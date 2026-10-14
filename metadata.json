@@ -1,0 +1,10 @@
+{
+  "name": "AFİNA ZEYTİN",
+  "description": "AFİNA ZEYTİN - Köklerinden aldığı güçle büyüyor. Sinematik 3D Tone Mapped Zeytin & Zeytinyağı Deneyimi, Vitrin ve Yönetim Paneli",
+  "requestFrame": {
+    "permissions": []
+  },
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

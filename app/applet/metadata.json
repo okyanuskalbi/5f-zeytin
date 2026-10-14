@@ -1,0 +1,8 @@
+{
+  "name": "5F Zeytin - Doğal Zeytin ve Soğuk Sıkım Zeytinyağı",
+  "description": "Ege ve Akdeniz'in kadim zeytin bahçelerinden sofranıza: Doğal sofralık zeytinler, erken hasat soğuk sıkım sızma zeytinyağları ve butik zeytin ezmeleri.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
