@@ -35,4 +35,9 @@ Tek landing navigasyonunu ve footer bağlantılarını kur.
 - Kullanıcı yerine açık karar verme; gizli bilgi commit etme; onaysız görseli yayınlama.
 - Gerçek ödeme, üretim DB değişikliği, canlı e-posta veya domain mutasyonu için bu taslağı tek başına yetki sayma.
 
+## Coder Notu
+
+- Başlangıç kontrolü: 002 ve 080 `TAMAMLANDI`, çalışma ağacı temiz ve dal `main`. Ancak 080 çıktıları manifestte `candidate`, `approval: null`; kullanıcı görsel onayı bulunmuyor. AGENTS/PLAN uyarınca zeytin/topluluk logoları onay gelmeden runtime'a bağlanamaz. Bu engel uygulama öncesinde kaydedildi; görsel onay kayıtları değiştirilmeyecek. Yapılabilen metin tabanlı kabuk uygulanacak, logo yerleşimi eksik kaldığı için durum `BEKLİYOR` kalacak.
+- TDD / RED (20 Ekim 2026): `PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" npm run test:e2e -- tests/e2e/shell.spec.ts --project=chromium-320 --grep 'shell exposes'` → **exit 1**, uygulama henüz header içermediği için `getByRole('banner')` bulunamadı. İlk denemedeki Chromium `MachPortRendezvousServer: Permission denied` ortam hatası süreç izniyle çözüldü; geçerli RED doğrudan eksik uygulama davranışıdır.
+
 ## Durum: BEKLİYOR
