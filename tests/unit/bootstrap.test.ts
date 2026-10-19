@@ -2,6 +2,7 @@ import { cleanup, render, screen } from "@testing-library/react";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { scripts } from "../../package.json";
 
 afterEach(() => {
   cleanup();
@@ -40,15 +41,22 @@ describe("ZEYTİN bootstrap", () => {
 });
 
 describe("Playwright target selection", () => {
-  it("starts a local server on 3000 with three browsers and four widths", async () => {
+  it("uses port 3004 for development and production servers", () => {
+    expect(scripts.dev).toBe("next dev -p 3004");
+    expect(scripts.start).toBe("next start -p 3004");
+  });
+
+  it("starts a local server on 3004 with three browsers and four widths", async () => {
     vi.stubEnv("PLAYWRIGHT_BASE_URL", undefined);
     const { default: config } = await import("../../playwright.config");
 
-    expect(config.use?.baseURL).toBe("http://localhost:3000");
+    expect(config.use?.baseURL).toBe("http://localhost:3004");
     expect(config.webServer).toMatchObject({
       command: "npm run start",
-      url: "http://localhost:3000",
+      url: "http://localhost:3004",
+      reuseExistingServer: false,
     });
+    expect(config.metadata).toMatchObject({ targetHost: "localhost:3004" });
     expect(config.projects).toHaveLength(12);
     for (const browserName of ["chromium", "firefox", "webkit"]) {
       for (const width of [320, 390, 768, 1440]) {
