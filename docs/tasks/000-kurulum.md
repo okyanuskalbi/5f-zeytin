@@ -12,7 +12,7 @@ kurulum (kod yazma YOK — sadece iskelet, doküman, ECC dosyaları, git)
 
 ## Referans
 - İş akışı: `~/PROJELER/5F-ZEYTIN/docs/referans/claude-codex-workflow.md` (bölüm 2–6 şablonları BİREBİR kullanılacak)
-- E-ticaret örneği (SADECE OKU, ASLA DEĞİŞTİRME): `~/PROJELER/MLNEW` — Next.js + Supabase + iyzico/PayTR callback (`app/api/payments/*`), sepet, ödeme, sipariş-takip, admin, nodemailer
+- E-ticaret örneği (SADECE OKU, ASLA DEĞİŞTİRME): `~/PROJELER/MLNEW` — Next.js + Supabase + PayTR iFrame API ve callback (`app/api/payments/*`), sepet, ödeme, sipariş-takip, admin, nodemailer
 - Mevcut ZEYTİN kodu: Google AI Studio çıktısı, React+Vite, EKSİK (`src/main.tsx`/`App.tsx` yok). Bileşenler (Hero, ScrollProductCard, CinematicScrollExperience, ThreeOliveBottleViewer, CartDrawer, CheckoutModal...) ve `docs/visual-prompts.md` referans olarak korunacak.
 
 ## Ortam (kontrol edildi)
@@ -59,7 +59,7 @@ kurulum (kod yazma YOK — sadece iskelet, doküman, ECC dosyaları, git)
 - **Yoğun işlerin tamamı Codex'te:** her görsel üretimi, bileşen, animasyon, entegrasyon ayrı task; Claude sadece plan + denetim yapar.
 - Üyelik (kayıt/giriş, hesabım, sipariş geçmişi).
 - Sepet: drawer + sepet sayfası, **sepet görünümünde upsell/çapraz satış** (ör. zeytin alana zeytinyağı, adet artırınca kademeli indirim).
-- Ödeme: MLNEW yapısı gibi (iyzico ve/veya PayTR callback) — sağlayıcı kararı açık.
+- Ödeme: 000c kararıyla yalnız PayTR iFrame API, site içine gömülü; MLNEW salt okunur düzen/callback referansı. Mağaza hesabı ve anahtarlar açık.
 - **Sepette bırakılanlar**: terk edilen sepet tespiti → zamanlı e-posta + **% indirim kuponu** (mail marketing).
 - **Promo/reklam kodları**: kupon sistemi (yüzde/tutar, süre, kullanım limiti, UTM kaynağı).
 - **Admin paneli**: ürün (≤6), sipariş, kupon/kampanya, terk edilen sepetler, müşteri, kargo bilgisi girişi; shadcn tabanlı.
@@ -75,13 +75,13 @@ kurulum (kod yazma YOK — sadece iskelet, doküman, ECC dosyaları, git)
   4. **AFİNA COFFEE** — kahve kahverengi + krem; "Kahveden daha fazlası…", COFFEE · DESSERT · BAKERY; fincan + kahve çekirdekleri.
   5. **AFİNA MOTORS** — siyah + altın/bronz şerit "AFİNA MOTORS"; at başlı logo; "GÜVENLE ALIN KEYİFLE SÜRÜN"; Alım · Satım · Takas; spor otomobil.
   6. **AFİNA ŞİRKETLER TOPLULUĞU** (kapanış) — krem/altın; sektör kartları İnşaat · Otomotiv · Tarım · Gastronomi + 5 marka logosu ızgarası.
-- Ek: hero/intro (topluluk logosu), hakkımızda, iletişim (form + harita), her marka için alt sayfa veya modal (ileride), KVKK. Mobilde dikey tam ekran geçişler, `prefers-reduced-motion` ile sade mod.
+- Ek: hero/intro (topluluk logosu), hakkımızda, iletişim (form + harita), her marka sahnesinde “Devamını oku” detay paneli (000c: tek landing, ayrı marka route’u yok), KVKK. Mobilde dikey tam ekran geçişler, `prefers-reduced-motion` ile sade mod.
 - Logo ve görseller şimdilik placeholder; kullanıcı orijinal logoları verecek (referans görsel dosyası `docs/referans/` altına kullanıcı tarafından eklenecek).
 - Statik/SSG, DB yok. Yayın: Vercel; alan adı afina.com.tr (19 Eki 2026 alındı, DNS Cloudflare'de, A kaydı yok).
 
 ## Açık kararlar (PLAN.md'ye yaz, KENDİN KARAR VERME)
 1. ZEYTİN veritabanı: yeni Supabase projesi (ad/org) — kullanıcı onayı
-2. Ödeme sağlayıcı: iyzico mu PayTR mı (ikisi mi), mağaza hesapları
+2. PayTR mağaza hesabı ve anahtarlar; sağlayıcı seçimi 000c ile kapalı (yalnız PayTR).
 3. E-posta servisi: Resend / SMTP (nodemailer) — gönderen alan adı doğrulaması
 4. Kargo firması/firmaları ve otomatik takip API'si gerekip gerekmediği
 5. Terk edilen sepet indirim oranı ve bekleme süreleri

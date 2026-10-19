@@ -16,11 +16,11 @@ Kullanıcının verdiği resmi kaynakları iki repoya `docs/referans/` altına k
 2. **ZEYTİN** `docs/referans/`: `icerik.md` (yalnız 01 Çatı + 04 Zeytin bölümleri), `logolar/` (zeytin + topluluk PNG/SVG + asıl PDF).
 3. **KURUMSAL PLAN.md güncelle** (resmi belgeye göre):
    - Ana mesaj: **"Farklı sektörler. Ortak bir imza."** Hero metni + kurumsal tanıtım belgeden birebir.
-   - Site akışı (belge bölüm 09): 01 HERO → 02 MARKALAR → 03 HİKÂYEMİZ → 04 DETAY (her marka ayrı sayfa) → 05 İLETİŞİM.
+   - Site akışı (belge bölüm 09): 01 HERO → 02 MARKALAR → 03 HİKÂYEMİZ → 04 DETAY (000c: her marka sahnesinde açılan panel, aynı landing içinde) → 05 İLETİŞİM.
    - **02 MARKALAR = kullanıcının istediği scroll kurgusu:** her scroll adımı tam ekran marka geçiş sahnesi, sıra belgedeki gibi: **İnşaat → Zeytin → Börek → Coffee → Motors**. Her sahnede: alan etiketi, slogan, 2–3 satır kart metni, CTA (belgeden birebir), markanın banner renk kimliği.
    - **Börek ve Coffee "ÇOK YAKINDA"** rozetiyle; CTA "Açılış Duyurularını/Gelişmelerini Takip Edin" (e-posta/Instagram takip). Açılışa kadar korunur.
    - 03 HİKÂYEMİZ: 2010 Antalya inşaat → farklı alanlar; video metnindeki manifesto ("Bazı başarılar tek bir alana sığmaz / Kimi zaman bir yapıda… yollara… toprağa kök salar / Farklı alanlarda aynı değerlerle büyüdük / Emek. Güven. / Yılların birikimi tek bir kimlikte buluşuyor / …geleceğe attığı imza") scroll ile kelime kelime altın açılış olarak kullanılabilir. **"Tuna İnşaat" / "Mehmet Tuna Otomotiv" adları KULLANILMAZ** (resmi belgede yok) — açık karar olarak işaretle.
-   - Detay sayfaları: `/insaat`, `/zeytin`, `/borek`, `/coffee`, `/motors` — hikâye, hizmet başlıkları, slogan, CTA, SEO başlığı/açıklaması belgeden birebir.
+   - 000c ile güncel detay kapsamı: `#insaat`, `#zeytin`, `#borek`, `#coffee`, `#motors` sahnelerinde “Devamını oku” paneli; hikâye, hizmet başlıkları, slogan ve CTA belgeden birebir. SEO alanları tek canonical altında Brand schema verisine eşlenir; ayrı marka sayfası oluşturulmaz.
    - Görsel dil: video (koyu sinematik + altın gradyan vurgu + italik serif giriş) + çatı krem/altın; marka sahnelerinde banner renkleri.
    - Konumlar: İnşaat **Antalya, 2010'dan beri**; Zeytin **Osmaniye üretim tesisi**.
    - **İddia kuralı:** "%100 organik / %100 doğal", ciro, proje adedi, sertifika, liderlik iddiası KULLANILMAZ (belge "Yayın öncesi kontrol"). Banner'daki "%100 Organik %100 Doğal" rozeti kullanılmaz.
@@ -54,7 +54,7 @@ Kullanıcının verdiği resmi kaynakları iki repoya `docs/referans/` altına k
 
 - 19 Ekim 2026: iki reponun PLAN ve görev taslakları resmi Sürüm 2.0 içeriğine göre güncellendi. Kullanıcının 000b talimatı, bu görev için docs düzenleme ve iki repoda çalışma yetkisidir; uygulama kodu/deploy yapılmadı, npm install çalıştırılmadı.
 - KURUMSAL: resmi PDF + tüm metnin Markdown eşleniği, altı PNG/SVG çifti + asıl logo PDF, video metni + 8 referans kare yerleştirildi. ZEYTİN: yalnız 01+04 metni, zeytin/topluluk PNG/SVG + asıl PDF yerleştirildi. Kaynakta olmayan 08 bölümü üretilmedi. Video dosyası kopyalanmadı/oynatılmadı; video metninin eski ad/sırası yerine PLAN'daki resmi içerik kararı uygulanır.
-- Yeni BEKLİYOR görevler: KURUMSAL 029 Marka varlıkları + 030–034 beş ayrı detay sayfası; ZEYTİN 080 Marka varlıkları + 081 toptan formu + 082 gönderim entegrasyonu. İki marka görevi 6+6 optimize normal/dark SVG, dosya başına <60 KB, PNG karşılaştırma şeridi, favicon/OG kabulü içerir. ZEYTİN 080'de eksik dört logo referansı salt okunur kaynaktan kendi reposuna alınacaktır. Bu görevde SVG optimizasyonu/görsel üretimi yapılması istenmedi; bu işler BEKLİYOR kalır.
+- Yeni BEKLİYOR görevler: KURUMSAL 029 Marka varlıkları + 030–034 beş marka detay içeriği (000c ile landing içi panel olarak güncellendi); ZEYTİN 080 Marka varlıkları + 081 toptan formu + 082 gönderim entegrasyonu. İki marka görevi 6+6 optimize normal/dark SVG, dosya başına <60 KB, PNG karşılaştırma şeridi, favicon/OG kabulü içerir. ZEYTİN 080'de eksik dört logo referansı salt okunur kaynaktan kendi reposuna alınacaktır. Bu görevde SVG optimizasyonu/görsel üretimi yapılması istenmedi; bu işler BEKLİYOR kalır.
 - ZEYTİN 004/005 tesis görseli görevlerine “Osmaniye üretim tesisi” kaynağı eklendi; gerçek tesis fotoğrafı ve görsel onayı bu görevlerin ayrı kapısıdır. 000 taslağında kalan eski rozet yönlendirmesi kullanılmaz kararıyla güncellendi. CLAUDE.md bölüm 6/7 komutları iki repoda istenen bayraklarla değiştirildi.
 
 Komutla doğrulanan kabul sonuçları:

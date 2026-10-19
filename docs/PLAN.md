@@ -51,13 +51,16 @@ docs/tasks/              # sırayla uygulanacak bağımsız task’lar
 | 6 | Fiyat/stok/kupon/ödeme sunucuda; callback idempotent | İstemci manipülasyonu ve çift işleme riskini engellemek | 2026-10-19 |
 | 7 | Her yeni public tablo migration’ında açık GRANT/REVOKE; istemci grant’inde RLS | Kullanıcı erişimi ile service_role sınırını açık kılmak | 2026-10-19 |
 | 8 | Özgün kod yalnız _legacy/; görseller aday/onay manifestiyle ayrılır | Referans kaybı ve onaysız yayın olmaması | 2026-10-19 |
+| 9 | Ödeme yalnız PayTR iFrame API; token sunucuda, ödeme sayfamızda gömülü iframe | Kullanıcı kararı: müşteri siteden ayrılmasın; kart alanları PayTR’de kalsın, uygulama kart verisi işlemesin | 2026-10-19 |
 
 
 ## ZEYTİN kapsamı
 
 - Marka AFİNA ZEYTİN, ana slogan **“Kökü toprakta. Yeri sofrada.”**; alt slogan **“Toprağın sunduğu lezzet, Afina’nın özeniyle.”**. “Köklerinden aldığı güçle büyüyor” yalnız ikincil/hikâye metni olarak kalabilir; #243A29 zeytin yeşili, #F5F1E7 fildişi, #D4B483 şampanya altını, altın dal + el logosu. Tek landing, scroll-linked/whileInView ürün sahneleri; en fazla 5–6 aktif ürün.
 - Üyelik: kayıt/giriş, hesabım, yalnız kendine ait sipariş geçmişi. Sepet: drawer + sayfa, upsell/çapraz satış (ör. zeytin yanında zeytinyağı), onaylı eşiklerde kademeli adet indirimi.
-- Ödeme: iyzico ve/veya PayTR seçimi açık; başlatma ve callback ayrı task, sunucuda tutar/para birimi/sipariş doğrulaması ve idempotency. Sandbox kanıtı, canlı tahsilat kanıtı değildir.
+- Ödeme: yalnız **PayTR iFrame API**, site içine gömülü. `createPaytrSession(order) → {iframeUrl, token}` sunucuda `get-token` çağırır; `https://www.paytr.com/odeme/guvenli/<token>` ödeme sayfamızda `iframeResizer` ile açılır. Kart/3D Secure alanları PayTR iframe içindedir; kendi kart alanlarımız çizilmez. Sol özet/temsili kart görseli/güven bilgisi, sağ iframe; upsell/kupon/kargo çevresi marka tokenlarına uyarlanır. Sağlayıcı soyutlaması yok; ileride gerekirse ayrıca planlanır.
+- PayTR bildirimi sunucu-sunucu hash doğrulaması ve idempotent sipariş güncellemesi yapar, düz `OK` döner. `merchant_ok_url` / `merchant_fail_url` kendi sonuç sayfamıza döner; sipariş durumu **yalnız doğrulanmış callback** ile değişir. Test modu `PAYTR_TEST_MODE` env değerinden okunur; sandbox kanıtı canlı tahsilat kanıtı değildir.
+- Yerel ödeme önizlemesi: 001’den hemen sonra 001b, DB/üyelik gerektirmeyen bellek içi örnek sipariş ve zorunlu `test_mode=1` ile `/odeme-onizleme` ekranını kurar. Anahtar yoksa uyarı gösterir; production build’de sayfa, token route’u ve sonuç sayfaları `PAYMENT_PREVIEW=1` olsa da 404 döner. Localhost yönlendirme sonucu ödeme teyidi sayılmaz; tam callback testi için README’de `cloudflared tunnel` notu bulunur.
 - Kupon/reklam kodu: yüzde/tutar, süre, kullanım limiti, UTM; terk edilen sepet tespiti, onaylı bekleme süresi, izinli e-posta ve yüzde kuponu ayrı entegrasyonlar.
 - Admin: ürün (≤6), sipariş, kupon/kampanya, terk edilen sepet, müşteri, kargo bilgisi; shadcn CLI + tokenlara uyarlanmış UI. Admin firma/takip no girer, müşteri e-postası ve siparis-takip sayfası birbirinden ayrı görevler.
 - Ürün kapsamı: **sofralık zeytin, salamura zeytin, zeytinyağı**; perakende site satışı + toptan satış. En fazla 6 aktif ürün sınırı tüm kanal ve admin akışlarında korunur; gerçek SKU, ambalaj/fiyat/stok kullanıcıdan gelir.
@@ -93,7 +96,7 @@ Tesis kimliği: **Osmaniye üretim tesisi** (resmi belge bölüm 04); iki katlı
 
 ## Salt okunur MLNEW referansı
 
-`~/PROJELER/MLNEW` değiştirilmez; gerçek sırlar/katalog/iş kuralları kopyalanmaz. İncelenen örnek yollar: `lib/payments/provider.ts`, `lib/payments/iyzico.ts`, `lib/payments/paytr.ts`, `app/api/payments/iyzico/callback/route.ts`, `app/api/payments/paytr/callback/route.ts`, `app/api/checkout/route.ts`, `app/siparis-takip/`, `app/admin/`, `lib/mail/transport.ts`. Callback’te sunucu doğrulaması, koşullu/idempotent sipariş güncellemesi ve e-posta adapter sınırı yalnız mimari referanstır.
+`~/PROJELER/MLNEW` değiştirilmez; gerçek sırlar/katalog/iş kuralları kopyalanmaz. İncelenen örnek yollar: `components/cart/CartView.tsx` (sol kart görseli/güven + sağ iframe), `lib/payments/paytr.ts`, `app/api/payments/paytr/callback/route.ts`, `app/api/checkout/route.ts`, `app/siparis-takip/`, `app/admin/`, `lib/mail/transport.ts`. Callback’te sunucu doğrulaması, koşullu/idempotent sipariş güncellemesi ve e-posta adapter sınırı yalnız mimari referanstır.
 
 ## Çalışma ve kabul düzeni
 
@@ -108,7 +111,7 @@ Ara kontrol: temel/token/varlık görevlerinden sonra build + responsive doğrul
 Bu maddeler kullanıcı kararıdır; aşağıdaki seçeneklerden hiçbiri otomatik seçilmedi.
 
 1. ZEYTİN: yeni Supabase projesinin adı ve organizasyonu — kullanıcı onayı gerekli.
-2. Ödeme: iyzico / PayTR / ikisi ve mağaza hesapları — açık.
+2. PayTR mağaza hesabı, merchant ID/key/salt teslimi ve test/canlı hesap erişimi — açık; sağlayıcı seçimi kapalıdır. Sırlar yalnız `.env.local` içinde; `.env.example` yalnız boş anahtar adlarını içerir (001b).
 3. E-posta: Resend / SMTP (nodemailer), gönderen alan adı ve doğrulaması — açık.
 4. Kargo firması/firmaları ve otomatik takip API’si ihtiyacı — açık.
 5. Terk edilen sepet indirim yüzdesi ve bekleme süreleri — açık; kademeli indirim eşikleri de kullanıcı tarafından verilecek.
@@ -118,11 +121,12 @@ Bu maddeler kullanıcı kararıdır; aşağıdaki seçeneklerden hiçbiri otomat
 
 ## Task listesi
 
-Numaralar mevcut task bağlantılarını korur; aşağıdaki satır sırası ve `addBlockedBy` bağımlılıkları uygulama sırasıdır. 080 marka varlıkları temel işlerden sonra, 081/082 toptan talebi hukuk/e-posta hazırlığından sonra, kalite kabulü yayın öncesinde tamamlanır. 000b yalnız bu taslakları günceller, aşağıdaki görevleri çalıştırmaz.
+Numaralar mevcut task bağlantılarını korur; aşağıdaki satır sırası ve `addBlockedBy` bağımlılıkları uygulama sırasıdır. 080 marka varlıkları temel işlerden sonra, 081/082 toptan talebi hukuk/e-posta hazırlığından sonra, kalite kabulü yayın öncesinde tamamlanır. 000b ve 000c yalnız bu taslakları günceller; aşağıdaki uygulama görevlerini çalıştırmaz. 001b, 001’den hemen sonra gelir.
 
 | No | İsim | Tür | Bağımlı | Durum |
 |----|------|-----|---------|-------|
 | 001 | [Next.js App Router ve test temeli](tasks/001-bootstrap.md) | fullstack | — | BEKLİYOR |
+| 001b | [ONAY GEREKLİ — PayTR yerel ödeme önizlemesi (DB yok)](tasks/001b-odeme-onizleme.md) | fullstack | 001 | BEKLİYOR |
 | 002 | [Marka token ve UI temeli](tasks/002-tokens.md) | frontend | 001 | BEKLİYOR |
 | 003 | [Görsel aday ve onay kaydı](tasks/003-asset-registry.md) | frontend | 001 | BEKLİYOR |
 | 080 | [Marka varlıkları](tasks/080-brand-assets.md) | frontend | 002, 003 | BEKLİYOR |
@@ -169,10 +173,10 @@ Numaralar mevcut task bağlantılarını korur; aşağıdaki satır sırası ve 
 | 044 | [ONAY GEREKLİ — Sipariş şeması](tasks/044-orders-db.md) | backend | 040, 028 | BEKLİYOR |
 | 045 | [ONAY GEREKLİ — Sipariş oluşturma API](tasks/045-checkout-api.md) | backend | 044, 035 | BEKLİYOR |
 | 046 | [ONAY GEREKLİ — Ödeme bilgi formu](tasks/046-checkout-ui.md) | frontend | 045, 037 | BEKLİYOR |
-| 047 | [ONAY GEREKLİ — Onaylanan ödeme sağlayıcısı başlatma](tasks/047-payment-adapter.md) | backend | 045 | BEKLİYOR |
-| 048 | [ONAY GEREKLİ — Checkout ödeme sağlayıcısı bağlantısı](tasks/048-payment-embed.md) | frontend | 047, 046 | BEKLİYOR |
-| 049 | [ONAY GEREKLİ — Ödeme callback doğrulaması](tasks/049-payment-callback.md) | backend | 047 | BEKLİYOR |
-| 050 | [ONAY GEREKLİ — Ödeme sonucunu sunucudan gösterme](tasks/050-payment-result.md) | frontend | 049, 046, 048 | BEKLİYOR |
+| 047 | [ONAY GEREKLİ — PayTR iFrame oturumu başlatma](tasks/047-payment-adapter.md) | backend | 045 | BEKLİYOR |
+| 048 | [ONAY GEREKLİ — Tek ödeme ekranında PayTR iFrame](tasks/048-payment-embed.md) | frontend | 047, 046 | BEKLİYOR |
+| 049 | [ONAY GEREKLİ — PayTR callback doğrulaması](tasks/049-payment-callback.md) | backend | 047 | BEKLİYOR |
+| 050 | [ONAY GEREKLİ — PayTR sonucunu sunucudan gösterme](tasks/050-payment-result.md) | frontend | 049, 046, 048 | BEKLİYOR |
 | 051 | [Onaylı e-posta servisi adapterı](tasks/051-mail.md) | backend | 001 | BEKLİYOR |
 | 052 | [ONAY GEREKLİ — Sipariş bildirimi entegrasyonu](tasks/052-order-email.md) | backend | 051, 049 | BEKLİYOR |
 | 053 | [ONAY GEREKLİ — Kupon ve kampanya şeması](tasks/053-coupons-db.md) | backend | 044 | BEKLİYOR |

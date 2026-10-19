@@ -23,7 +23,7 @@ Adres ve sipariş özeti formunu checkout API’ye bağla.
 
 ## Adımlar
 1. PLAN, AGENTS ve bağımlı task’ları oku; gereken kullanıcı kararları/onayları yoksa başlamadan Coder Notu’na engeli kaydet.
-2. Yüklenme/hata ve çift gönderim koruması, mesafeli satış/KVKK bağlantıları; kart verisi uygulamaya alınmaz, sağlayıcı formu ayrı görevde.
+2. Yüklenme/hata ve çift gönderim koruması, mesafeli satış/KVKK bağlantıları; kart verisi uygulamaya alınmaz. Aynı `/odeme` ekranına PayTR iframe bağlantısı 048’de eklenir; ayrı kart formu veya ikinci ödeme ekranı oluşturulmaz.
 3. Uygulama görevinde ilgili davranış testini önce başarısız çalıştır, uygula ve geçir. Görsel görevinde model/kaynak/çıktı doğrulaması yap; key ve kişisel veri kaydetme.
 4. Kabul komutlarını çalıştır, çıktıyı ve varsa kullanıcı onay kaydını Coder Notu’na ekle; yalnız bu task kapsamını commit et.
 
