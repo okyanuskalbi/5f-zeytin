@@ -1,4 +1,4 @@
-> ONAY GEREKLİ (ödeme)
+> ONAYLANDI (ödeme önizlemesi, DB yok): kullanıcı 19 Eki 2026 "LOCALDE HER İKİ SİSTEMİ GÖREYİM" + "SADECE PAYTR OLARAK DEVAM ET". Gerçek anahtar yoksa uyarılı mod; anahtar YALNIZ .env.local.
 
 # Task 001b: PayTR yerel ödeme önizlemesi (DB yok)
 

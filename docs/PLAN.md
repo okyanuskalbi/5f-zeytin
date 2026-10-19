@@ -156,7 +156,7 @@ Numaralar mevcut task bağlantılarını korur; aşağıdaki satır sırası ve 
 | 027 | [ONAY GEREKLİ — Yerel Supabase doğrulama ortamı](tasks/027-supabase-local.md) | backend | 001 | BEKLİYOR |
 | 028 | [ONAY GEREKLİ — Ürün şeması ve RLS](tasks/028-catalog-db.md) | backend | 001, 027 | BEKLİYOR |
 | 029 | [ONAY GEREKLİ — Katalog okuma entegrasyonu](tasks/029-catalog-api.md) | backend | 028 | BEKLİYOR |
-| 030 | [Ürün kartı bileşeni](tasks/030-product-card.md) | frontend | 002, 029 | BEKLİYOR |
+| 030 | [Ürün kartı bileşeni](tasks/030-product-card.md) | frontend | 002 (geçici sabit veri; 029 sonra) | BEKLİYOR |
 | 031 | [Ürün kartı scroll hareketi](tasks/031-card-motion.md) | frontend | 030 | BEKLİYOR |
 | 032 | [Landing sahne orkestrasyonu](tasks/032-scenes.md) | frontend | 026, 031 | BEKLİYOR |
 | 033 | [Hikâye ve tesis bölümü](tasks/033-facility.md) | frontend | 032 | BEKLİYOR |

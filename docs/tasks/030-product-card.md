@@ -7,7 +7,7 @@ frontend
 Her ürünün satın alma kartını kur.
 
 ## Bağlam
-`docs/PLAN.md`: Hedef, Teknoloji, Mimari kararlar ve ilgili kapsam bölümü. Bağımlı task’lar / addBlockedBy: 002 (tokens); 029 (catalog-api). Komutlar 001 görevinde kurulacak araçlara dayanır; bağımlılıklar tamamlanmadan bu task çalıştırılmaz.
+`docs/PLAN.md`: Hedef, Teknoloji, Mimari kararlar ve ilgili kapsam bölümü. Bağımlı task’lar / addBlockedBy: 002 (tokens). **Geçici veri kararı (Claude, 19 Eki):** 029 (Supabase katalog) kullanıcı kararı beklediği için kart `lib/catalog/static-products.ts` içindeki temsili ≤6 ürün sabit verisini, 029'un döneceği tipte (`types/catalog.ts`) okur; veri kaynağı tek bir `getProducts()` fonksiyonunun arkasında, 029 geldiğinde yalnız o fonksiyon değişir. Fiyatlar temsili ve UI'da "temsili" notu yok ama `static-products.ts` başında yorum + PLAN'da açık karar olarak kalır. Komutlar 001 görevinde kurulacak araçlara dayanır; bağımlılıklar tamamlanmadan bu task çalıştırılmaz.
 
 ## Kullanılacak araçlar
 - ECC skill: frontend-patterns, accessibility
