@@ -66,7 +66,18 @@ Uygulama ve doğrulama komutlarını ilk kez kur; Task 000 sırasında uygulama 
 
 Port 3000, `lsof -nP -iTCP:3000 -sTCP:LISTEN` çıktısında PID **50762** tarafından tutuluyor. `lsof -a -p 50762 -d cwd -Fn` bu sürecin `/Users/emre/PROJELER/shortlistleads/src/frontend` uygulaması olduğunu gösterdi. Kullanıcıdan portu boşaltması istendi; başka projenin süreci durdurulmadı ve port kararı değiştirilmedi. Port boşaldığında yukarıdaki tarayıcı önbelleği değişkeniyle ikinci kabul komutu tekrar çalıştırılmalı. **Ana sayfanın HTTP 200 yanıtı ve 12 tarayıcı/ekran koşumu henüz doğrulanmadığı için durum BEKLİYOR.**
 
+### 001-a uygulama ve yeniden kabul — 19 Ekim 2026
+
+- Önceki port 3000 engeli, onaylı 001-a düzeltmesiyle kapandı. `package.json` içindeki `dev` / `start` komutları `-p 3004`, Playwright yerel `baseURL` / `webServer` hedefi `http://localhost:3004` olarak güncellendi. Başka projenin sürecine müdahale edilmedi.
+- README'ye güncel kurulum, 3004 adresi, kabul komutları ve açık uzak hedef kullanımı eklendi. PLAN'da yerel adres bulunmadığı için `docs/PLAN.md` değiştirilmedi. `_legacy/` ve `docs/visual-prompts.md` korundu. Task gereği 21st kullanılmadı; ek skill veya bağımlılık kurulmadı. `package.json` / lockfile bağımlılık ve engine tutarlılığı Node komutuyla doğrulandı; lockfile değişmedi.
+- RED: önce `tests/unit/bootstrap.test.ts` içinde dev/start ve Playwright için 3004 sözleşmesi tanımlandı. `npm run test -- tests/unit/bootstrap.test.ts` → exit 1, **2 başarısız / 5 başarılı**; iki hata da mevcut 3000 değerinin beklenen 3004 ile uyuşmamasıydı. TDD checkpoint commit'i: `cb57d90` (mevcut `main` üzerinde).
+- GREEN / ilk kabul: `npm run lint && npm run typecheck && npm run test -- tests/unit/bootstrap.test.ts` → **exit 0, 7 test başarılı**. Yerel hedef, 12 proje, `reuseExistingServer: false`, uzak hedefte yerel sunucunun başlatılmaması ve boş hedefin reddi doğrulandı.
+- `npm run test -- tests/unit/bootstrap.test.ts --coverage` → **exit 0**; iki uygulama dosyasında statement/function/line **%100**, branch 0/0.
+- İkinci kabul: `export PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright"` ardından `npm run build && npm run test:e2e -- tests/e2e/bootstrap.spec.ts` → **exit 0, 12 test başarılı (7.2 saniye)**. İlk denemedeki macOS sandbox tarayıcı açılış hatası (`MachPortRendezvousServer: Permission denied`) gerekli süreç izniyle aynı kabul komutu yeniden çalıştırılarak çözüldü. npm önbelleği için `export npm_config_cache="$PWD/.cache/npm"` kullanıldı.
+- Chromium / Firefox / WebKit × 320 / 390 / 768 / 1440 genişliklerinde ana sayfa **HTTP 200**, doğru origin, `meta[name="app"][content="zeytin"]`, Türkçe belge dili, resmi başlık/slogan ve yatay taşma olmaması doğrulandı. `test-results/results.json` Node assertion'ları: hedef **localhost:3004**, 12 proje, **12 başarılı / 0 başarısız / 0 atlanan / 0 flaky** ve 12 testte doğru `target-host` annotation'ı. HTML/JSON raporları git dışında tutulur.
+- Production build'deki **5 `.next/**/*.nft.json`** dosyası Node komutuyla tarandı: **0 `_legacy` referansı**. `git diff --check` başarılı. Her iki kabul kriteri tamamlandı; kalan engel yok. Bu doğrulama yerel uygulama içindir; uzak preview/live hedefi çalıştırılmadı.
+
 ## Düzeltme 001-a (Claude, 19 Eki)
 3000 portu kullanıcının başka projesinde (shortlistleads) sürekli açık; ona DOKUNMA. ZEYTİN portunu **3004** yap: `package.json` dev/start `-p 3004`, `playwright.config.ts` baseURL/webServer 3004, README/PLAN'daki yerel adres `http://localhost:3004`. Sonra E2E dahil tüm kabul kriterlerini yeniden çalıştır.
 
-## Durum: BEKLİYOR
+## Durum: TAMAMLANDI

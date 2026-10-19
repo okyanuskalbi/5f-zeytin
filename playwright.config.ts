@@ -1,7 +1,7 @@
 import { defineConfig } from "@playwright/test";
 
 const externalBaseURL = process.env.PLAYWRIGHT_BASE_URL;
-const baseURL = externalBaseURL ?? "http://localhost:3000";
+const baseURL = externalBaseURL ?? "http://localhost:3004";
 const targetURL = new URL(baseURL);
 const browserNames = ["chromium", "firefox", "webkit"] as const;
 const viewportWidths = [320, 390, 768, 1440];
