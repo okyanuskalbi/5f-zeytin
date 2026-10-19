@@ -1,4 +1,387 @@
 {
   "version": 1,
-  "assets": []
+  "assets": [
+    {
+      "id": "brand-afina-topluluk",
+      "file": "/brand/afina-topluluk.svg",
+      "sha256": "7efeb22761952652542bb7b9c7722e0076abcd6a27585b5b043dd095652e6845",
+      "width": 381,
+      "height": 225,
+      "aspectRatio": "127:75",
+      "model": "source-svg-native-gradients-svgo-4.1.0",
+      "promptId": "TASK-080",
+      "representative": false,
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-topluluk.svg",
+          "sha256": "0ae7decd5b10d084037a507cb6a86444352772ab759bc612bd94fc62314c45bb"
+        },
+        {
+          "file": "docs/referans/logolar/afina-topluluk.png",
+          "sha256": "e17a97ca61e968fca161d9e6f6ef4e089f0f924b218eb961fda08835632d3f19"
+        }
+      ],
+      "status": "candidate",
+      "approval": null
+    },
+    {
+      "id": "brand-afina-topluluk-dark",
+      "file": "/brand/afina-topluluk-dark.svg",
+      "sha256": "f2a640f761a9f1abc5f510d187552a3d6cc3dc2b18b1669072129d731d33dbcc",
+      "width": 381,
+      "height": 225,
+      "aspectRatio": "127:75",
+      "model": "source-svg-native-gradients-svgo-4.1.0",
+      "promptId": "TASK-080",
+      "representative": false,
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-topluluk.svg",
+          "sha256": "0ae7decd5b10d084037a507cb6a86444352772ab759bc612bd94fc62314c45bb"
+        },
+        {
+          "file": "docs/referans/logolar/afina-topluluk.png",
+          "sha256": "e17a97ca61e968fca161d9e6f6ef4e089f0f924b218eb961fda08835632d3f19"
+        }
+      ],
+      "status": "candidate",
+      "approval": null
+    },
+    {
+      "id": "brand-afina-zeytin",
+      "file": "/brand/afina-zeytin.svg",
+      "sha256": "49afab6fbfb1b9c1b7c6c4ce6f8e1b90db8922eb6383792acdf7793144278f6f",
+      "width": 145,
+      "height": 167,
+      "aspectRatio": "145:167",
+      "model": "source-svg-native-gradients-svgo-4.1.0",
+      "promptId": "TASK-080",
+      "representative": false,
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-zeytin.svg",
+          "sha256": "0350812d1ca7b69b572116e5902262eb68f20a88888fc8e06a3ede23ceb05685"
+        },
+        {
+          "file": "docs/referans/logolar/afina-zeytin.png",
+          "sha256": "845182fa8c976af093485a12b3fe109b5d19da9455313e380227ada69f288aed"
+        }
+      ],
+      "status": "candidate",
+      "approval": null
+    },
+    {
+      "id": "brand-afina-zeytin-dark",
+      "file": "/brand/afina-zeytin-dark.svg",
+      "sha256": "a5626b9dfd14b1cdd6bcbe2bdff5579f9d99cc338632298ddb3c14e0f0b6dfe3",
+      "width": 145,
+      "height": 167,
+      "aspectRatio": "145:167",
+      "model": "source-svg-native-gradients-svgo-4.1.0",
+      "promptId": "TASK-080",
+      "representative": false,
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-zeytin.svg",
+          "sha256": "0350812d1ca7b69b572116e5902262eb68f20a88888fc8e06a3ede23ceb05685"
+        },
+        {
+          "file": "docs/referans/logolar/afina-zeytin.png",
+          "sha256": "845182fa8c976af093485a12b3fe109b5d19da9455313e380227ada69f288aed"
+        }
+      ],
+      "status": "candidate",
+      "approval": null
+    },
+    {
+      "id": "brand-afina-borek",
+      "file": "/brand/afina-borek.svg",
+      "sha256": "02cf3447fdcbf959c41b04d92385cf7f7be794c1ce064849ea3e47eeb3801938",
+      "width": 108,
+      "height": 166,
+      "aspectRatio": "54:83",
+      "model": "source-svg-native-gradients-svgo-4.1.0",
+      "promptId": "TASK-080",
+      "representative": false,
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-borek.svg",
+          "sha256": "253d2dcf7256fbf4bf0194dee4bf0a59adbbc42dffb695452b62d1a7f5d28c88"
+        },
+        {
+          "file": "docs/referans/logolar/afina-borek.png",
+          "sha256": "78fb547e5389e2f9c5f88e1a1847199320a91cf593ecc2fe7f554add641af74b"
+        }
+      ],
+      "status": "candidate",
+      "approval": null
+    },
+    {
+      "id": "brand-afina-borek-dark",
+      "file": "/brand/afina-borek-dark.svg",
+      "sha256": "02cf3447fdcbf959c41b04d92385cf7f7be794c1ce064849ea3e47eeb3801938",
+      "width": 108,
+      "height": 166,
+      "aspectRatio": "54:83",
+      "model": "source-svg-native-gradients-svgo-4.1.0",
+      "promptId": "TASK-080",
+      "representative": false,
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-borek.svg",
+          "sha256": "253d2dcf7256fbf4bf0194dee4bf0a59adbbc42dffb695452b62d1a7f5d28c88"
+        },
+        {
+          "file": "docs/referans/logolar/afina-borek.png",
+          "sha256": "78fb547e5389e2f9c5f88e1a1847199320a91cf593ecc2fe7f554add641af74b"
+        }
+      ],
+      "status": "candidate",
+      "approval": null
+    },
+    {
+      "id": "brand-afina-coffee",
+      "file": "/brand/afina-coffee.svg",
+      "sha256": "5cd2732fef1be0e814463cb8482e5cb15167a05c899b4a51491c13cb813a4532",
+      "width": 187,
+      "height": 167,
+      "aspectRatio": "187:167",
+      "model": "source-svg-native-gradients-svgo-4.1.0",
+      "promptId": "TASK-080",
+      "representative": false,
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-coffee.svg",
+          "sha256": "9693a6070a4ce6219c0f014a0a37dd6ba04e32d504d78249cb85f23459d38e7a"
+        },
+        {
+          "file": "docs/referans/logolar/afina-coffee.png",
+          "sha256": "100b2280ce4bbf433858b6c561d394144d176a897f0b23acaa8f5be38c7c7bcf"
+        }
+      ],
+      "status": "candidate",
+      "approval": null
+    },
+    {
+      "id": "brand-afina-coffee-dark",
+      "file": "/brand/afina-coffee-dark.svg",
+      "sha256": "f756e62e5552507483c5560b4150c5ef94d99ff9bba1a4571583b7bf4ce263be",
+      "width": 187,
+      "height": 167,
+      "aspectRatio": "187:167",
+      "model": "source-svg-native-gradients-svgo-4.1.0",
+      "promptId": "TASK-080",
+      "representative": false,
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-coffee.svg",
+          "sha256": "9693a6070a4ce6219c0f014a0a37dd6ba04e32d504d78249cb85f23459d38e7a"
+        },
+        {
+          "file": "docs/referans/logolar/afina-coffee.png",
+          "sha256": "100b2280ce4bbf433858b6c561d394144d176a897f0b23acaa8f5be38c7c7bcf"
+        }
+      ],
+      "status": "candidate",
+      "approval": null
+    },
+    {
+      "id": "brand-afina-motors",
+      "file": "/brand/afina-motors.svg",
+      "sha256": "47440adbdbfd8b02751799d7bfe873d7640ebab672b25a1caae72a877166ed25",
+      "width": 228,
+      "height": 167,
+      "aspectRatio": "228:167",
+      "model": "source-svg-native-gradients-svgo-4.1.0",
+      "promptId": "TASK-080",
+      "representative": false,
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-motors.svg",
+          "sha256": "ef2e273ff95bda10cc14dc3a5fafe067903090d46a453f8363c416a818450ec5"
+        },
+        {
+          "file": "docs/referans/logolar/afina-motors.png",
+          "sha256": "a3855ae26c4e860edfeb0993db4b164b101a95fba07a2cd8913f8b09c50cd520"
+        }
+      ],
+      "status": "candidate",
+      "approval": null
+    },
+    {
+      "id": "brand-afina-motors-dark",
+      "file": "/brand/afina-motors-dark.svg",
+      "sha256": "6033e0819d35d753ca804e1d2e4a2587246bd409288a44479f23225e16055929",
+      "width": 228,
+      "height": 167,
+      "aspectRatio": "228:167",
+      "model": "source-svg-native-gradients-svgo-4.1.0",
+      "promptId": "TASK-080",
+      "representative": false,
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-motors.svg",
+          "sha256": "ef2e273ff95bda10cc14dc3a5fafe067903090d46a453f8363c416a818450ec5"
+        },
+        {
+          "file": "docs/referans/logolar/afina-motors.png",
+          "sha256": "a3855ae26c4e860edfeb0993db4b164b101a95fba07a2cd8913f8b09c50cd520"
+        }
+      ],
+      "status": "candidate",
+      "approval": null
+    },
+    {
+      "id": "brand-afina-insaat",
+      "file": "/brand/afina-insaat.svg",
+      "sha256": "3a118e447c67ffd3a92920cfc98eff328332990dfcc80e9d8687d0ed5dce955b",
+      "width": 175,
+      "height": 167,
+      "aspectRatio": "175:167",
+      "model": "source-svg-native-gradients-svgo-4.1.0",
+      "promptId": "TASK-080",
+      "representative": false,
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-insaat.svg",
+          "sha256": "b6db023cfba9aa7a69e7835e8ff68b211b67ceb51478c12681f26fa389b18a37"
+        },
+        {
+          "file": "docs/referans/logolar/afina-insaat.png",
+          "sha256": "e58290af9d62d53a3fd64d6085586c248b35554decf86b82c27721b2f9dc0ee2"
+        }
+      ],
+      "status": "candidate",
+      "approval": null
+    },
+    {
+      "id": "brand-afina-insaat-dark",
+      "file": "/brand/afina-insaat-dark.svg",
+      "sha256": "103965f6fab2ccc3318226077cc7536948a28f678aa2e0818369ca19e9222f02",
+      "width": 175,
+      "height": 167,
+      "aspectRatio": "175:167",
+      "model": "source-svg-native-gradients-svgo-4.1.0",
+      "promptId": "TASK-080",
+      "representative": false,
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-insaat.svg",
+          "sha256": "b6db023cfba9aa7a69e7835e8ff68b211b67ceb51478c12681f26fa389b18a37"
+        },
+        {
+          "file": "docs/referans/logolar/afina-insaat.png",
+          "sha256": "e58290af9d62d53a3fd64d6085586c248b35554decf86b82c27721b2f9dc0ee2"
+        }
+      ],
+      "status": "candidate",
+      "approval": null
+    },
+    {
+      "id": "brand-favicon",
+      "file": "/brand/favicon.svg",
+      "sha256": "c8cad56a558493832ab9ed75ba89dffba66503ee00c3837625b0d325b2b303e5",
+      "width": 113,
+      "height": 113,
+      "aspectRatio": "1:1",
+      "model": "source-svg-native-gradients-svgo-4.1.0",
+      "promptId": "TASK-080",
+      "representative": false,
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-zeytin.svg",
+          "sha256": "0350812d1ca7b69b572116e5902262eb68f20a88888fc8e06a3ede23ceb05685"
+        },
+        {
+          "file": "docs/referans/logolar/afina-zeytin.png",
+          "sha256": "845182fa8c976af093485a12b3fe109b5d19da9455313e380227ada69f288aed"
+        }
+      ],
+      "status": "candidate",
+      "approval": null
+    },
+    {
+      "id": "brand-og",
+      "file": "/brand/og.png",
+      "sha256": "8e4349835bacca4db9a31b3c605bc6a58601a1b342fbc350eded2cdfec6ac640",
+      "width": 1200,
+      "height": 630,
+      "aspectRatio": "40:21",
+      "model": "sharp-0.35.5",
+      "promptId": "TASK-080",
+      "representative": false,
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-zeytin.svg",
+          "sha256": "0350812d1ca7b69b572116e5902262eb68f20a88888fc8e06a3ede23ceb05685"
+        },
+        {
+          "file": "docs/referans/logolar/afina-zeytin.png",
+          "sha256": "845182fa8c976af093485a12b3fe109b5d19da9455313e380227ada69f288aed"
+        },
+        {
+          "file": "docs/referans/icerik.md",
+          "sha256": "c4b118f9786830b272dd0a407187cada123ae31a427a6da350096453eaa79f42"
+        }
+      ],
+      "status": "candidate",
+      "approval": null
+    }
+  ]
 }

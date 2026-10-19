@@ -48,4 +48,116 @@ Asıl Illustrator kaynağı docs/referans/logolar/AFİNA Logolar2.pdf; PNG görs
 - Servis/hesap/kanal kararlarını kullanıcı yerine verme; gizli bilgi commit etme.
 - Bu task kaynak dosyalarını veya uygulama sayfalarını değiştirmez; üretilmiş sahne/tesis görseli ve video üretmez.
 
-## Durum: BEKLİYOR
+## Coder Notu
+
+Task 002 ve 003 dosyalarının `TAMAMLANDI` durumu doğrulandı. Görevdeki
+`design-system`, `verification-loop` ve `image-processing` skill'leri kullanıldı.
+21st MCP bu görevde istenmediği için kullanılmadı; yeni UI/runtime bağlantısı yok.
+
+### Uygulama
+
+- Altı markanın yalnız kendi nesnelerini içeren 6 normal + 6 dark SVG'si,
+  zeytin ambleminden transparan favicon ve 1200×630 OG PNG hazırlandı.
+  SVG boyutları 1.691–54.713 bayt; favicon 52.353 bayt. Hepsi 60.000 bayttan küçük.
+- Her kaynak SVG'deki 985 üst düzey nesneden yalnız ilgili logo seçildi;
+  diğer logolar fiziksel olarak çıkarıldı. Kullanılan clip/defs bağımlılıkları
+  korundu, gereksiz tanımlar temizlendi ve gerçek görünür sınırlara kırpıldı.
+  Zeytin renk dilimleri, kaynak konturları korunarak yerel linear/radial
+  gradientlere birleştirildi; kaynak renklerinden alınan stop'lar sadeleştirildi.
+  SVGO 4.1.0, multipass, 3 basamak koordinat hassasiyeti kullanıldı.
+- Koyu sürümlerde siyah/koyu wordmark'lar fildişine, topluluk/motors alt yazıları
+  marka altınına uyarlandı; amblem renkleri korundu. Coffee ve inşaat yazıları
+  da koyu zeminde okunur. Börek turuncu kimliği ve inşaat kırmızı alt yazısı korundu.
+- Eksik dört markanın sekiz PNG/SVG kaynağı AFINA-KAYNAK'tan birebir kopyalandı.
+  Kaynak klasöre yazılmadı. Mevcut PDF, zeytin/topluluk PNG ve SVG'lerinin
+  `git show HEAD:<dosya>` baytlarıyla eşitliği ayrıca doğrulandı.
+- Kaynak SHA-256/bayt/ölçü, dönüşüm, çıktı ölçüsü/hash ve görsel inceleme
+  `docs/gorsel-onay.md` ile manifestte kayıtlı. 14 varlık `candidate`,
+  `approval: null`; kullanıcı kararı yazılmadı, sayfalara bağlanmadı.
+- SVGO yalnız repo içi `.cache/npm` önbelleğiyle çalıştırıldı. PDF yapısını
+  incelemek için pypdf 6.1.1 yalnız `.cache/task-080/python` içine kuruldu.
+  Proje bağımlılıkları/lockfile değişmedi; ara betikler ve renderlar `.cache/`
+  altında, commit dışında tutuldu. Mevcut Sharp 0.35.5, Pillow ve NumPy kullanıldı.
+
+### Görsel inceleme ve render komutları
+
+Çalıştırılan hazırlama/render komutları:
+
+```sh
+pdftocairo -f 1 -l 1 -scale-to 1800 -png -singlefile 'docs/referans/logolar/AFİNA Logolar2.pdf' .cache/task-080/pdf-source
+node .cache/task-080/inspect.mjs
+python3 .cache/task-080/extract.py
+python3 .cache/task-080/compact.py
+npm_config_cache="$PWD/.cache/npm" npx --yes svgo@4.1.0 --config .cache/task-080/svgo.config.mjs -f .cache/task-080/compact -o public/brand
+node .cache/task-080/render.mjs
+python3 .cache/task-080/compare.py
+```
+
+Yerel Chromium `getBBox()` ile kaynak nesne ve clip sınırları ölçüldü.
+macOS sandbox tarayıcıyı engellediği için ölçüm komutu izinli sandbox dışı
+çalıştırmayla tamamlandı. Üretim/render işlemleri yereldir; görsel üretim API'si yok.
+
+Commit içindeki kaynak ve sonuçlardan PNG ile aynı boyutta normal/dark renderları
+yeniden almak için ara betik gerektirmeyen komut:
+
+```sh
+mkdir -p .cache/task-080
+node --input-type=module <<'JS'
+import sharp from 'sharp';
+import { readFile } from 'node:fs/promises';
+for (const name of 'topluluk zeytin borek coffee motors insaat'.split(' ')) {
+  const source = await readFile(`docs/referans/logolar/afina-${name}.svg`, 'utf8');
+  const viewBox = source.match(/viewBox="([^"]+)"/)[1];
+  const { width, height } = await sharp(`docs/referans/logolar/afina-${name}.png`).metadata();
+  for (const suffix of ['', '-dark']) {
+    const svg = await readFile(`public/brand/afina-${name}${suffix}.svg`, 'utf8');
+    const aligned = svg.replace(/<svg\b[^>]*>/,
+      `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="${viewBox}">`);
+    await sharp(Buffer.from(aligned)).png().toFile(`.cache/task-080/${name}${suffix}-aligned.png`);
+  }
+}
+for (const size of [16, 32, 48, 128]) {
+  await sharp('public/brand/favicon.svg').resize(size, size).png()
+    .toFile(`.cache/task-080/favicon-${size}.png`);
+}
+JS
+```
+
+`docs/referans/logolar/karsilastirma.png` (1440×2100) ve `public/brand/og.png`
+dosyaları görsel olarak açılıp incelendi. Altı PNG/normal SVG çifti şekil,
+harf, renk ve kırpma bakımından uyumlu; başka logodan kalan parça yok.
+Koyu zemindeki altı wordmark okunur. Coffee/börek/inşaat amblemlerindeki özgün
+koyu renkler korunmuştur. Favicon 16/32/48/128 px, açık ve koyu zeminde
+kontrol edildi; küçük boyutta dairesel amblem/el silüeti seçiliyor.
+OG'de resmi logo ve birebir resmi slogan kullanıldı.
+
+Kaynak SVG → optimize SVG görünür alanda ortalama mutlak RGB farkı 0–255
+ölçeğinde 0,027–1,456; rasterizer/kenar yumuşatma nedeniyle piksel eşitliği
+iddia edilmez. Ayrıntılı marka ölçümleri görsel onay dosyasındadır.
+Bu inceleme teknik kontroldür; kullanıcı görsel onayı yerine geçmez.
+
+### Kabul ve doğrulama sonuçları
+
+| Komut / kontrol | Sonuç |
+| --- | --- |
+| İlk çalıştırılan görevdeki Python boyut kontrolü (RED) | Beklenen `AssertionError`: 12 logo ve favicon henüz yoktu. |
+| `ls public/brand/*.svg` | PASS: 6 normal + 6 dark + 1 favicon, toplam 13 SVG. |
+| Kabul kriterindeki Python dosya/boyut komutu | PASS: `6+6 logo ve favicon boyutları`; her biri `<60000`. |
+| `test -s docs/referans/logolar/karsilastirma.png && test -s public/brand/og.png && sips -g pixelWidth -g pixelHeight public/brand/og.png` | PASS: iki PNG mevcut; OG 1200×630. |
+| `rg -n '<(image|foreignObject)\b' public/brand/*.svg` | PASS: eşleşme yok (beklenen çıkış 1); raster/HTML yok. |
+| Kabul kriterindeki Python `ElementTree.parse` komutu | PASS: `SVG XML`, 13 dosya ayrıştırıldı. |
+| SVG izinli eleman ve `url(#id)` bağımlılık kontrolü | PASS: yalnız SVG/defs/path/g/clipPath/linearGradient/radialGradient/stop; eksik referans, harici href ve event handler yok. |
+| Kaynak bayt karşılaştırması | PASS: 12 PNG/SVG AFINA-KAYNAK ile birebir; mevcut PDF/PNG/SVG HEAD ile aynı. |
+| Kontrol şeridi ve OG'nin görsel olarak açılması | PASS: altı marka, üç sütun ve dört favicon boyutu incelendi. |
+| `npm run build` | PASS: prebuild 14 varlığı doğruladı; production build başarılı. |
+| `npm run typecheck` | PASS: hata yok. |
+| `npm run lint` | PASS: hata/uyarı yok. |
+| `npm run test -- --coverage` | PASS: 2 dosya, 53/53 test. Mevcut kapsam ayarı 2 dosyada %100 raporladı; bu oran görsel/piksel kapsamı değildir. |
+| `npm run check:assets -- --candidate` | PASS: 14 aday; kaynak/hash/ölçü/onay/runtime denetimi başarılı. |
+| `npm run check:assets -- --approved` | PASS: 0 onaylı varlık; kullanıcı kararları boş. |
+| Gizli anahtar deseni taraması ve `git diff --check` | PASS: bulgu/boşluk hatası yok. |
+
+Altı kabul kriteri tamamlandı. Uygulanamayan adım veya kalan görev engeli yok.
+Runtime yerleşimi, kullanıcı görsel onayı ve yayın bu görevin sonraki kapılarıdır.
+
+## Durum: TAMAMLANDI
