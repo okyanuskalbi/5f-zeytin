@@ -1,0 +1,78 @@
+import { cleanup, render, screen } from "@testing-library/react";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+afterEach(() => {
+  cleanup();
+  vi.unstubAllEnvs();
+  vi.resetModules();
+});
+
+describe("ZEYTİN bootstrap", () => {
+  it("renders the brand heading inside the main landmark", async () => {
+    const { default: Home } = await import("../../app/page");
+
+    render(createElement(Home));
+
+    const heading = screen.getByRole("heading", { level: 1, name: "Afina Zeytin" });
+    expect(screen.getByRole("main").contains(heading)).toBe(true);
+    expect(screen.getByText("Kökü toprakta. Yeri sofrada.")).toBeDefined();
+  });
+
+  it("identifies the application as ZEYTİN in page metadata", async () => {
+    const { metadata } = await import("../../app/layout");
+
+    expect(metadata.title).toBe("Afina Zeytin | Zeytin ve Zeytinyağı");
+    expect(metadata.other).toMatchObject({ app: "zeytin" });
+  });
+
+  it("serves Turkish document semantics and keeps child content", async () => {
+    const { default: RootLayout } = await import("../../app/layout");
+
+    const html = renderToStaticMarkup(
+      createElement(RootLayout, null, createElement("p", null, "İçerik")),
+    );
+
+    expect(html).toContain('<html lang="tr">');
+    expect(html).toContain("<p>İçerik</p>");
+  });
+});
+
+describe("Playwright target selection", () => {
+  it("starts a local server on 3000 with three browsers and four widths", async () => {
+    vi.stubEnv("PLAYWRIGHT_BASE_URL", undefined);
+    const { default: config } = await import("../../playwright.config");
+
+    expect(config.use?.baseURL).toBe("http://localhost:3000");
+    expect(config.webServer).toMatchObject({
+      command: "npm run start",
+      url: "http://localhost:3000",
+    });
+    expect(config.projects).toHaveLength(12);
+    for (const browserName of ["chromium", "firefox", "webkit"]) {
+      for (const width of [320, 390, 768, 1440]) {
+        expect(config.projects).toContainEqual(
+          expect.objectContaining({
+            use: expect.objectContaining({ browserName, viewport: { width, height: 900 } }),
+          }),
+        );
+      }
+    }
+  });
+
+  it("uses the explicit remote host and disables the local webServer", async () => {
+    vi.stubEnv("PLAYWRIGHT_BASE_URL", "https://preview.example.com");
+    const { default: config } = await import("../../playwright.config");
+
+    expect(config.use?.baseURL).toBe("https://preview.example.com");
+    expect(config.webServer).toBeUndefined();
+    expect(config.metadata).toMatchObject({ targetHost: "preview.example.com" });
+  });
+
+  it("rejects an empty explicit target instead of falling back to localhost", async () => {
+    vi.stubEnv("PLAYWRIGHT_BASE_URL", "");
+
+    await expect(import("../../playwright.config")).rejects.toThrow("Invalid URL");
+  });
+});
