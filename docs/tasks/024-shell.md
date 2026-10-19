@@ -37,7 +37,32 @@ Tek landing navigasyonunu ve footer bağlantılarını kur.
 
 ## Coder Notu
 
-- Başlangıç kontrolü: 002 ve 080 `TAMAMLANDI`, çalışma ağacı temiz ve dal `main`. Ancak 080 çıktıları manifestte `candidate`, `approval: null`; kullanıcı görsel onayı bulunmuyor. AGENTS/PLAN uyarınca zeytin/topluluk logoları onay gelmeden runtime'a bağlanamaz. Bu engel uygulama öncesinde kaydedildi; görsel onay kayıtları değiştirilmeyecek. Yapılabilen metin tabanlı kabuk uygulanacak, logo yerleşimi eksik kaldığı için durum `BEKLİYOR` kalacak.
+- Başlangıç kontrolü: 002 ve 080 `TAMAMLANDI`, çalışma ağacı temiz ve dal `main`. Ancak 080 çıktıları manifestte `candidate`, `approval: null`; kullanıcı görsel onayı bulunmuyor. AGENTS/PLAN uyarınca zeytin/topluluk logoları onay gelmeden runtime'a bağlanamaz. Bu engel uygulama öncesinde kaydedildi; görsel onay kayıtları değiştirilmedi. Metin tabanlı kabuk uygulandı, logo yerleşimi eksik kaldığı için durum `BEKLİYOR` bırakıldı.
 - TDD / RED (20 Ekim 2026): `PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" npm run test:e2e -- tests/e2e/shell.spec.ts --project=chromium-320 --grep 'shell exposes'` → **exit 1**, uygulama henüz header içermediği için `getByRole('banner')` bulunamadı. İlk denemedeki Chromium `MachPortRendezvousServer: Permission denied` ortam hatası süreç izniyle çözüldü; geçerli RED doğrudan eksik uygulama davranışıdır.
+
+### Uygulama ve kapsam
+
+- `frontend-patterns`, `accessibility` ve `tdd-workflow` skill'leri kullanıldı; ek skill veya bağımlılık kurulmadı. 21st MCP `search` / `get_component` ile [Mega Menu Navbar](https://21st.dev/@anelkabag/components/navbar2) (31723) ve [Footer Two](https://21st.dev/@meschacirung/components/footer-2) (27521) alındı; masaüstü/mobil navigasyon ve gruplu footer yapısı AFİNA tokenlarına, Türkçe resmi içeriğe ve tek landing kapsamına uyarlandı.
+- Mevcut shadcn Button/Dialog kullanıldı. `npm_config_cache="$PWD/.cache/npm" npx shadcn@latest docs button dialog` → **exit 0**, resmi belgeler doğrulandı; bileşen veya tema yeniden kurulmadı. Yeni animasyon eklenmedi; mevcut reduced-motion desteği korundu.
+- Navbar: masaüstü navigasyon, mobil modal, hesap/sepet bağlantıları. Menü ilk bağlantıya odaklanır; Tab/Shift-Tab odak tuzağı, Escape, kapatma düğmesi, dış alan ve bağlantı seçimiyle kapanır. Masaüstüne geçildiğinde modal/scroll kilidi kalkar ve görünür ana sayfa bağlantısı odaklanır. Layout'ta klavyeyle görünür olan içerik atlama bağlantısı eklendi.
+- Footer: resmi alt slogan ve tesis konumu, keşif/hukuk bağlantı grupları ve `https://afina.com.tr` topluluk bağlantısı. Marka adı düz metindir; yeni logo, ürün, fiyat, iletişim veya hukuki metin üretilmedi.
+- Hedef sözleşmesi: `/#urunler`, `/#tesisimiz`, `/#toptan`, `/hesabim`, `/sepet`, `/kvkk`, `/mesafeli-satis`, `/iade`. Landing bölümleri 025–033/081; hesap, sepet ve hukuk sayfaları 043/037/073 görevlerinin kapsamındadır ve mevcut checkout'ta henüz yoktur. Testler bu bağlantıların href değerlerini, menü davranışını ve bulunamayan sayfadan landing'e dönüşü doğrular; gelecekteki bölüm/form/hesap/sepet/hukuk işlevlerinin hazır olduğu iddia edilmez.
+- Ara koşumlarda modalın arka planı erişilebilirlik ağacından gizlemesine uygun sorgu düzeltildi. Klavye testi ilk bağlantı odağındaki eksikliği buldu; `onOpenAutoFocus` ile düzeltildi. Dış alan tıklaması Playwright'ın görünürlük/kararlılık kontrolünü kullanan locator ile doğrulandı; sabit bekleme eklenmedi.
+
+### Nihai komutla doğrulama — 20 Ekim 2026
+
+| Komut / kontrol | Sonuç |
+| --- | --- |
+| `npm run lint && npm run typecheck && npm run build` | **exit 0**; production build ve prebuild varlık denetimi başarılı. Son test düzenlemesinden sonra lint/typecheck ayrıca başarılı. |
+| `PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" npm run test:e2e -- tests/e2e/shell.spec.ts` | **exit 0; 48/48 başarılı, 19,0 sn**. Chromium/Firefox/WebKit × 320/390/768/1440; normal, 404, klavye, reduced-motion, mobil menü ve resize. Kısa ekran 320×480 ayrıca doğrulandı. |
+| `PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" npm run test:e2e -- tests/e2e/bootstrap.spec.ts tests/e2e/tokens.spec.ts` | **exit 0; 24/24 başarılı, 21,7 sn**. Ortak layout, marka tokenları, kontrast ve mevcut Dialog/Button regresyonu yok. |
+| `npm run test -- --coverage` | **exit 0; 53/53 başarılı**. Mevcut iki dosyanın kapsamı %100; bu rapor yeni kabuğun satır kapsamını ölçmez, kabuk tarayıcı testleriyle doğrulandı. |
+| Playwright JSON raporlarının Node assertion'ları | **PASS**: yerel `localhost:3004`, 12 proje, shell 48 / regresyon 24 başarılı; **0 başarısız, 0 atlanan, 0 flaky**. |
+| Manifest kontrolü | **PASS**: 14 varlığın tamamı hâlâ `candidate`, `approval: null`; runtime'da aday görsel yok. |
+| `git diff --check` | **exit 0**. |
+
+Shell raporu/ekran görüntüleri `.cache/task-024/shell-results/`, regresyon JSON'u `.cache/task-024/regression-results.json` altında yerel ve commit dışındadır. Chromium 320/1440 tam sayfa ve WebKit 390 mobil menü görüntüleri görsel olarak açılıp incelendi; taşma/kesilme yok. Safari/macOS klavyede Option-Tab, diğer tarayıcılarda Tab kullanıldı. RED kanıtı `5a2a239` commit'inde, uygulama/GREEN kanıtı bu notu taşıyan sonraki task commit'indedir.
+
+**Kalan engel:** Adım 2'de istenen optimize zeytin/topluluk normal/dark logolarının runtime yerleşimi, kullanıcı görsel onayı olmadığı için yapılmadı. Kabul komutları başarılı olsa da bu gereksinim tamamlanmadığından `TAMAMLANDI` yazılmadı. PLAN, diğer task dosyaları, görsel onay/manifest kayıtları, kaynaklar, `_legacy/`, servis/DB/auth/ödeme ve yayın ayarları değiştirilmedi.
 
 ## Durum: BEKLİYOR

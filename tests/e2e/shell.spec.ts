@@ -71,7 +71,8 @@ test("skip link and mobile menu support keyboard, dismissal and reduced motion",
       await expect(page.getByRole("navigation", { name: "Ana navigasyon" }).getByRole("link").first()).toBeFocused();
       continue;
     }
-    const trigger = page.getByRole("button", { name: "Menüyü aç" });
+    // Keep the same locator when the modal hides its trigger from assistive technology.
+    const trigger = page.getByRole("button", { name: "Menüyü aç", includeHidden: true });
     await trigger.focus();
     await expect(trigger).toHaveAttribute("aria-expanded", "false");
     await page.keyboard.press("Enter");
@@ -107,6 +108,10 @@ test("skip link and mobile menu support keyboard, dismissal and reduced motion",
     await expect(dialog).toHaveCount(0);
     await expect(trigger).toBeFocused();
     await trigger.click();
+    await page.locator('[data-slot="dialog-overlay"]').click({ position: { x: 4, y: 4 } });
+    await expect(dialog).toHaveCount(0);
+    await expect(trigger).toBeFocused();
+    await trigger.click();
     await first.click();
     await expect(dialog).toHaveCount(0);
     await expect(page).toHaveURL(/\/#urunler$/);
@@ -129,7 +134,12 @@ test("mobile menu releases the page when resized to desktop", async ({ page }, t
   await page.setViewportSize({ width: 320, height: 480 });
   await page.getByRole("button", { name: "Menüyü aç" }).click();
   await expect(dialog).toBeVisible();
-  expect(await dialog.evaluate((element) => element.scrollHeight >= element.clientHeight)).toBe(true);
+  const box = (await dialog.boundingBox())!;
+  expect(box.y).toBeGreaterThanOrEqual(0);
+  expect(box.y + box.height).toBeLessThanOrEqual(480);
+  const cart = dialog.getByRole("link", { name: "Sepetim" });
+  await cart.scrollIntoViewIfNeeded();
+  await expect(cart).toBeInViewport();
   await dialog.getByRole("button", { name: "Kapat", exact: true }).click();
   await expectNoOverflow(page);
 });
