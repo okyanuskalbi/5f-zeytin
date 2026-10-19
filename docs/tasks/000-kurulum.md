@@ -89,12 +89,12 @@ kurulum (kod yazma YOK — sadece iskelet, doküman, ECC dosyaları, git)
 7. Vercel ekip/proje ve alan adı bağlama zamanı
 
 ## Kabul kriterleri
-- [ ] `git -C ~/PROJELER/5F-ZEYTIN log -1 --oneline` → "chore: proje iskeleti + plan", `git status` temiz, origin/main ile eşit
-- [ ] `gh repo view okyanuskalbi/afina-kurumsal --json visibility` → PRIVATE; yerel repo push'lu
-- [ ] Her iki repoda: `CLAUDE.md`, `AGENTS.md`, `.claude/commands/build.md`, `docs/PLAN.md`, `.claude/rules/ecc/common`, `.agents/skills/frontend-patterns/SKILL.md`, `.gitignore` mevcut
-- [ ] Her iki repoda `docs/tasks/001-*.md` ve sonrası mevcut, hepsi `## Durum: BEKLİYOR`
-- [ ] `git ls-files | grep -E "\.env|\.mcp\.json"` → boş (her iki repo)
-- [ ] ZEYTİN `_legacy/` altında eski kod duruyor
+- [x] `git -C ~/PROJELER/5F-ZEYTIN log -1 --oneline` → "chore: proje iskeleti + plan", `git status` temiz, origin/main ile eşit
+- [x] `gh repo view okyanuskalbi/afina-kurumsal --json visibility` → PRIVATE; yerel repo push'lu
+- [x] Her iki repoda: `CLAUDE.md`, `AGENTS.md`, `.claude/commands/build.md`, `docs/PLAN.md`, `.claude/rules/ecc/common`, `.agents/skills/frontend-patterns/SKILL.md`, `.gitignore` mevcut
+- [x] Her iki repoda `docs/tasks/001-*.md` ve sonrası mevcut, hepsi `## Durum: BEKLİYOR`
+- [x] `git ls-files | grep -E "\.env|\.mcp\.json"` → boş (her iki repo)
+- [x] ZEYTİN `_legacy/` altında eski kod duruyor
 
 ## Yapılmaması gerekenler
 - Uygulama kodu yazma, `npm install`/`create-next-app` çalıştırma (bu task'ta değil)
@@ -103,4 +103,35 @@ kurulum (kod yazma YOK — sadece iskelet, doküman, ECC dosyaları, git)
 - Branch/PR açma — doğrudan main
 - ECC'yi yeniden kurma
 
-## Durum: BEKLİYOR
+## Durum: TAMAMLANDI
+
+## Coder Notu
+
+19 Ekim 2026: A (ZEYTİN) ve ardından B (KURUMSAL) kurulum adımları uygulandı. Yapılamayan kurulum adımı yok.
+
+- ZEYTİN kurulum commit'i: `94d44af` — `chore: proje iskeleti + plan`; `origin/main` üzerine push edildi.
+- KURUMSAL: `https://github.com/okyanuskalbi/afina-kurumsal`, yerel `~/PROJELER/AFINA-KURUMSAL`; PRIVATE, varsayılan branch `main`. Kurulum commit'i `2213342` — `chore: proje iskeleti + plan`; `origin/main` üzerine push edildi.
+- ZEYTİN: `001–079` arası 79 task taslağı; KURUMSAL: `001–028` arası 28 taslak. Hepsi `## Durum: BEKLİYOR`; DB/ödeme/auth görevlerinin ilk satırında gerekli onay ibaresi var. Bu taslaklar çalıştırılmadı.
+- Her repoda dört ECC rule paketi kaynakla dosya/hash düzeyinde aynı. ZEYTİN'de 19, KURUMSAL'de 16 ECC skill her iki harness dizinine kopyalandı. KURUMSAL'de `backend-patterns`, `database-migrations`, `postgres-patterns` yok. `find-skills` her repoda hem `.agents/skills/` hem `.claude/skills/` içine proje bazlı kuruldu; `skills-lock.json` mevcut.
+- `CLAUDE.md` ve `AGENTS.md` workflow bölüm 3/4 gövdelerini birebir içeriyor; proje bağlamı ve istenen ek kurallar eklendi. `build.md` bölüm 5 ile aynı, yalnız istenen `--approve-for-me` flag değişikliği var. PLAN'lar bölüm 6 başlıklarını kullanıyor ve yedi açık kararı kullanıcıya bırakıyor.
+- İlk npx denemesinde varsayılan `~/.npm` önbelleğinde EPERM oluştu. Global izinleri değiştirmeden `env npm_config_cache=/private/tmp/afina-task000-npm-cache npx --yes skills add https://github.com/vercel-labs/skills --skill find-skills --agent codex claude-code --copy --yes` ile iki projede başarıyla kuruldu. ECC yeniden kurulmadı.
+- Özgün ZEYTİN kodunun 37 dosyası `git mv` ile `_legacy/` altına taşındı; önceki `f073938` commit'indeki bloblarla aynı. `docs/visual-prompts.md` ve workflow referansı değişmedi. MLNEW yalnız okundu; başlangıçtaki çalışma durumu korundu.
+- Bağımsız plan/commit incelemesinde bulunan bağlantı ve bağımlılık boşlukları kapatıldı; son incelemelerde HIGH/CRITICAL bulgu yok. Uygulama kodu, Next.js bağımlılığı, Supabase/ödeme/e-posta hesabı, Vercel projesi veya DNS kaydı oluşturulmadı/değiştirilmedi; görsel üretimi yapılmadı.
+
+Komutla kabul kanıtları (durum güncellemesinden önce):
+
+| Kontrol / komut | Sonuç |
+|---|---|
+| `git -C ~/PROJELER/5F-ZEYTIN log -1 --oneline` | `94d44af chore: proje iskeleti + plan` |
+| İki repoda `git status --short --branch` | Yalnız `## main...origin/main`; çalışma ağaçları temiz |
+| İki repoda `git rev-list --left-right --count HEAD...origin/main` | `0 0` |
+| İki repoda `git ls-remote origin refs/heads/main` | Sırasıyla `94d44af90a6af7fa73a25922a5d02bbb8118e978` ve `2213342b2babb6010c9533784090065df20760bf`; yerel HEAD ile aynı |
+| `gh repo view okyanuskalbi/afina-kurumsal --json visibility,defaultBranchRef` | `PRIVATE`, `main` |
+| `python3 /private/tmp/afina-task000-verify.py --both` | İki repo PASS: gerekli yollar, birebir workflow gövdeleri, kaynakla eş ECC dosyaları, sıralı görevler, BEKLİYOR durumları, geçerli skill/bağımlılıklar/onay kapıları ve ignore kuralları |
+| İki repoda `git ls-files \| grep -E "\.env\|\.mcp\.json"` | Çıktı boş; `.env.example` dahil hiçbir böyle dosya izlenmiyor |
+| `git diff --cached --check` ve credential desen taraması | İki repoda bulgu yok |
+| Blob/hash ve MLNEW durum karşılaştırması | 37 legacy dosyası ve `visual-prompts.md` aynı; MLNEW durumu değişmedi |
+
+Doğrulayıcı ve hazırlık yardımcıları yalnız `/private/tmp/` altında çalıştırıldı; uygulama veya test kodu olarak repolara eklenmedi. Uygulama henüz kurulmadığı için build/lint/E2E çalıştırılmadı; bu görevdeki kabul dosya/git kurulumuna aittir.
+
+İlk kabul maddesindeki “son commit kurulum mesajı olsun” koşulu A12 sonunda ve yukarıdaki kontrolde sağlandı. Kullanıcının ayrıca istediği bu TAMAMLANDI/checklist/Coder Notu güncellemesi ZEYTİN'de yalnız `docs/tasks/000-kurulum.md` içeren ayrı bir son commit ile push edilir. Bu nedenle final `git log -1` belgeleme commit'ini, `git log -2` ise hemen arkasındaki `94d44af` kurulum commit'ini gösterir; kurulum commit'i değiştirilmedi.
