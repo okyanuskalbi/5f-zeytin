@@ -156,13 +156,15 @@ function staticText(node) {
 
 async function verifyRuntime(root, assets) {
   const visit = async (file) => {
-    if (!/\.(?:[cm]?[jt]sx?|css|scss|mdx)$/.test(file)) return;
+    if (!/\.(?:[cm]?[jt]sx?|json|css|scss|mdx)$/.test(file) || file === "package-lock.json") return;
     const text = await readFile(await localFile(root, file), "utf8");
     if (/\.(css|scss|mdx)$/.test(file)) {
       for (const match of text.matchAll(/(?:images\/generated|brand)\/[^\s"'`);<>}]*/g)) verifyRuntimePath(file, match[0], assets);
       return;
     }
-    const source = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true, extname(file).endsWith("x") ? ts.ScriptKind.TSX : ts.ScriptKind.TS);
+    const extension = extname(file);
+    const kind = extension === ".json" ? ts.ScriptKind.JSON : extension.endsWith("x") ? ts.ScriptKind.TSX : ts.ScriptKind.TS;
+    const source = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true, kind);
     const inspect = (node) => {
       const value = staticText(node);
       if (value !== undefined) verifyRuntimePath(file, value, assets);
