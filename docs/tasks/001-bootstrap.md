@@ -34,7 +34,7 @@ Uygulama ve doğrulama komutlarını ilk kez kur; Task 000 sırasında uygulama 
 3. Uygulama görevinde ilgili davranış testini önce başarısız çalıştır, uygula ve geçir. Görsel görevinde model/kaynak/çıktı doğrulaması yap; key ve kişisel veri kaydetme.
 4. Kabul komutlarını çalıştır, çıktıyı ve varsa kullanıcı onay kaydını Coder Notu’na ekle; yalnız bu task kapsamını commit et.
 
-**Port kararı (Claude, 19 Eki):** ZEYTİN tüm yerel sunucular **3000** portunda (`-p 3000`, Playwright 3000); KURUMSAL 3001 kullanır, iki repo paralel test çalıştırır — `reuseExistingServer` başka uygulamaya bağlanmasın diye yanıtta ZEYTİN'e özgü bir işaret (ör. `<meta name="app" content="zeytin">`) kontrol edilsin.
+**Port kararı (Claude, 19 Eki):** ZEYTİN tüm yerel sunucular **3004** portunda (`-p 3004`, Playwright 3004; 3000 başka projede dolu); KURUMSAL 3001 kullanır, iki repo paralel test çalıştırır — `reuseExistingServer` başka uygulamaya bağlanmasın diye yanıtta ZEYTİN'e özgü bir işaret (ör. `<meta name="app" content="zeytin">`) kontrol edilsin.
 
 ## Kabul kriterleri
 - [ ] `npm run lint && npm run typecheck && npm run test -- tests/unit/bootstrap.test.ts` başarılı.
@@ -65,5 +65,8 @@ Uygulama ve doğrulama komutlarını ilk kez kur; Task 000 sırasında uygulama 
 ### Engel
 
 Port 3000, `lsof -nP -iTCP:3000 -sTCP:LISTEN` çıktısında PID **50762** tarafından tutuluyor. `lsof -a -p 50762 -d cwd -Fn` bu sürecin `/Users/emre/PROJELER/shortlistleads/src/frontend` uygulaması olduğunu gösterdi. Kullanıcıdan portu boşaltması istendi; başka projenin süreci durdurulmadı ve port kararı değiştirilmedi. Port boşaldığında yukarıdaki tarayıcı önbelleği değişkeniyle ikinci kabul komutu tekrar çalıştırılmalı. **Ana sayfanın HTTP 200 yanıtı ve 12 tarayıcı/ekran koşumu henüz doğrulanmadığı için durum BEKLİYOR.**
+
+## Düzeltme 001-a (Claude, 19 Eki)
+3000 portu kullanıcının başka projesinde (shortlistleads) sürekli açık; ona DOKUNMA. ZEYTİN portunu **3004** yap: `package.json` dev/start `-p 3004`, `playwright.config.ts` baseURL/webServer 3004, README/PLAN'daki yerel adres `http://localhost:3004`. Sonra E2E dahil tüm kabul kriterlerini yeniden çalıştır.
 
 ## Durum: BEKLİYOR
