@@ -262,6 +262,7 @@ describe("unapproved runtime usage protection", () => {
     ['app/page.tsx', 'const image = "/images/" + "generated/p01/candidate.png";'],
     ['app/page.tsx', 'import registry from "@/public/images/generated/manifest.json";'],
     ['lib/assets.ts', 'export const image = "/images/generated/missing.png";'],
+    ['lib/hero.json', '{"image":"/images/generated/p01/candidate.png"}'],
     ['components/Hero.tsx', 'import image from "../public/images/generated/p01/candidate.png";'],
   ])("rejects candidate, unknown and dynamic references in %s: %s", async (file, source) => {
     await put(file, source);
