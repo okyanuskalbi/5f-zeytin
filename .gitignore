@@ -1,0 +1,11 @@
+node_modules/
+.next/
+.env*
+!.env.example
+.vercel/
+.DS_Store
+*.log
+.mcp.json
+playwright-report/
+test-results/
+coverage/

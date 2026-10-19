@@ -1,9 +1,7 @@
-# 5F Zeytin
+# AFİNA ZEYTİN
 
-5F Zeytin web projesinin kaynak kodu deposu.
+[afinazeytin.com](https://afinazeytin.com) için premium vitrin ve satın alma projesi.
 
-## Başlangıç
+Kurulum/plan aşaması: Next.js App Router + TypeScript + Tailwind 4 + shadcn/ui + Framer Motion + Supabase + Vercel. Yeni uygulama henüz kurulmadı; AI Studio React/Vite kaynakları [_legacy/](_legacy/) içinde korunur.
 
-Bu depo, Google AI Studio'ya içe aktarmak ve web projesini geliştirmeye başlamak için hazırlanmıştır.
-
-Şu anda yalnızca bu README dosyası bulunmaktadır. Uygulama kodu ve kurulum talimatları geliştirme sırasında eklenecektir.
+Mimari/açık kararlar: [docs/PLAN.md](docs/PLAN.md). Sıralı görevler: [docs/tasks](docs/tasks). Özgün [görsel promptları](docs/visual-prompts.md) korunur. Claude planlar ve denetler; Codex görevleri AGENTS.md kurallarına göre uygular. Görsel, DB, ödeme ve yayın onayları ilgili görevlerde ayrıca alınır.
