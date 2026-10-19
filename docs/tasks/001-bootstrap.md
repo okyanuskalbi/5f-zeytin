@@ -34,6 +34,8 @@ Uygulama ve doğrulama komutlarını ilk kez kur; Task 000 sırasında uygulama 
 3. Uygulama görevinde ilgili davranış testini önce başarısız çalıştır, uygula ve geçir. Görsel görevinde model/kaynak/çıktı doğrulaması yap; key ve kişisel veri kaydetme.
 4. Kabul komutlarını çalıştır, çıktıyı ve varsa kullanıcı onay kaydını Coder Notu’na ekle; yalnız bu task kapsamını commit et.
 
+**Port kararı (Claude, 19 Eki):** ZEYTİN tüm yerel sunucular **3000** portunda (`-p 3000`, Playwright 3000); KURUMSAL 3001 kullanır, iki repo paralel test çalıştırır — `reuseExistingServer` başka uygulamaya bağlanmasın diye yanıtta ZEYTİN'e özgü bir işaret (ör. `<meta name="app" content="zeytin">`) kontrol edilsin.
+
 ## Kabul kriterleri
 - [ ] `npm run lint && npm run typecheck && npm run test -- tests/unit/bootstrap.test.ts` başarılı.
 - [ ] `npm run build && npm run test:e2e -- tests/e2e/bootstrap.spec.ts` başarılı; ana sayfa 200 ve _legacy bağımlılığı yok.
