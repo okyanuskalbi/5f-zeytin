@@ -1,7 +1,7 @@
 # Proje Planı
 
 ## Hedef
-AFİNA ZEYTİN için afinazeytin.com üzerinde tek landing vitrin + satın alma akışı. En fazla 5–6 aktif ürün admin’den girilir; scroll ile sahneye giren ürünler, üyelik, sepet, ödeme, kampanya ve sipariş/kargo takibi tek müşteri yolunda birleşir. Örnek ürünler gerçek katalog değildir.
+AFİNA ZEYTİN için afinazeytin.com üzerinde tek landing vitrin + perakende satın alma ve toptan talep akışı. En fazla 5–6 aktif ürün admin’den girilir; scroll ile sahneye giren ürünler, üyelik, sepet, ödeme, kampanya ve sipariş/kargo takibi tek müşteri yolunda birleşir. Örnek ürünler gerçek katalog değildir.
 
 Kısaltmalar: ZEYTİN = `~/PROJELER/5F-ZEYTIN` / afinazeytin.com; KURUMSAL = `~/PROJELER/AFINA-KURUMSAL` / afina.com.tr. Kaynak görev: ZEYTİN `docs/tasks/000-kurulum.md`; workflow bölüm 6 iskeleti kullanıldı.
 
@@ -22,10 +22,12 @@ Planlanan uygulama dizinleri henüz oluşturulmaz; 001 ve ilgili görevlerde aç
 
 ```text
 app/                     # landing, sepet, odeme, hesabim, siparis-takip, hukuk, admin
-app/api/                 # products, cart/quote, checkout, payments callback, admin, cron
+app/api/                 # products, cart/quote, checkout, payments callback, admin, cron, wholesale
 components/              # ui, site, landing, catalog, cart, checkout, account, admin
 lib/                     # contracts, catalog, cart, auth, orders, pricing, payments, mail, shipping, seo
 supabase/migrations/     # yalnız onaylı DB task’larında oluşturulur
+public/brand/            # 080 sonrasında normal/dark logo, favicon ve OG
+docs/referans/           # resmi içerik 01+04; orijinal zeytin/topluluk logo kaynakları
 public/images/generated/ # aday görseller ve manifest; kullanıcı onayı olmadan runtime’da kullanılmaz
 _legacy/                 # korunmuş AI Studio React/Vite kodu ve varlıklar, salt referans
 tests/unit/              # Vitest davranış ve sözleşme testleri
@@ -53,12 +55,33 @@ docs/tasks/              # sırayla uygulanacak bağımsız task’lar
 
 ## ZEYTİN kapsamı
 
-- Marka AFİNA ZEYTİN, “Köklerinden aldığı güçle büyüyor”; #243A29 zeytin yeşili, #F5F1E7 fildişi, #D4B483 şampanya altını, altın dal + el logosu. Tek landing, scroll-linked/whileInView ürün sahneleri; en fazla 5–6 aktif ürün.
+- Marka AFİNA ZEYTİN, ana slogan **“Kökü toprakta. Yeri sofrada.”**; alt slogan **“Toprağın sunduğu lezzet, Afina’nın özeniyle.”**. “Köklerinden aldığı güçle büyüyor” yalnız ikincil/hikâye metni olarak kalabilir; #243A29 zeytin yeşili, #F5F1E7 fildişi, #D4B483 şampanya altını, altın dal + el logosu. Tek landing, scroll-linked/whileInView ürün sahneleri; en fazla 5–6 aktif ürün.
 - Üyelik: kayıt/giriş, hesabım, yalnız kendine ait sipariş geçmişi. Sepet: drawer + sayfa, upsell/çapraz satış (ör. zeytin yanında zeytinyağı), onaylı eşiklerde kademeli adet indirimi.
 - Ödeme: iyzico ve/veya PayTR seçimi açık; başlatma ve callback ayrı task, sunucuda tutar/para birimi/sipariş doğrulaması ve idempotency. Sandbox kanıtı, canlı tahsilat kanıtı değildir.
 - Kupon/reklam kodu: yüzde/tutar, süre, kullanım limiti, UTM; terk edilen sepet tespiti, onaylı bekleme süresi, izinli e-posta ve yüzde kuponu ayrı entegrasyonlar.
 - Admin: ürün (≤6), sipariş, kupon/kampanya, terk edilen sepet, müşteri, kargo bilgisi; shadcn CLI + tokenlara uyarlanmış UI. Admin firma/takip no girer, müşteri e-postası ve siparis-takip sayfası birbirinden ayrı görevler.
-- SEO/AEO: Product + Organization, canonical, sitemap, robots, llms.txt. KVKK, mesafeli satış ve iade sayfaları kullanıcı metin/onayını bekler.
+- Ürün kapsamı: **sofralık zeytin, salamura zeytin, zeytinyağı**; perakende site satışı + toptan satış. En fazla 6 aktif ürün sınırı tüm kanal ve admin akışlarında korunur; gerçek SKU, ambalaj/fiyat/stok kullanıcıdan gelir.
+- Toptan CTA: **“Toptan Satış İçin İletişime Geçin”** → landing toptan talep formu (081) → onaylı e-posta servisiyle gerçek gönderim (082); doğrulama, KVKK ve hata/başarı durumları. Toptan fiyat/katalog/DB uydurulmaz.
+- **Tesisimiz**: Osmaniye üretim tesisi; resmi marka hikâyesi bölüm 04 birebir kullanılır, görseller 004/005 ve onaylı 034 akışından gelir.
+- SEO/AEO: Product + Organization, canonical, sitemap, robots, llms.txt. KVKK, mesafeli satış ve iade sayfaları kullanıcı metin/onayını bekler; toptan formu da aydınlatma kapsamına alınır.
+
+## Resmi içerik ve marka varlıkları
+
+Metinlerde tek kaynak `docs/referans/icerik.md`: resmi belgenin Sürüm 2.0 / 19 Ekim 2026 **01 Çatı + 04 Zeytin** bölümleri; diğer marka bölümleri bu repoya alınmaz. 000b içerik kararları önceki taslak slogan/placeholder notlarının yerini alır. Orijinal zeytin/topluluk PNG ve ham SVG'leri ile asıl Illustrator logo PDF'si `docs/referans/logolar/` altında hazırdır. 080'de optimize normal/dark SVG, favicon/OG ve PNG karşılaştırma şeridi hazırlanır; bu doküman görevi runtime varlığı üretmez.
+
+Ana CTA: **“Ürünlerimizi Keşfedin”** → perakende ürün vitrini. İkincil CTA: **“Toptan Satış İçin İletişime Geçin”** → toptan formu.
+
+Resmi marka hikâyesi (Tesisimiz / hikâye içeriği, birebir):
+
+Zeytinin hikâyesi toprakta başlar, sofrada tamamlanır. Afina Zeytin, bu köklü lezzeti doğallığına saygı duyan bir anlayışla sunuyor. Markanın odağında, zeytinin kendine özgü tadını ve sofralarımızdaki yerini korumak var.
+
+Osmaniye’de bulunan fabrikasıyla zeytin ve zeytinyağı alanında faaliyet gösteren Afina Zeytin, salamura zeytin çeşitlerini ve zeytinyağını hem bireysel tüketicilere hem de toptan alıcılara ulaştırıyor. Ürünün özüne duyduğu saygıyı yalın ve özenli bir sunumla birleştiriyor.
+
+SEO başlığı: **Afina Zeytin | Zeytin ve Zeytinyağı**
+
+SEO açıklaması: Afina Zeytin, Osmaniye’deki fabrikasıyla zeytin, salamura zeytin ve zeytinyağını toptan ve perakende müşterileriyle buluşturuyor.
+
+**İddia kuralı:** “%100 organik / %100 doğal” iddiaları ve aynı ifadeli banner rozeti kullanılmaz; doğrulanmamış ciro, proje adedi, sertifika, garanti veya liderlik iddiası kullanılmaz. Resmi belgenin “Yayın öncesi kontrol” sınırı metin, görsel, alt metin ve SEO/schema için de geçerlidir.
 
 ## Görsel üretim ve onay
 
@@ -66,7 +89,7 @@ docs/tasks/              # sırayla uygulanacak bağımsız task’lar
 
 İstenen model: GPT Image 2.5, Atlas MCP `openai/gpt-image-2.5-flare`. Bu planda model erişimi doğrulanmış sayılmaz; ilgili üretim görevinde resmi araç/katalog ile kontrol edilir. Çıktılar `public/images/generated/`, kaynak/model/prompt/oran/hash/temsili durum ve kullanıcı kararı `docs/gorsel-onay.md` ile manifestte tutulur. Kullanıcı onayı olmadan uygulamaya alınmaz, videoya geçilmez. P08–P12 tasarım referansıdır; AI stüdyo/scroll editörü/3D uygulaması bu kapsamdan çıkartılamaz.
 
-Tesis kimliği: iki katlı modern yapı, parlak zeytin-yeşili + mat siyah bloklar; siyah tabelada yeşil el yazısı “Afina” ve beyaz “ZEYTİN”; cam vitrinler; gri beton platform/basamak; saksı zeytinleri ve AFİNA bayrakları; kilitli parke avlu; Osmaniye/Çukurova ve parçalı bulutlu mavi gök. Kullanıcının temsili fotoğrafı korunarak premium altın saat/tone mapping, temiz avlu, kişi/plaka yok, doğru okunur tabela; hero/tesis ve KURUMSAL Zeytin sahnesi için 16:9 + 9:16 adaylar. Fotoğraf gelmeden üretim başlamaz.
+Tesis kimliği: **Osmaniye üretim tesisi** (resmi belge bölüm 04); iki katlı modern yapı, parlak zeytin-yeşili + mat siyah bloklar; siyah tabelada yeşil el yazısı “Afina” ve beyaz “ZEYTİN”; cam vitrinler; gri beton platform/basamak; saksı zeytinleri ve AFİNA bayrakları; kilitli parke avlu; Osmaniye/Çukurova ve parçalı bulutlu mavi gök. Kullanıcının temsili fotoğrafı korunarak premium altın saat/tone mapping, temiz avlu, kişi/plaka yok, doğru okunur tabela; hero/tesis ve KURUMSAL Zeytin sahnesi için 16:9 + 9:16 adaylar. Fotoğraf gelmeden üretim başlamaz.
 
 ## Salt okunur MLNEW referansı
 
@@ -89,17 +112,22 @@ Bu maddeler kullanıcı kararıdır; aşağıdaki seçeneklerden hiçbiri otomat
 3. E-posta: Resend / SMTP (nodemailer), gönderen alan adı ve doğrulaması — açık.
 4. Kargo firması/firmaları ve otomatik takip API’si ihtiyacı — açık.
 5. Terk edilen sepet indirim yüzdesi ve bekleme süreleri — açık; kademeli indirim eşikleri de kullanıcı tarafından verilecek.
-6. Orijinal logolar, gerçek ürün listesi (en fazla 6) ve fiyatlar — açık; örnek ürünler gerçek katalog değildir.
-7. Vercel ekip/proje ve alan adı bağlama zamanı — açık.
+6. Orijinal zeytin/topluluk logoları teslim alındı; optimizasyon 080. Gerçek ürün listesi (en fazla 6), ambalajlar ve fiyatlar — açık; örnek ürünler gerçek katalog değildir.
+7. Toptan formu alıcısı ve onaylı gönderim servisi, şirket iletişim bilgileri/KVKK metni — açık; servis kendiliğinden seçilmez.
+8. Vercel ekip/proje ve alan adı bağlama zamanı — açık.
 
 ## Task listesi
+
+Numaralar mevcut task bağlantılarını korur; aşağıdaki satır sırası ve `addBlockedBy` bağımlılıkları uygulama sırasıdır. 080 marka varlıkları temel işlerden sonra, 081/082 toptan talebi hukuk/e-posta hazırlığından sonra, kalite kabulü yayın öncesinde tamamlanır. 000b yalnız bu taslakları günceller, aşağıdaki görevleri çalıştırmaz.
+
 | No | İsim | Tür | Bağımlı | Durum |
 |----|------|-----|---------|-------|
 | 001 | [Next.js App Router ve test temeli](tasks/001-bootstrap.md) | fullstack | — | BEKLİYOR |
 | 002 | [Marka token ve UI temeli](tasks/002-tokens.md) | frontend | 001 | BEKLİYOR |
 | 003 | [Görsel aday ve onay kaydı](tasks/003-asset-registry.md) | frontend | 001 | BEKLİYOR |
-| 004 | [Tesis görseli — 16:9](tasks/004-factory-wide.md) | frontend | 003 | BEKLİYOR |
-| 005 | [Tesis görseli — 9:16](tasks/005-factory-tall.md) | frontend | 003 | BEKLİYOR |
+| 080 | [Marka varlıkları](tasks/080-brand-assets.md) | frontend | 002, 003 | BEKLİYOR |
+| 004 | [Tesis görseli — 16:9](tasks/004-factory-wide.md) | frontend | 003, 080 | BEKLİYOR |
+| 005 | [Tesis görseli — 9:16](tasks/005-factory-tall.md) | frontend | 003, 080 | BEKLİYOR |
 | 006 | [P01 — Ağaç / hero görsel adayı](tasks/006-p01.md) | frontend | 003 | BEKLİYOR |
 | 007 | [P02 — Yeşil zeytin makro görsel adayı](tasks/007-p02.md) | frontend | 003 | BEKLİYOR |
 | 008 | [P03 — Siyah zeytin makro görsel adayı](tasks/008-p03.md) | frontend | 003 | BEKLİYOR |
@@ -112,13 +140,13 @@ Bu maddeler kullanıcı kararıdır; aşağıdaki seçeneklerden hiçbiri otomat
 | 015 | [P10 — Admin genel bakış konsepti görsel adayı](tasks/015-p10.md) | frontend | 003 | BEKLİYOR |
 | 016 | [P11 — Scroll editörü konsepti görsel adayı](tasks/016-p11.md) | frontend | 003 | BEKLİYOR |
 | 017 | [P12 — Görsel stüdyosu konsepti görsel adayı](tasks/017-p12.md) | frontend | 003 | BEKLİYOR |
-| 018 | [Ürün 1 — temsili teneke/şişe görseli](tasks/018-product-image-1.md) | frontend | 003 | BEKLİYOR |
-| 019 | [Ürün 2 — temsili teneke/şişe görseli](tasks/019-product-image-2.md) | frontend | 003 | BEKLİYOR |
-| 020 | [Ürün 3 — temsili teneke/şişe görseli](tasks/020-product-image-3.md) | frontend | 003 | BEKLİYOR |
-| 021 | [Ürün 4 — temsili teneke/şişe görseli](tasks/021-product-image-4.md) | frontend | 003 | BEKLİYOR |
-| 022 | [Ürün 5 — temsili teneke/şişe görseli](tasks/022-product-image-5.md) | frontend | 003 | BEKLİYOR |
-| 023 | [Ürün 6 — temsili teneke/şişe görseli](tasks/023-product-image-6.md) | frontend | 003 | BEKLİYOR |
-| 024 | [Landing navigasyon ve footer](tasks/024-shell.md) | frontend | 002 | BEKLİYOR |
+| 018 | [Ürün 1 — temsili teneke/şişe görseli](tasks/018-product-image-1.md) | frontend | 003, 080 | BEKLİYOR |
+| 019 | [Ürün 2 — temsili teneke/şişe görseli](tasks/019-product-image-2.md) | frontend | 003, 080 | BEKLİYOR |
+| 020 | [Ürün 3 — temsili teneke/şişe görseli](tasks/020-product-image-3.md) | frontend | 003, 080 | BEKLİYOR |
+| 021 | [Ürün 4 — temsili teneke/şişe görseli](tasks/021-product-image-4.md) | frontend | 003, 080 | BEKLİYOR |
+| 022 | [Ürün 5 — temsili teneke/şişe görseli](tasks/022-product-image-5.md) | frontend | 003, 080 | BEKLİYOR |
+| 023 | [Ürün 6 — temsili teneke/şişe görseli](tasks/023-product-image-6.md) | frontend | 003, 080 | BEKLİYOR |
+| 024 | [Landing navigasyon ve footer](tasks/024-shell.md) | frontend | 002, 080 | BEKLİYOR |
 | 025 | [Hero bileşeni](tasks/025-hero.md) | frontend | 024 | BEKLİYOR |
 | 026 | [Hero hareketi](tasks/026-hero-motion.md) | frontend | 025 | BEKLİYOR |
 | 027 | [ONAY GEREKLİ — Yerel Supabase doğrulama ortamı](tasks/027-supabase-local.md) | backend | 001 | BEKLİYOR |
@@ -168,9 +196,11 @@ Bu maddeler kullanıcı kararıdır; aşağıdaki seçeneklerden hiçbiri otomat
 | 071 | [ONAY GEREKLİ — Sipariş takip sayfası](tasks/071-tracking.md) | fullstack | 069 | BEKLİYOR |
 | 072 | [ONAY GEREKLİ — Hesabım sipariş geçmişi](tasks/072-history.md) | fullstack | 043, 071 | BEKLİYOR |
 | 073 | [KVKK ve satış/iade sayfaları](tasks/073-legal.md) | frontend | 024 | BEKLİYOR |
-| 074 | [Ürün SEO ve AEO](tasks/074-seo.md) | frontend | 033, 029, 073 | BEKLİYOR |
+| 081 | [Toptan satış talep formu](tasks/081-wholesale-form.md) | frontend | 024, 073 | BEKLİYOR |
+| 082 | [Toptan talep gönderim entegrasyonu](tasks/082-wholesale-send.md) | fullstack | 081, 051 | BEKLİYOR |
+| 074 | [Ürün SEO ve AEO](tasks/074-seo.md) | frontend | 033, 029, 073, 080, 081 | BEKLİYOR |
 | 075 | [ONAY GEREKLİ — Satın alma akışı bütünleşik kabul](tasks/075-commerce-e2e.md) | fullstack | 054, 050, 052, 039, 072, 070, 064, 066, 067, 068, 048, 055, 058, 061, 041, 038 | BEKLİYOR |
-| 076 | [Mobil erişilebilirlik ve hareket/performance kabulü](tasks/076-quality.md) | frontend | 074, 032, 037, 075, 034 | BEKLİYOR |
+| 076 | [Mobil erişilebilirlik ve hareket/performance kabulü](tasks/076-quality.md) | frontend | 074, 032, 037, 075, 034, 082 | BEKLİYOR |
 | 077 | [ONAY GEREKLİ — Onaylı uzak Supabase hedefini hazırlama](tasks/077-supabase-target.md) | backend | 076, 027, 028, 044, 053, 056 | BEKLİYOR |
 | 078 | [Vercel önizleme dağıtımı](tasks/078-preview.md) | fullstack | 076, 077 | BEKLİYOR |
 | 079 | [Domain ve canlı yayın kabulü](tasks/079-launch.md) | fullstack | 078 | BEKLİYOR |

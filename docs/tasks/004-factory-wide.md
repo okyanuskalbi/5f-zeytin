@@ -7,9 +7,9 @@ frontend
 Tek tesis görselini aday olarak üret; kullanıcıya onaya sun.
 
 ## Bağlam
-`docs/PLAN.md`: Hedef, Teknoloji, Mimari kararlar ve ilgili kapsam bölümü. Bağımlı task’lar / addBlockedBy: 003 (asset-registry). Komutlar 001 görevinde kurulacak araçlara dayanır; bağımlılıklar tamamlanmadan bu task çalıştırılmaz.
+`docs/PLAN.md`: Hedef, Teknoloji, Mimari kararlar ve ilgili kapsam bölümü. Bağımlı task’lar / addBlockedBy: 003 (asset-registry); 080 (brand-assets). Komutlar 001 görevinde kurulacak araçlara dayanır; bağımlılıklar tamamlanmadan bu task çalıştırılmaz.
 
-Kullanıcının temsili tesis fotoğrafı ve model erişimi beklenir.
+Resmi kaynak: docs/referans/icerik.md bölüm 04 — **Osmaniye üretim tesisi**. Kullanıcının temsili tesis fotoğrafı ve model erişimi beklenir; resmi metin fotoğraf yerine geçmez.
 
 ## Kullanılacak araçlar
 - ECC skill: frontend-design-direction, verification-loop
@@ -23,7 +23,7 @@ Kullanıcının temsili tesis fotoğrafı ve model erişimi beklenir.
 
 ## Adımlar
 1. PLAN, AGENTS ve bağımlı task’ları oku; gereken kullanıcı kararları/onayları yoksa başlamadan Coder Notu’na engeli kaydet.
-2. Kullanıcının tesis fotoğrafı gelmeden başlama. İki katlı modern tesis; parlak zeytin-yeşili + mat siyah bloklar; siyah tabelada el yazısı yeşil Afina ve beyaz ZEYTİN; büyük cam, gri beton platform/basamak, saksıda zeytin, AFİNA bayrakları, kilitli parke avlu; Osmaniye/Çukurova, parçalı bulutlu mavi gök. Premium sinematik altın saat, tone mapping, temiz avlu, kişi/plaka yok; tabela doğru ve okunur. Atlas openai/gpt-image-2.5-flare uygunluğunu doğrula; yoksa model seçme, Coder Notu yaz. Oran 16:9. Çıktı aday kalır, kullanım/video yok.
+2. Kaynak bağlamı: **Osmaniye üretim tesisi**; docs/referans/icerik.md bölüm 04. Kullanıcının tesis fotoğrafı gelmeden başlama. İki katlı modern tesis; parlak zeytin-yeşili + mat siyah bloklar; siyah tabelada el yazısı yeşil Afina ve beyaz ZEYTİN; büyük cam, gri beton platform/basamak, saksıda zeytin, AFİNA bayrakları, kilitli parke avlu; Osmaniye/Çukurova, parçalı bulutlu mavi gök. Premium sinematik altın saat, tone mapping, temiz avlu, kişi/plaka yok; tabela doğru ve okunur. Atlas openai/gpt-image-2.5-flare uygunluğunu doğrula; yoksa model seçme, Coder Notu yaz. Oran 16:9. Çıktı aday kalır, kullanım/video yok.
 3. Uygulama görevinde ilgili davranış testini önce başarısız çalıştır, uygula ve geçir. Görsel görevinde model/kaynak/çıktı doğrulaması yap; key ve kişisel veri kaydetme.
 4. Kabul komutlarını çalıştır, çıktıyı ve varsa kullanıcı onay kaydını Coder Notu’na ekle; yalnız bu task kapsamını commit et.
 

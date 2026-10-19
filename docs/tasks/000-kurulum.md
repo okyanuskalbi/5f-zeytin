@@ -70,7 +70,7 @@ kurulum (kod yazma YOK — sadece iskelet, doküman, ECC dosyaları, git)
 ## KURUMSAL gereksinimleri (afina.com.tr)
 - **AFİNA Şirketler Topluluğu** kurumsal sitesi. Ana kurgu: **her scroll adımı tam ekran bir geçiş sayfası, her biri bir markayı tanıtır** (scroll-snap + Framer Motion sahne geçişleri: renk/arka plan morph, logo girişi, parallax görsel). Sıra ve kimlikler (kullanıcının referans görselinden):
   1. **AFİNA İNŞAAT** — lacivert blueprint + kırmızı (#E31E24 civarı); "PLANDAN → YAPIYA", "Hayalinizdeki yaşam alanını birlikte inşa edelim."; sol yarı çizim/plan, sağ yarı modern beton villa (plan→yapı geçişi animasyonu).
-  2. **AFİNA ZEYTİN** — zeytin yeşili bokeh + şampanya altın logo; "Zeytin", "Zeytinyağı" etiketleri, "%100 Organik %100 Doğal" rozeti; zeytin dalı, zeytinyağı şişesi. ZEYTİN sitesine (afinazeytin.com) yönlendiren CTA.
+  2. **AFİNA ZEYTİN** — zeytin yeşili bokeh + şampanya altın logo; "Zeytin", "Zeytinyağı" etiketleri, 000b kararıyla "%100 Organik %100 Doğal" rozeti kullanılmaz; zeytin dalı, zeytinyağı şişesi. ZEYTİN sitesine (afinazeytin.com) yönlendiren CTA.
   3. **AFİNA BÖREK** — bordo/kırmızı + turuncu-sarı buğday başağı logo; "Her Diliminde Lezzet Saklı"; tepsi börek görseli.
   4. **AFİNA COFFEE** — kahve kahverengi + krem; "Kahveden daha fazlası…", COFFEE · DESSERT · BAKERY; fincan + kahve çekirdekleri.
   5. **AFİNA MOTORS** — siyah + altın/bronz şerit "AFİNA MOTORS"; at başlı logo; "GÜVENLE ALIN KEYİFLE SÜRÜN"; Alım · Satım · Takas; spor otomobil.

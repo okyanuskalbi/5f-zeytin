@@ -20,7 +20,7 @@ Her ürünün satın alma kartını kur.
 
 ## Adımlar
 1. PLAN, AGENTS ve bağımlı task’ları oku; gereken kullanıcı kararları/onayları yoksa başlamadan Coder Notu’na engeli kaydet.
-2. Ağırlık, fiyat, stok, adet ve sepete ekle; yükleniyor/boş/tükendi durumları. ≤6 canlı ürün, görsel yalnız onaylı manifestten; testler temsili fixture kullanır.
+2. Sofralık zeytin, salamura zeytin, zeytinyağı kapsamındaki gerçek ≤6 ürün: ağırlık, fiyat, stok, adet, sepete ekle; yükleniyor/boş/tükendi durumları. Ürün/fiyat kullanıcıdan, görseller yalnız onaylı manifest; testte temsili fixture. Resmi bölüm 04 kapsamı aşılmaz; “%100 organik / %100 doğal” iddiaları ve banner rozeti kullanılmaz.
 3. Uygulama görevinde ilgili davranış testini önce başarısız çalıştır, uygula ve geçir. Görsel görevinde model/kaynak/çıktı doğrulaması yap; key ve kişisel veri kaydetme.
 4. Kabul komutlarını çalıştır, çıktıyı ve varsa kullanıcı onay kaydını Coder Notu’na ekle; yalnız bu task kapsamını commit et.
 

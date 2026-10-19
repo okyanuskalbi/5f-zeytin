@@ -19,7 +19,7 @@ Kullanıcının onayladığı zamanda afinazeytin.com alan adını yayına bağl
 
 ## Adımlar
 1. PLAN, AGENTS ve bağımlı task’ları oku; gereken kullanıcı kararları/onayları yoksa başlamadan Coder Notu’na engeli kaydet.
-2. Vercel/Cloudflare hedef kayıtlarını mevcut durumdan doğrula; görseller/logolar, hukuki metin ve gerçek katalog onayları; ödeme/mail sandbox ve canlı kabulünü ayır. Gerçek çekim veya kişiye e-posta testi ayrıca açık yetki olmadan yapılmaz.
+2. Toptan CTA/form ve onaylı alıcı/servis hazırlığını, resmi slogan/SEO, Tesisimiz/Osmaniye ve optimize logoları kontrol et; gerçek talep e-postası ayrıca yetkili test alıcısıyla doğrulanır. Vercel/Cloudflare hedef kayıtlarını mevcut durumdan doğrula; görseller/logolar, hukuki metin ve gerçek katalog onayları; ödeme/mail sandbox ve canlı kabulünü ayır. Gerçek çekim veya kişiye e-posta testi ayrıca açık yetki olmadan yapılmaz.
 3. Uygulama görevinde ilgili davranış testini önce başarısız çalıştır, uygula ve geçir. Görsel görevinde model/kaynak/çıktı doğrulaması yap; key ve kişisel veri kaydetme.
 4. Kabul komutlarını çalıştır, çıktıyı ve varsa kullanıcı onay kaydını Coder Notu’na ekle; yalnız bu task kapsamını commit et.
 

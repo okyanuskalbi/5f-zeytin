@@ -21,13 +21,15 @@ Kökler ve tesis hikâyesini landing içine yerleştir.
 
 ## Adımlar
 1. PLAN, AGENTS ve bağımlı task’ları oku; gereken kullanıcı kararları/onayları yoksa başlamadan Coder Notu’na engeli kaydet.
-2. Sadece onaylı tesis ve P01–P12 varlıkları; yoksa placeholder. Tesisin gerçekliği ve organik gibi iddialar kullanıcı metni olmadan kesinleştirilmez.
+2. “Tesisimiz” başlığı altında Osmaniye üretim tesisi ve docs/referans/icerik.md bölüm 04 marka hikâyesi birebir; sofralık/salamura zeytin, zeytinyağı, perakende + toptan kapsamı. “Köklerinden aldığı güçle büyüyor” yalnız ikincil hikâye metni olabilir. Onaylı tesis/P01–P12 varlıkları, yoksa placeholder; “%100 organik / %100 doğal” ve doğrulanmamış sertifika/liderlik/kapasite iddiaları kullanılmaz.
 3. Uygulama görevinde ilgili davranış testini önce başarısız çalıştır, uygula ve geçir. Görsel görevinde model/kaynak/çıktı doğrulaması yap; key ve kişisel veri kaydetme.
 4. Kabul komutlarını çalıştır, çıktıyı ve varsa kullanıcı onay kaydını Coder Notu’na ekle; yalnız bu task kapsamını commit et.
 
 ## Kabul kriterleri
 - [ ] `npm run test:e2e -- tests/e2e/facility.spec.ts` başarılı; aşağıdaki davranışın normal, hata ve reduced-motion/klavye senaryoları doğrulanır.
 - [ ] `npm run lint && npm run typecheck && npm run build` başarılı.
+
+- [ ] `npm run test:e2e -- tests/e2e/facility.spec.ts` Tesisimiz/Osmaniye metnini, resmi hikâye eşitliğini ve onaysız görselin yayınlanmamasını doğrular.
 
 ## Yapılmaması gerekenler
 - Task dışına çıkma, ek iyileştirme yapma; diğer repolara yazma.

@@ -22,7 +22,7 @@ Kullanıcı tarafından onaylanacak hukuk metinlerini sayfala.
 
 ## Adımlar
 1. PLAN, AGENTS ve bağımlı task’ları oku; gereken kullanıcı kararları/onayları yoksa başlamadan Coder Notu’na engeli kaydet.
-2. Şirket unvan/adres/iletişim gerçek verilerle; onay gelene kadar taslak etiketini koru, hukuki güvence iddiası yok. Footer ve checkout linkleri erişilebilir.
+2. Şirket unvan/adres/iletişim gerçek verilerle; toptan talep formu, sipariş ve pazarlama izni akışlarına uygun kullanıcı onaylı aydınlatma, mesafeli satış/iade içerikleri. Onay gelene kadar taslak, hukuki güvence iddiası yok. Footer/checkout/toptan formu KVKK bağlantıları erişilebilir; hukuk metni uydurma.
 3. Uygulama görevinde ilgili davranış testini önce başarısız çalıştır, uygula ve geçir. Görsel görevinde model/kaynak/çıktı doğrulaması yap; key ve kişisel veri kaydetme.
 4. Kabul komutlarını çalıştır, çıktıyı ve varsa kullanıcı onay kaydını Coder Notu’na ekle; yalnız bu task kapsamını commit et.
 

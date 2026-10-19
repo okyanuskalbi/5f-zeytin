@@ -20,7 +20,7 @@ Kullanıcının belirlediği Vercel ekip/projeye önizleme hazırla.
 
 ## Adımlar
 1. PLAN, AGENTS ve bağımlı task’ları oku; gereken kullanıcı kararları/onayları yoksa başlamadan Coder Notu’na engeli kaydet.
-2. Task 000’da Vercel kurma. Ekip/proje kararı ve güvenli env hazır olunca dağıt; cron planı ve sandbox callback URL’leri; noindex, secret sızıntısı yok; build ile canlı kabulü ayır.
+2. Toptan CTA/form, resmi slogan/SEO, Tesisimiz/Osmaniye ve optimize marka varlıklarını da doğrula. Task 000’da Vercel kurma. Ekip/proje kararı ve güvenli env hazır olunca dağıt; cron planı ve sandbox callback URL’leri; noindex, secret sızıntısı yok; build ile canlı kabulü ayır.
 3. Uygulama görevinde ilgili davranış testini önce başarısız çalıştır, uygula ve geçir. Görsel görevinde model/kaynak/çıktı doğrulaması yap; key ve kişisel veri kaydetme.
 4. Kabul komutlarını çalıştır, çıktıyı ve varsa kullanıcı onay kaydını Coder Notu’na ekle; yalnız bu task kapsamını commit et.
 

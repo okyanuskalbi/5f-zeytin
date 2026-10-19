@@ -7,7 +7,7 @@ frontend
 Tek landing navigasyonunu ve footer bağlantılarını kur.
 
 ## Bağlam
-`docs/PLAN.md`: Hedef, Teknoloji, Mimari kararlar ve ilgili kapsam bölümü. Bağımlı task’lar / addBlockedBy: 002 (tokens). Komutlar 001 görevinde kurulacak araçlara dayanır; bağımlılıklar tamamlanmadan bu task çalıştırılmaz.
+`docs/PLAN.md`: Hedef, Teknoloji, Mimari kararlar ve ilgili kapsam bölümü. Bağımlı task’lar / addBlockedBy: 002 (tokens); 080 (brand-assets). Komutlar 001 görevinde kurulacak araçlara dayanır; bağımlılıklar tamamlanmadan bu task çalıştırılmaz.
 
 ## Kullanılacak araçlar
 - ECC skill: frontend-patterns, accessibility
@@ -22,7 +22,7 @@ Tek landing navigasyonunu ve footer bağlantılarını kur.
 
 ## Adımlar
 1. PLAN, AGENTS ve bağımlı task’ları oku; gereken kullanıcı kararları/onayları yoksa başlamadan Coder Notu’na engeli kaydet.
-2. Klavye, mobil menü, sepet ve hesap bağlantıları; marka sloganı; hukuk bağlantıları. Nihai ürün ve logo uydurma.
+2. Klavye, mobil menü, sepet ve hesap bağlantıları; public/brand/ optimize zeytin/topluluk logoları. Ana slogan “Kökü toprakta. Yeri sofrada.”; Tesisimiz, ürünler, toptan talep ve hukuk hash/link hedefleri. Nihai ürün/fiyat uydurma; resmi metin kaynağı docs/referans/icerik.md bölüm 01 + 04.
 3. Uygulama görevinde ilgili davranış testini önce başarısız çalıştır, uygula ve geçir. Görsel görevinde model/kaynak/çıktı doğrulaması yap; key ve kişisel veri kaydetme.
 4. Kabul komutlarını çalıştır, çıktıyı ve varsa kullanıcı onay kaydını Coder Notu’na ekle; yalnız bu task kapsamını commit et.
 

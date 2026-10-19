@@ -21,13 +21,15 @@ Hero içeriğini ve duyarlı yerleşimini kur.
 
 ## Adımlar
 1. PLAN, AGENTS ve bağımlı task’ları oku; gereken kullanıcı kararları/onayları yoksa başlamadan Coder Notu’na engeli kaydet.
-2. Slogan ve marka; onaylı görsel yoksa açıkça etiketlenmiş placeholder. CTA vitrindeki ürünlere gider. Bu görevde scroll animasyonu ekleme.
+2. Ana slogan “Kökü toprakta. Yeri sofrada.”, alt “Toprağın sunduğu lezzet, Afina’nın özeniyle.” birebir. “Ürünlerimizi Keşfedin” → ≤6 ürünlü perakende vitrin; “Toptan Satış İçin İletişime Geçin” → #toptan-iletisim. Resmi bölüm 04, optimize zeytin logosu; onaylı sahne görseli yoksa etiketli placeholder. Bu görevde scroll animasyonu ekleme.
 3. Uygulama görevinde ilgili davranış testini önce başarısız çalıştır, uygula ve geçir. Görsel görevinde model/kaynak/çıktı doğrulaması yap; key ve kişisel veri kaydetme.
 4. Kabul komutlarını çalıştır, çıktıyı ve varsa kullanıcı onay kaydını Coder Notu’na ekle; yalnız bu task kapsamını commit et.
 
 ## Kabul kriterleri
 - [ ] `npm run test:e2e -- tests/e2e/hero.spec.ts` başarılı; aşağıdaki davranışın normal, hata ve reduced-motion/klavye senaryoları doğrulanır.
 - [ ] `npm run lint && npm run typecheck && npm run build` başarılı.
+
+- [ ] `npm run test:e2e -- tests/e2e/hero.spec.ts` iki sloganı ve perakende/toptan CTA metin-hedeflerini resmi kaynakla birebir doğrular.
 
 ## Yapılmaması gerekenler
 - Task dışına çıkma, ek iyileştirme yapma; diğer repolara yazma.

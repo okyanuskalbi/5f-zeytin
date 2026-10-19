@@ -1,0 +1,40 @@
+# Task 081: Toptan satış talep formu
+
+## Tür
+frontend
+
+## Amaç
+Perakende satışın yanında resmi toptan CTA’sını ve erişilebilir talep formunu landing içine ekle.
+
+## Bağlam
+`docs/PLAN.md` ve resmi `docs/referans/icerik.md` içerik sözleşmesi. Bağımlı task’lar / addBlockedBy: 024 (shell); 073 (legal). Bağımlılıklar tamamlanmadan uygulanmaz.
+
+
+## Kullanılacak araçlar
+- ECC skill: frontend-patterns, accessibility, tdd-workflow
+- 21st MCP: evet — proje tokenlarına uyarlanan form/sayfa düzeni
+- find-skills ile bulunup kurulacak ek skill: yok; mevcut araçlar yeterli, yeni kurulum gerekirse Coder Notu’na yaz.
+
+## Dokunulacak dosyalar
+- `components/landing/WholesaleForm.tsx` (oluştur / düzenle)
+- `lib/contracts/wholesale.ts` (oluştur / düzenle)
+- `app/page.tsx` (oluştur / düzenle)
+- `tests/e2e/wholesale-form.spec.ts` (oluştur / düzenle)
+
+## Adımlar
+1. PLAN, AGENTS, resmi docs/referans/icerik.md bölüm 04 ve KVKK görevini oku. Toptan satış için gerçek fiyat/katalog veya yeni DB oluşturma.
+2. Önce form davranışı E2E testini yaz. “Toptan Satış İçin İletişime Geçin” CTA → #toptan-iletisim; kaynaktaki sofralık zeytin/salamura zeytin/zeytinyağı kapsamı korunur, ≤6 aktif perakende ürünü sınırı değişmez.
+3. İsim/firma, iletişim e-postası/telefonu ve talep mesajı; asgari gerekli alanlarla istemci sözleşmesini kur, alan/uzunluk ve hataları erişilebilir göster. KVKK aydınlatma bağlantısı; pazarlama iznini otomatik işaretleme veya taleple birleştirme. Alıcı/iletişim bilgisi kullanıcıdan gelir.
+4. Form submit bağımlılığı enjekte edilebilir olsun; bu task testte mock başarı/hata/pending kullanır. 082 gerçek servis bağlantısı yokken runtime gönderildi başarısı gösterme; form durumu bunu açık yansıtır. Ürün/sepet/ödeme akışını değiştirme.
+5. Klavye/odak, mobil ve reduced-motion testlerini geçir; resmi CTA eşitliği ve sonuçları Coder Notu’na yaz.
+
+## Kabul kriterleri
+- [ ] `npm run test:e2e -- tests/e2e/wholesale-form.spec.ts` CTA hash/odak hedefini, geçersiz alanları, KVKK bağlantısını ve mock pending/başarı/hata durumlarını doğrular.
+- [ ] `npm run lint && npm run typecheck && npm run build` başarılı; backend hazır değilken sahte gönderim başarısı yok.
+
+## Yapılmaması gerekenler
+- Task dışına çıkma; diğer repolara ve salt okunur AFINA-KAYNAK klasörüne yazma.
+- Resmi metinleri yeniden yazma, belgesiz iddia/ürün/fiyat/iletişim bilgisi üretme.
+- Servis/hesap/kanal kararlarını kullanıcı yerine verme; gizli bilgi commit etme.
+
+## Durum: BEKLİYOR

@@ -29,11 +29,11 @@ Bu projede sen KOD YAZMAZSIN. `src/` altına dosya oluşturma veya düzenleme �
 4. Her task için ilgili ECC skill'ini ve gerekiyorsa 21st MCP'yi task dosyasına yaz.
 5. Task hazır olunca kullanıcıya özetle ve onay iste.
 6. Onay gelince Codex'i çalıştır:
-   codex exec --full-auto "docs/tasks/NNN-isim.md dosyasını AGENTS.md kurallarına göre uygula. Bitince task dosyasına '## Durum: TAMAMLANDI' ekle."
+   codex exec --skip-git-repo-check --approve-for-me -c sandbox_workspace_write.network_access=true "docs/tasks/NNN-isim.md dosyasını AGENTS.md kurallarına göre uygula. Bitince task dosyasına '## Durum: TAMAMLANDI' ekle."
 7. Codex bitince `/code-review` ile (taze context) `git diff HEAD~1`'i task'taki kabul kriterlerine göre denetle. Güvenlik dokunan task'larda ek olarak `security-review` skill'ini çalıştır.
    - Hepsi tamamsa: kullanıcıya "NNN tamamlandı" de ve sıradaki task'a geç.
    - Eksik varsa: task dosyasına `## Düzeltme NNN-x` bölümü ekle ve:
-     codex exec --full-auto resume --last "docs/tasks/NNN-isim.md içindeki Düzeltme bölümünü uygula."
+     codex exec --skip-git-repo-check --approve-for-me -c sandbox_workspace_write.network_access=true resume --last "docs/tasks/NNN-isim.md içindeki Düzeltme bölümünü uygula."
    - 3 denemede düzelmezse kullanıcıya rapor et, kendin düzeltmeye kalkma.
 
 ## Task dosyası şablonu

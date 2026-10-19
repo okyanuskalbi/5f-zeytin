@@ -7,7 +7,7 @@ frontend
 Onaylı gerçek ürün listesindeki 5. ürünün görsel adayını tek görevde üret.
 
 ## Bağlam
-`docs/PLAN.md`: Hedef, Teknoloji, Mimari kararlar ve ilgili kapsam bölümü. Bağımlı task’lar / addBlockedBy: 003 (asset-registry). Komutlar 001 görevinde kurulacak araçlara dayanır; bağımlılıklar tamamlanmadan bu task çalıştırılmaz.
+`docs/PLAN.md`: Hedef, Teknoloji, Mimari kararlar ve ilgili kapsam bölümü. Bağımlı task’lar / addBlockedBy: 003 (asset-registry); 080 (brand-assets). Komutlar 001 görevinde kurulacak araçlara dayanır; bağımlılıklar tamamlanmadan bu task çalıştırılmaz.
 
 Koşullu slot 5: kullanıcı listesinde yoksa uygulanmaz, Coder Notu ile kapsam dışı olduğu kaydedilir; kendi kendine TAMAMLANDI işaretlenmez.
 
@@ -23,7 +23,7 @@ Koşullu slot 5: kullanıcı listesinde yoksa uygulanmaz, Coder Notu ile kapsam 
 
 ## Adımlar
 1. PLAN, AGENTS ve bağımlı task’ları oku; gereken kullanıcı kararları/onayları yoksa başlamadan Coder Notu’na engeli kaydet.
-2. Ürün adı, ambalaj, ağırlık/hacim ve orijinal logo kullanıcıdan gelmeden başlama. Referans: yeşil-beyaz AFİNA Doğal Kırma Yeşil Zeytin 10 KG teneke; örnek her ürüne kopyalanmaz. İstenen model Atlas openai/gpt-image-2.5-flare; uygunluğunu doğrula. En fazla 6 aktif ürün, eksik slot için hayali ürün/fiyat yaratma. Kullanıcı kararı kayda girene kadar yalnız TEMSİLİ ADAY; uygulamaya alma.
+2. Ürün adı, ambalaj ve ağırlık/hacim kullanıcıdan gelmeden başlama. Orijinal zeytin logosu docs/referans/logolar/ altında hazırdır; optimize kaynak 080’den alınır. Referans: yeşil-beyaz AFİNA Doğal Kırma Yeşil Zeytin 10 KG teneke; örnek her ürüne kopyalanmaz. İstenen model Atlas openai/gpt-image-2.5-flare; uygunluğunu doğrula. En fazla 6 aktif ürün, eksik slot için hayali ürün/fiyat yaratma. Kullanıcı kararı kayda girene kadar yalnız TEMSİLİ ADAY; uygulamaya alma.
 3. Uygulama görevinde ilgili davranış testini önce başarısız çalıştır, uygula ve geçir. Görsel görevinde model/kaynak/çıktı doğrulaması yap; key ve kişisel veri kaydetme.
 4. Kabul komutlarını çalıştır, çıktıyı ve varsa kullanıcı onay kaydını Coder Notu’na ekle; yalnız bu task kapsamını commit et.
 

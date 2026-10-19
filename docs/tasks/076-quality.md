@@ -7,7 +7,7 @@ frontend
 Duyarlı vitrin ve alışveriş erişilebilirliğini doğrula.
 
 ## Bağlam
-`docs/PLAN.md`: Hedef, Teknoloji, Mimari kararlar ve ilgili kapsam bölümü. Bağımlı task’lar / addBlockedBy: 074 (seo); 032 (scenes); 037 (cart-page); 075 (commerce-e2e); 034 (asset-handoff). Komutlar 001 görevinde kurulacak araçlara dayanır; bağımlılıklar tamamlanmadan bu task çalıştırılmaz.
+`docs/PLAN.md`: Hedef, Teknoloji, Mimari kararlar ve ilgili kapsam bölümü. Bağımlı task’lar / addBlockedBy: 074 (seo); 032 (scenes); 037 (cart-page); 075 (commerce-e2e); 034 (asset-handoff); 082 (wholesale-send). Komutlar 001 görevinde kurulacak araçlara dayanır; bağımlılıklar tamamlanmadan bu task çalıştırılmaz.
 
 ## Kullanılacak araçlar
 - ECC skill: accessibility, motion-advanced, e2e-testing, verification-loop
@@ -20,7 +20,7 @@ Duyarlı vitrin ve alışveriş erişilebilirliğini doğrula.
 
 ## Adımlar
 1. PLAN, AGENTS ve bağımlı task’ları oku; gereken kullanıcı kararları/onayları yoksa başlamadan Coder Notu’na engeli kaydet.
-2. 320/375/390/768/1024/1440/1920; Chromium/Firefox/WebKit, klavye, axe ve reduced-motion; taşma/odak/CTA; Lighthouse LCP/CLS ve JS bütçesini ölç, sonuçları kaydet.
+2. 320/375/390/768/1024/1440/1920; Chromium/Firefox/WebKit, klavye/axe/reduced-motion; ürün ≤6, perakende satın alma + toptan CTA/form doğrulama/mocked gönderim, Tesisimiz/Osmaniye ve logo dark kontrastı. Taşma/odak/CTA, Lighthouse LCP/CLS ve JS bütçesi; resmi metin ve iddia kuralını doğrula, sonuçları kaydet.
 3. Uygulama görevinde ilgili davranış testini önce başarısız çalıştır, uygula ve geçir. Görsel görevinde model/kaynak/çıktı doğrulaması yap; key ve kişisel veri kaydetme.
 4. Kabul komutlarını çalıştır, çıktıyı ve varsa kullanıcı onay kaydını Coder Notu’na ekle; yalnız bu task kapsamını commit et.
 
