@@ -1,0 +1,299 @@
+// @vitest-environment node
+import { createHash } from "node:crypto";
+import { spawnSync } from "node:child_process";
+import { mkdir, mkdtemp, readFile, rm, symlink, writeFile } from "node:fs/promises";
+import { dirname, join, resolve } from "node:path";
+import sharp from "sharp";
+import { afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
+import { scripts } from "../../package.json";
+
+interface Options {
+  root: string;
+  id?: string;
+  mode?: "all" | "candidate" | "approved";
+}
+
+interface Decision {
+  recordId: string;
+  assetId: string;
+  sha256: string;
+  decision: "approved" | "rejected";
+  decidedAt: string;
+  evidenceRef: string;
+}
+
+interface Asset {
+  id: string;
+  file: string;
+  sha256: string;
+  width: number;
+  height: number;
+  aspectRatio: string;
+  model: string;
+  promptId: string;
+  representative: boolean;
+  references: { file: string; sha256: string }[];
+  status: "candidate" | "approved" | "rejected";
+  approval: { recordId: string; decidedAt: string } | null;
+}
+
+let checkAssets: (options: Options) => Promise<{ checked: number; mode: string }>;
+let parseArgs: (args: string[]) => { id?: string; mode: string };
+let root: string;
+let asset: Asset;
+let decisions: Decision[];
+let image: Buffer;
+const projectRoot = resolve(import.meta.dirname, "../..");
+const checkerPath = join(projectRoot, "scripts/check-assets.mjs");
+const digest = (value: string | Buffer) => createHash("sha256").update(value).digest("hex");
+
+async function put(file: string, content: string | Buffer) {
+  const target = join(root, file);
+  await mkdir(dirname(target), { recursive: true });
+  await writeFile(target, content);
+}
+
+async function save(assets: unknown[] = [asset]) {
+  await put("public/images/generated/manifest.json", JSON.stringify({ version: 1, assets }));
+  await put("docs/gorsel-onay.md", `# Görsel kararları\n\n\`\`\`json asset-decisions\n${JSON.stringify({ version: 1, decisions })}\n\`\`\`\n`);
+}
+
+function approve() {
+  const decidedAt = "2026-10-19T10:00:00.000Z";
+  asset = { ...asset, status: "approved", approval: { recordId: "decision-p01-v1", decidedAt } };
+  decisions = [{ recordId: "decision-p01-v1", assetId: asset.id, sha256: asset.sha256,
+    decision: "approved", decidedAt, evidenceRef: "user-message-asset-p01-v1" }];
+}
+
+beforeAll(async () => {
+  ({ checkAssets, parseArgs } = await import(checkerPath));
+  image = await sharp({ create: { width: 160, height: 90, channels: 3, background: "#243A29" } }).png().toBuffer();
+});
+
+beforeEach(async () => {
+  await mkdir(join(projectRoot, ".cache"), { recursive: true });
+  root = await mkdtemp(join(projectRoot, ".cache/asset-registry-"));
+  const reference = "# P01\nSynthetic test prompt, no generation request.\n";
+  asset = { id: "p01", file: "/images/generated/p01/candidate.png", sha256: digest(image),
+    width: 160, height: 90, aspectRatio: "16:9", model: "openai/gpt-image-2.5-flare",
+    promptId: "P01", representative: true,
+    references: [{ file: "docs/visual-prompts.md", sha256: digest(reference) }], status: "candidate", approval: null };
+  decisions = [];
+  await put(`public${asset.file}`, image);
+  await put("docs/visual-prompts.md", reference);
+  await put("app/page.tsx", 'export default function Page() { return <main>Afina</main>; }');
+  await save();
+});
+
+afterEach(async () => {
+  if (root) await rm(root, { recursive: true, force: true });
+});
+
+describe("asset registry CLI", () => {
+  it("supports exact ID and mutually exclusive candidate/approved modes", () => {
+    expect(parseArgs([])).toEqual({ mode: "all" });
+    expect(parseArgs(["--id", "p01", "--candidate"])).toEqual({ id: "p01", mode: "candidate" });
+    expect(parseArgs(["--approved", "--id", "p01"])).toEqual({ id: "p01", mode: "approved" });
+    for (const args of [["--unknown"], ["--id"], ["--id", "--candidate"], ["--candidate", "--approved"], ["--candidate", "--candidate"], ["--id", "p01", "--id", "p02"]]) {
+      expect(() => parseArgs(args)).toThrow();
+    }
+  });
+
+  it("validates an empty initial registry without network or generation", async () => {
+    await rm(join(root, "public/images/generated/p01"), { recursive: true });
+    await save([]);
+    await expect(checkAssets({ root, mode: "candidate" })).resolves.toEqual({ checked: 0, mode: "candidate" });
+    const result = spawnSync(process.execPath, [checkerPath, "--candidate"], { cwd: root, encoding: "utf8", timeout: 15000 });
+    expect(result.status, result.stderr).toBe(0);
+    expect(result.stdout).toContain("0");
+    const failure = spawnSync(process.execPath, [checkerPath, "--id", "missing"], { cwd: root, encoding: "utf8", timeout: 15000 });
+    expect(failure.status).toBe(1);
+    expect(failure.stderr).toContain("missing");
+  });
+
+  it("runs the guard before both dev and production builds", async () => {
+    const current = JSON.parse(await readFile(join(projectRoot, "package.json"), "utf8")).scripts;
+    expect(current["check:assets"]).toBe("node scripts/check-assets.mjs");
+    expect(current.prebuild).toBe("npm run check:assets");
+    expect(current.predev).toBe("npm run check:assets");
+    expect(scripts.build).toBe("next build");
+  });
+});
+
+describe("asset metadata and source integrity", () => {
+  it("validates candidate bytes, dimensions, ratio, provenance and representative label", async () => {
+    await expect(checkAssets({ root, id: "p01", mode: "candidate" })).resolves.toEqual({ checked: 1, mode: "candidate" });
+  });
+
+  it("rejects a missing file", async () => {
+    await rm(join(root, `public${asset.file}`));
+    await expect(checkAssets({ root })).rejects.toThrow(/dosya/i);
+  });
+
+  it("rejects replacement bytes even when the filename is unchanged", async () => {
+    await put(`public${asset.file}`, Buffer.concat([image, Buffer.from("changed")]));
+    await expect(checkAssets({ root })).rejects.toThrow(/hash/i);
+  });
+
+  it.each([
+    ["sha256", "invalid"], ["width", 161], ["height", 91], ["aspectRatio", "9:16"],
+    ["model", ""], ["promptId", ""], ["representative", "true"], ["status", "invalid"],
+    ["references", []], ["file", "/images/generated/../private.png"],
+  ])("rejects invalid %s metadata", async (key, value) => {
+    await save([{ ...asset, [key]: value }]);
+    await expect(checkAssets({ root })).rejects.toThrow();
+  });
+
+  it("rejects a disguised non-image file", async () => {
+    await put(`public${asset.file}`, "not an image");
+    await save([{ ...asset, sha256: digest("not an image") }]);
+    await expect(checkAssets({ root })).rejects.toThrow(/görsel/i);
+  });
+
+  it("rejects changed or missing references", async () => {
+    await put("docs/visual-prompts.md", "changed prompt");
+    await expect(checkAssets({ root })).rejects.toThrow(/hash/i);
+    await rm(join(root, "docs/visual-prompts.md"));
+    await expect(checkAssets({ root })).rejects.toThrow(/dosya/i);
+  });
+
+  it("rejects unregistered files and duplicate IDs or output paths", async () => {
+    await put("public/images/generated/extra.png", image);
+    await expect(checkAssets({ root })).rejects.toThrow(/kayıtsız/i);
+    await rm(join(root, "public/images/generated/extra.png"));
+    await save([asset, asset]);
+    await expect(checkAssets({ root })).rejects.toThrow(/tekrar/i);
+    await save([asset, { ...asset, id: "p02" }]);
+    await expect(checkAssets({ root })).rejects.toThrow(/tekrar/i);
+  });
+
+  it("rejects symlinked assets and source directories", async () => {
+    await rm(join(root, `public${asset.file}`));
+    await symlink(join(root, "docs/visual-prompts.md"), join(root, `public${asset.file}`));
+    await expect(checkAssets({ root })).rejects.toThrow(/sembolik/i);
+    await rm(join(root, `public${asset.file}`));
+    await put(`public${asset.file}`, image);
+    await symlink(join(root, "docs"), join(root, "components"));
+    await expect(checkAssets({ root })).rejects.toThrow(/sembolik/i);
+  });
+
+  it("rejects unknown public fields and personally identifying values", async () => {
+    await save([{ ...asset, approvedBy: "private@example.test" }]);
+    await expect(checkAssets({ root })).rejects.toThrow(/alan/i);
+    await save([{ ...asset, model: "private@example.test" }]);
+    await expect(checkAssets({ root })).rejects.toThrow();
+  });
+
+  it("rejects malformed manifests and invalid ID/mode selections", async () => {
+    await put("public/images/generated/manifest.json", "{");
+    await expect(checkAssets({ root })).rejects.toThrow(/JSON/i);
+    await put("public/images/generated/manifest.json", JSON.stringify({ version: 2, assets: [] }));
+    await expect(checkAssets({ root })).rejects.toThrow(/version/i);
+    await save();
+    await expect(checkAssets({ root, id: "absent" })).rejects.toThrow(/absent/i);
+    await expect(checkAssets({ root, id: "p01", mode: "approved" })).rejects.toThrow(/approved/i);
+  });
+});
+
+describe("user decision records", () => {
+  it("allows an approved image only with a matching separate decision record", async () => {
+    approve();
+    await save();
+    await put("components/Hero.tsx", `export const hero = "${asset.file}";`);
+    await expect(checkAssets({ root, id: "p01", mode: "approved" })).resolves.toEqual({ checked: 1, mode: "approved" });
+    await expect(checkAssets({ root, mode: "candidate" })).resolves.toEqual({ checked: 0, mode: "candidate" });
+  });
+
+  it("rejects a forged status flag or an absent independent approval record", async () => {
+    await save([{ ...asset, status: "approved" }]);
+    await expect(checkAssets({ root })).rejects.toThrow(/onay/i);
+    approve();
+    decisions = [];
+    await save();
+    await expect(checkAssets({ root })).rejects.toThrow(/onay/i);
+  });
+
+  it.each([
+    { sha256: "0".repeat(64) }, { assetId: "p02" }, { decision: "rejected" },
+    { decidedAt: "2026-10-18T10:00:00.000Z" }, { evidenceRef: "" },
+  ])("rejects mismatched approval evidence: %j", async (patch) => {
+    approve();
+    decisions = [{ ...decisions[0], ...patch } as Decision];
+    await save();
+    await expect(checkAssets({ root })).rejects.toThrow(/onay|karar/i);
+  });
+
+  it("rejects missing, invalid, future and normalized-invalid decision dates", async () => {
+    approve();
+    for (const decidedAt of ["", "yesterday", "2999-01-01T00:00:00.000Z", "2026-02-30T10:00:00.000Z"]) {
+      await save([{ ...asset, approval: { ...asset.approval, decidedAt } }]);
+      await expect(checkAssets({ root })).rejects.toThrow(/tarih/i);
+    }
+  });
+
+  it("rejects duplicate decisions and stale decisions attached to a candidate", async () => {
+    approve();
+    decisions = [decisions[0], decisions[0]];
+    await save();
+    await expect(checkAssets({ root })).rejects.toThrow(/tekrar/i);
+    decisions = [decisions[0]];
+    await save([{ ...asset, status: "candidate" }]);
+    await expect(checkAssets({ root })).rejects.toThrow(/onay/i);
+  });
+
+  it("rejects a missing or ambiguous machine-readable decision block", async () => {
+    await put("docs/gorsel-onay.md", "# No decision block");
+    await expect(checkAssets({ root })).rejects.toThrow(/karar/i);
+    await save();
+    const doc = await readFile(join(root, "docs/gorsel-onay.md"), "utf8");
+    await put("docs/gorsel-onay.md", `${doc}\n${doc}`);
+    await expect(checkAssets({ root })).rejects.toThrow(/karar/i);
+  });
+});
+
+describe("unapproved runtime usage protection", () => {
+  it.each([
+    ['app/page.tsx', 'import image from "@/public/images/generated/p01/candidate.png";'],
+    ['components/Hero.tsx', '<img src="/images/generated/p01/candidate.png" />'],
+    ['lib/assets.ts', 'export const image = "/images/generated/p01/candidate.png?width=800";'],
+    ['app/globals.css', 'main { background: url(/images/generated/p01/candidate.png); }'],
+    ['app/page.tsx', 'const image = `/images/generated/${id}.png`;'],
+    ['app/page.tsx', 'const image = "\\u002fimages/generated/p01/candidate.png";'],
+    ['app/page.tsx', 'const image = "/images/" + "generated/p01/candidate.png";'],
+    ['app/page.tsx', 'import registry from "@/public/images/generated/manifest.json";'],
+    ['lib/assets.ts', 'export const image = "/images/generated/missing.png";'],
+    ['components/Hero.tsx', 'import image from "../public/images/generated/p01/candidate.png";'],
+  ])("rejects candidate, unknown and dynamic references in %s: %s", async (file, source) => {
+    await put(file, source);
+    await expect(checkAssets({ root, mode: "candidate" })).rejects.toThrow(/onaysız|dinamik|manifest/i);
+  });
+
+  it("still rejects a different candidate when selecting a valid approved ID", async () => {
+    const candidate = { ...asset, id: "p02", file: "/images/generated/p02.png" };
+    await put(`public${candidate.file}`, image);
+    approve();
+    await save([asset, candidate]);
+    await put("lib/assets.ts", `export const image = "${candidate.file}";`);
+    await expect(checkAssets({ root, id: "p01", mode: "approved" })).rejects.toThrow(/onaysız/i);
+  });
+
+  it("never treats P08–P12 design references as publishable assets", async () => {
+    asset = { ...asset, promptId: "P08" };
+    approve();
+    await save();
+    await put("lib/assets.ts", `export const image = "${asset.file}";`);
+    await expect(checkAssets({ root })).rejects.toThrow(/tasarım referansı/i);
+  });
+
+  it("permits unused rejected candidates and supports future brand assets", async () => {
+    await save([{ ...asset, status: "rejected" }]);
+    await expect(checkAssets({ root })).resolves.toEqual({ checked: 1, mode: "all" });
+    await rm(join(root, `public${asset.file}`));
+    asset = { ...asset, file: "/brand/afina-zeytin.png", model: "svgo", promptId: "TASK-080", representative: false };
+    await put(`public${asset.file}`, image);
+    await save();
+    await expect(checkAssets({ root, mode: "candidate" })).resolves.toEqual({ checked: 1, mode: "candidate" });
+    await put("app/page.tsx", `const logo = "${asset.file}";`);
+    await expect(checkAssets({ root })).rejects.toThrow(/onaysız/i);
+  });
+});
