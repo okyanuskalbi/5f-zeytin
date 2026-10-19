@@ -4,13 +4,113 @@
 @source "../components";
 
 :root {
-  --background: #f5f1e7;
-  --foreground: #243a29;
+  color-scheme: light;
+  --brand-olive: #243a29;
+  --brand-ivory: #f5f1e7;
+  --brand-gold: #d4b483;
+
+  --background: var(--brand-ivory);
+  --foreground: var(--brand-olive);
+  --card: #fffcf5;
+  --card-foreground: var(--foreground);
+  --popover: var(--card);
+  --popover-foreground: var(--foreground);
+  --primary: var(--brand-olive);
+  --primary-foreground: var(--brand-ivory);
+  --primary-hover: #354e3b;
+  --secondary: var(--brand-gold);
+  --secondary-foreground: var(--brand-olive);
+  --secondary-hover: #c7a572;
+  --muted: #e9e3d6;
+  --muted-foreground: #5b6558;
+  --accent: #e5e9df;
+  --accent-foreground: var(--brand-olive);
+  /* Champagne gold is reserved for dark surfaces; use this ink on ivory. */
+  --gold-ink: #78603c;
+  --destructive: #943b32;
+  --destructive-foreground: #fffcf5;
+  --destructive-hover: #7e3029;
+  --border: #d1cabb;
+  --input: #7b856e;
+  --ring: var(--brand-olive);
+  --overlay: #14261a;
+
+  /* Local stacks keep Turkish copy legible without a remote font dependency. */
+  --font-body: "Helvetica Neue", Arial, sans-serif;
+  --font-display: Georgia, "Times New Roman", serif;
+  --radius: 0.5rem;
+  --duration-fast: 150ms;
+  --shadow-dialog: 0 1.5rem 5rem rgb(20 38 26 / 20%);
 }
 
-body {
-  margin: 0;
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-gold-ink: var(--gold-ink);
+  --color-brand-gold: var(--brand-gold);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive-hover: var(--destructive-hover);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-overlay: var(--overlay);
+  --font-sans: var(--font-body);
+  --font-serif: var(--font-display);
+  --radius-sm: calc(var(--radius) - 0.25rem);
+  --radius-md: calc(var(--radius) - 0.125rem);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 0.25rem);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    margin: 0;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  h1 { font-size: clamp(2rem, 1.5rem + 2vw, 3.5rem); }
+  h2 { font-size: clamp(1.5rem, 1.25rem + 1vw, 2.25rem); }
+  h3 { font-size: 1.25rem; }
+
+  ::selection {
+    background: var(--brand-gold);
+    color: var(--brand-olive);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+  }
 }
