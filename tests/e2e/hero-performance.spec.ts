@@ -1,0 +1,32 @@
+import { expect, test } from "@playwright/test";
+
+test("mobile poster is preloaded in SSR and frames wait for idle or interaction with a ten-frame budget", async ({ page, request }, testInfo) => {
+  await page.setViewportSize({ width: 390, height: 900 });
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "hardwareConcurrency", { configurable: true, get: () => 8 });
+    // Hold browser idle work: the SSR poster and purchase controls must stand alone.
+    window.requestIdleCallback = () => 1;
+    window.cancelIdleCallback = () => {};
+  });
+  const frames: string[] = [];
+  page.on("request", (entry) => { if (/\/frames\/hero-zeytin\/\d+\/frame-/.test(entry.url())) frames.push(entry.url()); });
+  const html = await (await request.get("/")).text();
+  expect(html).toMatch(/<link[^>]+rel="preload"[^>]+as="image"[^>]+imageSrcSet=/i);
+  await page.goto("/");
+  const hero = page.locator("[data-hero-label]");
+  const poster = hero.locator("[data-frame-sequence] img");
+  await expect.poll(() => poster.evaluate((node: HTMLImageElement) => node.complete && node.naturalWidth)).toBeGreaterThanOrEqual(1600);
+  await expect(hero.getByRole("button", { name: "Sepete ekle" })).toBeEnabled();
+  expect(frames).toHaveLength(0);
+  const currentSrc = await poster.evaluate((node: HTMLImageElement) => node.currentSrc);
+  const delivery = await request.get(currentSrc, { headers: { Accept: "image/avif,image/webp" } });
+  expect(delivery.headers()["content-type"]).toContain("image/avif");
+  expect((await delivery.body()).length).toBeLessThanOrEqual(60 * 1024);
+  await page.screenshot({ path: testInfo.outputPath("mobile-poster.png") });
+  await page.keyboard.press("Shift");
+  await expect(hero.locator("canvas")).toHaveAttribute("data-frame", "0");
+  await expect.poll(() => frames.length).toBe(10);
+  await page.waitForTimeout(300);
+  expect(frames).toHaveLength(10);
+});

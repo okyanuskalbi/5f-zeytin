@@ -312,6 +312,17 @@ describe("bounded progressive loading", () => {
   }
   afterEach(() => { loaders.splice(0).forEach((instance) => instance.dispose()); });
 
+  it("caps the mobile initial window at ten frames without limiting later seeking", () => {
+    const frames = createFrameLoader({ src: "/media/demo/manifest.json", width: 960, count: 48, initialCount: 10, onLoad: vi.fn() });
+    loaders.push(frames);
+    frames.preloadInitial();
+    for (let i = 0; i < 5; i++) finishPending();
+    expect(MockImage.requests).toHaveLength(10);
+    frames.preloadAround(40);
+    for (let i = 0; i < 5; i++) finishPending();
+    expect(frames.nearest(40)?.index).toBe(40);
+  });
+
   it("requests only the first 15 frames initially, with at most six requests in flight", () => {
     const frames = loader();
     frames.preloadInitial();
