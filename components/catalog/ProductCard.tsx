@@ -3,6 +3,7 @@
 import { useId, useRef, useState, type JSX, type SubmitEvent } from "react";
 import { Minus, Plus, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ProductCardMotion } from "@/components/catalog/ProductCardMotion";
 import type { Product } from "@/types/catalog";
 
 type ProductCardProps = {
@@ -28,7 +29,11 @@ export function ProductCard({ product, loading = false, onAddToCart }: ProductCa
   }
   if (!product) return <p role="status" className="text-muted-foreground">Görüntülenecek ürün bulunmuyor.</p>;
   // Replacing a product resets its quantity, pending state and old feedback.
-  return <PurchaseCard key={product.id} product={product} onAddToCart={onAddToCart} />;
+  return (
+    <ProductCardMotion key={product.id}>
+      <PurchaseCard product={product} onAddToCart={onAddToCart} />
+    </ProductCardMotion>
+  );
 }
 
 function PurchaseCard({ product, onAddToCart }: { product: Product; onAddToCart: ProductCardProps["onAddToCart"] }): JSX.Element {
