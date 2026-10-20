@@ -34,7 +34,7 @@ test.beforeEach(async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
 });
 
-test("hero plays a bounded entrance once and a small scroll parallax without moving its actions", async ({ page, baseURL }, testInfo) => {
+test("hero plays a bounded entrance once alongside the approved scroll sequence", async ({ page, baseURL }, testInfo) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   testInfo.annotations.push({ type: "target-host", description: new URL(baseURL!).host });
@@ -51,27 +51,16 @@ test("hero plays a bounded entrance once and a small scroll parallax without mov
   });
   expect((await page.goto("/"))?.status()).toBe(200);
   const entrance = hero(page).locator('[data-hero-motion="entrance"]');
-  const parallax = hero(page).locator('[data-hero-motion="parallax"]');
   await expect(entrance).toHaveCount(1);
-  await expect(parallax).toHaveCount(1);
+  await expect(hero(page).locator("canvas")).toHaveAttribute("data-frame", "0");
   await expect.poll(() => page.evaluate(() => {
     const { heroEntranceSamples } = window as unknown as { heroEntranceSamples: number[] };
     return heroEntranceSamples.some((y) => y > 0.1 && y <= 16);
   })).toBe(true);
   await expect.poll(() => translateY(entrance)).toBeCloseTo(0, 2);
 
-  const action = hero(page).getByRole("link", { name: actions[0][0], exact: true });
-  const actionTop = (await action.boundingBox())!.y;
-  const initialY = await translateY(parallax);
   await page.mouse.wheel(0, 240);
   await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(100);
-  await expect.poll(async () => Math.abs(await translateY(parallax) - initialY)).toBeGreaterThan(0.5);
-  expect(await translateY(parallax)).toBeGreaterThanOrEqual(-16);
-  expect(await translateY(parallax)).toBeLessThanOrEqual(0);
-  const scrollOffset = await page.evaluate(() => scrollY);
-  expect((await action.boundingBox())!.y + scrollOffset).toBeCloseTo(actionTop, 0);
-  await page.evaluate(() => scrollTo(0, 0));
-  await expect.poll(() => translateY(parallax)).toBeCloseTo(initialY, 1);
   expect(await translateY(entrance)).toBeCloseTo(0, 2);
   await expectUsable(page);
   expect(errors).toEqual([]);
@@ -102,7 +91,7 @@ test("reduced motion keeps the hero static and keyboard destinations accessible"
     expect(new URL(page.url()).hash).toBe(hash);
     await expect(page.locator(hash)).toBeFocused();
   }
-  for (const effect of ["entrance", "parallax"]) {
+  for (const effect of ["entrance"]) {
     expect(await translateY(hero(page).locator(`[data-hero-motion="${effect}"]`))).toBe(0);
   }
   expect(await hero(page).evaluate((node) => node.getAnimations({ subtree: true }).length)).toBe(0);
@@ -110,17 +99,14 @@ test("reduced motion keeps the hero static and keyboard destinations accessible"
   await page.screenshot({ path: testInfo.outputPath("hero-reduced-motion.png"), fullPage: true });
 });
 
-test("changing the motion preference immediately stops and resets parallax", async ({ page }) => {
+test("changing the motion preference replaces video frames with the static poster", async ({ page }) => {
   await page.goto("/");
-  const parallax = hero(page).locator('[data-hero-motion="parallax"]');
-  await expect.poll(async () => Math.abs(await translateY(parallax))).toBeGreaterThan(0.1);
+  await expect(hero(page).locator("canvas")).toHaveAttribute("data-frame", "0");
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await expect.poll(() => translateY(parallax)).toBe(0);
-  await page.mouse.wheel(0, 240);
-  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(100);
-  expect(await translateY(parallax)).toBe(0);
+  await expect(hero(page).locator("canvas")).toHaveCount(0);
+  await expect(hero(page).locator("[data-frame-sequence] img")).toBeVisible();
   await page.emulateMedia({ reducedMotion: "no-preference" });
-  await expect.poll(async () => Math.abs(await translateY(parallax))).toBeGreaterThan(0.1);
+  await expect(hero(page).locator("canvas")).toBeVisible();
   await expectUsable(page);
 });
 
@@ -131,7 +117,7 @@ test("a low-end device keeps nonessential hero motion static and scroll unlocked
   await page.goto("/");
   await page.mouse.wheel(0, 240);
   await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(100);
-  for (const effect of ["entrance", "parallax"]) {
+  for (const effect of ["entrance"]) {
     expect(await translateY(hero(page).locator(`[data-hero-motion="${effect}"]`))).toBe(0);
   }
   await expectUsable(page);
@@ -152,7 +138,7 @@ test("failed JavaScript and logo requests leave server-rendered hero links usabl
   await page.goto("/");
   expect(failedScripts.length).toBeGreaterThan(0);
   await expectUsable(page);
-  for (const effect of ["entrance", "parallax"]) {
+  for (const effect of ["entrance"]) {
     const layer = hero(page).locator(`[data-hero-motion="${effect}"]`);
     expect(await translateY(layer)).toBe(0);
     expect(await layer.evaluate((node) => node.getAnimations({ subtree: true }).length)).toBe(0);
@@ -165,7 +151,7 @@ test("hero remains static and navigable when JavaScript is disabled", async ({ b
     const page = await context.newPage();
     await page.goto(new URL("/", baseURL!).href);
     await expectUsable(page);
-    for (const effect of ["entrance", "parallax"]) {
+    for (const effect of ["entrance"]) {
       expect(await translateY(hero(page).locator(`[data-hero-motion="${effect}"]`))).toBe(0);
     }
   } finally {

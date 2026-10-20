@@ -92,7 +92,8 @@ async function expectFlow(page: Page): Promise<void> {
   await expect(page.getByRole("region", { name: "Hikâyemiz", exact: true })).toContainText("Afina Zeytin, Osmaniye’deki fabrikasıyla");
   await expect(page.getByRole("region", { name: "Ürünlerimiz", exact: true }).getByRole("article")).toHaveCount(3);
   await expect(page.locator('img[src*="/images/generated/"]')).toHaveCount(0);
-  await expect(page.locator("canvas")).toHaveCount(0);
+  await expect(page.locator('[data-scene="hero"] img[src="/images/hero/zeytinlik-2400.webp"]')).toBeVisible();
+  await expect(page.locator('[data-scene]:not([data-scene="hero"]) canvas')).toHaveCount(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 }
 

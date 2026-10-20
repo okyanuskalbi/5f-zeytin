@@ -1,0 +1,28 @@
+.hero {
+  --frame-top: 6.0625rem;
+  --frame-height: max(48rem, calc(100svh - var(--frame-top)));
+}
+
+.hero .media {
+  bottom: auto;
+  height: 42%;
+}
+
+.readability {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent 24%, var(--brand-ivory) 43%);
+}
+
+@media (min-width: 640px) {
+  .hero { --frame-top: 7.0625rem; }
+}
+
+@media (min-width: 1024px) {
+  .hero .media { bottom: 0; height: 100%; }
+
+  .readability {
+    background: linear-gradient(to right, rgb(245 241 231 / 92%) 0%, rgb(245 241 231 / 75%) 32%, rgb(245 241 231 / 0%) 58%);
+  }
+}

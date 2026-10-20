@@ -57,15 +57,14 @@ test("hero matches official copy and links to retail and wholesale destinations"
   await page.screenshot({ path: testInfo.outputPath("hero.png"), fullPage: true });
 });
 
-test("hero uses the approved logo and a labeled placeholder without unapproved scene media", async ({ page }) => {
+test("hero uses the approved logo and grove poster without unapproved scene media", async ({ page }) => {
   const requests: string[] = [];
   page.on("request", (request) => requests.push(request.url()));
   await page.goto("/");
   const hero = page.getByRole("region", { name: "Afina Zeytin", exact: true });
-  const placeholder = hero.getByRole("figure", { name: "Hero görseli" });
-  await expect(placeholder).toBeVisible();
-  await expect(placeholder.getByText("Onaylı sahne görseli bekleniyor.", { exact: true })).toBeVisible();
-  await expect(hero.locator("img, video, canvas")).toHaveCount(0);
+  await expect(hero.locator("[data-frame-sequence] img")).toBeVisible();
+  await expect(hero.getByText("Onaylı sahne görseli bekleniyor.", { exact: true })).toHaveCount(0);
+  await expect(hero.locator("video")).toHaveCount(0);
   const logo = page.getByRole("banner").getByRole("img", { name: "Afina Zeytin", exact: true });
   await expect(logo).toHaveAttribute("src", "/brand/afina-zeytin.svg");
   await expect.poll(() => logo.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);

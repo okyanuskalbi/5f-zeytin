@@ -438,6 +438,52 @@
         "decidedAt": "2026-10-20"
       },
       "runtime": true
+    },
+    {
+      "id": "hero-zeytinlik-2400",
+      "file": "/images/hero/zeytinlik-2400.webp",
+      "sha256": "f6d490617df356087f6fbbf88e761ed6d233e35d47f63b1f012cd1a3ededa3ff",
+      "width": 2400,
+      "height": 1350,
+      "aspectRatio": "16:9",
+      "model": "source-approved-webp-sharp-0.35.5",
+      "promptId": "TASK-086",
+      "representative": true,
+      "references": [
+        {
+          "file": "docs/tasks/086-hero-zeytinlik.md",
+          "sha256": "6367eef7fb8ef6d6cf66f0f41768bcb63cf93f110e80d0b4d8f0f7725a989cbe"
+        }
+      ],
+      "status": "approved",
+      "approval": {
+        "recordId": "user-2026-10-20-hero-zeytinlik-2400",
+        "decidedAt": "2026-10-20"
+      },
+      "runtime": true
+    },
+    {
+      "id": "hero-zeytinlik-1200",
+      "file": "/images/hero/zeytinlik-1200.webp",
+      "sha256": "96bad3c9018135bd27e907e3e6eca6771b447c0b682c5faca05f775a3ec78ce4",
+      "width": 1200,
+      "height": 675,
+      "aspectRatio": "16:9",
+      "model": "source-approved-webp-sharp-0.35.5",
+      "promptId": "TASK-086",
+      "representative": true,
+      "references": [
+        {
+          "file": "docs/tasks/086-hero-zeytinlik.md",
+          "sha256": "6367eef7fb8ef6d6cf66f0f41768bcb63cf93f110e80d0b4d8f0f7725a989cbe"
+        }
+      ],
+      "status": "approved",
+      "approval": {
+        "recordId": "user-2026-10-20-hero-zeytinlik-1200",
+        "decidedAt": "2026-10-20"
+      },
+      "runtime": true
     }
   ]
 }

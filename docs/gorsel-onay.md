@@ -500,7 +500,63 @@ yerleşim canlı yayın veya domain bağlama işlemi değildir.
       "approvedBy": "user",
       "approvedAt": "2026-10-20",
       "evidence": "user-message-2026-10-20-task-024-a-brand-set"
+    },
+    {
+      "recordId": "user-2026-10-20-hero-zeytinlik-2400",
+      "assetId": "hero-zeytinlik-2400",
+      "sha256": "f6d490617df356087f6fbbf88e761ed6d233e35d47f63b1f012cd1a3ededa3ff",
+      "references": [
+        {
+          "file": "docs/tasks/086-hero-zeytinlik.md",
+          "sha256": "6367eef7fb8ef6d6cf66f0f41768bcb63cf93f110e80d0b4d8f0f7725a989cbe"
+        }
+      ],
+      "approvedBy": "user",
+      "approvedAt": "2026-10-20",
+      "evidence": "user-message-2026-10-20-task-086-hero-ok"
+    },
+    {
+      "recordId": "user-2026-10-20-hero-zeytinlik-1200",
+      "assetId": "hero-zeytinlik-1200",
+      "sha256": "96bad3c9018135bd27e907e3e6eca6771b447c0b682c5faca05f775a3ec78ce4",
+      "references": [
+        {
+          "file": "docs/tasks/086-hero-zeytinlik.md",
+          "sha256": "6367eef7fb8ef6d6cf66f0f41768bcb63cf93f110e80d0b4d8f0f7725a989cbe"
+        }
+      ],
+      "approvedBy": "user",
+      "approvedAt": "2026-10-20",
+      "evidence": "user-message-2026-10-20-task-086-hero-ok"
+    },
+    {
+      "recordId": "user-2026-10-20-hero-zeytin-sequence",
+      "assetId": "hero-zeytin-sequence",
+      "sha256": "993ccb9e67decc74105534c7bc261e92fe0a030d96dec2721185f8f9d5248794",
+      "references": [
+        {
+          "file": "docs/tasks/086-hero-zeytinlik.md",
+          "sha256": "6367eef7fb8ef6d6cf66f0f41768bcb63cf93f110e80d0b4d8f0f7725a989cbe"
+        }
+      ],
+      "approvedBy": "user",
+      "approvedAt": "2026-10-20",
+      "evidence": "user-message-2026-10-20-task-086-videolar-ok"
     }
   ]
 }
 ```
+
+## TASK-086 — Onaylı zeytinlik hero ve scroll videosu
+
+Task 086’nın açık varlık kayıt talebiyle bu onay kaydı eklendi. Görsel ve video
+onayı [Task 086](tasks/086-hero-zeytinlik.md) bağlamındadır; dış kaynaklar salt
+okunur doğrulandı. Kaynak görsel SHA-256: `a5e9683e842478222e73a08631d96892cdbe0e4cc2812ce7cac1b870bec76b79`;
+kaynak video SHA-256: `a326b19c0ee6e830d987113359992a63da4ef20e8c64bf9196d0f67ce6d981b8`. Bu sahne temsili olup gerçek ürün veya tesis fotoğrafı iddiası taşımaz.
+
+İki WebP poster `approved`, `runtime=true` olarak görsel manifestindedir.
+Kare dizisi onayı `public/frames/hero-zeytin/approval.json` baytlarının hash’ine
+bağlıdır; bu dosya 24 fps, 1920/960 px, 121’er kare, poster ve manifest hash’lerini
+kapsar. `check:assets` bütün dosyaları, ölçüleri, onay bağını ve toplam 12 MB
+sınırını denetler. MP4 runtime’a eklenmedi. Önceki video kapsam sınırı bu
+görevde açıkça onaylanan hero kare dizisini kapsamaz; diğer sahnelere onay vermez.

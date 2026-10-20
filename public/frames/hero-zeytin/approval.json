@@ -1,0 +1,992 @@
+{
+  "version": 1,
+  "id": "hero-zeytin-sequence",
+  "sourceSha256": "a326b19c0ee6e830d987113359992a63da4ef20e8c64bf9196d0f67ce6d981b8",
+  "manifestSha256": "32226572b3563cd50f14c54cb2defdc87f4f4f2f09b7cf84fde8324ac0383077",
+  "files": [
+    {
+      "file": "1920/frame-0001.webp",
+      "sha256": "bc988adc9a7b55517ff92b934cc04b1a1971b26ebccab629c9518207e7bf23ec"
+    },
+    {
+      "file": "1920/frame-0002.webp",
+      "sha256": "8a4f10134d96dcb08736ee770aeee3aa9635027f440fd79d374e23fa1c206746"
+    },
+    {
+      "file": "1920/frame-0003.webp",
+      "sha256": "740acd37f880cbc5aff53a283bd2579404c3a109c49119219ef567d3ddcc0677"
+    },
+    {
+      "file": "1920/frame-0004.webp",
+      "sha256": "15ad923cbba21490d222e4f010f501d24e42948525b0104ea3cfc3c949937bc2"
+    },
+    {
+      "file": "1920/frame-0005.webp",
+      "sha256": "515185463027e7e2904ed8a484343a29f6d37e53ee507a2864e6fdaa4b65a2f9"
+    },
+    {
+      "file": "1920/frame-0006.webp",
+      "sha256": "b3064a601d94b5308ebd6e523ac8df8c527125b99648354edd9d14e4d1138920"
+    },
+    {
+      "file": "1920/frame-0007.webp",
+      "sha256": "21b75bb3aaf75b6fe0c6da75a1b71fb401fa8e36a053c2e4a0f8a9488fcfdd87"
+    },
+    {
+      "file": "1920/frame-0008.webp",
+      "sha256": "76b45e569c70a9cae538e205fe6671e0fc970d0cfcf88a7ba626dfe4e50eb2ee"
+    },
+    {
+      "file": "1920/frame-0009.webp",
+      "sha256": "60c23a42ec380735bfd2c78a1b016841f9df38334485a6120cc110127d69c3ef"
+    },
+    {
+      "file": "1920/frame-0010.webp",
+      "sha256": "31133d29999e60789e29501c42675d6a70e8494f1bc12541c929222d55fa430f"
+    },
+    {
+      "file": "1920/frame-0011.webp",
+      "sha256": "dde57c212d47ccad3fde3f1b605525dd9c58d87952e88972d04f788841029eb1"
+    },
+    {
+      "file": "1920/frame-0012.webp",
+      "sha256": "a94cdeb2310f58c4d1f8f8bd0a5a4f291adc68ec87fa624256c4a0eac29a9e3c"
+    },
+    {
+      "file": "1920/frame-0013.webp",
+      "sha256": "b82a9b88963c3ccf3378692703e19a46bd85ab6bd2a2135df4e88e912db26188"
+    },
+    {
+      "file": "1920/frame-0014.webp",
+      "sha256": "9a2fd35ebd435c5240b90d0999127e631c62db3d90cb573b427a057bf05f53a2"
+    },
+    {
+      "file": "1920/frame-0015.webp",
+      "sha256": "c6a9730f6b6ad7fb5697e337b121370649c9212c104fb580303906d8a49b8d82"
+    },
+    {
+      "file": "1920/frame-0016.webp",
+      "sha256": "2f3630777a1d5818bac587ae33ef4f08e3693a258e988d7eeebb35ac0a93e8c9"
+    },
+    {
+      "file": "1920/frame-0017.webp",
+      "sha256": "3692029b7079908f2f9775997b4d2d779eba36dbb878ed6a04702abcb817e4c6"
+    },
+    {
+      "file": "1920/frame-0018.webp",
+      "sha256": "20b19e45cbb5960f15fc92a84823fcee84953d3f7132c403a27fb6ce9ced2bd1"
+    },
+    {
+      "file": "1920/frame-0019.webp",
+      "sha256": "c105a12b469b21f3c45fc42f956443b7e4099081c9d1dd9ccdc622c27bfd676f"
+    },
+    {
+      "file": "1920/frame-0020.webp",
+      "sha256": "8a2b859337424735faf0e385584c2c09fda6080c128581e25d2c88789d29acd8"
+    },
+    {
+      "file": "1920/frame-0021.webp",
+      "sha256": "20cd208ec5cf39ce57d369e8abc83dd0beded3b4e2fb598bea59c5e7679791f7"
+    },
+    {
+      "file": "1920/frame-0022.webp",
+      "sha256": "2b32ceec11f6778a7064de238a33f0a489b8ae0d5aa9293a27376745a7975fd0"
+    },
+    {
+      "file": "1920/frame-0023.webp",
+      "sha256": "f9d587b1720b169692dfd6a097f4192fe3702a64d23233f0df76692c5e9287ff"
+    },
+    {
+      "file": "1920/frame-0024.webp",
+      "sha256": "75c374a26eb8044895416501bf2c307e188840d65cad2a5cb5e81bf6a4d9074a"
+    },
+    {
+      "file": "1920/frame-0025.webp",
+      "sha256": "e19811306b9ac9173a0bc3d4bd18d6c9eefc75cec6ad2291438b0b3fd22dda9b"
+    },
+    {
+      "file": "1920/frame-0026.webp",
+      "sha256": "d08c13b9cce58c850d948869c01219608f073e72a128f351ef01303e6af0cf3a"
+    },
+    {
+      "file": "1920/frame-0027.webp",
+      "sha256": "cd006020928c5ba077d68211d9e2023a3f2de902f8c43d037e9dd507f4a11f41"
+    },
+    {
+      "file": "1920/frame-0028.webp",
+      "sha256": "8fb5d0a4ba12678269b01029b323cfb75cd35585cbf253f45b5e1effb44ca83a"
+    },
+    {
+      "file": "1920/frame-0029.webp",
+      "sha256": "bb8a68731942f30fdc262ecf3756f48f809b6ceebd6ba2cc78b591f39c45c161"
+    },
+    {
+      "file": "1920/frame-0030.webp",
+      "sha256": "482831b7da7e03504e9c672eba1178a20bf5da376c242af4bdf6ecaa56b60fc3"
+    },
+    {
+      "file": "1920/frame-0031.webp",
+      "sha256": "47f6b4015729bc8c80e8cc9c9495c08ecea84345493e2e811b0f2456fc2e9d02"
+    },
+    {
+      "file": "1920/frame-0032.webp",
+      "sha256": "73128b5ebf2f7a0c1ef7da49e996ec3e352091878f15e1a227aaf834a3e5707b"
+    },
+    {
+      "file": "1920/frame-0033.webp",
+      "sha256": "c13ecf4adbfb4fb557c71d179549869747c093eec106371676a4b0be017bd8ea"
+    },
+    {
+      "file": "1920/frame-0034.webp",
+      "sha256": "e51d1609b0810c4db7e19b895277178929e756b6e904e1c873217a82f92422c3"
+    },
+    {
+      "file": "1920/frame-0035.webp",
+      "sha256": "5b9e5449014cb96a0be6ffdeda518e35da2b3754df485f6ba034037c8984fef6"
+    },
+    {
+      "file": "1920/frame-0036.webp",
+      "sha256": "341128631bd665d3eefe3d66d62881e3337400f928a32a263ce59225a5eefd5c"
+    },
+    {
+      "file": "1920/frame-0037.webp",
+      "sha256": "1e1b995b7a66727bf074646220b916509a971c79832a3f3f1fb935ba7ee61b1f"
+    },
+    {
+      "file": "1920/frame-0038.webp",
+      "sha256": "2da77c7928da0bf3484dbba2d0c85c04a55cac006a62aa4032add7176438b5dc"
+    },
+    {
+      "file": "1920/frame-0039.webp",
+      "sha256": "3b0ceb8e52630fe848cca38420e10c01b4e5ef34fa15184ea14de2751256d787"
+    },
+    {
+      "file": "1920/frame-0040.webp",
+      "sha256": "fb831adf5d8131327ad42b68e3dacdc5a5ce06896886d43d29ea979c97e9f85a"
+    },
+    {
+      "file": "1920/frame-0041.webp",
+      "sha256": "3727a3ee34e09a364a8129358c15ede9e4fbe7663b4967dfc9bc81e992886b64"
+    },
+    {
+      "file": "1920/frame-0042.webp",
+      "sha256": "fe3fb2f89c43d850b0cfe6745320cef8a5a24552b94388331942666c331cc4fc"
+    },
+    {
+      "file": "1920/frame-0043.webp",
+      "sha256": "426016dada7b2f91e36d2462c0593b30b8c3102a9e2173ae29c7f7e9235ebe9c"
+    },
+    {
+      "file": "1920/frame-0044.webp",
+      "sha256": "b1029316d44634bc78d2db597ae19d533475f3c5634832230ec2d97765436f83"
+    },
+    {
+      "file": "1920/frame-0045.webp",
+      "sha256": "aab2be52ba075a6a4399c4a4a21995e69dc378a25bb513e6c3a6d1e902646a95"
+    },
+    {
+      "file": "1920/frame-0046.webp",
+      "sha256": "1043cad0cdc6a7d511853c1fb3359ed4bf2688d2088b02d425d22e843d7d9085"
+    },
+    {
+      "file": "1920/frame-0047.webp",
+      "sha256": "ef8c1a0cc6a21c084c7a2cc473f6789039a2cf39727d46a1c25813cdacb14770"
+    },
+    {
+      "file": "1920/frame-0048.webp",
+      "sha256": "8ed2303d9c9759dc243b94be96480b3888679a9e4bfa8ebf3355a28f9cd2c9cd"
+    },
+    {
+      "file": "1920/frame-0049.webp",
+      "sha256": "9d84d02045e8ef3c715d2cd85897a1bd6dc9a1c6437300c4e470fd26fc8e9df2"
+    },
+    {
+      "file": "1920/frame-0050.webp",
+      "sha256": "3729e885effa80b3aa513ae0e7424b36e9d0a051a4362c7e5992b8edf735b536"
+    },
+    {
+      "file": "1920/frame-0051.webp",
+      "sha256": "741de0a0ce4eaa7c08a8aa98166b9f2010c85731d5c5457b167393638eee5991"
+    },
+    {
+      "file": "1920/frame-0052.webp",
+      "sha256": "fa08b43703592b4f4820d42b87887bab819ad29e868f2488766fafc6d7a43992"
+    },
+    {
+      "file": "1920/frame-0053.webp",
+      "sha256": "24141fe00c40f57a40ed3cf4f35079954a39c7c496c53902b8a643c45f672f8a"
+    },
+    {
+      "file": "1920/frame-0054.webp",
+      "sha256": "e7367bb466c2dae2cfd268f30947295023fd5e58f7e7f860c42e4794d28e6828"
+    },
+    {
+      "file": "1920/frame-0055.webp",
+      "sha256": "f3ceab964f0786b41e90e71afafdce6ede72a56653e183b5fae4325a40ed0aef"
+    },
+    {
+      "file": "1920/frame-0056.webp",
+      "sha256": "3eb86611bb5930c48bec81a81e1842115cdea1ecea8162dfec06bc081c46762e"
+    },
+    {
+      "file": "1920/frame-0057.webp",
+      "sha256": "8e187ffea46ecf4f5c1a6dea637478d9bc8dec0c10c275ff53cc2865c7882a49"
+    },
+    {
+      "file": "1920/frame-0058.webp",
+      "sha256": "f8d3bd58b9107c1c5b6aef3232562a42f999e569afae9e2ec79688f41db6e6b8"
+    },
+    {
+      "file": "1920/frame-0059.webp",
+      "sha256": "2e3eee2a6df04ded8088a21ded6c360f03f3c3c41f501d0408fb36c90b5c3f76"
+    },
+    {
+      "file": "1920/frame-0060.webp",
+      "sha256": "3131f828ad002e1f375bfed57b071bd6a4a6e3b8b10039f12a743e86748b2ce4"
+    },
+    {
+      "file": "1920/frame-0061.webp",
+      "sha256": "0cd15942dae723cc459859480381aabfc0ec5390fb4c0d960770740b3cd18087"
+    },
+    {
+      "file": "1920/frame-0062.webp",
+      "sha256": "42e7fe9af37a192272bd5e1fb9f42f98e2d852717b35a0fc532115781c8b8693"
+    },
+    {
+      "file": "1920/frame-0063.webp",
+      "sha256": "9379a014ebb90f213497d6ddd1e15f0b619b386fe1659b34978592e645163590"
+    },
+    {
+      "file": "1920/frame-0064.webp",
+      "sha256": "282c07c81265247672553fe50eda4715636c5fb0b2d3e9a571a119936623f15d"
+    },
+    {
+      "file": "1920/frame-0065.webp",
+      "sha256": "b870a9a180821cf690a2aabfc543ccc38b00a0acff3d61c7032c6b9e22f9a563"
+    },
+    {
+      "file": "1920/frame-0066.webp",
+      "sha256": "2fed5559639a90d292fc58fb3a0bcfffba4381f71042bb329bcf31059ce456f9"
+    },
+    {
+      "file": "1920/frame-0067.webp",
+      "sha256": "d537f358e8feff66f7ebb1af2b8d07269c73073fc1c6badba319acc0731a5306"
+    },
+    {
+      "file": "1920/frame-0068.webp",
+      "sha256": "44028d7e0c91ae46c7774668b99cbebd5b7d7c858c4ac106a7f625ef5de76fac"
+    },
+    {
+      "file": "1920/frame-0069.webp",
+      "sha256": "e36781aaa67692f35031e19d56da811a138aa4db4ba8e69c1bde351fea65940b"
+    },
+    {
+      "file": "1920/frame-0070.webp",
+      "sha256": "069297776d8008a685d216ab738e906e6cf0bc3034c57e7309300f51682be281"
+    },
+    {
+      "file": "1920/frame-0071.webp",
+      "sha256": "4870901285d18dd8f02ee987d49741c3d7f48f84243728e67bd120e85b1728fd"
+    },
+    {
+      "file": "1920/frame-0072.webp",
+      "sha256": "193683ea4b5821796e04f61899ca4216774cfd07766b84c75997ad4b216959cd"
+    },
+    {
+      "file": "1920/frame-0073.webp",
+      "sha256": "84b58d8c22be25af2d09df01b5638ec96e4def3ef32f410b76385a362896768f"
+    },
+    {
+      "file": "1920/frame-0074.webp",
+      "sha256": "fd87d14af6511d246643ed70f69a98604c0290394be10fe6e13d0b3c9829fbbb"
+    },
+    {
+      "file": "1920/frame-0075.webp",
+      "sha256": "058f4930a91467ce2a8733c5db477feed7369d11a7a869542de6bceb181dd868"
+    },
+    {
+      "file": "1920/frame-0076.webp",
+      "sha256": "ef71c0b8a65c6ecb711d86d160bcbc24d9b3cbd0bc90268979d39045ed518730"
+    },
+    {
+      "file": "1920/frame-0077.webp",
+      "sha256": "588469b89beb9459ca2c77d608c4dfbbffd75340355838e6889eaa0373f1cfe1"
+    },
+    {
+      "file": "1920/frame-0078.webp",
+      "sha256": "be80ddf83217defe6da9ef041a5cf1ec5ef2b9d28dc1c343322cf70527398f46"
+    },
+    {
+      "file": "1920/frame-0079.webp",
+      "sha256": "6390358005c9dd21630dc7b8d4746fdeeabc111439f922f20582bf1ab72616a3"
+    },
+    {
+      "file": "1920/frame-0080.webp",
+      "sha256": "fabec84eb6264a2d0b32d911050e3c740f18d90e31a8912bf276b5301fae1d65"
+    },
+    {
+      "file": "1920/frame-0081.webp",
+      "sha256": "35188e8194e96263c68da1d852449cffbe1d06b78c40a0e9c6ea246a27c1af4d"
+    },
+    {
+      "file": "1920/frame-0082.webp",
+      "sha256": "481a638d1ab9a4db3459252b9436821a91c279861cb465cda66f5021771d19f8"
+    },
+    {
+      "file": "1920/frame-0083.webp",
+      "sha256": "33110c6b06fdd1e8364967108d0ef19f46a7579618589d078aefc2260afc5c1b"
+    },
+    {
+      "file": "1920/frame-0084.webp",
+      "sha256": "a627c9bc2a2911210c32e173305eced12668d547ef0f9f002145bbb7b28d28c5"
+    },
+    {
+      "file": "1920/frame-0085.webp",
+      "sha256": "85c63d1096c3c765f8cf92e3cdb1971a021468b254f04a45c240f7993fa0b7d4"
+    },
+    {
+      "file": "1920/frame-0086.webp",
+      "sha256": "c24617d8a507847fedbd99c8bc0db09c125fa07f2b2a3cbe5954f173787a2897"
+    },
+    {
+      "file": "1920/frame-0087.webp",
+      "sha256": "4cd5648dcaf854d1b32719b5e963ed20e9d60d1216d1b8c7b9767fe156e6da59"
+    },
+    {
+      "file": "1920/frame-0088.webp",
+      "sha256": "5cd42a9cabeebdc6a5a459cdefac65c9772ad69e5d53be02a6b3dd25aca8af75"
+    },
+    {
+      "file": "1920/frame-0089.webp",
+      "sha256": "3aabd12aba852c7381756e3c86f3caf5bf25c6e09ebefe7078088172c2005d74"
+    },
+    {
+      "file": "1920/frame-0090.webp",
+      "sha256": "b15cfad58adb0335306a7bee28347b9b0741b3cbca3a9bdbff55077d90fbd559"
+    },
+    {
+      "file": "1920/frame-0091.webp",
+      "sha256": "bb895f4e0e4dd34cd26f85a19962348d1ecf21557a7cfcdf5377f71b4e15b72f"
+    },
+    {
+      "file": "1920/frame-0092.webp",
+      "sha256": "b03ea692b709d1da5823a6a513e50e28427c8d05664a10fb81e7ada3d5efb364"
+    },
+    {
+      "file": "1920/frame-0093.webp",
+      "sha256": "0bd99b534c86c6a75e5f322aaef1c2e3ad399b8d5113803836847b6e3769be1b"
+    },
+    {
+      "file": "1920/frame-0094.webp",
+      "sha256": "e1c77526d909d1357e7681cd51b116f036459e7a7c6ae94619adc6623d66fea8"
+    },
+    {
+      "file": "1920/frame-0095.webp",
+      "sha256": "e64138c5d559c8a58d12ed96fd1d7b1a382bdd9b853d20362c4b216809b496cb"
+    },
+    {
+      "file": "1920/frame-0096.webp",
+      "sha256": "1eb545e77d8f3d8628d4f317f8f87580da8180d44f405a90b275a112584f9de7"
+    },
+    {
+      "file": "1920/frame-0097.webp",
+      "sha256": "dab28a0b8738aabfba25a99cee48ef87047a0bf020cdd0ad991723dcba2f3a95"
+    },
+    {
+      "file": "1920/frame-0098.webp",
+      "sha256": "eda2bebb5ed45be1f675d23613d7138e46aceea20f7cd9e17ee2ba1ee0e0ae85"
+    },
+    {
+      "file": "1920/frame-0099.webp",
+      "sha256": "15d848bc3eb864568acb34c494ab9db0d7e14221d979547f404c8e935fd3b82e"
+    },
+    {
+      "file": "1920/frame-0100.webp",
+      "sha256": "fe9836f8c3acc2d560597a6cddfe40a5816e35ad6c46287884e2110acfb746af"
+    },
+    {
+      "file": "1920/frame-0101.webp",
+      "sha256": "7417a75be36bb9fd856f543d6330c1c8e20361d7494b96931626365683750791"
+    },
+    {
+      "file": "1920/frame-0102.webp",
+      "sha256": "62ddf227c9647b6f7d03a00d3436a0c9f29bb9390953f967ff2e9edcc8d50a42"
+    },
+    {
+      "file": "1920/frame-0103.webp",
+      "sha256": "0e38698892ab02b421b5c5ac9a45f8dfe63f8faa8d8a5b6b468abc864646bbf6"
+    },
+    {
+      "file": "1920/frame-0104.webp",
+      "sha256": "681986b1a7c8d5b47776539c0c549b61562c79b0fc9a33247bd95d44c7d4eef8"
+    },
+    {
+      "file": "1920/frame-0105.webp",
+      "sha256": "aca284ceaa324adf63bb06feab4f0d16e3b712377c57307769d1aa6e63d011b2"
+    },
+    {
+      "file": "1920/frame-0106.webp",
+      "sha256": "3e34311f1083158b7994e4f7d7505a5190c9987a92e1ba67d8a9540eb1a8e163"
+    },
+    {
+      "file": "1920/frame-0107.webp",
+      "sha256": "547e37c42cd57a0e87294bb7f9b28ba47088cfa39e0db8f3ef48b8e2e15deb89"
+    },
+    {
+      "file": "1920/frame-0108.webp",
+      "sha256": "9b436bf4cfc261449c75544cd3c22723ae06ae03890a4316041039298cb64a07"
+    },
+    {
+      "file": "1920/frame-0109.webp",
+      "sha256": "4e783bcbb752489ab4993ade2cf835e09620cb8f9a1be461ba7007f15784b867"
+    },
+    {
+      "file": "1920/frame-0110.webp",
+      "sha256": "c0f5459da4022efb17afd0ef69ff0c79a78e594fc5434b2afac81834b76f641a"
+    },
+    {
+      "file": "1920/frame-0111.webp",
+      "sha256": "383023819b4f921a262db2a3bfbd7f8a70a7ba35b0046086b2c12a846650c5ff"
+    },
+    {
+      "file": "1920/frame-0112.webp",
+      "sha256": "782060a439998391cd6dfa669b6835a9209ae85736c01f6b390ff8a8f6292a55"
+    },
+    {
+      "file": "1920/frame-0113.webp",
+      "sha256": "631ee7b096f6dc031adb393ac54e6d0410bc1ae32e893e2a613e60c340c3c142"
+    },
+    {
+      "file": "1920/frame-0114.webp",
+      "sha256": "93b0da2451efaabb61da8a9005fd86415fabd370f72846c051075663e8d5b942"
+    },
+    {
+      "file": "1920/frame-0115.webp",
+      "sha256": "ec42446a24dcdb4b8f1aff43cb15ecade6876577e068e11601b1fdf2ceadb032"
+    },
+    {
+      "file": "1920/frame-0116.webp",
+      "sha256": "397e2c9491502e15e6965e230a9067bdcc0aa60eb61f1887f99bcb16939b85ae"
+    },
+    {
+      "file": "1920/frame-0117.webp",
+      "sha256": "34f6eb3a65de5539861e35dac6f5599acc8fb5b8f582275f1c51eee15e652abb"
+    },
+    {
+      "file": "1920/frame-0118.webp",
+      "sha256": "474eac40bdb13f4343446ffd16ae1c2088ab1afe1b3dce9e4636ae924fef43a1"
+    },
+    {
+      "file": "1920/frame-0119.webp",
+      "sha256": "23ddf1a48487e67f555e69ba4d2f1573a2056e3a93f1f81197153c6ab8374783"
+    },
+    {
+      "file": "1920/frame-0120.webp",
+      "sha256": "4072e947590bf8368b905dba3acb257d2580be2ed7bc356d821bed5f44fe5d9e"
+    },
+    {
+      "file": "1920/frame-0121.webp",
+      "sha256": "f900f6f4c90af3609ac48b0cf2564a2dbb98200cd9fa87d9af763956d9a78683"
+    },
+    {
+      "file": "960/frame-0001.webp",
+      "sha256": "330416b79a54631ba3b96b5c669dd627f7f67fd9d538fafbf9e14b3354574261"
+    },
+    {
+      "file": "960/frame-0002.webp",
+      "sha256": "67f17f70c331b2da811f4c379581577a5ef71d4a58b33de7db8f5e5d9ac319f0"
+    },
+    {
+      "file": "960/frame-0003.webp",
+      "sha256": "18714570a546f27eedce715eb8a46525fdfed758a01c463f6f582d8fca3e8c16"
+    },
+    {
+      "file": "960/frame-0004.webp",
+      "sha256": "62fd74c1d087e4bec499e30eb2216e9a72c6ca0730fcbadc06bf72d2c1b057ef"
+    },
+    {
+      "file": "960/frame-0005.webp",
+      "sha256": "12c60533a7acda3cbd816d1769b37619f5bef4b709ac338791b563a4778fc918"
+    },
+    {
+      "file": "960/frame-0006.webp",
+      "sha256": "b2adc618968f7c32d568fd754fdbfa49e75c575e925f451881fee152062c3145"
+    },
+    {
+      "file": "960/frame-0007.webp",
+      "sha256": "5094a62f312e3a64014780e1408b296f72523952ccf1abd64efec1e0a3910482"
+    },
+    {
+      "file": "960/frame-0008.webp",
+      "sha256": "284aedaca1efe766eb63e466302dec33798d458ab9bcfd50cadfcd12a7a4fab0"
+    },
+    {
+      "file": "960/frame-0009.webp",
+      "sha256": "0afeca1d37bcb37e2b15da5b2763f4993aeffd64affaa894d8a846d691384ed1"
+    },
+    {
+      "file": "960/frame-0010.webp",
+      "sha256": "58ef46cefe5357033716261fefa45437796f1d989ea58f61ec4f6ffd29e8f1e8"
+    },
+    {
+      "file": "960/frame-0011.webp",
+      "sha256": "d9c6ff174cb83e300b44c6cb62517f2c77fc37ed642f3cb769304a1c77724939"
+    },
+    {
+      "file": "960/frame-0012.webp",
+      "sha256": "1ec39ec31c5cfcef6f65ae2cb19d6bedc91ff7c700077d1f5d5de5956749f35f"
+    },
+    {
+      "file": "960/frame-0013.webp",
+      "sha256": "f83091ca693d7b217542a5f8805c54f5f36dbed1a55ad45217d87e5089c01c6e"
+    },
+    {
+      "file": "960/frame-0014.webp",
+      "sha256": "2ed397f0e96bb6063e9c7ca2a52756edb4dd497935dbb67dc18dfd2b54c859c4"
+    },
+    {
+      "file": "960/frame-0015.webp",
+      "sha256": "2f9e5797968675840399f1c0ac6c2f7965e6e1dbd1588349238ccaf8e2a5cca4"
+    },
+    {
+      "file": "960/frame-0016.webp",
+      "sha256": "510c0a67b9b06c36d3d849ea8e7c4231bbd6a65418e9308097fca0a58fe97808"
+    },
+    {
+      "file": "960/frame-0017.webp",
+      "sha256": "e6679a608e3817202bdfa7cacc71983176deb394aba901d3fcad3730dec06db6"
+    },
+    {
+      "file": "960/frame-0018.webp",
+      "sha256": "7bf0036825cd143c9def87a46c0b60b461b152e1aa3ee8cdbd9465b199528bc7"
+    },
+    {
+      "file": "960/frame-0019.webp",
+      "sha256": "f17a08b9a252d0a0f21e8db08d62bad5bd9c915b71e27db7df983797366e7840"
+    },
+    {
+      "file": "960/frame-0020.webp",
+      "sha256": "83354eda87cd34a93b9c3397ac686f81333e35617b89afe73ff7ce39968f366d"
+    },
+    {
+      "file": "960/frame-0021.webp",
+      "sha256": "b06307123944e95cfc4c420609dfbc960e380c13e6c6675a49b7a5e87d2c1a20"
+    },
+    {
+      "file": "960/frame-0022.webp",
+      "sha256": "5bf9a445e2d77235c81df1e66f972bfb7331775a46008770c98b170e4c0b28c5"
+    },
+    {
+      "file": "960/frame-0023.webp",
+      "sha256": "02279ad426b765cc07c2407cca101daa5898481cecc0ba1232268611476cc8ed"
+    },
+    {
+      "file": "960/frame-0024.webp",
+      "sha256": "28fc75d65d77804f3fbe3cdf99c80938f227625b4171c26925d1de726bae20e9"
+    },
+    {
+      "file": "960/frame-0025.webp",
+      "sha256": "19e5f9007e13b7e088efd9cc7263c1d824aa34a0c043e9b18bb1aa40fbd674c4"
+    },
+    {
+      "file": "960/frame-0026.webp",
+      "sha256": "b19544c9b224032b79ad6451ee924f2a63542dc00083e800a6945c2a652effc2"
+    },
+    {
+      "file": "960/frame-0027.webp",
+      "sha256": "aadfb4ce77d73fdf1655bc9880bbb897c60ddb079a25d68dc2451e29ff114fd7"
+    },
+    {
+      "file": "960/frame-0028.webp",
+      "sha256": "1f45b3bc0d851a4c1c5d1caa3524669fedcc57e5036c4ca99fcddde0f19b4619"
+    },
+    {
+      "file": "960/frame-0029.webp",
+      "sha256": "f30573da9640975320177422b3fdc68677765146282ebb343a8adbd6090b146d"
+    },
+    {
+      "file": "960/frame-0030.webp",
+      "sha256": "229f4f7f39acb05db777139693a774e10c1b69ca12abfa978b4c25cdf63a5f21"
+    },
+    {
+      "file": "960/frame-0031.webp",
+      "sha256": "6b5113e25b1aedd2a86a1edf74279cda2ac35b720f34c3e0f596c68e08366166"
+    },
+    {
+      "file": "960/frame-0032.webp",
+      "sha256": "712bd51fe187bd0b8ba9ecfe02cf558ebe01aaa0d6ef663d196685ba397f21c3"
+    },
+    {
+      "file": "960/frame-0033.webp",
+      "sha256": "d952b49ca40c9cb540fe989906fe8487acf7246530ee6fee0970394ce9b4aef0"
+    },
+    {
+      "file": "960/frame-0034.webp",
+      "sha256": "434130d1eb7f446b2e4158599e1467bf6a11e08e046326cb8eeb0f9ce80e0489"
+    },
+    {
+      "file": "960/frame-0035.webp",
+      "sha256": "c1d44421609364130eedc96e04817484119976b2044c0aa1164be4ad40759460"
+    },
+    {
+      "file": "960/frame-0036.webp",
+      "sha256": "003eae2e8a4a398d71048bb8043f415d3d5352506fc75fa5f5e7737af8d51e35"
+    },
+    {
+      "file": "960/frame-0037.webp",
+      "sha256": "de303c473ca5f02cecd3ea4bf0abbffa32a26d68b30b9c8f9f42450b9dc04b36"
+    },
+    {
+      "file": "960/frame-0038.webp",
+      "sha256": "abbb7bce8464630230569491aa938e50c06a78c3b680d32d6c5bddd4cc6acae3"
+    },
+    {
+      "file": "960/frame-0039.webp",
+      "sha256": "c58a1cbbcb441938b17746c9593d3466ae89e80ec9b08b666ba678cf3b6f0817"
+    },
+    {
+      "file": "960/frame-0040.webp",
+      "sha256": "336630265bbcad16f1ae30eef7aa048e078d549c9103f9149ede0a1ccf440024"
+    },
+    {
+      "file": "960/frame-0041.webp",
+      "sha256": "ceaf369bde4c029c45f905972c5dd9e369e9e0b925e8effe46599366c8b7e04f"
+    },
+    {
+      "file": "960/frame-0042.webp",
+      "sha256": "c4884d0ba72d1925386e539bc5627cad04a3dc7eb7b9100c0555f04effd1b28e"
+    },
+    {
+      "file": "960/frame-0043.webp",
+      "sha256": "b390799b1b482d3c36ce0de84a70d348e1c49db0986b7fd84c220fbeefb3d9a0"
+    },
+    {
+      "file": "960/frame-0044.webp",
+      "sha256": "bef4e0f40a17cc0a702049bac094e0d14be4de2630f7112375fee6162ab35b9c"
+    },
+    {
+      "file": "960/frame-0045.webp",
+      "sha256": "b7be0fa78718eeaf6996e6809f782556656578ca920b936a54759b58597d809a"
+    },
+    {
+      "file": "960/frame-0046.webp",
+      "sha256": "98ee51ec500fb514322125709a9e2d5fd0ad6285ef2edaad8f325b1a885dd634"
+    },
+    {
+      "file": "960/frame-0047.webp",
+      "sha256": "b88b7d931a3f7019700a2e5eb7959dcbd20963251b77a47108799a5b27f31126"
+    },
+    {
+      "file": "960/frame-0048.webp",
+      "sha256": "e8687416ff214dcf2b905d34d0b49714c13f500a097af3ab510e1a8eb1b6a37e"
+    },
+    {
+      "file": "960/frame-0049.webp",
+      "sha256": "6abfd5b59e67cb1abffcffb39ee5ccdf01ed81eccb7188e790b9ade14d1fd104"
+    },
+    {
+      "file": "960/frame-0050.webp",
+      "sha256": "05f95da2ac1c03fbdad52703f6ca92e4c974c34d543a10937e106c1e03ca4dd3"
+    },
+    {
+      "file": "960/frame-0051.webp",
+      "sha256": "98cd1232f6325359d28c170b255a2985917a8d605edbcddd06b6e8f2d1676eee"
+    },
+    {
+      "file": "960/frame-0052.webp",
+      "sha256": "46b9e3d4017ef723e01948b90ac7848decc8087ecc51f77202f1fb021aa9570f"
+    },
+    {
+      "file": "960/frame-0053.webp",
+      "sha256": "248799ec8af4956980dd7a20014f48ccb3ebbd67b61abaf8059987520cf41938"
+    },
+    {
+      "file": "960/frame-0054.webp",
+      "sha256": "250ab07ccb06a5dd9ac343a9d08ab5cdbb25d092d04e9d4c1b8e7c25145349f6"
+    },
+    {
+      "file": "960/frame-0055.webp",
+      "sha256": "6d18704b68161acafc56ae05601636d530a1516104a68bde2bd8e67d62a205bc"
+    },
+    {
+      "file": "960/frame-0056.webp",
+      "sha256": "9ed68c98eaa2bd58418157c76932591ab975cf081cb771976196ed3bfb924aba"
+    },
+    {
+      "file": "960/frame-0057.webp",
+      "sha256": "5cd4c0f50632c1948c7acd047474ec795082fae2def5693421eaf1aa87937aae"
+    },
+    {
+      "file": "960/frame-0058.webp",
+      "sha256": "eb472055eda0047cb2f3298898f586d2d8af2c463f2cb12d1662c56cd70fd2e7"
+    },
+    {
+      "file": "960/frame-0059.webp",
+      "sha256": "e71e7f89ea7b0c2f891057e1e6948e260464828a2cc74513899988676e320ab0"
+    },
+    {
+      "file": "960/frame-0060.webp",
+      "sha256": "c2d761026fe1e76a899862144d6759b224867afa159be75abbb29ddf3ded73c0"
+    },
+    {
+      "file": "960/frame-0061.webp",
+      "sha256": "c530f5d0f7a3101ec9e8949c2430605a7e82c7f7b939dd32aede448dc81d71f4"
+    },
+    {
+      "file": "960/frame-0062.webp",
+      "sha256": "5802bef1e9b4f13261886763e6886ae44322a407f35e267d53e9c2b4ece69564"
+    },
+    {
+      "file": "960/frame-0063.webp",
+      "sha256": "31a5c86ab1b32603ce7b83bbb8be4946232914f8ae178e22feec2fe168152cb1"
+    },
+    {
+      "file": "960/frame-0064.webp",
+      "sha256": "ad6c4ed0603b418c950c10236dae444097155173945205fb1b8807d42bb0d49b"
+    },
+    {
+      "file": "960/frame-0065.webp",
+      "sha256": "b74339c2aa697f674f32f0b00b8c38116d419d6146e6a7db71feb5f1eafd8364"
+    },
+    {
+      "file": "960/frame-0066.webp",
+      "sha256": "0e29dea93783651b0e4b5100cba2fa1b93265745de5d61299ff1143abbf3cb46"
+    },
+    {
+      "file": "960/frame-0067.webp",
+      "sha256": "70ef17be2c27031b8fbb46e81991b700514abc32513d0213897775cf64bf3fc6"
+    },
+    {
+      "file": "960/frame-0068.webp",
+      "sha256": "e561e1026bbe6f5e9351b2e68bd96c7a23fc1191561deab9d9f15ef0a1134ca2"
+    },
+    {
+      "file": "960/frame-0069.webp",
+      "sha256": "1d17cc9063248cea274706375a040cd73d2036dd9382e88d0c28b266f2c8d6e4"
+    },
+    {
+      "file": "960/frame-0070.webp",
+      "sha256": "ab8028e05eb138320679421af2fb61ed3c645dedc96ab13f9d60ef49ea407046"
+    },
+    {
+      "file": "960/frame-0071.webp",
+      "sha256": "850d5327a42381fd4da901ed79a634577479c3bd4c4ce8b1ca4a8aa508e57699"
+    },
+    {
+      "file": "960/frame-0072.webp",
+      "sha256": "85d4b2ec513e3779174b4b9f81e9dae90c295a6089218a9a337c01089feaf848"
+    },
+    {
+      "file": "960/frame-0073.webp",
+      "sha256": "8c5bf367be7b7391b75f87433461cad0147a52260d5f737d1ebf7965bde6d229"
+    },
+    {
+      "file": "960/frame-0074.webp",
+      "sha256": "3a5e06933bf60e89bc0bfbe5a0db5bc05440a00d2fd8e09e9c91fb579051e0af"
+    },
+    {
+      "file": "960/frame-0075.webp",
+      "sha256": "d1d6e15f62aadeaa6a2715542c4b4ef737573bf5a3a284a7bac98956b652c1c9"
+    },
+    {
+      "file": "960/frame-0076.webp",
+      "sha256": "8e3cd6097698fc8956019af1353428c04aaf53de94da966e4cc6603028bfbb9a"
+    },
+    {
+      "file": "960/frame-0077.webp",
+      "sha256": "17f55eff51c41eb5f8a25d8a1f06283ecb57b131d9eca9049ed31613595a733b"
+    },
+    {
+      "file": "960/frame-0078.webp",
+      "sha256": "42445fff7d055c222af67202bf76f7c5e85cef8260d8a5b510a0a89a0ffea501"
+    },
+    {
+      "file": "960/frame-0079.webp",
+      "sha256": "21421fab2d04af51b58e673b3914e8572c350cebb9c47ae3f6b81e4ce3117651"
+    },
+    {
+      "file": "960/frame-0080.webp",
+      "sha256": "6cafec59f6c4e67a1ebde9ae6c2e8fc73e9c1104b066deed581811122b113154"
+    },
+    {
+      "file": "960/frame-0081.webp",
+      "sha256": "0a31df348be530b068bd98760c95f2e03f803e491ed890761837af1bd3d26b91"
+    },
+    {
+      "file": "960/frame-0082.webp",
+      "sha256": "8a9ce0015c6b890b4e4f0118c828429ac186e363ec7513546252c9615e728733"
+    },
+    {
+      "file": "960/frame-0083.webp",
+      "sha256": "c75a5debc6d0bbf825d24f36a08c577676bf7acb5269a9fcff35e43019cc62da"
+    },
+    {
+      "file": "960/frame-0084.webp",
+      "sha256": "88102f0d73826c334f48385b652c56656bbee0a650042038116c2087777c197d"
+    },
+    {
+      "file": "960/frame-0085.webp",
+      "sha256": "74fb8aee94b9e1c4f0fa96191049542db805e119f60a29387aba37a323a2a721"
+    },
+    {
+      "file": "960/frame-0086.webp",
+      "sha256": "9307e5d7e4bb2d7b8afc7f101d1a5d9b9676095d10065407de6a2a41c9d073aa"
+    },
+    {
+      "file": "960/frame-0087.webp",
+      "sha256": "6e2a750932974d58e22fa6d3f491e6521d41096b7168f2da142daeab3b2a8fa2"
+    },
+    {
+      "file": "960/frame-0088.webp",
+      "sha256": "0b4dd08f055a5c1e537e9cdbe7a4ee36ed3f1b87ee796263b829f90f16dff35f"
+    },
+    {
+      "file": "960/frame-0089.webp",
+      "sha256": "74c042539ec0b6c7faabcd106fe849af578f5d73dfd0860ddafb45fe21e6ab62"
+    },
+    {
+      "file": "960/frame-0090.webp",
+      "sha256": "d26c9bb5564ce75ddf54d85bb480dead6de3091ff5b39516bcdd3657b73dc9ab"
+    },
+    {
+      "file": "960/frame-0091.webp",
+      "sha256": "9e1b4c58d7cacd42116f85204e53d4dedc88deede8c6fd736a5766a88a325eaa"
+    },
+    {
+      "file": "960/frame-0092.webp",
+      "sha256": "f7969778f5cd08432a3099f0ad681dc7a860d7579ac6aee249291c491badd37d"
+    },
+    {
+      "file": "960/frame-0093.webp",
+      "sha256": "2f3eec43526a2f446baeb17e6f5fffc52c45727ae6e8fbe55ad6b0f42888717b"
+    },
+    {
+      "file": "960/frame-0094.webp",
+      "sha256": "40b24724f3ab9f30760631dc4675177f08473cda4cfb6dda67257a64640fecf7"
+    },
+    {
+      "file": "960/frame-0095.webp",
+      "sha256": "ad532b39da5a2f6bcf7cef211a7589f3f7e2b1a2a7cda0dd4c3e28a382c8a0ff"
+    },
+    {
+      "file": "960/frame-0096.webp",
+      "sha256": "a10a675bc4d939d59ab3f722d5c12aa9c30e1d8d6195bd95e3e32da585016274"
+    },
+    {
+      "file": "960/frame-0097.webp",
+      "sha256": "8f9ddbc8fd2d83e8e49fe76a5bb8e259f3c1077be50b706b6cf2965d17197f1a"
+    },
+    {
+      "file": "960/frame-0098.webp",
+      "sha256": "8a3aa9cea0cdc0d15a38d4f3c5f7f0f7f15c0967f6b7f1d3a78736ad6427434c"
+    },
+    {
+      "file": "960/frame-0099.webp",
+      "sha256": "980e7876ea8fffc3be38213d2a38d5e49522a62bf69804361729e85ef0d2548b"
+    },
+    {
+      "file": "960/frame-0100.webp",
+      "sha256": "f1e809316f2f465a6178e35c5e6678318e9c4ca00f5efa1fc069df074110768c"
+    },
+    {
+      "file": "960/frame-0101.webp",
+      "sha256": "b3ba1bad6543dc2c7ce63fc430acd52931a04cbdbda590f2783a3e978c02cb01"
+    },
+    {
+      "file": "960/frame-0102.webp",
+      "sha256": "1811d2e38f3ea535823c57e1c39fa33372bd89c59956a7ac8238a0afb9887bbf"
+    },
+    {
+      "file": "960/frame-0103.webp",
+      "sha256": "4b2034b6fa291d0ae791f9be8f3e7947aed5dc820b240952973433c5a622c3c4"
+    },
+    {
+      "file": "960/frame-0104.webp",
+      "sha256": "315bea88135d14d2d72fa7b7b901017e052f1de95b9decd092c68070c0b0f610"
+    },
+    {
+      "file": "960/frame-0105.webp",
+      "sha256": "a5a85bc323e6bf3d7e97438dbe13e7d98e6ab377ecc9e18007015a6d754d8393"
+    },
+    {
+      "file": "960/frame-0106.webp",
+      "sha256": "4dded78ce3dca39aa8a187b3b1ca15674b39081817e1910c63d69206f72ce498"
+    },
+    {
+      "file": "960/frame-0107.webp",
+      "sha256": "4501c5672c6b3301015c4333ec2a608e05da6c35346029714923f92698cb09c9"
+    },
+    {
+      "file": "960/frame-0108.webp",
+      "sha256": "6be9ab358a352cb0d61655691a27cc5c9179e629e55e5465ac03f50ad8cf16da"
+    },
+    {
+      "file": "960/frame-0109.webp",
+      "sha256": "a7cdf8e8f3f7a0570a66221f03a2d9e4db15ff5f4892d74de098cd05ff4abacc"
+    },
+    {
+      "file": "960/frame-0110.webp",
+      "sha256": "8914f034d78033246be57e9a263d001cb00501d2ad35a519fada0d84d6c6b41b"
+    },
+    {
+      "file": "960/frame-0111.webp",
+      "sha256": "76e60a114dcf30db58b0000bfd04ca2ba82da23d2d5d9c262e56c1b3b3facf36"
+    },
+    {
+      "file": "960/frame-0112.webp",
+      "sha256": "d76f387c3f6b293552059040857af3dc92ab6988b06b5b009eb81a60948b059d"
+    },
+    {
+      "file": "960/frame-0113.webp",
+      "sha256": "de6d6daeea349426e6e00c78bf0a67fa1f8c181437c965a4a44b6bd867cf68b0"
+    },
+    {
+      "file": "960/frame-0114.webp",
+      "sha256": "ab9f7a0c1c97fcf9be3dd19020bf07063c024eefefdbe621652eb543e2ffe753"
+    },
+    {
+      "file": "960/frame-0115.webp",
+      "sha256": "33dbf0b7dc449154e3757e0ab45ebc8f675a9dab9c6bbac3748b5818b21721f6"
+    },
+    {
+      "file": "960/frame-0116.webp",
+      "sha256": "17148157a0d0a54087f216f348d6a885662b7d6415256a8267b86b613bdad7f1"
+    },
+    {
+      "file": "960/frame-0117.webp",
+      "sha256": "08ee13cf8cd64bfb90bcf901dea5b7e74de1a02f6c3d23ef4ef4693c3d586a6a"
+    },
+    {
+      "file": "960/frame-0118.webp",
+      "sha256": "4b2da02c1ca2ba55ead37399ce3b3e647dde9aff1e46f951e02e143800fb154e"
+    },
+    {
+      "file": "960/frame-0119.webp",
+      "sha256": "b22a3d8fccc0c347d63aeb9fdb1b414e87240ba9b336fb3af9466ec125b0086e"
+    },
+    {
+      "file": "960/frame-0120.webp",
+      "sha256": "f24bb36a933e48684e3be69b53516005bc4488efe75e409a62567f2552ca5b59"
+    },
+    {
+      "file": "960/frame-0121.webp",
+      "sha256": "6b74660ea07943389b491f5c9a5c0aebb2bc027b04706f409d91ce1494669fca"
+    },
+    {
+      "file": "poster.webp",
+      "sha256": "bc988adc9a7b55517ff92b934cc04b1a1971b26ebccab629c9518207e7bf23ec"
+    }
+  ],
+  "status": "approved",
+  "runtime": true,
+  "approval": {
+    "recordId": "user-2026-10-20-hero-zeytin-sequence",
+    "decidedAt": "2026-10-20"
+  },
+  "references": [
+    {
+      "file": "docs/tasks/086-hero-zeytinlik.md",
+      "sha256": "6367eef7fb8ef6d6cf66f0f41768bcb63cf93f110e80d0b4d8f0f7725a989cbe"
+    }
+  ]
+}

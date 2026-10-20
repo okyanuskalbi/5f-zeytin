@@ -10,6 +10,8 @@ const DECISIONS = "docs/gorsel-onay.md";
 const ID = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
 const HASH = /^[a-f0-9]{64}$/;
 const IMAGE = /\.(png|jpe?g|webp|avif|svg)$/i;
+const IMAGE_ROOT = "(?:images/(?:generated|hero)|brand)";
+const SEQUENCE = "public/frames/hero-zeytin";
 const ASSET_FIELDS = ["id", "file", "sha256", "width", "height", "aspectRatio", "model", "promptId", "representative", "references", "status", "approval"];
 
 function requireThat(condition, message) {
@@ -118,11 +120,11 @@ function verifyApproval(asset, decisions) {
 async function verifyAsset(root, asset, decisions) {
   exactFields(asset, Object.hasOwn(asset, "runtime") ? [...ASSET_FIELDS, "runtime"] : ASSET_FIELDS, "Görsel");
   requireThat(typeof asset.id === "string" && ID.test(asset.id), "Geçersiz görsel kimliği.");
-  requireThat(typeof asset.file === "string" && /^\/(images\/generated|brand)\/[a-zA-Z0-9/_.-]+$/.test(asset.file) && IMAGE.test(asset.file), `${asset.id}: görsel dosya yolu geçersiz.`);
+  requireThat(typeof asset.file === "string" && new RegExp(`^/${IMAGE_ROOT}/[a-zA-Z0-9/_.-]+$`).test(asset.file) && IMAGE.test(asset.file), `${asset.id}: görsel dosya yolu geçersiz.`);
   requireThat(typeof asset.model === "string" && /^[a-zA-Z0-9][a-zA-Z0-9._/-]*$/.test(asset.model), `${asset.id}: model gerekli.`);
   requireThat(typeof asset.promptId === "string" && /^(P(0[1-9]|1[0-2])|TASK-\d{3})$/.test(asset.promptId), `${asset.id}: prompt ID gerekli.`);
   requireThat(typeof asset.representative === "boolean", `${asset.id}: temsili etiketi gerekli.`);
-  requireThat(!asset.file.startsWith("/images/generated/") || asset.representative === true, `${asset.id}: üretilen görsel temsili olmalı.`);
+  requireThat(!/^\/images\/(generated|hero)\//.test(asset.file) || asset.representative === true, `${asset.id}: üretilen görsel temsili olmalı.`);
   requireThat(["candidate", "approved", "rejected"].includes(asset.status), `${asset.id}: geçersiz aday/onay durumu.`);
   requireThat(!Object.hasOwn(asset, "runtime") || typeof asset.runtime === "boolean", `${asset.id}: runtime boolean olmalı.`);
   requireThat(asset.runtime !== true || asset.status === "approved", `${asset.id}: runtime için kullanıcı onayı gerekli.`);
@@ -158,24 +160,73 @@ async function walk(root, directory, visit) {
   }
 }
 
-function verifyRuntimePath(sourceFile, value, assets) {
+async function verifyHeroSequence(root, decisions) {
+  try { await lstat(join(root, SEQUENCE)); }
+  catch (error) { if (error.code === "ENOENT") return false; throw error; }
+  const receiptPath = `${SEQUENCE}/approval.json`;
+  const receipt = await readJSON(root, receiptPath);
+  exactFields(receipt, ["version", "id", "sourceSha256", "manifestSha256", "files", "status", "runtime", "approval", "references"], "Kare dizisi onayı");
+  requireThat(receipt.version === 1 && receipt.id === "hero-zeytin-sequence" && HASH.test(receipt.sourceSha256)
+    && receipt.status === "approved" && receipt.runtime === true, "Kare dizisi için açık kullanıcı onayı gerekli.");
+  verifyApproval({ ...receipt, sha256: createHash("sha256").update(await readFile(await localFile(root, receiptPath))).digest("hex") }, decisions);
+  requireThat(Array.isArray(receipt.references) && receipt.references.length > 0, "Kare dizisi kaynak referansı gerekli.");
+  for (const reference of receipt.references) {
+    exactFields(reference, ["file", "sha256"], "Kare dizisi kaynağı");
+    requireThat(reference.file === "docs/tasks/086-hero-zeytinlik.md", "Kare dizisi onay kaynağı geçersiz.");
+    await verifyHash(root, reference.file, reference.sha256);
+  }
+  const manifest = JSON.parse(await verifyHash(root, `${SEQUENCE}/manifest.json`, receipt.manifestSha256));
+  exactFields(manifest, ["count", "fps", "widths", "aspect", "poster"], "Hero kare manifesti");
+  requireThat(manifest.count === 121 && manifest.fps === 24 && JSON.stringify(manifest.widths) === "[1920,960]"
+    && manifest.aspect === 16 / 9 && manifest.poster === "poster.webp", "Hero kare sayısı/fps/ölçüleri geçersiz.");
+  const expected = new Map([["poster.webp", 1920]]);
+  for (const width of manifest.widths) {
+    for (let index = 1; index <= manifest.count; index += 1) expected.set(`${width}/frame-${String(index).padStart(4, "0")}.webp`, width);
+  }
+  requireThat(Array.isArray(receipt.files) && receipt.files.length === expected.size, "Eksik kare onay kaydı.");
+  const registered = new Set([`${SEQUENCE}/manifest.json`, receiptPath]);
+  let total = 0;
+  for (const entry of receipt.files) {
+    exactFields(entry, ["file", "sha256"], "Kare");
+    const width = expected.get(entry.file);
+    requireThat(width, "Kayıtsız veya tekrarlanan kare.");
+    expected.delete(entry.file);
+    const file = `${SEQUENCE}/${entry.file}`;
+    const bytes = await verifyHash(root, file, entry.sha256);
+    const metadata = await sharp(bytes).metadata();
+    requireThat(metadata.format === "webp" && metadata.width === width && metadata.height === width * 9 / 16 && (!metadata.pages || metadata.pages === 1), "Kare ölçüsü/biçimi geçersiz.");
+    total += bytes.length;
+    registered.add(file);
+  }
+  await walk(root, SEQUENCE, async (file) => {
+    requireThat(registered.has(file), `Kayıtsız kare dosyası: ${file}`);
+    if (file.endsWith(".json")) total += (await readFile(await localFile(root, file))).length;
+  });
+  requireThat(total <= 12 * 1024 * 1024, "Hero kare dizisi 12 MB sınırını aşıyor.");
+  return true;
+}
+
+function verifyRuntimePath(sourceFile, value, assets, sequenceApproved) {
   // Decode percent escapes and normalize static import aliases/relative paths.
   let decoded;
   try { decoded = decodeURIComponent(value); }
   catch {
-    requireThat(!/(?:images\/generated|brand)\//.test(value), `Geçersiz görsel URL: ${sourceFile}`);
+    requireThat(!new RegExp(`${IMAGE_ROOT}/|frames/hero-zeytin`).test(value), `Geçersiz görsel URL: ${sourceFile}`);
     return;
   }
-  const marker = decoded.search(/(?:images\/generated|brand)\//);
-  if (marker < 0) return;
-  let path = `/${decoded.slice(marker).split(/[?#]/)[0]}`;
-  // URL normalization also catches dot segments inside literal file paths.
-  path = new URL(path, "https://assets.invalid").pathname;
-  requireThat(!path.endsWith("/manifest.json"), `${sourceFile}: manifest runtime'a import edilemez.`);
-  const asset = assets.find((entry) => entry.file === path);
-  requireThat(asset?.status === "approved", `${sourceFile}: onaysız, kayıtsız veya dinamik görsel kullanımı.`);
-  requireThat(asset.runtime !== false, `${sourceFile}: görselin runtime kullanımı kapalı.`);
-  requireThat(!/^P(08|09|10|11|12)$/.test(asset.promptId), `${sourceFile}: tasarım referansı runtime'da kullanılamaz.`);
+  for (const match of decoded.matchAll(/frames\/hero-zeytin[^\s"',)<>}]*/g)) {
+    requireThat(sequenceApproved && match[0] === "frames/hero-zeytin/manifest.json", `${sourceFile}: onaysız veya dinamik kare dizisi.`);
+  }
+  for (const match of decoded.matchAll(new RegExp(`${IMAGE_ROOT}/[^\\s"',)<>}]*`, "g"))) {
+    let path = `/${match[0].split(/[?#]/)[0]}`;
+    // URL normalization also catches dot segments inside literal file paths.
+    path = new URL(path, "https://assets.invalid").pathname;
+    requireThat(!path.endsWith("/manifest.json"), `${sourceFile}: manifest runtime'a import edilemez.`);
+    const asset = assets.find((entry) => entry.file === path);
+    requireThat(asset?.status === "approved", `${sourceFile}: onaysız, kayıtsız veya dinamik görsel kullanımı.`);
+    requireThat(asset.runtime !== false, `${sourceFile}: görselin runtime kullanımı kapalı.`);
+    requireThat(!/^P(08|09|10|11|12)$/.test(asset.promptId), `${sourceFile}: tasarım referansı runtime'da kullanılamaz.`);
+  }
 }
 
 function staticText(node) {
@@ -188,12 +239,12 @@ function staticText(node) {
   return undefined;
 }
 
-async function verifyRuntime(root, assets) {
+async function verifyRuntime(root, assets, sequenceApproved) {
   const visit = async (file) => {
     if (!/\.(?:[cm]?[jt]sx?|json|css|scss|mdx)$/.test(file) || file === "package-lock.json") return;
     const text = await readFile(await localFile(root, file), "utf8");
     if (/\.(css|scss|mdx)$/.test(file)) {
-      for (const match of text.matchAll(/(?:images\/generated|brand)\/[^\s"'`);<>}]*/g)) verifyRuntimePath(file, match[0], assets);
+      for (const match of text.matchAll(new RegExp(`(?:${IMAGE_ROOT}/|frames/hero-zeytin)[^\\s"'\x60);<>}]*`, "g"))) verifyRuntimePath(file, match[0], assets, sequenceApproved);
       return;
     }
     const extension = extname(file);
@@ -201,7 +252,7 @@ async function verifyRuntime(root, assets) {
     const source = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true, kind);
     const inspect = (node) => {
       const value = staticText(node);
-      if (value !== undefined) verifyRuntimePath(file, value, assets);
+      if (value !== undefined) verifyRuntimePath(file, value, assets, sequenceApproved);
       ts.forEachChild(node, inspect);
     };
     inspect(source);
@@ -231,8 +282,12 @@ export async function checkAssets({ root, id, mode = "all" }) {
   await walk(root, "public/images/generated", async (file) => {
     requireThat(file === MANIFEST || files.has(`/${relative("public", file).split(sep).join("/")}`), `Kayıtsız dosya: ${file}`);
   });
+  await walk(root, "public/images/hero", async (file) => {
+    requireThat(files.has(`/${relative("public", file).split(sep).join("/")}`), `Kayıtsız dosya: ${file}`);
+  });
+  const sequenceApproved = await verifyHeroSequence(root, decisions);
   // Selection never bypasses whole-registry integrity or runtime usage checks.
-  await verifyRuntime(root, manifest.assets);
+  await verifyRuntime(root, manifest.assets, sequenceApproved);
   const selected = manifest.assets.filter((asset) => (!id || asset.id === id) && (mode === "all" || asset.status === mode));
   requireThat(!id || selected.length > 0, `Görsel bulunamadı: ${id} (${mode}).`);
   return { checked: selected.length, mode };

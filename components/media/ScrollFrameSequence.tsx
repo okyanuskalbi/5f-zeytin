@@ -13,6 +13,9 @@ import {
 
 interface ScrollFrameSequenceProps {
   src: string;
+  /** Approved responsive poster, available in server HTML before the manifest loads. */
+  poster?: { src: string; srcSet?: string; width: number; height: number };
+  mediaClassName?: string;
   scrollLength?: number;
   fit?: "cover" | "contain";
   blurFill?: boolean;
@@ -23,11 +26,12 @@ interface ScrollFrameSequenceProps {
 
 function useMediaQuery(query: string, serverValue = false): boolean {
   const subscribe = useCallback((notify: () => void) => {
+    if (typeof window.matchMedia !== "function") return () => {};
     const media = window.matchMedia(query);
     media.addEventListener("change", notify);
     return () => media.removeEventListener("change", notify);
   }, [query]);
-  return useSyncExternalStore(subscribe, () => window.matchMedia(query).matches, () => serverValue);
+  return useSyncExternalStore(subscribe, () => typeof window.matchMedia === "function" ? window.matchMedia(query).matches : serverValue, () => serverValue);
 }
 
 interface ActiveSequenceProps {
@@ -143,7 +147,7 @@ function ActiveSequence({ target, manifest, src, fit, blurFill, progress }: Acti
 }
 
 export function ScrollFrameSequence({
-  src, scrollLength = 300, fit = "cover", blurFill = false, children, label = "Kare dizisi",
+  src, poster, mediaClassName = "", scrollLength = 300, fit = "cover", blurFill = false, children, label = "Kare dizisi",
 }: ScrollFrameSequenceProps): JSX.Element {
   const target = useRef<HTMLDivElement>(null);
   const progress = useMotionValue(0);
@@ -154,7 +158,14 @@ export function ScrollFrameSequence({
   const [posterLoaded, setPosterLoaded] = useState("");
   const [posterFailed, setPosterFailed] = useState("");
   const manifest = result?.src === src ? result.manifest : undefined;
-  const failed = (result?.src === src && result.error) || posterFailed === src;
+  const posterURL = poster?.src ?? (manifest ? sequenceAssetURL(src, manifest.poster) : undefined);
+  const posterKey = `${src}:${posterURL ?? ""}`;
+  const failed = (result?.src === src && result.error) || posterFailed === posterKey;
+  // An eager server-rendered poster may finish before React attaches onLoad.
+  const observePoster = useCallback((image: HTMLImageElement | null) => {
+    if (image?.complete && image.naturalWidth > 0) setPosterLoaded(posterKey);
+    else if (image?.complete && image.currentSrc) setPosterFailed(posterKey);
+  }, [posterKey]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -173,21 +184,22 @@ export function ScrollFrameSequence({
 
   return (
     <div ref={target} data-frame-sequence data-status={failed ? "error" : manifest ? "ready" : "loading"}
-      className="relative bg-background" style={{ height: `${height}vh` }}>
-      <div className="sticky top-0 h-screen overflow-hidden">
-        {manifest && (
-          <div role={label ? "img" : undefined} aria-label={label || undefined} aria-hidden={!label || undefined} className="absolute inset-0">
+      className="relative bg-background" style={{ height: reduced || failed ? (poster ? "var(--frame-height, 100vh)" : "100vh") : `${height}vh` }}>
+      <div className="sticky top-[var(--frame-top,0px)] h-[var(--frame-height,100vh)] overflow-hidden">
+        {posterURL && (
+          <div role={label ? "img" : undefined} aria-label={label || undefined} aria-hidden={!label || undefined} className={`absolute inset-0 ${mediaClassName}`}>
             {fit === "contain" && blurFill && (
               <div aria-hidden="true" className="absolute -inset-12 bg-cover bg-center blur-2xl"
-                style={{ backgroundImage: `url("${sequenceAssetURL(src, manifest.poster)}")` }} />
+                style={{ backgroundImage: `url("${posterURL}")` }} />
             )}
             {/* A plain image preserves the manifest URL and the exact poster-only request budget. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img key={`poster:${src}`} src={sequenceAssetURL(src, manifest.poster)} alt="" aria-hidden="true"
-              width={manifest.widths[0]} height={Math.round(manifest.widths[0] / manifest.aspect)}
-              onLoad={() => setPosterLoaded(src)} onError={() => setPosterFailed(src)}
+            <img ref={observePoster} key={`poster:${posterKey}`} src={posterURL} srcSet={poster?.srcSet} sizes={poster?.srcSet ? "100vw" : undefined} alt="" aria-hidden="true"
+              width={poster?.width ?? manifest!.widths[0]} height={poster?.height ?? Math.round(manifest!.widths[0] / manifest!.aspect)}
+              fetchPriority={poster ? "high" : undefined}
+              onLoad={() => setPosterLoaded(posterKey)} onError={() => setPosterFailed(posterKey)}
               className={`absolute inset-0 h-full w-full ${fit === "cover" ? "object-cover" : "object-contain"}`} />
-            {!reduced && !failed && posterLoaded === src && (
+            {manifest && !reduced && !failed && posterLoaded === posterKey && (
               <ActiveSequence key={`frames:${src}`} target={target} manifest={manifest} src={src} fit={fit} blurFill={blurFill} progress={progress} />
             )}
           </div>

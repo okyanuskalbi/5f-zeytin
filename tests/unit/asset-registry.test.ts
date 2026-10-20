@@ -318,7 +318,87 @@ describe("Task 024-a source-bound brand approvals", () => {
   });
 });
 
+describe("Task 086 approved hero frame integrity", () => {
+  async function saveSequence(): Promise<void> {
+    const directory = "public/frames/hero-zeytin";
+    const manifest = JSON.stringify({ count: 121, fps: 24, widths: [1920, 960], aspect: 16 / 9, poster: "poster.webp" });
+    const files: { file: string; sha256: string }[] = [];
+    for (const width of [1920, 960]) {
+      const bytes = await sharp({ create: { width, height: width * 9 / 16, channels: 3, background: "#243A29" } }).webp().toBuffer();
+      for (let index = 1; index <= 121; index++) {
+        const file = `${width}/frame-${String(index).padStart(4, "0")}.webp`;
+        await put(`${directory}/${file}`, bytes);
+        files.push({ file, sha256: digest(bytes) });
+      }
+      if (width === 1920) {
+        await put(`${directory}/poster.webp`, bytes);
+        files.push({ file: "poster.webp", sha256: digest(bytes) });
+      }
+    }
+    const task = "docs/tasks/086-hero-zeytinlik.md";
+    const taskCopy = "Synthetic user approval fixture";
+    await put(task, taskCopy);
+    const decidedAt = "2026-10-19T10:00:00.000Z";
+    const recordId = "sequence-approval";
+    const receipt = { version: 1, id: "hero-zeytin-sequence", sourceSha256: digest("approved source video"),
+      manifestSha256: digest(manifest), files, status: "approved", runtime: true,
+      approval: { recordId, decidedAt }, references: [{ file: task, sha256: digest(taskCopy) }] };
+    const json = JSON.stringify(receipt);
+    decisions.push({ recordId, assetId: receipt.id, sha256: digest(json), decision: "approved", decidedAt,
+      evidenceRef: "user-message-sequence-approval" });
+    await save();
+    await put(`${directory}/manifest.json`, manifest);
+    await put(`${directory}/approval.json`, json);
+    await put("components/Hero.tsx", 'export const frames = "/frames/hero-zeytin/manifest.json";');
+  }
+
+  it("validates every approved frame and rejects changed bytes, missing frames and unregistered extras", async () => {
+    await saveSequence();
+    await expect(checkAssets({ root })).resolves.toEqual({ checked: 1, mode: "all" });
+    const file = "public/frames/hero-zeytin/1920/frame-0001.webp";
+    const original = await readFile(join(root, file));
+    await put(file, image);
+    await expect(checkAssets({ root })).rejects.toThrow(/hash/i);
+    await put(file, original);
+    await put("public/frames/hero-zeytin/extra.webp", image);
+    await expect(checkAssets({ root })).rejects.toThrow(/kayıtsız/i);
+    await rm(join(root, "public/frames/hero-zeytin/extra.webp"));
+    await rm(join(root, file));
+    await expect(checkAssets({ root })).rejects.toThrow(/eksik dosya/i);
+  });
+
+  it("binds the entire receipt to user approval so file hashes cannot be rewritten", async () => {
+    await saveSequence();
+    const file = "public/frames/hero-zeytin/approval.json";
+    const receipt = JSON.parse(await readFile(join(root, file), "utf8"));
+    receipt.files[0].sha256 = "0".repeat(64);
+    await put(file, JSON.stringify(receipt));
+    await expect(checkAssets({ root })).rejects.toThrow(/onay kararı/i);
+  });
+});
+
 describe("unapproved runtime usage protection", () => {
+  it("requires independent approval for hero images, including every responsive srcSet entry", async () => {
+    await rm(join(root, `public${asset.file}`));
+    asset.file = "/images/hero/approved.webp";
+    await put(`public${asset.file}`, image);
+    approve();
+    await save();
+    await put("components/Hero.tsx", `export const poster = "${asset.file} 2400w, /images/hero/unapproved.webp 1200w";`);
+    await expect(checkAssets({ root })).rejects.toThrow(/onaysız/i);
+    await put("components/Hero.tsx", `export const poster = "${asset.file} 1200w, ${asset.file} 2400w";`);
+    await expect(checkAssets({ root })).resolves.toEqual({ checked: 1, mode: "all" });
+    await put("public/images/hero/extra.webp", image);
+    await expect(checkAssets({ root })).rejects.toThrow(/kayıtsız/i);
+  });
+
+  it("rejects a hero sequence without a hash-bound approval receipt", async () => {
+    await put("components/Hero.tsx", 'export const frames = "/frames/hero-zeytin/manifest.json";');
+    await expect(checkAssets({ root })).rejects.toThrow(/onaysız/i);
+    await put("public/frames/hero-zeytin/manifest.json", "{}");
+    await expect(checkAssets({ root })).rejects.toThrow(/eksik dosya/i);
+  });
+
   it.each([
     ['app/page.tsx', 'import image from "@/public/images/generated/p01/candidate.png";'],
     ['components/Hero.tsx', '<img src="/images/generated/p01/candidate.png" />'],

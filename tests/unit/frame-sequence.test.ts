@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createElement } from "react";
+import { renderToString } from "react-dom/server";
 import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import type { MotionValue } from "motion/react";
 
@@ -131,6 +132,31 @@ describe("sequence lifecycle and fallback content", () => {
     expect(view.container.querySelector("canvas")).toBeNull();
     expect(MockImage.requests).toHaveLength(0);
     expect((view.container.firstElementChild as HTMLElement).style.height).toBe("100vh");
+  });
+
+  it("renders an approved responsive poster in server HTML before JavaScript or manifest fetch", () => {
+    const html = renderToString(createElement(ScrollFrameSequence, {
+      src: "/fixture/manifest.json",
+      poster: { src: "/approved.webp", srcSet: "/small.webp 1200w, /approved.webp 2400w", width: 2400, height: 1350 },
+    }, createElement("a", { href: "#end" }, "Keşfet")));
+    expect(html).toContain('src="/approved.webp"');
+    expect(html).toContain('srcSet="/small.webp 1200w, /approved.webp 2400w"');
+    expect(html).toContain('fetchPriority="high"');
+    expect(html).toContain("Keşfet");
+    expect(html).not.toContain("<canvas");
+    expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it("keeps the approved image and CTA when the manifest is unavailable", async () => {
+    vi.mocked(fetch).mockResolvedValueOnce({ ok: false } as Response);
+    const view = render(createElement(ScrollFrameSequence, {
+      src: "/failed.json", poster: { src: "/approved.webp", width: 2400, height: 1350 },
+    }, createElement("a", { href: "#end" }, "Keşfet")));
+    await screen.findByRole("status");
+    expect(view.container.querySelector("img")?.getAttribute("src")).toBe("/approved.webp");
+    expect(view.container.querySelector("canvas")).toBeNull();
+    expect(screen.getByRole("link", { name: "Keşfet" })).toBeTruthy();
+    expect(MockImage.requests).toHaveLength(0);
   });
 
   it("waits for proximity before extending the initial buffer and cancels on unmount", async () => {
