@@ -26,7 +26,12 @@ for (const document of documents) {
     const draft = main.getByRole("region", { name: "Taslak — onay bekleniyor" });
     await expect(draft).toBeVisible();
     await expect(draft).toContainText("Onaylı metin henüz eklenmedi.");
-    await expect(draft).toContainText("şirket unvanı, adresi ve iletişim bilgileri");
+    await expect(draft).toContainText("İletişim bilgileri ve yasal metin onayı bekleniyor.");
+    const seller = main.getByRole("region", { name: "Satıcı bilgileri", exact: true });
+    await expect(seller).toContainText("AFİNA ZEYTİNCİLİK TARIM ÜRÜNLERİ SANAYİ VE TİCARET LİMİTED ŞİRKETİ");
+    await expect(seller).toContainText("0091520061");
+    await expect(seller).toContainText("No: 35, Ellek Beldesi, Düziçi / Osmaniye");
+    await expect(main.locator('a[href^="tel:"], a[href^="mailto:"]')).toHaveCount(0);
     await expect(main.getByRole("heading", { level: 2, name: document.scope })).toBeVisible();
     await expect(main.locator('form, input, button[type="submit"]')).toHaveCount(0);
     const navigation = main.getByRole("navigation", { name: "Hukuk sayfaları" });
@@ -76,7 +81,7 @@ test("skip link, document navigation and return work by keyboard with reduced mo
       await expect(returnLink).toBeFocused();
       await page.keyboard.press("Enter");
       await expect(page).toHaveURL(/\/$/);
-      await expect(page.getByRole("main").getByRole("heading", { level: 1, name: "Afina Zeytin", exact: true })).toBeVisible();
+      await expect(page.getByRole("main").getByRole("heading", { level: 1, name: "Kökü toprakta. Yeri sofrada.", exact: true })).toBeVisible();
       await expectNoOverflow(page);
     }
   }

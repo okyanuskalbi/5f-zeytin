@@ -37,6 +37,10 @@ test("ok and fail query strings never confirm a payment", async ({ page }) => {
     expect(response?.status()).toBe(200);
     await expect(page.getByRole("status")).toHaveText(resultWarning);
     await expect(page.getByText("Bu dönüş sipariş durumunu değiştirmez.")).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
+    const headingLines = await page.getByRole("heading", { level: 1 }).evaluate(element =>
+      element.getBoundingClientRect().height / parseFloat(getComputedStyle(element).lineHeight));
+    expect(headingLines).toBeLessThanOrEqual(2.05);
     await expect(page.locator("iframe")).toHaveCount(0);
     await expect(page.getByRole("link", { name: "Önizlemeye dön" })).toHaveAttribute("href", "/odeme-onizleme");
   }

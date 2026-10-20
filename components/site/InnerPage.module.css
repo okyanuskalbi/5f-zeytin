@@ -42,6 +42,7 @@
 .summary { display: grid; gap: 24px; }
 .summary h2 { font-size: var(--step-lead); }
 .empty { padding-block: 32px; }
+.empty .header { display: block; }
 .empty p { max-width: 54ch; }
 .empty p + p { margin-top: 16px; }
 .empty a { margin-top: 24px; }

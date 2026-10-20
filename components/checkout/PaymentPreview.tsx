@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CreditCard, LockKeyhole, ShieldCheck } from "lucide-react";
+import styles from "@/components/site/InnerPage.module.css";
 import { Button } from "@/components/ui/button";
 
 type Summary = Readonly<{ productName: string; amountKurus: number; quantity: number }>;
@@ -94,38 +94,39 @@ export function PaymentPreview({ keysAvailable, summary }: { keysAvailable: bool
   }
 
   const money = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY" }).format(summary.amountKurus / 100);
-  return <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
-    <h1>Ödeme ekranı önizlemesi</h1>
+  return <main className={styles.page}>
+    <header className={styles.header}><h1>Ödeme önizlemesi</h1>
     <p className="mt-4 max-w-2xl text-muted-foreground">Sabit örnek sipariş ile PayTR test ekranını inceleyin. Ürün ve tutar temsilidir; gerçek sipariş oluşturulmaz.</p>
-    <div className="mt-10 grid items-start gap-6 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
-      <aside aria-label="Örnek sipariş özeti" className="min-w-0 space-y-6">
-        <div aria-hidden="true" className="rounded-none bg-primary p-6 text-primary-foreground sm:p-8">
-          <div className="flex items-center justify-between gap-4"><span className="text-xs tracking-widest text-primary-foreground">TEMSİLİ · TEST</span><CreditCard className="size-8 text-primary-foreground" /></div>
-          <p className="mt-10 font-serif text-2xl">Afina Zeytin</p>
-          <p className="mt-2 text-sm">Ödeme önizlemesi</p>
+    </header>
+    <div className={`${styles.layout} ${styles.paymentLayout}`}>
+      <aside aria-label="Örnek sipariş özeti" className={styles.previewAside}>
+        <div aria-hidden="true" className={styles.previewCard}>
+          <span>Temsili kart · Test</span>
+          <p>Afina Zeytin</p>
+          <span>Ödeme önizlemesi</span>
         </div>
         {/* Adapted from 21st.dev astralyxdev/checkout-summary (demo 36084):
             integer minor units, semantic dl rows and a separated total. */}
-        <section className="rounded-none bg-card p-6" aria-labelledby="preview-summary-title">
-          <h2 id="preview-summary-title" className="text-xl">Örnek sipariş</h2>
-          <dl data-slot="checkout-summary" className="mt-5 flex flex-col gap-3 text-sm">
+        <section className={styles.paper} aria-labelledby="preview-summary-title">
+          <h2 id="preview-summary-title" className={`${styles.ribbon} text-xl`}>Örnek sipariş</h2>
+          <dl data-slot="checkout-summary" className="mt-5 flex flex-col gap-3 text-base">
             <div className="flex items-baseline gap-3"><dt className="min-w-0 flex-1 text-muted-foreground">{summary.productName}</dt><dd className="shrink-0">{summary.quantity} adet</dd></div>
             <div className="flex items-baseline gap-3 pt-3"><dt className="min-w-0 flex-1 font-medium">Test tutarı</dt><dd className="shrink-0 text-base font-medium tabular-nums">{money}</dd></div>
           </dl>
         </section>
-        <div className="flex items-start gap-3 text-sm text-muted-foreground"><ShieldCheck aria-hidden="true" className="mt-1 size-5 shrink-0" /><p>Kart ve 3D Secure alanları PayTR çerçevesinde açılır. Kart bilgilerinizi bu siteye girmeyin.</p></div>
+        <div className="text-base text-muted-foreground"><p>Kart ve 3D Secure alanları PayTR çerçevesinde açılır. Kart bilgilerinizi bu siteye girmeyin.</p></div>
       </aside>
-      <section aria-labelledby="preview-payment-title" className="min-w-0 rounded-none bg-card p-5 sm:p-8">
-        <div className="mb-6 flex items-center gap-3"><LockKeyhole aria-hidden="true" className="size-5 shrink-0" /><h2 id="preview-payment-title" className="text-xl">PayTR test ekranı</h2></div>
-        {!keysAvailable ? <p role="alert" className="rounded-none bg-background p-4 text-sm">Test anahtarı eksik — .env.local&apos;e ekleyin</p> : <>
-          {state.phase === "requesting" && <p role="status" className="mb-4 text-sm">Test oturumu hazırlanıyor…</p>}
-          {state.phase === "error" && <p role="alert" className="mb-4 text-sm text-destructive">{state.message}</p>}
+      <section aria-labelledby="preview-payment-title" className={`${styles.paper} ${styles.summary}`}>
+        <h2 id="preview-payment-title" className={styles.ribbon}>PayTR test ekranı</h2>
+        {!keysAvailable ? <p role="alert" className={styles.notice}>Test anahtarı eksik — .env.local&apos;e ekleyin</p> : <>
+          {state.phase === "requesting" && <p role="status" className="mb-4 text-base">Test oturumu hazırlanıyor…</p>}
+          {state.phase === "error" && <p role="alert" className="mb-4 text-base text-destructive">{state.message}</p>}
           {state.phase === "frame" && <PaytrFrame session={state.session} onFailure={frameFailure} />}
           <Button className="mt-4 w-full" disabled={state.phase === "requesting" || state.phase === "frame"} onClick={() => void start()}>
             {state.phase === "error" ? "Yeniden dene" : state.phase === "requesting" ? "Hazırlanıyor…" : "Test ekranını aç"}
           </Button>
         </>}
-        <p className="mt-6 text-sm text-muted-foreground">Önizleme yönlendirme sonucu, ödeme teyidi değildir.</p>
+        <p className="mt-6 text-base text-muted-foreground">Önizleme yönlendirme sonucu, ödeme teyidi değildir.</p>
       </section>
     </div>
   </main>;

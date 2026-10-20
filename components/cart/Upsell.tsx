@@ -3,6 +3,7 @@
 import { useId, type JSX } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import styles from "@/components/site/InnerPage.module.css";
 import type { CartItem } from "@/lib/cart/types";
 import type { Product } from "@/types/catalog";
 
@@ -42,17 +43,17 @@ export function Upsell({ products, items, configuration, onAdd }: UpsellProps): 
     && !inCart.has(id) && Number.isSafeInteger(stock) && stock > 0);
   if (suggestions.length === 0) return null;
 
-  return <section aria-labelledby={`${id}-heading`} className="space-y-4 rounded-none bg-card p-5 sm:p-6">
+  return <section aria-labelledby={`${id}-heading`} className="space-y-6">
     <div className="space-y-2">
       <h2 id={`${id}-heading`} className="text-2xl">Sofranızı tamamlayın</h2>
-      <p className="text-sm text-muted-foreground">Sepetinizdeki ürünlere eşlik edebilecek seçenekler.</p>
+      <p className="text-base text-muted-foreground">Sepetinizdeki ürünlere eşlik edebilecek seçenekler.</p>
     </div>
     <ul className="space-y-3">
-      {suggestions.map((product) => <li key={product.id} className="flex min-w-0 flex-col gap-4 rounded-none bg-background p-4 sm:flex-row sm:items-center sm:justify-between">
+      {suggestions.map((product) => <li key={product.id} className={`${styles.line} flex min-w-0 flex-col gap-4 sm:flex-row sm:items-center sm:justify-between`}>
         <div className="min-w-0 space-y-1">
           <h3 className="text-lg break-words">{product.name}</h3>
-          <p className="text-sm text-foreground">{product.weight}</p>
-          <p className="text-sm tabular-nums">{money.format(product.priceKurus / 100)} ₺ / adet (tahmini)</p>
+          <p className="text-base text-foreground">{product.weight}</p>
+          <p className="text-base tabular-nums">{money.format(product.priceKurus / 100)} ₺ / adet (tahmini)</p>
         </div>
         <Button variant="outline" className="w-full shrink-0 sm:w-auto" aria-label={`${product.name} sepete ekle`} onClick={() => onAdd(product.id)}>
           <Plus aria-hidden="true" />Sepete ekle
@@ -79,7 +80,7 @@ export function QuantityDiscount({ products, items, configuration }: QuantityDis
   const applicable = products.filter(({ id }) => productIds.includes(id));
   if (applicable.length === 0 || !items.some(({ productId }) => applicable.some(({ id }) => id === productId))) return null;
 
-  return <section aria-labelledby={`${id}-heading`} className="space-y-3 pt-5 text-sm">
+  return <section aria-labelledby={`${id}-heading`} className="space-y-3 pt-5 text-base">
     <h3 id={`${id}-heading`} className="text-lg">Miktar indirimi koşulları</h3>
     <p className="break-words text-muted-foreground">Bu ürünlerin toplam adedi için: {applicable.map(({ name }) => name).join(", ")}.</p>
     <ul className="space-y-2">

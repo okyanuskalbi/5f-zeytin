@@ -2,11 +2,12 @@
 
 import { useEffect, useId, useRef, useState, useSyncExternalStore, type JSX, type ReactElement, type RefObject } from "react";
 import Link from "next/link";
-import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
+import { Minus, Plus, Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger,
 } from "@/components/ui/dialog";
+import styles from "@/components/site/InnerPage.module.css";
 import type { CartStore } from "@/lib/cart/types";
 import type { Product } from "@/types/catalog";
 
@@ -66,7 +67,7 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
     }}>
       {trigger && <DialogTrigger ref={triggerRef} asChild>{trigger}</DialogTrigger>}
       <DialogContent showCloseButton={false} aria-modal="true"
-        className="top-0 right-0 left-auto flex h-dvh max-h-dvh w-[calc(100%-1rem)] max-w-md translate-x-0 translate-y-0 flex-col gap-0 overflow-hidden rounded-none border-y-0 border-r-0 p-0 sm:p-0"
+        className={`${styles.drawer} top-0 right-0 left-auto flex h-dvh max-h-dvh w-[calc(100%-1rem)] max-w-md translate-x-0 translate-y-0 flex-col gap-0 overflow-hidden rounded-none p-0 sm:p-0`}
         onOpenAutoFocus={(event) => {
           event.preventDefault();
           // Also cover programmatic opens, whose opener is outside DialogTrigger.
@@ -82,30 +83,30 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
             opener.focus();
           }
         }}>
-        <DialogHeader className="shrink-0 flex-row items-start justify-between gap-3 p-5 pr-5">
+        <DialogHeader className={`${styles.drawerHeader} shrink-0 flex-row items-start justify-between gap-4 pr-6`}>
           <div className="min-w-0 space-y-2">
-            <DialogTitle className="flex items-center gap-2"><ShoppingBag aria-hidden="true" className="size-5 shrink-0 text-foreground" />Sepetim</DialogTitle>
-            <DialogDescription className="text-sm">Ürünlerinizi gözden geçirin, adetleri düzenleyin.</DialogDescription>
+            <DialogTitle className="flex items-center gap-2">Sepetim</DialogTitle>
+            <DialogDescription className="text-base">Ürünlerinizi gözden geçirin, adetleri düzenleyin.</DialogDescription>
           </div>
           <DialogClose asChild><Button ref={closeRef} variant="ghost" size="icon" aria-label="Sepeti kapat"><X aria-hidden="true" /></Button></DialogClose>
         </DialogHeader>
 
-        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto overscroll-contain p-5">
+        <div className={`${styles.drawerBody} min-h-0 flex-1 space-y-6 overflow-y-auto overscroll-contain`}>
           {!state.hydrated ? <p role="status">Sepet yükleniyor…</p> : lines.length === 0 ? (
-            <p role="status" className="py-8 text-center text-muted-foreground">Sepetiniz henüz boş.</p>
+            <p role="status" className="py-8 text-muted-foreground">Sepetiniz henüz boş.</p>
           ) : (
             <ul aria-label="Sepetteki ürünler" className="space-y-4">
               {lines.map(({ productId, product, quantity }, index) => {
                 const unavailable = !product || product.stock < quantity;
                 return (
-                  <li key={productId} className="rounded-none bg-background p-4">
+                  <li key={productId} className={styles.line}>
                     <div role="group" aria-labelledby={`${id}-line-${index}`} className="space-y-3">
                       <h3 id={`${id}-line-${index}`} className="text-lg break-words">{product?.name ?? "Kullanılamayan ürün"}</h3>
                       {product && <>
-                        <p className="text-sm text-foreground">{product.weight}</p>
-                        <p className="text-sm tabular-nums">{formatPrice(product.priceKurus)} / adet</p>
+                        <p className="text-base text-foreground">{product.weight}</p>
+                        <p className="text-base tabular-nums">{formatPrice(product.priceKurus)} / adet</p>
                       </>}
-                      {unavailable && <p className="text-sm text-destructive">Bu ürün artık kullanılamıyor.</p>}
+                      {unavailable && <p className="text-base text-destructive">Bu ürün artık kullanılamıyor.</p>}
                       <div className="flex flex-wrap items-center justify-between gap-2">
                         <div className="flex items-center gap-1">
                           <Button variant="outline" size="icon" aria-label="Adedi azalt" disabled={unavailable || quantity <= 1}
@@ -122,18 +123,18 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
               })}
             </ul>
           )}
-          {state.storageError && <p role="alert" className="text-sm text-destructive">Sepet bu tarayıcıya kaydedilemiyor. Sayfayı yenilerseniz sepetiniz korunmayabilir.</p>}
-          <p role={feedback.error ? "alert" : "status"} aria-atomic="true" className={`text-sm ${feedback.error ? "text-destructive" : "text-muted-foreground"}`}>
+          {state.storageError && <p role="alert" className="text-base text-destructive">Sepet bu tarayıcıya kaydedilemiyor. Sayfayı yenilerseniz sepetiniz korunmayabilir.</p>}
+          <p role={feedback.error ? "alert" : "status"} aria-atomic="true" className={`text-base ${feedback.error ? "text-destructive" : "text-muted-foreground"}`}>
             {feedback.message}
           </p>
         </div>
 
-        <div className="grid shrink-0 gap-3 bg-background p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
-          <div className="flex flex-wrap items-baseline justify-between gap-2 text-sm">
+        <div className={`${styles.drawerFooter} grid shrink-0 gap-4 bg-background`}>
+          <div className="flex flex-wrap items-baseline justify-between gap-2 text-base">
             <p>Ara toplam (tahmini) · {itemCount} adet</p>
             <p className="text-lg font-medium tabular-nums">{state.hydrated && (lines.length === 0 || validCart) ? formatPrice(subtotal) : "—"}</p>
           </div>
-          <p className="text-sm text-muted-foreground">Kargo ve indirimler dahil değildir.</p>
+          <p className="text-base text-muted-foreground">Kargo ve indirimler dahil değildir.</p>
           <DialogClose asChild><Button asChild variant="outline"><Link href="/sepet" prefetch={false}>Sepeti görüntüle</Link></Button></DialogClose>
           {validCart ? (
             <DialogClose asChild><Button asChild><Link href="/odeme" prefetch={false}>Ödemeye geç</Link></Button></DialogClose>
