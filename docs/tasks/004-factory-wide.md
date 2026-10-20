@@ -81,4 +81,7 @@ Resmi kaynak: docs/referans/icerik.md bölüm 04 — **Osmaniye üretim tesisi**
 Kaynak ön koşulu ve görsel teslimi tamamlanmadığından durum `BEKLİYOR`.
 Kişisel veri, anahtar, kullanıcı onayı veya uydurma çıktı kaydedilmedi.
 
+## Düzeltme 004-a (Claude, 20 Eki)
+Kaynak fotoğraf artık mevcut (kullanıcının sohbete yapıştırdığı tesis fotoğrafı): `~/PROJELER/AFINA-KAYNAK/fabrika/afina-zeytin-tesis-osmaniye.png` (1672×941, salt okunur). Yeşil-siyah cephe, "Afina ZEYTİN" tabelası, Osmaniye. Bu fotoğrafı referans alarak Atlas `openai/gpt-image-2.5-flare` (edit/referans) ile kimliği koruyan premium aday üret: altın saat ışığı, tone mapping, temiz avlu, plaka/kişi yok, tabela okunur ve doğru yazılı ("Afina ZEYTİN"). En az 2 aday, `docs/gorsel-onay.md`'de aday olarak kaydet; kullanıcı onayı Claude tarafından alınacak (onaysız public/'e koyma). Kaynak fotoğrafı `docs/referans/` altına kopyalayıp hash'le.
+
 ## Durum: BEKLİYOR

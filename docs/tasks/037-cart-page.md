@@ -71,4 +71,7 @@ Sepet sayfasını drawer ile aynı veri kaynağına bağla.
 - **Gerçek fiyatın sunucudan yenilenmesi doğrulanamadı:** mevcut `getProducts()` halen temsili veridir. Route'un sunucuya tekrar isteği ve yeni katalog prop'undan fiyat/stok gösterimi çalışır; bu, gerçek katalog/quote entegrasyonu kanıtı değildir. Task 029 ve 054/055 tamamlanıp gerçek katalog kararı sağlanmalıdır.
 - Gerçek kupon uygulama ve ödeme bağlantıları Task 054/055 ile 046'ya bağlıdır. Bu görevde yalnız erişilebilir alanları hazırlandı; oran/eşik/sağlayıcı kararı verilmedi, gerçek ödeme başlatılmadı. Global sepet bağlantısı Task 038'e bırakıldı. Bu bağımlılıklar task dışına çıkılarak uygulanmadı; bu nedenle **Durum BEKLİYOR** bırakıldı.
 
-## Durum: BEKLİYOR
+## Claude kararı (20 Eki)
+Yerel kapsam (sepet sayfası, adet/sil, boş durum, testler 108/108 + 126/126) kabul edildi. Gerçek fiyat kaynağı, kupon ve ödeme bağlantısı bu görevin değil; 029 (katalog), 054/055 (fiyat/kupon) ve 045–050 (checkout/PayTR) görevlerinde, kullanıcının DB/ödeme kararından sonra bağlanacak.
+
+## Durum: TAMAMLANDI
