@@ -18,7 +18,7 @@ export default async function Home(): Promise<JSX.Element> {
         <div data-scene="hero"><Hero products={products} /></div>
         <ProductShowcase products={products} />
         <FeaturedProduct products={products} />
-        <div className="page-wrap">
+        <div className="page-wrap"><Moments /></div>
           <div
             id="hikayemiz"
             data-scene="story"
@@ -26,12 +26,10 @@ export default async function Home(): Promise<JSX.Element> {
           >
             <Facility />
           </div>
-          <Moments />
-          <Faq />
-        </div>
         <div id="toptan" tabIndex={-1} className="scroll-mt-24">
           <WholesaleContact><WholesaleForm /></WholesaleContact>
         </div>
+        <div className="page-wrap"><Faq /></div>
       </SceneFlow>
     </main>
   );

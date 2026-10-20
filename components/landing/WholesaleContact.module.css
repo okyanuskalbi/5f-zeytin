@@ -1,26 +1,27 @@
 .section {
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: start;
-  padding: 64px var(--page-margin) 96px;
-  background: var(--brand-olive); scroll-margin-top: calc(var(--header-height) + 24px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 96px;
+  align-items: start;
+  padding: 96px var(--page-margin);
+  background: var(--brand-olive);
+  color: var(--brand-ivory);
+  scroll-margin-top: calc(var(--header-height) + 24px);
+  --foreground: var(--brand-ivory);
+  --background: var(--brand-olive);
+  --muted: var(--brand-olive);
+  --muted-foreground: var(--brand-sand);
+  --input: var(--brand-gold);
+  --destructive: #ffd5ca;
 }
-.section:focus-visible { outline-offset: -8px; outline-color: var(--brand-ivory); }
-.card { width: 380px; max-width: 100%; padding: 32px; background: var(--card); color: var(--brand-olive); }
-.card address { font-style: normal; color: var(--body-ink); }
-.cta { width: 100%; margin-top: 32px; }
-.card p { margin-top: 16px; font-size: var(--step-body); color: var(--muted-foreground); }
-.scope { grid-column: 2; grid-row: 1; color: var(--brand-ivory); padding: 24px 0; }
-.card { grid-column: 1; grid-row: 1; }
-.statement { font-size: var(--step-display); line-height: 1.1; }
-.scope p + p { margin-top: 32px; }
-.section > form { grid-column: 1 / -1; width: 100%; max-width: none; }
-
-@media (min-width: 1200px) {
-  .section { grid-template-columns: minmax(0, 380px) minmax(0, 1fr) minmax(0, 480px); }
-  .section > form { grid-column: auto; }
-}
-
-@media (max-width: 767px) {
-  .section { grid-template-columns: minmax(0, 1fr); padding-block: 64px 96px; }
-  .card { grid-column: 1; grid-row: 2; padding: 24px; }
-  .scope { grid-column: 1; grid-row: 1; padding: 0; }
+.section:focus-visible { outline-offset: -8px; }
+.scope { min-width: 0; }
+.statement { font-size: var(--step-head); line-height: 1.1; }
+.scope p { margin-top: 24px; }
+.address { max-width: 34ch; margin-top: 48px; font-style: normal; }
+.cta { max-width: 100%; height: auto; min-height: 44px; padding-inline: 0; margin-top: 24px; white-space: normal; text-align: left; }
+.section > form { width: 100%; max-width: none; }
+@media (max-width: 1023px) {
+  .section { grid-template-columns: minmax(0, 1fr); gap: 48px; padding-block: 64px; }
+  .address { margin-top: 32px; }
 }
