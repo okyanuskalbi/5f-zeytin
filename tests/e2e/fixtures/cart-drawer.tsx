@@ -37,6 +37,7 @@ function CartDrawerFixture(): JSX.Element {
     <main style={{ padding: "1rem", minHeight: "150vh" }}>
       <h1>Sepet drawer davranış testi</h1>
       <CartDrawer store={store} products={mode === "unavailable" ? [] : products} open={open} onOpenChange={setOpen}
+        checkoutHref="/odeme"
         trigger={<Button>Sepeti aç</Button>}
         upsell={mode === "upsell" ? { activeProductIds: ["fixture-olive", "fixture-oil"], relations: [{ sourceProductId: "fixture-olive", targetProductId: "fixture-oil" }] } : null} />
       <Button onClick={() => setOpen(true)}>Dışarıdan aç</Button>

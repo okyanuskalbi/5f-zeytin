@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, useSyncExternalStore, type JSX, type ReactElement, type RefObject } from "react";
+import { forwardRef, useEffect, useId, useRef, useState, useSyncExternalStore, type JSX, type ReactElement, type RefObject } from "react";
 import Link from "next/link";
 import { Minus, Plus, Trash2, X } from "lucide-react";
 import { Dialog as DialogPrimitive } from "radix-ui";
-import { AnimatePresence, motion, useDragControls, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useDragControls, useIsPresent, useReducedMotion, type HTMLMotionProps } from "motion/react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog, DialogClose, DialogDescription, DialogOverlay, DialogPortal, DialogTitle, DialogTrigger,
@@ -32,9 +32,19 @@ type CartDrawerProps = {
 const money = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 function formatPrice(kurus: number): string { return `${money.format(kurus / 100)} ₺`; }
 
+// Exiting content stays visible for its animation, but cannot receive focus.
+const CartPanel = forwardRef<HTMLDivElement, HTMLMotionProps<"div">>(function CartPanel(props, ref) {
+  const present = useIsPresent();
+  return <motion.div {...props} ref={ref} aria-hidden={!present} inert={!present} />;
+});
+const CartLine = forwardRef<HTMLLIElement, HTMLMotionProps<"li">>(function CartLine(props, ref) {
+  const present = useIsPresent();
+  return <motion.li {...props} ref={ref} aria-hidden={!present} inert={!present} />;
+});
+
 // 21st ddoemonn/Drawer 23558 (modal/focus/scroll) + wensity/Drawer 31360
 // (bottom sheet/snap/scroll body), adapted to the existing Radix and Motion stack.
-export function CartDrawer({ store, products, open, onOpenChange, trigger, returnFocusRef, upsell, checkoutHref = "/odeme" }: CartDrawerProps): JSX.Element {
+export function CartDrawer({ store, products, open, onOpenChange, trigger, returnFocusRef, upsell, checkoutHref = null }: CartDrawerProps): JSX.Element {
   const state = useSyncExternalStore(store.subscribe, store.getSnapshot, store.getServerSnapshot);
   const id = useId();
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -109,7 +119,7 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
             opener.focus();
           }
         }}>
-      <motion.div data-slot="dialog-content" data-cart-drawer="" data-snap={expanded ? "expanded" : "compact"} aria-hidden={!open} inert={!open}
+      <CartPanel data-slot="dialog-content" data-cart-drawer="" data-snap={expanded ? "expanded" : "compact"}
         className={styles.drawer} layoutRoot
         initial={reduced ? false : mobile ? { y: "100%" } : { x: "100%" }}
         animate={{ x: 0, y: 0 }} exit={reduced ? { opacity: 0 } : mobile ? { y: "100%" } : { x: "100%" }} transition={transition}
@@ -136,14 +146,14 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
           ) : (
             <ul aria-label="Sepetteki ürünler">
               <AnimatePresence initial={false} mode="popLayout">
-              {lines.map(({ productId, product, quantity }, index) => {
+              {lines.map(({ productId, product, quantity }) => {
                 const unavailable = !product || product.stock < quantity;
                 return (
-                  <motion.li key={productId} className={styles.line} layout={reduced ? false : "position"}
+                  <CartLine key={productId} className={styles.line} layout={reduced ? false : "position"}
                     initial={reduced ? false : { opacity: 0, x: motionTokens.distance.lg }} animate={{ opacity: 1, x: 0 }}
                     exit={reduced ? { opacity: 0 } : { opacity: 0, x: motionTokens.distance.lg }} transition={transition}>
-                    <div role="group" aria-labelledby={`${id}-line-${index}`} className="space-y-3">
-                      <h3 id={`${id}-line-${index}`} className="text-lg break-words">{product?.name ?? "Kullanılamayan ürün"}</h3>
+                    <div role="group" aria-labelledby={`${id}-line-${encodeURIComponent(productId)}`} className="space-y-3">
+                      <h3 id={`${id}-line-${encodeURIComponent(productId)}`} className="text-lg break-words">{product?.name ?? "Kullanılamayan ürün"}</h3>
                       {product && <>
                         <p className="text-base text-foreground">{product.weight}</p>
                         <p className="text-base tabular-nums">{formatPrice(product.priceKurus)} / adet</p>
@@ -160,7 +170,7 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
                         <Button variant="ghost" size="icon" aria-label="Sepetten sil" onClick={() => removeItem(productId)}><Trash2 aria-hidden="true" /></Button>
                       </div>
                     </div>
-                  </motion.li>
+                  </CartLine>
                 );
               })}
               </AnimatePresence>
@@ -186,12 +196,12 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
           ) : <Button disabled>Ödemeye geç</Button>}
           </div>
           {!checkoutHref && <p className="text-sm text-muted-foreground">Ödeme henüz kullanıma açık değil.</p>}
-          <button type="button" className={styles.resize} aria-label={expanded ? "Sepeti daralt" : "Sepeti genişlet"} aria-expanded={expanded}
+          {mobile && <button type="button" className={styles.resize} aria-label={expanded ? "Sepeti daralt" : "Sepeti genişlet"} aria-expanded={expanded}
             onPointerDown={event => { if (!reduced) controls.start(event); }}
-            onClick={() => setExpanded(value => !value)}><span aria-hidden="true" /></button>
+            onClick={() => setExpanded(value => !value)}><span aria-hidden="true" /></button>}
           <DialogClose asChild><Button variant="ghost">Alışverişe devam et</Button></DialogClose>
         </div>
-      </motion.div>
+      </CartPanel>
       </DialogPrimitive.Content>
       </DialogPortal>}
       </AnimatePresence>

@@ -12,6 +12,22 @@ const resizer = `window.iFrameResize = function(options, frame) {
   frame.iFrameResizer = {removeListeners: function() {window.__resizerRemoved = true;}};
 };`;
 
+test("cart checkout entry reaches the guarded local PayTR preview without treating cart intent as an order", async ({ page }) => {
+  const devURL = process.env.FRAME_SEQUENCE_DEV_URL;
+  if (!devURL) throw new Error("FRAME_SEQUENCE_DEV_URL must point to this checkout dev server.");
+  await page.addInitScript(() => localStorage.setItem("afina-zeytin:cart", JSON.stringify([{ productId: "sample-table-olive", quantity: 1 }])));
+  await page.goto(new URL("/", devURL).href);
+  await page.getByRole("banner").getByRole("button", { name: /^Sepetim/ }).click();
+  const panel = page.getByRole("dialog", { name: "Sepetim", exact: true });
+  await expect(panel.getByRole("link", { name: "Ödemeye geç" })).toHaveAttribute("href", "/odeme-onizleme");
+  await panel.getByRole("link", { name: "Ödemeye geç" }).click();
+  await expect(page).toHaveURL(/\/odeme-onizleme$/);
+  await expect(page.getByRole("main").getByRole("alert")).toHaveText(warning);
+  await page.goto(new URL("/sepet", devURL).href);
+  await expect(page.getByRole("link", { name: "Ödemeye geç" })).toHaveAttribute("href", "/odeme-onizleme");
+  await expect(page.getByText("Yerel test ödemesi sepetinizden tahsilat yapmaz.")).toBeVisible();
+});
+
 test("credential-free dev route shows the exact warning without token or PayTR requests", async ({ page, baseURL, request }, testInfo) => {
   const target = new URL(baseURL!);
   expect(["localhost", "127.0.0.1"]).toContain(target.hostname);

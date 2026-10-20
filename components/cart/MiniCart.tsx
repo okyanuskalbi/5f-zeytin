@@ -34,7 +34,7 @@ export function MiniCart(): JSX.Element | null {
     <AnimatePresence>
       {!footerVisible && <motion.aside key="mini-cart" aria-label="Mini sepet" data-mini-cart="" data-cart-open={cart.open} className={styles.mini}
         initial={reduced ? false : { opacity: 0, y: motionTokens.distance.lg }} animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0 }} transition={reduced ? { duration: 0 } : springs.drawer}>
+        exit={{ opacity: 0, transition: { duration: 0 } }} transition={reduced ? { duration: 0 } : springs.drawer}>
         <p aria-live="polite" aria-atomic="true">{count} adet · Ara toplam (tahmini)<strong>{known ? money.format(subtotal / 100) : "Tutar güncellenecek"}</strong></p>
         <Button onClick={event => cart.openCart(event.currentTarget)}>Sepet</Button>
       </motion.aside>}

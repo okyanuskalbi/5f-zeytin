@@ -10,6 +10,8 @@ vi.mock("next/font/google", () => ({
   Figtree: () => ({ variable: "font-body" }),
 }));
 vi.mock("next/font/local", () => ({ default: () => ({ variable: "font-display" }) }));
+// RootLayout now reads the server-owned payment preview availability flag.
+vi.mock("server-only", () => ({}));
 
 afterEach(() => {
   cleanup();

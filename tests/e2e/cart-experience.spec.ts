@@ -28,6 +28,7 @@ test("v2 drawer: totals after quantity/remove, modal focus, escape and scroll lo
   const panel = drawer(page);
   const close = panel.getByRole("button", { name: "Sepeti kapat" });
   await expect(close).toBeFocused();
+  await expect(panel.getByRole("button", { name: "Ödemeye geç" })).toBeDisabled();
   await expect(page.locator("body")).toHaveAttribute("data-scroll-locked");
   const line = panel.getByRole("group", { name: "Sofralık Zeytin", exact: true });
   await line.getByRole("button", { name: "Adedi artır" }).click();
@@ -49,6 +50,8 @@ test("v2 drawer: totals after quantity/remove, modal focus, escape and scroll lo
   await expect(panel).toHaveCount(0);
   await expect(headerCart(page)).toBeFocused();
   await expect(page.locator("body")).not.toHaveAttribute("data-scroll-locked");
+  await page.goto("/sepet");
+  await page.screenshot({ path: `test-results/106/${info.project.name}-empty.png`, fullPage: true });
 });
 
 test("mini cart: first add, responsive/footer/route visibility and focus return; reduced motion", async ({ page }, info) => {
