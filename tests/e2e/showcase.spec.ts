@@ -21,13 +21,14 @@ test.beforeEach(async ({ page }) => {
   });
   await page.goto("/");
   await section(page).evaluate((node) => node.scrollIntoView({ block: "start" }));
-  await expect(section(page).getByRole("article")).toHaveCount(3);
+  await expect(section(page).getByRole("article")).toHaveCount((await getProducts()).length);
 });
 test.afterEach(() => { expect(errors).toEqual([]); });
 
 test("every available product adds its SKU and quantity to the shared cart; sold out stays disabled", async ({ page, isMobile }) => {
   for (const product of await getProducts()) {
-    const card = section(page).getByRole("article", { name: product.name, exact: true });
+    const card = section(page).getByRole("article", { name: product.name, exact: true })
+      .filter({ has: page.getByText(product.weight, { exact: true }) });
     const add = card.getByRole("button", { name: "Sepete ekle", exact: true });
     if (product.stock <= 0) {
       await expect(card.getByText("Tükendi", { exact: true })).toBeVisible();
@@ -39,13 +40,13 @@ test("every available product adds its SKU and quantity to the shared cart; sold
     await expect(card.getByRole("spinbutton")).toHaveValue("2");
     if (isMobile) await add.tap(); else await add.click();
     await expect(drawer(page)).toBeVisible();
-    await expect(drawer(page).getByRole("group", { name: product.name, exact: true }).getByRole("status", { name: "Adet" })).toHaveText("2");
+    await expect(drawer(page).getByRole("group", { name: product.name, exact: true })
+      .filter({ has: page.getByText(product.weight, { exact: true }) }).getByRole("status", { name: "Adet" })).toHaveText("2");
     await page.keyboard.press("Escape");
     await expect(add).toBeFocused();
   }
-  expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), CART_STORAGE_KEY)).toEqual([
-    { productId: "sample-table-olive", quantity: 2 }, { productId: "sample-olive-oil", quantity: 2 },
-  ]);
+  expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), CART_STORAGE_KEY))
+    .toEqual((await getProducts()).filter(p => p.stock > 0).map(p => ({ productId: p.id, quantity: 2 })));
 });
 
 test("v2 products retain uncut controls without paper slips or ornaments", async ({ page }) => {
@@ -56,8 +57,9 @@ test("v2 products retain uncut controls without paper slips or ornaments", async
     await expect(article).toHaveCSS("transform", "none");
     for (const control of await article.locator("button,input").all()) {
       const box = (await control.boundingBox())!;
-      expect(box.width).toBeGreaterThanOrEqual(44);
-      expect(box.height).toBeGreaterThanOrEqual(44);
+      // Chromium may return 43.999938px for a computed 44px target at this scroll offset.
+      expect(Math.round(box.width * 1000) / 1000).toBeGreaterThanOrEqual(44);
+      expect(Math.round(box.height * 1000) / 1000).toBeGreaterThanOrEqual(44);
     }
   }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -100,7 +102,7 @@ test("without JavaScript product details and cart link remain available", async 
     });
     await page.goto(baseURL!);
     await section(page).evaluate(node => node.scrollIntoView({ block: "start" }));
-    await expect(section(page).getByRole("article")).toHaveCount(3);
+    await expect(section(page).getByRole("article")).toHaveCount((await getProducts()).length);
     // Firefox's no-JS realm cannot reliably poll an image JS property. Verify
     // the approved image response and rendered geometry independently instead.
     await expect.poll(() => loadedPosters.length).toBeGreaterThan(0);

@@ -11,24 +11,24 @@ const products: Product[] = [1, 5, 10].map(size => ({ id: `olive-${size}`, name:
 afterEach(() => { cleanup(); localStorage.clear(); });
 function mount(items = products) {
   render(<CartProvider products={items}><FeaturedProduct products={items} /></CartProvider>);
-  return within(screen.getByRole("region", { name: "Doğal Kırma Yeşil Zeytin", exact: true }));
+  return within(screen.getByRole("region", { name: "Doğal Kırma Yeşil Zeytin" }));
 }
 
 it("offers 1/5/10 kg from the catalog, defaults to 10 kg and updates its displayed price and weight", () => {
   const section = mount();
-  expect(section.getByRole("radio", { name: "10 kg", exact: true }).hasAttribute("checked")).toBe(true);
+  expect(section.getByRole("radio", { name: "10 kg" }).hasAttribute("checked")).toBe(true);
   expect(section.getByRole("status", { name: "Seçilen boy ve fiyat" }).textContent).toContain("10 kg · 2.200,00 ₺");
-  fireEvent.click(section.getByRole("radio", { name: "1 kg", exact: true }));
+  fireEvent.click(section.getByRole("radio", { name: "1 kg" }));
   expect(section.getByRole("status", { name: "Seçilen boy ve fiyat" }).textContent).toContain("1 kg · 220,00 ₺");
 });
 
 it("adds the selected SKU and quantity to the shared cart and reports cumulative stock failure", () => {
   const section = mount();
-  fireEvent.click(section.getByRole("radio", { name: "1 kg", exact: true }));
+  fireEvent.click(section.getByRole("radio", { name: "1 kg" }));
   fireEvent.click(section.getByRole("button", { name: "Adedi artır" }));
-  fireEvent.click(section.getByRole("button", { name: "Sepete ekle", exact: true }));
+  fireEvent.click(section.getByRole("button", { name: "Sepete ekle" }));
   expect(JSON.parse(localStorage.getItem("afina-zeytin:cart")!)).toEqual([{ productId: "olive-1", quantity: 2 }]);
-  fireEvent.click(section.getByRole("button", { name: "Sepete ekle", exact: true }));
+  fireEvent.click(section.getByRole("button", { name: "Sepete ekle" }));
   expect(section.getByRole("alert").textContent).toContain("eklenemedi");
   expect(JSON.parse(localStorage.getItem("afina-zeytin:cart")!)).toEqual([{ productId: "olive-1", quantity: 2 }]);
 });
@@ -36,12 +36,12 @@ it("adds the selected SKU and quantity to the shared cart and reports cumulative
 it("resets quantity on size changes, keeps sold-out sizes readable and prevents invalid quantities", () => {
   const section = mount();
   fireEvent.change(section.getByRole("spinbutton"), { target: { value: "1.5" } });
-  fireEvent.click(section.getByRole("button", { name: "Sepete ekle", exact: true }));
+  fireEvent.click(section.getByRole("button", { name: "Sepete ekle" }));
   expect(section.getByRole("alert").textContent).toContain("tam sayı");
-  fireEvent.click(section.getByRole("radio", { name: "5 kg", exact: true }));
+  fireEvent.click(section.getByRole("radio", { name: "5 kg" }));
   expect((section.getByRole("spinbutton") as HTMLInputElement).value).toBe("1");
-  expect(section.getByRole("button", { name: "Tükendi", exact: true }).hasAttribute("disabled")).toBe(true);
-  expect(section.getByRole("radio", { name: "5 kg", exact: true }).hasAttribute("disabled")).toBe(false);
+  expect(section.getByRole("button", { name: "Tükendi" }).hasAttribute("disabled")).toBe(true);
+  expect(section.getByRole("radio", { name: "5 kg" }).hasAttribute("disabled")).toBe(false);
 });
 
 it("never substitutes unrelated products or invents missing sizes, and preserves the wholesale destination", () => {
