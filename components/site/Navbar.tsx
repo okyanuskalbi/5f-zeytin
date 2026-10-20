@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type JSX } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, ShoppingBag, UserRound } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -36,14 +37,21 @@ export function Navbar(): JSX.Element {
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-background">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-4 py-4 sm:gap-6 sm:px-6">
-        {/* Optimized logos remain candidates; use the official name until approval. */}
         <Link
           ref={homeRef}
           href="/"
           aria-label="Afina Zeytin ana sayfa"
-          className="inline-flex min-h-11 min-w-0 items-center rounded-sm font-serif text-xl leading-tight focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring sm:text-2xl"
+          className="inline-flex min-h-11 shrink-0 items-center rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
         >
-          Afina Zeytin
+          <Image
+            src="/brand/afina-zeytin.svg"
+            alt="Afina Zeytin"
+            width={145}
+            height={167}
+            loading="eager"
+            unoptimized
+            className="h-16 w-auto sm:h-20"
+          />
         </Link>
 
         <nav aria-label="Ana navigasyon" className="hidden items-center gap-1 lg:flex">

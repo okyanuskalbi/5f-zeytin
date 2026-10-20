@@ -5,10 +5,15 @@ import { Footer } from "@/components/site/Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://afinazeytin.com"),
   title: "Afina Zeytin | Zeytin ve Zeytinyağı",
   description:
     "Afina Zeytin, Osmaniye’deki fabrikasıyla zeytin, salamura zeytin ve zeytinyağını toptan ve perakende müşterileriyle buluşturuyor.",
   other: { app: "zeytin" },
+  icons: { icon: { url: "/brand/favicon.svg", type: "image/svg+xml" } },
+  openGraph: {
+    images: [{ url: "/brand/og.png", width: 1200, height: 630, alt: "Afina Zeytin — Kökü toprakta. Yeri sofrada." }],
+  },
 };
 
 export default function RootLayout({

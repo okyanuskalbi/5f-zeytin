@@ -70,6 +70,12 @@ test("shell exposes navigation, official copy and destination contracts at every
   }
   await expectNoOverflow(page);
   expect(errors).toEqual([]);
+  // Logo loading checks scroll through the footer; capture the initial page view.
+  await page.evaluate(() => {
+    if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+    window.scrollTo(0, 0);
+  });
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
   await page.screenshot({ path: testInfo.outputPath("shell.png"), fullPage: true });
 });
 

@@ -25,8 +25,12 @@
           "sha256": "e17a97ca61e968fca161d9e6f6ef4e089f0f924b218eb961fda08835632d3f19"
         }
       ],
-      "status": "candidate",
-      "approval": null
+      "status": "approved",
+      "approval": {
+        "recordId": "user-2026-10-20-brand-afina-topluluk",
+        "decidedAt": "2026-10-20"
+      },
+      "runtime": true
     },
     {
       "id": "brand-afina-topluluk-dark",
@@ -52,8 +56,12 @@
           "sha256": "e17a97ca61e968fca161d9e6f6ef4e089f0f924b218eb961fda08835632d3f19"
         }
       ],
-      "status": "candidate",
-      "approval": null
+      "status": "approved",
+      "approval": {
+        "recordId": "user-2026-10-20-brand-afina-topluluk-dark",
+        "decidedAt": "2026-10-20"
+      },
+      "runtime": true
     },
     {
       "id": "brand-afina-zeytin",
@@ -79,8 +87,12 @@
           "sha256": "845182fa8c976af093485a12b3fe109b5d19da9455313e380227ada69f288aed"
         }
       ],
-      "status": "candidate",
-      "approval": null
+      "status": "approved",
+      "approval": {
+        "recordId": "user-2026-10-20-brand-afina-zeytin",
+        "decidedAt": "2026-10-20"
+      },
+      "runtime": true
     },
     {
       "id": "brand-afina-zeytin-dark",
@@ -106,8 +118,12 @@
           "sha256": "845182fa8c976af093485a12b3fe109b5d19da9455313e380227ada69f288aed"
         }
       ],
-      "status": "candidate",
-      "approval": null
+      "status": "approved",
+      "approval": {
+        "recordId": "user-2026-10-20-brand-afina-zeytin-dark",
+        "decidedAt": "2026-10-20"
+      },
+      "runtime": true
     },
     {
       "id": "brand-afina-borek",
@@ -133,8 +149,12 @@
           "sha256": "78fb547e5389e2f9c5f88e1a1847199320a91cf593ecc2fe7f554add641af74b"
         }
       ],
-      "status": "candidate",
-      "approval": null
+      "status": "approved",
+      "approval": {
+        "recordId": "user-2026-10-20-brand-afina-borek",
+        "decidedAt": "2026-10-20"
+      },
+      "runtime": true
     },
     {
       "id": "brand-afina-borek-dark",
@@ -160,8 +180,12 @@
           "sha256": "78fb547e5389e2f9c5f88e1a1847199320a91cf593ecc2fe7f554add641af74b"
         }
       ],
-      "status": "candidate",
-      "approval": null
+      "status": "approved",
+      "approval": {
+        "recordId": "user-2026-10-20-brand-afina-borek-dark",
+        "decidedAt": "2026-10-20"
+      },
+      "runtime": true
     },
     {
       "id": "brand-afina-coffee",
@@ -187,8 +211,12 @@
           "sha256": "100b2280ce4bbf433858b6c561d394144d176a897f0b23acaa8f5be38c7c7bcf"
         }
       ],
-      "status": "candidate",
-      "approval": null
+      "status": "approved",
+      "approval": {
+        "recordId": "user-2026-10-20-brand-afina-coffee",
+        "decidedAt": "2026-10-20"
+      },
+      "runtime": true
     },
     {
       "id": "brand-afina-coffee-dark",
@@ -214,8 +242,12 @@
           "sha256": "100b2280ce4bbf433858b6c561d394144d176a897f0b23acaa8f5be38c7c7bcf"
         }
       ],
-      "status": "candidate",
-      "approval": null
+      "status": "approved",
+      "approval": {
+        "recordId": "user-2026-10-20-brand-afina-coffee-dark",
+        "decidedAt": "2026-10-20"
+      },
+      "runtime": true
     },
     {
       "id": "brand-afina-motors",
@@ -241,8 +273,12 @@
           "sha256": "a3855ae26c4e860edfeb0993db4b164b101a95fba07a2cd8913f8b09c50cd520"
         }
       ],
-      "status": "candidate",
-      "approval": null
+      "status": "approved",
+      "approval": {
+        "recordId": "user-2026-10-20-brand-afina-motors",
+        "decidedAt": "2026-10-20"
+      },
+      "runtime": true
     },
     {
       "id": "brand-afina-motors-dark",
@@ -268,8 +304,12 @@
           "sha256": "a3855ae26c4e860edfeb0993db4b164b101a95fba07a2cd8913f8b09c50cd520"
         }
       ],
-      "status": "candidate",
-      "approval": null
+      "status": "approved",
+      "approval": {
+        "recordId": "user-2026-10-20-brand-afina-motors-dark",
+        "decidedAt": "2026-10-20"
+      },
+      "runtime": true
     },
     {
       "id": "brand-afina-insaat",
@@ -295,8 +335,12 @@
           "sha256": "e58290af9d62d53a3fd64d6085586c248b35554decf86b82c27721b2f9dc0ee2"
         }
       ],
-      "status": "candidate",
-      "approval": null
+      "status": "approved",
+      "approval": {
+        "recordId": "user-2026-10-20-brand-afina-insaat",
+        "decidedAt": "2026-10-20"
+      },
+      "runtime": true
     },
     {
       "id": "brand-afina-insaat-dark",
@@ -322,8 +366,12 @@
           "sha256": "e58290af9d62d53a3fd64d6085586c248b35554decf86b82c27721b2f9dc0ee2"
         }
       ],
-      "status": "candidate",
-      "approval": null
+      "status": "approved",
+      "approval": {
+        "recordId": "user-2026-10-20-brand-afina-insaat-dark",
+        "decidedAt": "2026-10-20"
+      },
+      "runtime": true
     },
     {
       "id": "brand-favicon",
@@ -349,8 +397,12 @@
           "sha256": "845182fa8c976af093485a12b3fe109b5d19da9455313e380227ada69f288aed"
         }
       ],
-      "status": "candidate",
-      "approval": null
+      "status": "approved",
+      "approval": {
+        "recordId": "user-2026-10-20-brand-favicon",
+        "decidedAt": "2026-10-20"
+      },
+      "runtime": true
     },
     {
       "id": "brand-og",
@@ -380,8 +432,12 @@
           "sha256": "c4b118f9786830b272dd0a407187cada123ae31a427a6da350096453eaa79f42"
         }
       ],
-      "status": "candidate",
-      "approval": null
+      "status": "approved",
+      "approval": {
+        "recordId": "user-2026-10-20-brand-og",
+        "decidedAt": "2026-10-20"
+      },
+      "runtime": true
     }
   ]
 }

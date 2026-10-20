@@ -79,4 +79,28 @@ Bu onayı `docs/gorsel-onay.md` makine kayıt bloğuna (`asset-approvals`) her l
 - TDD / RED: `PLAYWRIGHT_BASE_URL=http://localhost:3024 PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" npm run test:e2e -- tests/e2e/shell.spec.ts --project=chromium-320 --grep "shell exposes"` → **exit 1**; navbar'da `Afina Zeytin` isimli logo bulunamadı. Test güncel checkout'un `npm run build` çıktısından başlatılan `next start -p 3024` üzerinde çalıştı. 3004 kullanımda olduğu için mevcut süreç korunarak 3024 seçildi. İlk tarayıcı denemesindeki macOS MachPort izin hatası süreç izniyle çözüldü; geçerli RED eksik logo davranışıdır.
 - Yolculuklar: onaylı logoların bozulmadan yüklenmesi ve favicon/OG bağlantıları; logo isteği başarısız olduğunda erişilebilir bağlantılar; mevcut mobil/klavye/reduced-motion/404 davranışlarının korunması; onay/kaynak hash'i uyuşmadığında ve runtime izni olmadığında doğrulamanın reddi.
 
-## Durum: BEKLİYOR
+#### Uygulama / GREEN
+
+- 14 resmi marka çıktısının ve kaynak referanslarının SHA-256 değerleri tekrar hesaplandı. Kullanıcının yukarıdaki kararı `docs/gorsel-onay.md` içindeki `asset-approvals` bloğuna her varlık için `approvedBy: "user"`, `approvedAt: "2026-10-20"`, anonim `evidence` ve kaynak/çıktı hash'leriyle işlendi. Manifestte 14 kayıt `approved`, `runtime: true`; dosya baytları ve özgün kaynaklar değişmedi.
+- Düzeltmenin istediği alanlar mevcut doğrulayıcıda bulunmadığından yalnız gerekli sözleşme desteği `scripts/check-assets.mjs` ve testlerine eklendi. Eski `asset-decisions` sözleşmesi korunur; iki kayıt türünde kimlik benzersizdir. Gün hassasiyetindeki gerçek kullanıcı kararı için saat uydurulmaz. Kaynak/çıktı/karar uyuşmazlığı, ajan onayı, gelecekte/geçersiz tarih, runtime izni eksikliği ve P08–P12 kullanımı reddedilir. `runtime` eski kayıtlar için isteğe bağlıdır; `false` kullanımı kapatır. Bu destek frontend varlık kontrolüdür; backend/DB/auth/ödeme değişikliği yoktur.
+- Navbar'da normal zeytin; zeytin yeşili footer'da zeytin/topluluk dark logoları `next/image` ile sabit yollardan, gerçek en/boy oranıyla yerleştirildi. Erişilebilir bağlantı adları korunur. Favicon ve 1200×630 OG metadata'ya bağlandı; `metadataBase` PLAN'daki `https://afinazeytin.com` hedefidir, domain/yayın ayarı değiştirilmedi. Yeni animasyon, shadcn bileşeni veya bağımlılık eklenmedi.
+- RED kanıtı bu dalda `eddbf4b` commit'indedir. Aynı birim/E2E hedefleri GREEN oldu; ek bir üretim refaktörü gerekmedi. Görsel incelemede testin footer'a kaydırdıktan sonra tam sayfa çekmesi sticky navbar'ı görüntünün ortasında gösteriyordu; ekran kaydı başlangıç kaydırmasına döndürülerek düzeltildi ve testler yeniden geçti. Bu bir test kanıtı düzeltmesidir.
+
+#### Nihai komutla doğrulama — 20 Ekim 2026
+
+| Komut / kontrol | Sonuç / garanti |
+| --- | --- |
+| `npm run check:assets` ve `npm run check:assets -- --approved` | **exit 0; 14/14** çıktı, kaynak hash'i, onay ve runtime kullanımı doğrulandı. |
+| `npm run lint && npm run typecheck && npm run build` | **exit 0**; prebuild varlık denetimi ve production build başarılı. Son test düzenlemesinden sonra lint/typecheck tekrar **exit 0**. |
+| `npm run test -- tests/unit/asset-registry.test.ts` | **exit 0; 62/62**. Onay/kaynak/runtime kabul ve ret senaryoları dahil. |
+| `npm run test -- --coverage --coverage.include=scripts/check-assets.mjs` | **exit 0; 69/69**. Varlık denetleyicisi: statement **%94,23**, branch **%96,22**, function **%100**, line **%95,34**; tüm eşikler ≥%80. UI satır kapsamı bu ölçüme dahil değildir; tarayıcı davranışı ayrıca test edildi. |
+| `PLAYWRIGHT_BASE_URL=http://localhost:3024 PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" npm run test:e2e -- tests/e2e/shell.spec.ts` | **exit 0; 60/60, 25,3 sn**. Chromium/Firefox/WebKit × 320/390/768/1440. Logo yükleme/oran, favicon/OG, hata, klavye, reduced-motion, modal/resize ve 404. |
+| Aynı yerel env ile `npm run test:e2e -- tests/e2e/shell.spec.ts tests/e2e/bootstrap.spec.ts` | **exit 0; 72/72, 24,1 sn**; son test dosyasıyla shell **60** + layout regresyonu **12** başarılı. |
+| Playwright JSON raporuna Node assertion'ları | **PASS**: hedef `localhost:3024`, **12** proje, **72** başarılı; **0 başarısız / 0 atlanan / 0 flaky**, test başına tek deneme. |
+| `git diff --check` | **exit 0**. |
+
+Son rapor ve ekranlar `.cache/task-024-a/final-results/`, kapsam raporu `coverage/` altında yerel ve commit dışındadır. Chromium 320/1440 tam sayfa ve WebKit 390 menü görüntüleri açılarak incelendi; logolar doğru, taşma/kırpılma yok. Üretim build'inin otomatik değiştirdiği `next-env.d.ts` başlangıç içeriğine döndürüldü ve kapsam dışı değişiklik commit'e alınmadı.
+
+İlk oturumdaki logo onayı engeli 024-a ile giderildi; Task 024 kapsamında kalan engel yok. Hesap/sepet/hukuk/form/sahne bağlantıları önceki notta belirtilen gelecekteki task sözleşmeleridir; bu görev o özelliklerin uygulandığı veya canlı yayına alındığı iddiasını taşımaz. PLAN, diğer task'lar, kaynak logolar, `_legacy/`, özgün görsel promptları ve servis/yayın ayarları korunmuştur.
+
+## Durum: TAMAMLANDI

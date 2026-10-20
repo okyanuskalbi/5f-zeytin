@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 // Adapted from 21st Footer Two (meschacirung), with official AFİNA copy only.
 const groups = [
@@ -29,8 +30,15 @@ export function Footer(): JSX.Element {
       <div className="mx-auto max-w-7xl px-6 pt-12 pb-6 sm:pt-16">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr] lg:gap-16">
           <div className="min-w-0 md:col-span-2 lg:col-span-1">
-            <Link href="/" className={`${footerLink} font-serif text-2xl`} aria-label="Afina Zeytin ana sayfa">
-              Afina Zeytin
+            <Link href="/" className={footerLink} aria-label="Afina Zeytin ana sayfa">
+              <Image
+                src="/brand/afina-zeytin-dark.svg"
+                alt="Afina Zeytin"
+                width={145}
+                height={167}
+                unoptimized
+                className="h-32 w-auto"
+              />
             </Link>
             <p className="mt-4 max-w-sm text-base">Toprağın sunduğu lezzet, Afina’nın özeniyle.</p>
             <p className="mt-3 text-sm text-brand-gold">Osmaniye / Üretim Tesisi</p>
@@ -50,7 +58,16 @@ export function Footer(): JSX.Element {
         </div>
         <div className="mt-10 flex flex-col gap-4 border-t border-brand-gold/40 pt-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm">© {new Date().getFullYear()} Afina Zeytin</p>
-          <a href="https://afina.com.tr" className={footerLink}>AFİNA Şirketler Topluluğu</a>
+          <a href="https://afina.com.tr" className={footerLink} aria-label="AFİNA Şirketler Topluluğu">
+            <Image
+              src="/brand/afina-topluluk-dark.svg"
+              alt="AFİNA Şirketler Topluluğu"
+              width={381}
+              height={225}
+              unoptimized
+              className="h-auto w-40"
+            />
+          </a>
         </div>
       </div>
     </footer>

@@ -26,6 +26,11 @@ function validDate(value) {
   requireThat(typeof value === "string" && Number.isFinite(date.getTime()) && date.toISOString() === value && date.getTime() <= Date.now(), "Onay karar tarihi geçersiz veya gelecekte.");
 }
 
+function validDay(value) {
+  const date = new Date(value);
+  requireThat(typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value && value <= new Date().toISOString().slice(0, 10), "Onay karar tarihi geçersiz veya gelecekte.");
+}
+
 async function localFile(root, file) {
   requireThat(typeof file === "string" && file.length > 0 && !file.includes("\\") && !file.includes("\0") && !file.split("/").some((part) => !part || part.startsWith(".")), "Dosya yolu geçersiz.");
   const target = resolve(root, file);
@@ -70,6 +75,27 @@ async function readDecisions(root) {
     requireThat(["approved", "rejected"].includes(decision.decision) && /^user-message-[a-z0-9.-]+$/.test(decision.evidenceRef), "Onay kararı ve anonim kullanıcı mesajı referansı gerekli.");
     validDate(decision.decidedAt);
   }
+  // Task 024-a records the user's brand-set approval at its actual day precision.
+  // Keep legacy decisions valid; both ledgers share one record-ID namespace.
+  const approvalBlocks = [...text.matchAll(/^```json asset-approvals\r?\n([\s\S]*?)^```\s*$/gm)];
+  requireThat(approvalBlocks.length <= 1, "Tek bir asset-approvals onay bloğu olabilir.");
+  if (approvalBlocks.length === 0) return ledger.decisions;
+  let approvals;
+  try { approvals = JSON.parse(approvalBlocks[0][1]); } catch { throw new Error("Onay bloğu geçerli JSON olmalı."); }
+  exactFields(approvals, ["version", "approvals"], "Kullanıcı onay kaydı");
+  requireThat(approvals.version === 1 && Array.isArray(approvals.approvals), "Onay kaydı version/approvals geçersiz.");
+  for (const approval of approvals.approvals) {
+    exactFields(approval, ["recordId", "assetId", "sha256", "references", "approvedBy", "approvedAt", "evidence"], "Kullanıcı onayı");
+    requireThat(ID.test(approval.recordId) && ID.test(approval.assetId) && HASH.test(approval.sha256), "Onay kimliği/hash geçersiz.");
+    requireThat(!ids.has(approval.recordId), "Tekrarlanan karar kimliği.");
+    ids.add(approval.recordId);
+    requireThat(approval.approvedBy === "user" && /^user-message-[a-z0-9.-]+$/.test(approval.evidence), "Kullanıcı onayı ve anonim mesaj referansı gerekli.");
+    validDay(approval.approvedAt);
+    requireThat(Array.isArray(approval.references) && approval.references.length > 0, "Onay kaynak referansı gerekli.");
+    for (const reference of approval.references) exactFields(reference, ["file", "sha256"], "Onay kaynağı");
+    ledger.decisions.push({ recordId: approval.recordId, assetId: approval.assetId, sha256: approval.sha256,
+      decision: "approved", decidedAt: approval.approvedAt, evidenceRef: approval.evidence, references: approval.references });
+  }
   return ledger.decisions;
 }
 
@@ -80,13 +106,17 @@ function verifyApproval(asset, decisions) {
   }
   requireThat(asset.approval !== null, `${asset.id}: onay kaydı gerekli.`);
   exactFields(asset.approval, ["recordId", "decidedAt"], "Onay");
-  validDate(asset.approval.decidedAt);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(asset.approval.decidedAt)) validDay(asset.approval.decidedAt);
+  else validDate(asset.approval.decidedAt);
   const decision = decisions.find((entry) => entry.recordId === asset.approval.recordId);
   requireThat(decision && decision.assetId === asset.id && decision.sha256 === asset.sha256 && decision.decision === "approved" && decision.decidedAt === asset.approval.decidedAt, `${asset.id}: bağımsız onay kararı eksik veya uyuşmuyor.`);
+  if (decision.references) {
+    requireThat(Array.isArray(asset.references) && decision.references.length === asset.references.length && new Set(decision.references.map((entry) => entry.file)).size === decision.references.length && decision.references.every((entry) => asset.references.some((reference) => reference.file === entry.file && reference.sha256 === entry.sha256)), `${asset.id}: onay kaynak hash'leri uyuşmuyor.`);
+  }
 }
 
 async function verifyAsset(root, asset, decisions) {
-  exactFields(asset, ASSET_FIELDS, "Görsel");
+  exactFields(asset, Object.hasOwn(asset, "runtime") ? [...ASSET_FIELDS, "runtime"] : ASSET_FIELDS, "Görsel");
   requireThat(typeof asset.id === "string" && ID.test(asset.id), "Geçersiz görsel kimliği.");
   requireThat(typeof asset.file === "string" && /^\/(images\/generated|brand)\/[a-zA-Z0-9/_.-]+$/.test(asset.file) && IMAGE.test(asset.file), `${asset.id}: görsel dosya yolu geçersiz.`);
   requireThat(typeof asset.model === "string" && /^[a-zA-Z0-9][a-zA-Z0-9._/-]*$/.test(asset.model), `${asset.id}: model gerekli.`);
@@ -94,6 +124,9 @@ async function verifyAsset(root, asset, decisions) {
   requireThat(typeof asset.representative === "boolean", `${asset.id}: temsili etiketi gerekli.`);
   requireThat(!asset.file.startsWith("/images/generated/") || asset.representative === true, `${asset.id}: üretilen görsel temsili olmalı.`);
   requireThat(["candidate", "approved", "rejected"].includes(asset.status), `${asset.id}: geçersiz aday/onay durumu.`);
+  requireThat(!Object.hasOwn(asset, "runtime") || typeof asset.runtime === "boolean", `${asset.id}: runtime boolean olmalı.`);
+  requireThat(asset.runtime !== true || asset.status === "approved", `${asset.id}: runtime için kullanıcı onayı gerekli.`);
+  requireThat(asset.runtime !== true || !/^P(08|09|10|11|12)$/.test(asset.promptId), `${asset.id}: tasarım referansı runtime'da kullanılamaz.`);
   verifyApproval(asset, decisions);
   const bytes = await verifyHash(root, `public${asset.file}`, asset.sha256);
   let metadata;
@@ -141,6 +174,7 @@ function verifyRuntimePath(sourceFile, value, assets) {
   requireThat(!path.endsWith("/manifest.json"), `${sourceFile}: manifest runtime'a import edilemez.`);
   const asset = assets.find((entry) => entry.file === path);
   requireThat(asset?.status === "approved", `${sourceFile}: onaysız, kayıtsız veya dinamik görsel kullanımı.`);
+  requireThat(asset.runtime !== false, `${sourceFile}: görselin runtime kullanımı kapalı.`);
   requireThat(!/^P(08|09|10|11|12)$/.test(asset.promptId), `${sourceFile}: tasarım referansı runtime'da kullanılamaz.`);
 }
 

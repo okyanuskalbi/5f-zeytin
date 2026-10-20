@@ -1,8 +1,8 @@
 # Görsel aday ve kullanıcı karar kaydı
 
-Task 080 ile resmi kaynaklardan dönüştürülmüş 14 marka varlığı aday olarak
-kaydedildi. Henüz kullanıcı tarafından onaylanmış görsel yoktur. Bu kayıt,
-kullanıcı onayı yerine geçmez. `docs/visual-prompts.md` korunur.
+Task 080 ile resmi kaynaklardan dönüştürülmüş 14 marka varlığı, Task 024-a
+içindeki 20 Ekim 2026 tarihli kullanıcı kararıyla onaylandı. Kaynak ve çıktı
+hash’lerine bağlı kararlar aşağıdaki `asset-approvals` bloğundadır. `docs/visual-prompts.md` korunur.
 Video bu planın kapsamında değildir.
 
 Kamuya açık kayıt `public/images/generated/manifest.json` dosyasıdır. Yalnız
@@ -34,7 +34,8 @@ onaylasa da yalnız tasarım referansıdır; uygulama görseli olarak kullanıla
 ## Manifest sözleşmesi
 
 Kök nesne `{ "version": 1, "assets": [] }` biçimindedir. Her görsel aşağıdaki
-alanların **tamamını** içerir; fazladan alan kabul edilmez:
+zorunlu alanların **tamamını** içerir. Task 024-a ile yalnız `runtime` boolean
+alanı isteğe bağlı eklenebilir; başka fazladan alan kabul edilmez:
 
 | Alan | Kural |
 | --- | --- |
@@ -48,7 +49,8 @@ alanların **tamamını** içerir; fazladan alan kabul edilmez:
 | `representative` | Boolean temsili etiketi; üretilen görsellerde zorunlu `true`. Gerçek marka varlığında `false` olabilir. |
 | `references` | En az bir `{ "file": "docs/...", "sha256": "..." }`; prompt, tesis/ürün fotoğrafı veya özgün logo kaynağı ve gerçek hash'i. Dosya ve hash kontrol edilir. |
 | `status` | `candidate`, `approved` veya `rejected`. |
-| `approval` | Aday/reddedilende `null`; onaylıda yalnız `{ "recordId": "...", "decidedAt": "..." }`. |
+| `approval` | Aday/reddedilende `null`; onaylıda yalnız `{ "recordId": "...", "decidedAt": "..." }`. Karar bloğundaki tarih hassasiyeti korunur. |
+| `runtime` | İsteğe bağlı boolean. `true` yalnız onaylı ve P08–P12 dışındaki varlıklarda geçerlidir; `false` runtime kullanımını kapatır. Eski, alanı bulunmayan kayıtlar mevcut onay denetimini korur. |
 
 Üretilmiş dizindeki manifest dışındaki her dosya kayıtlı olmalıdır. Hareketli
 görsel/video kabul edilmez. Kaynak veya çıktı değişirse hash değişir; eski onay
@@ -74,8 +76,9 @@ Kaynaklar: [Sharp metadata](https://sharp.pixelplumbing.com/api-input/),
 4. Onaylı manifest kaydı, bu karara `recordId`/`decidedAt` ile bağlanır.
    Kimlik/hash/tarih/karar ve kanıt referansı uyuşmadan doğrulama geçmez.
    Reddedilmiş dosya kullanılmaz; yeni üretim yeni adaydır.
-5. Yalnız onaydan sonra Task 034 runtime yerleşimini yapar. Bu görev, yerleşim
-   veya yayın yetkisi sağlamaz.
+5. Yalnız onaydan sonra Task 034 runtime yerleşimini yapar. Task 024-a ayrıca
+   onaylı marka setinin shell/favicon/OG yerleşimine yetki verir. Karar kaydı
+   tek başına diğer görselleri yerleştirme veya canlı yayın yetkisi sağlamaz.
 
 Doğrulayıcı yerel kayıtların tutarlılığını denetler; harici kullanıcı mesajının
 gerçekliğini bağımsız olarak kanıtlayamaz. Mesaj referansını gerçek kullanıcı
@@ -132,7 +135,7 @@ Kaynak PDF/PNG/SVG değiştirilmedi.
 | motors | 2050×1533 | 0.195 |
 | insaat | 1633×1533 | 0.027 |
 
-### Çıktılar
+### Çıktılar (Task 080 anındaki aday kaydı)
 
 Hash, kaynak referansları, araç, piksel ölçüsü ve oran manifestte tutulur.
 
@@ -155,5 +158,349 @@ Hash, kaynak referansları, araç, piksel ölçüsü ve oran manifestte tutulur.
 
 Kontrol şeridi: 1440×2100 PNG, SHA-256 `5810a02c88ea1eadf8fd661a1a3fb448e177bcbf2e4126daed579e0218ce26c3`.
 
-14 varlığın tamamı adaydır; kullanıcı karar bloğu boş kalır. Runtime sayfa,
-metadata, favicon veya OG bağlantısı eklenmedi. Yerleşim ve yayın sonraki görevlerdedir.
+Task 080 tamamlandığında 14 varlığın tamamı adaydı; kullanıcı karar bloğu
+boştu ve runtime bağlantısı yoktu. Güncel onay kararı Task 024-a kaydındadır.
+
+
+## TASK-024-a — Kullanıcının resmi marka seti onayı
+
+Karar kaynağı: [Task 024-a kullanıcı onay kaydı](tasks/024-shell.md#düzeltme-024-a-claude-20-eki).
+Kullanıcının resmi Illustrator PDF’sinden çıkarılan 6 normal + 6 dark logo,
+favicon ve OG seti onaylıdır. Bu kayıt yeni görsel üretimi veya diğer adaylar
+için onay vermez. Karşılaştırma şeridi yeniden açılıp incelendi; kaynak ve
+çıktı baytlarının SHA-256 değerleri tekrar doğrulandı.
+
+`asset-decisions` eski karar sözleşmesini korur. Task 024-a için eklenen tek
+`asset-approvals` bloğu `{ "version": 1, "approvals": [] }` biçimindedir. Her
+kayıt tam olarak `recordId`, `assetId`, `sha256`, `references`, `approvedBy`,
+`approvedAt`, `evidence` alanlarını taşır. `approvedBy` yalnız `"user"`;
+`approvedAt` gelecekte olmayan gerçek karar günü (`YYYY-MM-DD`); `evidence`
+kişisel veri içermeyen `user-message-...` referansıdır. Saat bilinmediği için
+saat üretilmez. `references` manifestteki kaynak yolları ve hash’leriyle birebir
+eşleşir. İki blok arasında `recordId` benzersizdir. Manifest onayı aynı
+`recordId` ve gün hassasiyetindeki `decidedAt` ile bağlanır.
+
+14 kaydın `status` değeri `approved`, `runtime` değeri `true` yapıldı. Shell
+yalnız zeytin normal/dark ve topluluk dark logolarını kullanır; favicon ve OG
+metadata’ya bağlanır. Diğer onaylı markalar bu landing’e eklenmez. Bu yerel
+yerleşim canlı yayın veya domain bağlama işlemi değildir.
+
+```json asset-approvals
+{
+  "version": 1,
+  "approvals": [
+    {
+      "recordId": "user-2026-10-20-brand-afina-topluluk",
+      "assetId": "brand-afina-topluluk",
+      "sha256": "7efeb22761952652542bb7b9c7722e0076abcd6a27585b5b043dd095652e6845",
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-topluluk.svg",
+          "sha256": "0ae7decd5b10d084037a507cb6a86444352772ab759bc612bd94fc62314c45bb"
+        },
+        {
+          "file": "docs/referans/logolar/afina-topluluk.png",
+          "sha256": "e17a97ca61e968fca161d9e6f6ef4e089f0f924b218eb961fda08835632d3f19"
+        }
+      ],
+      "approvedBy": "user",
+      "approvedAt": "2026-10-20",
+      "evidence": "user-message-2026-10-20-task-024-a-brand-set"
+    },
+    {
+      "recordId": "user-2026-10-20-brand-afina-topluluk-dark",
+      "assetId": "brand-afina-topluluk-dark",
+      "sha256": "f2a640f761a9f1abc5f510d187552a3d6cc3dc2b18b1669072129d731d33dbcc",
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-topluluk.svg",
+          "sha256": "0ae7decd5b10d084037a507cb6a86444352772ab759bc612bd94fc62314c45bb"
+        },
+        {
+          "file": "docs/referans/logolar/afina-topluluk.png",
+          "sha256": "e17a97ca61e968fca161d9e6f6ef4e089f0f924b218eb961fda08835632d3f19"
+        }
+      ],
+      "approvedBy": "user",
+      "approvedAt": "2026-10-20",
+      "evidence": "user-message-2026-10-20-task-024-a-brand-set"
+    },
+    {
+      "recordId": "user-2026-10-20-brand-afina-zeytin",
+      "assetId": "brand-afina-zeytin",
+      "sha256": "49afab6fbfb1b9c1b7c6c4ce6f8e1b90db8922eb6383792acdf7793144278f6f",
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-zeytin.svg",
+          "sha256": "0350812d1ca7b69b572116e5902262eb68f20a88888fc8e06a3ede23ceb05685"
+        },
+        {
+          "file": "docs/referans/logolar/afina-zeytin.png",
+          "sha256": "845182fa8c976af093485a12b3fe109b5d19da9455313e380227ada69f288aed"
+        }
+      ],
+      "approvedBy": "user",
+      "approvedAt": "2026-10-20",
+      "evidence": "user-message-2026-10-20-task-024-a-brand-set"
+    },
+    {
+      "recordId": "user-2026-10-20-brand-afina-zeytin-dark",
+      "assetId": "brand-afina-zeytin-dark",
+      "sha256": "a5626b9dfd14b1cdd6bcbe2bdff5579f9d99cc338632298ddb3c14e0f0b6dfe3",
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-zeytin.svg",
+          "sha256": "0350812d1ca7b69b572116e5902262eb68f20a88888fc8e06a3ede23ceb05685"
+        },
+        {
+          "file": "docs/referans/logolar/afina-zeytin.png",
+          "sha256": "845182fa8c976af093485a12b3fe109b5d19da9455313e380227ada69f288aed"
+        }
+      ],
+      "approvedBy": "user",
+      "approvedAt": "2026-10-20",
+      "evidence": "user-message-2026-10-20-task-024-a-brand-set"
+    },
+    {
+      "recordId": "user-2026-10-20-brand-afina-borek",
+      "assetId": "brand-afina-borek",
+      "sha256": "02cf3447fdcbf959c41b04d92385cf7f7be794c1ce064849ea3e47eeb3801938",
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-borek.svg",
+          "sha256": "253d2dcf7256fbf4bf0194dee4bf0a59adbbc42dffb695452b62d1a7f5d28c88"
+        },
+        {
+          "file": "docs/referans/logolar/afina-borek.png",
+          "sha256": "78fb547e5389e2f9c5f88e1a1847199320a91cf593ecc2fe7f554add641af74b"
+        }
+      ],
+      "approvedBy": "user",
+      "approvedAt": "2026-10-20",
+      "evidence": "user-message-2026-10-20-task-024-a-brand-set"
+    },
+    {
+      "recordId": "user-2026-10-20-brand-afina-borek-dark",
+      "assetId": "brand-afina-borek-dark",
+      "sha256": "02cf3447fdcbf959c41b04d92385cf7f7be794c1ce064849ea3e47eeb3801938",
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-borek.svg",
+          "sha256": "253d2dcf7256fbf4bf0194dee4bf0a59adbbc42dffb695452b62d1a7f5d28c88"
+        },
+        {
+          "file": "docs/referans/logolar/afina-borek.png",
+          "sha256": "78fb547e5389e2f9c5f88e1a1847199320a91cf593ecc2fe7f554add641af74b"
+        }
+      ],
+      "approvedBy": "user",
+      "approvedAt": "2026-10-20",
+      "evidence": "user-message-2026-10-20-task-024-a-brand-set"
+    },
+    {
+      "recordId": "user-2026-10-20-brand-afina-coffee",
+      "assetId": "brand-afina-coffee",
+      "sha256": "5cd2732fef1be0e814463cb8482e5cb15167a05c899b4a51491c13cb813a4532",
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-coffee.svg",
+          "sha256": "9693a6070a4ce6219c0f014a0a37dd6ba04e32d504d78249cb85f23459d38e7a"
+        },
+        {
+          "file": "docs/referans/logolar/afina-coffee.png",
+          "sha256": "100b2280ce4bbf433858b6c561d394144d176a897f0b23acaa8f5be38c7c7bcf"
+        }
+      ],
+      "approvedBy": "user",
+      "approvedAt": "2026-10-20",
+      "evidence": "user-message-2026-10-20-task-024-a-brand-set"
+    },
+    {
+      "recordId": "user-2026-10-20-brand-afina-coffee-dark",
+      "assetId": "brand-afina-coffee-dark",
+      "sha256": "f756e62e5552507483c5560b4150c5ef94d99ff9bba1a4571583b7bf4ce263be",
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-coffee.svg",
+          "sha256": "9693a6070a4ce6219c0f014a0a37dd6ba04e32d504d78249cb85f23459d38e7a"
+        },
+        {
+          "file": "docs/referans/logolar/afina-coffee.png",
+          "sha256": "100b2280ce4bbf433858b6c561d394144d176a897f0b23acaa8f5be38c7c7bcf"
+        }
+      ],
+      "approvedBy": "user",
+      "approvedAt": "2026-10-20",
+      "evidence": "user-message-2026-10-20-task-024-a-brand-set"
+    },
+    {
+      "recordId": "user-2026-10-20-brand-afina-motors",
+      "assetId": "brand-afina-motors",
+      "sha256": "47440adbdbfd8b02751799d7bfe873d7640ebab672b25a1caae72a877166ed25",
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-motors.svg",
+          "sha256": "ef2e273ff95bda10cc14dc3a5fafe067903090d46a453f8363c416a818450ec5"
+        },
+        {
+          "file": "docs/referans/logolar/afina-motors.png",
+          "sha256": "a3855ae26c4e860edfeb0993db4b164b101a95fba07a2cd8913f8b09c50cd520"
+        }
+      ],
+      "approvedBy": "user",
+      "approvedAt": "2026-10-20",
+      "evidence": "user-message-2026-10-20-task-024-a-brand-set"
+    },
+    {
+      "recordId": "user-2026-10-20-brand-afina-motors-dark",
+      "assetId": "brand-afina-motors-dark",
+      "sha256": "6033e0819d35d753ca804e1d2e4a2587246bd409288a44479f23225e16055929",
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-motors.svg",
+          "sha256": "ef2e273ff95bda10cc14dc3a5fafe067903090d46a453f8363c416a818450ec5"
+        },
+        {
+          "file": "docs/referans/logolar/afina-motors.png",
+          "sha256": "a3855ae26c4e860edfeb0993db4b164b101a95fba07a2cd8913f8b09c50cd520"
+        }
+      ],
+      "approvedBy": "user",
+      "approvedAt": "2026-10-20",
+      "evidence": "user-message-2026-10-20-task-024-a-brand-set"
+    },
+    {
+      "recordId": "user-2026-10-20-brand-afina-insaat",
+      "assetId": "brand-afina-insaat",
+      "sha256": "3a118e447c67ffd3a92920cfc98eff328332990dfcc80e9d8687d0ed5dce955b",
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-insaat.svg",
+          "sha256": "b6db023cfba9aa7a69e7835e8ff68b211b67ceb51478c12681f26fa389b18a37"
+        },
+        {
+          "file": "docs/referans/logolar/afina-insaat.png",
+          "sha256": "e58290af9d62d53a3fd64d6085586c248b35554decf86b82c27721b2f9dc0ee2"
+        }
+      ],
+      "approvedBy": "user",
+      "approvedAt": "2026-10-20",
+      "evidence": "user-message-2026-10-20-task-024-a-brand-set"
+    },
+    {
+      "recordId": "user-2026-10-20-brand-afina-insaat-dark",
+      "assetId": "brand-afina-insaat-dark",
+      "sha256": "103965f6fab2ccc3318226077cc7536948a28f678aa2e0818369ca19e9222f02",
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-insaat.svg",
+          "sha256": "b6db023cfba9aa7a69e7835e8ff68b211b67ceb51478c12681f26fa389b18a37"
+        },
+        {
+          "file": "docs/referans/logolar/afina-insaat.png",
+          "sha256": "e58290af9d62d53a3fd64d6085586c248b35554decf86b82c27721b2f9dc0ee2"
+        }
+      ],
+      "approvedBy": "user",
+      "approvedAt": "2026-10-20",
+      "evidence": "user-message-2026-10-20-task-024-a-brand-set"
+    },
+    {
+      "recordId": "user-2026-10-20-brand-favicon",
+      "assetId": "brand-favicon",
+      "sha256": "c8cad56a558493832ab9ed75ba89dffba66503ee00c3837625b0d325b2b303e5",
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-zeytin.svg",
+          "sha256": "0350812d1ca7b69b572116e5902262eb68f20a88888fc8e06a3ede23ceb05685"
+        },
+        {
+          "file": "docs/referans/logolar/afina-zeytin.png",
+          "sha256": "845182fa8c976af093485a12b3fe109b5d19da9455313e380227ada69f288aed"
+        }
+      ],
+      "approvedBy": "user",
+      "approvedAt": "2026-10-20",
+      "evidence": "user-message-2026-10-20-task-024-a-brand-set"
+    },
+    {
+      "recordId": "user-2026-10-20-brand-og",
+      "assetId": "brand-og",
+      "sha256": "8e4349835bacca4db9a31b3c605bc6a58601a1b342fbc350eded2cdfec6ac640",
+      "references": [
+        {
+          "file": "docs/referans/logolar/AFİNA Logolar2.pdf",
+          "sha256": "a45eeea7abdad50f043cb8d2c9dc24228f8481086c9d43df8745c4700a65a9ab"
+        },
+        {
+          "file": "docs/referans/logolar/afina-zeytin.svg",
+          "sha256": "0350812d1ca7b69b572116e5902262eb68f20a88888fc8e06a3ede23ceb05685"
+        },
+        {
+          "file": "docs/referans/logolar/afina-zeytin.png",
+          "sha256": "845182fa8c976af093485a12b3fe109b5d19da9455313e380227ada69f288aed"
+        },
+        {
+          "file": "docs/referans/icerik.md",
+          "sha256": "c4b118f9786830b272dd0a407187cada123ae31a427a6da350096453eaa79f42"
+        }
+      ],
+      "approvedBy": "user",
+      "approvedAt": "2026-10-20",
+      "evidence": "user-message-2026-10-20-task-024-a-brand-set"
+    }
+  ]
+}
+```
