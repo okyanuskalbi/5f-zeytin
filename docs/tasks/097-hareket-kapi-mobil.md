@@ -129,4 +129,7 @@ kontrolleri production'a yönlendirildi. Testler ağ üzerinden ödeme/DB yazmad
 Fiziksel iOS Düşük Güç/gerçek yazılım klavyesi kabulü yapılmadı; emülasyon kanıtı
 bu iddiayla sunulmadı. Yeni skill kurulmadı; task'ın “21st MCP: hayır” tercihi uygulandı.
 
-## Durum: BEKLİYOR
+## Claude kararı (20 Eki)
+Hareket katmanı + 3 tur eleştiri + mobil rapor teslim. Açık maddeler devredildi: performans/LCP + Firefox odak → 098; inspect `few-pictures` FAIL'i ve içerik/tasarım tavanı → kullanıcının tesis fotoğrafı + Atlas süreç/ürün görseli kararı (onay sonrası görsel görevleri).
+
+## Durum: TAMAMLANDI
