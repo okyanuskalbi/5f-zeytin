@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import { Hero } from "@/components/landing/Hero";
+import { Facility } from "@/components/landing/Facility";
 import { SceneFlow } from "@/components/landing/SceneFlow";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { getProducts } from "@/lib/catalog/static-products";
@@ -11,7 +12,6 @@ export default async function Home(): Promise<JSX.Element> {
       <SceneFlow>
         <div data-scene="hero"><Hero /></div>
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          {/* Short official story; the facility section/media belong to Tasks 033/034. */}
           <section
             id="hikayemiz"
             data-scene="story"
@@ -28,6 +28,7 @@ export default async function Home(): Promise<JSX.Element> {
                 Afina Zeytin, Osmaniye’deki fabrikasıyla zeytin ve zeytinyağını doğallığına önem veren bir anlayışla sunuyor; ürünlerini toptan ve perakende kanallarda müşterileriyle buluşturuyor.
               </p>
             </div>
+            <Facility />
           </section>
           <section
             id="urunler"
