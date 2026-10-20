@@ -32,6 +32,7 @@ test.describe("development frame sequence", () => {
       if (/\/frame-\d+\.webp/.test(request.url())) requests.push(request.url());
     });
     page.on("pageerror", (error) => errors.push(error.message));
+    page.on("console", (message) => { if (message.type() === "error") errors.push(message.text()); });
     await page.emulateMedia({ reducedMotion: "no-preference" });
     await openDemo(page);
     await expect.poll(() => requests.length).toBe(15);
@@ -68,9 +69,8 @@ test.describe("development frame sequence", () => {
     await expect(canvas(page)).toBeHidden();
     await expect(page.getByRole("heading", { name: "Kare dizisi denemesi" })).toBeVisible();
     const action = page.getByRole("link", { name: "Deneme sonuna git" });
-    await action.focus();
+    await page.getByLabel("Bulanık kenarlar", { exact: true }).focus();
     await page.keyboard.press(browserName === "webkit" && process.platform === "darwin" ? "Alt+Tab" : "Tab");
-    await page.keyboard.press("Shift+Tab");
     await expect(action).toBeFocused();
     await page.keyboard.press("Enter");
     await expect(page.locator("#frames-end")).toBeInViewport();
@@ -109,14 +109,18 @@ test.describe("development frame sequence", () => {
   test("contain blur fill, high DPR and resizing preserve the canvas", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "no-preference" });
     await page.addInitScript(() => { Object.defineProperty(window, "devicePixelRatio", { get: () => 2 }); });
-    await page.goto(new URL("/__demo/frames?fit=contain&blurFill=1", demoURL!).href);
+    await page.goto(new URL("/__demo/frames", demoURL!).href);
     await expect(scene(page)).toHaveAttribute("data-status", "ready");
     await expect(canvas(page)).toHaveAttribute("data-frame", "0");
-    expect(await canvas(page).evaluate((node) => node.width)).toBe(page.viewportSize()!.width * 2);
-    expect(await canvas(page).evaluate((node) =>
+    await page.getByLabel("Contain", { exact: true }).check();
+    await expect.poll(() => canvas(page).evaluate((node: HTMLCanvasElement) =>
+      node.getContext("2d")!.getImageData(2, 2, 1, 1).data[3])).toBe(0);
+    await page.getByLabel("Bulanık kenarlar", { exact: true }).check();
+    expect(await canvas(page).evaluate((node: HTMLCanvasElement) => node.width)).toBe(page.viewportSize()!.width * 2);
+    await expect.poll(() => canvas(page).evaluate((node: HTMLCanvasElement) =>
       node.getContext("2d")!.getImageData(2, 2, 1, 1).data[3])).toBe(255);
     await page.setViewportSize({ width: 390, height: 700 });
-    await expect.poll(() => canvas(page).evaluate((node) => node.width)).toBe(780);
+    await expect.poll(() => canvas(page).evaluate((node: HTMLCanvasElement) => node.width)).toBe(780);
     await seek(page, 1);
     await expect(canvas(page)).toHaveAttribute("data-frame", "47");
   });
