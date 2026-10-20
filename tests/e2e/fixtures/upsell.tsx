@@ -16,9 +16,10 @@ const products: readonly Product[] = [
   { id: "unrelated", name: "Test İlişkisiz", category: "sofralik-zeytin", weight: "1 kg", priceKurus: 15000, stock: 4 },
 ];
 const mode = new URLSearchParams(location.search).get("mode");
+const initialProducts = mode === "target-restock" ? [products[0], { ...products[1], stock: 0 }, ...products.slice(2)] : products;
 let addFails = mode === "add-error";
 let storageFails = mode === "storage-error";
-const baseStore = createCartStore({ products, storage: {
+const baseStore = createCartStore({ products: initialProducts, storage: {
   getItem: (key) => localStorage.getItem(key),
   setItem(key, value) { if (storageFails) throw new Error("Test storage failure"); localStorage.setItem(key, value); },
 } });
@@ -33,7 +34,7 @@ const upsell = {
 const tiers = [{ minimumQuantity: 3, percentOff: 5 }, { minimumQuantity: 6, percentOff: 10 }];
 
 function Fixture(): JSX.Element {
-  const [catalog, setCatalog] = useState<readonly Product[] | null>(mode === "catalog-error" ? null : products);
+  const [catalog, setCatalog] = useState<readonly Product[] | null>(mode === "catalog-error" ? null : initialProducts);
   const [refreshing, setRefreshing] = useState(mode === "refreshing");
   const [configured, setConfigured] = useState(mode !== "no-config");
   const [open, setOpen] = useState(false);

@@ -172,6 +172,17 @@ test.describe("upsell configured presentation", () => {
     await expect(page.getByRole("alert")).toHaveCount(0);
   });
 
+  test("a newly restocked recommendation can be added after catalog refresh", async ({ page }) => {
+    await load(page, "target-restock");
+    await expect(recommendations(page)).toHaveCount(0);
+    await page.getByRole("button", { name: "Fiyat ve stokları yenile" }).click();
+    await expect(recommendations(page)).toBeVisible();
+    await recommendations(page).getByRole("button").click();
+    await expect(page.getByRole("group", { name: "Test Zeytinyağı", exact: true })).toBeVisible();
+    await expect(page.getByRole("alert")).toHaveCount(0);
+    await expect(recommendations(page)).toHaveCount(0);
+  });
+
   test("keyboard and reduced motion retain visible controls and safe focus after add", async ({ page, browserName }, testInfo) => {
     const nextKey = browserName === "webkit" && process.platform === "darwin" ? "Alt+Tab" : "Tab";
     for (const reducedMotion of ["no-preference", "reduce"] as const) {

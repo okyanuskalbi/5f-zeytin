@@ -44,4 +44,6 @@ Sepette ilgili ürün önerisini ve miktar indirimi sunumunu kur.
 
 - İlk GREEN: aynı E2E dosyası `--project chromium-320` → **exit 0; 7/7, 2,6 sn**. Onaylı/aktif/stoklu tekil hedef, kendini/sepettekini önermeme, aynı store'da ekleme/drawer/reload, yapılandırma yokken gizleme, tahmini toplamı değiştirmeyen miktar koşulları, hata/yeniden deneme ve klavye/reduced-motion/güvenli odak doğrulandı. Önceki 6/7 turunda testin ikinci seed'i eski init script'iyle çakışıyordu; kayıtlı test verisi açıkça değiştirilerek düzeltildi. `npm run lint && npm run typecheck && npm run build` **exit 0**, 14/14 varlık kontrolü. Tam tarayıcı matrisi ve kapsam denetimi sürüyor.
 
+- Salt okunur kod incelemesi, yenilemeyle stoğa giren önerinin store'un eski stok guard'ı nedeniyle sürekli reddedildiğini buldu. Ek RED: aynı E2E komutu `--project chromium-320 --grep 'newly restocked'` → **exit 1**; öneri görünmesine ve ekle tıklanmasına rağmen beklenen yeni sepet satırı oluşmadı. Güvenli stok guard güncellemesi uygulanmadan bu kanıt kaydedildi.
+
 ## Durum: BEKLİYOR
