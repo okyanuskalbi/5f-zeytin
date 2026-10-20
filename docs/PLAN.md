@@ -216,3 +216,6 @@ Numaralar mevcut task bağlantılarını korur; aşağıdaki satır sırası ve 
 | 077 | [ONAY GEREKLİ — Onaylı uzak Supabase hedefini hazırlama](tasks/077-supabase-target.md) | backend | 076, 027, 028, 044, 053, 056 | BEKLİYOR |
 | 078 | [Vercel önizleme dağıtımı](tasks/078-preview.md) | fullstack | 076, 077 | BEKLİYOR |
 | 079 | [Domain ve canlı yayın kabulü](tasks/079-launch.md) | fullstack | 078 | BEKLİYOR |
+
+## Yeniden kurgu (20 Eki 2026)
+`docs/DESIGN.md` (The page is the object — teneke etiketi). Sıra: 090 → 091 → 092 → 093 → 094 → 095 → 096 → 097. Kapı: tasteskill lint/inspect. 004/005 (premium tesis üretimi) plaka/yükleme kararı bekliyor; 093 yerel bulanık gerçek fotoğrafla ilerler.
