@@ -14,7 +14,7 @@ beforeEach(() => {
   vi.stubEnv("PAYTR_MERCHANT_SALT", credentials.merchantSalt);
   vi.stubEnv("PAYTR_TEST_MODE", "0");
   vi.stubGlobal("fetch", fetchMock);
-  fetchMock.mockReset().mockResolvedValue(Response.json({ status: "success", token: "mocktoken123" }));
+  fetchMock.mockReset().mockImplementation(async () => Response.json({ status: "success", token: "mocktoken123" }));
 });
 
 afterEach(() => {
