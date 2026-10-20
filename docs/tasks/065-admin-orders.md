@@ -11,6 +11,14 @@ Siparişleri ve ödeme durumunu yönetim ekranında göster.
 ## Bağlam
 `docs/PLAN.md`: Hedef, Teknoloji, Mimari kararlar ve ilgili kapsam bölümü. Bağımlı task’lar / addBlockedBy: 063 (admin-shell); 044 (orders-db). Komutlar 001 görevinde kurulacak araçlara dayanır; bağımlılıklar tamamlanmadan bu task çalıştırılmaz.
 
+## Admin görsel sözleşmesi
+
+Görsel referans: docs/referans/admin-stil.md ([stil belgesi](../referans/admin-stil.md)).
+
+shadcn bileşenleri (ortak liste): **Sidebar, Card, Table + sıralama, Chart, Command/search, Badge**. Her biri yalnız ilgili yüzey gerektiğinde kullanılır; shadcn için MCP yok, resmi CLI ile incele/ekle ve ZEYTİN tokenları + Figtree’ye uyarla. Ayrıntılı yerleşim ve erişilebilirlik kabulü stil belgesindedir.
+
+Sipariş Table sıralaması, filtre/pagination ve ödeme/kargo durum Badge’leri; doğrulanmamış paid değişikliği veya kart verisi eklenmez. **ONAY GEREKLİ** kapısı ve mevcut bağımlılıklar değişmez.
+
 ## Kullanılacak araçlar
 - ECC skill: frontend-patterns, api-design, security-review
 - 21st MCP: evet — sipariş tablosu/detayı

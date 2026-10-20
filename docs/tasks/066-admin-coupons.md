@@ -11,6 +11,14 @@ Kupon, reklam kaynağı ve kademe ayarlarını admin’e sun.
 ## Bağlam
 `docs/PLAN.md`: Hedef, Teknoloji, Mimari kararlar ve ilgili kapsam bölümü. Bağımlı task’lar / addBlockedBy: 063 (admin-shell); 054 (pricing). Komutlar 001 görevinde kurulacak araçlara dayanır; bağımlılıklar tamamlanmadan bu task çalıştırılmaz.
 
+## Admin görsel sözleşmesi
+
+Görsel referans: docs/referans/admin-stil.md ([stil belgesi](../referans/admin-stil.md)).
+
+shadcn bileşenleri (ortak liste): **Sidebar, Card, Table + sıralama, Chart, Command/search, Badge**. Her biri yalnız ilgili yüzey gerektiğinde kullanılır; shadcn için MCP yok, resmi CLI ile incele/ekle ve ZEYTİN tokenları + Figtree’ye uyarla. Ayrıntılı yerleşim ve erişilebilirlik kabulü stil belgesindedir.
+
+Kampanya Table/form ve geçerlilik Badge’leri; onaysız indirim, eşik veya otomasyon kararı verilmez. **ONAY GEREKLİ** kapısı ve mevcut bağımlılıklar değişmez.
+
 ## Kullanılacak araçlar
 - ECC skill: frontend-patterns, api-design, security-review
 - 21st MCP: evet — kupon/kampanya formu

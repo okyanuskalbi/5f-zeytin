@@ -11,6 +11,14 @@ Müşteri ve sipariş özetini yetkili admin’e göster.
 ## Bağlam
 `docs/PLAN.md`: Hedef, Teknoloji, Mimari kararlar ve ilgili kapsam bölümü. Bağımlı task’lar / addBlockedBy: 063 (admin-shell); 043 (account); 044 (orders-db). Komutlar 001 görevinde kurulacak araçlara dayanır; bağımlılıklar tamamlanmadan bu task çalıştırılmaz.
 
+## Admin görsel sözleşmesi
+
+Görsel referans: docs/referans/admin-stil.md ([stil belgesi](../referans/admin-stil.md)).
+
+shadcn bileşenleri (ortak liste): **Sidebar, Card, Table + sıralama, Chart, Command/search, Badge**. Her biri yalnız ilgili yüzey gerektiğinde kullanılır; shadcn için MCP yok, resmi CLI ile incele/ekle ve ZEYTİN tokenları + Figtree’ye uyarla. Ayrıntılı yerleşim ve erişilebilirlik kabulü stil belgesindedir.
+
+Müşteri Table, mevcut arama/pagination ve sipariş özeti; minimum kişisel veri, yetkisiz arama indeksi yok. **ONAY GEREKLİ** kapısı ve mevcut bağımlılıklar değişmez.
+
 ## Kullanılacak araçlar
 - ECC skill: frontend-patterns, security-review
 - 21st MCP: evet — müşteri tablosu/detayı

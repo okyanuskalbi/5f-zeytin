@@ -11,6 +11,14 @@ Terk edilmiş sepet ve kampanya durumunu göster.
 ## Bağlam
 `docs/PLAN.md`: Hedef, Teknoloji, Mimari kararlar ve ilgili kapsam bölümü. Bağımlı task’lar / addBlockedBy: 063 (admin-shell); 060 (recovery). Komutlar 001 görevinde kurulacak araçlara dayanır; bağımlılıklar tamamlanmadan bu task çalıştırılmaz.
 
+## Admin görsel sözleşmesi
+
+Görsel referans: docs/referans/admin-stil.md ([stil belgesi](../referans/admin-stil.md)).
+
+shadcn bileşenleri (ortak liste): **Sidebar, Card, Table + sıralama, Chart, Command/search, Badge**. Her biri yalnız ilgili yüzey gerektiğinde kullanılır; shadcn için MCP yok, resmi CLI ile incele/ekle ve ZEYTİN tokenları + Figtree’ye uyarla. Ayrıntılı yerleşim ve erişilebilirlik kabulü stil belgesindedir.
+
+Sepet Table ve izin/kampanya durum Badge’leri; yalnız yetkili veriler, yeni toplu e-posta işlemi yok. **ONAY GEREKLİ** kapısı ve mevcut bağımlılıklar değişmez.
+
 ## Kullanılacak araçlar
 - ECC skill: frontend-patterns, security-review
 - 21st MCP: evet — abandoned carts tablosu

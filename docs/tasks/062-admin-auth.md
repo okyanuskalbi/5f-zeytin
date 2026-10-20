@@ -11,6 +11,14 @@ Admin rolünü sunucuda doğrula.
 ## Bağlam
 `docs/PLAN.md`: Hedef, Teknoloji, Mimari kararlar ve ilgili kapsam bölümü. Bağımlı task’lar / addBlockedBy: 040 (auth-core). Komutlar 001 görevinde kurulacak araçlara dayanır; bağımlılıklar tamamlanmadan bu task çalıştırılmaz.
 
+## Admin görsel sözleşmesi
+
+Görsel referans: docs/referans/admin-stil.md ([stil belgesi](../referans/admin-stil.md)).
+
+shadcn bileşenleri (ortak liste): **Sidebar, Card, Table + sıralama, Chart, Command/search, Badge**. Her biri yalnız ilgili yüzey gerektiğinde kullanılır; shadcn için MCP yok, resmi CLI ile incele/ekle ve ZEYTİN tokenları + Figtree’ye uyarla. Ayrıntılı yerleşim ve erişilebilirlik kabulü stil belgesindedir.
+
+Bu backend yetki görevi ortak stil referansını taşır; Sidebar/Card/Chart gibi UI uygulaması 063 ve ilgili frontend task’larına aittir. Yetki kapsamı genişletilmez. **ONAY GEREKLİ** kapısı ve mevcut bağımlılıklar değişmez.
+
 ## Kullanılacak araçlar
 - ECC skill: backend-patterns, api-design, security-review
 - 21st MCP: hayır

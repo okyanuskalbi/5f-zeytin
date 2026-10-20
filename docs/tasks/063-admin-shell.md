@@ -11,9 +11,17 @@ Admin navigasyon ve operasyon özetini kur.
 ## Bağlam
 `docs/PLAN.md`: Hedef, Teknoloji, Mimari kararlar ve ilgili kapsam bölümü. Bağımlı task’lar / addBlockedBy: 062 (admin-auth); 002 (tokens). Komutlar 001 görevinde kurulacak araçlara dayanır; bağımlılıklar tamamlanmadan bu task çalıştırılmaz.
 
+## Admin görsel sözleşmesi
+
+Görsel referans: docs/referans/admin-stil.md ([stil belgesi](../referans/admin-stil.md)).
+
+shadcn bileşenleri (ortak liste): **Sidebar, Card, Table + sıralama, Chart, Command/search, Badge**. Her biri yalnız ilgili yüzey gerektiğinde kullanılır; shadcn için MCP yok, resmi CLI ile incele/ekle ve ZEYTİN tokenları + Figtree’ye uyarla. Ayrıntılı yerleşim ve erişilebilirlik kabulü stil belgesindedir.
+
+Kabukta Sidebar, üst arama ve üç özet Card; içgörü/Chart yalnız yetkili mevcut veriyle. Mobil menü ve tablo erişimi referanstaki kabulden geçer. **ONAY GEREKLİ** kapısı ve mevcut bağımlılıklar değişmez.
+
 ## Kullanılacak araçlar
 - ECC skill: frontend-patterns, accessibility
-- 21st MCP: evet — shadcn sidebar/table kabuğu
+- 21st MCP: evet — yalnız kabuk yerleşimi ilhamı; shadcn Sidebar/Table resmi CLI’den
 - find-skills ile bulunup kurulacak ek skill: yok; yeni ihtiyaç varsa önce `npx skills find <konu>`, kurulan skill Coder Notu’na yazılır.
 
 ## Dokunulacak dosyalar

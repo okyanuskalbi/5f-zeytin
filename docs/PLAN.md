@@ -68,6 +68,12 @@ docs/tasks/              # sırayla uygulanacak bağımsız task’lar
 - **Tesisimiz**: Osmaniye üretim tesisi; resmi marka hikâyesi bölüm 04 birebir kullanılır, görseller 004/005 ve onaylı 034 akışından gelir.
 - SEO/AEO: Product + Organization, canonical, sitemap, robots, llms.txt. KVKK, mesafeli satış ve iade sayfaları kullanıcı metin/onayını bekler; toptan formu da aydınlatma kapsamına alınır.
 
+## Kit uyarlaması — plan aşaması (20 Ekim 2026)
+
+Dört kaynak PDF’nin kendi özet/uyarlamaları kullanılır; PDF’ler repoya eklenmez. Tasarım sözleşmesi [DESIGN.md](DESIGN.md): mevcut marka tokenları, Z-A Fraunces/Figtree, AI-slop karşıtı hiyerarşi/gerçek içerik ve taste ev kuralları. Onaylı 086 okunurluk katmanı korunur. [Admin stil referansı](referans/admin-stil.md) ve kullanıcının JPG’si yalnız 062–069 yüzeylerini tarif eder; DB/auth **ONAY GEREKLİ** kapıları değişmez.
+
+AEO/GEO akışı **074 → 087 → 076**; 074’ün dosyaları tek üretici olarak kalır. Hero denetimi **083 + 085 + 086 → 088 → 076**; mevcut kare dizisi loop’a çevrilmez. 087 ve 088 aşağıda BEKLİYOR’dur; bu belge güncellemesi uygulama/yayın kabulü değildir. KURUMSAL çıktıları AFINA-KAYNAK’ta ayrı taslaktır.
+
 ## Resmi içerik ve marka varlıkları
 
 Metinlerde tek kaynak `docs/referans/icerik.md`: resmi belgenin Sürüm 2.0 / 19 Ekim 2026 **01 Çatı + 04 Zeytin** bölümleri; diğer marka bölümleri bu repoya alınmaz. 000b içerik kararları önceki taslak slogan/placeholder notlarının yerini alır. Orijinal zeytin/topluluk PNG ve ham SVG'leri ile asıl Illustrator logo PDF'si `docs/referans/logolar/` altında hazırdır. 080'de optimize normal/dark SVG, favicon/OG ve PNG karşılaştırma şeridi hazırlanır; bu doküman görevi runtime varlığı üretmez.
@@ -203,8 +209,10 @@ Numaralar mevcut task bağlantılarını korur; aşağıdaki satır sırası ve 
 | 081 | [Toptan satış talep formu](tasks/081-wholesale-form.md) | frontend | 024, 073 | BEKLİYOR |
 | 082 | [Toptan talep gönderim entegrasyonu](tasks/082-wholesale-send.md) | fullstack | 081, 051 | BEKLİYOR |
 | 074 | [Ürün SEO ve AEO](tasks/074-seo.md) | frontend | 033, 029, 073, 080, 081 | BEKLİYOR |
+| 087 | [AEO/GEO — ürün soruları ve kaynaklı entity](tasks/087-aeo-geo.md) | frontend | 074, 073, 081 | BEKLİYOR |
+| 088 | [Kit hero denetimi — onaylı 086](tasks/088-kit-hero-denetim.md) | frontend | 083, 085, 086 | BEKLİYOR |
 | 075 | [ONAY GEREKLİ — Satın alma akışı bütünleşik kabul](tasks/075-commerce-e2e.md) | fullstack | 054, 050, 052, 039, 072, 070, 064, 066, 067, 068, 048, 055, 058, 061, 041, 038 | BEKLİYOR |
-| 076 | [Mobil erişilebilirlik ve hareket/performance kabulü](tasks/076-quality.md) | frontend | 074, 032, 037, 075, 034, 082 | BEKLİYOR |
+| 076 | [Mobil erişilebilirlik ve hareket/performance kabulü](tasks/076-quality.md) | frontend | 074, 032, 037, 075, 034, 082, 087, 088 | BEKLİYOR |
 | 077 | [ONAY GEREKLİ — Onaylı uzak Supabase hedefini hazırlama](tasks/077-supabase-target.md) | backend | 076, 027, 028, 044, 053, 056 | BEKLİYOR |
 | 078 | [Vercel önizleme dağıtımı](tasks/078-preview.md) | fullstack | 076, 077 | BEKLİYOR |
 | 079 | [Domain ve canlı yayın kabulü](tasks/079-launch.md) | fullstack | 078 | BEKLİYOR |

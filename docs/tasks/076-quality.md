@@ -7,7 +7,7 @@ frontend
 Duyarlı vitrin ve alışveriş erişilebilirliğini doğrula.
 
 ## Bağlam
-`docs/PLAN.md`: Hedef, Teknoloji, Mimari kararlar ve ilgili kapsam bölümü. Bağımlı task’lar / addBlockedBy: 074 (seo); 032 (scenes); 037 (cart-page); 075 (commerce-e2e); 034 (asset-handoff); 082 (wholesale-send). Komutlar 001 görevinde kurulacak araçlara dayanır; bağımlılıklar tamamlanmadan bu task çalıştırılmaz.
+`docs/PLAN.md`: Hedef, Teknoloji, Mimari kararlar ve ilgili kapsam bölümü. Bağımlı task’lar / addBlockedBy: 074 (seo); 032 (scenes); 037 (cart-page); 075 (commerce-e2e); 034 (asset-handoff); 082 (wholesale-send); 087 (aeo-geo); 088 (kit-hero-denetim). Komutlar 001 görevinde kurulacak araçlara dayanır; bağımlılıklar tamamlanmadan bu task çalıştırılmaz.
 
 ## Kullanılacak araçlar
 - ECC skill: accessibility, motion-advanced, e2e-testing, verification-loop
@@ -27,6 +27,8 @@ Duyarlı vitrin ve alışveriş erişilebilirliğini doğrula.
 ## Kabul kriterleri
 - [ ] `npm run test:e2e -- tests/e2e/quality.spec.ts` başarılı; aşağıdaki davranışın normal, hata ve reduced-motion/klavye senaryoları doğrulanır.
 - [ ] `npm run lint && npm run typecheck && npm run build` başarılı.
+
+- [ ] [087 AEO/GEO](087-aeo-geo.md) kaynak/şema/keşif kabulü ve [088 hero denetimi](088-kit-hero-denetim.md) poster/scrub/mobil/reduced-motion kanıtları tamam; açık gerçek cihaz/teyit/yayın kabul maddeleri ayrıca kaydedilmiş.
 
 ## Yapılmaması gerekenler
 - Task dışına çıkma, ek iyileştirme yapma; diğer repolara yazma.
