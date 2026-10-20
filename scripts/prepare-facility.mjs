@@ -21,7 +21,7 @@ syncBuiltinESMExports();
 const { default: sharp } = await import("sharp");
 
 const hash = value => createHash("sha256").update(value).digest("hex");
-const source = "docs/referans/tesis/afina-zeytin-tesis-osmaniye.png";
+const source = process.env.TESIS_SOURCE ?? `${process.env.HOME}/PROJELER/AFINA-KAYNAK/fabrika/afina-zeytin-tesis-osmaniye.png`; // plakalı orijinal repoda tutulmaz
 const expected = "2ab815d27aa8ef64f367feb49f0bb4923870644e534200c7f1716239106126a3";
 const bytes = await readFile(source);
 if (hash(bytes) !== expected) throw new Error("Source changed; re-inspect the plate before processing.");

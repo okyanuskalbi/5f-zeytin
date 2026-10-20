@@ -563,7 +563,7 @@ görevde açıkça onaylanan hero kare dizisini kapsamaz; diğer sahnelere onay 
 
 ## TASK-004-a — Tesis kaynağı doğrulandı, üretim bekliyor
 
-Kaynak: `docs/referans/tesis/afina-zeytin-tesis-osmaniye.png`.
+Kaynak: kullanıcının orijinal fotoğrafı (plaka okunur) repoda TUTULMAZ — yerel `~/PROJELER/AFINA-KAYNAK/fabrika/afina-zeytin-tesis-osmaniye.png` (SHA-256 2ab815d2…); repoda yalnız plakası bulanık `docs/referans/tesis/tesis-osmaniye-plaka-bulanik.jpg`.
 Task 004-a'da belirtilen salt okunur tesis fotoğrafının birebir kopyasıdır;
 PNG **1672×941**, **1.395.429 bayt**, tek durağan görsel, EXIF/XMP/IPTC yok.
 SHA-256: `2ab815d27aa8ef64f367feb49f0bb4923870644e534200c7f1716239106126a3`.

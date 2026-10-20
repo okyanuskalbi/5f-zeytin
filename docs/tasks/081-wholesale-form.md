@@ -37,4 +37,19 @@ Perakende satışın yanında resmi toptan CTA’sını ve erişilebilir talep f
 - Resmi metinleri yeniden yazma, belgesiz iddia/ürün/fiyat/iletişim bilgisi üretme.
 - Servis/hesap/kanal kararlarını kullanıcı yerine verme; gizli bilgi commit etme.
 
+## Coder Notu
+
+### Bağımlılık kontrolü ve kabul komutları — 20 Ekim 2026
+
+- Başlangıç: repo kökü `/Users/emre/PROJELER/5F-ZEYTIN`, dal `main`, çalışma ağacı temiz. PLAN, AGENTS, resmi içerik bölüm 04 ve 024/073 görevleri okundu. `frontend-patterns`, `accessibility`, `tdd-workflow` skill'leri incelendi; ek skill/paket kurulmadı. 21st MCP `search` ile form adayları bulundu; uygulamaya alınmadı.
+- **Engel:** 024 `TAMAMLANDI`, ancak zorunlu bağımlılık `docs/tasks/073-legal.md` hâlâ `BEKLİYOR`. `app/kvkk/page.tsx` de “Taslak — onay bekleniyor” ve “Onaylı metin henüz eklenmedi.” durumunda. Bu görevin “Bağımlılıklar tamamlanmadan uygulanmaz.” kuralı nedeniyle form/sözleşme/E2E uygulamasına başlanmadı; bağımlılık ve hukuk onayı kendiliğinden tamamlanmış sayılmadı.
+
+| Komut | Sonuç |
+| --- | --- |
+| `npm run lint && npm run typecheck && npm run build` | **exit 0**; mevcut uygulamanın lint, tip kontrolü ve production build'i başarılı. Prebuild varlık denetimi **18/18 PASS**. Formun uygulandığına veya kabul edildiğine kanıt değildir. |
+| `PLAYWRIGHT_PORT=3081 npm run test:e2e -- tests/e2e/wholesale-form.spec.ts` | **exit 1 — No tests found.** Görev uygulanmadığından istenen test dosyası mevcut değil. Testler atlanmış/başarılı sayılmadı; bu sonuç TDD RED davranış kanıtı değildir. |
+
+- Resmi CTA metni kaynakta **“Toptan Satış İçin İletişime Geçin”** olarak doğrulandı; CTA hash/odak, geçersiz alanlar, formdaki KVKK bağlantısı, mock pending/başarı/hata, klavye/mobil/reduced-motion kabulü henüz doğrulanamadı. Form ve gönderim başarısı eklenmedi; backend/DB/e-posta, ürün/sepet/ödeme akışları ve diğer dokümanlar değiştirilmedi.
+- Devam koşulu: 073 görevinin kullanıcı onaylı hukuk içerikleriyle tamamlanması; ardından 081 için önce davranış E2E testi, uygulama ve kabul komutları. Mevcut task'ın kabul kriterleri karşılanmadığından durum **BEKLİYOR** bırakıldı.
+
 ## Durum: BEKLİYOR
