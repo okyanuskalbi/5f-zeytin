@@ -13,7 +13,7 @@ test.beforeAll(async () => {
   if (!["localhost", "127.0.0.1"].includes(target.hostname)) {
     throw new Error("Scene fixtures require this local checkout.");
   }
-  const root = fileURLToPath(new URL("../..", import.meta.url));
+  const root = fileURLToPath(new URL("../..", import.meta.url)).replace(/\/$/, "");
   // Reuse the existing HTML shell. Compile the real Home with boundary data
   // in memory, without adding an application route or changing its data source.
   const result = await build({
@@ -76,10 +76,11 @@ async function reveal(element: Locator): Promise<void> {
 }
 
 async function expectStatic(layers: Locator): Promise<void> {
-  await expect.poll(() => layers.evaluateAll((nodes) => nodes.every((node) => {
+  await expect.poll(() => layers.evaluateAll((nodes) => nodes.flatMap((node) => {
     const style = getComputedStyle(node);
-    return new DOMMatrixReadOnly(style.transform).m42 === 0 && style.opacity === "1";
-  }))).toBe(true);
+    return new DOMMatrixReadOnly(style.transform).m42 === 0 && style.opacity === "1"
+      ? [] : [{ element: node.outerHTML.slice(0, 180), transform: style.transform, opacity: style.opacity }];
+  }))).toEqual([]);
 }
 
 async function expectFlow(page: Page): Promise<void> {
