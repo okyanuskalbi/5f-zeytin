@@ -21,7 +21,7 @@ test("credential-free dev route shows the exact warning without token or PayTR r
   const response = await page.goto("/odeme-onizleme");
   expect(response?.status()).toBe(200);
   await expect(page.locator('meta[name="app"]')).toHaveAttribute("content", "zeytin");
-  await expect(page.getByRole("alert")).toHaveText(warning);
+  await expect(page.getByRole("main").getByRole("alert")).toHaveText(warning);
   await expect(page.locator("iframe")).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Test ekranını aç" })).toHaveCount(0);
   await expect(page.locator("main input")).toHaveCount(0);

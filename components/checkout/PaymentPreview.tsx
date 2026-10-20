@@ -13,7 +13,15 @@ type ResizerWindow = Window & { iFrameResize?: (options: { checkOrigin: string[]
 function PaytrFrame({ session, onFailure }: { session: Session; onFailure: () => void }) {
   const ref = useRef<ResizableFrame>(null);
   const timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const frameReady = useRef(false);
+  const resizerReady = useRef(false);
   const [loaded, setLoaded] = useState(false);
+  const markReady = useCallback(() => {
+    if (frameReady.current && resizerReady.current) {
+      if (timeout.current) clearTimeout(timeout.current);
+      setLoaded(true);
+    }
+  }, []);
 
   useEffect(() => {
     const frame = ref.current;
@@ -25,19 +33,23 @@ function PaytrFrame({ session, onFailure }: { session: Session; onFailure: () =>
       try {
         if (!host.iFrameResize || !frame) throw new Error("resizer unavailable");
         host.iFrameResize({ checkOrigin: ["https://www.paytr.com"] }, frame);
+        resizerReady.current = true;
+        markReady();
       } catch { onFailure(); }
     };
     script.onerror = onFailure;
     timeout.current = setTimeout(onFailure, 15_000);
+    frame?.addEventListener("error", onFailure);
     document.head.append(script);
     return () => {
       if (timeout.current) clearTimeout(timeout.current);
       script.onload = null;
       script.onerror = null;
       script.remove();
+      frame?.removeEventListener("error", onFailure);
       frame?.iFrameResizer?.removeListeners();
     };
-  }, [onFailure]);
+  }, [onFailure, markReady]);
 
   return <div>
     <p role="status" className="mb-4 text-sm text-muted-foreground">
@@ -45,8 +57,7 @@ function PaytrFrame({ session, onFailure }: { session: Session; onFailure: () =>
     </p>
     <iframe ref={ref} id="paytriframe" title="PayTR test ödeme formu" src={session.iframeUrl}
       className="min-h-[640px] w-full border-0 bg-card" allow="payment" scrolling="no"
-      onLoad={() => { if (timeout.current) clearTimeout(timeout.current); setLoaded(true); }}
-      onError={onFailure} />
+      onLoad={() => { frameReady.current = true; markReady(); }} />
     <p className="mt-4 text-sm text-muted-foreground">Çerçeve yüklenmesi ödeme teyidi değildir.</p>
   </div>;
 }

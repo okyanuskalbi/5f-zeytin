@@ -82,6 +82,22 @@ describe("local preview boundary and fixture", () => {
     expect(order.merchantOid).not.toBe(createPreviewOrder().merchantOid);
     expect(order.expiresAt - order.createdAt).toBe(300_000);
   });
+
+  it("uses the shared gate on the page and both result pages", async () => {
+    const pages = [await import("../../app/odeme-onizleme/page"),
+      await import("../../app/odeme-onizleme/sonuc/ok/page"),
+      await import("../../app/odeme-onizleme/sonuc/fail/page")];
+    for (const page of pages) {
+      expect(page.default()).toBeDefined();
+      for (const flag of ["0", "1"]) {
+        vi.stubEnv("NODE_ENV", "production");
+        vi.stubEnv("PAYMENT_PREVIEW", flag);
+        expect(() => page.default()).toThrow(/404/);
+      }
+      vi.stubEnv("NODE_ENV", "development");
+    }
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
 });
 
 describe("token route, mocked upstream", () => {
