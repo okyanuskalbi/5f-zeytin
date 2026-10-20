@@ -48,4 +48,27 @@ frontend
 
 - Ek regresyon GREEN: Drawer yalnız provider hydration tamamlandıktan sonra mount edilir. `npm run test -- tests/unit/cart-wire.test.tsx tests/unit/cart-wire-recovery.test.tsx --coverage --coverage.include=components/cart/CartProvider.tsx --coverage.reporter=text --coverage.reporter=json-summary` → **exit 0; 8/8**, provider statement/line/function **%100**, branch **%94,11**. Gerçek Drawer ile katalog toparlanmasında kayıtlı iki adet korunur ve sonra üçe artırılır. Aynı düzeltme sonrası lint/typecheck/build **exit 0**, son salt okunur incelemede kritik bulgu yok.
 
-## Durum: BEKLİYOR
+### Teslim edilen bağlantı
+
+- `CartProvider` layout'ta tek kez mount edilir; store her provider için ayrı oluşturulur, SSR istekleri arasında paylaşılmaz. Katalog yalnız mevcut `getProducts()` üzerinden sunucuda okunur. Hydration tamamlanmadan drawer mount edilmez; başarısız katalog okuması kayıtlı sepeti silmez.
+- ProductCard mevcut callback sözleşmesini koruyarak uygulamada ortak store'a ürün ID/adet ekler; başarılı ekleme drawer'ı açar. Birikimli stok hatasında adet/kayıt korunur, drawer açılmaz ve kullanıcı tekrar deneyebilir. Navbar toplam adedi erişilebilir düğme adında bildirir; sıfırda görsel rozet gizlenir. Rozet zeytin/fildişi tokenlarına uyarlanmıştır.
+- Gerçek `/sepet` sayfasındaki route-local store kaldırıldı; sayfa, drawer, ürünler ve Navbar aynı bellek sahibini kullanır. Depolama yazılamazken bile client navigation sonrası adetler korunur. Yenilemede yalnız ID/adet geri yüklenir; fiyat ve bilinmeyen alanlar kayıttan alınmaz.
+- Dış tetikleyici ref'i ile Safari'deki fare tıklaması dahil ürün ve Navbar odağı kapanışta geri verilir. Mevcut modal izolasyonu, odak tuzağı, Escape ve reduced-motion davranışı korunur. Mobil menünün `/sepet` bağlantısı aynı sepeti açar. Yeni animasyon, görsel, paket, skill, backend veya ödeme entegrasyonu eklenmedi.
+
+### Nihai komut kabulü — 20 Ekim 2026
+
+| Komut / garanti | Sonuç |
+| --- | --- |
+| `PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" npm run test:e2e -- tests/e2e/cart-wire.spec.ts tests/e2e/cart-drawer.spec.ts tests/e2e/cart-page.spec.ts tests/e2e/product-card.spec.ts tests/e2e/shell.spec.ts tests/e2e/scenes.spec.ts --config .cache/task-038/playwright.config.ts` | **exit 0; 396/396, 137,2 sn**. Task 038 **72/72**; drawer **48**, sepet sayfası **108**, ürün kartı **12**, shell **60**, sahneler **96**. Chromium/Firefox/WebKit × 320/390/768/1440. |
+| Normal, hata ve klavye/hareket senaryoları | Üründen ekleme, toplam adet rozeti, drawer/sayfa çift yönlü düzenleme, silme/boş durum, reload, birikimli stok reddi/tekrar deneme, tükenmiş ürün, sahte fiyat/bilinmeyen ID temizleme, mobil menü; bozuk/engellenen/yazılamayan storage, tek bellek sahibiyle gerçek client navigation; normal/reduced-motion, Enter/Space, odak tuzağı/Escape, fare/klavye tetikleyicisine odak dönüşü **PASS**. |
+| `npm run lint && npm run typecheck && npm run build` | **exit 0**, son production düzeltmesi dahil. Next.js 16.4.2 production build ve prebuild varlık denetimi **14/14 PASS**. |
+| `npm run test` | **exit 0; 134/134**, altı dosya. Gerçek Drawer ile katalog toparlanması regresyonu dahil. |
+| Yukarıdaki provider kapsam komutu | **exit 0; 8/8**; provider statement/line/function **%100**, branch **%94,11**. Diğer UI dosyalarının satır kapsamı bu ölçüme dahil değildir; değişen UI akışları gerçek tarayıcı testleriyle doğrulanır. |
+| `node .cache/task-038/verify-results.mjs` | **exit 0**; JSON raporunda `localhost:3038`, **12** proje, dosya başına sayılar, **396** tek denemeli başarılı test; **0 başarısız/atlanan/flaky/global hata** doğrulandı. |
+| `git diff --check` | **exit 0**. |
+
+- TDD checkpoint'leri aktif `main` geçmişindedir: `36750de` ilk RED, `f0d3801` ilk GREEN, `32679d9` gerçek Drawer toparlanma RED'i, `4270145` düzeltme GREEN'i. Son kod incelemesinde kritik bulgu yok.
+- Rapor `.cache/task-038/results.json`, ekranlar `.cache/task-038/results/`, kapsam özeti `coverage/coverage-summary.json` altında yerel ve commit dışıdır. Masaüstü rozet/reduced-motion ve 320 px boş sepet ekranları açılarak incelendi. Build'in otomatik değiştirdiği `next-env.d.ts` başlangıç içeriğine döndürüldü; kapsam dışı fark bırakılmadı.
+- Task 038 kapsamında kalan engel yok. Temsili katalog kararı korunur; gerçek katalog/fiyat/kupon/ödeme işleri kendi task'larındadır. Bu kabul yereldir; deployment veya canlı satış doğrulaması değildir. PLAN, diğer task dosyaları, `_legacy/`, görsel/onay kayıtları ve servis ayarları değiştirilmedi.
+
+## Durum: TAMAMLANDI
