@@ -7,6 +7,7 @@ import { WholesaleContact } from "@/components/landing/WholesaleContact";
 import { WholesaleForm } from "@/components/landing/WholesaleForm";
 import { SceneFlow } from "@/components/landing/SceneFlow";
 import { ProductShowcase } from "@/components/landing/ProductShowcase";
+import { FeaturedProduct } from "@/components/landing/FeaturedProduct";
 import { getProducts } from "@/lib/catalog/static-products";
 
 export default async function Home(): Promise<JSX.Element> {
@@ -16,6 +17,7 @@ export default async function Home(): Promise<JSX.Element> {
       <SceneFlow>
         <div data-scene="hero"><Hero products={products} /></div>
         <ProductShowcase products={products} />
+        <FeaturedProduct products={products} />
         <div className="page-wrap">
           <div
             id="hikayemiz"
@@ -27,7 +29,9 @@ export default async function Home(): Promise<JSX.Element> {
           <Moments />
           <Faq />
         </div>
-        <WholesaleContact><WholesaleForm /></WholesaleContact>
+        <div id="toptan" tabIndex={-1} className="scroll-mt-24">
+          <WholesaleContact><WholesaleForm /></WholesaleContact>
+        </div>
       </SceneFlow>
     </main>
   );
