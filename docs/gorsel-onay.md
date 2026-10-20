@@ -560,3 +560,23 @@ bağlıdır; bu dosya 24 fps, 1920/960 px, 121’er kare, poster ve manifest has
 kapsar. `check:assets` bütün dosyaları, ölçüleri, onay bağını ve toplam 12 MB
 sınırını denetler. MP4 runtime’a eklenmedi. Önceki video kapsam sınırı bu
 görevde açıkça onaylanan hero kare dizisini kapsamaz; diğer sahnelere onay vermez.
+
+## TASK-004-a — Tesis kaynağı doğrulandı, üretim bekliyor
+
+Kaynak: `docs/referans/tesis/afina-zeytin-tesis-osmaniye.png`.
+Task 004-a'da belirtilen salt okunur tesis fotoğrafının birebir kopyasıdır;
+PNG **1672×941**, **1.395.429 bayt**, tek durağan görsel, EXIF/XMP/IPTC yok.
+SHA-256: `2ab815d27aa8ef64f367feb49f0bb4923870644e534200c7f1716239106126a3`.
+Kaynak fotoğraf temsili referanstır; kullanıcı görsel onayı değildir.
+
+Atlas katalog/şeması `openai/gpt-image-2.5-flare/edit` için referans fotoğrafı,
+2048×1152 (16:9), PNG ve `n: 2` desteğini doğruladı. Kaynak yükleme isteği,
+geçici herkese açık URL oluşturacak dış aktarım için ayrıca kullanıcı izni
+gerektiği gerekçesiyle otomatik onay incelemesinde reddedildi. Aktarım izni
+soruldu; bu kayıt anında yanıt yok. Başarılı yükleme veya üretim yapılmadı.
+
+**Üretilmiş aday sayısı: 0.** Çıktı/hash/onay/karar kaydı oluşturulmadı;
+mevcut karar blokları ve public manifest değiştirilmedi. 004-a gereğince
+onaysız adaylar `public/` altında saklanamaz; mevcut doğrulayıcı yalnız bu
+dizindeki görselleri kabul ettiğinden kabul sözleşmesi ayrıca çözülmelidir.
+Ayrıntı ve komut sonuçları [Task 004 Coder Notu](tasks/004-factory-wide.md)'ndadır.
