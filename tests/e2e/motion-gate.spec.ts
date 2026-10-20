@@ -30,3 +30,18 @@ test("097: wholesale uses the left edge and fills its field with the confirmed p
   expect(geometry.left).toBeLessThan(geometry.viewport * 0.2);
   await expect(page.locator("[data-wholesale-scope]")).toContainText("Sofralık zeytin");
 });
+
+test("097: a keyboard-focused stub yields to the header cart when the footer enters", async ({ page }) => {
+  await page.goto("/");
+  await page.evaluate(() => scrollTo(0, innerHeight * 0.8));
+  const stub = page.locator("[data-hero-stub]");
+  await expect(stub).toBeVisible();
+  await stub.getByRole("link").focus();
+  await page.locator("footer").evaluate(node => node.scrollIntoView({ block: "start" }));
+  await expect(stub).toBeHidden();
+  await expect(page.getByRole("banner").getByRole("button", { name: "Sepetim, 0 adet" })).toBeFocused();
+  const legal = page.getByRole("contentinfo").getByRole("link", { name: "KVKK", exact: true });
+  await legal.hover();
+  await legal.click();
+  await expect(page).toHaveURL(/\/kvkk$/);
+});
