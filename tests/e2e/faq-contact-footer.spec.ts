@@ -50,13 +50,7 @@ test("confirmed FAQs stay open, channels stay absent and the contact/footer layo
     await expect(region.locator('a[href^="tel:"], a[href^="mailto:"]')).toHaveCount(0);
     await expect(region).not.toContainText(/teyit|gönderildi/i);
   }
-  await expect(footer.locator("[data-footer-scallop]")).toHaveCount(12);
-  const stamp = footer.locator("[data-footer-stamp] img");
-  await stamp.scrollIntoViewIfNeeded();
-  await expect.poll(() => stamp.evaluate((node: HTMLImageElement) => node.complete && node.naturalWidth > 0)).toBe(true);
-  expect(new URL((await stamp.getAttribute("src"))!, page.url()).searchParams.get("url")).toBe("/images/hero/zeytinlik-1200.webp");
-  await expect(stamp).toHaveAttribute("loading", "lazy");
-  await expect(stamp).toHaveAttribute("sizes", "88px");
+  await expect(footer.locator("[data-footer-scallop], [data-footer-stamp]")).toHaveCount(0);
   await expect(footer).toContainText("AFİNA ZEYTİNCİLİK TARIM ÜRÜNLERİ SAN. VE TİC. LTD. ŞTİ. · Düziçi VD · VKN 0091520061");
   await expect(footer.getByRole("link", { name: "AFİNA Şirketler Topluluğu" })).toHaveAttribute("href", "https://afina.com.tr");
   const metrics = await page.evaluate(() => {
@@ -150,7 +144,7 @@ test("reduced motion and JavaScript-free rendering keep every answer, address an
   await open(page);
   await page.locator("#toptan-iletisim").scrollIntoViewIfNeeded();
   await expect(page.locator("#toptan-title")).toHaveCSS("transform", "none");
-  await expect(page.locator("[data-footer-stamp]")).toHaveCSS("transform", "none");
+  await expect(page.locator("[data-footer-stamp]")).toHaveCount(0);
   await page.screenshot({ path: `test-results/095/${testInfo.project.name}-reduced.png` });
   const context = await browser.newContext({ javaScriptEnabled: false, baseURL, viewport: page.viewportSize()!, reducedMotion: "reduce" });
   const staticPage = await context.newPage();
@@ -164,7 +158,7 @@ test("reduced motion and JavaScript-free rendering keep every answer, address an
 
 test("missing stamp and community images do not remove their text, address or navigation", async ({ page }) => {
   await page.route("**/images/hero/**", route => route.abort());
-  await page.route("**/brand/afina-topluluk.svg", route => route.abort());
+  await page.route("**/brand/afina-topluluk-dark.svg", route => route.abort());
   await open(page);
   const footer = page.getByRole("contentinfo");
   await expect(footer.locator("address")).toHaveText(address);

@@ -63,7 +63,7 @@ it.each(["rejection", "negative result"])("retains entered values on %s and allo
   fill();
   fireEvent.submit(form());
   await waitFor(() => expect(screen.getByRole("alert").textContent).toContain("Talebiniz gönderilemedi."));
-  expect(document.activeElement).toBe(screen.getByRole("alert"));
+  await waitFor(() => expect(document.activeElement).toBe(screen.getByRole("alert")));
   expect((input("İsim / firma") as HTMLInputElement).value).toBe("  Örnek Firma  ");
   expect((input("Talep mesajı") as HTMLTextAreaElement).value).toBe("  Zeytin için bilgi rica ederim.  ");
   expect(form().textContent).not.toContain("private provider detail");

@@ -1,24 +1,11 @@
-import { mkdir, writeFile } from "node:fs/promises";
 import { expect, test, type Page } from "@playwright/test";
 import { getProducts } from "../../lib/catalog/static-products";
 import { CART_STORAGE_KEY } from "../../lib/cart/store";
 
 const section = (page: Page) => page.getByRole("region", { name: "Ürünlerimiz", exact: true });
-const row = (page: Page) => page.getByRole("region", { name: "Ürün fişleri", exact: true });
+const row = (page: Page) => page.getByRole("region", { name: "Ürün listesi", exact: true });
 const drawer = (page: Page) => page.getByRole("dialog", { name: "Sepetim", exact: true });
 let errors: string[] = [];
-
-async function expectClearStub(page: Page): Promise<void> {
-  await expect.poll(() => section(page).evaluate(node => {
-    const stub = document.querySelector<HTMLElement>('[data-hero-stub][data-visible="true"]');
-    if (!stub) return false;
-    const s = stub.getBoundingClientRect();
-    return [...node.querySelectorAll("article,[data-showcase-copy]")].some(card => {
-      const b = card.getBoundingClientRect();
-      return b.left < s.right && b.right > s.left && b.top < s.bottom && b.bottom > s.top;
-    });
-  })).toBe(false);
-}
 
 test.beforeEach(async ({ page }) => {
   errors = [];
@@ -38,7 +25,7 @@ test.beforeEach(async ({ page }) => {
 });
 test.afterEach(() => { expect(errors).toEqual([]); });
 
-test("every available slip adds its SKU and quantity to the shared cart; sold out stays disabled", async ({ page, isMobile }) => {
+test("every available product adds its SKU and quantity to the shared cart; sold out stays disabled", async ({ page, isMobile }) => {
   for (const product of await getProducts()) {
     const card = section(page).getByRole("article", { name: product.name, exact: true });
     const add = card.getByRole("button", { name: "Sepete ekle", exact: true });
@@ -61,90 +48,22 @@ test("every available slip adds its SKU and quantity to the shared cart; sold ou
   ]);
 });
 
-test("paper composition keeps every purchase control inside its uncut slip", async ({ page }, testInfo) => {
+test("v2 products retain uncut controls without paper slips or ornaments", async ({ page }) => {
   await page.evaluate(() => document.fonts.ready);
-  await expect(section(page).locator("[data-product-card-motion]").first().locator("..")).toHaveAttribute("data-test-motion-settled", "true");
-  await expect.poll(() => section(page).locator("[data-product-card-motion]").evaluateAll(layers =>
-    layers.every(layer => new DOMMatrixReadOnly(getComputedStyle(layer).transform).m42 === 0),
-  )).toBe(true);
-  // The scroll event schedules the existing stub placement on the next frame.
-  // Measure the settled placement, as we do for other asynchronous UI state.
-  await expectClearStub(page);
-  const metrics = await section(page).evaluate((node) => {
-    const box = node.getBoundingClientRect();
-    const track = node.querySelector('[aria-label="Ürün fişleri"]')!;
-    const trackBox = track.getBoundingClientRect();
-    const intrinsicHeight = parseFloat(getComputedStyle(node).paddingTop)
-      + (node.querySelector("[data-showcase-copy]") as HTMLElement).offsetHeight + (track as HTMLElement).offsetHeight;
-    const slips = [...node.querySelectorAll<HTMLElement>("[data-product-slip]")].map((card) => {
-      const rect = card.getBoundingClientRect();
-      const title = card.querySelector("h3")!;
-      return {
-        width: card.offsetWidth, height: card.offsetHeight,
-        bottom: rect.bottom - trackBox.top, top: rect.top - trackBox.top,
-        lines: (title as HTMLElement).offsetHeight / parseFloat(getComputedStyle(title).lineHeight),
-        minText: Math.min(...[...card.querySelectorAll("p,label,button,input")].map((el) => parseFloat(getComputedStyle(el).fontSize))),
-        controls: [...card.querySelectorAll<HTMLElement>("button,input")].map((el) => {
-          const control = el.getBoundingClientRect();
-          return { width: el.offsetWidth, height: el.offsetHeight, inside: control.top >= rect.top && control.bottom <= rect.bottom };
-        }),
-      };
-    });
-    const stub = document.querySelector<HTMLElement>('[data-hero-stub][data-visible="true"]');
-    const stubBox = stub?.getBoundingClientRect();
-    const stubOverlapsSlip = !!stubBox && [...node.querySelectorAll("article,[data-showcase-copy]")].some(card => {
-      const b = card.getBoundingClientRect();
-      return b.left < stubBox.right && b.right > stubBox.left && b.top < stubBox.bottom && b.bottom > stubBox.top;
-    });
-    return { width: box.width, height: box.height, intrinsicHeight, minHeight: parseFloat(getComputedStyle(node).minHeight),
-      viewport: innerWidth, viewportHeight: innerHeight, stubOverlapsSlip,
-      rowHeight: trackBox.height, scrollWidth: track.scrollWidth, clientWidth: track.clientWidth,
-      gap: getComputedStyle(node.querySelector("ul")!).gap, slips,
-      documentFits: document.documentElement.scrollWidth <= innerWidth };
-  });
-  await mkdir("test-results/092", { recursive: true });
-  await writeFile(`test-results/092/${testInfo.project.name}-geometry.json`, JSON.stringify(metrics, null, 2));
-  // A tall locator screenshot resizes WebKit's viewport while fixed elements
-  // are being placed. Preserve the actual device viewport and take a second
-  // view for purchase controls instead.
-  await page.screenshot({ path: `test-results/092/${testInfo.project.name}-vitrin.png` });
-  expect(metrics.width).toBe(metrics.viewport);
-  expect(metrics.height).toBeGreaterThanOrEqual(metrics.viewportHeight * 0.96 - 1);
-  // Short viewports expand to the controls' intrinsic height instead of
-  // cropping the slips. Otherwise the section remains exactly 96svh.
-  expect(Math.abs(metrics.height - Math.max(metrics.minHeight, metrics.intrinsicHeight))).toBeLessThan(2);
-  expect(metrics.gap).toBe("12px");
-  expect(metrics.documentFits).toBe(true);
-  expect(metrics.stubOverlapsSlip).toBe(false);
-  expect(new Set(metrics.slips.map(slip => slip.height)).size).toBeGreaterThan(1);
-  for (const slip of metrics.slips) {
-    expect(slip.minText).toBeGreaterThanOrEqual(14);
-    expect(slip.lines).toBeLessThanOrEqual(2.1);
-    expect(slip.top).toBeGreaterThanOrEqual(0);
-    expect(slip.bottom).toBeLessThanOrEqual(metrics.rowHeight);
-    for (const control of slip.controls) {
-      expect(control.width).toBeGreaterThanOrEqual(44);
-      expect(control.height).toBeGreaterThanOrEqual(44);
-      expect(control.inside).toBe(true);
+  await expect(section(page).locator("[data-product-slip]")).toHaveCount(0);
+  await expect(row(page)).not.toContainText("· · · · ·");
+  for (const article of await section(page).getByRole("article").all()) {
+    await expect(article).toHaveCSS("transform", "none");
+    for (const control of await article.locator("button,input").all()) {
+      const box = (await control.boundingBox())!;
+      expect(box.width).toBeGreaterThanOrEqual(44);
+      expect(box.height).toBeGreaterThanOrEqual(44);
     }
   }
-  if (metrics.viewport < 768) {
-    expect(metrics.scrollWidth).toBeGreaterThan(metrics.clientWidth);
-    expect(Math.abs(metrics.slips[0].width - metrics.viewport * 0.72)).toBeLessThan(1);
-    const next = await row(page).locator("li").nth(1).boundingBox();
-    expect(next!.x).toBeLessThan(metrics.viewport);
-    expect(next!.x).toBeGreaterThan(metrics.viewport * 0.65);
-  }
-  await section(page).getByRole("article").first().getByRole("button", { name: "Sepete ekle" }).scrollIntoViewIfNeeded();
-  await expectClearStub(page);
-  await page.screenshot({ path: `test-results/092/${testInfo.project.name}-vitrin-controls.png` });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
-test("native horizontal scrolling and keyboard focus reach the last slip", async ({ page }) => {
-  if (page.viewportSize()!.width >= 768) return;
-  await row(page).focus();
-  await page.keyboard.press("ArrowRight");
-  await expect.poll(() => row(page).evaluate((node) => node.scrollLeft)).toBeGreaterThan(0);
+test("keyboard focus reaches and purchases the last product", async ({ page }) => {
   const last = section(page).getByRole("article").last();
   await last.getByRole("button", { name: "Adedi artır" }).focus();
   await expect(last.getByRole("spinbutton")).toBeInViewport();
@@ -152,7 +71,7 @@ test("native horizontal scrolling and keyboard focus reach the last slip", async
   await expect(last.getByRole("spinbutton")).toHaveValue("2");
 });
 
-test("reduced motion keeps slips static, readable and purchasable", async ({ page }) => {
+test("reduced motion keeps products static, readable and purchasable", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.reload();
   await section(page).evaluate((node) => node.scrollIntoView({ block: "start" }));
@@ -170,7 +89,7 @@ test("reduced motion keeps slips static, readable and purchasable", async ({ pag
   await expect(add).toBeFocused();
 });
 
-test("without JavaScript the poster, product details and cart link remain available", async ({ browser, baseURL }, testInfo) => {
+test("without JavaScript product details and cart link remain available", async ({ browser, baseURL }, testInfo) => {
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: testInfo.project.use.viewport });
   try {
     const page = await context.newPage();
@@ -185,7 +104,7 @@ test("without JavaScript the poster, product details and cart link remain availa
     // Firefox's no-JS realm cannot reliably poll an image JS property. Verify
     // the approved image response and rendered geometry independently instead.
     await expect.poll(() => loadedPosters.length).toBeGreaterThan(0);
-    await expect(section(page).locator("img")).toBeVisible();
+    await expect(page.locator("[data-frame-sequence] img")).toBeVisible();
     for (const card of await section(page).getByRole("article").all()) {
       await expect(card.getByRole("heading")).toBeVisible();
       await expect(card.getByRole("button", { name: "Sepete ekle" })).toBeVisible();

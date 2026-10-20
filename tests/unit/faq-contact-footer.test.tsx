@@ -49,19 +49,15 @@ it("keeps the wholesale destination focusable, address public and unconfirmed ch
   expect(contact.querySelector('[role="status"]')?.textContent).toContain("Toptan talep gönderimi henüz kullanıma açık değil.");
 });
 
-it("prints the seller imprint, twelve scallops, approved orchard stamp and legal destinations", () => {
+it("prints the seller imprint and legal destinations without v1 ornaments", () => {
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(<Footer />);
   expect(doc.querySelector("footer")?.textContent).toContain("Kökü toprakta. Yeri sofrada.");
   expect(doc.body.textContent).toContain("AFİNA ZEYTİNCİLİK TARIM ÜRÜNLERİ SAN. VE TİC. LTD. ŞTİ. · Düziçi VD · VKN 0091520061");
-  expect(doc.querySelectorAll("[data-footer-scallop]")).toHaveLength(12);
-  const stamp = doc.querySelector('[data-footer-stamp] img')!;
-  expect(new URL(stamp.getAttribute("src")!, "https://assets.invalid").searchParams.get("url")).toBe("/images/hero/zeytinlik-1200.webp");
-  expect(stamp.getAttribute("loading")).toBe("lazy");
-  expect(stamp.getAttribute("sizes")).toBe("88px");
+  expect(doc.querySelector("[data-footer-scallop], [data-footer-stamp]")).toBeNull();
   for (const href of ["/kvkk", "/mesafeli-satis", "/iade", "https://afina.com.tr"]) {
     expect(doc.querySelector(`footer a[href="${href}"]`)).not.toBeNull();
   }
-  expect(doc.querySelector('a[href="https://afina.com.tr"] img')?.getAttribute("src")).toBe("/brand/afina-topluluk.svg");
+  expect(doc.querySelector('a[href="https://afina.com.tr"] img')?.getAttribute("src")).toBe("/brand/afina-topluluk-dark.svg");
   expect(doc.querySelector('a[href^="tel:"], a[href^="mailto:"]')).toBeNull();
 });

@@ -1,0 +1,25 @@
+.bar { position: sticky; top: 0; z-index: 30; background: var(--brand-ivory); color: var(--brand-olive); }
+.bar[data-over-hero="true"] { position: fixed; inset: 0 0 auto; }
+.bar[data-tone="dark"] { background: transparent; color: var(--brand-ivory); }
+.row { display: flex; height: 64px; align-items: center; justify-content: space-between; gap: 24px; }
+.home { display: inline-flex; align-items: center; min-width: 80px; min-height: 56px; }
+.logo { display: block; width: 80px; height: 56px; object-fit: contain; }
+.home:hover { opacity: 0.8; }
+.home:active { opacity: 0.65; }
+.desktop { display: none; align-items: center; gap: 24px; margin-left: auto; }
+.link { display: inline-flex; align-items: center; min-height: 44px; padding: 8px; font-weight: 600; }
+.link:hover { text-decoration: underline; text-underline-offset: 6px; }
+.link:active { text-decoration: underline; text-decoration-thickness: 2px; }
+.actions { display: flex; align-items: center; gap: 8px; }
+.control { position: relative; background: transparent; color: inherit; outline-color: currentColor; transition: none; }
+.control:hover { background: transparent; text-decoration: underline; outline: 2px solid currentColor; outline-offset: -4px; }
+.control:active { background: transparent; color: inherit; }
+.control:disabled { background: transparent; color: inherit; opacity: 0.5; }
+.account { display: none; }
+.badge { pointer-events: none; position: absolute; top: 0; right: 0; display: inline-flex; align-items: center; justify-content: center; min-width: 20px; min-height: 20px; padding-inline: 4px; background: var(--brand-olive); color: var(--brand-ivory); font-size: var(--step-small); font-weight: 600; line-height: 1.4; font-variant-numeric: tabular-nums; }
+.bar[data-tone="dark"] .badge { background: var(--brand-gold); color: var(--brand-earth); }
+.menu { inset: 0; width: 100%; max-width: none; height: 100dvh; max-height: none; display: flex; flex-direction: column; justify-content: space-between; gap: 32px; padding: max(64px, env(safe-area-inset-top, 0px)) max(24px, env(safe-area-inset-right, 0px)) max(32px, env(safe-area-inset-bottom, 0px)) max(24px, env(safe-area-inset-left, 0px)); background: var(--brand-ivory); color: var(--brand-olive); }
+.menuLinks { display: grid; align-content: center; gap: 8px; flex: 1; }
+.menuLinks .link { font-family: var(--font-display, var(--font-display-fallback)); font-size: var(--step-head); font-weight: 500; line-height: 1.2; }
+@media (min-width: 1024px) { .desktop, .account { display: flex; } .trigger { display: none; } }
+@media (prefers-reduced-motion: reduce) { .badge { transform: none !important; } }

@@ -1,13 +1,13 @@
 import { expect, test } from "@playwright/test";
 
-const heroSelector = "[data-hero-label]";
+const heroSelector = "[data-hero-intro]";
 
-test("label selects catalog products and sizes, then adds the selected SKU to the shared cart", async ({ page }) => {
+test("intro selects catalog products and sizes, then adds the selected SKU to the shared cart", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/");
   const hero = page.locator(heroSelector);
-  const print = hero.getByTestId("hero-print");
+  const print = hero.getByTestId("hero-product");
   await expect(print.getByRole("heading")).toHaveText("Sofralık Zeytin");
   await expect(print).toContainText("500 G");
   await expect(print).toContainText("125,50 ₺");
@@ -29,7 +29,7 @@ test("label selects catalog products and sizes, then adds the selected SKU to th
   expect(errors).toEqual([]);
 });
 
-test("label keyboard selection, first-screen geometry, approved logo and grove remain accessible", async ({ page }, testInfo) => {
+test("intro keyboard selection, headline, approved logo and grove remain accessible", async ({ page }, testInfo) => {
   await page.goto("/");
   await page.evaluate(() => document.fonts.ready);
   const hero = page.locator(heroSelector);
@@ -43,19 +43,20 @@ test("label keyboard selection, first-screen geometry, approved logo and grove r
   await expect(group.getByRole("radio", { name: "Sofralık Zeytin" })).toBeChecked();
   await page.keyboard.press("ArrowRight");
   await expect(group.getByRole("radio", { name: "Salamura Zeytin" })).toBeChecked();
+  await page.evaluate(() => scrollTo(0, 0));
   const title = page.locator("#hero-title");
   expect(await title.evaluate((node) => node.getBoundingClientRect().height / parseFloat(getComputedStyle(node).lineHeight))).toBeLessThanOrEqual(2.01);
   const box = (await title.boundingBox())!;
   expect(box.y).toBeGreaterThanOrEqual(64);
   expect(box.y + box.height).toBeLessThanOrEqual(page.viewportSize()!.height);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await expect(hero.getByRole("img", { name: "Afina Zeytin" })).toHaveAttribute("src", "/brand/afina-zeytin.svg");
+  await expect(page.getByRole("banner").getByRole("img", { name: "AFİNA ZEYTİN" })).toHaveAttribute("src", "/brand/afina-zeytin-dark.svg");
   await expect(hero.locator("[data-frame-sequence] img")).toHaveAttribute("src", "/images/hero/zeytinlik-2400.webp");
-  await expect(hero.locator("[data-frame-sequence] > div > div").first()).toHaveCSS("filter", "brightness(0.7)");
-  await page.screenshot({ path: `test-results/091/${testInfo.project.name}-hero.png` });
+  await expect(hero.locator("[data-frame-sequence] > div > div").first()).toHaveCSS("filter", "brightness(0.3)");
+  await page.screenshot({ path: `test-results/100/${testInfo.project.name}-hero.png` });
 });
 
-test("without JavaScript the printed label and product/cart destinations remain usable", async ({ browser, baseURL }, testInfo) => {
+test("without JavaScript the intro and product/cart destinations remain usable", async ({ browser, baseURL }, testInfo) => {
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: testInfo.project.use.viewport });
   try {
     const page = await context.newPage();

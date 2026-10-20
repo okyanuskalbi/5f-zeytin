@@ -4,15 +4,12 @@ test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => Object.defineProperty(navigator, "hardwareConcurrency", { configurable: true, get: () => 8 }));
 });
 
-test("097: the pinned label hands over to products within one screen of collapsing", async ({ page }) => {
+test("100: the v2 intro keeps a direct product destination without a pinned label", async ({ page }) => {
   await page.goto("/");
-  await expect(page.locator("[data-hero-label]")).toHaveAttribute("data-enhanced", "true");
-  const distance = await page.evaluate(() => {
-    const hero = document.querySelector("[data-hero-label]")!.getBoundingClientRect();
-    const products = document.querySelector("#urunler")!.getBoundingClientRect();
-    return (products.top - hero.top) / innerHeight - 0.7;
-  });
-  expect(distance).toBeLessThanOrEqual(1);
+  await expect(page.locator("[data-hero-label], [data-hero-stub]")).toHaveCount(0);
+  await page.locator("[data-hero-intro]").getByRole("link", { name: "Tüm ürünler", exact: true }).click();
+  await expect(page).toHaveURL(/#urunler$/);
+  await expect(page.locator("#urunler")).toBeFocused();
 });
 
 test("097: the process strip is typographic until distinct process imagery is approved", async ({ page }) => {
@@ -31,17 +28,14 @@ test("097: wholesale uses the left edge and fills its field with the confirmed p
   await expect(page.locator("[data-wholesale-scope]")).toContainText("Sofralık zeytin");
 });
 
-test("097: a keyboard-focused stub yields to the header cart when the footer enters", async ({ page }) => {
+test("100: the persistent cart preserves focus while the footer enters", async ({ page }) => {
   await page.goto("/");
-  await page.evaluate(() => scrollTo(0, innerHeight * 0.8));
-  const stub = page.locator("[data-hero-stub]");
-  await expect(stub).toBeVisible();
-  await stub.getByRole("link").focus();
+  const cart = page.getByRole("banner").getByRole("button", { name: "Sepetim, 0 adet" });
+  await cart.focus();
   await page.locator("footer").evaluate(node => node.scrollIntoView({ block: "start" }));
-  await expect(stub).toBeHidden();
-  await expect(page.getByRole("banner").getByRole("button", { name: "Sepetim, 0 adet" })).toBeFocused();
-  const legal = page.getByRole("contentinfo").getByRole("link", { name: "KVKK", exact: true });
-  await legal.hover();
-  await legal.click();
+  await expect(page.locator("[data-hero-stub]")).toHaveCount(0);
+  await expect(cart).toBeFocused();
+  await expect(cart).toBeInViewport();
+  await page.getByRole("contentinfo").getByRole("link", { name: "KVKK", exact: true }).click();
   await expect(page).toHaveURL(/\/kvkk$/);
 });

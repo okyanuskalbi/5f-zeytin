@@ -54,13 +54,13 @@ test("JavaScript-free landing keeps the form, legal link and honest disabled sub
   } finally { await context.close(); }
 });
 
-test("the floating product shortcut leaves the whole wholesale form clear during scroll", async ({ page }, testInfo) => {
+test("the v2 shell leaves the whole wholesale form clear during scroll", async ({ page }, testInfo) => {
   await page.goto("/");
   await page.evaluate(() => document.fonts.ready);
   const bounds = await form(page).evaluate(node => ({ top: node.getBoundingClientRect().top + scrollY, height: node.getBoundingClientRect().height }));
   for (const fraction of [0, 0.5, 1]) {
     await page.evaluate(({ top, height, fraction }) => scrollTo(0, top + height * fraction - innerHeight / 2), { ...bounds, fraction });
-    await expect(page.locator("[data-hero-stub]")).toHaveAttribute("data-visible", "true");
+    await expect(page.locator("[data-hero-stub]")).toHaveCount(0);
     await expect.poll(() => form(page).evaluate(node => {
       const stub = document.querySelector<HTMLElement>("[data-hero-stub]");
       if (!stub || getComputedStyle(stub).visibility !== "visible") return false;

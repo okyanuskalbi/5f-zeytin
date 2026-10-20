@@ -18,14 +18,6 @@
   color: var(--body-ink);
 }
 
-.paper::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 8px;
-  background: var(--label-green);
-}
-
 .paper h1, .paper h2, .paper h3 { color: var(--brand-olive); }
 
 .layout {
@@ -43,6 +35,7 @@
 .summary h2 { font-size: var(--step-lead); }
 .empty { padding-block: 32px; }
 .empty .header { display: block; }
+.empty .header h1 { font-size: var(--step-lead); }
 .empty p { max-width: 54ch; }
 .empty p + p { margin-top: 16px; }
 .empty a { margin-top: 24px; }
@@ -86,7 +79,6 @@
   color: var(--body-ink);
 }
 
-.drawer::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 8px; background: var(--label-green); }
 .drawerHeader { padding: 24px; }
 .drawerBody { padding: 0 24px 24px; }
 .drawerFooter { padding: 24px; padding-bottom: max(24px, env(safe-area-inset-bottom)); }

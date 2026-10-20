@@ -15,12 +15,12 @@ const products: readonly Product[] = [
 ];
 afterEach(() => { cleanup(); localStorage.clear(); vi.mocked(getProducts).mockReset(); });
 
-it("presents product slips with the existing quantity, stock and shared cart behavior", async () => {
+it("presents products with the existing quantity, stock and shared cart behavior", async () => {
   vi.mocked(getProducts).mockResolvedValue(products);
   render(<CartProvider products={products}>{await Home()}</CartProvider>);
-  const row = within(screen.getByRole("region", { name: "Ürün fişleri" }));
+  const row = within(screen.getByRole("region", { name: "Ürün listesi" }));
   const olive = within(row.getByRole("article", { name: "Sofralık Zeytin" }));
-  expect(olive.getByText("· · · · ·").getAttribute("aria-hidden")).toBe("true");
+  expect(row.queryByText("· · · · ·")).toBeNull();
   expect(olive.getByText("125,50 ₺")).toBeDefined();
   fireEvent.click(olive.getByRole("button", { name: "Adedi artır" }));
   fireEvent.click(olive.getByRole("button", { name: "Sepete ekle" }));
@@ -32,7 +32,7 @@ it("presents product slips with the existing quantity, stock and shared cart beh
   for (const button of soldOut.getAllByRole("button")) expect(button.hasAttribute("disabled")).toBe(true);
 });
 
-it("keeps the poster, official product scope and at most six slips without inventing images", async () => {
+it("keeps the official product scope and at most six products without inventing images", async () => {
   vi.mocked(getProducts).mockResolvedValue(Array.from({ length: 7 }, (_, index) => ({ ...products[0], id: String(index), name: `Ürün ${index + 1}` })));
   render(await Home());
   const showcase = within(screen.getByRole("region", { name: "Ürünlerimiz" }));
@@ -40,7 +40,7 @@ it("keeps the poster, official product scope and at most six slips without inven
   expect(showcase.queryByText("Ürün 7")).toBeNull();
   expect(showcase.getByText(/Sofralık zeytin, salamura zeytin ve zeytinyağı/)).toBeDefined();
   expect(showcase.getByText(/perakende ve toptan/)).toBeDefined();
-  const row = showcase.getByRole("region", { name: "Ürün fişleri" });
+  const row = showcase.getByRole("region", { name: "Ürün listesi" });
   expect(row.querySelector("img")).toBeNull();
 });
 

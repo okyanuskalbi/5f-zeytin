@@ -1,6 +1,6 @@
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
-import { HeroLabel } from "@/components/landing/HeroLabel";
+import { HeroIntro } from "@/components/landing/HeroIntro";
 import { CartProvider } from "@/components/cart/CartProvider";
 import type { Product } from "@/types/catalog";
 
@@ -16,10 +16,10 @@ const products: readonly Product[] = [
 afterEach(() => { cleanup(); localStorage.clear(); });
 
 it("selects a real size, adds its exact SKU and reports cumulative stock errors", () => {
-  render(<CartProvider products={products}><HeroLabel products={products} /></CartProvider>);
+  render(<CartProvider products={products}><HeroIntro products={products} /></CartProvider>);
   const size = within(screen.getByRole("radiogroup", { name: "Boy" }));
   fireEvent.click(size.getByRole("radio", { name: "5 kg" }));
-  const label = screen.getByTestId("hero-print");
+  const label = screen.getByTestId("hero-product");
   expect(label.textContent).toContain("5 KG");
   expect(label.textContent).toContain("450,00 ₺");
   const add = screen.getByRole("button", { name: "Sepete ekle" });
@@ -33,16 +33,16 @@ it("selects a real size, adds its exact SKU and reports cumulative stock errors"
 });
 
 it("keeps product and size choices consistent, including unavailable products", () => {
-  render(<CartProvider products={products}><HeroLabel products={products} /></CartProvider>);
+  render(<CartProvider products={products}><HeroIntro products={products} /></CartProvider>);
   fireEvent.click(screen.getByRole("radio", { name: "Zeytinyağı" }));
-  expect(screen.getByTestId("hero-print").textContent).toContain("500 ML");
-  expect(screen.getByTestId("hero-print").textContent).toContain("350,00 ₺");
+  expect(screen.getByTestId("hero-product").textContent).toContain("500 ML");
+  expect(screen.getByTestId("hero-product").textContent).toContain("350,00 ₺");
   expect(screen.getByRole("button", { name: "Tükendi" }).hasAttribute("disabled")).toBe(true);
   expect(screen.getAllByRole("radio").filter((node) => node.getAttribute("aria-checked") === "true")).toHaveLength(2);
 });
 
 it("supports keyboard arrows, Home and End with one tab stop per group", () => {
-  render(<CartProvider products={products}><HeroLabel products={products} /></CartProvider>);
+  render(<CartProvider products={products}><HeroIntro products={products} /></CartProvider>);
   const group = within(screen.getByRole("radiogroup", { name: "Ürün" }));
   const olive = group.getByRole("radio", { name: "Sofralık Zeytin" });
   fireEvent.keyDown(olive, { key: "ArrowRight" });
@@ -55,7 +55,7 @@ it("supports keyboard arrows, Home and End with one tab stop per group", () => {
 });
 
 it("keeps the headline and catalogue destination when no products are available", () => {
-  render(<HeroLabel products={[]} />);
+  render(<HeroIntro products={[]} />);
   expect(screen.getByRole("heading", { level: 1 }).textContent).toContain("Kökü toprakta.");
   expect(screen.getByRole("link", { name: "Tüm ürünler" }).getAttribute("href")).toBe("#urunler");
   expect(screen.queryByRole("radiogroup")).toBeNull();

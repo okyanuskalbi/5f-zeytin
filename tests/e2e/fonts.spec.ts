@@ -18,13 +18,13 @@ test("brand typography uses Fraunces headings with Figtree copy and tabular pric
   const headline = page.locator("#hero-title");
   const subtitle = page.getByRole("contentinfo").getByText("Toprağın sunduğu lezzet, Afina’nın özeniyle.", { exact: true });
   for (const heading of [title, headline, page.locator("#urunler").getByRole("heading", { name: "Sofralık Zeytin", exact: true })]) {
-    await expectFont(heading, "Fraunces", "600");
+    await expectFont(heading, "Fraunces", "500");
     await expect(heading).toHaveCSS("font-variation-settings", '"SOFT" 50');
     await expect(heading).toHaveCSS("font-optical-sizing", "auto");
   }
   await expectFont(subtitle, "Figtree", "400");
   await expectFont(page.locator("body"), "Figtree", "400");
-  await expectFont(page.getByRole("region", { name: "Afina Zeytin", exact: true }).getByRole("link", { name: "Tüm ürünler", exact: true }), "Figtree", "400");
+  await expectFont(page.getByRole("region", { name: "Afina Zeytin", exact: true }).getByRole("link", { name: "Tüm ürünler", exact: true }), "Figtree", "600");
   await expectFont(page.getByText("Adet", { exact: true }).first(), "Figtree", "600");
   const prices = page.locator("#urunler article .tabular-nums").filter({ hasText: "₺" });
   await expect(prices).toHaveCount(3);
@@ -55,8 +55,9 @@ test("Turkish glyphs and lira render from self-hosted fonts in every brand style
     panel.id = "font-glyph-probes";
     panel.style.cssText = "padding:16px;overflow-wrap:anywhere";
     for (const [index, [variable, weight, fontStyle]] of [
-      ["--font-display", "600", "normal"], ["--font-display", "400", "italic"],
+      ["--font-display", "500", "normal"], ["--font-display", "400", "italic"],
       ["--font-body", "400", "normal"], ["--font-body", "600", "normal"],
+      ["--font-display", "700", "normal"], ["--font-body", "800", "normal"],
     ].entries()) {
       const probe = document.createElement("p");
       probe.id = `font-glyph-${index}`;
@@ -74,10 +75,10 @@ test("Turkish glyphs and lira render from self-hosted fonts in every brand style
     await document.fonts.ready;
   }, glyphSample);
   const probes = page.locator("#font-glyph-probes p");
-  await expect(probes).toHaveCount(4);
-  for (let index = 0; index < 4; index++) {
+  await expect(probes).toHaveCount(6);
+  for (let index = 0; index < 6; index++) {
     await expect(probes.nth(index)).toHaveText(glyphSample);
-    await expectFont(probes.nth(index), index < 2 ? "Fraunces" : "Figtree", index === 0 || index === 3 ? "600" : "400");
+    await expectFont(probes.nth(index), index < 2 || index === 4 ? "Fraunces" : "Figtree", ["500", "400", "400", "600", "700", "800"][index]);
   }
   if (browserName === "chromium") {
     // Inspect painted fonts, since CSS alone can hide missing glyphs. Figtree
@@ -87,7 +88,7 @@ test("Turkish glyphs and lira render from self-hosted fonts in every brand style
     await session.send("CSS.enable");
     const { root } = await session.send("DOM.getDocument");
     const evidence = [];
-    for (let index = 0; index < 4; index++) {
+    for (let index = 0; index < 6; index++) {
       for (const part of ["letters", "currency", "amount"]) {
         const { nodeId } = await session.send("DOM.querySelector", { nodeId: root.nodeId, selector: `#font-glyph-${index}-${part}` });
         const { fonts } = await session.send("CSS.getPlatformFontsForNode", { nodeId });
@@ -95,11 +96,11 @@ test("Turkish glyphs and lira render from self-hosted fonts in every brand style
         expect(fonts.length).toBeGreaterThan(0);
         for (const font of fonts) {
           expect(font.glyphCount).toBeGreaterThan(0);
-          if (index >= 2 && part === "currency") {
+          if ([2, 3, 5].includes(index) && part === "currency") {
             expect(font.familyName).toMatch(/Figtree|Helvetica Neue|Arial/i);
           } else {
             expect(font.isCustomFont).toBe(true);
-            expect(font.familyName).toMatch(index < 2 ? /Fraunces/i : /Figtree/i);
+            expect(font.familyName).toMatch(index < 2 || index === 4 ? /Fraunces/i : /Figtree/i);
           }
         }
       }

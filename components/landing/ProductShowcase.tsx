@@ -1,33 +1,20 @@
 import type { JSX } from "react";
-import Image from "next/image";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import type { Product } from "@/types/catalog";
-import { heroPoster } from "@/lib/media/hero-poster";
 import styles from "./ProductShowcase.module.css";
 
-// Adapted from 21st shugar/Scroller (3927): an overflowing horizontal flex
-// track. Native scrolling keeps touch, keyboard and no-JS browsing available;
-// AFİNA's paper slips replace its sample boxes and edge fades.
 export function ProductShowcase({ products }: { products: readonly Product[] }): JSX.Element {
   return <section id="urunler" data-scene="products" aria-labelledby="urunler-title"
     tabIndex={-1} className={styles.showcase}>
-    <picture>
-      <source type="image/avif" media="(max-width: 767px) and (orientation: portrait)" srcSet={heroPoster.mobileSrcSet} sizes="100vw" />
-      <source type="image/webp" media="(max-width: 767px) and (orientation: portrait)" srcSet={heroPoster.mobileWebpSrcSet} sizes="100vw" />
-      <source type="image/avif" srcSet={heroPoster.desktopSrcSet} sizes="100vw" />
-      <source type="image/webp" srcSet={heroPoster.desktopWebpSrcSet} sizes="100vw" />
-      <Image src="/images/hero/zeytinlik-2400.webp" alt="" fill sizes="100vw" loading="lazy" fetchPriority="low"
-        className={styles.poster} />
-    </picture>
     <div data-showcase-copy="" className={styles.intro}>
       <h2 id="urunler-title" data-scene-reveal="">Ürünlerimiz</h2>
       <p data-scene-reveal="">Sofralık zeytin, salamura zeytin ve zeytinyağı; perakende ve toptan.</p>
     </div>
     {products.length === 0 ? <p role="status" className={styles.empty}>Görüntülenecek ürün bulunmuyor.</p> :
-      <div role="region" aria-label="Ürün fişleri" tabIndex={0} className={styles.scroller}>
+      <div role="region" aria-label="Ürün listesi" tabIndex={0} className={styles.scroller}>
         <ul className={styles.row}>
           {products.slice(0, 6).map((product) => <li key={product.id} className={styles.item}>
-            <ProductCard product={product} appearance="slip" />
+            <ProductCard product={product} />
           </li>)}
         </ul>
       </div>}

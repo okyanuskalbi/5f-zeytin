@@ -15,7 +15,7 @@ test("mobile poster is preloaded in SSR and frames wait for idle or interaction 
   const html = await (await request.get("/")).text();
   expect(html).toMatch(/<link[^>]+rel="preload"[^>]+as="image"[^>]+imageSrcSet=/i);
   await page.goto("/");
-  const hero = page.locator("[data-hero-label]");
+  const hero = page.locator("[data-hero-intro]");
   const poster = hero.locator("[data-frame-sequence] img");
   await expect.poll(() => poster.evaluate((node: HTMLImageElement) => node.complete && node.naturalWidth > 0)).toBe(true);
   await expect(hero.getByRole("button", { name: "Sepete ekle" })).toBeEnabled();

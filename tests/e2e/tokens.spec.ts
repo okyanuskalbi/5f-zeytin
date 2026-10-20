@@ -67,7 +67,7 @@ test("brand tokens, button states and dialog remain accessible with keyboard and
       const style = getComputedStyle(body);
       return { background: style.backgroundColor, foreground: style.color, fontSize: style.fontSize, lineHeight: style.lineHeight };
     });
-    expect(tokens.background).toBe("rgb(245, 241, 231)");
+    expect(tokens.background).toBe("rgb(246, 241, 230)");
     expect(tokens.foreground).toBe("rgb(36, 58, 41)");
     expect(parseFloat(tokens.fontSize)).toBeGreaterThanOrEqual(16);
     expect(parseFloat(tokens.lineHeight) / parseFloat(tokens.fontSize)).toBeGreaterThanOrEqual(1.5);
@@ -93,7 +93,7 @@ test("brand tokens, button states and dialog remain accessible with keyboard and
     await expect(page.getByRole("status")).toHaveText("İşlem sayısı: 1");
     await page.mouse.move(0, 0);
     await expect(primary).toHaveCSS("background-color", "rgb(36, 58, 41)");
-    await expect(page.getByRole("button", { name: "İkincil eylem" })).toHaveCSS("background-color", "rgb(245, 241, 231)");
+    await expect(page.getByRole("button", { name: "İkincil eylem" })).toHaveCSS("background-color", "rgb(246, 241, 230)");
     if (await page.evaluate(() => matchMedia("(hover: hover)").matches)) {
       await primary.hover();
       await expect(primary).toHaveCSS("background-color", "rgb(53, 78, 59)");

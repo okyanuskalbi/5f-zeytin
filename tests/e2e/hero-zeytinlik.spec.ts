@@ -14,7 +14,7 @@ test.beforeEach(async ({ page }) => {
 
 async function expectPosterAndActions(page: Page): Promise<void> {
   await page.evaluate(() => scrollTo(0, 0));
-  await expect(hero(page).locator("[data-hero-card]")).toBeVisible();
+  await expect(hero(page).locator("#hero-title")).toBeVisible();
   const poster = sequence(page).locator("img");
   await expect(poster).toBeVisible();
   await expect.poll(() => poster.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
@@ -39,7 +39,7 @@ async function expectPosterAndActions(page: Page): Promise<void> {
 // Sample the rendered photo/gradient behind each text run, preserving button backgrounds.
 async function expectAA(page: Page): Promise<number> {
   await page.evaluate(() => document.fonts.ready);
-  const selector = '[data-hero-label] :is(p,h1,h2,a,button), header nav a';
+  const selector = '[data-hero-intro] :is(p,h1,h2,a,button), header nav a';
   const runs = await page.locator(selector).evaluateAll((elements) => elements.flatMap((element) => {
     const style = getComputedStyle(element);
     if (style.visibility === "hidden" || style.display === "none") return [];

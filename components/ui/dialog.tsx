@@ -35,16 +35,20 @@ function DialogOverlay({ className, ...props }: React.ComponentProps<typeof Dial
 
 type DialogContentProps = React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean;
+  placement?: "center" | "fullscreen";
 };
 
-function DialogContent({ className, children, showCloseButton = true, ...props }: DialogContentProps): React.JSX.Element {
+function DialogContent({ className, children, showCloseButton = true, placement = "center", ...props }: DialogContentProps): React.JSX.Element {
   return (
     <DialogPortal>
       <DialogOverlay />
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "fixed top-1/2 left-1/2 z-50 grid max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 gap-6 overflow-y-auto rounded-none bg-popover p-6 text-popover-foreground  outline-none sm:p-8 [&>*]:min-w-0",
+          "fixed z-50 grid gap-6 overflow-y-auto rounded-none bg-popover p-6 text-popover-foreground outline-none sm:p-8 [&>*]:min-w-0",
+          placement === "fullscreen"
+            ? "inset-0 h-dvh w-full max-w-none"
+            : "top-1/2 left-1/2 max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2",
           className,
         )}
         {...props}

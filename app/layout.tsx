@@ -11,7 +11,7 @@ import "./globals.css";
 
 const Fraunces = localFont({
   src: [
-    { path: "./fonts/Fraunces-normal.woff2", weight: "600", style: "normal" },
+    { path: "./fonts/Fraunces-normal.woff2", weight: "500 700", style: "normal" },
     { path: "./fonts/Fraunces-italic.woff2", weight: "400", style: "italic" },
   ],
   display: "swap",
@@ -26,7 +26,7 @@ const bodyFont = Figtree({
   subsets: ["latin", "latin-ext"],
   display: "swap",
   preload: false,
-  weight: ["400", "600"],
+  weight: ["400", "600", "800"],
   variable: "--font-body",
   fallback: ["Helvetica Neue", "Arial", "sans-serif"],
 });

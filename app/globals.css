@@ -6,20 +6,22 @@
 :root {
   color-scheme: light;
   --brand-olive: #243a29;
-  --brand-ivory: #f5f1e7;
+  --brand-earth: #0d110d;
+  --brand-ivory: #f6f1e6;
+  --brand-sand: #ede4d1;
+  --factory-green: #6ccb3c;
   --brand-gold: #d4b483;
-  --label-green: #2f7a3b;
-  --body-ink: #141a15;
+  --body-ink: var(--brand-earth);
   --page-margin: clamp(1.5rem, 2.2vw, 2rem);
   --page-gutter: 1.5rem;
   --header-height: calc(4rem + env(safe-area-inset-top, 0px));
 
-  /* Five print sizes, shared by headings, controls and captions. */
+  /* Five v2 sizes: caption, body, product, section heading and hero display. */
   --step-small: 0.875rem;
-  --step-body: 1rem;
-  --step-lead: clamp(1.25rem, 2vw, 1.5rem);
-  --step-head: clamp(1.75rem, 3vw, 2.25rem);
-  --step-display: clamp(2.25rem, 4.2vw, 3.5rem);
+  --step-body: clamp(1.0625rem, 1.3vw, 1.1875rem);
+  --step-lead: clamp(1.625rem, 2.1vw, 1.875rem);
+  --step-head: clamp(2.5rem, 5vw, 4.75rem);
+  --step-display: clamp(4rem, 10vw, 10.5rem);
 
   --background: var(--brand-ivory);
   --foreground: var(--brand-olive);
@@ -33,7 +35,7 @@
   --secondary: var(--brand-ivory);
   --secondary-foreground: var(--brand-olive);
   --secondary-hover: #e5e9df;
-  --muted: #e9e3d6;
+  --muted: var(--brand-sand);
   --muted-foreground: #5b6558;
   --accent: #e5e9df;
   --accent-foreground: var(--brand-olive);
@@ -70,7 +72,8 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-brand-gold: var(--brand-gold);
-  --color-label-green: var(--label-green);
+  --color-brand-earth: var(--brand-earth);
+  --color-brand-sand: var(--brand-sand);
   --color-body-ink: var(--body-ink);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
@@ -103,6 +106,8 @@
     border-color: var(--border);
   }
 
+  html { scroll-padding-top: calc(var(--header-height) + 16px); }
+
   body {
     margin: 0;
     background: var(--background);
@@ -120,12 +125,12 @@
   }
 
   h1, h2, h3 {
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1.2;
     text-wrap: balance;
   }
 
-  h1 { font-size: var(--step-display); }
+  h1 { font-size: var(--step-head); }
   h2 { font-size: var(--step-head); }
   h3 { font-size: var(--step-lead); }
 
@@ -173,6 +178,11 @@
   }
 }
 
-@media (max-width: 767px) {
-  :root { --step-display: clamp(1.75rem, 9vw, 2.25rem); }
+
+/* Contextual actions inherit accessible colours from their flat surface. */
+[data-surface="dark"] {
+  --primary: var(--brand-gold);
+  --primary-foreground: var(--brand-earth);
+  --primary-hover: var(--brand-ivory);
+  --ring: var(--brand-gold);
 }
