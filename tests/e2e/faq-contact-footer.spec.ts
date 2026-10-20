@@ -82,8 +82,12 @@ test("confirmed FAQs stay open, channels stay absent and the contact/footer layo
   await mkdir("test-results/095", { recursive: true });
   for (const [name, region] of [["faq", faq], ["contact", contact], ["footer", footer]] as const) {
     await region.evaluate(node => node.scrollIntoView({ block: "start" }));
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve(null)))));
     await page.screenshot({ path: `test-results/095/${testInfo.project.name}-${name}.png` });
   }
+  await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve(null)))));
+  await page.screenshot({ path: `test-results/095/${testInfo.project.name}-footer-end.png` });
   await writeFile(`test-results/095/${testInfo.project.name}-metrics.json`, JSON.stringify({ metrics, errors, media }, null, 2));
   await noOverflow(page);
   expect(errors).toEqual([]);

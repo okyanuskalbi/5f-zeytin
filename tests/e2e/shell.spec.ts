@@ -30,7 +30,7 @@ test("shell exposes navigation, official copy and destination contracts at every
   await expect(header.getByRole("button", { name: "Sepetim, 0 adet" })).toHaveAttribute("aria-haspopup", "dialog");
   await expect(header.getByRole("link", { name: "Hesabım" })).toHaveAttribute("href", "/hesabim");
   await expect(footer.getByText("Toprağın sunduğu lezzet, Afina’nın özeniyle.")).toBeVisible();
-  await expect(page.getByText("Kökü toprakta. Yeri sofrada.", { exact: true })).toHaveCount(1);
+  await expect(footer.getByText("Kökü toprakta. Yeri sofrada.", { exact: true })).toBeVisible();
   await expectLinks(footer.getByRole("navigation", { name: "Keşfedin" }));
   const legal = footer.getByRole("navigation", { name: "Yasal bilgiler" });
   for (const [name, href] of [["KVKK", "/kvkk"], ["Mesafeli Satış Sözleşmesi", "/mesafeli-satis"], ["İade ve İptal", "/iade"]]) {
@@ -41,8 +41,7 @@ test("shell exposes navigation, official copy and destination contracts at every
   await expectLinks(page.getByRole("navigation", { name: "Site navigasyonu" }));
   await page.keyboard.press("Escape");
   const logos = [
-    [footer.getByRole("img", { name: "Afina Zeytin", exact: true }), "/brand/afina-zeytin-dark.svg"],
-    [footer.getByRole("img", { name: "AFİNA Şirketler Topluluğu", exact: true }), "/brand/afina-topluluk-dark.svg"],
+    [footer.getByRole("img", { name: "AFİNA Şirketler Topluluğu", exact: true }), "/brand/afina-topluluk.svg"],
   ] as const;
   for (const [logo, src] of logos) {
     await logo.scrollIntoViewIfNeeded();
@@ -54,7 +53,7 @@ test("shell exposes navigation, official copy and destination contracts at every
     }));
     expect(dimensions.rendered).toBeCloseTo(dimensions.original, 1);
   }
-  await expect(page.locator('img[src*="/brand/"]')).toHaveCount(2);
+  await expect(footer.locator('img[src*="/brand/"]')).toHaveCount(1);
   await expect(page.locator('img[src*="/images/generated/"]')).toHaveCount(0);
   await expect(page.locator('link[rel="icon"]')).toHaveAttribute("href", "/brand/favicon.svg");
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", "https://afinazeytin.com/brand/og.png");
