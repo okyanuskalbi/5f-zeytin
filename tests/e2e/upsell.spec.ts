@@ -97,7 +97,7 @@ test.describe("upsell configured presentation", () => {
     await expect(page.getByText("Sepetiniz henüz boş.")).toBeVisible();
     await expect(recommendations(page)).toHaveCount(0);
     await expect(discount(page)).toHaveCount(0);
-    await page.evaluate((key) => localStorage.removeItem(key), CART_STORAGE_KEY);
+    await page.evaluate((key) => localStorage.setItem(key, JSON.stringify([{ productId: "unrelated", quantity: 1 }])), CART_STORAGE_KEY);
     await load(page, "normal", [{ productId: "unrelated", quantity: 1 }]);
     await expect(recommendations(page)).toHaveCount(0);
     await expect(discount(page)).toHaveCount(0);

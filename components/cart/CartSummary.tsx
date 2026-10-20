@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, Minus, Plus, RefreshCw, ShoppingBag, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/cart/CartProvider";
+import { Upsell, QuantityDiscount, type UpsellConfiguration, type QuantityDiscountConfiguration } from "@/components/cart/Upsell";
 import type { CartStore } from "@/lib/cart/types";
 import type { Product } from "@/types/catalog";
 
@@ -15,6 +16,9 @@ type CartSummaryProps = {
   products: readonly Product[] | null;
   onRefresh: () => void;
   refreshing?: boolean;
+  /** Absent until approved configuration is supplied; never infer a campaign. */
+  upsell?: UpsellConfiguration | null;
+  quantityDiscount?: QuantityDiscountConfiguration | null;
 };
 
 const money = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -32,7 +36,7 @@ export function CartPage({ products }: { products: readonly Product[] | null }):
 
 // Adapted from 21st astralyxdev/Checkout Summary (36084): semantic amount rows
 // and explicit unknown charges. AFİNA uses estimates, never a client final quote.
-export function CartSummary({ store, products, onRefresh, refreshing = false }: CartSummaryProps): JSX.Element {
+export function CartSummary({ store, products, onRefresh, refreshing = false, upsell, quantityDiscount }: CartSummaryProps): JSX.Element {
   const state = useSyncExternalStore(store.subscribe, store.getSnapshot, store.getServerSnapshot);
   const id = useId();
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -47,6 +51,19 @@ export function CartSummary({ store, products, onRefresh, refreshing = false }: 
   const subtotal = lines.reduce((sum, { product, quantity }) => sum + (product?.priceKurus ?? 0) * quantity, 0);
   const itemCount = lines.reduce((sum, { quantity }) => sum + quantity, 0);
   const knownSubtotal = products !== null && state.hydrated && !invalidStock;
+  const showOffers = knownSubtotal && lines.length > 0 && !refreshing;
+
+  function addSuggestion(productId: string): void {
+    try {
+      // Do not reconcile here: an unsuccessful add must not prune other lines.
+      store.addItem(productId, 1);
+      headingRef.current?.focus();
+      const name = products?.find((product) => product.id === productId)?.name;
+      setFeedback({ error: false, message: `${name} sepetinize eklendi.` });
+    } catch {
+      setFeedback({ error: true, message: "Ürün eklenemedi. Stok değişmiş olabilir. Fiyat ve stokları yenileyip tekrar deneyin." });
+    }
+  }
 
   function changeQuantity(productId: string, quantity: number): void {
     try {
@@ -113,6 +130,7 @@ export function CartSummary({ store, products, onRefresh, refreshing = false }: 
             <p role="alert" className="text-sm text-destructive">Sepetteki bazı ürünlerin stoğu değişti. Devam etmeden önce adetleri ve ürünleri güncelleyin.</p>
             <Button variant="outline" disabled={refreshing} onClick={reconcileStock}>Stok değişikliklerini uygula</Button>
           </div>}
+          {showOffers && <Upsell products={products} items={state.items} configuration={upsell} onAdd={addSuggestion} />}
           {state.storageError && <p role="alert" className="text-sm text-destructive">Sepet bu tarayıcıya kaydedilemiyor. Sayfayı yenilerseniz sepetiniz korunmayabilir.</p>}
           <p aria-label="Sepet bildirimi" role={feedback.error ? "alert" : "status"} aria-atomic="true" className={`text-sm ${feedback.error ? "text-destructive" : "text-muted-foreground"}`}>{feedback.message}</p>
         </section>
@@ -125,6 +143,7 @@ export function CartSummary({ store, products, onRefresh, refreshing = false }: 
             <div className="flex flex-wrap justify-between gap-2"><dt>İndirimler</dt><dd className="text-muted-foreground">Henüz hesaplanmadı</dd></div>
           </dl>
           <p className="text-sm text-muted-foreground">Kargo ve indirimler ara toplama dahil değildir. Kesin tutar ödeme öncesinde sunucuda doğrulanır.</p>
+          {showOffers && <QuantityDiscount products={products} items={state.items} configuration={quantityDiscount} />}
           <Button variant="outline" className="w-full" onClick={onRefresh} disabled={refreshing} aria-busy={refreshing}>
             <RefreshCw aria-hidden="true" />Fiyat ve stokları yenile
           </Button>
