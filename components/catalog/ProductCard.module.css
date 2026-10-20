@@ -1,7 +1,7 @@
 .slip {
   position: relative;
   gap: 16px;
-  min-height: inherit;
+  min-height: var(--slip-height);
   padding: 24px;
   color: var(--brand-olive);
   background: var(--card);

@@ -45,6 +45,20 @@ test("every available slip adds its SKU and quantity to the shared cart; sold ou
 
 test("paper composition keeps every purchase control inside its uncut slip", async ({ page }, testInfo) => {
   await page.evaluate(() => document.fonts.ready);
+  await expect.poll(() => section(page).locator("[data-product-card-motion]").evaluateAll(layers =>
+    layers.every(layer => new DOMMatrixReadOnly(getComputedStyle(layer).transform).m42 === 0),
+  )).toBe(true);
+  // The scroll event schedules the existing stub placement on the next frame.
+  // Measure the settled placement, as we do for other asynchronous UI state.
+  await expect.poll(() => section(page).evaluate(node => {
+    const stub = document.querySelector<HTMLElement>('[data-hero-stub][data-visible="true"]');
+    if (!stub) return false;
+    const s = stub.getBoundingClientRect();
+    return [...node.querySelectorAll("article")].some(card => {
+      const b = card.getBoundingClientRect();
+      return b.left < s.right && b.right > s.left && b.top < s.bottom && b.bottom > s.top;
+    });
+  })).toBe(false);
   const metrics = await section(page).evaluate((node) => {
     const box = node.getBoundingClientRect();
     const track = node.querySelector('[aria-label="Ürün fişleri"]')!;

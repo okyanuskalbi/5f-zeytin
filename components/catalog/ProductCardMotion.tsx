@@ -61,6 +61,9 @@ export function ProductCardMotion({ children }: { children: ReactNode }): JSX.El
               duration: motionTokens.duration.slow,
               ease: motionTokens.easing.smooth,
             });
+            void animation.then(() => {
+              if (target.isConnected) target.dispatchEvent(new Event("afina:product-card-settled", { bubbles: true }));
+            });
           } catch {
             reset();
           }
