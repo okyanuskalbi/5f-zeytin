@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }) => {
 test("100: the v2 intro keeps a direct product destination without a pinned label", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator("[data-hero-label], [data-hero-stub]")).toHaveCount(0);
-  await page.locator("[data-hero-intro]").getByRole("link", { name: "Tüm ürünler", exact: true }).click();
+  await page.locator("[data-hero-intro]").getByRole("link", { name: "Ürünleri keşfet", exact: true }).click();
   await expect(page).toHaveURL(/#urunler$/);
   await expect(page.locator("#urunler")).toBeFocused();
 });

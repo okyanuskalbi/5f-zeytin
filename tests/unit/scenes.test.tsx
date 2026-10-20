@@ -19,7 +19,7 @@ describe("landing scene catalog boundaries", () => {
       expect(html).toContain(`id="${id}"`);
     }
     expect(html).toContain('href="#urunler"');
-    expect(html).toContain("Tüm ürünler");
+    expect(html).toContain("Ürünleri keşfet");
   });
 
   it("renders only the first six supplied products without mutating the catalog", async () => {

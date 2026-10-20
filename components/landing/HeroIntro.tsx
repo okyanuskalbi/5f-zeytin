@@ -1,9 +1,8 @@
 "use client";
 
 import { useRef, useState, type JSX, type KeyboardEvent } from "react";
-import { heroPoster } from "@/lib/media/hero-poster";
 import { useCart } from "@/components/cart/CartProvider";
-import { ScrollFrameSequence } from "@/components/media/ScrollFrameSequence";
+import { HeroLightScene } from "./HeroLightScene";
 import { Button } from "@/components/ui/button";
 import type { Product } from "@/types/catalog";
 import styles from "./Hero.module.css";
@@ -50,14 +49,8 @@ export function HeroIntro({ products }: { products: readonly Product[] }): JSX.E
   }
   const canAdd = !!cart?.products && cart.state.hydrated;
   return <section aria-label="Afina Zeytin" data-hero-intro="" className={styles.hero}>
-    <ScrollFrameSequence src="/frames/hero-zeytin/manifest.json" poster={heroPoster}
-      deferPlayback initialCount={10} scrollLength={150} positionX={1} mediaClassName={styles.media} label="" />
-    <div data-surface="dark" className={styles.stage}>
-      <h1 id="hero-title" className={styles.title}><span>Kökü toprakta.</span>{" "}<span>Yeri sofrada.</span></h1>
-      <p>Toprağın sunduğu lezzet, Afina’nın özeniyle.</p>
-      <Button asChild><a href="#urunler">Tüm ürünler</a></Button>
-    </div>
-    <div data-nav-light="" className={styles.purchase}>
+    <HeroLightScene />
+    <div className={styles.purchase}>
       {selected && <>
         <div data-testid="hero-product" aria-live="polite" aria-atomic="true">
           <h2>{selected.name}</h2>

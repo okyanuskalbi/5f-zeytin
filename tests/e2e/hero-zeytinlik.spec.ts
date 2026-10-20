@@ -3,7 +3,7 @@ import sharp from "sharp";
 
 const hero = (page: Page) => page.getByRole("region", { name: "Afina Zeytin", exact: true });
 const sequence = (page: Page) => hero(page).locator("[data-frame-sequence]");
-const actions = ["Tüm ürünler"];
+const actions = ["Ürünleri keşfet"];
 
 test.use({ trace: "on" });
 test.beforeEach(async ({ page }) => {
@@ -87,7 +87,7 @@ async function expectAA(page: Page): Promise<number> {
 }
 
 async function seek(page: Page, progress: number): Promise<number> {
-  return sequence(page).evaluate((element, value) => {
+  return page.locator("[data-hero-scene]").evaluate((element, value) => {
     const top = element.getBoundingClientRect().top + scrollY;
     const distance = element.clientHeight - innerHeight;
     scrollTo(0, top + distance * value);
@@ -151,8 +151,8 @@ test("poster and actions survive disabled JavaScript and manifest failures", asy
     const staticPage = await context.newPage();
     await staticPage.goto(new URL("/", baseURL!).href);
     await expect(sequence(staticPage).locator("img")).toBeVisible();
-    await hero(staticPage).getByRole("link", { name: "Tüm ürünler", exact: true }).scrollIntoViewIfNeeded();
-    await expect(hero(staticPage).getByRole("link", { name: "Tüm ürünler", exact: true })).toBeInViewport();
+    await hero(staticPage).getByRole("link", { name: "Ürünleri keşfet", exact: true }).scrollIntoViewIfNeeded();
+    await expect(hero(staticPage).getByRole("link", { name: "Ürünleri keşfet", exact: true })).toBeInViewport();
   } finally {
     await context.close();
   }

@@ -57,7 +57,7 @@ it("supports keyboard arrows, Home and End with one tab stop per group", () => {
 it("keeps the headline and catalogue destination when no products are available", () => {
   render(<HeroIntro products={[]} />);
   expect(screen.getByRole("heading", { level: 1 }).textContent).toContain("Kökü toprakta.");
-  expect(screen.getByRole("link", { name: "Tüm ürünler" }).getAttribute("href")).toBe("#urunler");
+  expect(screen.getByRole("link", { name: "Ürünleri keşfet" }).getAttribute("href")).toBe("#urunler");
   expect(screen.queryByRole("radiogroup")).toBeNull();
   expect(screen.queryByRole("button", { name: "Sepete ekle" })).toBeNull();
 });

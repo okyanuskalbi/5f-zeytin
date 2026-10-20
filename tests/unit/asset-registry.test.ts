@@ -401,7 +401,7 @@ describe("unapproved runtime usage protection", () => {
     approve();
     await save();
     const files = [];
-    for (const [name, width, height, avif, webp] of [["mobile", 900, 1350, 15, 10], ["desktop", 2400, 1350, 60, 75]] as const) {
+    for (const [name, width, height, avif, webp] of [["mobile", 900, 1350, 15, 10], ["desktop", 2400, 1350, 25, 75]] as const) {
       for (const format of ["avif", "webp"] as const) {
         const bytes = await sharp(image).resize(width, height, { fit: "cover", position: "right" })[format]({ quality: format === "avif" ? avif : webp }).toBuffer();
         const file = `/images/hero/optimized/${name}.${format}`;

@@ -8,10 +8,10 @@ for (const reducedMotion of ["no-preference", "reduce"] as const) {
     await page.evaluate(() => document.fonts.ready);
     const header = page.getByRole("banner");
     const logo = header.getByRole("img", { name: "AFİNA ZEYTİN", exact: true });
-    await expect(header).toHaveAttribute("data-tone", "dark");
-    await expect(header).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
-    await expect(header).toHaveCSS("color", "rgb(246, 241, 230)");
-    await expect(logo).toHaveAttribute("src", "/brand/afina-zeytin-dark.svg");
+    await expect(header).toHaveAttribute("data-tone", reducedMotion === "reduce" ? "light" : "dark");
+    await expect(header).toHaveCSS("background-color", reducedMotion === "reduce" ? "rgb(246, 241, 230)" : "rgba(0, 0, 0, 0)");
+    await expect(header).toHaveCSS("color", reducedMotion === "reduce" ? "rgb(36, 58, 41)" : "rgb(246, 241, 230)");
+    await expect(logo).toHaveAttribute("src", reducedMotion === "reduce" ? "/brand/afina-zeytin.svg" : "/brand/afina-zeytin-dark.svg");
     await expect(page.locator("[data-hero-label],[data-hero-card],[data-hero-stub],[data-product-slip],[data-footer-scallop],[data-footer-stamp]")).toHaveCount(0);
     const metrics = await page.evaluate(() => {
       const root = getComputedStyle(document.documentElement);
@@ -42,7 +42,7 @@ for (const reducedMotion of ["no-preference", "reduce"] as const) {
     await expect(cart).toBeEnabled();
     await expect(cart.locator('[data-slot="count-badge"]')).toHaveText("2");
     await page.evaluate(() => scrollTo(0, 0));
-    await expect(header).toHaveAttribute("data-tone", "dark");
+    await expect(header).toHaveAttribute("data-tone", reducedMotion === "reduce" ? "light" : "dark");
     const desktop = page.viewportSize()!.width >= 1024;
     await expect(header.getByRole("navigation", { name: "Ana navigasyon" })).toBeVisible({ visible: desktop });
     const menu = header.getByRole("button", { name: "Menüyü aç" });

@@ -52,8 +52,8 @@ test("intro keyboard selection, headline, approved logo and grove remain accessi
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await expect(page.getByRole("banner").getByRole("img", { name: "AFİNA ZEYTİN" })).toHaveAttribute("src", "/brand/afina-zeytin-dark.svg");
   await expect(hero.locator("[data-frame-sequence] img")).toHaveAttribute("src", "/images/hero/zeytinlik-2400.webp");
-  await expect(hero.locator("[data-frame-sequence] > div > div").first()).toHaveCSS("filter", "brightness(0.3)");
-  await page.screenshot({ path: `test-results/100/${testInfo.project.name}-hero.png` });
+  await expect(hero.locator("[data-hero-media]")).toHaveCSS("filter", "brightness(0.55)");
+  await page.screenshot({ path: `test-results/101/${testInfo.project.name}-hero.png` });
 });
 
 test("without JavaScript the intro and product/cart destinations remain usable", async ({ browser, baseURL }, testInfo) => {
@@ -62,7 +62,7 @@ test("without JavaScript the intro and product/cart destinations remain usable",
     const page = await context.newPage();
     await page.goto(new URL("/", baseURL!).href);
     await expect(page.locator("#hero-title")).toBeVisible();
-    await page.locator(heroSelector).getByRole("link", { name: "Tüm ürünler", exact: true }).click();
+    await page.locator(heroSelector).getByRole("link", { name: "Ürünleri keşfet", exact: true }).click();
     await expect(page).toHaveURL(/#urunler$/);
     await expect(page.locator("#urunler").getByRole("article")).toHaveCount(3);
     await expect(page.locator("noscript").getByRole("link", { name: "Sepete git" })).toHaveAttribute("href", "/sepet");

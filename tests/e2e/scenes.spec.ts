@@ -161,7 +161,7 @@ test("keyboard and reduced motion keep scene links, quantity and native scrollin
     await page.goto("/");
     await expectFlow(page);
     const hero = page.getByRole("region", { name: "Afina Zeytin", exact: true });
-    const discover = hero.getByRole("link", { name: "Tüm ürünler", exact: true });
+    const discover = hero.getByRole("link", { name: "Ürünleri keşfet", exact: true });
     const wholesale = page.locator("#tesisimiz").getByRole("link", { name: "Toptan Satış İçin İletişime Geçin", exact: true });
     await wholesale.focus();
     await page.keyboard.press("Enter");
@@ -216,7 +216,7 @@ test("failed observer and failed JavaScript preserve all scenes and anchor navig
     await expectFlow(page);
     await expectStatic(page.locator(sceneLayers));
     const discover = page.getByRole("region", { name: "Afina Zeytin", exact: true })
-      .getByRole("link", { name: "Tüm ürünler", exact: true });
+      .getByRole("link", { name: "Ürünleri keşfet", exact: true });
     await discover.click();
     await expect(page.locator("#urunler")).toBeInViewport();
     await expect(page.locator("#urunler article").first().getByRole("button", { name: "Sepete ekle", exact: true })).toBeVisible();
@@ -231,7 +231,7 @@ test("JavaScript-disabled SSR includes every scene and both CTA destinations", a
     await expectFlow(page);
     await expectStatic(page.locator(sceneLayers));
     const hero = page.getByRole("region", { name: "Afina Zeytin", exact: true });
-    for (const [name, id] of [["Tüm ürünler", "urunler"], ["Toptan Satış İçin İletişime Geçin", "toptan-iletisim"]]) {
+    for (const [name, id] of [["Ürünleri keşfet", "urunler"], ["Toptan Satış İçin İletişime Geçin", "toptan-iletisim"]]) {
       await (id === "urunler" ? hero : page.locator("#tesisimiz")).getByRole("link", { name, exact: true }).click();
       await expect(page.locator(`#${id}`)).toBeInViewport();
     }
@@ -250,7 +250,7 @@ test("low-end touch devices keep scenes static and quantity controls at least 44
     await page.goto(new URL("/", baseURL!).href);
     await expectFlow(page);
     await page.getByRole("region", { name: "Afina Zeytin", exact: true })
-      .getByRole("link", { name: "Tüm ürünler", exact: true }).tap();
+      .getByRole("link", { name: "Ürünleri keşfet", exact: true }).tap();
     const card = page.locator("#urunler article").first();
     const increase = card.getByRole("button", { name: "Adedi artır" });
     await increase.tap();

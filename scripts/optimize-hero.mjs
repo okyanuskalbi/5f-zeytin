@@ -9,7 +9,7 @@ const sourceFile = "/images/hero/zeytinlik-2400.webp";
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const variants = [
   { name: "mobile", width: 900, height: 1350, avif: 15, webp: 10 },
-  { name: "desktop", width: 2400, height: 1350, avif: 60, webp: 75 },
+  { name: "desktop", width: 2400, height: 1350, avif: 25, webp: 75 },
 ];
 
 /** Re-encoding an approved photo is not a new image approval. Keep its provenance. */
@@ -28,7 +28,7 @@ export async function verifyHeroDerivatives(root, assets) {
     unique.add(entry.file);
     const bytes = await readFile(join(root, "public", entry.file));
     const metadata = await sharp(bytes).metadata();
-    if (hash(bytes) !== entry.sha256 || metadata.width !== expected.width || metadata.height !== expected.height || (entry.file.includes("mobile") && bytes.length > 60 * 1024)) throw new Error("Invalid hero derivative hash, dimensions or budget.");
+    if (hash(bytes) !== entry.sha256 || metadata.width !== expected.width || metadata.height !== expected.height || ((entry.file.includes("mobile") || expected.format === "avif") && bytes.length > 60 * 1024)) throw new Error("Invalid hero derivative hash, dimensions or budget.");
     const derived = await sharp(sourceBytes).resize(expected.width, expected.height, { fit: "cover", position: "right" })[expected.format]({ quality: expected.quality }).toBuffer();
     if (hash(derived) !== entry.sha256) throw new Error("Hero derivative does not match the approved source transform.");
   }
