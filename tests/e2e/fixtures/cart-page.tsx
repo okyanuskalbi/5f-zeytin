@@ -33,10 +33,10 @@ function Fixture(): JSX.Element {
   const [open, setOpen] = useState(false);
   return <>
     <CartSummary store={store} products={catalog} onRefresh={() => {
-      setCatalog(mode === "stock-change" ? [{ ...products[0], priceKurus: 15075, stock: 1 }]
+      setCatalog(mode === "stock-change" ? [{ ...products[0], priceKurus: 15075, stock: 1 }, ...products.slice(2)]
         : mode === "catalog-error" && catalog !== null ? null : products);
     }} />
-    <CartDrawer store={store} products={catalog ?? []} open={open} onOpenChange={setOpen} trigger={<Button>Sepeti aç</Button>} />
+    {catalog !== null && <CartDrawer store={store} products={catalog} open={open} onOpenChange={setOpen} trigger={<Button>Sepeti aç</Button>} />}
     <Button onClick={() => { storageFails = false; }}>Kaydı etkinleştir</Button>
     <Button onClick={() => { quantityFails = true; }}>Stok hatasını tetikle</Button>
     <Button onClick={() => { quantityFails = false; }}>Stoğu düzelt</Button>

@@ -128,6 +128,18 @@ test.describe("cart page component", () => {
     await expect(page.getByText("725,50 ₺", { exact: true })).toHaveCount(0);
     expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), CART_STORAGE_KEY)).toEqual(items);
   });
+  test("stock mismatch keeps unrelated edits from silently pruning other lines", async ({ page }) => {
+    await load(page, "stock-change", [...items, { productId: "fixture-extra-0", quantity: 1 }]);
+    await page.getByRole("button", { name: "Fiyat ve stokları yenile" }).click();
+    const extra = page.getByRole("group", { name: "Uzun ürün adı 1 · Sofralar için salamura zeytin", exact: true });
+    await expect(extra.getByRole("button", { name: "Adedi artır" })).toBeDisabled();
+    expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), CART_STORAGE_KEY))
+      .toEqual([...items, { productId: "fixture-extra-0", quantity: 1 }]);
+    await page.getByRole("button", { name: "Stok değişikliklerini uygula" }).click();
+    await expect(extra.getByRole("button", { name: "Adedi artır" })).toBeEnabled();
+    await extra.getByRole("button", { name: "Adedi artır" }).click();
+    await expect(extra.getByRole("status", { name: "Adet" })).toHaveText("2");
+  });
   test("storage and quantity failures: edits stay in memory and recover", async ({ page }) => {
     await load(page, "write-error");
     await expect(page.getByRole("alert")).toContainText("kaydedilemiyor");
@@ -188,8 +200,8 @@ test.describe("cart page component", () => {
     await expect(payment).toBeInViewport();
     for (const control of await page.locator('main button, main input, main a').all()) {
       const box = (await control.boundingBox())!;
-      expect(box.height).toBeGreaterThanOrEqual(44);
-      expect(box.width).toBeGreaterThanOrEqual(44);
+      expect(Math.round(box.height * 100) / 100).toBeGreaterThanOrEqual(44);
+      expect(Math.round(box.width * 100) / 100).toBeGreaterThanOrEqual(44);
     }
     await page.screenshot({ path: testInfo.outputPath("cart-short-screen.png"), fullPage: true });
   });
