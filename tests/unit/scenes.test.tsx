@@ -9,7 +9,7 @@ vi.mock("@/lib/catalog/static-products", () => ({ getProducts: vi.fn() }));
 beforeEach(() => vi.mocked(getProducts).mockReset());
 
 describe("landing scene catalog boundaries", () => {
-  it("renders an empty catalog status on the server while retaining both CTA destinations", async () => {
+  it("renders an empty catalog status on the server while retaining the product destination", async () => {
     vi.mocked(getProducts).mockResolvedValue([]);
     const html = renderToStaticMarkup(await Home());
 
@@ -19,7 +19,7 @@ describe("landing scene catalog boundaries", () => {
       expect(html).toContain(`id="${id}"`);
     }
     expect(html).toContain('href="#urunler"');
-    expect(html).toContain('href="#toptan-iletisim"');
+    expect(html).toContain("Tüm ürünler");
   });
 
   it("renders only the first six supplied products without mutating the catalog", async () => {

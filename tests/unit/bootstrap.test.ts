@@ -22,9 +22,9 @@ describe("ZEYTİN bootstrap", () => {
 
     render(await Home());
 
-    const heading = screen.getByRole("heading", { level: 1, name: "Afina Zeytin" });
+    const heading = screen.getByRole("heading", { level: 1, name: "Kökü toprakta. Yeri sofrada." });
     expect(screen.getByRole("main").contains(heading)).toBe(true);
-    expect(screen.getByText("Kökü toprakta. Yeri sofrada.")).toBeDefined();
+    expect(screen.getByRole("img", { name: "Afina Zeytin" })).toBeDefined();
   });
 
   it("identifies the application as ZEYTİN in page metadata", async () => {

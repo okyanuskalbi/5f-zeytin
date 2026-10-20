@@ -10,7 +10,7 @@ export default async function Home(): Promise<JSX.Element> {
   return (
     <main>
       <SceneFlow>
-        <div data-scene="hero"><Hero /></div>
+        <div data-scene="hero"><Hero products={products} /></div>
         <div className="page-wrap">
           <section
             id="hikayemiz"

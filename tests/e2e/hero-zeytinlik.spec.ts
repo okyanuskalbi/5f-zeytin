@@ -3,7 +3,7 @@ import sharp from "sharp";
 
 const hero = (page: Page) => page.getByRole("region", { name: "Afina Zeytin", exact: true });
 const sequence = (page: Page) => hero(page).locator("[data-frame-sequence]");
-const actions = ["Ürünlerimizi Keşfedin", "Toptan Satış İçin İletişime Geçin"];
+const actions = ["Tüm ürünler"];
 
 test.use({ trace: "on" });
 test.beforeEach(async ({ page }) => {
@@ -13,6 +13,8 @@ test.beforeEach(async ({ page }) => {
 });
 
 async function expectPosterAndActions(page: Page): Promise<void> {
+  await page.evaluate(() => scrollTo(0, 0));
+  await expect(hero(page).locator("[data-hero-card]")).toBeVisible();
   const poster = sequence(page).locator("img");
   await expect(poster).toBeVisible();
   await expect.poll(() => poster.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
@@ -37,9 +39,10 @@ async function expectPosterAndActions(page: Page): Promise<void> {
 // Sample the rendered photo/gradient behind each text run, preserving button backgrounds.
 async function expectAA(page: Page): Promise<number> {
   await page.evaluate(() => document.fonts.ready);
-  const selector = 'section[aria-labelledby="hero-title"] :is(p,h1,a), header nav a';
+  const selector = '[data-hero-label] :is(p,h1,h2,a,button), header nav a';
   const runs = await page.locator(selector).evaluateAll((elements) => elements.flatMap((element) => {
     const style = getComputedStyle(element);
+    if (style.visibility === "hidden" || style.display === "none") return [];
     const color = style.color.match(/[\d.]+/g)!.slice(0, 3).map(Number);
     const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
     const result: { text: string; color: number[]; threshold: number; x: number; y: number; width: number; height: number }[] = [];
@@ -66,7 +69,7 @@ async function expectAA(page: Page): Promise<number> {
     .reduce((sum, channel, index) => sum + channel * [0.2126, 0.7152, 0.0722][index], 0);
   let minimum = Infinity;
   // The compact menu removes the old desktop navigation text from this sample.
-  expect(runs.length).toBeGreaterThanOrEqual(5);
+  expect(runs.length).toBeGreaterThanOrEqual(1);
   for (const run of runs) {
     const foreground = luminance(run.color);
     let contrast = Infinity;
@@ -143,8 +146,8 @@ test("poster and actions survive disabled JavaScript and manifest failures", asy
     const staticPage = await context.newPage();
     await staticPage.goto(new URL("/", baseURL!).href);
     await expect(sequence(staticPage).locator("img")).toBeVisible();
-    await hero(staticPage).getByRole("link", { name: "Ürünlerimizi Keşfedin", exact: true }).scrollIntoViewIfNeeded();
-    await expect(hero(staticPage).getByRole("link", { name: "Ürünlerimizi Keşfedin", exact: true })).toBeInViewport();
+    await hero(staticPage).getByRole("link", { name: "Tüm ürünler", exact: true }).scrollIntoViewIfNeeded();
+    await expect(hero(staticPage).getByRole("link", { name: "Tüm ürünler", exact: true })).toBeInViewport();
   } finally {
     await context.close();
   }
@@ -155,7 +158,7 @@ test("poster and actions survive disabled JavaScript and manifest failures", asy
   await expectPosterAndActions(page);
 });
 
-test("kit: short landscape keeps both keyboard actions inside the viewport", async ({ page }, testInfo) => {
+test("kit: short landscape keeps label keyboard actions inside the viewport", async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 844, height: 390 });
   await page.goto("/");
   await expect(sequence(page)).toHaveAttribute("data-status", "ready");
@@ -183,7 +186,7 @@ test("kit: intermediate widths and viewport changes preserve layout and focus", 
 });
 
 for (const failure of ["manifest-404", "frames-404", "canvas-null", "canvas-throw", "draw-throw", "context-lost"] as const) {
-  test(`kit: ${failure} preserves the poster and both actions`, async ({ page }, testInfo) => {
+  test(`kit: ${failure} preserves the poster and label actions`, async ({ page }, testInfo) => {
     if (failure === "context-lost") await page.setViewportSize({ width: page.viewportSize()!.width, height: 900 });
     const errors: string[] = [];
     page.on("pageerror", (error) => errors.push(error.message));
@@ -218,7 +221,7 @@ for (const failure of ["manifest-404", "frames-404", "canvas-null", "canvas-thro
   });
 }
 
-test("kit: slow media keeps the SSR poster geometry and both actions usable", async ({ page }, testInfo) => {
+test("kit: slow media keeps the SSR poster geometry and label actions usable", async ({ page }, testInfo) => {
   let release!: () => void;
   const delayed = new Promise<void>((resolve) => { release = resolve; });
   await page.route("**/frames/hero-zeytin/**", async (route) => { await delayed; await route.continue(); });

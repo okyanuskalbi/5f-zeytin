@@ -1,171 +1,109 @@
-import { expect, test, type Locator, type Page } from "@playwright/test";
-
-const actions = [
-  ["Ürünlerimizi Keşfedin", "#urunler"],
-  ["Toptan Satış İçin İletişime Geçin", "#toptan-iletisim"],
-] as const;
-
-function hero(page: Page): Locator {
-  return page.getByRole("region", { name: "Afina Zeytin", exact: true });
-}
-
-async function translateY(element: Locator): Promise<number> {
-  return element.evaluate((node) => new DOMMatrixReadOnly(getComputedStyle(node).transform).m42);
-}
-
-async function expectUsable(page: Page): Promise<void> {
-  await expect(hero(page).getByText("Kökü toprakta. Yeri sofrada.", { exact: true })).toBeVisible();
-  await expect(hero(page).getByText("Toprağın sunduğu lezzet, Afina’nın özeniyle.", { exact: true })).toBeVisible();
-  for (const [name, hash] of actions) {
-    const action = hero(page).getByRole("link", { name, exact: true });
-    await expect(action).toHaveAttribute("href", hash);
-    await action.click();
-    expect(new URL(page.url()).hash).toBe(hash);
-    await expect(page.locator(hash)).toBeFocused();
-  }
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-}
+import { expect, test } from "@playwright/test";
 
 test.beforeEach(async ({ page }) => {
-  // Keep the normal-motion scenario independent of the test machine's CPU count.
-  await page.addInitScript(() => {
-    Object.defineProperty(navigator, "hardwareConcurrency", { configurable: true, get: () => 8 });
-  });
+  await page.addInitScript(() => Object.defineProperty(navigator, "hardwareConcurrency", { configurable: true, get: () => 8 }));
+});
+
+test("scroll shrinks the label into an accurate persistent cart stub and reverses", async ({ page }, testInfo) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
-});
-
-test("hero plays a bounded entrance once alongside the approved scroll sequence", async ({ page, baseURL }, testInfo) => {
-  // Exercise active frames above the short-viewport poster fallback threshold.
-  await page.setViewportSize({ width: page.viewportSize()!.width, height: 900 });
-  const errors: string[] = [];
-  page.on("pageerror", (error) => errors.push(error.message));
-  testInfo.annotations.push({ type: "target-host", description: new URL(baseURL!).host });
-  await page.addInitScript(() => {
-    const samples: number[] = [];
-    Object.assign(window, { heroEntranceSamples: samples });
-    const started = performance.now();
-    function sample(): void {
-      const entrance = document.querySelector('[data-hero-motion="entrance"]');
-      if (entrance) samples.push(new DOMMatrixReadOnly(getComputedStyle(entrance).transform).m42);
-      if (performance.now() - started < 5000) requestAnimationFrame(sample);
-    }
-    requestAnimationFrame(sample);
-  });
-  expect((await page.goto("/"))?.status()).toBe(200);
-  const entrance = hero(page).locator('[data-hero-motion="entrance"]');
-  await expect(entrance).toHaveCount(1);
-  await expect(hero(page).locator("canvas")).toHaveAttribute("data-frame", "0");
-  await expect.poll(() => page.evaluate(() => {
-    const { heroEntranceSamples } = window as unknown as { heroEntranceSamples: number[] };
-    return heroEntranceSamples.some((y) => y > 0.1 && y <= 16);
-  })).toBe(true);
-  await expect.poll(() => translateY(entrance)).toBeCloseTo(0, 2);
-
-  if (await page.evaluate(() => matchMedia("(pointer: coarse)").matches)) {
-    await page.evaluate(() => scrollBy(0, 240));
-  } else {
-    await page.mouse.wheel(0, 240);
-  }
-  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(100);
-  expect(await translateY(entrance)).toBeCloseTo(0, 2);
-  await expectUsable(page);
-  expect(errors).toEqual([]);
   await page.goto("/");
-  await expect.poll(() => translateY(entrance)).toBeCloseTo(0, 2);
-  await page.screenshot({ path: testInfo.outputPath("hero-motion.png"), fullPage: true });
+  const hero = page.locator("[data-hero-label]");
+  const stub = page.getByRole("complementary", { name: "Etiket koçanı" });
+  await expect(hero).toHaveAttribute("data-enhanced", "true");
+  await expect(stub).toBeHidden();
+  await hero.getByRole("button", { name: "Sepete ekle" }).click();
+  await page.keyboard.press("Escape");
+  await page.evaluate(() => scrollTo(0, innerHeight * 0.4));
+  await expect.poll(async () => {
+    const scale = await hero.locator("[data-hero-card]").evaluate((node) => new DOMMatrix(getComputedStyle(node).transform).a);
+    return scale > 0.15 && scale < 1;
+  }).toBe(true);
+  await page.evaluate(() => scrollTo(0, innerHeight * 1.1));
+  await expect(stub).toBeVisible();
+  await expect(stub).toContainText("1 adet");
+  await expect(stub).toContainText("125,50 ₺");
+  expect((await stub.boundingBox())!.width).toBe(120);
+  expect((await stub.boundingBox())!.x).toBeGreaterThanOrEqual(16);
+  expect((await stub.boundingBox())!.y + (await stub.boundingBox())!.height).toBeLessThanOrEqual(page.viewportSize()!.height - 16);
+  await page.screenshot({ path: `test-results/091/${testInfo.project.name}-stub.png` });
+  await page.locator("#urunler").scrollIntoViewIfNeeded();
+  await expect(stub).toBeInViewport();
+  await stub.getByRole("link", { name: "Sepete git" }).click();
+  await expect(page).toHaveURL(/\/sepet$/);
+  await expect(page.getByRole("group", { name: "Sofralık Zeytin", exact: true }).getByRole("status", { name: "Adet" })).toHaveText("1");
+  await page.goto("/");
+  await expect(hero.locator("[data-hero-card]")).toBeVisible();
+  await expect(stub).toBeHidden();
 });
 
-test("reduced motion keeps the hero static and keyboard destinations accessible", async ({ page, browserName }, testInfo) => {
+test("empty stub leads to products and updates from the existing header drawer", async ({ page }) => {
+  await page.goto("/");
+  await page.evaluate(() => scrollTo(0, innerHeight * 1.1));
+  const stub = page.getByRole("complementary", { name: "Etiket koçanı" });
+  await expect(stub.getByRole("link", { name: "Ürünlere göz at" })).toBeVisible();
+  await stub.getByRole("link").click();
+  await expect(page).toHaveURL(/#urunler$/);
+  await page.getByRole("article", { name: "Sofralık Zeytin", exact: true }).getByRole("button", { name: "Sepete ekle" }).click();
+  await page.keyboard.press("Escape");
+  await expect(stub).toContainText("125,50 ₺");
+  await page.getByRole("button", { name: "Sepetim, 1 adet" }).click();
+  await page.getByRole("dialog", { name: "Sepetim" }).getByRole("button", { name: "Sepetten sil" }).click();
+  await page.keyboard.press("Escape");
+  await expect(stub.getByRole("link", { name: "Ürünlere göz at" })).toBeVisible();
+});
+
+test("reduced motion is static, requests no frames, keeps controls and header cart accessible", async ({ page }, testInfo) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
+  const frames: string[] = [];
+  page.on("request", (request) => { if (/\/frame-\d+\.webp/.test(request.url())) frames.push(request.url()); });
   await page.goto("/");
-  const nextControl = browserName === "webkit" && process.platform === "darwin" ? "Alt+Tab" : "Tab";
-  await page.keyboard.press(nextControl);
-  await expect(page.getByRole("link", { name: "Ana içeriğe geç" })).toBeFocused();
-  await page.keyboard.press("Enter");
-  await expect(page.locator("#ana-icerik")).toBeFocused();
-  for (const [name, hash] of actions) {
-    await page.keyboard.press(nextControl);
-    const action = hero(page).getByRole("link", { name, exact: true });
-    await expect(action).toBeFocused();
-    expect(await action.evaluate((node) => parseFloat(getComputedStyle(node).outlineWidth))).toBeGreaterThanOrEqual(2);
-    expect(await action.evaluate((node) => getComputedStyle(node).transitionDuration)).toBe("0s");
-    if (hash === actions[1][1]) await page.keyboard.press("Shift+Tab");
-  }
-  for (const [name, hash] of actions) {
-    await hero(page).getByRole("link", { name, exact: true }).focus();
-    await page.keyboard.press("Enter");
-    expect(new URL(page.url()).hash).toBe(hash);
-    await expect(page.locator(hash)).toBeFocused();
-  }
-  for (const effect of ["entrance"]) {
-    expect(await translateY(hero(page).locator(`[data-hero-motion="${effect}"]`))).toBe(0);
-  }
-  expect(await hero(page).evaluate((node) => node.getAnimations({ subtree: true }).length)).toBe(0);
-  await page.goto("/");
-  await page.screenshot({ path: testInfo.outputPath("hero-reduced-motion.png"), fullPage: true });
+  const hero = page.locator("[data-hero-label]");
+  await expect(hero).toHaveAttribute("data-static", "true");
+  await hero.getByRole("radio", { name: "Zeytinyağı" }).click();
+  await hero.getByRole("button", { name: "Sepete ekle" }).click();
+  await page.keyboard.press("Escape");
+  expect(await hero.locator("[data-hero-card]").evaluate((node) => getComputedStyle(node).transform)).toBe("none");
+  await page.evaluate(() => scrollTo(0, innerHeight));
+  await expect(page.locator("[data-hero-stub]")).toBeHidden();
+  await expect(page.getByRole("button", { name: "Sepetim, 1 adet" })).toBeInViewport();
+  expect(frames).toEqual([]);
+  await page.evaluate(() => scrollTo(0, 0));
+  await page.screenshot({ path: `test-results/091/${testInfo.project.name}-reduced.png` });
 });
 
-test("changing the motion preference replaces video frames with the static poster", async ({ page }) => {
-  await page.setViewportSize({ width: page.viewportSize()!.width, height: 900 });
+test("live preference changes and media failure preserve the printed label", async ({ page }) => {
+  await page.route("**/frames/hero-zeytin/manifest.json", (route) => route.fulfill({ status: 500 }));
   await page.goto("/");
-  await expect(hero(page).locator("canvas")).toHaveAttribute("data-frame", "0");
+  await expect(page.locator("[data-frame-sequence]")).toHaveAttribute("data-status", "error");
+  await expect(page.locator("#hero-title")).toBeVisible();
+  await page.evaluate(() => scrollTo(0, innerHeight));
+  await expect(page.locator("[data-hero-stub]")).toBeVisible();
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await expect(hero(page).locator("canvas")).toHaveCount(0);
-  await expect(hero(page).locator("[data-frame-sequence] img")).toBeVisible();
-  await page.emulateMedia({ reducedMotion: "no-preference" });
-  await expect(hero(page).locator("canvas")).toBeVisible();
-  await expectUsable(page);
+  await expect(page.locator("[data-hero-stub]")).toBeHidden();
+  await page.evaluate(() => scrollTo(0, 0));
+  await expect(page.locator("[data-hero-card]")).toBeVisible();
+  await expect(page.locator("[data-hero-card]")).toHaveCSS("transform", "none");
 });
 
-test("a low-end device keeps nonessential hero motion static and scroll unlocked", async ({ page }) => {
-  await page.addInitScript(() => {
-    Object.defineProperty(navigator, "hardwareConcurrency", { configurable: true, get: () => 4 });
-  });
+test("restored mixed cart uses catalog prices and the stub clears large text while scrolling", async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem("afina-zeytin:cart", JSON.stringify([
+    { productId: "sample-table-olive", quantity: 1, priceKurus: 1 },
+    { productId: "sample-olive-oil", quantity: 2 },
+  ])));
   await page.goto("/");
-  if (await page.evaluate(() => matchMedia("(pointer: coarse)").matches)) {
-    await page.evaluate(() => scrollBy(0, 240));
-  } else {
-    await page.mouse.wheel(0, 240);
-  }
-  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(100);
-  for (const effect of ["entrance"]) {
-    expect(await translateY(hero(page).locator(`[data-hero-motion="${effect}"]`))).toBe(0);
-  }
-  await expectUsable(page);
-});
-
-test("failed JavaScript and logo requests leave server-rendered hero links usable", async ({ page }) => {
-  const failedScripts: string[] = [];
-  await page.route("**/*", async (route) => {
-    if (route.request().resourceType() === "script") {
-      failedScripts.push(route.request().url());
-      await route.abort();
-    } else if (route.request().url().includes("/brand/afina-")) {
-      await route.abort();
-    } else {
-      await route.continue();
-    }
-  });
-  await page.goto("/");
-  expect(failedScripts.length).toBeGreaterThan(0);
-  await expectUsable(page);
-  for (const effect of ["entrance"]) {
-    const layer = hero(page).locator(`[data-hero-motion="${effect}"]`);
-    expect(await translateY(layer)).toBe(0);
-    expect(await layer.evaluate((node) => node.getAnimations({ subtree: true }).length)).toBe(0);
-  }
-});
-
-test("hero remains static and navigable when JavaScript is disabled", async ({ browser, baseURL }, testInfo) => {
-  const context = await browser.newContext({ javaScriptEnabled: false, viewport: testInfo.project.use.viewport });
-  try {
-    const page = await context.newPage();
-    await page.goto(new URL("/", baseURL!).href);
-    await expectUsable(page);
-    for (const effect of ["entrance"]) {
-      expect(await translateY(hero(page).locator(`[data-hero-motion="${effect}"]`))).toBe(0);
-    }
-  } finally {
-    await context.close();
+  const stub = page.locator("[data-hero-stub]");
+  for (const screen of [1, 2, 3, 4]) {
+    await page.evaluate((screen) => scrollTo(0, innerHeight * screen), screen);
+    await expect(stub).toBeVisible();
+    await expect(stub).toContainText("3 adet");
+    await expect(stub).toContainText("825,50 ₺");
+    await expect.poll(() => page.evaluate(() => {
+      const stub = document.querySelector("[data-hero-stub]")!.getBoundingClientRect();
+      const headings = [...document.querySelectorAll("h1,h2,h3")].filter((node) => !node.closest("[data-hero-label]"));
+      return headings.every((node) => {
+        const range = document.createRange(); range.selectNodeContents(node);
+        return [...range.getClientRects()].every((box) => box.right <= stub.left || box.left >= stub.right || box.bottom <= stub.top || box.top >= stub.bottom);
+      });
+    })).toBe(true);
   }
 });
