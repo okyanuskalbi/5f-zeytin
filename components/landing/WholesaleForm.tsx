@@ -45,6 +45,7 @@ export function WholesaleForm({ submitRequest }: { submitRequest?: WholesaleSubm
     if (inFlight.current || !submitRequest) return;
     const validation = validateWholesaleRequest(values);
     if (!validation.ok) {
+      setStatus("idle");
       setErrors(validation.errors);
       const field = Object.keys(validation.errors)[0];
       const control = event.currentTarget.elements.namedItem(field);

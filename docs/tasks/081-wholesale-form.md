@@ -70,4 +70,11 @@ Perakende satışın yanında resmi toptan CTA’sını ve erişilebilir talep f
 - `npm run test -- tests/unit/wholesale-form.test.ts tests/unit/wholesale-form-ui.test.tsx tests/unit/faq-contact-footer.test.tsx --coverage --coverage.include=lib/contracts/wholesale.ts --coverage.include=components/landing/WholesaleForm.tsx` → **exit 0; 22/22**, hedefli statement/function/line **%100**, branch **%98,46**. İlk kapsam denemesi yalnız SSR yaptığı için eşik altındaydı; gerçek etkileşim, payload normalizasyonu, aynı tick çift submit ve tekrar deneme testleriyle kapandı. Bu, global uygulama kapsamı iddiası değildir.
 - `npm run lint && npm run typecheck && npm run build` → lint/typecheck **exit 0**; prebuild **exit 1**, aynı eksik tesis kaynak dosyası. `npx next build` ayrıca **exit 0**; tarayıcı testleri bu güncel yerel production çıktısı üzerindedir. Standart kabul zinciri geçmediğinden durum şimdilik **BEKLİYOR**; mevcut kaynak/manifest uyuşmazlığı task dışında kendiliğinden düzeltilmedi.
 
+### Son durum bildirimi düzeltmesi — 20 Ekim 2026
+
+- Son incelemede başarıdan sonra sıfırlanan boş formun yeniden submit edilmesinde eski başarı mesajının kaldığı bulundu. Önce `npm run test -- tests/unit/wholesale-form-ui.test.tsx` **exit 1; 1 başarısız / 5 başarılı** ile yeniden üretildi; RED checkpoint `4fea4a1`. Geçersiz yeni denemede durum `idle` yapılınca aynı test GREEN; E2E başarı senaryosuna da boş tekrar/ilk hataya odak/çağrı sayısının artmaması eklendi.
+- Aynı hedefli coverage komutu **exit 0; 23/23**, statement/function/line **%100**, branch **%98,46**; lint ve typecheck **exit 0**.
+- İlk iletişim/footer regresyon koşumu **74/78**: dört Firefox hukuk sayfasından geri dönüş testinde eski yardımcı `200` beklerken geçerli cache revalidation `304` aldı. Yardımcı yalnız `200`/`304` kabul edecek şekilde düzeltildi; asıl sayfa/içerik/link assertion'ları korunur. Test sonucu son koşumda tekrar doğrulanacak; bu ara hata gizlenmedi.
+- İzole formun Chromium 1440 ve WebKit 390 ekranları açılarak incelendi; alan, etiket, KVKK ve focus görünür, yatay taşma/kırpılma yok. Runtime bölüm ekranı da son E2E koşumuna eklendi.
+
 ## Durum: BEKLİYOR

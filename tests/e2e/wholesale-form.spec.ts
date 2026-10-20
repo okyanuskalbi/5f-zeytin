@@ -37,6 +37,7 @@ test("landing CTA reaches the focusable wholesale form and never claims delivery
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await form(page).scrollIntoViewIfNeeded();
   await page.screenshot({ path: testInfo.outputPath("wholesale-landing.png"), fullPage: true });
+  await page.locator("#toptan-iletisim").screenshot({ path: testInfo.outputPath("wholesale-section.png") });
   await form(page).getByRole("link", { name: "KVKK aydınlatma metni" }).click();
   await expect(page.getByRole("heading", { name: "Taslak — onay bekleniyor" })).toBeVisible();
 });
@@ -125,6 +126,10 @@ test.describe("injected wholesale form", () => {
     }
     const payload = JSON.parse(await page.getByTestId("mock-payload").textContent() ?? "{}");
     expect(payload).toEqual({ name: "Örnek Firma", email: "talep@example.test", phone: "", message: "Sofralık zeytin ve zeytinyağı için bilgi rica ederim." });
+    await form(page).getByRole("button", { name: "Talebi gönder", exact: true }).click();
+    await expect(form(page).getByRole("status")).toHaveText("");
+    await expect(form(page).getByLabel("İsim / firma", { exact: true })).toBeFocused();
+    await expect(page.getByRole("status", { name: "Mock çağrı sayısı" })).toHaveText("1");
   });
 
   test("mock error and rejection preserve the request for retry; phone alone is sufficient", async ({ page }) => {

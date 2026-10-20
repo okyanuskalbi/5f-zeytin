@@ -10,7 +10,8 @@ const questions = [
 const address = "Şehit Ali Gökçe Mah. Şehit Ömer Halis Demir Sk. No: 35, Ellek Beldesi, Düziçi / Osmaniye";
 
 async function open(page: Page): Promise<void> {
-  expect((await page.goto("/"))?.status()).toBe(200);
+  // Firefox revalidates the cached landing when returning from a legal page.
+  expect([200, 304]).toContain((await page.goto("/"))?.status());
   await page.evaluate(() => document.fonts.ready);
 }
 async function noOverflow(page: Page): Promise<void> {
