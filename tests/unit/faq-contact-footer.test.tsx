@@ -62,6 +62,14 @@ it("prints the seller imprint and legal destinations without v1 ornaments", () =
   expect(doc.querySelector('a[href^="tel:"], a[href^="mailto:"]')).toBeNull();
 });
 
+it("offers a named home link around the dark brand logo and keeps the footer close concise", () => {
+  const doc = document.implementation.createHTMLDocument();
+  doc.body.innerHTML = renderToStaticMarkup(<Footer />);
+  const home = doc.querySelector('footer a[href="/"][aria-label="Afina Zeytin ana sayfa"]');
+  expect(home?.querySelector("img")?.getAttribute("src")).toBe("/brand/afina-zeytin-dark.svg");
+  expect(doc.querySelector("footer")?.textContent).not.toContain("Zeytinin hikâyesi toprakta başlar, sofrada tamamlanır.");
+});
+
 
 it("places the full-width factory band immediately before wholesale and after the process", async () => {
   const doc = await landing();

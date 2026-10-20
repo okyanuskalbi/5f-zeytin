@@ -26,7 +26,7 @@ it("publishes only the official story sentence, never unconfirmed process copy",
   expect(readFileSync("docs/referans/icerik.md", "utf8")).toContain(paragraphs[0].textContent);
 });
 
-it("provides keyboard scroll access, named controls and typographic stage notes until distinct imagery is approved", async () => {
+it("provides keyboard scroll access and named controls with only stage names until distinct imagery is approved", async () => {
   render(await Home());
   const section = screen.getByRole("region", { name: "Topraktan sofraya" });
   expect(within(section).getByRole("list", { name: "Süreç anları" }).tabIndex).toBe(0);
@@ -34,5 +34,5 @@ it("provides keyboard scroll access, named controls and typographic stage notes 
   expect(within(section).getByRole("button", { name: "Sonraki an" })).toBeDefined();
   expect(within(section).getByRole("progressbar", { name: "Süreç şeridi ilerlemesi" }).getAttribute("aria-valuenow")).toBe("0");
   expect(section.querySelectorAll("img")).toHaveLength(0);
-  expect(section.querySelectorAll("li span")).toHaveLength(6);
+  expect([...section.querySelectorAll("li")].map(node => node.textContent)).toEqual(titles);
 });
