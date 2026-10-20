@@ -96,4 +96,4 @@ PLAYWRIGHT_PORT=3114 npx playwright test tests/e2e/cart-wire.spec.ts tests/e2e/c
 ## Claude kararı (20 Eki)
 Bölüm kabul (222 unit, 30 bölüm e2e, 220 regresyon, inspect 0 FAIL). Toptan form bağlantısı 081'de, FAQPage/schema üreticisi 074→087'de tamamlanır; genel shell/hukuk/coverage maddeleri 097 kapısında.
 
-## Durum: TAMAMLANDI
+## Durum: TAMAMLANDI — v1; v2 (DESIGN.md Topraktan sofraya, 100–107) ile değiştirilecek

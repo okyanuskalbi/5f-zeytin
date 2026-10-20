@@ -1,47 +1,54 @@
-# ZEYTİN — Yeniden kurgu tasarım yönü (DESIGN.md)
+# ZEYTİN — Tasarım v2: "Topraktan sofraya" (DESIGN.md)
 
-Tarih: 2026-10-20. Kullanıcı: "ZEYTİN PROJESİNİDE VERDİĞİM PDFLERE GÖRE BAŞTAN KURGULA VE MDLERİNİ OLUŞTUR".
-Kaynaklar: `design-taste-frontend` föyü (`.taste-skill/direction.json`, yön **The page is the object**, `--keep palette,type`; `about` → `about-photo-tile-facts`, gerekçe: kurucu bilgisi yok, resmi metin değiştirilmez) + dört kit (`~/PROJELER/AFINA-KAYNAK/kitler/ozet.md`: sinematik hero, scroll'a bağlı video, AI-slop'tan profesyonele, AEO+GEO) + admin referansı (`docs/referans/admin-stil.md`). Eski token kaydı: `docs/DESIGN-token-kaydi.md`. Föyü basmak: `node ~/.claude/skills/design-taste-frontend/scripts/draw.mjs --show` (repo kökünden). Ek skill: `profesyonel-web-sitesi` (marka → hiyerarşi → mikro detay; ekran görüntüsü kanıtı).
-
-## KORUNANLAR
-Z-A fontları (Fraunces + Figtree), renkler (zeytin yeşili `#243A29`, fildişi `#F5F1E7`, altın `#D4B483`), onaylı logolar, onaylı zeytinlik görseli + zeytin videosu kare dizisi (086), `ScrollFrameSequence` (083), sepet altyapısı (035–039), PayTR önizleme (001b), resmi metinler (`docs/referans/icerik.md`), iddia kuralı (%100/organik/sertifika yok), ≤ 6 ürün.
+Tarih: 2026-10-20. Kullanıcı: "ZEYTİN SİTESİNİ HİÇ BEĞENMEDİM BAŞTAN YAP" → üç yön provası (A sinematik koyu, B aydınlık editoryal, C fabrika yeşili) → "21.DEV VE FRAMER MOTION UX/UI SKİLLERİ İLE EN İYİ SEÇENEKLERİ YAP" → **Claude kararı: A + B, C vurgu**. v1 (etiket nesnesi) reddedildi: `docs/DESIGN-v1-etiket.md` yalnız arşiv. Kaynaklar: `motion-framer`, `design-taste-frontend` ev kuralları ve kapısı, `profesyonel-web-sitesi`, dört kit (`~/PROJELER/AFINA-KAYNAK/kitler/ozet.md`), 21st.dev referansları (aşağıda).
 
 ## Fikir
-> Bu sayfada **Afina Zeytin'in kendi teneke etiketi** (yeşil kenar bantları, beyaz orta alan, altın kurdele üzerinde ürün adı, "10 KG") → **sayfanın nesnesine** dönüşür: hero bir etiket kartıdır; ürünler yan yana dizilmiş etiket fişleridir; footer etiketin arka yüzüdür.
+Slogan sayfanın kendisidir: **"Kökü toprakta. Yeri sofrada."** Sayfa koyu, sinematik **toprakta** (zeytinlik, gece/şafak, A) başlar; kaydırdıkça ışık doğar ve sayfa aydınlık **sofraya** (krem zemin, net ürün fotoğrafları, satış, B) dönüşür. Duygu topraktan, satış sofradan gelir. Tesisin parlak yeşil-siyah cephesi (C) yalnız "Tesisimiz/Toptan" bölümünde vurgu.
 
-Rakip testi: başka zeytinciler kendi etiketiyle yapabilir ama bu etiket (referans: `~/PROJELER/AFINA-KAYNAK/referans/zeytin-teneke-instagram.png`) ve Osmaniye/Düziçi tesisi yalnız Afina'nın.
+## Korunanlar
+Fraunces + Figtree (Z-A), logolar, onaylı zeytinlik görseli/videosu ve `ScrollFrameSequence`, sepet altyapısı (035–039 store/upsell), PayTR önizleme (001b), toptan form (081), yasal taslaklar (073), resmi metinler, iddia kuralı (%100/organik/sertifika yok), ≤ 6 ürün, plakası bulanık tesis fotoğrafı (yayın kullanıcı onayına bağlı).
 
-**Canlı öğe (tek):** Hero etiket kartında ürün ve boy seçimi (ör. Kırma Yeşil · 1 kg / 5 kg / 10 kg teneke) → etiketteki ad, gramaj ve fiyat "yeniden basılır"; "Sepete ekle" aynı kartta. Scroll edince kart küçülüp sol alt köşede **etiket koçanı** olur ve **sepet özeti** gösterir (ürün sayısı · toplam · "Sepete git"). Script yoksa: düz ürün listesi + sepet linki.
+## Renk
+| Token | Değer | Kullanım |
+|---|---|---|
+| toprak | `#0D110D` | hero zemini, koyu bölümler |
+| zeytin | `#243A29` | birincil düğme, başlık mürekkebi (açık zeminde), toptan bölümü |
+| krem (sofra) | `#F6F1E6` | vitrin ve sonrası ana zemin |
+| kum | `#EDE4D1` | yüzey ton adımı (kart arka planı yok; bölüm tonu) |
+| altın | `#D4B483` | koyu zeminde birincil eylem, fiyat vurgusu |
+| fabrika yeşili | `#6CCB3C` | YALNIZ Tesisimiz/Toptan bandı (tesis cephesi rengi) |
+Gradyan yok. "Işık doğuşu" = scroll'a bağlı **düz renk** enterpolasyonu (toprak → krem), tek bir sabit geçiş bölümünde.
 
-## Sayfa argümanı (bölümler = iddialar)
-1. **Hero — Kart, loş oda üstünde:** zeytinlik video karesi (kararmış, `brightness(0.7)`) tam ekran; ortada etiket kartı (canlı öğe). İddia: kökü toprakta, yeri sofrada; Osmaniye üretim tesisi.
-2. **Vitrin — Kenarda dizili etiket fişleri:** tam ekran fotoğraf/video önünde ≤ 6 ürün fişi (her biri farklı yükseklik, 2–3'ü 1–2° eğik): ad (Fraunces 600), gramaj, fiyat (tabular), stok, adet, Sepete ekle. Mobilde yatay kaydırılan sıra. İddia: az ama gerçek ürün.
-3. **Tesisimiz — Geniş fotoğraf, renk karosu, bilgiler:** gerçek tesis fotoğrafı (`AFINA-KAYNAK/fabrika/afina-zeytin-tesis-osmaniye.png`, plaka YEREL olarak bulanıklaştırılır, dış yükleme yok; premium üretim 004/005 onaylanırsa değiştirilir) + Osmaniye ili SVG silüeti + Düziçi noktası; bilgiler: Ellek / Düziçi / Osmaniye · Faaliyet: sofralık zeytin, salamura, zeytinyağı · Kanal: perakende + toptan · Kuruluş: 2021 (vergi levhası işe başlama). İddia: kendi tesisimizde üretiyoruz.
-4. **Topraktan sofraya — Sürüklenen anlar şeridi:** Hasat · Seçim · Kırma · Salamura · Dolum · Sofrada (her anda 1 satır başlık + 3 satır; süreç metinleri KULLANICI TEYİDİ gerektirir → teyit gelene kadar yalnız resmi belgeden türetilebilen genel ifadeler, iddia yok). Görseller: üretim görevi (Atlas, onaylı) gelene kadar onaylı kareler/tesis fotoğrafı kırpımları.
-5. **SSS — Cevaplar okuma metni:** 087'deki **yalnız teyitli** sorular, iki kolon, akordeon yok.
-6. **İletişim/Toptan — Ziyaret kartı fotoğraf üstünde:** tesis fotoğrafı tam ekran + kart: "Toptan satış" başlığı, adres (Şehit Ali Gökçe Mah. Şehit Ömer Halis Demir Sk. No:35, Ellek, Düziçi/Osmaniye), telefon/e-posta (TEYİT BEKLİYOR — yer tutucu görünmez, alan gizli), "Toptan Satış İçin İletişime Geçin" butonu → toptan form (081/082).
-7. **Footer — Etiketin arka yüzü:** fırfırlı üst kenar, sol: imza cümlesi + kısa mesaj; sağ: adres/linkler + pul (tesis fotoğrafı minik); en altta baskı satırı: satıcı unvanı + VKN (SIRKET.md'deki kamuya açık alanlar) + yasal linkler (KVKK, mesafeli satış, iade).
+## Tipografi
+Fraunces 500/700 (opsz, SOFT 50): display `clamp(64px, 10vw, 168px)` (hero), başlık `clamp(40px, 5vw, 76px)`, ürün adı 26–30px. Figtree 400/600/800: gövde 17–19px, fiyat 600 tabular, düğme 600. ≤ 5 boyut; başlık ≤ 2 satır; 13px altı yok.
 
-## Renk (iki-üç renkli baskı işi)
-Zemin fildişi `#F5F1E7` · mürekkep zeytin yeşili `#243A29` (ana metin), koyu `#141A15` (gövde) · etiket kenar bandı yeşili `#2F7A3B` (referans etiketteki canlı yeşil; yalnız etiket bantlarında) · altın `#D4B483` yalnız kurdele/vurgu ve birincil eylem değil (birincil eylem zeytin yeşili dolu düğme). Gradyan yok (etiket kurdelesi düz altın).
+## Sayfa akışı (bölümler = iddialar)
+1. **Toprak (hero, koyu, sticky ~180vh):** zeytinlik kare dizisi tam boy (koyulaştırılmış), "Kökü toprakta." dev Fraunces sol alt; kaydırdıkça ikinci satır "Yeri sofrada." gelir ve **ışık doğar**: zemin toprak → krem, görüntü aydınlanır (brightness 0.55 → 1), metin krem → zeytin. Sağ altta altın "Ürünleri keşfet". Üst çubuk: logo, Ürünler · Tesisimiz · Toptan, sepet (adet rozeti) — renk zemine göre değişir.
+2. **Sofra / Vitrin (krem):** başlık "Sofranıza" + bir cümle (resmi ürün kapsamı). ≤ 6 ürün **3×2 ızgara** (mobil tek kolon büyük kart; tablet 2 kolon): stüdyo görseli 4:5 (Atlas, onaylı), hover'da sahne görseline çapraz geçiş, ad, gramaj, fiyat, **hızlı ekle** (21st Add to Cart Button deseni: bas → yükleniyor → "Eklendi ✓" → sıfırla) + adet. Karta tıklayınca **hızlı görünüm** (sağ panel/mobilde alt sayfa): galeri, varyant/boy seçici, adet, sepete ekle, kısa açıklama, toptan linki. Kart çerçevesi/gölgesi yok; ayrım boşluk ve kum ton adımıyla.
+3. **Öne çıkan: Doğal Kırma Yeşil Zeytin 10 kg (split stage):** sol yapışkan büyük teneke görseli, sağda kaydırılan metin: ürün hikâyesi (resmi metinden), kullanım, gramaj/boy seçimi, sepete ekle, "Toptan alım için teklif isteyin".
+4. **Topraktan sofraya (süreç):** Hasat → Seçim → Kırma → Salamura → Dolum → Sofrada; yatay sürüklenen şerit (Framer Motion drag + ilerleme çubuğu). Süreç metinleri teyitsiz → yalnız adım adları + resmi tek cümle; görseller onaylı üretim gelince (aynı görsel iki kez YOK).
+5. **Tesisimiz + Toptan (fabrika yeşili bandı, C):** tam genişlik yeşil bant, solda dev siyah "Osmaniye'de, kendi tesisimizde." ve bilgiler (Ellek/Düziçi/Osmaniye · sofralık, salamura, zeytinyağı · perakende + toptan · 2021'den bu yana), sağda tesis fotoğrafı (kullanıcı onayı gelince; yoksa Osmaniye silüeti); altında toptan formu (081) zeytin zemin üstünde.
+6. **SSS (krem):** yalnız teyitli cevaplar (087), iki kolon okuma metni.
+7. **Footer (toprak):** logo, kısa slogan, linkler, satıcı bilgisi satırı (unvan · Düziçi VD · VKN), yasal linkler, küçük Topluluk logosu → afina.com.tr.
 
-## Tipografi (Z-A)
-Fraunces 600 (SOFT 50): etiket adı, bölüm başlıkları, ürün adları. Figtree 400/600: gövde 16–18px, fiyat tabular-nums, etiket detayları. 5 boyut tavanı; 13px altı yok; başlıklar ≤ 2 satır her genişlikte.
+**Sepet deneyimi:** sağdan açılan çekmece (mobilde alttan sayfa, sürükle-kapat), satır ekleme/silme `layout` + `AnimatePresence`, upsell (039) çekmecede, toplam ve "Ödemeye geç". İlk eklemeden sonra mobilde altta **mini sepet çubuğu** (adet · toplam · Sepet), güvenli alan içinde.
 
-## Ev kuralları (inspect.mjs ölçer) + kit ilkeleri
-Eyebrow yok ("OSMANİYE / ÜRETİM TESİSİ" küçük üst etiketi kalkar → bilgi başlıkta/cümlede), 01/02 yok, hairline/çerçeveli kutu yok (form/tablo hariç), gradyan yok, durağan gölge yok, glass yok, ikonlu kart yok, emoji yok, ≤ 2 font, "görsel hazırlanıyor" yer tutucu kutuları yok (görsel yoksa bölüm tipografiyle tamamlanır). Kit (AI-slop): marka kimliği → hiyerarşi → mikro detay sırası, her bölüm ekran görüntüsüyle kanıtlanır. Kit (sinematik): video <5 MB, poster, `muted playsinline`, reduced-motion'da poster, mobilde küçük kaynak.
+## Hareket (motion-framer)
+- İmza hareket: **ışığın doğuşu** (hero sonu, `useScroll` + `useTransform` → zemin rengi, görüntü parlaklığı, metin rengi; düz renk).
+- Bölüm girişleri: `whileInView`, `once`, başlık → metin → görsel, stagger 0.06–0.08, y 24px.
+- Vitrin kartları: kademeli giriş; hover görsel çapraz geçiş; hızlı ekle durum makinesi (spring, `visualDuration 0.35, bounce 0.2`).
+- Sepet: `AnimatePresence` + `layout`; rozet sayısı değişince küçük zıplama.
+- `useReducedMotion`: ışık geçişi anlık, kare dizisi poster, giriş animasyonu yok.
+- Yalnız transform/opacity/filter/renk; LCP öğesi animasyonsuz görünür.
 
-## Hareket
-İmza hareketi **Pinned story:** etiket kartı sticky; scroll'da küçülerek sol alta koçan olur (transform: scale + translate), ürün fişleri önünden geçer. Ayrıca: her bölümde başlık → metin → görsel girişi (60–90 ms stagger), tüm kontrollerde hover/press/focus, video kare dizisi + marquee yok (sakin). `prefers-reduced-motion`: kart statik, koçan yok (sepet header'da).
+## 21st.dev referansları (ilham; tokenlara uyarla, varsayılan bırakma)
+Add to Cart Button `34564` (bidyut10) · Product Card `5650` (beratberkayg, Framer Motion) · Drawer `23558` (ddoemonn, yan panel + odak tuzağı) · Drawer `31360` (wensity, mobil alt sayfa + snap) · Thumbnail image viewer `37501` (ibrandify, hızlı görünüm galerisi). Kod: `mcp__21st__get_component` (günlük kota).
 
-## Diğer sayfalar
-Sepet, ödeme (PayTR iframe), hesap, sipariş takip, yasal sayfalar aynı etiket dili: kağıt panel + fildişi zemin, tek buton biçimi (kare köşe). Admin: `docs/referans/admin-stil.md` (ayrı, sade panel dili).
+## Ev kuralları
+tasteskill ev kuralları geçerli (eyebrow, 01/02, hairline, gradyan, durağan gölge, glass, ikonlu kart, emoji yok; ≤ 2 font). İç sayfa istisnası (`--allow few-pictures,focal-point,still-page`) yalnız iç sayfalarda.
 
-## Mobil (zorunlu)
-iPhone 14/SE (WebKit), Pixel 7/Galaxy S20 (Chromium), yatay mod. Claude simülasyon bulguları (20 Eki): hero başlığı ilk ekranın altında kesiliyor; yer tutucu kutular uzun boş alanlar yaratıyor; ürün kartları çok uzun; footer linkleri tekrar. Yeni düzende: hero kartı 70svh, başlık iki satır 9vw; fişler yatay kaydırma (72vw genişlik); sabit alt koçan dokunma hedefi ≥ 44px ve iPhone güvenli alanı.
+## Performans ve mobil (zorunlu kabul)
+Lighthouse mobil ≥ 85, LCP < 2.5 s (hero posteri ≤ 60 KB AVIF, fetchpriority=high; kare dizisi etkileşim/boşta), CLS < 0.1, A11y ≥ 95. iPhone 14/SE (WebKit), Pixel 7/Galaxy S20 (Chromium), yatay mod; dokunma ≥ 44px; mini sepet güvenli alan.
 
 ## Kapı
-Her görev: `node ~/.claude/skills/design-taste-frontend/scripts/lint.mjs app components` + production'da `inspect.mjs http://127.0.0.1:<port>` FAIL 0; ekran görüntüleri 1440/768/390.
-
-## İç sayfa denetim istisnası (Claude, 20 Eki)
-Sepet, ödeme önizleme, hesap, sipariş takip, yasal sayfalar ve 404 okuma/işlem sayfalarıdır: `inspect.mjs` için yalnız `--allow few-pictures,focal-point,still-page` geçerlidir (landing yoğunluk kuralları). Diğer tüm kurallar (başlık satırı, kontrast, taşma, odak görünürlüğü, tipografi, ev kuralları) iç sayfalarda da FAIL 0 olmalıdır. Landing (`/`) için istisna YOK.
+Her görev: `lint.mjs app components` 0 FAIL + production `inspect.mjs` bölüm FAIL 0 + 1440/768/390 + iPhone 14 ekran görüntüleri. AGENTS.md 'Yeniden kurgu ara görevleri' kuralı geçerli (global kapı 107).

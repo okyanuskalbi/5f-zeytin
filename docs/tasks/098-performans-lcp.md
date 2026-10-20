@@ -26,4 +26,4 @@ frontend
 - [ ] Görsel kalite: hero posteri iPhone 14 ekran görüntüsünde bulanık/pikselli değil
 - [ ] lint/typecheck/build
 
-## Durum: BEKLİYOR
+## Durum: İPTAL — v2 tasarım (100–107)

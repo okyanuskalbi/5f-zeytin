@@ -78,4 +78,4 @@ Profesyonel web sitesi görsel kanıtı (dosyalar `test-results/091/` altında, 
 | Kontrast ≥4,5:1 | `style-audit.json` + e2e piksel ölçümleri | PASS; 6,22 / 10,87 / 12,26 |
 | Yasak liste | `inspect/desktop-fold.jpg`, `inspect/tablet-fold.jpg`, `inspect/mobile-fold.jpg`, `webkit-iphone14-hero.png` | mor degrade, emoji, blur yığını, iki CTA şablonu ve stok 3D yok |
 
-## Durum: TAMAMLANDI
+## Durum: TAMAMLANDI — v1; v2 (DESIGN.md Topraktan sofraya, 100–107) ile değiştirilecek

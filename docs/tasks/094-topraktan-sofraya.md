@@ -96,4 +96,4 @@ AGENTS.md 090–096 ara görev kuralına göre global bulgular: `npm test -- --c
 
 Kod farkı/sır taraması: `git diff --check origin/main` PASS; eklenen TypeScript/TSX/CSS satırlarında özel anahtar, gömülü token/şifre veya debug log yok (`security-audit.json`). Task dışı ürün, fiyat, stok, görsel onayı, ödeme, DB/auth ve servis ayarı değiştirilmedi.
 
-## Durum: TAMAMLANDI
+## Durum: TAMAMLANDI — v1; v2 (DESIGN.md Topraktan sofraya, 100–107) ile değiştirilecek

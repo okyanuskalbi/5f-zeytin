@@ -82,4 +82,4 @@ Profesyonel web sitesi görsel kanıtı:
 | Kontrast ≥4,5:1 | `style-audit.json` | Ana metin 11,97:1; stok 5,95:1; düğme 10,87:1; scrim üstü en açık fotoğraf varsayımında 10,38:1 |
 | Yasak liste | Dört kabul ekran görüntüsü + inspect | Mor degrade, emoji, blur yığını, boş görsel kutusu ve stok 3D yok |
 
-## Durum: TAMAMLANDI
+## Durum: TAMAMLANDI — v1; v2 (DESIGN.md Topraktan sofraya, 100–107) ile değiştirilecek

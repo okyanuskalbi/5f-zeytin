@@ -107,4 +107,4 @@ Profesyonel web sitesi kanıtı:
 | Kontrast ≥4,5:1 | `style-audit.json` | Yeşil/fildişi 10,87:1; gövde/kağıt 17,25:1; etiket/fildişi 5,40:1; altın/yeşil 6,22:1 |
 | Yasak liste | Görüntüler + lint/inspect | Mor degrade, emoji, blur kart yığını, boş görsel kutusu, stok 3D yok |
 
-## Durum: TAMAMLANDI
+## Durum: TAMAMLANDI — v1; v2 (DESIGN.md Topraktan sofraya, 100–107) ile değiştirilecek

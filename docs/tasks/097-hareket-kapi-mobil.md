@@ -132,4 +132,4 @@ bu iddiayla sunulmadı. Yeni skill kurulmadı; task'ın “21st MCP: hayır” t
 ## Claude kararı (20 Eki)
 Hareket katmanı + 3 tur eleştiri + mobil rapor teslim. Açık maddeler devredildi: performans/LCP + Firefox odak → 098; inspect `few-pictures` FAIL'i ve içerik/tasarım tavanı → kullanıcının tesis fotoğrafı + Atlas süreç/ürün görseli kararı (onay sonrası görsel görevleri).
 
-## Durum: TAMAMLANDI
+## Durum: TAMAMLANDI — v1; v2 (DESIGN.md Topraktan sofraya, 100–107) ile değiştirilecek
