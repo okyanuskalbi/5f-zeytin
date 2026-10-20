@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "@/components/site/InnerPage.module.css";
 import { Button } from "@/components/ui/button";
+import { CheckoutSignIn } from "@/components/account/CheckoutSignIn";
 
 type Summary = Readonly<{ productName: string; amountKurus: number; quantity: number }>;
 type Session = { iframeUrl: string; token: string };
@@ -117,6 +118,7 @@ export function PaymentPreview({ keysAvailable, summary }: { keysAvailable: bool
         <div className="text-base text-muted-foreground"><p>Kart ve 3D Secure alanları PayTR çerçevesinde açılır. Kart bilgilerinizi bu siteye girmeyin.</p></div>
       </aside>
       <section aria-labelledby="preview-payment-title" className={`${styles.paper} ${styles.summary}`}>
+        <CheckoutSignIn />
         <h2 id="preview-payment-title" className={styles.ribbon}>PayTR test ekranı</h2>
         {!keysAvailable ? <p role="alert" className={styles.notice}>Test anahtarı eksik — .env.local&apos;e ekleyin</p> : <>
           {state.phase === "requesting" && <p role="status" className="mb-4 text-base">Test oturumu hazırlanıyor…</p>}

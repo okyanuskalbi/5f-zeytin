@@ -1,11 +1,13 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import { expect, it } from "vitest";
+import { afterEach, expect, it, vi } from "vitest";
 import Kvkk from "@/app/kvkk/page";
 import Sale from "@/app/mesafeli-satis/page";
 import Returns from "@/app/iade/page";
 import Account, { metadata as accountMetadata } from "@/app/hesabim/page";
 import Tracking, { metadata as trackingMetadata } from "@/app/siparis-takip/page";
 import NotFound from "@/app/not-found";
+
+afterEach(() => vi.unstubAllEnvs());
 
 for (const [name, Page] of [["KVKK", Kvkk], ["satış", Sale], ["iade", Returns]] as const) {
   it(`${name} keeps the draft visible while publishing only confirmed seller details`, () => {
@@ -23,6 +25,9 @@ for (const [name, Page] of [["KVKK", Kvkk], ["satış", Sale], ["iade", Returns]
 
 for (const [title, Page, metadata] of [["Hesabım", Account, accountMetadata], ["Sipariş takibi", Tracking, trackingMetadata], ["Sayfa bulunamadı", NotFound, null]] as const) {
   it(`${title} exposes a recovery link without collecting data or simulating a service`, () => {
+    // The recovery-only account is the production default, without demo opt-in.
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("NEXT_PUBLIC_DEMO", undefined);
     const doc = document.implementation.createHTMLDocument();
     doc.body.innerHTML = renderToStaticMarkup(<Page />);
     expect(doc.querySelector("h1")?.textContent).toBe(title);
