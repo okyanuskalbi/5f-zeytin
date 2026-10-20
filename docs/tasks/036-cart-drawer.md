@@ -33,4 +33,11 @@ Erişilebilir sepet drawer arayüzünü kur.
 - Kullanıcı yerine açık karar verme; gizli bilgi commit etme; onaysız görseli yayınlama.
 - Gerçek ödeme, üretim DB değişikliği, canlı e-posta veya domain mutasyonu için bu taslağı tek başına yetki sayma.
 
+## Coder Notu
+
+- Başlangıç: `main`, temiz çalışma ağacı; 035 ve 024 task dosyaları `TAMAMLANDI`. Bu görev için eksik kullanıcı kararı/onay kapısı yok. Global provider, ürün/navigasyon bağlantısı 038; `/sepet` sayfası 037 ve `/odeme` akışı 046 kapsamındadır.
+- `frontend-patterns`, `accessibility`, `tdd-workflow` okundu. 21st MCP `search` / `get_component` ile [Drawer — Shopping Cart](https://21st.dev/@efferd/components/drawer) (4485) alındı. Yerel Next.js `use-client`/`link` kılavuzları ve Radix Dialog resmi belgesi incelendi; `npm_config_cache="$PWD/.cache/npm" npx shadcn@latest docs button dialog` **exit 0**. Mevcut shadcn Dialog/Button kullanılacak; yeni paket/skill kurulmadı.
+- TDD / RED: `PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" npm run test:e2e -- tests/e2e/cart-drawer.spec.ts --config .cache/task-036/playwright.config.ts --project=chromium-320 --grep 'quantity, limits'` → **exit 1**, beklenen eksik uygulama: `Could not resolve '../../../components/cart/CartDrawer'`. Fixture yeni bileşeni doğrudan kullanır; hata eksik drawer modülüdür.
+- 3004 portundaki mevcut süreç korundu. Commit dışı `.cache/task-036/playwright.config.ts`, proje konfigürasyonundaki aynı 12 tarayıcı/viewport projesini bu checkout'un `next start` çıktısı üzerinde `localhost:3036` hedefine taşır; başka checkout/sunucu yeniden kullanılmaz. Test fixture'ı mevcut Vite/Playwright yöntemini izler; iki destek dosyası yalnız `tests/e2e/fixtures/cart-drawer.*` altındadır, public test rotası oluşturulmaz.
+
 ## Durum: BEKLİYOR
