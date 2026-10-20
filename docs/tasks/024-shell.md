@@ -69,4 +69,14 @@ Shell raporu/ekran görüntüleri `.cache/task-024/shell-results/`, regresyon JS
 **Kullanıcı görsel onayı alındı.** Kullanıcı 2026-10-20: "sana vermiştim logoları bir kontrol et pdflerde vardı" — logolar kullanıcının kendi resmi Illustrator PDF'inden (AFİNA Logolar2.pdf) çıkarıldı; Claude karşılaştırma şeridini (docs/referans/logolar/karsilastirma.png) kullanıcıya açtı ve orijinal PNG ↔ optimize SVG ↔ dark SVG uyumunu doğruladı. Kullanıcı kararı: logo seti (6 normal + 6 dark SVG, favicon, OG) ONAYLI.
 Bu onayı `docs/gorsel-onay.md` makine kayıt bloğuna (`asset-approvals`) her logo/favicon/OG çıktısı için dosya SHA-256 ve kaynak hash'lerine bağlı `approvedBy: "user"`, `approvedAt: "2026-10-20"`, `evidence` alanıyla işle; manifestte ilgili varlıkları `approved`/`runtime=true` yap, `public/brand/` yerleşimini tamamla, `check-assets` dahil tüm kabul kriterlerini yeniden çalıştır.
 
+## Coder Notu
+
+### Düzeltme 024-a — 20 Ekim 2026
+
+- Başlangıç: `main`, temiz çalışma ağacı; 002/080 task dosyaları `TAMAMLANDI`. Yukarıdaki Claude onay kaydı 14 marka çıktısı için kullanıcı kararını açıkça kaydediyor. Bu düzeltme, `docs/gorsel-onay.md` ve manifestteki onay alanlarının güncellenmesine de yetki veriyor; PLAN ve diğer task dosyaları korunur.
+- `frontend-patterns`, `accessibility`, `tdd-workflow` yüklendi; yeni skill/paket kurulmadı. 21st MCP navbar/footer araması yapıldı; mevcut uygulamanın dayandığı Mega Menu Navbar (31723) ve Footer Two (27521) kodları yeniden incelendi. Yerel Next.js 16.4.2 image/metadata kılavuzları okundu.
+- TDD / RED: `npm run test -- tests/unit/asset-registry.test.ts` → **exit 1; 6 başarısız / 56 başarılı**. İstenen `asset-approvals` ve `runtime` alanlarının henüz desteklenmemesi doğrulandı.
+- TDD / RED: `PLAYWRIGHT_BASE_URL=http://localhost:3024 PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" npm run test:e2e -- tests/e2e/shell.spec.ts --project=chromium-320 --grep "shell exposes"` → **exit 1**; navbar'da `Afina Zeytin` isimli logo bulunamadı. Test güncel checkout'un `npm run build` çıktısından başlatılan `next start -p 3024` üzerinde çalıştı. 3004 kullanımda olduğu için mevcut süreç korunarak 3024 seçildi. İlk tarayıcı denemesindeki macOS MachPort izin hatası süreç izniyle çözüldü; geçerli RED eksik logo davranışıdır.
+- Yolculuklar: onaylı logoların bozulmadan yüklenmesi ve favicon/OG bağlantıları; logo isteği başarısız olduğunda erişilebilir bağlantılar; mevcut mobil/klavye/reduced-motion/404 davranışlarının korunması; onay/kaynak hash'i uyuşmadığında ve runtime izni olmadığında doğrulamanın reddi.
+
 ## Durum: BEKLİYOR

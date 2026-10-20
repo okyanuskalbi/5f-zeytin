@@ -35,6 +35,7 @@ interface Asset {
   references: { file: string; sha256: string }[];
   status: "candidate" | "approved" | "rejected";
   approval: { recordId: string; decidedAt: string } | null;
+  runtime?: boolean;
 }
 
 let checkAssets: (options: Options) => Promise<{ checked: number; mode: string }>;
@@ -248,6 +249,72 @@ describe("user decision records", () => {
     const doc = await readFile(join(root, "docs/gorsel-onay.md"), "utf8");
     await put("docs/gorsel-onay.md", `${doc}\n${doc}`);
     await expect(checkAssets({ root })).rejects.toThrow(/karar/i);
+  });
+});
+
+describe("Task 024-a source-bound brand approvals", () => {
+  function brandApproval() {
+    asset = { ...asset, runtime: true, status: "approved", approval: { recordId: "brand-p01-v1", decidedAt: "2026-10-20" } };
+    return { recordId: "brand-p01-v1", assetId: asset.id, sha256: asset.sha256,
+      references: asset.references, approvedBy: "user", approvedAt: "2026-10-20",
+      evidence: "user-message-2026-10-20-task-024-a-brand-set" };
+  }
+
+  async function saveBrand(approvals: unknown[]) {
+    await save();
+    const doc = await readFile(join(root, "docs/gorsel-onay.md"), "utf8");
+    await put("docs/gorsel-onay.md", `${doc}\n\`\`\`json asset-approvals\n${JSON.stringify({ version: 1, approvals })}\n\`\`\`\n`);
+  }
+
+  it("allows source-bound user approval with day precision and explicit runtime permission", async () => {
+    await saveBrand([brandApproval()]);
+    await put("components/Logo.tsx", `export const logo = "${asset.file}";`);
+    await expect(checkAssets({ root, mode: "approved" })).resolves.toEqual({ checked: 1, mode: "approved" });
+  });
+
+  it.each([
+    { approvedBy: "agent" }, { approvedAt: "2999-01-01" }, { approvedAt: "2026-02-30" },
+    { approvedAt: "yesterday" }, { evidence: "" }, { references: [] },
+    { references: [{ file: "docs/visual-prompts.md", sha256: "0".repeat(64) }] },
+    { sha256: "0".repeat(64) }, { assetId: "p02" }, { approvedAt: "2026-10-19" },
+  ])("rejects invalid or changed brand approval provenance: %j", async (patch) => {
+    await saveBrand([{ ...brandApproval(), ...patch }]);
+    await expect(checkAssets({ root })).rejects.toThrow();
+  });
+
+  it("rejects ambiguous brand records and duplicate IDs across both ledgers", async () => {
+    const approval = brandApproval();
+    await saveBrand([approval, approval]);
+    await expect(checkAssets({ root })).rejects.toThrow(/tekrar/i);
+    decisions = [{ recordId: approval.recordId, assetId: asset.id, sha256: asset.sha256,
+      decision: "approved", decidedAt: "2026-10-19T10:00:00.000Z", evidenceRef: approval.evidence }];
+    await saveBrand([approval]);
+    await expect(checkAssets({ root })).rejects.toThrow(/tekrar/i);
+    decisions = [];
+    await saveBrand([approval]);
+    const doc = await readFile(join(root, "docs/gorsel-onay.md"), "utf8");
+    await put("docs/gorsel-onay.md", `${doc}\n${doc.slice(doc.indexOf("```json asset-approvals"))}`);
+    await expect(checkAssets({ root })).rejects.toThrow(/onay/i);
+  });
+
+  it.each([true, "true"])("rejects unapproved or non-boolean runtime permission: %j", async (runtime) => {
+    await save([{ ...asset, runtime }]);
+    await expect(checkAssets({ root })).rejects.toThrow(/runtime|onay/i);
+  });
+
+  it("allows an approved reference to stay out of runtime and rejects its use", async () => {
+    approve();
+    asset.runtime = false;
+    await save();
+    await expect(checkAssets({ root })).resolves.toEqual({ checked: 1, mode: "all" });
+    await put("components/Logo.tsx", `export const logo = "${asset.file}";`);
+    await expect(checkAssets({ root })).rejects.toThrow(/runtime/i);
+  });
+
+  it("rejects runtime=true on an approved design reference", async () => {
+    approve();
+    await save([{ ...asset, promptId: "P08", runtime: true }]);
+    await expect(checkAssets({ root })).rejects.toThrow(/tasarım referansı/i);
   });
 });
 

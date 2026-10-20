@@ -46,11 +46,51 @@ test("shell exposes navigation, official copy and destination contracts at every
     await expectLinks(header.getByRole("navigation", { name: "Ana navigasyon" }));
     await expect(page.getByRole("button", { name: "Menüyü aç" })).toBeHidden();
   }
-  // Until the explicit visual approval, neither candidate logos nor generated scenes may render.
-  await expect(page.locator('img[src*="/brand/"], img[src*="/images/generated/"]')).toHaveCount(0);
+  const logos = [
+    [header.getByRole("img", { name: "Afina Zeytin", exact: true }), "/brand/afina-zeytin.svg"],
+    [footer.getByRole("img", { name: "Afina Zeytin", exact: true }), "/brand/afina-zeytin-dark.svg"],
+    [footer.getByRole("img", { name: "AFİNA Şirketler Topluluğu", exact: true }), "/brand/afina-topluluk-dark.svg"],
+  ] as const;
+  for (const [logo, src] of logos) {
+    await logo.scrollIntoViewIfNeeded();
+    await expect(logo).toBeVisible();
+    await expect(logo).toHaveAttribute("src", src);
+    await expect.poll(() => logo.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
+    const dimensions = await logo.evaluate((image: HTMLImageElement) => ({
+      rendered: image.width / image.height, original: image.naturalWidth / image.naturalHeight,
+    }));
+    expect(dimensions.rendered).toBeCloseTo(dimensions.original, 1);
+  }
+  await expect(page.locator('img[src*="/brand/"]')).toHaveCount(3);
+  await expect(page.locator('img[src*="/images/generated/"]')).toHaveCount(0);
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute("href", "/brand/favicon.svg");
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", "https://afinazeytin.com/brand/og.png");
+  for (const file of ["/brand/favicon.svg", "/brand/og.png"]) {
+    expect((await page.request.get(file)).status()).toBe(200);
+  }
   await expectNoOverflow(page);
   expect(errors).toEqual([]);
   await page.screenshot({ path: testInfo.outputPath("shell.png"), fullPage: true });
+});
+
+test("failed logo requests keep named home, community and menu links usable", async ({ page }) => {
+  await page.route("**/brand/afina-*.svg", (route) => route.abort());
+  await page.goto("/");
+  const home = page.getByRole("banner").getByRole("link", { name: "Afina Zeytin ana sayfa" });
+  await expect(home).toBeVisible();
+  await expect(home).toHaveAccessibleName("Afina Zeytin ana sayfa");
+  await home.focus();
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page.getByRole("contentinfo").getByRole("link", { name: "AFİNA Şirketler Topluluğu" })).toHaveAttribute("href", "https://afina.com.tr");
+  if (page.viewportSize()!.width < 1024) {
+    await page.getByRole("button", { name: "Menüyü aç" }).click();
+    await expectLinks(page.getByRole("navigation", { name: "Mobil navigasyon" }));
+    await page.keyboard.press("Escape");
+  } else {
+    await expectLinks(page.getByRole("navigation", { name: "Ana navigasyon" }));
+  }
+  await expectNoOverflow(page);
 });
 
 test("skip link and mobile menu support keyboard, dismissal and reduced motion", async ({ page, browserName }) => {
