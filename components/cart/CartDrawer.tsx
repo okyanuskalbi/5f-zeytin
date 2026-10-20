@@ -82,9 +82,9 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
             opener.focus();
           }
         }}>
-        <DialogHeader className="shrink-0 flex-row items-start justify-between gap-3 border-b p-5 pr-5">
+        <DialogHeader className="shrink-0 flex-row items-start justify-between gap-3 p-5 pr-5">
           <div className="min-w-0 space-y-2">
-            <DialogTitle className="flex items-center gap-2"><ShoppingBag aria-hidden="true" className="size-5 shrink-0 text-gold-ink" />Sepetim</DialogTitle>
+            <DialogTitle className="flex items-center gap-2"><ShoppingBag aria-hidden="true" className="size-5 shrink-0 text-foreground" />Sepetim</DialogTitle>
             <DialogDescription className="text-sm">Ürünlerinizi gözden geçirin, adetleri düzenleyin.</DialogDescription>
           </div>
           <DialogClose asChild><Button ref={closeRef} variant="ghost" size="icon" aria-label="Sepeti kapat"><X aria-hidden="true" /></Button></DialogClose>
@@ -98,11 +98,11 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
               {lines.map(({ productId, product, quantity }, index) => {
                 const unavailable = !product || product.stock < quantity;
                 return (
-                  <li key={productId} className="rounded-lg border border-border bg-background p-4">
+                  <li key={productId} className="rounded-none bg-background p-4">
                     <div role="group" aria-labelledby={`${id}-line-${index}`} className="space-y-3">
                       <h3 id={`${id}-line-${index}`} className="text-lg break-words">{product?.name ?? "Kullanılamayan ürün"}</h3>
                       {product && <>
-                        <p className="text-sm text-gold-ink">{product.weight}</p>
+                        <p className="text-sm text-foreground">{product.weight}</p>
                         <p className="text-sm tabular-nums">{formatPrice(product.priceKurus)} / adet</p>
                       </>}
                       {unavailable && <p className="text-sm text-destructive">Bu ürün artık kullanılamıyor.</p>}
@@ -128,7 +128,7 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
           </p>
         </div>
 
-        <div className="grid shrink-0 gap-3 border-t border-border bg-background p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+        <div className="grid shrink-0 gap-3 bg-background p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
           <div className="flex flex-wrap items-baseline justify-between gap-2 text-sm">
             <p>Ara toplam (tahmini) · {itemCount} adet</p>
             <p className="text-lg font-medium tabular-nums">{state.hydrated && (lines.length === 0 || validCart) ? formatPrice(subtotal) : "—"}</p>

@@ -65,9 +65,7 @@ test("hero uses the approved logo and grove poster without unapproved scene medi
   await expect(hero.locator("[data-frame-sequence] img")).toBeVisible();
   await expect(hero.getByText("Onaylı sahne görseli bekleniyor.", { exact: true })).toHaveCount(0);
   await expect(hero.locator("video")).toHaveCount(0);
-  const logo = page.getByRole("banner").getByRole("img", { name: "Afina Zeytin", exact: true });
-  await expect(logo).toHaveAttribute("src", "/brand/afina-zeytin.svg");
-  await expect.poll(() => logo.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
+  await expect(page.getByRole("banner").getByRole("link", { name: "Afina Zeytin ana sayfa" })).toHaveText("AFİNA ZEYTİN");
   expect(requests.some((url) => url.includes("/images/generated/"))).toBe(false);
   await expectNoOverflow(page);
 });
@@ -75,8 +73,7 @@ test("hero uses the approved logo and grove poster without unapproved scene medi
 test("hero content and actions remain usable when logo requests fail", async ({ page }, testInfo) => {
   await page.route("**/brand/afina-*.svg", (route) => route.abort());
   await page.goto("/");
-  const logo = page.getByRole("banner").getByRole("img", { name: "Afina Zeytin", exact: true });
-  await expect.poll(() => logo.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth === 0)).toBe(true);
+  await expect(page.getByRole("banner").getByRole("link", { name: "Afina Zeytin ana sayfa" })).toHaveText("AFİNA ZEYTİN");
   const hero = page.getByRole("region", { name: "Afina Zeytin", exact: true });
   await expect(hero.getByText(headline, { exact: true })).toBeVisible();
   await expect(hero.getByText(subtitle, { exact: true })).toBeVisible();

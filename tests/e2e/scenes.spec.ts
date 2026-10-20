@@ -137,7 +137,11 @@ test("scene entrances follow native scroll once, without moving product controls
     requestAnimationFrame(tick);
   }));
   expect(await samples(page)).toEqual([]);
-  await page.mouse.wheel(0, 240);
+  if (await page.evaluate(() => matchMedia("(pointer: coarse)").matches)) {
+    await page.evaluate(() => scrollBy(0, 240));
+  } else {
+    await page.mouse.wheel(0, 240);
+  }
   await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(100);
   await expect(page.locator("body")).not.toHaveCSS("overflow", "hidden");
   await expect(page.locator("[data-scene-flow]")).toHaveCSS("touch-action", "auto");
@@ -270,6 +274,6 @@ test("the composed Home caps seven supplied products at six and keeps an empty c
   await page.goto("/__scenes-fixture/?count=0");
   await expect(page.locator("#urunler article")).toHaveCount(0);
   await expect(page.locator("#urunler").getByRole("status")).toHaveText("Görüntülenecek ürün bulunmuyor.");
-  await page.getByRole("link", { name: "Toptan Satış İçin İletişime Geçin", exact: true }).click();
+  await page.getByRole("region", { name: "Afina Zeytin", exact: true }).getByRole("link", { name: "Toptan Satış İçin İletişime Geçin", exact: true }).click();
   await expect(page.locator("#toptan-iletisim")).toBeInViewport();
 });

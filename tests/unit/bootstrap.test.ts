@@ -52,18 +52,23 @@ describe("Playwright target selection", () => {
     expect(scripts.start).toBe("next start -p 3004");
   });
 
-  it("starts a local server on 3004 with three browsers and four widths", async () => {
+  it("starts a local server on 3004 with three browsers, four widths and iPhone 14", async () => {
     vi.stubEnv("PLAYWRIGHT_BASE_URL", undefined);
+    vi.stubEnv("PLAYWRIGHT_PORT", undefined);
     const { default: config } = await import("../../playwright.config");
 
     expect(config.use?.baseURL).toBe("http://localhost:3004");
     expect(config.webServer).toMatchObject({
-      command: "npm run start",
+      command: "npm run start -- --port 3004",
       url: "http://localhost:3004",
       reuseExistingServer: false,
     });
     expect(config.metadata).toMatchObject({ targetHost: "localhost:3004" });
-    expect(config.projects).toHaveLength(12);
+    expect(config.projects).toHaveLength(13);
+    expect(config.projects).toContainEqual(expect.objectContaining({
+      name: "webkit-iphone14",
+      use: expect.objectContaining({ defaultBrowserType: "webkit", isMobile: true, hasTouch: true }),
+    }));
     for (const browserName of ["chromium", "firefox", "webkit"]) {
       for (const width of [320, 390, 768, 1440]) {
         expect(config.projects).toContainEqual(
@@ -73,6 +78,20 @@ describe("Playwright target selection", () => {
         );
       }
     }
+  });
+
+  it("owns the requested local production port without reusing another server", async () => {
+    vi.stubEnv("PLAYWRIGHT_BASE_URL", undefined);
+    vi.stubEnv("PLAYWRIGHT_PORT", "3104");
+    const { default: config } = await import("../../playwright.config");
+
+    expect(config.use?.baseURL).toBe("http://localhost:3104");
+    expect(config.webServer).toMatchObject({ command: "npm run start -- --port 3104", reuseExistingServer: false });
+  });
+
+  it("rejects an invalid local port", async () => {
+    vi.stubEnv("PLAYWRIGHT_PORT", "0");
+    await expect(import("../../playwright.config")).rejects.toThrow("PLAYWRIGHT_PORT must be a valid port.");
   });
 
   it("uses the explicit remote host and disables the local webServer", async () => {

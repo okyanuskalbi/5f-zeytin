@@ -48,7 +48,7 @@ export default async function RootLayout({
       <body>
         <a
           href="#ana-icerik"
-          className="fixed top-4 left-4 z-[100] -translate-y-32 rounded-md bg-primary px-5 py-3 text-primary-foreground focus:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+          className="fixed top-4 left-4 z-[100] -translate-y-32 rounded-none bg-primary px-5 py-3 text-primary-foreground focus:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
         >
           Ana içeriğe geç
         </a>

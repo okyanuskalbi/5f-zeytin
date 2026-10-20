@@ -15,7 +15,7 @@ type ProductCardProps = {
 };
 
 const priceFormatter = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const cardStyle = "flex min-w-0 flex-col gap-5 rounded-lg border border-border bg-card p-5 text-card-foreground";
+const cardStyle = "flex min-w-0 flex-col gap-6 bg-card p-6 text-card-foreground";
 
 // Adapted from 21st Product Listing Card (shadcnstore/product-card-1, demo 28227).
 // Keep its image/detail/action hierarchy; use AFİNA tokens and semantic controls.
@@ -23,7 +23,6 @@ export function ProductCard({ product, loading = false, onAddToCart }: ProductCa
   if (loading) {
     return (
       <div role="status" aria-label="Ürün yükleniyor" aria-busy="true" className={cardStyle}>
-        <div aria-hidden="true" className="aspect-square rounded-md bg-muted" />
         <p className="text-muted-foreground">Ürün yükleniyor…</p>
       </div>
     );
@@ -83,13 +82,10 @@ function PurchaseCard({ product, onAddToCart }: { product: Product; onAddToCart:
 
   return (
     <article aria-labelledby={`${id}-title`} aria-busy={pending} className={cardStyle}>
-      {/* Approved product media is wired in Task 034; never load candidate images. */}
-      <div className="flex aspect-square items-end rounded-md border border-border bg-muted p-4">
-        <p className="text-sm text-muted-foreground">Ürün görseli hazırlanıyor.</p>
-      </div>
+      {/* Without approved media, the product is complete in type alone. */}
       <div className="flex flex-1 flex-col gap-3">
         <h3 id={`${id}-title`} className="break-words">{product.name}</h3>
-        <p className="text-sm text-gold-ink">{product.weight}</p>
+        <p className="text-sm text-foreground">{product.weight}</p>
         <p className="mt-auto text-2xl font-medium tabular-nums">{priceFormatter.format(product.priceKurus / 100)} ₺</p>
         <p id={`${id}-stock`} className="text-sm text-muted-foreground">
           {soldOut ? "Tükendi" : `Stokta · ${product.stock} adet`}
@@ -104,7 +100,7 @@ function PurchaseCard({ product, onAddToCart }: { product: Product; onAddToCart:
           <input ref={input} id={`${id}-quantity`} type="number" inputMode="numeric" min={1} max={product.stock} step={1}
             value={quantity} disabled={pending || soldOut} onChange={(event) => changeQuantity(event.target.value)}
             aria-invalid={invalidQuantity} aria-describedby={`${id}-stock ${id}-feedback`}
-            className="min-h-11 w-16 min-w-0 rounded-md border border-input bg-background px-2 text-center text-base tabular-nums focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring disabled:cursor-not-allowed disabled:bg-muted aria-invalid:border-destructive" />
+            className="min-h-11 w-16 min-w-0 rounded-none border border-input bg-background px-2 text-center text-base tabular-nums focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring disabled:cursor-not-allowed disabled:bg-muted aria-invalid:border-destructive" />
           <Button variant="outline" size="icon" aria-label="Adedi artır"
             disabled={pending || soldOut || !validQuantity || amount >= product.stock}
             onClick={() => changeQuantity(String(amount + 1))}><Plus aria-hidden="true" /></Button>

@@ -3,7 +3,7 @@ import { expect, test, type Locator, type Page } from "@playwright/test";
 const landingLinks = [
   ["Ürünlerimizi Keşfedin", "/#urunler"],
   ["Tesisimiz", "/#tesisimiz"],
-  ["Toptan Satış İçin İletişime Geçin", "/#toptan"],
+  ["Toptan Satış İçin İletişime Geçin", "/#toptan-iletisim"],
 ] as const;
 
 async function expectLinks(navigation: Locator): Promise<void> {
@@ -37,17 +37,10 @@ test("shell exposes navigation, official copy and destination contracts at every
     await expect(legal.getByRole("link", { name, exact: true })).toHaveAttribute("href", href);
   }
   await expect(footer.getByRole("link", { name: "AFİNA Şirketler Topluluğu" })).toHaveAttribute("href", "https://afina.com.tr");
-  if (page.viewportSize()!.width < 1024) {
-    await expect(header.getByRole("navigation", { name: "Ana navigasyon" })).toBeHidden();
-    await page.getByRole("button", { name: "Menüyü aç" }).click();
-    await expectLinks(page.getByRole("navigation", { name: "Mobil navigasyon" }));
-    await page.keyboard.press("Escape");
-  } else {
-    await expectLinks(header.getByRole("navigation", { name: "Ana navigasyon" }));
-    await expect(page.getByRole("button", { name: "Menüyü aç" })).toBeHidden();
-  }
+  await page.getByRole("button", { name: "Menüyü aç" }).click();
+  await expectLinks(page.getByRole("navigation", { name: "Site navigasyonu" }));
+  await page.keyboard.press("Escape");
   const logos = [
-    [header.getByRole("img", { name: "Afina Zeytin", exact: true }), "/brand/afina-zeytin.svg"],
     [footer.getByRole("img", { name: "Afina Zeytin", exact: true }), "/brand/afina-zeytin-dark.svg"],
     [footer.getByRole("img", { name: "AFİNA Şirketler Topluluğu", exact: true }), "/brand/afina-topluluk-dark.svg"],
   ] as const;
@@ -61,7 +54,7 @@ test("shell exposes navigation, official copy and destination contracts at every
     }));
     expect(dimensions.rendered).toBeCloseTo(dimensions.original, 1);
   }
-  await expect(page.locator('img[src*="/brand/"]')).toHaveCount(3);
+  await expect(page.locator('img[src*="/brand/"]')).toHaveCount(2);
   await expect(page.locator('img[src*="/images/generated/"]')).toHaveCount(0);
   await expect(page.locator('link[rel="icon"]')).toHaveAttribute("href", "/brand/favicon.svg");
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", "https://afinazeytin.com/brand/og.png");
@@ -89,13 +82,9 @@ test("failed logo requests keep named home, community and menu links usable", as
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/\/$/);
   await expect(page.getByRole("contentinfo").getByRole("link", { name: "AFİNA Şirketler Topluluğu" })).toHaveAttribute("href", "https://afina.com.tr");
-  if (page.viewportSize()!.width < 1024) {
-    await page.getByRole("button", { name: "Menüyü aç" }).click();
-    await expectLinks(page.getByRole("navigation", { name: "Mobil navigasyon" }));
-    await page.keyboard.press("Escape");
-  } else {
-    await expectLinks(page.getByRole("navigation", { name: "Ana navigasyon" }));
-  }
+  await page.getByRole("button", { name: "Menüyü aç" }).click();
+  await expectLinks(page.getByRole("navigation", { name: "Site navigasyonu" }));
+  await page.keyboard.press("Escape");
   await expectNoOverflow(page);
 });
 
@@ -110,13 +99,6 @@ test("skip link and mobile menu support keyboard, dismissal and reduced motion",
     expect(await skip.evaluate((element) => parseFloat(getComputedStyle(element).outlineWidth))).toBeGreaterThanOrEqual(2);
     await page.keyboard.press("Enter");
     await expect(page.locator("#ana-icerik")).toBeFocused();
-    if (page.viewportSize()!.width >= 1024) {
-      const home = page.getByRole("banner").getByRole("link", { name: "Afina Zeytin ana sayfa" });
-      await home.focus();
-      await page.keyboard.press(nextControl);
-      await expect(page.getByRole("navigation", { name: "Ana navigasyon" }).getByRole("link").first()).toBeFocused();
-      continue;
-    }
     // Keep the same locator when the modal hides its trigger from assistive technology.
     const trigger = page.getByRole("button", { name: "Menüyü aç", includeHidden: true });
     await trigger.focus();
@@ -165,7 +147,7 @@ test("skip link and mobile menu support keyboard, dismissal and reduced motion",
   }
 });
 
-test("mobile menu releases the page when resized to desktop", async ({ page }, testInfo) => {
+test("menu remains usable across viewport changes", async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 600 });
   await page.goto("/");
   await page.getByRole("button", { name: "Menüyü aç" }).click();
@@ -173,9 +155,10 @@ test("mobile menu releases the page when resized to desktop", async ({ page }, t
   await expect(dialog).toBeVisible();
   await page.screenshot({ path: testInfo.outputPath("shell-menu.png"), fullPage: true });
   await page.setViewportSize({ width: 1440, height: 900 });
-  await expect(dialog).toHaveCount(0);
+  await expect(dialog).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("button", { name: "Menüyü aç" })).toBeFocused();
   await expect(page.getByRole("main")).toBeVisible();
-  await expect(page.getByRole("banner").getByRole("link", { name: "Afina Zeytin ana sayfa" })).toBeFocused();
   await expect(page.locator("body")).not.toHaveCSS("overflow", "hidden");
   await page.setViewportSize({ width: 320, height: 480 });
   await page.getByRole("button", { name: "Menüyü aç" }).click();
@@ -195,13 +178,9 @@ test("404 keeps shell navigation usable and recovers to the landing", async ({ p
   const header = page.getByRole("banner");
   await expect(header).toBeVisible();
   await expect(page.getByRole("contentinfo")).toBeVisible();
-  if (page.viewportSize()!.width < 1024) {
-    await page.getByRole("button", { name: "Menüyü aç" }).click();
-    await page.getByRole("navigation", { name: "Mobil navigasyon" }).getByRole("link", { name: "Tesisimiz", exact: true }).click();
-    await expect(page.getByRole("dialog")).toHaveCount(0);
-  } else {
-    await header.getByRole("navigation", { name: "Ana navigasyon" }).getByRole("link", { name: "Tesisimiz", exact: true }).click();
-  }
+  await page.getByRole("button", { name: "Menüyü aç" }).click();
+  await page.getByRole("navigation", { name: "Site navigasyonu" }).getByRole("link", { name: "Tesisimiz", exact: true }).click();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(page).toHaveURL(/\/#tesisimiz$/);
   await expect(page.getByRole("main").getByRole("heading", { level: 1, name: "Afina Zeytin" })).toBeVisible();
   await header.getByRole("link", { name: "Afina Zeytin ana sayfa" }).click();

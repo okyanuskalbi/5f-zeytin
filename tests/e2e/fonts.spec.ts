@@ -26,7 +26,7 @@ test("brand typography uses Fraunces headings and italic subtitle with Figtree t
   await expect(subtitle).toHaveCSS("font-style", "italic");
   await expect(subtitle).toHaveCSS("font-variation-settings", '"SOFT" 50');
   await expectFont(page.locator("body"), "Figtree", "400");
-  await expectFont(page.getByRole("main").getByRole("link", { name: "Ürünlerimizi Keşfedin", exact: true }), "Figtree", "600");
+  await expectFont(page.getByRole("region", { name: "Afina Zeytin", exact: true }).getByRole("link", { name: "Ürünlerimizi Keşfedin", exact: true }), "Figtree", "600");
   await expectFont(page.getByText("Adet", { exact: true }).first(), "Figtree", "600");
   const prices = page.locator("#urunler article .tabular-nums").filter({ hasText: "₺" });
   await expect(prices).toHaveCount(3);
@@ -126,7 +126,7 @@ test("fallback stacks keep Turkish content and actions readable when font files 
   await page.evaluate(() => document.fonts.ready);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await expect(page.getByRole("main").getByText("Toprağın sunduğu lezzet, Afina’nın özeniyle.", { exact: true })).toBeVisible();
-  await page.getByRole("main").getByRole("link", { name: "Ürünlerimizi Keşfedin", exact: true }).click();
+  await page.getByRole("region", { name: "Afina Zeytin", exact: true }).getByRole("link", { name: "Ürünlerimizi Keşfedin", exact: true }).click();
   await expect(page.locator("#urunler")).toBeFocused();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

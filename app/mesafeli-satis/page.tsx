@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-const legalLink = "inline-flex min-h-11 items-center rounded-sm py-2 underline underline-offset-4 hover:text-gold-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring";
+const legalLink = "inline-flex min-h-11 items-center rounded-none py-2 underline underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring";
 
 // Content-card structure adapted from 21st Privacy Policy Collapsible Card (24952).
 // Draft information stays visible; the example's legal copy is not used.
@@ -16,10 +16,10 @@ export default function Page(): JSX.Element {
   return (
     <main className="mx-auto max-w-3xl px-6 py-12 sm:py-20">
       <header className="mb-8">
-        <p className="mb-3 text-sm font-semibold text-gold-ink">Yasal bilgiler</p>
+        <p className="mb-3 text-sm font-semibold text-foreground">Yasal bilgiler</p>
         <h1>Mesafeli Satış Sözleşmesi</h1>
       </header>
-      <div className="divide-y rounded-lg border bg-card text-card-foreground">
+      <div className="rounded-none bg-card text-card-foreground">
         <section aria-labelledby="taslak-basligi" className="space-y-4 p-6 sm:p-8">
           <h2 id="taslak-basligi">Taslak — onay bekleniyor</h2>
           <p>Onaylı metin henüz eklenmedi.</p>

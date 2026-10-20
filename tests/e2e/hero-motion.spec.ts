@@ -35,6 +35,8 @@ test.beforeEach(async ({ page }) => {
 });
 
 test("hero plays a bounded entrance once alongside the approved scroll sequence", async ({ page, baseURL }, testInfo) => {
+  // Exercise active frames above the short-viewport poster fallback threshold.
+  await page.setViewportSize({ width: page.viewportSize()!.width, height: 900 });
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   testInfo.annotations.push({ type: "target-host", description: new URL(baseURL!).host });
@@ -59,7 +61,11 @@ test("hero plays a bounded entrance once alongside the approved scroll sequence"
   })).toBe(true);
   await expect.poll(() => translateY(entrance)).toBeCloseTo(0, 2);
 
-  await page.mouse.wheel(0, 240);
+  if (await page.evaluate(() => matchMedia("(pointer: coarse)").matches)) {
+    await page.evaluate(() => scrollBy(0, 240));
+  } else {
+    await page.mouse.wheel(0, 240);
+  }
   await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(100);
   expect(await translateY(entrance)).toBeCloseTo(0, 2);
   await expectUsable(page);
@@ -100,6 +106,7 @@ test("reduced motion keeps the hero static and keyboard destinations accessible"
 });
 
 test("changing the motion preference replaces video frames with the static poster", async ({ page }) => {
+  await page.setViewportSize({ width: page.viewportSize()!.width, height: 900 });
   await page.goto("/");
   await expect(hero(page).locator("canvas")).toHaveAttribute("data-frame", "0");
   await page.emulateMedia({ reducedMotion: "reduce" });
@@ -115,7 +122,11 @@ test("a low-end device keeps nonessential hero motion static and scroll unlocked
     Object.defineProperty(navigator, "hardwareConcurrency", { configurable: true, get: () => 4 });
   });
   await page.goto("/");
-  await page.mouse.wheel(0, 240);
+  if (await page.evaluate(() => matchMedia("(pointer: coarse)").matches)) {
+    await page.evaluate(() => scrollBy(0, 240));
+  } else {
+    await page.mouse.wheel(0, 240);
+  }
   await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(100);
   for (const effect of ["entrance"]) {
     expect(await translateY(hero(page).locator(`[data-hero-motion="${effect}"]`))).toBe(0);

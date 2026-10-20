@@ -15,11 +15,11 @@ function TokensFixture(): JSX.Element {
     <main style={{ maxWidth: "48rem", margin: "0 auto", padding: "2rem 1rem" }}>
       <h1>AFİNA ZEYTİN</h1>
       <p>Kökü toprakta. Yeri sofrada.</p>
-      <p data-testid="gold-on-ivory" style={{ color: "var(--gold-ink)" }}>Toprağın sunduğu lezzet</p>
-      <p data-testid="gold-on-olive" style={{ background: "var(--primary)", color: "var(--brand-gold)", padding: "1rem" }}>Afina’nın özeniyle.</p>
+      <p data-testid="body-ink" style={{ color: "var(--body-ink)" }}>Toprağın sunduğu lezzet</p>
+      <p data-testid="label-ribbon" style={{ background: "var(--brand-gold)", color: "var(--foreground)", padding: "1rem" }}>Afina’nın özeniyle.</p>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", marginBlock: "2rem" }}>
         <Button onClick={() => setAttempts((value) => value + 1)}>Ürünlerimizi Keşfedin</Button>
-        <Button variant="secondary">Altın vurgu</Button>
+        <Button variant="secondary">İkincil eylem</Button>
         <Button variant="outline">Toptan Satış İçin İletişime Geçin</Button>
         <Button variant="ghost">Vazgeç</Button>
         <Button variant="link" asChild><a href="#details">Ayrıntılar</a></Button>

@@ -84,7 +84,7 @@ test("badge counts all quantities and mobile menu reaches the same restored cart
   expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), CART_STORAGE_KEY)).toEqual(expected);
   if (page.viewportSize()!.width < 1024) {
     await page.getByRole("button", { name: "Menüyü aç" }).click();
-    await page.getByRole("navigation", { name: "Mobil navigasyon" }).getByRole("link", { name: "Sepetim", exact: true }).click();
+    await page.getByRole("navigation", { name: "Site navigasyonu" }).getByRole("link", { name: "Sepetim", exact: true }).click();
   } else {
     await cartButton(page).click();
     await drawer(page).getByRole("link", { name: "Sepeti görüntüle" }).click();

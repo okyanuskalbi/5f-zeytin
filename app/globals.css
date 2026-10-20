@@ -8,6 +8,18 @@
   --brand-olive: #243a29;
   --brand-ivory: #f5f1e7;
   --brand-gold: #d4b483;
+  --label-green: #2f7a3b;
+  --body-ink: #141a15;
+  --page-margin: clamp(1.5rem, 2.2vw, 2rem);
+  --page-gutter: 1.5rem;
+  --header-height: calc(4rem + env(safe-area-inset-top, 0px));
+
+  /* Five print sizes, shared by headings, controls and captions. */
+  --step-small: 0.8125rem;
+  --step-body: 1rem;
+  --step-lead: clamp(1.25rem, 2vw, 1.5rem);
+  --step-head: clamp(1.75rem, 3vw, 2.25rem);
+  --step-display: clamp(2.25rem, 4.2vw, 3.5rem);
 
   --background: var(--brand-ivory);
   --foreground: var(--brand-olive);
@@ -18,15 +30,13 @@
   --primary: var(--brand-olive);
   --primary-foreground: var(--brand-ivory);
   --primary-hover: #354e3b;
-  --secondary: var(--brand-gold);
+  --secondary: var(--brand-ivory);
   --secondary-foreground: var(--brand-olive);
-  --secondary-hover: #c7a572;
+  --secondary-hover: #e5e9df;
   --muted: #e9e3d6;
   --muted-foreground: #5b6558;
   --accent: #e5e9df;
   --accent-foreground: var(--brand-olive);
-  /* Champagne gold is reserved for dark surfaces; use this ink on ivory. */
-  --gold-ink: #78603c;
   --destructive: #943b32;
   --destructive-foreground: #fffcf5;
   --destructive-hover: #7e3029;
@@ -38,9 +48,8 @@
   /* Also used by isolated component fixtures without the next/font layout. */
   --font-body-fallback: "Helvetica Neue", Arial, sans-serif;
   --font-display-fallback: Georgia, "Times New Roman", serif;
-  --radius: 0.5rem;
+  --radius: 0px;
   --duration-fast: 150ms;
-  --shadow-dialog: 0 1.5rem 5rem rgb(20 38 26 / 20%);
 }
 
 @theme inline {
@@ -60,8 +69,9 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
-  --color-gold-ink: var(--gold-ink);
   --color-brand-gold: var(--brand-gold);
+  --color-label-green: var(--label-green);
+  --color-body-ink: var(--body-ink);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-destructive-hover: var(--destructive-hover);
@@ -72,10 +82,20 @@
   --font-sans: var(--font-body, var(--font-body-fallback));
   --font-serif: var(--font-display, var(--font-display-fallback));
   --font-weight-medium: 600;
-  --radius-sm: calc(var(--radius) - 0.25rem);
-  --radius-md: calc(var(--radius) - 0.125rem);
+  --radius-sm: var(--radius);
+  --radius-md: var(--radius);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 0.25rem);
+  --radius-xl: var(--radius);
+  --text-xs: var(--step-small);
+  --text-sm: var(--step-small);
+  --text-base: var(--step-body);
+  --text-lg: var(--step-body);
+  --text-xl: var(--step-lead);
+  --text-2xl: var(--step-lead);
+  --text-3xl: var(--step-head);
+  --text-4xl: var(--step-head);
+  --text-5xl: var(--step-display);
+  --text-6xl: var(--step-display);
 }
 
 @layer base {
@@ -88,7 +108,7 @@
     background: var(--background);
     color: var(--foreground);
     font-family: var(--font-body, var(--font-body-fallback));
-    font-size: 1rem;
+    font-size: var(--step-body);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
   }
@@ -105,13 +125,44 @@
     text-wrap: balance;
   }
 
-  h1 { font-size: clamp(2rem, 1.5rem + 2vw, 3.5rem); }
-  h2 { font-size: clamp(1.5rem, 1.25rem + 1vw, 2.25rem); }
-  h3 { font-size: 1.25rem; }
+  h1 { font-size: var(--step-display); }
+  h2 { font-size: var(--step-head); }
+  h3 { font-size: var(--step-lead); }
+
+  p { color: inherit; }
+
+  a {
+    text-underline-offset: 0.2em;
+  }
+
+  a:active { text-decoration: underline; }
+
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
 
   ::selection {
-    background: var(--brand-gold);
-    color: var(--brand-olive);
+    background: var(--brand-olive);
+    color: var(--brand-ivory);
+  }
+}
+
+@layer components {
+  .page-wrap {
+    padding-inline: var(--page-margin);
+  }
+
+  .page-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--page-gutter);
+  }
+
+  .site-bar {
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-left: max(var(--page-margin), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--page-margin), env(safe-area-inset-right, 0px));
   }
 }
 

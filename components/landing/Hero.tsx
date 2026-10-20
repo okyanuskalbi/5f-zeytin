@@ -24,11 +24,10 @@ export function Hero(): JSX.Element {
         label=""
       >
         <div aria-hidden="true" className={styles.readability} />
-        <div className="relative mx-auto flex h-full max-w-7xl items-end px-4 py-6 sm:px-6 sm:py-10 lg:items-center lg:py-14">
+        <div className="page-wrap relative flex h-full items-end py-6 sm:py-10 lg:items-center lg:py-14">
           <div className="flex w-full max-w-md flex-col items-start gap-4 lg:max-w-[26rem] lg:gap-5">
             <div className="space-y-2">
-              <p className="text-xs font-medium tracking-widest text-foreground">OSMANİYE / ÜRETİM TESİSİ</p>
-              <h1 id="hero-title" className="text-3xl sm:text-4xl">Afina Zeytin</h1>
+              <h1 id="hero-title">Afina Zeytin</h1>
             </div>
             <p className="max-w-xs text-sm leading-relaxed text-foreground sm:text-base">
               Zeytinin hikâyesi toprakta başlar, sofrada tamamlanır.

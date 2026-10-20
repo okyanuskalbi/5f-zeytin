@@ -93,14 +93,18 @@ test("brand tokens, button states and dialog remain accessible with keyboard and
     await expect(page.getByRole("status")).toHaveText("İşlem sayısı: 1");
     await page.mouse.move(0, 0);
     await expect(primary).toHaveCSS("background-color", "rgb(36, 58, 41)");
-    await expect(page.getByRole("button", { name: "Altın vurgu" })).toHaveCSS("background-color", "rgb(212, 180, 131)");
-    await primary.hover();
-    await expect(primary).toHaveCSS("background-color", "rgb(53, 78, 59)");
-    for (const item of [primary, page.getByRole("button", { name: "Altın vurgu" }),
+    await expect(page.getByRole("button", { name: "İkincil eylem" })).toHaveCSS("background-color", "rgb(245, 241, 231)");
+    if (await page.evaluate(() => matchMedia("(hover: hover)").matches)) {
+      await primary.hover();
+      await expect(primary).toHaveCSS("background-color", "rgb(53, 78, 59)");
+    } else {
+      await expect(primary).toHaveCSS("background-color", "rgb(36, 58, 41)");
+    }
+    for (const item of [primary, page.getByRole("button", { name: "İkincil eylem" }),
       page.getByRole("button", { name: "Toptan Satış İçin İletişime Geçin" }),
       page.getByRole("button", { name: "Vazgeç", exact: true }), page.getByRole("link", { name: "Ayrıntılar" }),
       page.getByRole("button", { name: "Hata durumunu göster" }),
-      page.getByTestId("gold-on-ivory"), page.getByTestId("gold-on-olive")]) {
+      page.getByTestId("body-ink"), page.getByTestId("label-ribbon")]) {
       expect(await contrast(item)).toBeGreaterThanOrEqual(4.5);
     }
     for (const button of await page.getByRole("button").all()) {

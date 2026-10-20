@@ -18,8 +18,8 @@ async function expectStory(facility: Locator): Promise<void> {
   await expect(facility).not.toContainText(/%\s*100\s*(organik|doğal)|sertifikalı|lider|ton kapasite/i);
 }
 
-async function expectPlaceholder(facility: Locator): Promise<void> {
-  await expect(facility.getByText("Tesis görseli yakında.", { exact: true })).toBeVisible();
+async function expectTypography(facility: Locator): Promise<void> {
+  await expect(facility.getByText(/görseli.*(yakında|hazırlanıyor)/i)).toHaveCount(0);
   // No network media or CSS image may bypass the asset approval process.
   await expect(facility.locator("img, picture, video, canvas, iframe, source, image")).toHaveCount(0);
   expect(await facility.locator("*").evaluateAll((nodes) => nodes.some((node) =>
@@ -43,7 +43,7 @@ test.beforeEach(async ({ baseURL }, testInfo) => {
   testInfo.annotations.push({ type: "target-host", description: target.host });
 });
 
-test("facility presents the exact official story and an unpublished-media placeholder", async ({ page }, testInfo) => {
+test("facility presents the exact official story and typography without media placeholders", async ({ page }, testInfo) => {
   const errors: string[] = [];
   const generatedRequests: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
@@ -53,7 +53,7 @@ test("facility presents the exact official story and an unpublished-media placeh
   expect((await page.goto("/#tesisimiz"))?.status()).toBe(200);
   const facility = page.getByRole("region", { name: "Tesisimiz", exact: true });
   await expectStory(facility);
-  await expectPlaceholder(facility);
+  await expectTypography(facility);
   await expect(page.locator('#hikayemiz [id="tesisimiz"]')).toHaveCount(1);
   expect(await page.locator("[data-scene]").evaluateAll((nodes) => nodes.map((node) => node.getAttribute("data-scene"))))
     .toEqual(["hero", "story", "products", "wholesale"]);
@@ -75,7 +75,7 @@ test("image request failures preserve the story, fallback and onward actions", a
   await page.goto("/#tesisimiz");
   const facility = page.getByRole("region", { name: "Tesisimiz", exact: true });
   await expectStory(facility);
-  await expectPlaceholder(facility);
+  await expectTypography(facility);
   expect(failedImages).toBeGreaterThan(0);
   const products = facility.getByRole("link", { name: "Ürünlerimizi Keşfedin" });
   await products.click();
@@ -98,7 +98,7 @@ for (const reducedMotion of ["no-preference", "reduce"] as const) {
       await tabTo(page, menu, nextControl);
       await page.keyboard.press("Enter");
     }
-    const navigation = page.getByRole("navigation", { name: isMobile ? "Mobil navigasyon" : "Ana navigasyon", exact: true });
+    const navigation = page.getByRole("navigation", { name: isMobile ? "Site navigasyonu" : "Ana navigasyon", exact: true });
     const facilityLink = navigation.getByRole("link", { name: "Tesisimiz", exact: true });
     await tabTo(page, facilityLink, nextControl);
     await page.keyboard.press("Enter");
@@ -149,7 +149,7 @@ test("server-rendered facility copy and links work without JavaScript", async ({
     await page.goto("/#tesisimiz");
     const facility = page.getByRole("region", { name: "Tesisimiz", exact: true });
     await expectStory(facility);
-    await expectPlaceholder(facility);
+    await expectTypography(facility);
     await facility.getByRole("link", { name: "Toptan Satış İçin İletişime Geçin" }).click();
     await expect(page).toHaveURL(/#toptan-iletisim$/);
     await expect(page.getByRole("heading", { name: "Toptan satış", exact: true })).toBeInViewport();

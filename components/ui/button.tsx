@@ -4,15 +4,15 @@ import { cn } from "cn";
 import { Slot } from "radix-ui";
 
 const buttonVariants = cva(
-  "inline-flex min-h-11 min-w-0 max-w-full items-center justify-center gap-2 rounded-md border border-transparent font-sans text-sm font-medium whitespace-normal break-words text-center transition-colors duration-(--duration-fast) focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring focus-visible:ring-2 focus-visible:ring-background disabled:cursor-not-allowed disabled:border-border disabled:bg-muted disabled:text-muted-foreground disabled:hover:bg-muted aria-invalid:border-destructive aria-invalid:outline-destructive motion-reduce:transition-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "inline-flex min-h-11 min-w-0 max-w-full items-center justify-center gap-2 rounded-none border border-transparent font-sans text-base font-medium whitespace-normal break-words text-center transition-[color,background-color,transform] duration-(--duration-fast) focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:hover:bg-muted aria-invalid:border-destructive aria-invalid:outline-destructive active:scale-[0.98] motion-reduce:transform-none motion-reduce:transition-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary-hover",
+        default: "bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary",
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive-hover",
-        outline: "border-input bg-background text-foreground hover:bg-accent",
+        outline: "bg-background text-foreground hover:bg-accent",
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary-hover",
-        ghost: "text-foreground hover:bg-accent",
+        ghost: "bg-background text-foreground hover:bg-accent",
         link: "text-primary underline underline-offset-4 hover:decoration-2",
       },
       size: {
