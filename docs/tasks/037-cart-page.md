@@ -34,4 +34,10 @@ Sepet sayfasını drawer ile aynı veri kaynağına bağla.
 - Kullanıcı yerine açık karar verme; gizli bilgi commit etme; onaysız görseli yayınlama.
 - Gerçek ödeme, üretim DB değişikliği, canlı e-posta veya domain mutasyonu için bu taslağı tek başına yetki sayma.
 
+## Coder Notu
+
+- PLAN, AGENTS ve Task 035/036/055 okundu; 035 ve 036 tamamlanmış, başlangıçta `main` çalışma ağacı temizdir. Frontend, erişilebilirlik ve TDD skill'leri kullanılıyor. 21st MCP `Checkout Summary` (36084, astralyxdev) kodu incelendi; bilinmeyen ücretleri sıfır göstermeyen özet yapısı marka tokenlarına uyarlanacak.
+- Başlamadan saptanan sınır: `getProducts()` halen Task 030'un temsili kataloğunu döndürüyor. Gerçek katalog Task 029, sunucu fiyat/kupon quote bağlantısı Task 054/055 ve ödeme alanı Task 046 kapsamındadır. Bu görev backend/DB/ödeme uygulamasına yetki vermez. Gerçek fiyat yenilemesi doğrulanamayacağı için uygulanabilen frontend ve testler teslim edilecek; durum BEKLİYOR kalacak.
+- RED: üretim kodundan önce E2E ve test fixture'ları yazıldı. `PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" npm run test:e2e -- tests/e2e/cart-page.spec.ts --config .cache/task-037/playwright.config.ts --project chromium-320 --grep 'route loads'` → **exit 1**, test gerçekten çalıştı; `/sepet` için beklenen 200 yerine **404** aldı. İlk tarayıcı başlatmasındaki macOS MachPort kısıtı süreç izniyle giderildi; bu ortam hatası RED sayılmadı. 3004 portundaki mevcut sürece dokunulmadı; kabul için ayrı 3037 portu kullanılıyor.
+
 ## Durum: BEKLİYOR
