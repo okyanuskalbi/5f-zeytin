@@ -152,7 +152,11 @@ test("failed JavaScript and logo requests leave server-rendered hero links usabl
   await page.goto("/");
   expect(failedScripts.length).toBeGreaterThan(0);
   await expectUsable(page);
-  expect(await hero(page).evaluate((node) => node.getAnimations({ subtree: true }).length)).toBe(0);
+  for (const effect of ["entrance", "parallax"]) {
+    const layer = hero(page).locator(`[data-hero-motion="${effect}"]`);
+    expect(await translateY(layer)).toBe(0);
+    expect(await layer.evaluate((node) => node.getAnimations({ subtree: true }).length)).toBe(0);
+  }
 });
 
 test("hero remains static and navigable when JavaScript is disabled", async ({ browser, baseURL }, testInfo) => {

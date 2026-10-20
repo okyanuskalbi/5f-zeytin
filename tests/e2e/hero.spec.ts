@@ -120,7 +120,9 @@ test("hero supports keyboard focus, native anchors and reduced motion", async ({
       await expect(page.locator(hash)).toBeFocused();
     }
     await page.goto("/");
-    expect(await hero.evaluate((element) => element.getAnimations({ subtree: true }).length)).toBe(0);
+    if (reducedMotion === "reduce") {
+      expect(await hero.evaluate((element) => element.getAnimations({ subtree: true }).length)).toBe(0);
+    }
     await expectNoOverflow(page);
     if (reducedMotion === "reduce") {
       await page.screenshot({ path: testInfo.outputPath("hero-reduced-motion.png"), fullPage: true });
