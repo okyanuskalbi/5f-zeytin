@@ -96,4 +96,7 @@ node ~/.claude/skills/design-taste-frontend/scripts/inspect.mjs http://127.0.0.1
 | Kontrast ≥4,5:1 | Token renklerinden hesaplandı | Yeşil/fildişi 10,87:1; gövde/kağıt 17,25:1; ikincil/kağıt 5,95:1; yeşil/altın 6,22:1 |
 | Yasak liste | Lint ve açılan ekranlar | Mor degrade, emoji, glass/blur yığını, stok 3D, onaysız medya yok |
 
-## Durum: BEKLİYOR
+## Claude kararı (20 Eki)
+Kabul (248 unit + 198 e2e, lint/typecheck/build). İç sayfalardaki 3 FAIL landing yoğunluk kurallarıdır → DESIGN.md 'İç sayfa denetim istisnası' ile `--allow few-pictures,focal-point,still-page`; diğer kurallar 097 kapısında FAIL 0.
+
+## Durum: TAMAMLANDI

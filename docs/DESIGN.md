@@ -42,3 +42,6 @@ iPhone 14/SE (WebKit), Pixel 7/Galaxy S20 (Chromium), yatay mod. Claude simülas
 
 ## Kapı
 Her görev: `node ~/.claude/skills/design-taste-frontend/scripts/lint.mjs app components` + production'da `inspect.mjs http://127.0.0.1:<port>` FAIL 0; ekran görüntüleri 1440/768/390.
+
+## İç sayfa denetim istisnası (Claude, 20 Eki)
+Sepet, ödeme önizleme, hesap, sipariş takip, yasal sayfalar ve 404 okuma/işlem sayfalarıdır: `inspect.mjs` için yalnız `--allow few-pictures,focal-point,still-page` geçerlidir (landing yoğunluk kuralları). Diğer tüm kurallar (başlık satırı, kontrast, taşma, odak görünürlüğü, tipografi, ev kuralları) iç sayfalarda da FAIL 0 olmalıdır. Landing (`/`) için istisna YOK.
