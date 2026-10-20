@@ -25,8 +25,8 @@ test("097: the process strip is typographic until distinct process imagery is ap
 
 test("097: wholesale uses the left edge and fills its field with the confirmed product scope", async ({ page }) => {
   await page.goto("/#toptan-iletisim");
-  const heading = page.locator("#toptan-title");
-  const geometry = await heading.evaluate(node => ({ left: node.getBoundingClientRect().left, viewport: innerWidth }));
+  const card = page.locator("[data-wholesale-card]");
+  const geometry = await card.evaluate(node => ({ left: node.getBoundingClientRect().left, viewport: innerWidth }));
   expect(geometry.left).toBeLessThan(geometry.viewport * 0.2);
   await expect(page.locator("[data-wholesale-scope]")).toContainText("Sofralık zeytin");
 });

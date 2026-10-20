@@ -15,7 +15,7 @@
   --header-height: calc(4rem + env(safe-area-inset-top, 0px));
 
   /* Five print sizes, shared by headings, controls and captions. */
-  --step-small: 0.8125rem;
+  --step-small: 0.875rem;
   --step-body: 1rem;
   --step-lead: clamp(1.25rem, 2vw, 1.5rem);
   --step-head: clamp(1.75rem, 3vw, 2.25rem);
@@ -167,7 +167,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  [data-scene-reveal] { transform: none !important; opacity: 1 !important; }
   :root {
     --duration-fast: 0ms;
   }
+}
+
+@media (max-width: 767px) {
+  :root { --step-display: clamp(1.75rem, 9vw, 2.25rem); }
 }

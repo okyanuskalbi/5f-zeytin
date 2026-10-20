@@ -63,7 +63,7 @@ test.describe("development frame sequence", () => {
   test("reduced motion requests only the poster and keeps text and keyboard actions usable", async ({ page, browserName }, testInfo) => {
     const images: string[] = [];
     await page.emulateMedia({ reducedMotion: "reduce" });
-    page.on("request", (request) => { if (request.url().endsWith(".webp")) images.push(request.url()); });
+    page.on("request", (request) => { if (request.url().includes("/media/frame-demo/") && request.url().endsWith(".webp")) images.push(request.url()); });
     await openDemo(page);
     await expect(scene(page).locator("img")).toBeVisible();
     await expect(canvas(page)).toBeHidden();
@@ -119,7 +119,7 @@ test.describe("development frame sequence", () => {
     expect(await canvas(page).evaluate((node: HTMLCanvasElement) => node.width)).toBe(page.viewportSize()!.width * 2);
     await expect.poll(() => canvas(page).evaluate((node: HTMLCanvasElement) =>
       node.getContext("2d")!.getImageData(2, 2, 1, 1).data[3])).toBe(255);
-    await page.setViewportSize({ width: 390, height: 700 });
+    await page.setViewportSize({ width: 390, height: 900 });
     await expect.poll(() => canvas(page).evaluate((node: HTMLCanvasElement) => node.width)).toBe(780);
     await seek(page, 1);
     await expect(canvas(page)).toHaveAttribute("data-frame", "47");

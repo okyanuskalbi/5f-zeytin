@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type JSX, type KeyboardEvent } from "react";
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useIsPresent, useMotionValue, useMotionValueEvent, useScroll, useTransform } from "motion/react";
 import { useCart } from "@/components/cart/CartProvider";
@@ -14,6 +14,9 @@ const motionTokens = { duration: { instant: 0, print: 0.2 }, stubWidth: 120, scr
 const money = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const formatPrice = (kurus: number): string => `${money.format(kurus / 100)} ₺`;
 const preference = "(prefers-reduced-motion: reduce), (max-height: 500px)";
+// Resize the same approved source through Next's image service. The original
+// remains the fallback; ScrollFrameSequence and the approved files are intact.
+const responsivePoster = getImageProps({ src: "/images/hero/zeytinlik-2400.webp", alt: "", width: 2400, height: 1350, sizes: "100vw" }).props.srcSet;
 
 function useStaticLabel(): boolean {
   const subscribe = useCallback((notify: () => void) => {
@@ -132,7 +135,7 @@ export function HeroLabel({ products }: { products: readonly Product[] }): JSX.E
         element.style.setProperty("--stub-left", `${space.left}px`);
         element.style.setProperty("--stub-bottom", `${innerHeight - space.top - box.height}px`);
       } else {
-        const readingSectionVisible = [...document.querySelectorAll("#tesisimiz, #topraktan-sofraya, #sik-sorulanlar, #toptan-iletisim, footer")]
+        const readingSectionVisible = [...document.querySelectorAll("#urunler, #tesisimiz, #topraktan-sofraya, #sik-sorulanlar, #toptan-iletisim, footer")]
           .some(section => { const rect = section.getBoundingClientRect(); return rect.top < innerHeight && rect.bottom > headerBottom; });
         if (readingSectionVisible) {
           // A narrow reading column can leave no safe 120px space. The header
@@ -201,8 +204,8 @@ export function HeroLabel({ products }: { products: readonly Product[] }): JSX.E
 
   return <section ref={root} aria-label="Afina Zeytin" data-hero-label="" data-static={staticLabel} className={styles.hero}>
     <ScrollFrameSequence src="/frames/hero-zeytin/manifest.json"
-      poster={{ src: "/images/hero/zeytinlik-2400.webp", srcSet: "/images/hero/zeytinlik-1200.webp 1200w, /images/hero/zeytinlik-2400.webp 2400w", width: 2400, height: 1350 }}
-      scrollLength={300} positionX={1} mediaClassName={styles.media} label="" />
+      poster={{ src: "/images/hero/zeytinlik-2400.webp", srcSet: responsivePoster, width: 2400, height: 1350 }}
+      scrollLength={150} positionX={1} mediaClassName={styles.media} label="" />
     <div className={styles.stage}>
       <div ref={anchor} className={styles.anchor}>
         <motion.div data-hero-card="" aria-hidden={compact || undefined} inert={compact}

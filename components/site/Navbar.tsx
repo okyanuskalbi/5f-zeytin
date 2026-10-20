@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type JSX } from "react";
+import { useEffect, useRef, useState, type JSX } from "react";
 import Link from "next/link";
 import { ShoppingBag, UserRound } from "lucide-react";
 
@@ -25,6 +25,20 @@ export function Navbar(): JSX.Element {
   const itemCount = cart?.state.items.reduce((count, item) => count + item.quantity, 0) ?? 0;
   const [isOpen, setIsOpen] = useState(false);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    // Radix preserves live regions. Keep their containing page inert too, so
+    // the hero's product announcements cannot expose the background to AT.
+    const background = [...document.querySelectorAll<HTMLElement>("#ana-icerik, footer")];
+    const previous = background.map(node => ({ node, inert: node.inert, hidden: node.getAttribute("aria-hidden") }));
+    background.forEach(node => { node.inert = true; node.setAttribute("aria-hidden", "true"); });
+    return () => previous.forEach(({ node, inert, hidden }) => {
+      node.inert = inert;
+      if (hidden === null) node.removeAttribute("aria-hidden");
+      else node.setAttribute("aria-hidden", hidden);
+    });
+  }, [isOpen]);
 
   return (
     <header className="site-bar sticky top-0 z-30 bg-background">

@@ -7,6 +7,7 @@ import { inView, useAnimate, useReducedMotion } from "motion/react";
 const motionTokens = {
   distance: { md: 16 },
   duration: { instant: 0, slow: 0.6 },
+  stagger: 0.08,
   easing: { smooth: [0.22, 1, 0.36, 1] },
 } as const;
 
@@ -22,10 +23,10 @@ export function SceneFlow({ children }: { children: ReactNode }): JSX.Element {
     if (typeof window.matchMedia !== "function") return;
     const root = scope.current;
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const scenes = [...root.querySelectorAll<HTMLElement>("[data-scene]")]
+    const scenes = [...root.querySelectorAll<HTMLElement>("[data-scene], #sik-sorulanlar")]
       .flatMap((scene) => {
-        const layer = scene.querySelector<HTMLElement>("[data-scene-reveal]");
-        return layer ? [{ scene, layer }] : [];
+        return [...scene.querySelectorAll<HTMLElement>("[data-scene-reveal]")]
+          .map((layer, index) => ({ scene, layer, index }));
       });
     const animations = new Map<HTMLElement, ReturnType<typeof animate>>();
     let observers: VoidFunction[] = [];
@@ -49,26 +50,27 @@ export function SceneFlow({ children }: { children: ReactNode }): JSX.Element {
 
     function interrupt(event: Event): void {
       if (!(event.target instanceof Element)) return;
-      const scene = event.target.closest("[data-scene]");
-      const entry = scenes.find((entry) => entry.scene === scene);
-      if (!entry) return;
-      entered.current.add(entry.scene);
-      reset(entry.layer);
+      const scene = event.target.closest("[data-scene], #sik-sorulanlar");
+      for (const entry of scenes.filter((entry) => entry.scene === scene)) {
+        entered.current.add(entry.layer);
+        reset(entry.layer);
+      }
     }
 
     function start(): void {
       stop();
       if (preference.matches || navigator.hardwareConcurrency <= 4) return;
       try {
-        for (const { scene, layer } of scenes) {
-          if (entered.current.has(scene)) continue;
+        for (const { scene, layer, index } of scenes) {
+          if (entered.current.has(layer)) continue;
           observers.push(inView(scene, () => {
-            if (entered.current.has(scene)) return;
-            entered.current.add(scene);
+            if (entered.current.has(layer)) return;
+            entered.current.add(layer);
             if (scene.contains(document.activeElement)) return;
             try {
               animations.set(layer, animate(layer, { y: [motionTokens.distance.md, 0] }, {
                 duration: motionTokens.duration.slow,
+                delay: index * motionTokens.stagger,
                 ease: motionTokens.easing.smooth,
               }));
             } catch {

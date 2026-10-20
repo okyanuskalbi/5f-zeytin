@@ -12,9 +12,9 @@ export function ProductShowcase({ products }: { products: readonly Product[] }):
     tabIndex={-1} className={styles.showcase}>
     <Image src="/images/hero/zeytinlik-2400.webp" alt="" fill sizes="100vw"
       className={styles.poster} />
-    <div data-scene-reveal="" data-showcase-copy="" className={styles.intro}>
-      <h2 id="urunler-title">Ürünlerimiz</h2>
-      <p>Sofralık zeytin, salamura zeytin ve zeytinyağı; perakende ve toptan.</p>
+    <div data-showcase-copy="" className={styles.intro}>
+      <h2 id="urunler-title" data-scene-reveal="">Ürünlerimiz</h2>
+      <p data-scene-reveal="">Sofralık zeytin, salamura zeytin ve zeytinyağı; perakende ve toptan.</p>
     </div>
     {products.length === 0 ? <p role="status" className={styles.empty}>Görüntülenecek ürün bulunmuyor.</p> :
       <div role="region" aria-label="Ürün fişleri" tabIndex={0} className={styles.scroller}>

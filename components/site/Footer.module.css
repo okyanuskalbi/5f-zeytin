@@ -9,7 +9,7 @@
 .destination address { font-style: normal; margin-bottom: 24px; }
 .stamp { position: absolute; top: 0; right: 0; width: 100px; padding: 6px; background: var(--card); transform: rotate(3deg); }
 .stamp img { display: block; width: 88px; height: auto; aspect-ratio: 3 / 4; object-fit: cover; object-position: 32% center; }
-.link { display: inline-flex; align-items: center; min-height: 44px; padding-block: 8px; max-width: 100%; text-decoration: underline; text-decoration-color: transparent; }
+.link { display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; padding-block: 8px; max-width: 100%; text-decoration: underline; text-decoration-color: transparent; }
 .link:hover { text-decoration-color: currentColor; }
 .link:focus-visible, .community:focus-visible { outline: 2px solid var(--brand-olive); outline-offset: 4px; }
 .link:active { color: var(--body-ink); text-decoration-color: currentColor; }

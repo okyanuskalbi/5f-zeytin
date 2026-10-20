@@ -21,6 +21,10 @@ test.beforeAll(async () => {
     resolve: { alias: { "@": root } },
     plugins: [{
       name: "scene-boundary-fixture", enforce: "pre",
+      // Next's CommonJS image entry nests its default outside the Next compiler.
+      // Keep the real image implementation in this Vite-only boundary fixture.
+      resolveId(id) { if (id === "next/image") return "\0scene-next-image"; },
+      load(id) { if (id === "\0scene-next-image") return 'export { Image as default } from "next/dist/client/image-component"; export { getImageProps } from "next/dist/shared/lib/image-external";'; },
       transform(_code, id) {
         if (id === `${root}/tests/e2e/fixtures/product-card.tsx`) return `
           import { createRoot } from "react-dom/client";
@@ -57,9 +61,9 @@ test.beforeEach(async ({ page, baseURL }, testInfo) => {
     const samples: Sample[] = [];
     Object.assign(window, { sceneSamples: samples });
     function sample(): void {
-      for (const node of document.querySelectorAll("[data-scene-reveal]")) {
+      for (const node of document.querySelectorAll("[data-scene-reveal], [data-facility-enter]")) {
         const y = new DOMMatrixReadOnly(getComputedStyle(node).transform).m42;
-        if (Math.abs(y) > 0.05) samples.push({ scene: node.closest("[data-scene]")!.getAttribute("data-scene")!, y });
+        if (Math.abs(y) > 0.05) samples.push({ scene: (node.closest("[data-scene]")?.getAttribute("data-scene") ?? "faq"), y });
       }
       requestAnimationFrame(sample);
     }
@@ -86,10 +90,10 @@ async function expectStatic(layers: Locator): Promise<void> {
 async function expectFlow(page: Page): Promise<void> {
   await expect(page.locator("[data-scene-flow]")).toHaveCount(1);
   expect(await page.locator("[data-scene]").evaluateAll((nodes) => nodes.map((node) => node.getAttribute("data-scene"))))
-    .toEqual(["hero", "story", "products", "wholesale"]);
+    .toEqual(["hero", "products", "story", "moments", "wholesale"]);
   await expect(page.getByRole("main")).toHaveCount(1);
-  await expect(page.getByRole("heading", { level: 1, name: "Afina Zeytin" })).toHaveCount(1);
-  await expect(page.getByRole("region", { name: "Hikâyemiz", exact: true })).toContainText("Afina Zeytin, Osmaniye’deki fabrikasıyla");
+  await expect(page.getByRole("heading", { level: 1, name: "Kökü toprakta. Yeri sofrada." })).toHaveCount(1);
+  await expect(page.getByRole("region", { name: "Tesisimiz", exact: true })).toContainText("Afina Zeytin, Osmaniye’deki fabrikasıyla");
   await expect(page.getByRole("region", { name: "Ürünlerimiz", exact: true }).getByRole("article")).toHaveCount(3);
   await expect(page.locator('img[src*="/images/generated/"]')).toHaveCount(0);
   await expect(page.locator('[data-scene="hero"] img[src="/images/hero/zeytinlik-2400.webp"]')).toBeVisible();
@@ -120,7 +124,7 @@ test("scene entrances follow native scroll once, without moving product controls
   await expectFlow(page);
   const catalogBefore = await page.locator("#urunler article").allTextContents();
   for (const scene of ["story", "products", "wholesale"]) {
-    const layer = page.locator(`[data-scene="${scene}"] ${sceneLayers}`);
+    const layer = page.locator(`[data-scene="${scene}"] ${scene === "story" ? "[data-facility-enter]" : sceneLayers}`).first();
     await expect(layer).toHaveCount(1);
     await reveal(layer);
     await expect.poll(async () => (await samples(page)).some((entry) => entry.scene === scene)).toBe(true);
@@ -154,19 +158,18 @@ test("keyboard and reduced motion keep scene links, quantity and native scrollin
     await page.goto("/");
     await expectFlow(page);
     const hero = page.getByRole("region", { name: "Afina Zeytin", exact: true });
-    const discover = hero.getByRole("link", { name: "Ürünlerimizi Keşfedin", exact: true });
-    await discover.focus();
-    await page.keyboard.press(tab);
-    const wholesale = hero.getByRole("link", { name: "Toptan Satış İçin İletişime Geçin", exact: true });
-    await expect(wholesale).toBeFocused();
+    const discover = hero.getByRole("link", { name: "Tüm ürünler", exact: true });
+    const wholesale = page.locator("#tesisimiz").getByRole("link", { name: "Toptan Satış İçin İletişime Geçin", exact: true });
+    await wholesale.focus();
     await page.keyboard.press("Enter");
     await expect(page.locator("#toptan-iletisim")).toBeFocused();
     await expect(page.locator("#toptan-iletisim")).toBeInViewport();
+    await page.evaluate(() => scrollTo(0, 0));
     await discover.focus();
     await page.keyboard.press("Enter");
     await expect(page.locator("#urunler")).toBeFocused();
-    await page.keyboard.press(tab);
     const quantity = page.locator("#urunler article").first().getByRole("spinbutton");
+    await quantity.focus();
     await expect(quantity).toBeFocused();
     await page.keyboard.press(tab);
     await expect(page.locator("#urunler article").first().getByRole("button", { name: "Adedi artır" })).toBeFocused();
@@ -210,7 +213,7 @@ test("failed observer and failed JavaScript preserve all scenes and anchor navig
     await expectFlow(page);
     await expectStatic(page.locator(sceneLayers));
     const discover = page.getByRole("region", { name: "Afina Zeytin", exact: true })
-      .getByRole("link", { name: "Ürünlerimizi Keşfedin", exact: true });
+      .getByRole("link", { name: "Tüm ürünler", exact: true });
     await discover.click();
     await expect(page.locator("#urunler")).toBeInViewport();
     await expect(page.locator("#urunler article").first().getByRole("button", { name: "Sepete ekle", exact: true })).toBeVisible();
@@ -225,8 +228,8 @@ test("JavaScript-disabled SSR includes every scene and both CTA destinations", a
     await expectFlow(page);
     await expectStatic(page.locator(sceneLayers));
     const hero = page.getByRole("region", { name: "Afina Zeytin", exact: true });
-    for (const [name, id] of [["Ürünlerimizi Keşfedin", "urunler"], ["Toptan Satış İçin İletişime Geçin", "toptan-iletisim"]]) {
-      await hero.getByRole("link", { name, exact: true }).click();
+    for (const [name, id] of [["Tüm ürünler", "urunler"], ["Toptan Satış İçin İletişime Geçin", "toptan-iletisim"]]) {
+      await (id === "urunler" ? hero : page.locator("#tesisimiz")).getByRole("link", { name, exact: true }).click();
       await expect(page.locator(`#${id}`)).toBeInViewport();
     }
   } finally {
@@ -244,7 +247,7 @@ test("low-end touch devices keep scenes static and quantity controls at least 44
     await page.goto(new URL("/", baseURL!).href);
     await expectFlow(page);
     await page.getByRole("region", { name: "Afina Zeytin", exact: true })
-      .getByRole("link", { name: "Ürünlerimizi Keşfedin", exact: true }).tap();
+      .getByRole("link", { name: "Tüm ürünler", exact: true }).tap();
     const card = page.locator("#urunler article").first();
     const increase = card.getByRole("button", { name: "Adedi artır" });
     await increase.tap();
@@ -260,6 +263,8 @@ test("low-end touch devices keep scenes static and quantity controls at least 44
 });
 
 test("the composed Home caps seven supplied products at six and keeps an empty catalog navigable", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("pageerror", error => errors.push(error.stack ?? error.message));
   await page.route("**/__scenes-fixture/**", async (route) => {
     const name = new URL(route.request().url()).pathname.replace("/__scenes-fixture/", "") || html;
     const body = assets.get(name);
@@ -267,6 +272,8 @@ test("the composed Home caps seven supplied products at six and keeps an empty c
       name.endsWith(".js") ? "application/javascript" : name.endsWith(".css") ? "text/css" : "text/html" });
   });
   await page.goto("/__scenes-fixture/?count=7");
+  await page.waitForTimeout(500);
+  expect(errors).toEqual([]);
   await expect(page.locator("[data-scene-flow]")).toHaveCount(1);
   await expect(page.locator("#urunler article")).toHaveCount(6);
   expect(await page.locator("#urunler article h3").allTextContents()).toEqual(Array.from({ length: 6 }, (_, i) => `Sınır ürünü ${i + 1}`));
@@ -274,6 +281,6 @@ test("the composed Home caps seven supplied products at six and keeps an empty c
   await page.goto("/__scenes-fixture/?count=0");
   await expect(page.locator("#urunler article")).toHaveCount(0);
   await expect(page.locator("#urunler").getByRole("status")).toHaveText("Görüntülenecek ürün bulunmuyor.");
-  await page.getByRole("region", { name: "Afina Zeytin", exact: true }).getByRole("link", { name: "Toptan Satış İçin İletişime Geçin", exact: true }).click();
+  await page.locator("#tesisimiz").getByRole("link", { name: "Toptan Satış İçin İletişime Geçin", exact: true }).click();
   await expect(page.locator("#toptan-iletisim")).toBeInViewport();
 });

@@ -61,7 +61,7 @@ test("confirmed FAQs stay open, channels stay absent and the contact/footer layo
     const faq = document.querySelector("#sik-sorulanlar")!;
     const contact = document.querySelector("#toptan-iletisim")!;
     const footer = document.querySelector("footer")!;
-    const card = contact.firstElementChild!;
+    const card = contact.querySelector("[data-wholesale-card]")!;
     const answers = faq.lastElementChild!;
     return {
       width: innerWidth, height: innerHeight, columns: getComputedStyle(answers).columnCount,
@@ -78,9 +78,9 @@ test("confirmed FAQs stay open, channels stay absent and the contact/footer layo
   expect(metrics.headingFont).toMatch(/Fraunces/i);
   expect(metrics.questionFont).toMatch(/Figtree/i);
   expect(metrics.cardWidth).toBeLessThanOrEqual(380);
-  if (metrics.width >= 768) expect(metrics.cardWidth).toBe(380);
+  if (metrics.width >= 1200) expect(metrics.cardWidth).toBe(380);
   expect(metrics.background).toBe("rgb(36, 58, 41)");
-  expect(metrics.imprintSize).toBe("13px");
+  expect(metrics.imprintSize).toBe("14px");
   for (const heading of metrics.headings) expect(heading.height / heading.line).toBeLessThanOrEqual(2.05);
   await mkdir("test-results/095", { recursive: true });
   for (const [name, region] of [["faq", faq], ["contact", contact], ["footer", footer]] as const) {

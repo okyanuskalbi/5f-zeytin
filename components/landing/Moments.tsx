@@ -1,13 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type JSX, type KeyboardEvent, type PointerEvent } from "react";
-import Image from "next/image";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { inView, useAnimate, useReducedMotion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import styles from "./Moments.module.css";
 
 const moments = ["Hasat", "Seçim", "Kırma", "Salamura", "Dolum", "Sofrada"] as const;
+// Fragments of the official brand story; no unconfirmed production claims.
+const notes = ["Toprakta başlar.", "Zeytinin kendine özgü tadı.", "Köklü lezzet.", "Salamura zeytin.", "Zeytin ve zeytinyağı.", "Sofrada tamamlanır."];
 const motionTokens = {
   distance: { md: 16 },
   duration: { instant: 0, slow: 0.6 },
@@ -150,13 +151,11 @@ export function Moments(): JSX.Element {
       <ul ref={rowRef} id="moments-row" aria-label="Süreç anları" aria-describedby="moments-help" tabIndex={0}
         className={styles.row} onScroll={measure} onKeyDown={keyboard} onPointerDown={pointerDown} onPointerMove={pointerMove}
         onPointerUp={release} onPointerCancel={release} onLostPointerCapture={release}>
-        {moments.map(title => (
+        {moments.map((title, index) => (
           <li key={title} className={styles.moment}>
             <div data-moment-enter="">
               <h3>{title}</h3>
-              {/* Atmosphere only: approved grove crops do not depict these stages. */}
-              <Image src="/images/hero/zeytinlik-1200.webp" alt="" width={1200} height={675} unoptimized loading="lazy"
-                draggable={false} className={styles.photo} />
+              <span className={styles.note}>{notes[index]}</span>
             </div>
           </li>
         ))}

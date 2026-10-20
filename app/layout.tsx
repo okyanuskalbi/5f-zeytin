@@ -11,6 +11,9 @@ import "./globals.css";
 const displayFont = Fraunces({
   subsets: ["latin", "latin-ext"],
   display: "swap",
+  // Only preload the poster and body face. The variable display faces (including
+  // unused italics) otherwise compete with the first screen's image on mobile.
+  preload: false,
   weight: "variable",
   style: ["normal", "italic"],
   axes: ["opsz", "SOFT"],

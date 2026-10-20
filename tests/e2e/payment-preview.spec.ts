@@ -18,7 +18,9 @@ test("credential-free dev route shows the exact warning without token or PayTR r
   testInfo.annotations.push({ type: "target-host", description: target.host });
   const paymentRequests: string[] = [];
   page.on("request", (req) => { if (/paytr-token|paytr\.com/.test(req.url())) paymentRequests.push(req.url()); });
-  const response = await page.goto("/odeme-onizleme");
+  const devURL = process.env.FRAME_SEQUENCE_DEV_URL;
+  if (!devURL) throw new Error("FRAME_SEQUENCE_DEV_URL must point to this checkout dev server.");
+  const response = await page.goto(new URL("/odeme-onizleme", devURL).href);
   expect(response?.status()).toBe(200);
   await expect(page.locator('meta[name="app"]')).toHaveAttribute("content", "zeytin");
   await expect(page.getByRole("main").getByRole("alert")).toHaveText(warning);
@@ -26,14 +28,16 @@ test("credential-free dev route shows the exact warning without token or PayTR r
   await expect(page.getByRole("button", { name: "Test ekranını aç" })).toHaveCount(0);
   await expect(page.locator("main input")).toHaveCount(0);
   expect(paymentRequests).toEqual([]);
-  const token = await request.post("/api/odeme-onizleme/paytr-token", { headers: { Origin: target.origin } });
+  const token = await request.post(new URL("/api/odeme-onizleme/paytr-token", devURL).href, { headers: { Origin: new URL(devURL).origin } });
   expect(token.status()).toBe(503);
   expect((await token.json()).error.message).toBe(warning);
 });
 
 test("ok and fail query strings never confirm a payment", async ({ page }) => {
   for (const status of ["ok", "fail"]) {
-    const response = await page.goto(`/odeme-onizleme/sonuc/${status}?paid=true&status=success&amount=999999`);
+    const devURL = process.env.FRAME_SEQUENCE_DEV_URL;
+    if (!devURL) throw new Error("FRAME_SEQUENCE_DEV_URL must point to this checkout dev server.");
+    const response = await page.goto(new URL(`/odeme-onizleme/sonuc/${status}?paid=true&status=success&amount=999999`, devURL).href);
     expect(response?.status()).toBe(200);
     await expect(page.getByRole("status")).toHaveText(resultWarning);
     await expect(page.getByText("Bu dönüş sipariş durumunu değiştirmez.")).toBeVisible();

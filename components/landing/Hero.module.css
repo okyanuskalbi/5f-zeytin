@@ -29,7 +29,7 @@
 .weight { font-family: var(--font-display, var(--font-display-fallback)); font-weight: 600; font-size: var(--step-head); line-height: 1.2; }
 .price, .stubTotal { font-variant-numeric: tabular-nums; }
 .price { font-size: var(--step-lead); }
-.title { margin-block: auto; font-size: 9vw; line-height: 1.12; letter-spacing: -0.035em; }
+.title { margin-block: auto; font-size: var(--step-display); line-height: 1.12; letter-spacing: -0.035em; }
 .title span { display: block; }
 .choices { display: flex; flex-wrap: wrap; gap: 8px; }
 .segments { display: flex; flex: 1 1 auto; gap: 4px; background: var(--brand-ivory); }
@@ -52,6 +52,7 @@
 }
 .stub[data-visible="true"] { visibility: visible; pointer-events: auto; }
 .stubCount, .stubTotal { font-size: var(--step-small); line-height: 1.5; }
+.stub a, .stubCount, .stubTotal { font-size: max(14px, var(--step-small)); }
 .stub a { font-weight: 600; }
 .stub::before, .stub::after { width: 4px; }
 .noScript { position: relative; padding: 16px; background: var(--brand-ivory); }

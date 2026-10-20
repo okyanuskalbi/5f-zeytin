@@ -20,7 +20,7 @@ test.beforeEach(async ({ baseURL }) => {
   if (!["localhost", "127.0.0.1"].includes(new URL(baseURL!).hostname)) throw new Error("Local checkout required.");
 });
 
-test("six moments use approved atmosphere, the official sentence and responsive strip geometry", async ({ page }, testInfo) => {
+test("six typographic moments preserve the official sentence and responsive strip geometry", async ({ page }, testInfo) => {
   const errors: string[] = [];
   const requests: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
@@ -39,10 +39,10 @@ test("six moments use approved atmosphere, the official sentence and responsive 
     return {
       viewport: innerWidth, overflow: document.documentElement.scrollWidth - innerWidth,
       columns: [...strip.children].map(child => {
-        const image = child.querySelector("img")!;
-        return { width: child.getBoundingClientRect().width, photo: image.getBoundingClientRect().toJSON(), src: image.getAttribute("src"),
-          alt: image.alt, loading: image.loading, crop: getComputedStyle(image).objectPosition,
-          gap: parseFloat(getComputedStyle(image).marginTop), font: getComputedStyle(child.querySelector("h3")!).fontFamily };
+        return { width: child.getBoundingClientRect().width, imageCount: child.querySelectorAll("img").length,
+          gap: parseFloat(getComputedStyle(child.firstElementChild!).paddingTop),
+          font: getComputedStyle(child.querySelector("h3")!).fontFamily,
+          size: parseFloat(getComputedStyle(child.querySelector("h3")!).fontSize) };
       }),
       gap: parseFloat(getComputedStyle(strip).gap), snap: getComputedStyle(strip).scrollSnapType,
       heading: { font: headingStyle.fontFamily, size: parseFloat(headingStyle.fontSize), height: h2.getBoundingClientRect().height, line: parseFloat(headingStyle.lineHeight) },
@@ -56,16 +56,14 @@ test("six moments use approved atmosphere, the official sentence and responsive 
   expect(metrics.snap).toBe("x mandatory");
   const mobile = metrics.viewport < 768;
   expect(metrics.gap).toBe(mobile ? 16 : 32);
-  expect(new Set(metrics.columns.map(column => column.gap)).size).toBeGreaterThan(3);
-  expect(new Set(metrics.columns.map(column => column.crop)).size).toBe(6);
+  expect(new Set(metrics.columns.map(column => column.gap)).size).toBe(3);
   for (const column of metrics.columns) {
     expect(column.width).toBeCloseTo(mobile ? metrics.viewport * 0.72 : 280, 0);
-    expect(column.photo.width / column.photo.height).toBeCloseTo(4 / 5, 2);
-    expect(column.src).toBe("/images/hero/zeytinlik-1200.webp");
-    expect(column.alt).toBe("");
-    expect(column.loading).toBe("lazy");
-    expect(column.gap).toBeGreaterThanOrEqual(mobile ? 32 : 80);
-    expect(column.gap).toBeLessThanOrEqual(mobile ? 64 : 140);
+    expect(column.imageCount).toBe(0);
+    expect(column.font).toMatch(/Fraunces/i);
+    expect(column.size).toBeGreaterThanOrEqual(28);
+    expect(column.gap).toBeGreaterThanOrEqual(32);
+    expect(column.gap).toBeLessThanOrEqual(64);
   }
   const next = section(page).getByRole("button", { name: "Sonraki an" });
   if (mobile) await expect(next).toBeHidden();
@@ -116,11 +114,11 @@ test("keyboard and desktop buttons advance actual scroll and the progress bar in
   }
 });
 
-test("mouse dragging over the image advances the strip, restores snap and keeps vertical scroll free", async ({ page, isMobile, browserName }) => {
+test("mouse dragging over the typographic strip advances the strip, restores snap and keeps vertical scroll free", async ({ page, isMobile, browserName }) => {
   await open(page);
   const bounds = (await row(page).boundingBox())!;
   const x = Math.min(bounds.x + bounds.width - 32, 360);
-  const y = Math.min(bounds.y + 220, (await page.evaluate(() => innerHeight)) - 100);
+  const y = Math.min(bounds.y + 100, (await page.evaluate(() => innerHeight)) - 100);
   await page.mouse.move(x, y);
   await page.mouse.down();
   await page.mouse.move(x - 220, y, { steps: 16 });

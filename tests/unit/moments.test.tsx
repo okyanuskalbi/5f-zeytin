@@ -26,21 +26,13 @@ it("publishes only the official story sentence, never unconfirmed process copy",
   expect(readFileSync("docs/referans/icerik.md", "utf8")).toContain(paragraphs[0].textContent);
 });
 
-it("provides keyboard scroll access, named controls and only approved atmosphere photography", async () => {
+it("provides keyboard scroll access, named controls and typographic stage notes until distinct imagery is approved", async () => {
   render(await Home());
   const section = screen.getByRole("region", { name: "Topraktan sofraya" });
   expect(within(section).getByRole("list", { name: "Süreç anları" }).tabIndex).toBe(0);
   expect(within(section).getByRole("button", { name: "Önceki an" })).toBeDefined();
   expect(within(section).getByRole("button", { name: "Sonraki an" })).toBeDefined();
   expect(within(section).getByRole("progressbar", { name: "Süreç şeridi ilerlemesi" }).getAttribute("aria-valuenow")).toBe("0");
-  const manifest = JSON.parse(readFileSync("public/images/generated/manifest.json", "utf8"));
-  const images = [...section.querySelectorAll("img")];
-  expect(images).toHaveLength(6);
-  for (const image of images) {
-    expect(image.alt).toBe(""); // Crops are atmosphere, not evidence of a production stage.
-    const asset = manifest.assets.find((entry: { file: string }) => entry.file === image.getAttribute("src"));
-    expect(asset?.status).toBe("approved");
-    expect(asset?.runtime).toBe(true);
-    expect(image.getAttribute("loading")).toBe("lazy");
-  }
+  expect(section.querySelectorAll("img")).toHaveLength(0);
+  expect(section.querySelectorAll("li span")).toHaveLength(6);
 });

@@ -4,7 +4,7 @@
 }
 
 .title { font-size: var(--step-display); line-height: 1.1; }
-.lead { max-width: 88ch; margin-top: 24px; font-size: var(--step-lead); line-height: 1.5; color: var(--body-ink); }
+.lead { max-width: 60ch; margin-top: 24px; font-size: var(--step-lead); line-height: 1.5; color: var(--body-ink); }
 .tiles { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); align-items: start; gap: 16px; margin-top: 64px; }
 .editorial { grid-column: 1 / 9; min-width: 0; padding-right: 64px; }
 .statement { max-width: 24ch; font-family: var(--font-display, var(--font-display-fallback)); font-variation-settings: "SOFT" 50; font-weight: 600; font-size: var(--step-head); line-height: 1.3; }
@@ -31,7 +31,7 @@
 @media (max-width: 767px) {
   .facility { padding-block: 64px; }
   .title { font-size: clamp(1.75rem, 9vw, 2.25rem); }
-  .lead { font-size: 18px; }
+  .lead { font-size: var(--step-lead); }
   .statement { font-size: var(--step-lead); }
   .tiles { grid-template-columns: minmax(0, 1fr); gap: 32px; margin-top: 32px; }
   .editorial, .region { grid-column: 1; padding: 0; }

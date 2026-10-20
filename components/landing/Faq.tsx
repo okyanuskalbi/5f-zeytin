@@ -13,10 +13,10 @@ export const verifiedFaqs = [
 export function Faq(): JSX.Element {
   return (
     <section id="sik-sorulanlar" data-reading-safe="" aria-labelledby="sss-title" className={styles.section}>
-      <h2 id="sss-title">Sık sorulanlar</h2>
+      <h2 id="sss-title" data-scene-reveal="">Sık sorulanlar</h2>
       <div className={styles.answers}>
         {verifiedFaqs.map(item => (
-          <div key={item.id} data-faq={item.id} className={styles.answer}>
+          <div key={item.id} data-faq={item.id} data-scene-reveal="" className={styles.answer}>
             <h3>{item.question}</h3>{" "}<p data-faq-answer="">{item.answer}</p>
           </div>
         ))}
