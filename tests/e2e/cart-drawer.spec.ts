@@ -139,6 +139,10 @@ test("cart drawer: keyboard focus trap, all dismissal paths, external opener and
     }
     // Traverse real controls and change a quantity from the keyboard.
     await page.keyboard.press(nextControl);
+    if (reducedMotion === "reduce") {
+      await expect(dialog.getByRole("group", { name: "Sofralık Zeytin", exact: true }).getByRole("button", { name: "Adedi azalt" })).toBeFocused();
+      await page.keyboard.press(nextControl);
+    }
     const increase = dialog.getByRole("group", { name: "Sofralık Zeytin", exact: true }).getByRole("button", { name: "Adedi artır" });
     await expect(increase).toBeFocused();
     await page.keyboard.press("Enter");

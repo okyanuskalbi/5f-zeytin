@@ -40,4 +40,10 @@ Erişilebilir sepet drawer arayüzünü kur.
 - TDD / RED: `PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" npm run test:e2e -- tests/e2e/cart-drawer.spec.ts --config .cache/task-036/playwright.config.ts --project=chromium-320 --grep 'quantity, limits'` → **exit 1**, beklenen eksik uygulama: `Could not resolve '../../../components/cart/CartDrawer'`. Fixture yeni bileşeni doğrudan kullanır; hata eksik drawer modülüdür.
 - 3004 portundaki mevcut süreç korundu. Commit dışı `.cache/task-036/playwright.config.ts`, proje konfigürasyonundaki aynı 12 tarayıcı/viewport projesini bu checkout'un `next start` çıktısı üzerinde `localhost:3036` hedefine taşır; başka checkout/sunucu yeniden kullanılmaz. Test fixture'ı mevcut Vite/Playwright yöntemini izler; iki destek dosyası yalnız `tests/e2e/fixtures/cart-drawer.*` altındadır, public test rotası oluşturulmaz.
 
+### Uygulama / ilk GREEN
+
+- 21st örneğinin başlık/listeler/alt eylemler düzeni AFİNA tokenlarına uyarlandı. Mevcut Dialog/Button üzerinde kontrollü `open`/`onOpenChange`, mevcut `CartStore` aboneliği/hydration, adet/stok koruması, silme, boş sepet, tahmini kuruş bazlı ara toplam ve `/sepet`/`/odeme` CTA'ları uygulandı. Eksik katalog satırı görünür kalır ve ödeme CTA'sı kapanır. Yeni animasyon/görsel/paket eklenmedi.
+- Klavye odağı açılışta kapatma düğmesine taşınır; Escape, kapatma, dış alan ve alışverişe devam ile geri verilir. Satır silinmeden önce odak kapatma düğmesine alınır. Kayıt hatasında sepet bellekte kullanılabilir; stok kaynaklı düzenleme hatası canlı uyarıyla görünür ve yeniden denenebilir.
+- İlk GREEN: RED ile aynı E2E hedefi `--project=chromium-320` (grep olmadan) → **exit 0; 4/4 başarılı, 2,5 sn**. İlk tarayıcı başlatmasındaki macOS MachPort izin hatası süreç izniyle giderildi. Ara test açık `aria-modal` niteliğini doğrulayınca bileşene eklendi; ikinci motion turunda etkinleşen azalt düğmesi klavye testinin sırasına dahil edildi. `npm run lint && npm run typecheck` → **exit 0**. Tüm tarayıcılar ve production build kabulü henüz sürüyor.
+
 ## Durum: BEKLİYOR
