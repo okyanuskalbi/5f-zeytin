@@ -1,0 +1,41 @@
+.section { padding-block: 96px; scroll-margin-top: calc(var(--header-height) + 24px); }
+.heading { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.heading h2 { font-size: var(--step-head); }
+.controls { display: flex; gap: 8px; }
+.progress { height: 6px; margin-top: 24px; background: var(--muted); }
+.progress span { display: block; height: 100%; background: var(--brand-olive); }
+.intro { max-width: 54ch; margin-top: 32px; color: var(--body-ink); }
+.row {
+  display: flex; gap: 32px; margin: 32px calc(-1 * var(--page-margin)) 0;
+  padding: 8px var(--page-margin) 24px; list-style: none; overflow-x: auto;
+  scroll-snap-type: x mandatory; scroll-padding-inline: var(--page-margin);
+  overscroll-behavior-x: contain; scrollbar-color: var(--brand-olive) var(--muted);
+  cursor: grab;
+}
+.row:focus-visible { outline: 2px solid var(--ring); outline-offset: -4px; }
+.row[data-dragging] { scroll-snap-type: none; cursor: grabbing; user-select: none; }
+.moment { flex: 0 0 280px; min-width: 0; scroll-snap-align: start; }
+.moment h3 { font-size: var(--step-body); line-height: 1.5; }
+.photo { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; margin-top: var(--moment-space, 80px); object-fit: cover; object-position: var(--moment-crop, 5%) center; user-select: none; }
+.moment:nth-child(2) { --moment-space: 128px; --moment-crop: 22%; }
+.moment:nth-child(3) { --moment-space: 96px; --moment-crop: 40%; }
+.moment:nth-child(4) { --moment-space: 136px; --moment-crop: 58%; }
+.moment:nth-child(5) { --moment-space: 112px; --moment-crop: 76%; }
+.moment:nth-child(6) { --moment-space: 80px; --moment-crop: 95%; }
+
+@media (max-width: 767px) {
+  .section { padding-block: 64px; }
+  .controls { display: none; }
+  .row { gap: 16px; }
+  .moment { flex-basis: 72vw; --moment-space: 32px; }
+  .moment:nth-child(2) { --moment-space: 64px; }
+  .moment:nth-child(3) { --moment-space: 40px; }
+  .moment:nth-child(4) { --moment-space: 56px; }
+  .moment:nth-child(5) { --moment-space: 48px; }
+  .moment:nth-child(6) { --moment-space: 32px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section [data-moment-enter] { transform: none !important; }
+  .row { scroll-behavior: auto; }
+}

@@ -1,6 +1,7 @@
 import type { JSX } from "react";
 import { Hero } from "@/components/landing/Hero";
 import { Facility } from "@/components/landing/Facility";
+import { Moments } from "@/components/landing/Moments";
 import { SceneFlow } from "@/components/landing/SceneFlow";
 import { ProductShowcase } from "@/components/landing/ProductShowcase";
 import { getProducts } from "@/lib/catalog/static-products";
@@ -20,6 +21,7 @@ export default async function Home(): Promise<JSX.Element> {
           >
             <Facility />
           </div>
+          <Moments />
           <section
             id="toptan-iletisim"
             data-scene="wholesale"

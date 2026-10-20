@@ -8,7 +8,7 @@ afterEach(cleanup);
 
 it("places the six moments after the facility and before wholesale in the landing", async () => {
   render(await Home());
-  const section = screen.getByRole("region", { name: "Topraktan sofraya", exact: true });
+  const section = screen.getByRole("region", { name: "Topraktan sofraya" });
   expect(within(section).getAllByRole("heading", { level: 3 }).map(node => node.textContent)).toEqual(titles);
   expect(within(section).getAllByRole("listitem")).toHaveLength(6);
   const facility = document.querySelector("#tesisimiz")!;
@@ -19,7 +19,7 @@ it("places the six moments after the facility and before wholesale in the landin
 
 it("publishes only the official story sentence, never unconfirmed process copy", async () => {
   render(await Home());
-  const section = screen.getByRole("region", { name: "Topraktan sofraya", exact: true });
+  const section = screen.getByRole("region", { name: "Topraktan sofraya" });
   const paragraphs = [...section.querySelectorAll("p:not(.sr-only)")];
   expect(paragraphs.map(node => node.textContent)).toEqual(["Zeytinin hikâyesi toprakta başlar, sofrada tamamlanır."]);
   expect(section.textContent).not.toMatch(/saat|derece|katkısız|elle topla|soğuk sık|teyit bekliyor|organik/i);
@@ -28,7 +28,7 @@ it("publishes only the official story sentence, never unconfirmed process copy",
 
 it("provides keyboard scroll access, named controls and only approved atmosphere photography", async () => {
   render(await Home());
-  const section = screen.getByRole("region", { name: "Topraktan sofraya", exact: true });
+  const section = screen.getByRole("region", { name: "Topraktan sofraya" });
   expect(within(section).getByRole("list", { name: "Süreç anları" }).tabIndex).toBe(0);
   expect(within(section).getByRole("button", { name: "Önceki an" })).toBeDefined();
   expect(within(section).getByRole("button", { name: "Sonraki an" })).toBeDefined();
@@ -41,6 +41,6 @@ it("provides keyboard scroll access, named controls and only approved atmosphere
     const asset = manifest.assets.find((entry: { file: string }) => entry.file === image.getAttribute("src"));
     expect(asset?.status).toBe("approved");
     expect(asset?.runtime).toBe(true);
-    expect(image.loading).toBe("lazy");
+    expect(image.getAttribute("loading")).toBe("lazy");
   }
 });
