@@ -25,4 +25,13 @@ Yeniden kurgu — **önce `docs/DESIGN.md` (tamamı), föy (`node ~/.claude/skil
 - [ ] production (`next build && next start -p 3104`) üzerinde `inspect.mjs http://127.0.0.1:3104` → bu bölüm için FAIL yok; 1440/768/390 + iPhone 14 (WebKit) ekran görüntüleri `test-results/097/`
 - [ ] lint/typecheck/build; ilgili e2e (reduced-motion + mobil WebKit dahil); sepet testleri bozulmaz
 
+## Claude eleştirisi (20 Eki, 1440 kaydırma, 091–095 sonrası) — bu turda MUTLAKA çözülecek
+1. **Hero sonrası boş sabit sahne:** kart küçüldükten sonra ~2 ekran boyunca yalnız zeytinlik görüntüsü + minik koçan kalıyor (near-empty ×2). Pinned run kısalsın (kart koçana dönüşür dönüşmez vitrin başlasın; ≤ 1 ekran geçiş).
+2. **Koçan çok küçük ve okunmuyor** ('Ürünlere göz at' ~10px kutu): 120px genişlik, 14px+ metin, sepet adedi/toplam okunur; ürün fişleri ve footer üstüne binmesin (vitrin ve footer görünürken gizlenir veya kenara çekilir).
+3. **Vitrin fişleri** fotoğrafın altına sıkışmış ve kesik görünüyor: föy 'slips standing along the bottom' — fişler alt kenarda AYAKTA, tam görünür, farklı yükseklikler; 'Ürünlerimiz' kolonu fotoğrafın üst bölümünde; fişler ile kolon arasında görünür nefes.
+4. **Topraktan sofraya:** beş kolonda aynı zeytinlik kırpımı tekrar ediyor — kopya görsel yasak. Görsel üretimi onaylanana kadar kolonlar görselsiz tipografik (adım adı büyük Fraunces + kısa satır) ya da onaylı görüntülerin FARKLI kırpımları (tesis, şişe, kase, dal); aynı kare iki kez kullanılmaz.
+5. **Toptan bölümü:** büyük boş yeşil alan + küçük kart (near-empty). Tesis fotoğrafı kullanıcı onayı gelene kadar: kart sola, alanın kalanına büyük tipografik 'Toptan satış' + ürün kapsamı; onay gelince fotoğraf.
+6. **Osmaniye silüeti** kaba ve kesik görünüyor: gerçek il sınırı (kaynaklı, sadeleştirilmiş), Düziçi noktası + etiket; karo içinde ortalı, kırpılmadan.
+Ekran görüntüleri: `/private/tmp/claude-501/-Users-emre/862bcbce-6e8d-4a73-a71a-971f141b67f4/scratchpad/mobil/z-yeni.jpg` (geçici).
+
 ## Durum: BEKLİYOR
