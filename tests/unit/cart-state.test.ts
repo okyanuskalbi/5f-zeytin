@@ -308,6 +308,7 @@ describe("cart persistence and hydration", () => {
     const store = createStore(storage);
     expect(() => store.hydrate()).not.toThrow();
     expect(store.getSnapshot().storageError).toBe(true);
+    expect(storage.setItem).not.toHaveBeenCalled();
     store.addItem("olive");
     expect(store.getSnapshot().items[0].quantity).toBe(1);
   });
