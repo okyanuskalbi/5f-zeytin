@@ -1,10 +1,21 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import TrackingPage from "@/app/siparis-takip/page";
+import { Tracking } from "@/components/orders/Tracking";
 import { createMockAuthAdapter } from "@/lib/auth/adapter";
 import { createMockAccountAdapter } from "@/lib/account/adapter";
 import { createMockTrackingAdapter, createDemoAttemptLimiter, isTrackingDemoEnabled, validateTrackingQuery } from "@/lib/orders/tracking-adapter";
 
 describe("tracking demo boundary and matching", () => {
   beforeEach(() => sessionStorage.clear());
+  afterEach(() => vi.unstubAllEnvs());
+
+  it("mounts the tracking client only with production demo opt-in", () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("NEXT_PUBLIC_DEMO", "1");
+    expect(TrackingPage().props.children.type).toBe(Tracking);
+    vi.stubEnv("NEXT_PUBLIC_DEMO", "0");
+    expect(TrackingPage().props.title).toBe("Sipariş takibi");
+  });
 
   it("requires explicit production opt-in and validates bounded order/contact fields", () => {
     expect(isTrackingDemoEnabled("production", undefined)).toBe(false);
