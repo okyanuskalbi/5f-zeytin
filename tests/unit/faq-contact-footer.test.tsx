@@ -1,8 +1,10 @@
 import { readFileSync } from "node:fs";
 import { renderToStaticMarkup } from "react-dom/server";
-import { expect, it } from "vitest";
+import { expect, it, vi } from "vitest";
 import Home from "@/app/page";
 import { Footer } from "@/components/site/Footer";
+
+vi.mock("next/font/local", () => ({ default: () => ({ variable: "font-hero" }) }));
 
 const questions = [
   "Afina Zeytin hangi ürün alanlarında çalışıyor?",

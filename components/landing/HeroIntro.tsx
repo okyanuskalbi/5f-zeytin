@@ -35,7 +35,7 @@ function Segments({ label, options, value, onChange }: {
 
 // The v1 purchase contract remains available in document flow until the v2
 // showcase/quick-view tasks take ownership. No label, dock or floating stub.
-export function HeroIntro({ products }: { products: readonly Product[] }): JSX.Element {
+export function HeroIntro({ products, className = "" }: { products: readonly Product[]; className?: string }): JSX.Element {
   const cart = useCart();
   const [selectedId, setSelectedId] = useState(products[0]?.id);
   const selected = products.find((product) => product.id === selectedId) ?? products[0];
@@ -48,7 +48,7 @@ export function HeroIntro({ products }: { products: readonly Product[] }): JSX.E
     setFeedback({ error: false, message: "" });
   }
   const canAdd = !!cart?.products && cart.state.hydrated;
-  return <section aria-label="Afina Zeytin" data-hero-intro="" className={styles.hero}>
+  return <section aria-label="Afina Zeytin" data-hero-intro="" className={`${styles.hero} ${className}`}>
     <HeroLightScene />
     <div className={styles.purchase}>
       {selected && <>

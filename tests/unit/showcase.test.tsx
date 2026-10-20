@@ -5,6 +5,8 @@ import { CartProvider } from "@/components/cart/CartProvider";
 import { getProducts } from "@/lib/catalog/static-products";
 import type { Product } from "@/types/catalog";
 
+vi.mock("next/font/local", () => ({ default: () => ({ variable: "font-hero" }) }));
+
 vi.mock("@/lib/catalog/static-products", () => ({ getProducts: vi.fn() }));
 vi.mock("@/components/media/ScrollFrameSequence", () => ({ ScrollFrameSequence: () => <div /> }));
 vi.mock("@/components/cart/CartDrawer", () => ({ CartDrawer: () => null }));

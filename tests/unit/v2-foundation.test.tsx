@@ -1,9 +1,11 @@
 import { readFileSync } from "node:fs";
 import { renderToStaticMarkup } from "react-dom/server";
-import { expect, it } from "vitest";
+import { expect, it, vi } from "vitest";
 import { Hero } from "@/components/landing/Hero";
 import { Footer } from "@/components/site/Footer";
 import { ProductShowcase } from "@/components/landing/ProductShowcase";
+
+vi.mock("next/font/local", () => ({ default: () => ({ variable: "font-hero" }) }));
 
 it("replaces the v1 label, stub, product slips and scallops without losing destinations", () => {
   const doc = document.implementation.createHTMLDocument();

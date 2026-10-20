@@ -21,8 +21,9 @@ export function HeroLightScene(): JSX.Element {
   const imageScale = useTransform(scrollYProgress, [0.65, 1], [1, 0.88]);
   const lineOpacity = useTransform(scrollYProgress, [0.4, 0.52], [0, 1]);
   const lineY = useTransform(scrollYProgress, [0.4, 0.52], [motionTokens.distance.lg, 0]);
-  // Keep the readability layer opaque. Switching its ink and ground together
-  // avoids the low-contrast midpoint of interpolating two opposing text colors.
+  // Large display ink switches at the AA crossover of the interpolated ground.
+  // The smaller support text switches its opaque ground and ink together.
+  const titleInk = useTransform(scrollYProgress, value => value < 0.565 ? "#F6F1E6" : "#243A29");
   const copyGround = useTransform(scrollYProgress, value => value < 0.65 ? "#0D110D" : "#F6F1E6");
   const ink = useTransform(scrollYProgress, value => value < 0.65 ? "#F6F1E6" : "#243A29");
 
@@ -33,15 +34,16 @@ export function HeroLightScene(): JSX.Element {
         <ScrollFrameSequence src="/frames/hero-zeytin/manifest.json" poster={heroPoster}
           deferPlayback initialCount={10} scrollLength={100} scrollTarget={target} positionX={1} label="" />
       </motion.div>
-      <motion.div className={styles.copy} style={{ backgroundColor: copyGround, color: ink }}>
+      <div aria-hidden="true" className={styles.navShade} />
+      <motion.div className={styles.copy} style={{ backgroundColor: ground, color: titleInk }}>
         <h1 id="hero-title" className={styles.title}>
           <span>Kökü toprakta.</span>{" "}
           <motion.span style={{ opacity: lineOpacity, y: reduced ? 0 : lineY }}>Yeri sofrada.</motion.span>
         </h1>
-        <div className={styles.support}>
+        <motion.div className={styles.support} style={{ backgroundColor: copyGround, color: ink }}>
           <p>Toprağın sunduğu lezzet, Afina’nın özeniyle.</p>
           <a className={styles.discover} href="#urunler">Ürünleri keşfet</a>
-        </div>
+        </motion.div>
       </motion.div>
     </motion.div>
     <div data-nav-light="" aria-hidden="true" className={styles.lightMarker} />

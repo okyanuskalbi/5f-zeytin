@@ -4,6 +4,8 @@ import type { Product } from "@/types/catalog";
 import { getProducts } from "@/lib/catalog/static-products";
 import Home from "@/app/page";
 
+vi.mock("next/font/local", () => ({ default: () => ({ variable: "font-hero" }) }));
+
 vi.mock("@/lib/catalog/static-products", () => ({ getProducts: vi.fn() }));
 
 beforeEach(() => vi.mocked(getProducts).mockReset());
