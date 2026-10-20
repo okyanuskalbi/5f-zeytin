@@ -4,16 +4,17 @@
 }
 .section h2 { grid-column: 1 / 4; }
 .answers { grid-column: 5 / 13; columns: 2; column-gap: 48px; color: var(--body-ink); }
-.answer { break-inside: avoid; margin-bottom: 24px; line-height: 1.6; }
+.answer { break-inside: avoid; margin-bottom: 32px; line-height: 1.6; }
 .answer:last-child { margin-bottom: 0; }
-.answer h3 { display: inline; font-family: var(--font-body, var(--font-body-fallback)); font-size: var(--step-body); line-height: inherit; color: var(--brand-olive); }
-.answer p { display: inline; font-size: var(--step-body); }
+.answer h3 { font-family: var(--font-body, var(--font-body-fallback)); font-size: var(--step-body); font-weight: 600; line-height: inherit; color: var(--brand-olive); text-wrap: pretty; }
+.answer p { margin-top: 8px; font-size: var(--step-body); }
 
 @media (max-width: 1023px) {
-  .section h2 { grid-column: 1 / 5; }
-  .answers { columns: 1; grid-column: 6 / 13; }
+  .section h2 { grid-column: 1 / -1; }
+  .answers { columns: 2; column-gap: 32px; grid-column: 1 / -1; }
 }
-@media (max-width: 599px) {
+@media (max-width: 767px) {
   .section { display: block; padding-block: 64px; }
   .section h2 { margin-bottom: 32px; }
+  .answers { columns: 1; }
 }

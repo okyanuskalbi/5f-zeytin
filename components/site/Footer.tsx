@@ -17,14 +17,15 @@ const legalLinks = [
 
 export function Footer(): JSX.Element {
   return (
-    <footer className={styles.footer}>
-      <div data-reading-safe="" className={styles.paper}>
+    <footer data-surface="dark" className={styles.footer}>
+      <div data-reading-safe="">
         <div className={styles.columns}>
           <div className={styles.message}>
-            <Image src="/brand/afina-zeytin-dark.svg" alt="Afina Zeytin" width={104} height={80} sizes="104px" className={styles.logo} />
+            <Link href="/" aria-label="Afina Zeytin ana sayfa" className={styles.home}>
+              <Image src="/brand/afina-zeytin-dark.svg" alt="Afina Zeytin" width={104} height={80} sizes="104px" className={styles.logo} />
+            </Link>
             <p className={styles.signature}>Kökü toprakta.<br /> Yeri sofrada.</p>
             <p>Toprağın sunduğu lezzet, Afina’nın özeniyle.</p>
-            <p>Zeytinin hikâyesi toprakta başlar, sofrada tamamlanır.</p>
           </div>
           <div className={styles.destination}>
             <address>Şehit Ali Gökçe Mah. Şehit Ömer Halis Demir Sk. No: 35, Ellek Beldesi, Düziçi / Osmaniye</address>

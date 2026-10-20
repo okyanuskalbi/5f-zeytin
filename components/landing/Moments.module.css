@@ -3,7 +3,7 @@
 .heading h2 { font-size: var(--step-head); }
 .controls { display: flex; gap: 8px; }
 .progress { height: 6px; margin-top: 24px; background: var(--muted); }
-.progress span { display: block; height: 100%; background: var(--brand-olive); }
+.progress span { display: block; height: 100%; background: var(--brand-olive); transform-origin: left; }
 .intro { max-width: 54ch; margin-top: 32px; color: var(--body-ink); }
 .row {
   display: flex; gap: 32px; margin: 32px calc(-1 * var(--page-margin)) 0;
@@ -14,16 +14,15 @@
 }
 .row:focus-visible { outline: 2px solid var(--ring); outline-offset: -4px; }
 .row[data-dragging] { scroll-snap-type: none; cursor: grabbing; user-select: none; }
-.moment { flex: 0 0 280px; min-width: 0; scroll-snap-align: start; }
+.moment { flex: 0 0 clamp(280px, 24vw, 384px); min-width: 0; scroll-snap-align: start; }
 .moment > div { min-height: 200px; padding-block: var(--moment-space, 32px) 24px; }
 .moment h3 { font-size: var(--step-head); line-height: 1.2; }
-.note { display: block; margin-top: 24px; font-size: var(--step-body); }
 .moment:nth-child(2n) { --moment-space: 64px; }
 .moment:nth-child(3n) { --moment-space: 48px; }
 
 @media (max-width: 767px) {
   .section { padding-block: 64px; }
-  .controls { display: none; }
+  .heading { flex-wrap: wrap; }
   .row { gap: 16px; }
   .moment { flex-basis: 72vw; }
 }

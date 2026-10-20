@@ -2,27 +2,26 @@
 
 import { useCallback, useEffect, useRef, useState, type JSX, type KeyboardEvent, type PointerEvent } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { motion, useDragControls, type PanInfo } from "motion/react";
 import { useDeferredEnhancement, usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
 import { Button } from "@/components/ui/button";
 import styles from "./Moments.module.css";
 
 const moments = ["Hasat", "Seçim", "Kırma", "Salamura", "Dolum", "Sofrada"] as const;
-// Fragments of the official brand story; no unconfirmed production claims.
-const notes = ["Toprakta başlar.", "Zeytinin kendine özgü tadı.", "Köklü lezzet.", "Salamura zeytin.", "Zeytin ve zeytinyağı.", "Sofrada tamamlanır."];
 const motionTokens = {
-  distance: { md: 16 },
+  distance: { md: 24 },
   duration: { instant: 0, slow: 0.6 },
   stagger: 0.08,
   easing: { smooth: [0.22, 1, 0.36, 1] },
 } as const;
-const dragThreshold = 8;
-
-// Adapted from 21st appica-dev Carousel / progress demo 34485: named previous /
-// next controls and scroll-derived progress. Native scroll-snap replaces Embla
-// and its plugins so touch scrolling and the complete SSR list work without JS.
+// 21st Progressive Carousel (6274) and Framer Normal Carousel (19084): named
+// controls and a flat progress fill, adapted to our six official stage names.
+// Motion handles mouse drag; the native scroller remains the sole position
+// source for drag, keyboard, touch, wheel, resize and the no-JavaScript fallback.
 export function Moments(): JSX.Element {
   const rowRef = useRef<HTMLUListElement>(null);
-  const drag = useRef<{ id: number; x: number; y: number; left: number } | null>(null);
+  const dragOrigin = useRef(0);
+  const dragControls = useDragControls();
   const [position, setPosition] = useState({ progress: 0, start: true, end: false });
   const scope = useRef<HTMLElement>(null);
   const reduced = usePrefersReducedMotion();
@@ -31,9 +30,10 @@ export function Moments(): JSX.Element {
   const measure = useCallback((): void => {
     const row = rowRef.current;
     if (!row) return;
-    const max = row.scrollWidth - row.clientWidth;
+    const max = Math.max(0, row.scrollWidth - row.clientWidth);
     const left = Math.min(max, Math.max(0, row.scrollLeft));
-    setPosition({ progress: max > 0 ? Math.round(left / max * 100) : 100, start: left <= 1, end: max - left <= 1 });
+    const next = { progress: max > 0 ? Math.round(left / max * 100) : 100, start: left <= 1, end: max - left <= 1 };
+    setPosition(previous => previous.progress === next.progress && previous.start === next.start && previous.end === next.end ? previous : next);
   }, []);
 
   function go(direction: number | "start" | "end"): void {
@@ -59,26 +59,18 @@ export function Moments(): JSX.Element {
     // Touch and pen retain native horizontal AND vertical scrolling.
     if (event.pointerType !== "mouse" || event.button !== 0) return;
     const row = event.currentTarget;
-    drag.current = { id: event.pointerId, x: event.clientX, y: event.clientY, left: row.scrollLeft };
+    dragOrigin.current = row.scrollLeft;
     row.focus({ preventScroll: true });
-    row.setPointerCapture(event.pointerId);
+    dragControls.start(event, { distanceThreshold: 8 });
   }
 
-  function pointerMove(event: PointerEvent<HTMLUListElement>): void {
-    const start = drag.current;
-    if (!start || start.id !== event.pointerId) return;
-    const distance = event.clientX - start.x;
-    if (!event.currentTarget.hasAttribute("data-dragging") &&
-      (Math.abs(distance) < dragThreshold || Math.abs(distance) < Math.abs(event.clientY - start.y))) return;
-    event.currentTarget.setAttribute("data-dragging", "");
-    event.currentTarget.scrollLeft = start.left - distance;
+  function move(_: MouseEvent | TouchEvent | globalThis.PointerEvent, info: PanInfo): void {
+    const row = rowRef.current;
+    if (row) row.scrollLeft = dragOrigin.current - info.offset.x;
   }
 
-  function release(event: PointerEvent<HTMLUListElement>): void {
-    if (drag.current?.id !== event.pointerId) return;
-    drag.current = null;
-    event.currentTarget.removeAttribute("data-dragging");
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+  function release(): void {
+    rowRef.current?.removeAttribute("data-dragging");
     measure();
   }
 
@@ -154,22 +146,24 @@ export function Moments(): JSX.Element {
         </div>
       </div>
       <div role="progressbar" aria-label="Süreç şeridi ilerlemesi" aria-valuemin={0} aria-valuemax={100} aria-valuenow={position.progress} className={styles.progress}>
-        <span style={{ width: `${position.progress}%` }} />
+        <span style={{ transform: `scaleX(${position.progress / 100})` }} />
       </div>
       <p data-moment-enter="" className={styles.intro}>Zeytinin hikâyesi toprakta başlar, sofrada tamamlanır.</p>
       <p id="moments-help" className="sr-only">Şeridi kaydırın veya sağ ve sol ok tuşlarını kullanın. Home ile başa, End ile sona gidin.</p>
-      <ul ref={rowRef} id="moments-row" aria-label="Süreç anları" aria-describedby="moments-help" tabIndex={0}
-        className={styles.row} onScroll={measure} onKeyDown={keyboard} onPointerDown={pointerDown} onPointerMove={pointerMove}
-        onPointerUp={release} onPointerCancel={release} onLostPointerCapture={release}>
-        {moments.map((title, index) => (
+      <motion.ul ref={rowRef} id="moments-row" aria-label="Süreç anları" aria-describedby="moments-help" tabIndex={0}
+        className={styles.row} onScroll={measure} onKeyDown={keyboard} onPointerDown={pointerDown}
+        drag="x" dragControls={dragControls} dragListener={false} dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0} dragMomentum={false}
+        onDragStart={() => rowRef.current?.setAttribute("data-dragging", "")}
+        onDrag={move} onDragEnd={release} onPointerCancel={release}>
+        {moments.map(title => (
           <li key={title} className={styles.moment}>
             <div data-moment-enter="">
               <h3>{title}</h3>
-              <span className={styles.note}>{notes[index]}</span>
             </div>
           </li>
         ))}
-      </ul>
+      </motion.ul>
     </section>
   );
 }
