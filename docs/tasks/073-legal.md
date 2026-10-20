@@ -62,4 +62,7 @@ Yerel JSON kanıtı `.cache/task-073/legal-results.json`; ekranlar `.cache/task-
 
 **Kalan engeller:** Tam şirket unvanı/adresi/iletişimi ve kullanıcı onaylı üç hukuk metni teslim edilmedi; checkout/toptan formu henüz olmadığı için bu yüzeylerdeki KVKK bağlantıları doğrulanamadı. Teknik kabul komutları başarılıdır; adım 2'nin bu gereksinimleri karşılanmadığından durum **BEKLİYOR** bırakıldı. Onaylı içeriklerle nihai hukuk sayfaları ve canlı yayın kabulü tamamlanmış sayılmaz.
 
-## Durum: BEKLİYOR
+## Claude kararı (20 Eki)
+Yasal sayfalar taslak olarak kabul (satıcı unvan/adres/VD/VKN SIRKET.md'den). Onaylı hukuk metni + MERSİS/telefon/e-posta/KEP/iade adresi kullanıcıdan ("kalsın şimdilik") — **yayın öncesi açık iş** (079 launch kabulüne bağlı). Bağımlı görevler (081 vb.) taslak bağlantılarla ilerleyebilir.
+
+## Durum: TAMAMLANDI
