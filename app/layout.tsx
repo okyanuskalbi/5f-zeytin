@@ -6,7 +6,7 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { getProducts } from "@/lib/catalog/static-products";
-import { isPaymentPreviewEnabled } from "@/lib/payments/preview";
+import { isCheckoutDemoEnabled } from "@/lib/checkout/adapter";
 import type { Product } from "@/types/catalog";
 import "./globals.css";
 
@@ -58,7 +58,7 @@ export default async function RootLayout({
         >
           Ana içeriğe geç
         </a>
-        <CartProvider products={products} checkoutHref={isPaymentPreviewEnabled() ? "/odeme-onizleme" : null}>
+        <CartProvider products={products} checkoutHref={isCheckoutDemoEnabled() ? "/odeme" : null}>
           <Navbar />
           <div id="ana-icerik" tabIndex={-1} className="scroll-mt-28 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring">
             {children}

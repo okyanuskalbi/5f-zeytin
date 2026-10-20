@@ -63,7 +63,8 @@ function PaytrFrame({ session, onFailure }: { session: Session; onFailure: () =>
   </div>;
 }
 
-export function PaymentPreview({ keysAvailable, summary }: { keysAvailable: boolean; summary: Summary }) {
+/** Shared 001b local preview, never a checkout session or payment confirmation. */
+export function PaytrPreviewControl({ keysAvailable, unavailableMessage = "Test anahtarı eksik — .env.local'e ekleyin" }: { keysAvailable: boolean; unavailableMessage?: string }) {
   const [state, setState] = useState<State>({ phase: "idle" });
   const controllerRef = useRef<AbortController | null>(null);
   const frameFailure = useCallback(() => setState({ phase: "error", message: "PayTR test ekranı yüklenemedi. Yeniden deneyin." }), []);
@@ -94,6 +95,19 @@ export function PaymentPreview({ keysAvailable, summary }: { keysAvailable: bool
     }
   }
 
+  return <>
+    {!keysAvailable ? <p role="alert" className={styles.notice}>{unavailableMessage}</p> : <>
+      {state.phase === "requesting" && <p role="status" className="mb-4 text-base">Test oturumu hazırlanıyor…</p>}
+      {state.phase === "error" && <p role="alert" className="mb-4 text-base text-destructive">{state.message}</p>}
+      {state.phase === "frame" && <PaytrFrame session={state.session} onFailure={frameFailure} />}
+      <Button className="mt-4 w-full" disabled={state.phase === "requesting" || state.phase === "frame"} onClick={() => void start()}>
+        {state.phase === "error" ? "Yeniden dene" : state.phase === "requesting" ? "Hazırlanıyor…" : "Test ekranını aç"}
+      </Button>
+    </>}
+  </>;
+}
+
+export function PaymentPreview({ keysAvailable, summary }: { keysAvailable: boolean; summary: Summary }) {
   const money = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY" }).format(summary.amountKurus / 100);
   return <main className={styles.page}>
     <header className={styles.header}><h1>Ödeme önizlemesi</h1>
@@ -120,14 +134,7 @@ export function PaymentPreview({ keysAvailable, summary }: { keysAvailable: bool
       <section aria-labelledby="preview-payment-title" className={`${styles.paper} ${styles.summary}`}>
         <CheckoutSignIn />
         <h2 id="preview-payment-title" className={styles.ribbon}>PayTR test ekranı</h2>
-        {!keysAvailable ? <p role="alert" className={styles.notice}>Test anahtarı eksik — .env.local&apos;e ekleyin</p> : <>
-          {state.phase === "requesting" && <p role="status" className="mb-4 text-base">Test oturumu hazırlanıyor…</p>}
-          {state.phase === "error" && <p role="alert" className="mb-4 text-base text-destructive">{state.message}</p>}
-          {state.phase === "frame" && <PaytrFrame session={state.session} onFailure={frameFailure} />}
-          <Button className="mt-4 w-full" disabled={state.phase === "requesting" || state.phase === "frame"} onClick={() => void start()}>
-            {state.phase === "error" ? "Yeniden dene" : state.phase === "requesting" ? "Hazırlanıyor…" : "Test ekranını aç"}
-          </Button>
-        </>}
+        <PaytrPreviewControl keysAvailable={keysAvailable} />
         <p className="mt-6 text-base text-muted-foreground">Önizleme yönlendirme sonucu, ödeme teyidi değildir.</p>
       </section>
     </div>
