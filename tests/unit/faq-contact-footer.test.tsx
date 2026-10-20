@@ -39,13 +39,14 @@ it("keeps the wholesale destination focusable, address public and unconfirmed ch
   const contact = doc.querySelector("#toptan-iletisim")!;
   expect(contact.getAttribute("tabindex")).toBe("-1");
   expect(contact.querySelector("address")?.textContent).toBe("Şehit Ali Gökçe Mah. Şehit Ömer Halis Demir Sk. No: 35, Ellek Beldesi, Düziçi / Osmaniye");
-  expect(contact.querySelector('a[href^="tel:"], a[href^="mailto:"], img, video, canvas, input, textarea')).toBeNull();
-  expect(contact.textContent).not.toMatch(/teyit|telefon|e-posta|hazırlanıyor|gönderildi/i);
-  // 081 is not implemented: the CTA must honestly communicate unavailability.
-  const cta = contact.querySelector("button")!;
+  expect(contact.querySelector('a[href^="tel:"], a[href^="mailto:"], img, video, canvas')).toBeNull();
+  expect(contact.textContent).not.toMatch(/teyit|hazırlanıyor|gönderildi/i);
+  // 081 exposes the form; 082 delivery remains unavailable.
+  const cta = contact.querySelector('a[href="#toptan-iletisim"]')!;
   expect(cta.textContent).toBe("Toptan Satış İçin İletişime Geçin");
-  expect(cta.hasAttribute("disabled")).toBe(true);
-  expect(doc.getElementById(cta.getAttribute("aria-describedby")!)?.textContent).toBe("Toptan talep formu henüz kullanıma açık değil.");
+  expect(contact.querySelectorAll("input, textarea")).toHaveLength(4);
+  expect(contact.querySelector('button[type="submit"]')?.hasAttribute("disabled")).toBe(true);
+  expect(contact.querySelector('[role="status"]')?.textContent).toContain("Toptan talep gönderimi henüz kullanıma açık değil.");
 });
 
 it("prints the seller imprint, twelve scallops, approved orchard stamp and legal destinations", () => {

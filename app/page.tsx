@@ -4,6 +4,7 @@ import { Facility } from "@/components/landing/Facility";
 import { Moments } from "@/components/landing/Moments";
 import { Faq } from "@/components/landing/Faq";
 import { WholesaleContact } from "@/components/landing/WholesaleContact";
+import { WholesaleForm } from "@/components/landing/WholesaleForm";
 import { SceneFlow } from "@/components/landing/SceneFlow";
 import { ProductShowcase } from "@/components/landing/ProductShowcase";
 import { getProducts } from "@/lib/catalog/static-products";
@@ -26,7 +27,7 @@ export default async function Home(): Promise<JSX.Element> {
           <Moments />
           <Faq />
         </div>
-        <WholesaleContact />
+        <WholesaleContact><WholesaleForm /></WholesaleContact>
       </SceneFlow>
     </main>
   );

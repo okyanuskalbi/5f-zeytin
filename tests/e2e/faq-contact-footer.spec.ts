@@ -40,12 +40,14 @@ test("confirmed FAQs stay open, channels stay absent and the contact/footer layo
   await expect(faq).not.toContainText(/kargo|iade|minimum|saklanır|sertifika|teyit|stok|sıkım/i);
   await expect(contact.locator("address")).toHaveText(address);
   await expect(footer.locator("address")).toHaveText(address);
-  await expect(contact.locator("img, video, canvas, input, textarea")).toHaveCount(0);
-  await expect(contact.getByRole("button", { name: "Toptan Satış İçin İletişime Geçin" })).toBeDisabled();
-  await expect(contact.getByRole("button")).toHaveAccessibleDescription("Toptan talep formu henüz kullanıma açık değil.");
+  await expect(contact.locator("img, video, canvas")).toHaveCount(0);
+  await expect(contact.getByRole("link", { name: "Toptan Satış İçin İletişime Geçin", exact: true })).toHaveAttribute("href", "#toptan-iletisim");
+  await expect(contact.getByRole("form", { name: "Toptan talep formu" })).toBeVisible();
+  await expect(contact.getByRole("button", { name: "Talebi gönder", exact: true })).toBeDisabled();
+  await expect(contact.getByRole("button", { name: "Talebi gönder", exact: true })).toHaveAccessibleDescription("Toptan talep gönderimi henüz kullanıma açık değil. Bilgileriniz gönderilmez.");
   for (const region of [contact, footer]) {
     await expect(region.locator('a[href^="tel:"], a[href^="mailto:"]')).toHaveCount(0);
-    await expect(region).not.toContainText(/telefon|e-posta|teyit|gönderildi/i);
+    await expect(region).not.toContainText(/teyit|gönderildi/i);
   }
   await expect(footer.locator("[data-footer-scallop]")).toHaveCount(12);
   const stamp = footer.locator("[data-footer-stamp] img");

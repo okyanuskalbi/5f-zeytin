@@ -1,5 +1,5 @@
 .section {
-  display: flex; align-items: flex-start; justify-content: flex-end;
+  display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start; justify-content: flex-end;
   min-height: 100svh; padding: 64px var(--page-margin) 96px;
   background: var(--brand-olive); scroll-margin-top: calc(var(--header-height) + 24px);
 }
