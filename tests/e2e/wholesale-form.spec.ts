@@ -37,7 +37,6 @@ test("landing CTA reaches the focusable wholesale form and never claims delivery
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await form(page).scrollIntoViewIfNeeded();
   await page.screenshot({ path: testInfo.outputPath("wholesale-landing.png"), fullPage: true });
-  await page.locator("#toptan-iletisim").screenshot({ path: testInfo.outputPath("wholesale-section.png") });
   await form(page).getByRole("link", { name: "KVKK aydınlatma metni" }).click();
   await expect(page.getByRole("heading", { name: "Taslak — onay bekleniyor" })).toBeVisible();
 });
@@ -53,6 +52,28 @@ test("JavaScript-free landing keeps the form, legal link and honest disabled sub
     await form(staticPage).getByRole("link", { name: "KVKK aydınlatma metni" }).click();
     await expect(staticPage.getByRole("heading", { name: "KVKK", exact: true })).toBeVisible();
   } finally { await context.close(); }
+});
+
+test("the floating product shortcut leaves the whole wholesale form clear during scroll", async ({ page }, testInfo) => {
+  await page.goto("/");
+  await page.evaluate(() => document.fonts.ready);
+  const bounds = await form(page).evaluate(node => ({ top: node.getBoundingClientRect().top + scrollY, height: node.getBoundingClientRect().height }));
+  for (const fraction of [0, 0.5, 1]) {
+    await page.evaluate(({ top, height, fraction }) => scrollTo(0, top + height * fraction - innerHeight / 2), { ...bounds, fraction });
+    await expect(page.locator("[data-hero-stub]")).toHaveAttribute("data-visible", "true");
+    await expect.poll(() => form(page).evaluate(node => {
+      const stub = document.querySelector<HTMLElement>("[data-hero-stub]");
+      if (!stub || getComputedStyle(stub).visibility !== "visible") return false;
+      const shortcut = stub.getBoundingClientRect();
+      const panel = node.getBoundingClientRect();
+      return shortcut.left < panel.right && shortcut.right > panel.left && shortcut.top < panel.bottom && shortcut.bottom > panel.top;
+    })).toBe(false);
+  }
+  await page.evaluate(top => scrollTo(0, top - 96), bounds.top);
+  await expect(form(page).getByRole("heading", { name: "Toptan talep formu" })).toBeInViewport();
+  await page.screenshot({ path: testInfo.outputPath("wholesale-form-start.png") });
+  await form(page).getByRole("button", { name: "Talebi gönder", exact: true }).scrollIntoViewIfNeeded();
+  await page.screenshot({ path: testInfo.outputPath("wholesale-form-end.png") });
 });
 
 test.describe("injected wholesale form", () => {
