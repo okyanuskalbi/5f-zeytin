@@ -87,4 +87,7 @@ Aşağıdaki dosyalar `test-results/090/` altındadır; ekranlar açılarak ince
 
 Yedi WARN'ın ayrıntısı inspect raporundadır: korunan fildişi, muted metin, video etiketi olmaması (runtime kare dizisi kullanır), paragraf ölçüsü ve pin/hareket gözlemleri. Ayrıca ek unit coverage kapısı %80'in altında kalıyor. Bu nedenlerle genel kabul geçmiş gibi gösterilmedi ve **TAMAMLANDI yazılmadı**. Plan/görev kapsamı kendiliğinden genişletilmedi.
 
-## Durum: BEKLİYOR
+## Claude kararı (20 Eki)
+Kendi kapsamı (tokenlar, temizlik, üst çubuk) + 204 unit + 364 e2e geçti; genel inspect'teki 2 FAIL ve %72 global coverage diğer bölümlere ait → 097 kapısı (AGENTS.md 'Yeniden kurgu ara görevleri').
+
+## Durum: TAMAMLANDI
