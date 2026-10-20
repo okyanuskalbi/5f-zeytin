@@ -1,73 +1,52 @@
 import type { JSX } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import styles from "./Footer.module.css";
 
-// Adapted from 21st Footer Two (meschacirung), with official AFİNA copy only.
-const groups = [
-  {
-    title: "Keşfedin",
-    links: [
-      { label: "Ürünlerimizi Keşfedin", href: "/#urunler" },
-      { label: "Tesisimiz", href: "/#tesisimiz" },
-      { label: "Toptan Satış İçin İletişime Geçin", href: "/#toptan-iletisim" },
-    ],
-  },
-  {
-    title: "Yasal bilgiler",
-    links: [
-      { label: "KVKK", href: "/kvkk" },
-      { label: "Mesafeli Satış Sözleşmesi", href: "/mesafeli-satis" },
-      { label: "İade ve İptal", href: "/iade" },
-    ],
-  },
+// Two-column brand/navigation structure adapted from 21st Footer17 (ln-dev7,
+// demo 26908). AFİNA's label back replaces the default copy, border and styling.
+const links = [
+  { label: "Ürünlerimizi Keşfedin", href: "/#urunler" },
+  { label: "Tesisimiz", href: "/#tesisimiz" },
+  { label: "Toptan Satış İçin İletişime Geçin", href: "/#toptan-iletisim" },
 ];
-
-const footerLink = "inline-flex min-h-11 max-w-full items-center rounded-none py-2 text-sm underline-offset-4 hover:text-primary-foreground hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-foreground";
+const legalLinks = [
+  { label: "KVKK", href: "/kvkk" },
+  { label: "Mesafeli Satış Sözleşmesi", href: "/mesafeli-satis" },
+  { label: "İade ve İptal", href: "/iade" },
+];
 
 export function Footer(): JSX.Element {
   return (
-    <footer className="bg-primary text-primary-foreground">
-      <div className="page-wrap pt-12 pb-6 sm:pt-16">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr] lg:gap-16">
-          <div className="min-w-0 md:col-span-2 lg:col-span-1">
-            <Link href="/" className={footerLink} aria-label="Afina Zeytin ana sayfa">
-              <Image
-                src="/brand/afina-zeytin-dark.svg"
-                alt="Afina Zeytin"
-                width={145}
-                height={167}
-                unoptimized
-                className="h-32 w-auto"
-              />
-            </Link>
-            <p className="mt-4 max-w-sm text-base">Toprağın sunduğu lezzet, Afina’nın özeniyle.</p>
-            <p className="mt-3 text-base text-primary-foreground">Osmaniye üretim tesisi</p>
+    <footer className={styles.footer}>
+      <svg className={styles.scallops} viewBox="0 0 1200 32" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        {Array.from({ length: 12 }, (_, index) => <path key={index} data-footer-scallop="" d={`M ${index * 100} 32 Q ${index * 100 + 50} -32 ${index * 100 + 100} 32 Z`} />)}
+      </svg>
+      <div className={styles.paper}>
+        <div className={styles.columns}>
+          <div className={styles.message}>
+            <p className={styles.signature}>Kökü toprakta.<br /> Yeri sofrada.</p>
+            <p>Toprağın sunduğu lezzet, Afina’nın özeniyle.</p>
+            <p>Zeytinin hikâyesi toprakta başlar, sofrada tamamlanır.</p>
           </div>
-          {groups.map((group) => (
-            <nav key={group.title} aria-label={group.title} className="min-w-0">
-              <h2 className="mb-3 font-sans text-base font-semibold">{group.title}</h2>
-              <ul className="grid gap-1">
-                {group.links.map((link) => (
-                  <li key={link.href}>
-                    <Link href={link.href} className={footerLink}>{link.label}</Link>
-                  </li>
-                ))}
-              </ul>
+          <div className={styles.destination}>
+            <div data-footer-stamp="" className={styles.stamp}>
+              <Image src="/images/hero/zeytinlik-1200.webp" alt="" width={88} height={117} unoptimized />
+            </div>
+            <address>Şehit Ali Gökçe Mah. Şehit Ömer Halis Demir Sk. No: 35, Ellek Beldesi, Düziçi / Osmaniye</address>
+            <nav aria-label="Keşfedin">
+              <ul>{links.map(link => <li key={link.href}><Link className={styles.link} href={link.href}>{link.label}</Link></li>)}</ul>
             </nav>
-          ))}
+          </div>
         </div>
-        <div className="mt-10 flex flex-col gap-4 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm">© {new Date().getFullYear()} Afina Zeytin</p>
-          <a href="https://afina.com.tr" className={footerLink} aria-label="AFİNA Şirketler Topluluğu">
-            <Image
-              src="/brand/afina-topluluk-dark.svg"
-              alt="AFİNA Şirketler Topluluğu"
-              width={381}
-              height={225}
-              unoptimized
-              className="h-auto w-40"
-            />
-          </a>
+        <div className={styles.imprint}>
+          <p>AFİNA ZEYTİNCİLİK TARIM ÜRÜNLERİ SAN. VE TİC. LTD. ŞTİ. · Düziçi VD · VKN 0091520061</p>
+          <div className={styles.bottom}>
+            <nav aria-label="Yasal bilgiler"><ul>{legalLinks.map(link => <li key={link.href}><Link className={styles.link} href={link.href}>{link.label}</Link></li>)}</ul></nav>
+            <a href="https://afina.com.tr" className={styles.community} aria-label="AFİNA Şirketler Topluluğu">
+              <Image src="/brand/afina-topluluk.svg" alt="AFİNA Şirketler Topluluğu" width={381} height={225} unoptimized />
+            </a>
+          </div>
         </div>
       </div>
     </footer>

@@ -2,6 +2,8 @@ import type { JSX } from "react";
 import { Hero } from "@/components/landing/Hero";
 import { Facility } from "@/components/landing/Facility";
 import { Moments } from "@/components/landing/Moments";
+import { Faq } from "@/components/landing/Faq";
+import { WholesaleContact } from "@/components/landing/WholesaleContact";
 import { SceneFlow } from "@/components/landing/SceneFlow";
 import { ProductShowcase } from "@/components/landing/ProductShowcase";
 import { getProducts } from "@/lib/catalog/static-products";
@@ -22,20 +24,9 @@ export default async function Home(): Promise<JSX.Element> {
             <Facility />
           </div>
           <Moments />
-          <section
-            id="toptan-iletisim"
-            data-scene="wholesale"
-            aria-labelledby="toptan-title"
-            tabIndex={-1}
-            className="scroll-mt-36 py-12 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring sm:py-16"
-          >
-            {/* The wholesale form belongs to Task 081. */}
-            <div data-scene-reveal="" className="motion-reduce:transform-none">
-              <h2 id="toptan-title">Toptan satış</h2>
-              <p className="mt-4 max-w-xl text-muted-foreground">Toptan talep formu henüz kullanıma açık değil.</p>
-            </div>
-          </section>
+          <Faq />
         </div>
+        <WholesaleContact />
       </SceneFlow>
     </main>
   );

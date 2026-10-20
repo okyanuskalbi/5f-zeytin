@@ -1,0 +1,15 @@
+.section {
+  display: flex; align-items: flex-start; justify-content: flex-end;
+  min-height: 100svh; padding: 64px var(--page-margin) 96px;
+  background: var(--brand-olive); scroll-margin-top: calc(var(--header-height) + 24px);
+}
+.section:focus-visible { outline-offset: -8px; outline-color: var(--brand-ivory); }
+.card { width: 380px; max-width: 100%; padding: 32px; background: var(--card); color: var(--brand-olive); }
+.card address { margin-top: 32px; font-style: normal; color: var(--body-ink); }
+.cta { width: 100%; margin-top: 32px; }
+.card p { margin-top: 16px; font-size: var(--step-body); color: var(--muted-foreground); }
+
+@media (max-width: 767px) {
+  .section { min-height: 70svh; align-items: center; justify-content: center; padding-block: 64px 96px; }
+  .card { padding: 24px; }
+}
