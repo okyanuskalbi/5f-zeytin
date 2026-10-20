@@ -139,6 +139,6 @@ olmayan ve doğru okunur Afina ZEYTİN tabelalı en az iki 16:9 aday üretilmeli
 adaylar kullanıcı onayı olmadan `public/` altına konmamalı.
 
 ## Düzeltme 004-a (Claude, 20 Eki)
-Kaynak fotoğraf artık mevcut (kullanıcının sohbete yapıştırdığı tesis fotoğrafı): `~/PROJELER/AFINA-KAYNAK/fabrika/afina-zeytin-tesis-osmaniye.png` (1672×941, salt okunur). Yeşil-siyah cephe, "Afina ZEYTİN" tabelası, Osmaniye. Bu fotoğrafı referans alarak Atlas `openai/gpt-image-2.5-flare` (edit/referans) ile kimliği koruyan premium aday üret: altın saat ışığı, tone mapping, temiz avlu, plaka/kişi yok, tabela okunur ve doğru yazılı ("Afina ZEYTİN"). En az 2 aday, `docs/gorsel-onay.md`'de aday olarak kaydet; kullanıcı onayı Claude tarafından alınacak (onaysız public/'e koyma). Kaynak fotoğrafı `docs/referans/` altına kopyalayıp hash'le.
+Kaynak fotoğraf artık mevcut (kullanıcının sohbete yapıştırdığı tesis fotoğrafı): `~/PROJELER/AFINA-KAYNAK/fabrika/afina-zeytin-tesis-osmaniye.png` (1672×941, salt okunur). Yeşil-siyah cephe, "Afina ZEYTİN" tabelası, Osmaniye. Bu fotoğrafı referans alarak Atlas `openai/gpt-image-2.5-flare` (edit/referans) ile kimliği koruyan premium aday üret: altın saat ışığı, tone mapping, temiz avlu, plaka/kişi yok, tabela okunur ve doğru yazılı ("Afina ZEYTİN"). En az 2 aday, `docs/gorsel-onay.md`'de aday olarak kaydet; kullanıcı onayı Claude tarafından alınacak (onaysız public/'e koyma). Kaynak fotoğrafı repoya KOPYALAMA (plaka okunur, repo public); yalnız SHA-256'sını kaydet, yerel yoldan oku.
 
 ## Durum: BEKLİYOR
