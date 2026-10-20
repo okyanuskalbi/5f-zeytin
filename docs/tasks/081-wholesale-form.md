@@ -48,6 +48,7 @@ Perakende satışın yanında resmi toptan CTA’sını ve erişilebilir talep f
 | --- | --- |
 | `npm run lint && npm run typecheck && npm run build` | **exit 0**; mevcut uygulamanın lint, tip kontrolü ve production build'i başarılı. Prebuild varlık denetimi **18/18 PASS**. Formun uygulandığına veya kabul edildiğine kanıt değildir. |
 | `PLAYWRIGHT_PORT=3081 npm run test:e2e -- tests/e2e/wholesale-form.spec.ts` | **exit 1 — No tests found.** Görev uygulanmadığından istenen test dosyası mevcut değil. Testler atlanmış/başarılı sayılmadı; bu sonuç TDD RED davranış kanıtı değildir. |
+| `git diff --check` | **exit 0**; görev notunda boşluk/patch hatası yok. |
 
 - Resmi CTA metni kaynakta **“Toptan Satış İçin İletişime Geçin”** olarak doğrulandı; CTA hash/odak, geçersiz alanlar, formdaki KVKK bağlantısı, mock pending/başarı/hata, klavye/mobil/reduced-motion kabulü henüz doğrulanamadı. Form ve gönderim başarısı eklenmedi; backend/DB/e-posta, ürün/sepet/ödeme akışları ve diğer dokümanlar değiştirilmedi.
 - Devam koşulu: 073 görevinin kullanıcı onaylı hukuk içerikleriyle tamamlanması; ardından 081 için önce davranış E2E testi, uygulama ve kabul komutları. Mevcut task'ın kabul kriterleri karşılanmadığından durum **BEKLİYOR** bırakıldı.
