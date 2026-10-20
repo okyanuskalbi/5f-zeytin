@@ -14,7 +14,7 @@ describe("ZEYTİN bootstrap", () => {
   it("renders the brand heading inside the main landmark", async () => {
     const { default: Home } = await import("../../app/page");
 
-    render(createElement(Home));
+    render(await Home());
 
     const heading = screen.getByRole("heading", { level: 1, name: "Afina Zeytin" });
     expect(screen.getByRole("main").contains(heading)).toBe(true);
