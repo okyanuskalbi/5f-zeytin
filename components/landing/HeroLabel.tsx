@@ -104,14 +104,16 @@ export function HeroLabel({ products }: { products: readonly Product[] }): JSX.E
       if (element.contains(document.activeElement)) return;
       element.style.removeProperty("--stub-left");
       element.style.removeProperty("--stub-bottom");
+      element.style.removeProperty("visibility");
+      element.inert = false;
       const box = element.getBoundingClientRect();
       const headerBottom = document.querySelector("header")?.getBoundingClientRect().bottom ?? 64;
-      const obstacles = [...document.querySelectorAll<HTMLElement>("h1,h2,h3,p,a,button,input,select,textarea,[data-product-slip],[data-showcase-copy]")]
+      const obstacles = [...document.querySelectorAll<HTMLElement>("h1,h2,h3,p,a,button,input,select,textarea,[data-product-slip],[data-showcase-copy],[data-facility-safe]")]
         .filter((node) => !root.current?.contains(node) && node.getClientRects().length > 0)
         .flatMap((node) => {
           // A showcase slip is one paper object, including the space around
           // its purchase controls. Keep the stub outside the whole panel.
-          if (node.matches("[data-product-slip],[data-showcase-copy]")) return [node.getBoundingClientRect()];
+          if (node.matches("[data-product-slip],[data-showcase-copy],[data-facility-safe]")) return [node.getBoundingClientRect()];
           const range = document.createRange();
           range.selectNodeContents(node);
           return [...range.getClientRects()];
@@ -129,6 +131,15 @@ export function HeroLabel({ products }: { products: readonly Product[] }): JSX.E
       if (space) {
         element.style.setProperty("--stub-left", `${space.left}px`);
         element.style.setProperty("--stub-bottom", `${innerHeight - space.top - box.height}px`);
+      } else {
+        const facility = document.querySelector("#tesisimiz")?.getBoundingClientRect();
+        if (facility && facility.top < innerHeight && facility.bottom > headerBottom) {
+          // A narrow reading column can leave no safe 120px space. The header
+          // cart stays available; temporarily remove the duplicate stub rather
+          // than covering official copy, the map or the four facility facts.
+          element.style.visibility = "hidden";
+          element.inert = true;
+        }
       }
     }
     function schedule(): void { if (frame === undefined) frame = requestAnimationFrame(place); }
@@ -136,12 +147,14 @@ export function HeroLabel({ products }: { products: readonly Product[] }): JSX.E
     // Native animation completion can follow the last scroll frame. Reuse the
     // same placement scheduler once the slips have reached their final bounds.
     window.addEventListener("afina:product-card-settled", schedule);
+    window.addEventListener("afina:facility-settled", schedule);
     window.addEventListener("resize", schedule);
     schedule();
     return () => {
-      stop(); window.removeEventListener("afina:product-card-settled", schedule); window.removeEventListener("resize", schedule);
+      stop(); window.removeEventListener("afina:product-card-settled", schedule); window.removeEventListener("afina:facility-settled", schedule); window.removeEventListener("resize", schedule);
       if (frame !== undefined) cancelAnimationFrame(frame);
       element.style.removeProperty("--stub-left"); element.style.removeProperty("--stub-bottom");
+      element.style.removeProperty("visibility"); element.inert = false;
     };
   }, [compact, scrollY]);
 

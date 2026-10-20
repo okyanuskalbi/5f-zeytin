@@ -1,52 +1,47 @@
 import type { JSX } from "react";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
+import { FacilityMotion } from "@/components/landing/FacilityMotion";
+import { OsmaniyeMap } from "@/components/landing/OsmaniyeMap";
+import styles from "./Facility.module.css";
 
-// Adapted from 21st About 3 (shadcnblockscom, demo 2202): paired media and
-// editorial content, using AFİNA tokens and the official section 04 copy.
-// Until approved media arrives, official copy completes the section without a box.
+const facts = [
+  ["Konum", "Ellek, Düziçi / Osmaniye"],
+  ["Ürünler", "Sofralık zeytin, salamura zeytin, zeytinyağı"],
+  ["Satış", "Perakende + toptan"],
+  ["Faaliyet", "2021’den bu yana"],
+] as const;
+
 export function Facility(): JSX.Element {
   return (
-    <section
-      id="tesisimiz"
-      aria-labelledby="tesisimiz-title"
-      tabIndex={-1}
-      className="mt-12 scroll-mt-36 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring lg:mt-16"
-    >
-      <div className="page-grid items-start">
-        <div className="col-span-12 lg:col-span-4">
-          <h3 id="tesisimiz-title" className="text-2xl sm:text-3xl">Tesisimiz</h3>
-          <p className="mt-4 text-base">Osmaniye üretim tesisi</p>
-        </div>
-        <div className="col-span-12 min-w-0 lg:col-span-7 lg:col-start-6">
-          <div data-facility-story="" className="space-y-5 text-base leading-relaxed text-body-ink">
-            <p>
-              Zeytinin hikâyesi toprakta başlar, sofrada tamamlanır. Afina Zeytin, bu köklü lezzeti doğallığına saygı duyan bir anlayışla sunuyor. Markanın odağında, zeytinin kendine özgü tadını ve sofralarımızdaki yerini korumak var.
-            </p>
-            <p>
-              Osmaniye’de bulunan fabrikasıyla zeytin ve zeytinyağı alanında faaliyet gösteren Afina Zeytin, salamura zeytin çeşitlerini ve zeytinyağını hem bireysel tüketicilere hem de toptan alıcılara ulaştırıyor. Ürünün özüne duyduğu saygıyı yalın ve özenli bir sunumla birleştiriyor.
-            </p>
+    <section id="tesisimiz" aria-labelledby="tesisimiz-title" tabIndex={-1} className={styles.facility}>
+      <FacilityMotion>
+        <h2 id="tesisimiz-title" data-facility-enter="" className={styles.title}>Tesisimiz</h2>
+        <p data-facility-lead="" data-facility-enter="" className={styles.lead}>Osmaniye’de bulunan fabrikasıyla zeytin ve zeytinyağı alanında faaliyet gösteren Afina Zeytin, salamura zeytin çeşitlerini ve zeytinyağını hem bireysel tüketicilere hem de toptan alıcılara ulaştırıyor. Ürünün özüne duyduğu saygıyı yalın ve özenli bir sunumla birleştiriyor.</p>
+        <div className={styles.tiles}>
+          {/* Task 093: official copy completes the tile until the user approves
+              the locally redacted candidates. No empty media box. */}
+          <div data-facility-enter="" data-facility-typography="" data-facility-safe="" className={styles.editorial}>
+            <p className={styles.statement}>Zeytinin hikâyesi toprakta başlar, sofrada tamamlanır.</p>
+            <p className={styles.story}>Afina Zeytin, bu köklü lezzeti doğallığına saygı duyan bir anlayışla sunuyor. Markanın odağında, zeytinin kendine özgü tadını ve sofralarımızdaki yerini korumak var.</p>
+            <p data-facility-definition="" className={styles.definition}>Afina Zeytin, Osmaniye’deki fabrikasıyla zeytin ve zeytinyağını doğallığına önem veren bir anlayışla sunuyor; ürünlerini toptan ve perakende kanallarda müşterileriyle buluşturuyor.</p>
+            <div className={styles.actions}>
+              <Button asChild><a href="#urunler">Ürünlerimizi Keşfedin <ArrowDown aria-hidden="true" /></a></Button>
+              <Button asChild variant="link" className={styles.wholesale}><a href="#toptan-iletisim">Toptan Satış İçin İletişime Geçin <ArrowUpRight aria-hidden="true" /></a></Button>
+            </div>
           </div>
-
-          <ul aria-label="Faaliyet alanlarımız" className="mt-8 flex flex-wrap gap-x-5 gap-y-2 pt-5 text-sm font-medium text-foreground">
-            <li>Sofralık zeytin</li>
-            <li>Salamura zeytin</li>
-            <li>Zeytinyağı</li>
-            <li>Toptan satış</li>
-            <li>Perakende satış</li>
-          </ul>
-
-          <div className="mt-8 flex flex-col items-stretch gap-3 sm:items-start">
-            <Button asChild>
-              <a href="#urunler">Ürünlerimizi Keşfedin <ArrowDown aria-hidden="true" /></a>
-            </Button>
-            <Button asChild variant="link" className="justify-start px-0 text-left">
-              <a href="#toptan-iletisim">Toptan Satış İçin İletişime Geçin <ArrowUpRight aria-hidden="true" /></a>
-            </Button>
+          <div data-facility-safe="" className={styles.region}>
+            <div data-facility-enter="" className={styles.mapTile}>
+              <OsmaniyeMap className={styles.map} />
+              <p className={styles.mapLabel}>Osmaniye <span>Düziçi</span></p>
+            </div>
+            <dl data-facility-enter="" className={styles.facts}>
+              {facts.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}
+            </dl>
+            <a className={styles.credit} href="/maps/osmaniye-license.txt">Harita: geoBoundaries / © OpenStreetMap</a>
           </div>
         </div>
-      </div>
+      </FacilityMotion>
     </section>
   );
 }

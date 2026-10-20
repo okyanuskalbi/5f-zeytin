@@ -10,7 +10,7 @@ const DECISIONS = "docs/gorsel-onay.md";
 const ID = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
 const HASH = /^[a-f0-9]{64}$/;
 const IMAGE = /\.(png|jpe?g|webp|avif|svg)$/i;
-const IMAGE_ROOT = "(?:images/(?:generated|hero)|brand)";
+const IMAGE_ROOT = "(?:images/(?:generated|hero|tesis)|brand)";
 const SEQUENCE = "public/frames/hero-zeytin";
 const ASSET_FIELDS = ["id", "file", "sha256", "width", "height", "aspectRatio", "model", "promptId", "representative", "references", "status", "approval"];
 
@@ -283,6 +283,9 @@ export async function checkAssets({ root, id, mode = "all" }) {
     requireThat(file === MANIFEST || files.has(`/${relative("public", file).split(sep).join("/")}`), `Kayıtsız dosya: ${file}`);
   });
   await walk(root, "public/images/hero", async (file) => {
+    requireThat(files.has(`/${relative("public", file).split(sep).join("/")}`), `Kayıtsız dosya: ${file}`);
+  });
+  await walk(root, "public/images/tesis", async (file) => {
     requireThat(files.has(`/${relative("public", file).split(sep).join("/")}`), `Kayıtsız dosya: ${file}`);
   });
   const sequenceApproved = await verifyHeroSequence(root, decisions);

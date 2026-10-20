@@ -122,6 +122,22 @@ describe("asset registry CLI", () => {
 });
 
 describe("asset metadata and source integrity", () => {
+  it("registers local facility candidates but rejects their runtime use before user approval", async () => {
+    asset = { ...asset, id: "tesis-2400", file: "/images/tesis/tesis-2400.png", representative: false, runtime: false };
+    await put(`public${asset.file}`, image);
+    await rm(join(root, "public/images/generated/p01"), { recursive: true });
+    await save();
+    await expect(checkAssets({ root, id: asset.id, mode: "candidate" })).resolves.toEqual({ checked: 1, mode: "candidate" });
+    await put("components/Facility.tsx", '<img src="/images/tesis/tesis-2400.png" alt="Tesis" />');
+    await expect(checkAssets({ root })).rejects.toThrow(/onaysız/i);
+  });
+
+  it("rejects unregistered facility derivatives", async () => {
+    await put("public/images/tesis/unregistered.webp", image);
+    await save();
+    await expect(checkAssets({ root })).rejects.toThrow(/kayıtsız/i);
+  });
+
   it("validates candidate bytes, dimensions, ratio, provenance and representative label", async () => {
     await expect(checkAssets({ root, id: "p01", mode: "candidate" })).resolves.toEqual({ checked: 1, mode: "candidate" });
   });

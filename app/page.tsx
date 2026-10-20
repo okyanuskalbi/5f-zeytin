@@ -13,23 +13,13 @@ export default async function Home(): Promise<JSX.Element> {
         <div data-scene="hero"><Hero products={products} /></div>
         <ProductShowcase products={products} />
         <div className="page-wrap">
-          <section
+          <div
             id="hikayemiz"
             data-scene="story"
-            aria-labelledby="hikayemiz-title"
-            tabIndex={-1}
-            className="scroll-mt-36 py-12 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring sm:py-16"
+            className="scroll-mt-36"
           >
-            <div data-scene-reveal="" className="grid gap-6 motion-reduce:transform-none lg:grid-cols-2 lg:gap-12">
-              <div>
-                <h2 id="hikayemiz-title">Hikâyemiz</h2>
-              </div>
-              <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">
-                Afina Zeytin, Osmaniye’deki fabrikasıyla zeytin ve zeytinyağını doğallığına önem veren bir anlayışla sunuyor; ürünlerini toptan ve perakende kanallarda müşterileriyle buluşturuyor.
-              </p>
-            </div>
             <Facility />
-          </section>
+          </div>
           <section
             id="toptan-iletisim"
             data-scene="wholesale"

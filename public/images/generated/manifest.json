@@ -484,6 +484,46 @@
         "decidedAt": "2026-10-20"
       },
       "runtime": true
+    },
+    {
+      "id": "tesis-osmaniye-2400",
+      "file": "/images/tesis/tesis-osmaniye-2400.webp",
+      "sha256": "00e8e2c59d8d4f125f562eb730c6c298d2a6fab63358f53e806d45adf71c1731",
+      "width": 2400,
+      "height": 1500,
+      "aspectRatio": "16:10",
+      "model": "sharp/local-blur",
+      "promptId": "TASK-093",
+      "representative": false,
+      "references": [
+        {
+          "file": "docs/referans/tesis/afina-zeytin-tesis-osmaniye.png",
+          "sha256": "2ab815d27aa8ef64f367feb49f0bb4923870644e534200c7f1716239106126a3"
+        }
+      ],
+      "status": "candidate",
+      "approval": null,
+      "runtime": false
+    },
+    {
+      "id": "tesis-osmaniye-1200",
+      "file": "/images/tesis/tesis-osmaniye-1200.webp",
+      "sha256": "598c43da43aae93f12cdeec0c89c3c1b34c926e247118586d87450e4a08e554b",
+      "width": 1200,
+      "height": 750,
+      "aspectRatio": "16:10",
+      "model": "sharp/local-blur",
+      "promptId": "TASK-093",
+      "representative": false,
+      "references": [
+        {
+          "file": "docs/referans/tesis/afina-zeytin-tesis-osmaniye.png",
+          "sha256": "2ab815d27aa8ef64f367feb49f0bb4923870644e534200c7f1716239106126a3"
+        }
+      ],
+      "status": "candidate",
+      "approval": null,
+      "runtime": false
     }
   ]
 }

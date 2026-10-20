@@ -1,0 +1,20 @@
+Osmaniye il sınırı: geoBoundaries / OpenStreetMap contributors
+
+Kaynak: https://media.githubusercontent.com/media/wmgeolab/geoBoundaries/9469f09/releaseData/gbOpen/TUR/ADM1/geoBoundaries-TUR-ADM1_simplified.geojson
+Boundary ID: TUR-ADM1-25984515; shape ID: 25984515B63638727958144
+Sınır verisinin temsil yılı: 2021. Erişim: 2026-10-20.
+geoBoundaries: https://www.geoboundaries.org/
+Veri lisansı (geoBoundaries TUR ADM1 kaydı): CC BY-SA 2.0
+https://creativecommons.org/licenses/by-sa/2.0/
+
+Uyarlama: yalnız Osmaniye ili çıkarıldı, 37.25 derece referans enlemli
+yerel eşdikdörtgensel projeksiyonla 320x240 SVG görünüm alanına dönüştürüldü.
+Uyarlanmış sınır/SVG verisi de CC BY-SA 2.0 koşullarıyla paylaşılır.
+Kaynak ve yeniden üretilebilir koordinatlar: lib/geo/osmaniye.json
+
+Düziçi noktası: OpenStreetMap relation 1248436 (ilçe merkezi; tesis noktası değil).
+https://www.openstreetmap.org/relation/1248436
+Nominatim sonucu: 37.2401223, 36.4534072
+© OpenStreetMap contributors. ODbL 1.0
+https://www.openstreetmap.org/copyright
+https://opendatacommons.org/licenses/odbl/1-0/
