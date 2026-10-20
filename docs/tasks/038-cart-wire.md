@@ -36,4 +36,11 @@ frontend
 - Kullanıcı yerine açık karar verme; gizli bilgi commit etme; onaysız görseli yayınlama.
 - Gerçek ödeme, üretim DB değişikliği, canlı e-posta veya domain mutasyonu için bu taslağı tek başına yetki sayma.
 
+## Coder Notu
+
+- Başlangıç: `main`, temiz çalışma ağacı; 024/030/035/036/037 task dosyaları `TAMAMLANDI`. Bu yerel frontend bağlantısı için eksik kullanıcı kararı yok. PLAN ve diğer task dosyaları korunur. `frontend-patterns`, `accessibility`, `tdd-workflow` ve yerel Next.js use-client/context/layout/Playwright kılavuzları okundu. ECC kuralı gereği salt okunur TDD incelemesi alındı.
+- 21st MCP search/get_component ile [Count Badge](https://21st.dev/@sebafermanelli/components/count-badge) (37460) incelendi; sıfırda gizleme, erişilebilir gerçek adet adı ve dekoratif rozet yaklaşımı AFİNA tokenlarına uyarlanacak. Resmi `npx shadcn@latest docs button dialog` **exit 0**; mevcut Button/Dialog kullanılacak, yeni bağımlılık gerekmedi.
+- TDD RED: `npm run test -- tests/unit/cart-wire.test.tsx` → **exit 1**, beklenen eksik `components/cart/CartProvider` import'u. E2E RED: `PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" npm run test:e2e -- tests/e2e/cart-wire.spec.ts --config .cache/task-038/playwright.config.ts --project chromium-320 --grep 'product, badge'` → **exit 1**, gerçek sayfada sepet açma düğmesi/rozet bulunamadı. macOS MachPort kısıtı gerekli süreç izniyle giderildi; ortam hatası RED sayılmadı. Mevcut 3004 süreci korunur, kabul 3038'de bu checkout'un production build'iyle yapılır.
+- Zorunlu destek kapsamı: `CartSummary.tsx` içindeki route-local store ortak provider'a geçirilecek; `CartDrawer.tsx` dış tetikleyicinin Safari dahil odak dönüşünü alacak. Bootstrap async layout testi ve mevcut shell/product-card/scenes testlerindeki artık değişen beklentiler güncellenecek. Bunlar aynı Task 038 bağlantısının ve regresyon kabulünün gerekli parçalarıdır; backend/veri/ödeme kapsamı açılmaz.
+
 ## Durum: BEKLİYOR
