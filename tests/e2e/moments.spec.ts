@@ -12,7 +12,7 @@ const progress = (page: Page): Locator => section(page).getByRole("progressbar",
 async function open(page: Page): Promise<void> {
   expect((await page.goto("/#topraktan-sofraya"))?.status()).toBe(200);
   await expect(section(page)).toBeVisible();
-  await row(page).focus();
+  await row(page).evaluate(node => node.focus({ preventScroll: true }));
   await page.evaluate(() => document.fonts.ready);
 }
 

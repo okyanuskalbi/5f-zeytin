@@ -134,7 +134,7 @@ export function Moments(): JSX.Element {
   }, [animate, reduced, scope]);
 
   return (
-    <section ref={scope} id="topraktan-sofraya" data-scene="moments" aria-labelledby="moments-title" className={styles.section}>
+    <section ref={scope} id="topraktan-sofraya" data-scene="moments" data-moments-safe="" aria-labelledby="moments-title" className={styles.section}>
       <div className={styles.heading}>
         <h2 id="moments-title" data-moment-enter="">Topraktan sofraya</h2>
         <div className={styles.controls}>

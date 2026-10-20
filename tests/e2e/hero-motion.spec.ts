@@ -94,16 +94,29 @@ test("restored mixed cart uses catalog prices and the stub clears large text whi
   const stub = page.locator("[data-hero-stub]");
   for (const screen of [1, 2, 3, 4]) {
     await page.evaluate((screen) => scrollTo(0, innerHeight * screen), screen);
-    await expect(stub).toBeVisible();
     await expect(stub).toContainText("3 adet");
     await expect(stub).toContainText("825,50 ₺");
     await expect.poll(() => page.evaluate(() => {
-      const stub = document.querySelector("[data-hero-stub]")!.getBoundingClientRect();
+      const element = document.querySelector<HTMLElement>("[data-hero-stub]")!;
+      // Reading sections may have no safe 120px space for the duplicate cart.
+      // The fixed header remains the accessible cart entry in that case.
+      if (getComputedStyle(element).visibility === "hidden") return element.inert;
+      const stub = element.getBoundingClientRect();
       const headings = [...document.querySelectorAll("h1,h2,h3")].filter((node) => !node.closest("[data-hero-label]"));
       return headings.every((node) => {
         const range = document.createRange(); range.selectNodeContents(node);
         return [...range.getClientRects()].every((box) => box.right <= stub.left || box.left >= stub.right || box.bottom <= stub.top || box.top >= stub.bottom);
       });
     })).toBe(true);
+    if (!await stub.isVisible()) {
+      await expect(stub).toHaveAttribute("inert", "");
+      const cart = page.getByRole("banner").getByRole("button", { name: "Sepetim, 3 adet", exact: true });
+      await expect(cart).toBeVisible();
+      await cart.click();
+      const drawer = page.getByRole("dialog");
+      await expect(drawer).toContainText("825,50 ₺");
+      await drawer.getByRole("button", { name: "Sepeti kapat", exact: true }).click();
+      await expect(cart).toBeFocused();
+    }
   }
 });
