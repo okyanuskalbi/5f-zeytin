@@ -97,4 +97,7 @@ Playwright kendi production sunucusunu 3107'de başlattı; fixture route'ları i
 - **4 WARN:** sözleşmedeki krem palet (`palette-cream`), videoya izin verilmemesi/kare dizisi (`no-footage`), önceki vitrinin yatay akışı (`side-scroll`), korunan hero başlığının görsel üzerindeki sticky hareketi (`pinned-over-picture`).
 - AGENTS.md'nin ara görev kuralı uyarınca bu genel bulgular Task 103'ün bölüm kabulünü engellemez. **BEKLİYOR nedeni genel inspect değildir; yukarıdaki onaysız sahne görseli nedeniyle eksik kalan gerçek çapraz geçiştir.**
 
-## Durum: BEKLİYOR
+## Claude kararı (21 Eki)
+Kabul (257 unit, 205 e2e, inspect 0 FAIL). Stüdyo→sahne çapraz geçişi onaylı ürün görselleri gelince 102 ile birlikte bağlanır (kullanıcı onayı bekliyor: `AFINA-KAYNAK/urun-gorselleri`).
+
+## Durum: TAMAMLANDI
