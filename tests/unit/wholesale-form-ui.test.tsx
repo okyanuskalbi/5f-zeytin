@@ -7,6 +7,7 @@ afterEach(cleanup);
 const input = (name: string) => screen.getByLabelText(name, { exact: true });
 const form = () => screen.getByRole("form", { name: "Toptan talep formu" });
 function fill(): void {
+  fireEvent.click(screen.getByRole("checkbox", { name: "KVKK aydınlatma metnini okudum." }));
   fireEvent.change(input("İsim / firma"), { target: { value: "  Örnek Firma  " } });
   fireEvent.change(input("E-posta"), { target: { value: "talep@example.test" } });
   fireEvent.change(input("Talep mesajı"), { target: { value: "  Zeytin için bilgi rica ederim.  " } });
@@ -83,4 +84,23 @@ it("clears the previous success when the reset form is submitted empty", async (
   expect(screen.getByRole("status").textContent).toBe("");
   expect(document.activeElement).toBe(input("İsim / firma"));
   expect(submitRequest).toHaveBeenCalledTimes(1);
+});
+
+
+it("requires an explicit unchecked KVKK acknowledgement before sending and resets it after success", async () => {
+  const submitRequest = vi.fn<() => Promise<WholesaleResult>>().mockResolvedValue({ ok: true });
+  render(<WholesaleForm submitRequest={submitRequest} />);
+  const consent = screen.getByRole("checkbox", { name: "KVKK aydınlatma metnini okudum." }) as HTMLInputElement;
+  expect(consent.checked).toBe(false);
+  fill();
+  fireEvent.click(consent);
+  fireEvent.submit(form());
+  expect(submitRequest).not.toHaveBeenCalled();
+  expect(document.activeElement).toBe(consent);
+  expect(consent.getAttribute("aria-invalid")).toBe("true");
+  expect(consent.getAttribute("aria-describedby")).toMatch(/kvkk-error/);
+  fireEvent.click(consent);
+  fireEvent.submit(form());
+  await waitFor(() => expect(screen.getByRole("status").textContent).toBe("Talebiniz gönderildi."));
+  expect(consent.checked).toBe(false);
 });

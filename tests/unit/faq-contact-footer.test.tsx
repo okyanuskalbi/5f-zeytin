@@ -44,7 +44,7 @@ it("keeps the wholesale destination focusable, address public and unconfirmed ch
   // 081 exposes the form; 082 delivery remains unavailable.
   const cta = contact.querySelector('a[href="#toptan-iletisim"]')!;
   expect(cta.textContent).toBe("Toptan Satış İçin İletişime Geçin");
-  expect(contact.querySelectorAll("input, textarea")).toHaveLength(4);
+  expect(contact.querySelectorAll("input, textarea")).toHaveLength(5);
   expect(contact.querySelector('button[type="submit"]')?.hasAttribute("disabled")).toBe(true);
   expect(contact.querySelector('[role="status"]')?.textContent).toContain("Toptan talep gönderimi henüz kullanıma açık değil.");
 });
@@ -60,4 +60,13 @@ it("prints the seller imprint and legal destinations without v1 ornaments", () =
   }
   expect(doc.querySelector('a[href="https://afina.com.tr"] img')?.getAttribute("src")).toBe("/brand/afina-topluluk-dark.svg");
   expect(doc.querySelector('a[href^="tel:"], a[href^="mailto:"]')).toBeNull();
+});
+
+
+it("places the full-width factory band immediately before wholesale and after the process", async () => {
+  const doc = await landing();
+  const story = doc.querySelector('[data-scene="story"]')!;
+  expect(story.closest(".page-wrap")).toBeNull();
+  expect(story.nextElementSibling?.id).toBe("toptan");
+  expect(story.previousElementSibling?.querySelector("#topraktan-sofraya")).not.toBeNull();
 });

@@ -6,18 +6,16 @@ import { Facility } from "@/components/landing/Facility";
 const source = readFileSync("docs/referans/icerik.md", "utf8");
 const story = source.split("### Marka hikâyesi / detay sayfası tanıtımı\n\n")[1]
   .split("\n\n###")[0].trim().split("\n\n");
-const description = source.split("### KISA MARKA TANIMI / WEB SİTESİ KARTI\n\n")[1].split("\n\n")[0];
 
 afterEach(cleanup);
 
-it("sets the exact second official paragraph as the lead and preserves the official short definition", () => {
+it("sets the v2 factory headline and the exact second official paragraph", () => {
   render(<Facility />);
   const facility = screen.getByRole("region", { name: "Tesisimiz" });
-  expect(within(facility).getByRole("heading", { name: "Tesisimiz", level: 2 })).toBeDefined();
+  expect(within(facility).getByRole("heading", { name: "Osmaniye’de, kendi tesisimizde.", level: 2 })).toBeDefined();
   expect(facility.querySelector("[data-facility-lead]")?.textContent).toBe(story[1]);
-  expect(facility.querySelector("[data-facility-definition]")?.textContent).toBe(description);
-  expect(description.split(/\s+/).length).toBeLessThanOrEqual(35);
-  expect(facility.textContent?.replace(/\s/g, "")).toContain(story[0].replace(/\s/g, ""));
+  expect(facility.querySelector("[data-facility-definition]")).toBeNull();
+  expect(facility.querySelector("[data-facility-typography] dl")).not.toBeNull();
 });
 
 it("pairs all four official/plate facts with semantic labels and includes an accessible regional map", () => {
