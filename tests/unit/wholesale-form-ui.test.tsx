@@ -72,3 +72,15 @@ it.each(["rejection", "negative result"])("retains entered values on %s and allo
   await waitFor(() => expect(screen.getByRole("status").textContent).toBe("Talebiniz gönderildi."));
   expect(submitRequest).toHaveBeenCalledTimes(2);
 });
+
+it("clears the previous success when the reset form is submitted empty", async () => {
+  const submitRequest = vi.fn<() => Promise<WholesaleResult>>().mockResolvedValue({ ok: true });
+  render(<WholesaleForm submitRequest={submitRequest} />);
+  fill();
+  fireEvent.submit(form());
+  await waitFor(() => expect(screen.getByRole("status").textContent).toBe("Talebiniz gönderildi."));
+  fireEvent.submit(form());
+  expect(screen.getByRole("status").textContent).toBe("");
+  expect(document.activeElement).toBe(input("İsim / firma"));
+  expect(submitRequest).toHaveBeenCalledTimes(1);
+});
