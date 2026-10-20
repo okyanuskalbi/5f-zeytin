@@ -6,10 +6,12 @@ import { Button } from "@/components/ui/button";
 import { ProductCardMotion } from "@/components/catalog/ProductCardMotion";
 import { useCart } from "@/components/cart/CartProvider";
 import type { Product } from "@/types/catalog";
+import styles from "./ProductCard.module.css";
 
 type ProductCardProps = {
   product: Product | null;
   loading?: boolean;
+  appearance?: "card" | "slip";
   /** Optional standalone callback; the application uses its shared cart owner. */
   onAddToCart?: (productId: string, quantity: number) => void | Promise<void>;
 };
@@ -19,7 +21,7 @@ const cardStyle = "flex min-w-0 flex-col gap-6 bg-card p-6 text-card-foreground"
 
 // Adapted from 21st Product Listing Card (shadcnstore/product-card-1, demo 28227).
 // Keep its image/detail/action hierarchy; use AFİNA tokens and semantic controls.
-export function ProductCard({ product, loading = false, onAddToCart }: ProductCardProps): JSX.Element {
+export function ProductCard({ product, loading = false, onAddToCart, appearance = "card" }: ProductCardProps): JSX.Element {
   if (loading) {
     return (
       <div role="status" aria-label="Ürün yükleniyor" aria-busy="true" className={cardStyle}>
@@ -31,12 +33,12 @@ export function ProductCard({ product, loading = false, onAddToCart }: ProductCa
   // Replacing a product resets its quantity, pending state and old feedback.
   return (
     <ProductCardMotion key={product.id}>
-      <PurchaseCard product={product} onAddToCart={onAddToCart} />
+      <PurchaseCard product={product} onAddToCart={onAddToCart} appearance={appearance} />
     </ProductCardMotion>
   );
 }
 
-function PurchaseCard({ product, onAddToCart }: { product: Product; onAddToCart: ProductCardProps["onAddToCart"] }): JSX.Element {
+function PurchaseCard({ product, onAddToCart, appearance }: { product: Product; onAddToCart: ProductCardProps["onAddToCart"]; appearance: "card" | "slip" }): JSX.Element {
   const cart = useCart();
   const canAdd = !!onAddToCart || !!(cart?.products && cart.state.hydrated);
   const id = useId();
@@ -49,6 +51,8 @@ function PurchaseCard({ product, onAddToCart }: { product: Product; onAddToCart:
   const soldOut = product.stock <= 0;
   const amount = Number(quantity);
   const validQuantity = quantity.trim() !== "" && Number.isSafeInteger(amount) && amount >= 1 && amount <= product.stock;
+  const slip = appearance === "slip";
+  const [firstWord, ...remainingWords] = product.name.split(" ");
 
   function changeQuantity(value: string): void {
     setQuantity(value);
@@ -81,17 +85,18 @@ function PurchaseCard({ product, onAddToCart }: { product: Product; onAddToCart:
   }
 
   return (
-    <article aria-labelledby={`${id}-title`} aria-busy={pending} className={cardStyle}>
+    <article aria-labelledby={`${id}-title`} aria-busy={pending} data-product-slip={slip ? "" : undefined} className={`${cardStyle} ${slip ? styles.slip : ""}`}>
       {/* Without approved media, the product is complete in type alone. */}
-      <div className="flex flex-1 flex-col gap-3">
-        <h3 id={`${id}-title`} className="break-words">{product.name}</h3>
+      <div className={`flex flex-1 flex-col gap-3 ${slip ? styles.details : ""}`}>
+        <h3 id={`${id}-title`} className="break-words">{slip ? <><strong>{firstWord}</strong>{remainingWords.length > 0 ? ` ${remainingWords.join(" ")}` : ""}</> : product.name}</h3>
+        {slip && <p aria-hidden="true" className={styles.divider}>· · · · ·</p>}
         <p className="text-sm text-foreground">{product.weight}</p>
-        <p className="mt-auto text-2xl font-medium tabular-nums">{priceFormatter.format(product.priceKurus / 100)} ₺</p>
+        <p className={`mt-auto text-2xl font-medium tabular-nums ${slip ? styles.price : ""}`}>{priceFormatter.format(product.priceKurus / 100)} ₺</p>
         <p id={`${id}-stock`} className="text-sm text-muted-foreground">
           {soldOut ? "Tükendi" : `Stokta · ${product.stock} adet`}
         </p>
       </div>
-      <form noValidate onSubmit={addToCart} className="space-y-4">
+      <form noValidate onSubmit={addToCart} className={slip ? styles.purchase : "space-y-4"}>
         <label htmlFor={`${id}-quantity`} className="block text-sm font-medium">Adet</label>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="icon" aria-label="Adedi azalt"

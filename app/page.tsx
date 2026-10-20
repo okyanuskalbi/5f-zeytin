@@ -2,7 +2,7 @@ import type { JSX } from "react";
 import { Hero } from "@/components/landing/Hero";
 import { Facility } from "@/components/landing/Facility";
 import { SceneFlow } from "@/components/landing/SceneFlow";
-import { ProductCard } from "@/components/catalog/ProductCard";
+import { ProductShowcase } from "@/components/landing/ProductShowcase";
 import { getProducts } from "@/lib/catalog/static-products";
 
 export default async function Home(): Promise<JSX.Element> {
@@ -11,6 +11,7 @@ export default async function Home(): Promise<JSX.Element> {
     <main>
       <SceneFlow>
         <div data-scene="hero"><Hero products={products} /></div>
+        <ProductShowcase products={products} />
         <div className="page-wrap">
           <section
             id="hikayemiz"
@@ -28,22 +29,6 @@ export default async function Home(): Promise<JSX.Element> {
               </p>
             </div>
             <Facility />
-          </section>
-          <section
-            id="urunler"
-            data-scene="products"
-            aria-labelledby="urunler-title"
-            tabIndex={-1}
-            className="scroll-mt-36 py-12 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring sm:py-16"
-          >
-            <div data-scene-reveal="" className="motion-reduce:transform-none">
-              <h2 id="urunler-title">Ürünlerimiz</h2>
-            </div>
-            <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {products.length === 0 ? <ProductCard product={null} /> : products.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
           </section>
           <section
             id="toptan-iletisim"
