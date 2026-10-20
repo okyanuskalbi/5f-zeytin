@@ -25,10 +25,10 @@ export function Hero(): JSX.Element {
 
           <div className="min-w-0 space-y-6 lg:col-span-6 lg:col-start-7">
             <HeroMotion className="space-y-6">
-              <p className="max-w-xl font-serif text-4xl leading-[1.15] tracking-tight text-balance sm:text-5xl lg:text-6xl">
+              <p className="max-w-xl font-serif text-4xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-5xl lg:text-6xl">
                 Kökü toprakta. Yeri sofrada.
               </p>
-              <p className="max-w-md text-lg leading-relaxed text-muted-foreground">
+              <p className="max-w-md font-serif text-lg font-normal italic leading-relaxed text-muted-foreground">
                 Toprağın sunduğu lezzet, Afina’nın özeniyle.
               </p>
             </HeroMotion>

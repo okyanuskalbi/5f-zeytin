@@ -1,8 +1,27 @@
 import type { Metadata } from "next";
+import { Figtree, Fraunces } from "next/font/google";
 import type { JSX, ReactNode } from "react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import "./globals.css";
+
+const displayFont = Fraunces({
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+  weight: "variable",
+  style: ["normal", "italic"],
+  axes: ["opsz", "SOFT"],
+  variable: "--font-display",
+  fallback: ["Georgia", "Times New Roman", "serif"],
+});
+
+const bodyFont = Figtree({
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+  weight: ["400", "600"],
+  variable: "--font-body",
+  fallback: ["Helvetica Neue", "Arial", "sans-serif"],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://afinazeytin.com"),
@@ -20,7 +39,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: ReactNode }>): JSX.Element {
   return (
-    <html lang="tr">
+    <html lang="tr" className={`${displayFont.variable} ${bodyFont.variable}`}>
       <body>
         <a
           href="#ana-icerik"

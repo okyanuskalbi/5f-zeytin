@@ -47,8 +47,8 @@ test("hero matches official copy and links to retail and wholesale destinations"
     expect(box.x + box.width).toBeLessThanOrEqual(page.viewportSize()!.width);
     await expectDestination(page, action, hash);
   }
-  await expect(page.locator("#urunler").getByText("Şu anda görüntülenecek ürün bulunmuyor.", { exact: true })).toBeVisible();
-  await expect(page.locator("#urunler").getByRole("article")).toHaveCount(0);
+  await expect(page.locator("#urunler").getByRole("article")).toHaveCount(3);
+  await expect(page.locator("#urunler").getByRole("article", { name: "Sofralık Zeytin", exact: true })).toBeVisible();
   await expect(page.locator("#toptan-iletisim").getByText("Toptan talep formu henüz kullanıma açık değil.", { exact: true })).toBeVisible();
   await expect(page.locator("#toptan-iletisim").getByRole("button")).toHaveCount(0);
   await expectNoOverflow(page);

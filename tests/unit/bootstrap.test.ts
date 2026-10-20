@@ -4,6 +4,12 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { scripts } from "../../package.json";
 
+// next/font is a build-time transform; browser tests verify the real font files.
+vi.mock("next/font/google", () => ({
+  Fraunces: () => ({ variable: "font-display" }),
+  Figtree: () => ({ variable: "font-body" }),
+}));
+
 afterEach(() => {
   cleanup();
   vi.unstubAllEnvs();
@@ -35,7 +41,7 @@ describe("ZEYTİN bootstrap", () => {
       createElement(RootLayout, null, createElement("p", null, "İçerik")),
     );
 
-    expect(html).toContain('<html lang="tr">');
+    expect(new DOMParser().parseFromString(html, "text/html").documentElement.lang).toBe("tr");
     expect(html).toContain("<p>İçerik</p>");
   });
 });
