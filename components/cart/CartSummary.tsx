@@ -96,10 +96,10 @@ export function CartSummary({ store, products, onRefresh, refreshing = false }: 
                     </div>
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <div className="flex items-center gap-1">
-                        <Button variant="outline" size="icon" aria-label="Adedi azalt" disabled={unavailable || quantity <= 1 || refreshing}
+                        <Button variant="outline" size="icon" aria-label="Adedi azalt" disabled={invalidStock || quantity <= 1 || refreshing}
                           onClick={() => changeQuantity(productId, quantity - 1)}><Minus aria-hidden="true" /></Button>
                         <output aria-label="Adet" className="min-w-10 text-center tabular-nums">{quantity}</output>
-                        <Button variant="outline" size="icon" aria-label="Adedi artır" disabled={unavailable || quantity >= (product?.stock ?? 0) || refreshing}
+                        <Button variant="outline" size="icon" aria-label="Adedi artır" disabled={invalidStock || quantity >= (product?.stock ?? 0) || refreshing}
                           onClick={() => changeQuantity(productId, quantity + 1)}><Plus aria-hidden="true" /></Button>
                       </div>
                       <Button variant="ghost" size="icon" aria-label="Sepetten sil" onClick={() => removeItem(productId)}><Trash2 aria-hidden="true" /></Button>
