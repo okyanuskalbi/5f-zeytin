@@ -43,6 +43,7 @@ test("product, badge, drawer and page share quantities across navigation and rel
   await expect(drawer(page).getByRole("status", { name: "Adet" })).toHaveText("4");
   await drawer(page).getByRole("button", { name: "Sepetten sil" }).click();
   await page.keyboard.press("Escape");
+  await expect(page.locator("[data-cart-drawer]")).toHaveCount(0);
   await expect(page.getByText("Sepetiniz henüz boş.")).toBeVisible();
   await expect(cartButton(page)).toHaveAccessibleName("Sepetim, 0 adet");
   expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), CART_STORAGE_KEY)).toEqual([]);
@@ -113,6 +114,7 @@ test("storage write failure keeps a single in-memory cart through client navigat
   await expect(drawer(page).getByRole("alert")).toContainText("kaydedilemiyor");
   await page.evaluate(() => { Object.assign(window, { cartWireDocument: "same-document" }); });
   await drawer(page).getByRole("link", { name: "Sepeti görüntüle" }).click();
+  await expect(page.locator("[data-cart-drawer]")).toHaveCount(0);
   await expect(line(page).getByRole("status", { name: "Adet" })).toHaveText("1");
   expect(await page.evaluate(() => Reflect.get(window, "cartWireDocument"))).toBe("same-document");
   await line(page).getByRole("button", { name: "Adedi artır" }).click();

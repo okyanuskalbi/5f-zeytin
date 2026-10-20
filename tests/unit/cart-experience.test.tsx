@@ -34,3 +34,11 @@ it("does not infer suggestions without approved relationships", () => {
   render(<CartDrawer store={store} products={products} open onOpenChange={() => {}} />);
   expect(screen.queryByRole("region", { name: "Sofranızı tamamlayın" })).toBeNull();
 });
+
+it("keeps checkout unavailable when no approved checkout destination is supplied", () => {
+  const store = createCartStore({ products, storage: null });
+  store.addItem("olive");
+  render(<CartDrawer store={store} products={products} open onOpenChange={() => {}} checkoutHref={null} />);
+  expect(screen.queryByRole("link", { name: "Ödemeye geç" })).toBeNull();
+  expect(screen.getByRole("button", { name: "Ödemeye geç" }).hasAttribute("disabled")).toBe(true);
+});

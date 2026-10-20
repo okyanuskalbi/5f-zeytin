@@ -2,6 +2,8 @@
 
 import { createContext, useContext, useEffect, useRef, useState, useSyncExternalStore, type JSX, type ReactNode } from "react";
 import { CartDrawer } from "@/components/cart/CartDrawer";
+import { MiniCart } from "@/components/cart/MiniCart";
+import type { UpsellConfiguration } from "@/components/cart/Upsell";
 import { createCartStore } from "@/lib/cart/store";
 import type { CartState, CartStore } from "@/lib/cart/types";
 import type { Product } from "@/types/catalog";
@@ -13,12 +15,13 @@ type CartContextValue = {
   open: boolean;
   openCart: (opener?: HTMLElement) => void;
   addItem: (productId: string, quantity: number, opener?: HTMLElement) => void;
+  checkoutHref: string | null;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
 
 /** One owner in the persistent layout; no mutable cart is shared across SSR requests. */
-export function CartProvider({ products, children }: { products: readonly Product[] | null; children: ReactNode }): JSX.Element {
+export function CartProvider({ products, children, upsell, checkoutHref = null }: { products: readonly Product[] | null; children: ReactNode; upsell?: UpsellConfiguration | null; checkoutHref?: string | null }): JSX.Element {
   const [store] = useState(() => createCartStore({ products: products ?? [] }));
   const state = useSyncExternalStore(store.subscribe, store.getSnapshot, store.getServerSnapshot);
   const [open, setOpen] = useState(false);
@@ -43,9 +46,10 @@ export function CartProvider({ products, children }: { products: readonly Produc
     openCart(opener);
   }
 
-  return <CartContext.Provider value={{ store, state, products, open, openCart, addItem }}>
+  return <CartContext.Provider value={{ store, state, products, open, openCart, addItem, checkoutHref }}>
     {children}
-    {products !== null && state.hydrated && <CartDrawer store={store} products={products} open={open} onOpenChange={setOpen} returnFocusRef={returnFocusRef} />}
+    <MiniCart />
+    {products !== null && state.hydrated && <CartDrawer store={store} products={products} open={open} onOpenChange={setOpen} returnFocusRef={returnFocusRef} upsell={upsell} checkoutHref={checkoutHref} />}
   </CartContext.Provider>;
 }
 

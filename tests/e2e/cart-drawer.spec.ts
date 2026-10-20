@@ -62,6 +62,7 @@ async function loadCart(page: Page, mode = "normal", items: unknown = initialIte
 }
 
 async function assertFits(dialog: Locator, page: Page): Promise<void> {
+  await expect(dialog).toHaveCSS("transform", "none");
   const box = (await dialog.boundingBox())!;
   const viewport = page.viewportSize()!;
   expect(box.x).toBeGreaterThanOrEqual(0);
@@ -72,6 +73,19 @@ async function assertFits(dialog: Locator, page: Page): Promise<void> {
   expect(await dialog.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 }
+
+test("cart drawer: approved upsell animates into a line with correct totals and safe focus", async ({ page }) => {
+  await loadCart(page, "upsell", [{ productId: "fixture-olive", quantity: 1 }]);
+  const dialog = page.getByRole("dialog", { name: "Sepetim", exact: true });
+  await dialog.getByRole("button", { name: "Zeytinyağı sepete ekle" }).click();
+  await expect(dialog.getByRole("group", { name: "Zeytinyağı", exact: true })).toBeVisible();
+  await expect(dialog.getByText("425,50 ₺", { exact: true })).toBeVisible();
+  await expect(dialog.getByRole("region", { name: "Sofranızı tamamlayın" })).toHaveCount(0);
+  await expect(dialog.getByRole("button", { name: "Sepeti kapat" })).toBeFocused();
+  await dialog.getByRole("group", { name: "Sofralık Zeytin", exact: true }).getByRole("button", { name: "Sepetten sil" }).click();
+  await expect(dialog.getByRole("listitem")).toHaveCount(1);
+  await expect(dialog.getByText("300,00 ₺", { exact: true })).toBeVisible();
+});
 
 test("cart drawer: quantity, limits, persistence, removal, empty state and CTA destinations", async ({ page }, testInfo) => {
   const errors: string[] = [];

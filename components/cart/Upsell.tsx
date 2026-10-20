@@ -3,7 +3,7 @@
 import { useId, type JSX } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import styles from "@/components/site/InnerPage.module.css";
+import styles from "./CartExperience.module.css";
 import type { CartItem } from "@/lib/cart/types";
 import type { Product } from "@/types/catalog";
 

@@ -7,7 +7,7 @@ import { ArrowLeft, Minus, Plus, RefreshCw, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/cart/CartProvider";
 import { Upsell, QuantityDiscount, type UpsellConfiguration, type QuantityDiscountConfiguration } from "@/components/cart/Upsell";
-import styles from "@/components/site/InnerPage.module.css";
+import styles from "./CartExperience.module.css";
 import type { CartStore } from "@/lib/cart/types";
 import type { Product } from "@/types/catalog";
 
@@ -20,6 +20,7 @@ type CartSummaryProps = {
   /** Absent until approved configuration is supplied; never infer a campaign. */
   upsell?: UpsellConfiguration | null;
   quantityDiscount?: QuantityDiscountConfiguration | null;
+  checkoutHref?: string | null;
 };
 
 const money = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -31,13 +32,13 @@ export function CartPage({ products }: { products: readonly Product[] | null }):
   const router = useRouter();
   const [refreshing, startTransition] = useTransition();
   if (!cart) throw new Error("CartPage requires CartProvider.");
-  return <CartSummary store={cart.store} products={products} refreshing={refreshing}
+  return <CartSummary store={cart.store} products={products} refreshing={refreshing} checkoutHref={cart.checkoutHref}
     onRefresh={() => startTransition(() => { router.refresh(); })} />;
 }
 
 // Adapted from 21st astralyxdev/Checkout Summary (36084): semantic amount rows
 // and explicit unknown charges. AFİNA uses estimates, never a client final quote.
-export function CartSummary({ store, products, onRefresh, refreshing = false, upsell, quantityDiscount }: CartSummaryProps): JSX.Element {
+export function CartSummary({ store, products, onRefresh, refreshing = false, upsell, quantityDiscount, checkoutHref = null }: CartSummaryProps): JSX.Element {
   const state = useSyncExternalStore(store.subscribe, store.getSnapshot, store.getServerSnapshot);
   const id = useId();
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -101,7 +102,7 @@ export function CartSummary({ store, products, onRefresh, refreshing = false, up
       </header>
 
       <div className={styles.layout}>
-        <section aria-label="Sepet içeriği" className={`${styles.paper} ${styles.receipt}`}>
+        <section aria-label="Sepet içeriği" className={styles.contents}>
           {products === null ? <p role="alert" className="rounded-none p-5 text-destructive">Katalog yüklenemedi. Sepetiniz korunuyor. Fiyat ve stokları yenileyip tekrar deneyin.</p>
             : !state.hydrated ? <p role="status">Sepet yükleniyor…</p>
             : lines.length === 0 ? <div className={styles.empty}><p role="status">Sepetiniz henüz boş.</p><p className="text-muted-foreground">Sofranız için seçtikleriniz burada birikir.</p><Button asChild><Link href="/#urunler" prefetch={false}>Ürünlerimizi keşfedin</Link></Button></div>
@@ -138,8 +139,8 @@ export function CartSummary({ store, products, onRefresh, refreshing = false, up
           <p aria-label="Sepet bildirimi" role={feedback.error ? "alert" : "status"} aria-atomic="true" className={`text-base ${feedback.error ? "text-destructive" : "text-muted-foreground"}`}>{feedback.message}</p>
         </section>
 
-        <aside aria-labelledby={`${id}-summary`} className={`${styles.paper} ${styles.summary}`}>
-          <h2 id={`${id}-summary`} className={styles.ribbon}>Sepet özeti</h2>
+        <aside aria-labelledby={`${id}-summary`} className={styles.summary}>
+          <h2 id={`${id}-summary`}>Sepet özeti</h2>
           <dl className="space-y-4 text-base">
             <div className="flex flex-wrap items-baseline justify-between gap-2"><dt>Ara toplam (tahmini) · {itemCount} adet</dt><dd className="text-xl font-medium tabular-nums">{knownSubtotal ? formatPrice(subtotal) : "—"}</dd></div>
             <div className="flex flex-wrap justify-between gap-2 pt-4"><dt>Kargo</dt><dd className="text-muted-foreground">Ödemede hesaplanacak</dd></div>
@@ -159,8 +160,8 @@ export function CartSummary({ store, products, onRefresh, refreshing = false, up
             <Button variant="outline" className="w-full" disabled aria-describedby={`${id}-coupon-help`}>Kuponu uygula</Button>
           </div>
           <div className="space-y-3 pt-5">
-            <Button className="w-full" disabled aria-describedby={`${id}-payment-help`}>Ödemeye geç</Button>
-            <p id={`${id}-payment-help`} className="text-base text-muted-foreground">Ödeme henüz kullanıma açık değil. Fiyat ve stoklar kesinleşmeden ödeme başlatılmaz.</p>
+            {checkoutHref && showOffers ? <Button asChild className="w-full"><Link href={checkoutHref} prefetch={false}>Ödemeye geç</Link></Button> : <Button className="w-full" disabled aria-describedby={`${id}-payment-help`}>Ödemeye geç</Button>}
+            <p id={`${id}-payment-help`} className="text-base text-muted-foreground">{checkoutHref ? "Yerel test ödemesi sepetinizden tahsilat yapmaz." : "Ödeme henüz kullanıma açık değil. Fiyat ve stoklar kesinleşmeden ödeme başlatılmaz."}</p>
           </div>
         </aside>
       </div>
