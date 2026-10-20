@@ -57,13 +57,13 @@ test("confirmed FAQs stay open, channels stay absent and the contact/footer layo
     const faq = document.querySelector("#sik-sorulanlar")!;
     const contact = document.querySelector("#toptan-iletisim")!;
     const footer = document.querySelector("footer")!;
-    const card = contact.querySelector("[data-wholesale-card]")!;
+    const copy = contact.querySelector("[data-wholesale-scope]")!;
     const answers = faq.lastElementChild!;
     return {
       width: innerWidth, height: innerHeight, columns: getComputedStyle(answers).columnCount,
       faqPadding: getComputedStyle(faq).paddingTop, questionFont: getComputedStyle(faq.querySelector("h3")!).fontFamily,
-      headingFont: getComputedStyle(faq.querySelector("h2")!).fontFamily, cardWidth: card.getBoundingClientRect().width,
-      cardPadding: getComputedStyle(card).paddingTop, background: getComputedStyle(contact).backgroundColor,
+      headingFont: getComputedStyle(faq.querySelector("h2")!).fontFamily, contactColumns: getComputedStyle(contact).gridTemplateColumns.split(" ").length,
+      copyBackground: getComputedStyle(copy).backgroundColor, background: getComputedStyle(contact).backgroundColor,
       imprintSize: getComputedStyle(footer.querySelector('nav[aria-label="Yasal bilgiler"]')!).fontSize,
       headings: [...faq.querySelectorAll("h2"), contact.querySelector("h2")!].map(node => ({
         height: node.getBoundingClientRect().height, line: parseFloat(getComputedStyle(node).lineHeight),
@@ -73,8 +73,8 @@ test("confirmed FAQs stay open, channels stay absent and the contact/footer layo
   expect(metrics.columns).toBe(metrics.width >= 1024 ? "2" : "1");
   expect(metrics.headingFont).toMatch(/Fraunces/i);
   expect(metrics.questionFont).toMatch(/Figtree/i);
-  expect(metrics.cardWidth).toBeLessThanOrEqual(380);
-  if (metrics.width >= 1200) expect(metrics.cardWidth).toBe(380);
+  expect(metrics.contactColumns).toBe(metrics.width >= 1024 ? 2 : 1);
+  expect(metrics.copyBackground).toBe("rgba(0, 0, 0, 0)");
   expect(metrics.background).toBe("rgb(36, 58, 41)");
   expect(metrics.imprintSize).toBe("14px");
   for (const heading of metrics.headings) expect(heading.height / heading.line).toBeLessThanOrEqual(2.05);

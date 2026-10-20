@@ -4,7 +4,7 @@ import { useEffect, useRef, type JSX, type ReactNode } from "react";
 import { useDeferredEnhancement, usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
 
 const motionTokens = {
-  distance: { md: 16 },
+  distance: { md: 24 },
   duration: { instant: 0, slow: 0.6 },
   stagger: 0.08,
   easing: { smooth: [0.22, 1, 0.36, 1] },

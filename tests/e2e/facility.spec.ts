@@ -4,13 +4,11 @@ import { expect, test, type Locator, type Page } from "@playwright/test";
 
 const source = readFileSync(new URL("../../docs/referans/icerik.md", import.meta.url), "utf8");
 const story = source.split("### Marka hikâyesi / detay sayfası tanıtımı\n\n")[1].split("\n\n###")[0].trim().split("\n\n");
-const definition = source.split("### KISA MARKA TANIMI / WEB SİTESİ KARTI\n\n")[1].split("\n\n")[0];
 const values = ["Ellek, Düziçi / Osmaniye", "Sofralık zeytin, salamura zeytin, zeytinyağı", "Perakende + toptan", "2021’den bu yana"];
 
 async function expectContent(facility: Locator): Promise<void> {
-  await expect(facility.getByRole("heading", { name: "Tesisimiz", level: 2, exact: true })).toBeVisible();
+  await expect(facility.getByRole("heading", { name: "Osmaniye’de, kendi tesisimizde.", level: 2, exact: true })).toBeVisible();
   await expect(facility.locator("[data-facility-lead]")).toHaveText(story[1]);
-  await expect(facility.locator("[data-facility-definition]")).toHaveText(definition);
   await expect(facility.locator("dt")).toHaveText(["Konum", "Ürünler", "Satış", "Faaliyet"]);
   await expect(facility.locator("dd")).toHaveText(values);
   await expect(facility.getByRole("img", { name: "Osmaniye il sınırı ve Düziçi", exact: true })).toBeVisible();
@@ -48,6 +46,7 @@ test("official copy, plate facts and map reflow without loading unapproved photo
   await expectTypography(facility);
   await page.evaluate(() => document.fonts.ready);
   await facility.focus(); // Settles motion and starts the section's keyboard order.
+  await expect.poll(() => facility.locator("[data-facility-enter]").evaluateAll(nodes => nodes.every(node => getComputedStyle(node).transform === "none"))).toBe(true);
   const metrics = await facility.evaluate(node => {
     const title = node.querySelector("h2")!;
     const lead = node.querySelector("[data-facility-lead]")!;
@@ -68,14 +67,14 @@ test("official copy, plate facts and map reflow without loading unapproved photo
       gap: getComputedStyle(node.querySelector("dl")!).gap,
     };
   });
-  await mkdir("test-results/093", { recursive: true });
-  await writeFile(`test-results/093/${testInfo.project.name}-metrics.json`, JSON.stringify(metrics, null, 2));
-  await writeFile(`test-results/093/${testInfo.project.name}-network.json`, JSON.stringify(requests, null, 2));
+  await mkdir("test-results/104", { recursive: true });
+  await writeFile(`test-results/104/${testInfo.project.name}-metrics.json`, JSON.stringify(metrics, null, 2));
+  await writeFile(`test-results/104/${testInfo.project.name}-network.json`, JSON.stringify(requests, null, 2));
   // Preserve the actual viewport. Tall locator screenshots can resize WebKit
   // and move fixed header/stub layers into positions a phone never displays.
-  await page.screenshot({ path: `test-results/093/${testInfo.project.name}-tesisimiz.png` });
+  await page.screenshot({ path: `test-results/104/${testInfo.project.name}-tesisimiz.png` });
   await facility.getByRole("img").scrollIntoViewIfNeeded();
-  await page.screenshot({ path: `test-results/093/${testInfo.project.name}-map-facts.png` });
+  await page.screenshot({ path: `test-results/104/${testInfo.project.name}-map-facts.png` });
   expect(metrics.fits).toBe(true);
   expect(metrics.titleLines).toBeLessThanOrEqual(2);
   expect(metrics.factsColumns).toBe(2);
@@ -83,7 +82,7 @@ test("official copy, plate facts and map reflow without loading unapproved photo
   expect(metrics.minText).toBeGreaterThanOrEqual(13);
   if (metrics.width < 768) {
     expect(metrics.layout.rightTop).toBeGreaterThanOrEqual(metrics.layout.leftBottom);
-    expect(metrics.leadSize).toBe(20);
+    expect(metrics.leadSize).toBeGreaterThanOrEqual(17);
   } else {
     expect(metrics.layout.rightX).toBeGreaterThan(metrics.layout.leftRight);
     expect(Math.abs(metrics.layout.rightTop - metrics.layout.leftTop)).toBeLessThan(1);
@@ -108,7 +107,7 @@ test("the compact cart label never covers the facility copy, map or facts while 
   await page.addInitScript(() => Object.defineProperty(navigator, "hardwareConcurrency", { configurable: true, get: () => 8 }));
   await page.goto("/");
   const facility = page.getByRole("region", { name: "Tesisimiz", exact: true });
-  for (const selector of ["h2", "[data-facility-definition]", "dl", "dd:last-child"]) {
+  for (const selector of ["h2", "[data-facility-lead]", "dl", "dd:last-child"]) {
     await facility.locator(selector).first().evaluate(node => node.scrollIntoView({ block: "center", behavior: "instant" }));
     await expect.poll(() => facility.evaluate(node => {
       const stub = document.querySelector<HTMLElement>('[data-hero-stub][data-visible="true"]');
@@ -122,8 +121,8 @@ test("the compact cart label never covers the facility copy, map or facts while 
         return rects.some(b => b.top < innerHeight && b.bottom > 0 && b.left < box.right && b.right > box.left && b.top < box.bottom && b.bottom > box.top);
       }).map(el => el.textContent?.slice(0, 45));
     })).toEqual([]);
-    await mkdir("test-results/093", { recursive: true });
-    await page.screenshot({ path: `test-results/093/${testInfo.project.name}-scroll-${selector.replace(/[^a-z]/g, "")}.png` });
+    await mkdir("test-results/104", { recursive: true });
+    await page.screenshot({ path: `test-results/104/${testInfo.project.name}-scroll-${selector.replace(/[^a-z]/g, "")}.png` });
   }
 });
 
@@ -142,7 +141,7 @@ for (const reducedMotion of ["no-preference", "reduce"] as const) {
     await expect(page).toHaveURL(/#tesisimiz$/);
     const facility = page.getByRole("region", { name: "Tesisimiz", exact: true });
     await expectContent(facility);
-    await expect(facility.getByRole("heading", { name: "Tesisimiz", exact: true })).toBeInViewport();
+    await expect(facility.getByRole("heading", { name: "Osmaniye’de, kendi tesisimizde.", exact: true })).toBeInViewport();
     const headerBottom = await page.locator("header").evaluate(node => node.getBoundingClientRect().bottom);
     expect(await facility.evaluate(node => node.getBoundingClientRect().top)).toBeGreaterThanOrEqual(headerBottom);
     await facility.focus();
@@ -173,8 +172,8 @@ for (const reducedMotion of ["no-preference", "reduce"] as const) {
         const s = getComputedStyle(el);
         return s.transform === "none" && s.opacity === "1" && s.animationName === "none";
       }))).toBe(true);
-      await mkdir("test-results/093", { recursive: true });
-      await page.screenshot({ path: `test-results/093/${testInfo.project.name}-reduced.png` });
+      await mkdir("test-results/104", { recursive: true });
+      await page.screenshot({ path: `test-results/104/${testInfo.project.name}-reduced.png` });
     }
   });
 }

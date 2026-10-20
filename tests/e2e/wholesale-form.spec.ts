@@ -6,6 +6,7 @@ const cta = "Toptan Satış İçin İletişime Geçin";
 const form = (page: Page) => page.getByRole("form", { name: "Toptan talep formu" });
 
 async function fillRequest(page: Page, channel: "email" | "phone" = "email"): Promise<void> {
+  await form(page).getByRole("checkbox").check();
   await form(page).getByLabel("İsim / firma", { exact: true }).fill("Örnek Firma");
   if (channel === "email") await form(page).getByLabel("E-posta", { exact: true }).fill("talep@example.test");
   else await form(page).getByLabel("Telefon", { exact: true }).fill("+90 (555) 123 45 67");
@@ -24,7 +25,7 @@ test("landing CTA reaches the focusable wholesale form and never claims delivery
   await expect(form(page)).toContainText("Sofralık zeytin • Salamura zeytin • Zeytinyağı");
   await expect(form(page).getByRole("link", { name: "KVKK aydınlatma metni" })).toHaveAttribute("href", "/kvkk");
   await expect(form(page)).toContainText("KVKK metni taslaktır; onay bekleniyor.");
-  await expect(form(page).getByRole("checkbox")).toHaveCount(0);
+  await expect(form(page).getByRole("checkbox")).not.toBeChecked();
   await expect(form(page).getByRole("status")).toContainText("Toptan talep gönderimi henüz kullanıma açık değil.");
   await fillRequest(page);
   await expect(form(page).getByRole("button", { name: "Talebi gönder", exact: true })).toBeDisabled();
@@ -130,6 +131,24 @@ test.describe("injected wholesale form", () => {
     await expect(page.getByRole("status", { name: "Mock çağrı sayısı" })).toHaveText("0");
   });
 
+  test("KVKK acknowledgement is explicit and required before the injected submission", async ({ page }) => {
+    const consent = form(page).getByRole("checkbox");
+    await expect(consent).not.toBeChecked();
+    await fillRequest(page);
+    await consent.uncheck();
+    await form(page).getByRole("button", { name: "Talebi gönder", exact: true }).click();
+    await expect(consent).toBeFocused();
+    await expect(consent).toHaveAttribute("aria-invalid", "true");
+    await expect(consent).toHaveAccessibleDescription(/okuduğunuzu belirtin/);
+    await expect(page.getByRole("status", { name: "Mock çağrı sayısı" })).toHaveText("0");
+    await consent.check();
+    await form(page).getByRole("button", { name: "Talebi gönder", exact: true }).click();
+    await expect(consent).toBeDisabled();
+    await page.getByRole("button", { name: "Mock başarı" }).click();
+    await expect(form(page).getByRole("status")).toHaveText("Talebiniz gönderildi.");
+    await expect(consent).not.toBeChecked();
+  });
+
   test("mock pending locks edits and duplicate submissions; explicit success clears the form", async ({ page }) => {
     await fillRequest(page);
     const submit = form(page).getByRole("button", { name: "Talebi gönder", exact: true });
@@ -184,6 +203,8 @@ test.describe("injected wholesale form", () => {
         await expect(field).toBeFocused();
         expect(await field.evaluate(node => parseFloat(getComputedStyle(node).outlineWidth))).toBeGreaterThanOrEqual(2);
       }
+      await page.keyboard.press(next);
+      await expect(form(page).getByRole("checkbox")).toBeFocused();
       await page.keyboard.press(next);
       await expect(form(page).getByRole("link", { name: "KVKK aydınlatma metni" })).toBeFocused();
       await page.keyboard.press(next);

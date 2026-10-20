@@ -19,13 +19,9 @@ export default async function Home(): Promise<JSX.Element> {
         <ProductShowcase products={products} />
         <FeaturedProduct products={products} />
         <div className="page-wrap"><Moments /></div>
-          <div
-            id="hikayemiz"
-            data-scene="story"
-            className="scroll-mt-36"
-          >
-            <Facility />
-          </div>
+        <div id="hikayemiz" data-scene="story" className="scroll-mt-36">
+          <Facility />
+        </div>
         <div id="toptan" tabIndex={-1} className="scroll-mt-24">
           <WholesaleContact><WholesaleForm /></WholesaleContact>
         </div>

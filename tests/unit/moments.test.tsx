@@ -6,14 +6,14 @@ import Home from "@/app/page";
 const titles = ["Hasat", "Seçim", "Kırma", "Salamura", "Dolum", "Sofrada"];
 afterEach(cleanup);
 
-it("places the six moments after the facility and before wholesale in the landing", async () => {
+it("places the six moments before the adjacent facility and wholesale sections", async () => {
   render(await Home());
   const section = screen.getByRole("region", { name: "Topraktan sofraya" });
   expect(within(section).getAllByRole("heading", { level: 3 }).map(node => node.textContent)).toEqual(titles);
   expect(within(section).getAllByRole("listitem")).toHaveLength(6);
   const facility = document.querySelector("#tesisimiz")!;
   const wholesale = document.querySelector("#toptan-iletisim")!;
-  expect(facility.compareDocumentPosition(section) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  expect(section.compareDocumentPosition(facility) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   expect(section.compareDocumentPosition(wholesale) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
 });
 
