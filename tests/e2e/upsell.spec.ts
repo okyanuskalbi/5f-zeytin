@@ -114,11 +114,19 @@ test.describe("upsell configured presentation", () => {
     await increase.click();
     await expect(page.getByText("376,50 ₺", { exact: true })).toBeVisible();
     await expect(page.getByText("Henüz hesaplanmadı", { exact: true })).toBeVisible();
-    for (const mode of ["bad-threshold", "bad-rate", "duplicate-tier"]) {
+    for (const mode of ["bad-threshold", "bad-rate", "duplicate-tier", "fractional-threshold", "zero-rate", "nan-rate", "empty-tiers", "unknown-products"]) {
       await page.goto(`/__upsell-fixture/?mode=${mode}`);
       await expect(page.getByRole("group", { name: "Test Zeytin", exact: true })).toBeVisible();
       await expect(discount(page)).toHaveCount(0);
       await expect(recommendations(page)).toBeVisible();
+    }
+  });
+
+  test("missing relations or active source IDs cannot produce recommendations", async ({ page }) => {
+    for (const mode of ["no-active", "inactive-source", "no-relations"]) {
+      await load(page, mode);
+      await expect(page.getByRole("group", { name: "Test Zeytin", exact: true })).toBeVisible();
+      await expect(recommendations(page)).toHaveCount(0);
     }
   });
 
@@ -173,14 +181,17 @@ test.describe("upsell configured presentation", () => {
   });
 
   test("a newly restocked recommendation can be added after catalog refresh", async ({ page }) => {
-    await load(page, "target-restock");
-    await expect(recommendations(page)).toHaveCount(0);
-    await page.getByRole("button", { name: "Fiyat ve stokları yenile" }).click();
-    await expect(recommendations(page)).toBeVisible();
-    await recommendations(page).getByRole("button").click();
-    await expect(page.getByRole("group", { name: "Test Zeytinyağı", exact: true })).toBeVisible();
-    await expect(page.getByRole("alert")).toHaveCount(0);
-    await expect(recommendations(page)).toHaveCount(0);
+    for (const mode of ["target-restock", "new-target"]) {
+      await load(page, mode);
+      await expect(recommendations(page)).toHaveCount(0);
+      await page.getByRole("button", { name: "Fiyat ve stokları yenile" }).click();
+      await expect(recommendations(page)).toBeVisible();
+      await recommendations(page).getByRole("button").click();
+      await expect(page.getByRole("group", { name: "Test Zeytinyağı", exact: true })).toBeVisible();
+      await expect(page.getByRole("alert")).toHaveCount(0);
+      await expect(recommendations(page)).toHaveCount(0);
+      await page.evaluate((key) => localStorage.setItem(key, JSON.stringify([{ productId: "olive", quantity: 1 }])), CART_STORAGE_KEY);
+    }
   });
 
   test("keyboard and reduced motion retain visible controls and safe focus after add", async ({ page, browserName }, testInfo) => {

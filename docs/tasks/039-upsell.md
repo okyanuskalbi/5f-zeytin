@@ -48,4 +48,29 @@ Sepette ilgili ürün önerisini ve miktar indirimi sunumunu kur.
 
 - Regresyon GREEN: aynı E2E dosyası `--project chromium-320` → **exit 0; 8/8, 3,3 sn**. Öneriler yalnız tüm mevcut satırlar güncel katalog/stokla geçerliyken görünür; bu koşulda stok guard'ı yenilenerek yeniden stoklanan hedef eklenebilir. Geçersiz sepet satırları otomatik budanmaz; hata/yenilemede teklifler kapalı kalır.
 
-## Durum: BEKLİYOR
+### Teslim edilen frontend
+
+- `Upsell.tsx`, yalnız açıkça verilen onaylı ilişkilerden ve aktif kimlik listesinden öneri çıkarır. Stoksuz/pasif/kayıp/ilişkisiz hedefler, kendi ürünü ve sepette zaten bulunan ürünler gösterilmez; tekrar eden ilişkiler tek öneri oluşturur. Katalog hatası, hydration öncesi, boş/geçersiz stoklu sepet veya yenileme sırasında teklifler kapanır.
+- `CartSummary` aynı store'a tek adet ekler; mevcut sepet sayfası, drawer ve kayıt aynı ürünü görür. Yenilenen katalogla stoğa giren veya yeni gelen hedefler eklenebilir. Başarılı eklemede kaybolan öneri düğmesinin odağı kalıcı sepet başlığına taşınır. Reddedilen ekleme canlı hata/yeniden deneme verir; storage hatasında ekleme bellekte korunur ve mevcut storage uyarısı görünür.
+- Miktar koşulları yalnız opsiyonel yapılandırmadaki ürün kapsamı/eşik/oranlarla bilgi olarak sunulur; geçersiz/boş koşullar gizlenir. Eşik aşılması bile ara toplamdan indirim düşmez; “Henüz hesaplanmadı” ve sunucu doğrulama açıklaması korunur. Ürün/kampanya kararı, fiyat otoritesi veya backend uygulanmadı.
+- Gerçek `/sepet` route'una hiçbir ilişki/aktif ürün/kampanya verisi eklenmedi. **Onaylı yapılandırma yokken teklif göstermeme, bu task'ın açık kabul davranışıdır; frontend için engel değildir.** Gerçek katalog ve sunucu quote bağlantısı 029/054/055 kapsamındadır. Yeni görsel, animasyon, bağımlılık veya skill kurulmadı; mevcut Button'ın reduced-motion ve görünür odak stilleri kullanıldı.
+
+### Nihai komut kabulü — 20 Ekim 2026
+
+| Komut / garanti | Sonuç |
+| --- | --- |
+| `UPSELL_COVERAGE=1 CART_PAGE_COVERAGE=1 PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" npm run test:e2e -- tests/e2e/upsell.spec.ts tests/e2e/cart-page.spec.ts tests/e2e/cart-wire.spec.ts --config .cache/task-039/playwright.config.ts` | **exit 0; 288/288, 77,8 sn**. Task 039 **108**, sepet sayfası **108**, global sepet bağlantısı **72**. Chromium/Firefox/WebKit × 320/390/768/1440. |
+| Öneri / hata durumları | Onaylı aktif/stoklu tekil hedef, kendi/sepetteki/pasif/tükenmiş/kayıp/ilişkisiz hedefleri dışlama; ilişki/aktif kaynak/yapılandırma yokken gizleme, ekleme/drawer/reload, reddedilen stok/tekrar deneme, storage hatasında bellekte koruma ve toparlanma; katalog hatası/yenileme/stok uyuşmazlığında gizleme, stok `0 → pozitif` ve yeni katalog hedefinden ekleme **PASS**. |
+| İndirim sunumu | Yapılandırılan ürün kapsamı ve eşik/oran metni, boş/bozuk/fractional eşik/geçersiz oran/tekrar eden eşik/eksik ürün koşullarını gizleme, eşik aşılırken ara toplamı değiştirmeme ve sunucu doğrulama açıklaması **PASS**. Test kampanyaları yalnız fixture'dadır. |
+| Erişilebilirlik / responsive | Normal + reduced-motion, Tab/Enter ile ekleme, görünür odak ve ekleme sonrası sepet başlığına dönüş; 480 px kısa ekran, tüm genişliklerde taşmasız sunum, ≥44 px ekleme hedefi, reduced-motion'da sıfır transition **PASS**. Safari/macOS klavye gezinmesi mevcut test düzenindeki `Alt+Tab` ile doğrulanır. |
+| `npm run lint && npm run typecheck && npm run build` | **exit 0**, son stok düzeltmesi dahil; ESLint sıfır uyarı, TypeScript ve Next.js 16.4.2 production build başarılı, varlık kontrolü **14/14 PASS**. Son ek test sınırları sonrasında lint/typecheck tekrar **exit 0**. |
+| `npm run test` | **exit 0; 134/134**, altı dosya; store/provider regresyonları dahil. |
+| `node .cache/task-039/verify-results.mjs` | **exit 0**; hedef **localhost:3039**, **12** proje ve dosya başına **108/72/108**; **288** tek denemeli başarı, **0 başarısız/atlanan/flaky/global hata**. |
+| `node .cache/task-039/check-coverage.mjs .cache/task-039/results.json` | **exit 0**; 64 Chromium V8 kaydı/source map gerçek iki bileşene eşlendi. Upsell satır/fonksiyon **%100**, statement **%96,77**, dal **%96,66**; CartSummary satır **%96,66**, fonksiyon **%100**, statement **%97,29**, dal **%96,55**. Her dosyada dört metrik de ≥%80. Fixture'dan çıkarılan CartPage wrapper'ı/sunucu route'u bu kapsam ölçümüne dahil değildir; gerçek route E2E ile doğrulanır. |
+| `git diff --check` | **exit 0**. |
+
+- TDD checkpoint'leri aktif `main` geçmişinde: `1d3429f` ilk RED, `59bf5e1` ilk GREEN; `c4f97af` restock RED ve `002ef27` düzeltme GREEN. Son salt okunur kod incelemesinde önceki bulgu giderildi; yeni kritik/engelleyici bulgu yok.
+- Rapor `.cache/task-039/results.json`, ekranlar `.cache/task-039/results/`, kapsam özeti `.cache/task-039/coverage-summary.json` altında yerel/commit dışıdır. Masaüstü yapılandırılmış sunum ve 320 px reduced-motion ekranları açılıp incelendi. `UPSELL_COVERAGE` yalnız test ölçüm bayrağıdır; uygulama env sözleşmesi değildir.
+- Build'in otomatik değiştirdiği `next-env.d.ts` başlangıç içeriğine döndürüldü. Yalnız bu görev bileşenleri/testleri ve task dosyasının Coder Notu/Durum alanları değişti. PLAN, diğer task dosyaları, `_legacy/`, görseller ve backend/DB/auth/ödeme/yayın ayarları korunur. **Task 039 frontend kapsamında kalan engel yok.** Bu kabul yereldir; canlı yayın, gerçek indirim veya ödeme doğrulaması değildir.
+
+## Durum: TAMAMLANDI

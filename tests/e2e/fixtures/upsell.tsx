@@ -16,7 +16,8 @@ const products: readonly Product[] = [
   { id: "unrelated", name: "Test İlişkisiz", category: "sofralik-zeytin", weight: "1 kg", priceKurus: 15000, stock: 4 },
 ];
 const mode = new URLSearchParams(location.search).get("mode");
-const initialProducts = mode === "target-restock" ? [products[0], { ...products[1], stock: 0 }, ...products.slice(2)] : products;
+const initialProducts = mode === "target-restock" ? [products[0], { ...products[1], stock: 0 }, ...products.slice(2)]
+  : mode === "new-target" ? products.filter(({ id }) => id !== "oil") : products;
 let addFails = mode === "add-error";
 let storageFails = mode === "storage-error";
 const baseStore = createCartStore({ products: initialProducts, storage: {
@@ -40,11 +41,19 @@ function Fixture(): JSX.Element {
   const [open, setOpen] = useState(false);
   const invalidTiers = mode === "bad-threshold" ? [{ minimumQuantity: 1, percentOff: 5 }]
     : mode === "bad-rate" ? [{ minimumQuantity: 3, percentOff: 101 }]
+    : mode === "fractional-threshold" ? [{ minimumQuantity: 2.5, percentOff: 5 }]
+    : mode === "zero-rate" ? [{ minimumQuantity: 3, percentOff: 0 }]
+    : mode === "nan-rate" ? [{ minimumQuantity: 3, percentOff: NaN }]
+    : mode === "empty-tiers" ? []
     : mode === "duplicate-tier" ? [tiers[0], tiers[0]] : tiers;
+  const recommendationConfig = { ...upsell,
+    activeProductIds: mode === "no-active" ? [] : mode === "inactive-source" ? ["oil"] : upsell.activeProductIds,
+    relations: mode === "no-relations" ? [] : upsell.relations,
+  };
   return <>
     <CartSummary store={store} products={catalog} refreshing={refreshing}
-      upsell={configured ? upsell : undefined}
-      quantityDiscount={configured ? { productIds: ["olive"], tiers: invalidTiers } : undefined}
+      upsell={configured ? recommendationConfig : undefined}
+      quantityDiscount={configured ? { productIds: mode === "unknown-products" ? ["missing"] : ["olive"], tiers: invalidTiers } : undefined}
       onRefresh={() => {
         setCatalog(mode === "stock-change" ? [{ ...products[0], stock: 0 }, ...products.slice(1)]
           : mode === "target-change" ? [products[0], { ...products[1], stock: 0 }, ...products.slice(2)]
