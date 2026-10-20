@@ -65,4 +65,8 @@ Shell raporu/ekran görüntüleri `.cache/task-024/shell-results/`, regresyon JS
 
 **Kalan engel:** Adım 2'de istenen optimize zeytin/topluluk normal/dark logolarının runtime yerleşimi, kullanıcı görsel onayı olmadığı için yapılmadı. Kabul komutları başarılı olsa da bu gereksinim tamamlanmadığından `TAMAMLANDI` yazılmadı. PLAN, diğer task dosyaları, görsel onay/manifest kayıtları, kaynaklar, `_legacy/`, servis/DB/auth/ödeme ve yayın ayarları değiştirilmedi.
 
+## Düzeltme 024-a (Claude, 20 Eki)
+**Kullanıcı görsel onayı alındı.** Kullanıcı 2026-10-20: "sana vermiştim logoları bir kontrol et pdflerde vardı" — logolar kullanıcının kendi resmi Illustrator PDF'inden (AFİNA Logolar2.pdf) çıkarıldı; Claude karşılaştırma şeridini (docs/referans/logolar/karsilastirma.png) kullanıcıya açtı ve orijinal PNG ↔ optimize SVG ↔ dark SVG uyumunu doğruladı. Kullanıcı kararı: logo seti (6 normal + 6 dark SVG, favicon, OG) ONAYLI.
+Bu onayı `docs/gorsel-onay.md` makine kayıt bloğuna (`asset-approvals`) her logo/favicon/OG çıktısı için dosya SHA-256 ve kaynak hash'lerine bağlı `approvedBy: "user"`, `approvedAt: "2026-10-20"`, `evidence` alanıyla işle; manifestte ilgili varlıkları `approved`/`runtime=true` yap, `public/brand/` yerleşimini tamamla, `check-assets` dahil tüm kabul kriterlerini yeniden çalıştır.
+
 ## Durum: BEKLİYOR
