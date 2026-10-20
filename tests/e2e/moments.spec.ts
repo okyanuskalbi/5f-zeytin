@@ -58,7 +58,7 @@ test("six typographic moments preserve the official sentence and responsive stri
   expect(metrics.gap).toBe(mobile ? 16 : 32);
   expect(new Set(metrics.columns.map(column => column.gap)).size).toBe(3);
   for (const column of metrics.columns) {
-    expect(column.width).toBeCloseTo(mobile ? metrics.viewport * 0.72 : 280, 0);
+    expect(column.width).toBeCloseTo(mobile ? metrics.viewport * 0.72 : Math.max(280, Math.min(384, metrics.viewport * 0.24)), 0);
     expect(column.imageCount).toBe(0);
     expect(column.font).toMatch(/Fraunces/i);
     expect(column.size).toBeGreaterThanOrEqual(28);
@@ -66,12 +66,9 @@ test("six typographic moments preserve the official sentence and responsive stri
     expect(column.gap).toBeLessThanOrEqual(64);
   }
   const next = section(page).getByRole("button", { name: "Sonraki an" });
-  if (mobile) await expect(next).toBeHidden();
-  else {
-    await expect(next).toBeVisible();
-    expect((await next.boundingBox())!.width).toBe(48);
-    expect((await next.boundingBox())!.height).toBe(48);
-  }
+  await expect(next).toBeVisible();
+  expect((await next.boundingBox())!.width).toBe(48);
+  expect((await next.boundingBox())!.height).toBe(48);
   await mkdir("test-results/094", { recursive: true });
   await page.screenshot({ path: `test-results/094/${testInfo.project.name}-moments.png` });
   await writeFile(`test-results/094/${testInfo.project.name}-metrics.json`, JSON.stringify({ metrics, requests, errors }, null, 2));

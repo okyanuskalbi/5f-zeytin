@@ -70,7 +70,7 @@ test("confirmed FAQs stay open, channels stay absent and the contact/footer layo
       })),
     };
   });
-  expect(metrics.columns).toBe(metrics.width >= 1024 ? "2" : "1");
+  expect(metrics.columns).toBe(metrics.width >= 768 ? "2" : "1");
   expect(metrics.headingFont).toMatch(/Fraunces/i);
   expect(metrics.questionFont).toMatch(/Figtree/i);
   expect(metrics.contactColumns).toBe(metrics.width >= 1024 ? 2 : 1);
