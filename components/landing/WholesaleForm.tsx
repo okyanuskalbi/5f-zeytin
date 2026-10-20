@@ -80,7 +80,7 @@ export function WholesaleForm({ submitRequest }: { submitRequest?: WholesaleSubm
   }
 
   return (
-    <form aria-labelledby={`${id}-title`} aria-describedby={`${id}-scope ${id}-availability`}
+    <form data-reading-safe="" aria-labelledby={`${id}-title`} aria-describedby={`${id}-scope ${id}-availability`}
       aria-busy={pending} onSubmit={handleSubmit} noValidate method="post"
       className="w-full min-w-0 max-w-160 space-y-6 bg-card p-6 text-card-foreground sm:p-8">
       <h3 id={`${id}-title`}>Toptan talep formu</h3>

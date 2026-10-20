@@ -77,4 +77,20 @@ Perakende satışın yanında resmi toptan CTA’sını ve erişilebilir talep f
 - İlk iletişim/footer regresyon koşumu **74/78**: dört Firefox hukuk sayfasından geri dönüş testinde eski yardımcı `200` beklerken geçerli cache revalidation `304` aldı. Yardımcı yalnız `200`/`304` kabul edecek şekilde düzeltildi; asıl sayfa/içerik/link assertion'ları korunur. Test sonucu son koşumda tekrar doğrulanacak; bu ara hata gizlenmedi.
 - İzole formun Chromium 1440 ve WebKit 390 ekranları açılarak incelendi; alan, etiket, KVKK ve focus görünür, yatay taşma/kırpılma yok. Runtime bölüm ekranı da son E2E koşumuna eklendi.
 
+### Nihai doğrulama ve kalan engel — 20 Ekim 2026
+
+- Görsel kontrolün ek testi, sabit ürün kısayolunun mobil form paneline girdiğini doğruladı: Chromium 320 `--grep 'floating product shortcut'` **exit 1**, overlap `true`; RED checkpoint `76e02b5`. Yeni forma mevcut `data-reading-safe` sözleşmesi eklenerek panelin tamamı korundu; hero/sepet kodu veya animasyonu değiştirilmedi. Son test viewport ekranları (Chromium 1440 / WebKit 390, form başı ve sonu) açılarak incelendi: başlıklar, alanlar, KVKK ve düğme görünür, kısayol formu örtmüyor. Uzun bölümün element ekranı yerine gerçek viewport ekranları kullanıldı.
+
+| Nihai komut / kontrol | Sonuç |
+| --- | --- |
+| `PLAYWRIGHT_PORT=3081 npm run test:e2e -- tests/e2e/wholesale-form.spec.ts --output=.cache/task-081/final-results` | **exit 0; 91/91, 32,1 sn**. 13 profil; önceki 78 senaryoya form boyunca kısayol örtüşme kontrolü eklendi. CTA metni kaynakla birebir; hash/odak, KVKK taslak bağlantısı, alan doğrulama, mock pending/başarı/hata/tekrar ve başarı sonrası boş deneme, klavye/kısa ekran/mobil/reduced-motion/JS kapalı kabulü geçti. |
+| `PLAYWRIGHT_PORT=3081 npm run test:e2e -- tests/e2e/faq-contact-footer.spec.ts --output=.cache/task-081/regression-results` | **exit 0; 78/78, 31,2 sn**. Önbellek assertion düzeltmesinden sonra bütün SSS/iletişim/footer, yasal navigasyon ve kısayol regresyonları geçti. |
+| `npm run test -- tests/unit/wholesale-form.test.ts tests/unit/wholesale-form-ui.test.tsx tests/unit/faq-contact-footer.test.tsx --coverage --coverage.include=lib/contracts/wholesale.ts --coverage.include=components/landing/WholesaleForm.tsx` | **exit 0; 23/23**. Hedefli statement/function/line **%100**, branch **%98,46**. |
+| `npm run lint && npm run typecheck && npm run build` | Lint ve typecheck başarılı; zincir **exit 1**. Prebuild `check:assets`: **Eksik dosya: docs/referans/tesis/afina-zeytin-tesis-osmaniye.png**. Başlangıçtaki kaynak/manifest uyuşmazlığı sürüyor. |
+| `npx next build` | **exit 0**; son form koduyla production derlemesi başarılı. Standart npm build varlık kapısının yerine geçmez; E2E yalnız bu güncel yerel çıktı üzerinde çalıştırıldı. |
+| Playwright JSON assertion'ları | Her iki raporda **13 proje; 0 başarısız, 0 atlanan, 0 flaky**. `.cache/task-081/wholesale-results.json` ve `.cache/task-081/regression-results.json`, log/ekranlar yerel ve commit dışında. |
+| `git diff --check` | **exit 0**. TDD RED/GREEN checkpoint'leri aktif `main` geçmişinde korunur. |
+
+Form uygulaması ve kendi davranış kontrolleri tamamlandı. **Zorunlu standart build kabulü geçmediği için görev TAMAMLANDI sayılmadı; BEKLİYOR bırakıldı.** Eksik orijinal tesis fotoğrafı repoya taşınmadı; kaynak gizlilik/onay kaydı, manifest ve görev dışı dosyalar kendiliğinden değiştirilmedi. Bu kaynak/manifest uyuşmazlığı kendi kapsamında giderildikten sonra standart kabul zinciri tekrar çalıştırılmalıdır. Gerçek gönderim 082'ye aittir; runtime submit kapalı, sahte başarı veya gerçek e-posta/DB işlemi yoktur.
+
 ## Durum: BEKLİYOR
