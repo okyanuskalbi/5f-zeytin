@@ -26,3 +26,11 @@
     background: linear-gradient(to right, rgb(245 241 231 / 92%) 0%, rgb(245 241 231 / 75%) 32%, rgb(245 241 231 / 0%) 58%);
   }
 }
+
+/* A sticky scene taller than the viewport can trap keyboard focus below the fold. */
+@media (max-height: 55rem) {
+  .hero {
+    --frame-position: relative;
+    --frame-top: 0px;
+  }
+}

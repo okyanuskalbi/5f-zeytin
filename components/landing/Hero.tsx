@@ -19,6 +19,7 @@ export function Hero(): JSX.Element {
           height: 1350,
         }}
         scrollLength={300}
+        positionX={1}
         mediaClassName={styles.media}
         label=""
       >

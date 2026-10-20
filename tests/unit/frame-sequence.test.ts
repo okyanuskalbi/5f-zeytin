@@ -86,9 +86,19 @@ describe("sequence lifecycle and fallback content", () => {
   const context = { drawImage: vi.fn(), setTransform: vi.fn(), clearRect: vi.fn(), save: vi.fn(), restore: vi.fn(), filter: "none" };
   const disconnect = vi.fn();
   let visible: DocumentVisibilityState;
+  let saveData: boolean;
+  const connectionListeners = new Set<() => void>();
 
   beforeEach(() => {
     reduce = false;
+    saveData = false;
+    connectionListeners.clear();
+    vi.spyOn(navigator, "hardwareConcurrency", "get").mockReturnValue(8);
+    Object.defineProperty(navigator, "connection", { configurable: true, value: {
+      get saveData() { return saveData; },
+      addEventListener: (_: string, callback: () => void) => connectionListeners.add(callback),
+      removeEventListener: (_: string, callback: () => void) => connectionListeners.delete(callback),
+    } });
     visible = "visible";
     near = undefined;
     resized = undefined;
@@ -98,13 +108,13 @@ describe("sequence lifecycle and fallback content", () => {
     motionState.progress!.set(0);
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => manifest }));
     vi.stubGlobal("matchMedia", (query: string) => ({
-      get matches() { return query.includes("reduced") ? reduce : true; },
+      get matches() { return query.includes("reduced") ? reduce : !query.includes("max-height"); },
       addEventListener: (_: string, callback: () => void) => mediaListeners.add(callback),
       removeEventListener: (_: string, callback: () => void) => mediaListeners.delete(callback),
     }));
     vi.stubGlobal("IntersectionObserver", class {
       constructor(callback: typeof near) { near = callback; }
-      observe(): void {} disconnect = disconnect;
+      observe(): void { near?.([{ isIntersecting: true }]); } disconnect = disconnect;
     });
     vi.stubGlobal("ResizeObserver", class {
       constructor(callback: () => void) { resized = callback; }
@@ -132,6 +142,66 @@ describe("sequence lifecycle and fallback content", () => {
     expect(view.container.querySelector("canvas")).toBeNull();
     expect(MockImage.requests).toHaveLength(0);
     expect((view.container.firstElementChild as HTMLElement).style.height).toBe("100vh");
+  });
+
+  it("keeps data saver and low-end devices poster-only, including preference changes", async () => {
+    saveData = true;
+    const view = await mount();
+    expect(view.container.querySelector("canvas")).toBeNull();
+    expect(MockImage.requests).toHaveLength(0);
+    act(() => { saveData = false; connectionListeners.forEach((callback) => callback()); });
+    expect(view.container.querySelector("canvas")).not.toBeNull();
+    act(() => { saveData = true; connectionListeners.forEach((callback) => callback()); });
+    expect(view.container.querySelector("canvas")).toBeNull();
+    view.unmount();
+    expect(connectionListeners.size).toBe(0);
+    saveData = false;
+    vi.spyOn(navigator, "hardwareConcurrency", "get").mockReturnValue(4);
+    const lowEnd = await mount();
+    expect(lowEnd.container.querySelector("canvas")).toBeNull();
+    expect(screen.getByRole("link", { name: "Devam" })).toBeTruthy();
+  });
+
+  it("stops queued network work and drawing while outside the viewport", async () => {
+    const view = await mount();
+    expect(MockImage.requests).toHaveLength(6);
+    act(() => near?.([{ isIntersecting: false }]));
+    context.drawImage.mockClear();
+    act(() => {
+      motionState.progress!.set(0.75);
+      [...MockImage.requests].forEach((image) => image.load());
+    });
+    await new Promise((resolve) => setTimeout(resolve, 40));
+    expect(MockImage.requests).toHaveLength(6);
+    expect(context.drawImage).not.toHaveBeenCalled();
+    act(() => near?.([{ isIntersecting: true }]));
+    expect(MockImage.requests.length).toBeGreaterThan(6);
+    act(() => [...MockImage.requests].forEach((image) => image.load()));
+    await waitFor(() => expect(context.drawImage).toHaveBeenCalled());
+    view.unmount();
+  });
+
+  it("does not start frame downloads before the sequence enters the viewport", async () => {
+    vi.stubGlobal("IntersectionObserver", class {
+      constructor(callback: typeof near) { near = callback; }
+      observe(): void {} disconnect = disconnect;
+    });
+    const view = await mount();
+    expect(MockImage.requests).toHaveLength(0);
+    act(() => near?.([{ isIntersecting: true }]));
+    expect(MockImage.requests).toHaveLength(6);
+    view.unmount();
+  });
+
+  it.each(["null", "throw"])("keeps the poster and link when canvas context is %s", async (failure) => {
+    vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockImplementation(() => {
+      if (failure === "throw") throw new Error("Unavailable GPU");
+      return null;
+    });
+    const view = await mount();
+    expect(view.container.querySelector("canvas")?.hidden).toBe(true);
+    expect(screen.getByRole("link", { name: "Devam" })).toBeTruthy();
+    expect(MockImage.requests).toHaveLength(0);
   });
 
   it("renders an approved responsive poster in server HTML before JavaScript or manifest fetch", () => {
@@ -163,11 +233,11 @@ describe("sequence lifecycle and fallback content", () => {
     const view = await mount();
     for (let i = 0; i < 3; i++) act(() => { [...MockImage.requests].forEach((image) => image.onload && image.load()); });
     expect(MockImage.requests).toHaveLength(15);
+    act(() => near?.([{ isIntersecting: false }]));
     act(() => motionState.progress!.set(1));
-    await waitFor(() => expect(view.container.querySelector("canvas")?.dataset.frame).toBe("14"));
     expect(MockImage.requests).toHaveLength(15);
     act(() => near?.([{ isIntersecting: true }]));
-    expect(MockImage.requests.some((image) => image.src.endsWith("frame-0048.webp"))).toBe(true);
+    await waitFor(() => expect(MockImage.requests.some((image) => image.src.endsWith("frame-0048.webp"))).toBe(true));
     view.unmount();
     expect(disconnect).toHaveBeenCalledTimes(2);
     expect(mediaListeners.size).toBe(0);
@@ -291,5 +361,18 @@ describe("bounded progressive loading", () => {
     expect(MockImage.requests).toHaveLength(6);
     expect(MockImage.requests.every((image) => !image.onload && !image.onerror && !image.src)).toBe(true);
     expect(frames.nearest(0)).toBeUndefined();
+  });
+
+  it("pauses queued requests, keeps loaded pixels, and resumes at the current window", () => {
+    const frames = loader();
+    frames.preloadInitial();
+    frames.setPaused(true);
+    finishPending();
+    expect(MockImage.requests).toHaveLength(6);
+    expect(frames.nearest(0)?.index).toBe(0);
+    frames.setPaused(false);
+    expect(MockImage.requests).toHaveLength(6);
+    frames.preloadAround(40);
+    expect(MockImage.requests[6].src).toContain("frame-0041.webp");
   });
 });

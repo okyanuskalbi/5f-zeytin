@@ -58,11 +58,12 @@ export function createFrameLoader({ src, width, count, onLoad }: FrameLoaderOpti
   let queue: number[] = [];
   let active = 0;
   let disposed = false;
+  let paused = false;
   const concurrency = 6;
   const lookAhead = 15;
 
   function drain(): void {
-    while (!disposed && active < concurrency && queue.length) {
+    while (!disposed && !paused && active < concurrency && queue.length) {
       const index = queue.shift()!;
       if (images.has(index)) continue;
       const image = new Image();
@@ -93,6 +94,12 @@ export function createFrameLoader({ src, width, count, onLoad }: FrameLoaderOpti
   }
 
   return {
+    setPaused(value: boolean): void {
+      paused = value;
+      // Discard obsolete look-ahead work; resuming enqueues the current scroll window.
+      if (paused) queue = [];
+      else drain();
+    },
     preloadInitial(): void {
       enqueue(Array.from({ length: Math.min(lookAhead, count) }, (_, index) => index));
     },

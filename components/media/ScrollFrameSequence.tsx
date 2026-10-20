@@ -18,6 +18,7 @@ interface ScrollFrameSequenceProps {
   mediaClassName?: string;
   scrollLength?: number;
   fit?: "cover" | "contain";
+  positionX?: number;
   blurFill?: boolean;
   children?: ReactNode | ((progress: MotionValue<number>) => ReactNode);
   /** Describe meaningful media; decorative sequences can use an empty label. */
@@ -34,16 +35,29 @@ function useMediaQuery(query: string, serverValue = false): boolean {
   return useSyncExternalStore(subscribe, () => typeof window.matchMedia === "function" ? window.matchMedia(query).matches : serverValue, () => serverValue);
 }
 
+function useMediaBudget(): boolean {
+  const connection = typeof navigator === "undefined" ? undefined
+    : (navigator as Navigator & { connection?: EventTarget & { saveData?: boolean } }).connection;
+  const subscribe = useCallback((notify: () => void) => {
+    connection?.addEventListener("change", notify);
+    return () => connection?.removeEventListener("change", notify);
+  }, [connection]);
+  return useSyncExternalStore(subscribe,
+    () => connection?.saveData === true || navigator.hardwareConcurrency <= 4,
+    () => true);
+}
+
 interface ActiveSequenceProps {
   target: RefObject<HTMLDivElement | null>;
   manifest: FrameManifest;
   src: string;
   fit: "cover" | "contain";
+  positionX: number;
   blurFill: boolean;
   progress: MotionValue<number>;
 }
 
-function ActiveSequence({ target, manifest, src, fit, blurFill, progress }: ActiveSequenceProps): JSX.Element {
+function ActiveSequence({ target, manifest, src, fit, positionX, blurFill, progress }: ActiveSequenceProps): JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { scrollYProgress } = useScroll({ target, offset: ["start start", "end end"] });
   const index = useTransform(scrollYProgress, (value) => frameIndex(value, manifest.count));
@@ -51,13 +65,26 @@ function ActiveSequence({ target, manifest, src, fit, blurFill, progress }: Acti
   useEffect(() => {
     const canvas = canvasRef.current!;
     const section = target.current!;
-    const context = canvas.getContext("2d");
-    if (!context) return;
+    let context: CanvasRenderingContext2D | null;
+    try { context = canvas.getContext("2d"); }
+    catch { canvas.hidden = true; return; }
+    if (!context) { canvas.hidden = true; return; }
     let frames: ReturnType<typeof createFrameLoader> | undefined;
     let selectedWidth = 0;
     let animationFrame: number | undefined;
     let nearby = false;
     let disposed = false;
+
+    function fail(): void {
+      disposed = true;
+      canvas.hidden = true;
+      frames?.dispose();
+      if (animationFrame !== undefined) cancelAnimationFrame(animationFrame);
+    }
+
+    function active(): boolean {
+      return !disposed && nearby && document.visibilityState !== "hidden";
+    }
 
     function drawImage(image: HTMLImageElement, cover: boolean, expand = 0): void {
       const width = canvas.clientWidth;
@@ -65,53 +92,66 @@ function ActiveSequence({ target, manifest, src, fit, blurFill, progress }: Acti
       const scale = (cover ? Math.max : Math.min)(width / image.naturalWidth, height / image.naturalHeight);
       const dw = image.naturalWidth * scale + expand * 2;
       const dh = image.naturalHeight * scale + expand * 2;
-      context!.drawImage(image, (width - dw) / 2, (height - dh) / 2, dw, dh);
+      context!.drawImage(image, (width - dw) * positionX, (height - dh) / 2, dw, dh);
     }
 
     function draw(): void {
       animationFrame = undefined;
-      if (disposed || document.visibilityState === "hidden") return;
+      if (!active()) return;
       const nearest = frames?.nearest(index.get());
       if (!nearest) return; // The poster remains visible below the transparent canvas.
-      const dpr = window.devicePixelRatio || 1;
-      const width = Math.round(canvas.clientWidth * dpr);
-      const height = Math.round(canvas.clientHeight * dpr);
-      if (canvas.width !== width || canvas.height !== height) {
-        canvas.width = width;
-        canvas.height = height;
-      }
-      context!.setTransform(dpr, 0, 0, dpr, 0, 0);
-      context!.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
-      if (fit === "contain" && blurFill) {
-        context!.save();
-        context!.filter = "blur(24px)";
-        drawImage(nearest.image, true, 48);
-        context!.restore();
-      }
-      drawImage(nearest.image, fit === "cover");
-      canvas.dataset.frame = String(nearest.index);
+      try {
+        const dpr = window.devicePixelRatio || 1;
+        const width = Math.round(canvas.clientWidth * dpr);
+        const height = Math.round(canvas.clientHeight * dpr);
+        if (canvas.width !== width || canvas.height !== height) {
+          canvas.width = width;
+          canvas.height = height;
+        }
+        context!.setTransform(dpr, 0, 0, dpr, 0, 0);
+        context!.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+        if (fit === "contain" && blurFill) {
+          context!.save();
+          context!.filter = "blur(24px)";
+          drawImage(nearest.image, true, 48);
+          context!.restore();
+        }
+        drawImage(nearest.image, fit === "cover");
+        canvas.dataset.frame = String(nearest.index);
+      } catch { fail(); } // GPU/context errors reveal the SSR poster and stop further work.
     }
 
     function requestDraw(): void {
-      if (!disposed && animationFrame === undefined && document.visibilityState !== "hidden") {
+      if (active() && animationFrame === undefined) {
         animationFrame = requestAnimationFrame(draw);
       }
     }
 
     function preload(): void {
-      if (nearby && document.visibilityState !== "hidden" && index.get() > 0) frames?.preloadAround(index.get());
+      if (!active()) return;
+      if (index.get() > 0) frames?.preloadAround(index.get());
+      else frames?.preloadInitial();
     }
 
     function resize(): void {
+      if (!active()) return;
       const width = selectFrameWidth(manifest.widths, window.innerWidth);
       if (selectedWidth !== width) {
         frames?.dispose();
         selectedWidth = width;
         frames = createFrameLoader({ src, width, count: manifest.count, onLoad: requestDraw });
-        frames.preloadInitial();
-        preload();
       }
+      preload();
       requestDraw();
+    }
+
+    function syncActivity(): void {
+      frames?.setPaused(!active());
+      if (active()) resize();
+      else if (animationFrame !== undefined) {
+        cancelAnimationFrame(animationFrame);
+        animationFrame = undefined;
+      }
     }
 
     const stopIndex = index.on("change", () => { preload(); requestDraw(); });
@@ -119,14 +159,15 @@ function ActiveSequence({ target, manifest, src, fit, blurFill, progress }: Acti
     progress.set(scrollYProgress.get());
     const observer = new IntersectionObserver(([entry]) => {
       nearby = entry.isIntersecting;
-      preload();
-    }, { rootMargin: "100% 0px" });
+      syncActivity();
+    });
     observer.observe(section);
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(canvas);
     window.addEventListener("resize", resize);
-    const onVisibility = (): void => { preload(); requestDraw(); };
+    const onVisibility = syncActivity;
     document.addEventListener("visibilitychange", onVisibility);
+    canvas.addEventListener("contextlost", fail);
     resize();
 
     return () => {
@@ -137,23 +178,32 @@ function ActiveSequence({ target, manifest, src, fit, blurFill, progress }: Acti
       resizeObserver.disconnect();
       window.removeEventListener("resize", resize);
       document.removeEventListener("visibilitychange", onVisibility);
+      canvas.removeEventListener("contextlost", fail);
       if (animationFrame !== undefined) cancelAnimationFrame(animationFrame);
       frames?.dispose();
       progress.set(0);
     };
-  }, [blurFill, fit, index, manifest, progress, scrollYProgress, src, target]);
+  }, [blurFill, fit, positionX, index, manifest, progress, scrollYProgress, src, target]);
 
   return <canvas ref={canvasRef} aria-hidden="true" className="absolute inset-0 h-full w-full" />;
 }
 
 export function ScrollFrameSequence({
-  src, poster, mediaClassName = "", scrollLength = 300, fit = "cover", blurFill = false, children, label = "Kare dizisi",
+  src, poster, mediaClassName = "", scrollLength = 300, fit = "cover", positionX = 0.5, blurFill = false, children, label = "Kare dizisi",
 }: ScrollFrameSequenceProps): JSX.Element {
   const target = useRef<HTMLDivElement>(null);
   const progress = useMotionValue(0);
   // A static server snapshot also avoids prefetching motion frames before preference hydration.
   const reduced = useMediaQuery("(prefers-reduced-motion: reduce)", true);
+  const limited = useMediaBudget();
+  const shortViewport = useMediaQuery("(max-height: 55rem)");
   const mobile = useMediaQuery("(max-width: 767px)");
+  useEffect(() => {
+    const focused = document.activeElement;
+    if (!(focused instanceof HTMLElement) || !target.current?.contains(focused)) return;
+    const rect = focused.getBoundingClientRect();
+    if (rect.bottom > innerHeight || rect.top < 0) focused.scrollIntoView({ block: "nearest" });
+  }, [shortViewport]);
   const [result, setResult] = useState<{ src: string; manifest?: FrameManifest; error?: boolean }>();
   const [posterLoaded, setPosterLoaded] = useState("");
   const [posterFailed, setPosterFailed] = useState("");
@@ -180,12 +230,14 @@ export function ScrollFrameSequence({
   }, [src]);
 
   const length = Number.isFinite(scrollLength) ? Math.max(100, scrollLength) : 300;
-  const height = reduced || failed ? 100 : Math.max(100, length * (mobile ? 0.7 : 1));
+  const staticMedia = reduced || limited || shortViewport || failed;
+  const focusX = Number.isFinite(positionX) ? Math.max(0, Math.min(1, positionX)) : 0.5;
+  const height = staticMedia ? 100 : Math.max(100, length * (mobile ? 0.7 : 1));
 
   return (
     <div ref={target} data-frame-sequence data-status={failed ? "error" : manifest ? "ready" : "loading"}
-      className="relative bg-background" style={{ height: reduced || failed ? (poster ? "var(--frame-height, 100vh)" : "100vh") : `${height}vh` }}>
-      <div className="sticky top-[var(--frame-top,0px)] h-[var(--frame-height,100vh)] overflow-hidden">
+      className="relative bg-background" style={{ height: staticMedia ? (poster ? "var(--frame-height, 100vh)" : "100vh") : `${height}vh` }}>
+      <div className="[position:var(--frame-position,sticky)] top-[var(--frame-top,0px)] h-[var(--frame-height,100vh)] overflow-hidden">
         {posterURL && (
           <div role={label ? "img" : undefined} aria-label={label || undefined} aria-hidden={!label || undefined} className={`absolute inset-0 ${mediaClassName}`}>
             {fit === "contain" && blurFill && (
@@ -197,10 +249,11 @@ export function ScrollFrameSequence({
             <img ref={observePoster} key={`poster:${posterKey}`} src={posterURL} srcSet={poster?.srcSet} sizes={poster?.srcSet ? "100vw" : undefined} alt="" aria-hidden="true"
               width={poster?.width ?? manifest!.widths[0]} height={poster?.height ?? Math.round(manifest!.widths[0] / manifest!.aspect)}
               fetchPriority={poster ? "high" : undefined}
+              style={{ objectPosition: `${focusX * 100}% center` }}
               onLoad={() => setPosterLoaded(posterKey)} onError={() => setPosterFailed(posterKey)}
               className={`absolute inset-0 h-full w-full ${fit === "cover" ? "object-cover" : "object-contain"}`} />
-            {manifest && !reduced && !failed && posterLoaded === posterKey && (
-              <ActiveSequence key={`frames:${src}`} target={target} manifest={manifest} src={src} fit={fit} blurFill={blurFill} progress={progress} />
+            {manifest && !staticMedia && posterLoaded === posterKey && (
+              <ActiveSequence key={`frames:${src}`} target={target} manifest={manifest} src={src} fit={fit} positionX={focusX} blurFill={blurFill} progress={progress} />
             )}
           </div>
         )}
