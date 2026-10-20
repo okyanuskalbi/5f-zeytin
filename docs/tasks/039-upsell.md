@@ -34,4 +34,12 @@ Sepette ilgili ürün önerisini ve miktar indirimi sunumunu kur.
 - Kullanıcı yerine açık karar verme; gizli bilgi commit etme; onaysız görseli yayınlama.
 - Gerçek ödeme, üretim DB değişikliği, canlı e-posta veya domain mutasyonu için bu taslağı tek başına yetki sayma.
 
+## Coder Notu
+
+- Başlangıç `main`, temiz çalışma ağacı; 036/037/038 task dosyaları `TAMAMLANDI`. PLAN/AGENTS/bağımlılıklar, ECC `frontend-patterns`, `accessibility`, `tdd-workflow`, yerel Next.js `use-client`, `use-router` ve Playwright belgeleri okundu. ECC kuralı gereği salt okunur TDD denetimi alındı.
+- Onaylı ilişki/aktif ürün listesi ve indirim eşik/oran yapılandırması yok. Task'ın 2. adımı uyarınca varsayılan hiçbir teklif gösterilmeyecek; opsiyonel sunum prop'ları yalnız verilmiş yapılandırmayı kullanacak. Test fixture'ındaki örnek ilişki/eşik/oranlar gerçek karar veya runtime verisi değildir. Sunucu fiyat hesaplaması 054/055 kapsamındadır; bu görevde indirim uygulanmaz.
+- 21st MCP search/get_component ile [Product Listing Card](https://21st.dev/@shadcnstore/components/product-card-1) (28227) incelendi. Başlık/fiyat/ekleme eylemi AFİNA tokenlarına uyarlanacak. Resmi `npm_config_cache="$PWD/.cache/npm" npx shadcn@latest docs button` **exit 0**; mevcut Button kullanılacak, yeni paket/skill/animasyon/görsel gerekmiyor.
+- Test desteği olarak `tests/e2e/fixtures/upsell.{html,tsx}` eklendi; önceki görevlerin Vite/Playwright yöntemini izler. Public test rotası eklenmez. Mevcut 3004 süreci korunur; commit dışı `.cache/task-039/playwright.config.ts` bu checkout'un production build'ini **localhost:3039** üzerinde ve aynı 12 tarayıcı/viewport projesiyle kullanır.
+- TDD RED: `PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" npm run test:e2e -- tests/e2e/upsell.spec.ts --config .cache/task-039/playwright.config.ts --project chromium-320 --grep 'approved relations'` → **exit 1**, test çalıştı; beklenen tek öneri yerine **0** listitem bulundu (henüz uygulama yok). İlk macOS MachPort süreç kısıtı süreç izniyle giderildi; ortam hatası RED sayılmadı. Kabul ve uygulama sürüyor.
+
 ## Durum: BEKLİYOR
