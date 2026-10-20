@@ -1,9 +1,7 @@
 import { readFileSync } from "node:fs";
 import { cleanup, render, screen, within } from "@testing-library/react";
-import { afterEach, expect, it, vi } from "vitest";
+import { afterEach, expect, it } from "vitest";
 import Home from "@/app/page";
-
-vi.mock("next/font/local", () => ({ default: () => ({ variable: "font-hero" }) }));
 
 const titles = ["Hasat", "Seçim", "Kırma", "Salamura", "Dolum", "Sofrada"];
 afterEach(cleanup);

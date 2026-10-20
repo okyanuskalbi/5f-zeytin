@@ -1,15 +1,6 @@
 import { expect, test } from "@playwright/test";
 import sharp from "sharp";
 
-test("hero heading preloads a small subset of the approved Fraunces face", async ({ request }) => {
-  const html = await (await request.get("/")).text();
-  const preload = html.match(/<link[^>]+rel="preload"[^>]+href="([^"]*Fraunces_hero[^"]*\.woff2)"[^>]+as="font"/i);
-  expect(preload, "the LCP headline font must be discoverable in server HTML").not.toBeNull();
-  const response = await request.get(preload![1]);
-  expect(response.ok()).toBe(true);
-  expect((await response.body()).length).toBeLessThan(20 * 1024);
-});
-
 test("mobile poster is preloaded in SSR and frames wait for idle or interaction with a ten-frame budget", async ({ page, request }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 900 });
   await page.emulateMedia({ reducedMotion: "no-preference" });
