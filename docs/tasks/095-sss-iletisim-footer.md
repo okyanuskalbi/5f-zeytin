@@ -93,4 +93,7 @@ PLAYWRIGHT_PORT=3114 npx playwright test tests/e2e/cart-wire.spec.ts tests/e2e/c
 | Kontrast ≥4,5:1 | `style-audit.json` | Yeşil/fildişi **10,87:1**, gövde/kağıt **17,25:1**, açıklama/kağıt **5,95:1** |
 | Yasak liste taraması | Lint, inspect ve görüntüler | Mor degrade, emoji, glass/blur yığını, stok 3D veya boş medya yer tutucusu yok |
 
-## Durum: BEKLİYOR
+## Claude kararı (20 Eki)
+Bölüm kabul (222 unit, 30 bölüm e2e, 220 regresyon, inspect 0 FAIL). Toptan form bağlantısı 081'de, FAQPage/schema üreticisi 074→087'de tamamlanır; genel shell/hukuk/coverage maddeleri 097 kapısında.
+
+## Durum: TAMAMLANDI
