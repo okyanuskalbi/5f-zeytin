@@ -44,8 +44,8 @@ test("product cards: catalog, quantity limits, pending/error/retry, empty, stock
     }
     await expect(cards.first().getByText("500 g", { exact: true })).toBeVisible();
     await expect(cards.first().getByText("125,50 ₺", { exact: true })).toBeVisible();
-    await expect(cards.first().getByRole("button", { name: "Sepete ekle", exact: true })).toBeDisabled();
-    await expect(cards.first().getByText("Sepete ekleme henüz kullanıma açık değil.")).toBeVisible();
+    await expect(cards.first().getByRole("button", { name: "Sepete ekle", exact: true })).toBeEnabled();
+    await expect(cards.first().getByText("Sepete ekleme henüz kullanıma açık değil.")).toHaveCount(0);
     await expect(catalog.getByText(/%100 organik|%100 doğal|temsili/i)).toHaveCount(0);
     await expect(catalog.getByRole("img")).toHaveCount(0);
     expect(mediaRequests.some((url) => url.includes("/images/generated/"))).toBe(false);

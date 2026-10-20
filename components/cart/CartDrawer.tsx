@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, useSyncExternalStore, type JSX, type ReactElement } from "react";
+import { useEffect, useId, useRef, useState, useSyncExternalStore, type JSX, type ReactElement, type RefObject } from "react";
 import Link from "next/link";
 import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,8 @@ type CartDrawerProps = {
   onOpenChange: (open: boolean) => void;
   /** Optional local trigger; Task 038 can also open the drawer from its provider. */
   trigger?: ReactElement;
+  /** Explicit external opener also restores mouse focus correctly in Safari. */
+  returnFocusRef?: RefObject<HTMLElement | null>;
 };
 
 const money = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -24,7 +26,7 @@ function formatPrice(kurus: number): string { return `${money.format(kurus / 100
 
 // Adapted from 21st efferd/Drawer — Shopping Cart (4485): header, scrollable
 // lines and footer. Reuse AFİNA's Radix Dialog instead of adding another modal.
-export function CartDrawer({ store, products, open, onOpenChange, trigger }: CartDrawerProps): JSX.Element {
+export function CartDrawer({ store, products, open, onOpenChange, trigger, returnFocusRef }: CartDrawerProps): JSX.Element {
   const state = useSyncExternalStore(store.subscribe, store.getSnapshot, store.getServerSnapshot);
   const id = useId();
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -68,12 +70,13 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger }: Car
         onOpenAutoFocus={(event) => {
           event.preventDefault();
           // Also cover programmatic opens, whose opener is outside DialogTrigger.
-          if (!openerRef.current) openerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+          if (!openerRef.current) openerRef.current = returnFocusRef?.current ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null);
           closeRef.current?.focus();
         }}
         onCloseAutoFocus={(event) => {
           const opener = openerRef.current;
           openerRef.current = null;
+          if (returnFocusRef) returnFocusRef.current = null;
           if (opener?.isConnected && opener !== document.body) {
             event.preventDefault();
             opener.focus();

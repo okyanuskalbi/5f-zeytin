@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Menu, ShoppingBag, UserRound } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/components/cart/CartProvider";
 import {
   Dialog, DialogClose, DialogContent, DialogDescription,
   DialogHeader, DialogTitle, DialogTrigger,
@@ -21,6 +22,8 @@ const links = [
 const navLink = "inline-flex min-h-11 items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring";
 
 export function Navbar(): JSX.Element {
+  const cart = useCart();
+  const itemCount = cart?.state.items.reduce((count, item) => count + item.quantity, 0) ?? 0;
   const [isOpen, setIsOpen] = useState(false);
   const homeRef = useRef<HTMLAnchorElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
@@ -66,8 +69,17 @@ export function Navbar(): JSX.Element {
           <Button asChild variant="ghost" size="icon">
             <Link href="/hesabim" aria-label="Hesabım"><UserRound aria-hidden="true" /></Link>
           </Button>
-          <Button asChild variant="ghost" size="icon">
-            <Link href="/sepet" aria-label="Sepetim"><ShoppingBag aria-hidden="true" /></Link>
+          <Button variant="ghost" size="icon" className="relative"
+            aria-label={`Sepetim, ${itemCount} adet`} aria-haspopup="dialog" aria-expanded={cart?.open ?? false}
+            disabled={!cart?.state.hydrated || cart.products === null}
+            onClick={(event) => cart?.openCart(event.currentTarget)}>
+            <ShoppingBag aria-hidden="true" />
+            {/* Adapted from 21st sebafermanelli/Count Badge (37460). The button
+                names the exact count; the capped visual badge is decorative. */}
+            {itemCount > 0 && <span data-slot="count-badge" aria-hidden="true"
+              className="pointer-events-none absolute -top-1 -right-1 inline-flex min-h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground ring-2 ring-background">
+              {itemCount > 99 ? "99+" : itemCount}
+            </span>}
           </Button>
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>

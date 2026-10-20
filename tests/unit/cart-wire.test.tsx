@@ -1,4 +1,4 @@
-import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, renderHook, screen } from "@testing-library/react";
 import { renderToString } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { CartProvider, useCart } from "@/components/cart/CartProvider";
@@ -58,10 +58,8 @@ describe("global cart owner", () => {
 
   it("rejects cumulative stock overflow without opening or changing saved intent", () => {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify([{ productId: "olive", quantity: 3 }]));
-    let add!: (productId: string, quantity: number) => void;
-    function Access() { add = useCart()!.addItem; return <Consumer />; }
-    render(<CartProvider products={products}><Access /></CartProvider>);
-    expect(() => act(() => add("olive", 1))).toThrow(RangeError);
+    const { result } = renderHook(() => useCart(), { wrapper: ({ children }) => <CartProvider products={products}>{children}<Consumer /></CartProvider> });
+    expect(() => act(() => result.current!.addItem("olive", 1))).toThrow(RangeError);
     expect(screen.queryByRole("dialog")).toBeNull();
     expect(screen.getByRole("status", { name: "Adet" }).textContent).toBe("3");
   });
@@ -78,5 +76,12 @@ describe("global cart owner", () => {
   it("supports standalone consumers without creating another store", () => {
     render(<Consumer />);
     expect(screen.getByText("Bağlantısız")).toBeDefined();
+  });
+
+  it("rejects actions until the catalog is available", () => {
+    const { result } = renderHook(() => useCart(), { wrapper: ({ children }) => <CartProvider products={null}>{children}</CartProvider> });
+    act(() => result.current!.openCart());
+    expect(result.current!.open).toBe(false);
+    expect(() => act(() => result.current!.addItem("olive", 1))).toThrow("Katalog yüklenemedi");
   });
 });

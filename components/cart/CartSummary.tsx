@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Minus, Plus, RefreshCw, ShoppingBag, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { createCartStore } from "@/lib/cart/store";
+import { useCart } from "@/components/cart/CartProvider";
 import type { CartStore } from "@/lib/cart/types";
 import type { Product } from "@/types/catalog";
 
@@ -20,12 +20,13 @@ type CartSummaryProps = {
 const money = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 function formatPrice(kurus: number): string { return `${money.format(kurus / 100)} ₺`; }
 
-/** Route-local owner until Task 038 supplies the global cart owner. */
+/** The route, navbar, product cards and drawer share the layout's owner. */
 export function CartPage({ products }: { products: readonly Product[] | null }): JSX.Element {
-  const [store] = useState(() => createCartStore({ products: products ?? [] }));
+  const cart = useCart();
   const router = useRouter();
   const [refreshing, startTransition] = useTransition();
-  return <CartSummary store={store} products={products} refreshing={refreshing}
+  if (!cart) throw new Error("CartPage requires CartProvider.");
+  return <CartSummary store={cart.store} products={products} refreshing={refreshing}
     onRefresh={() => startTransition(() => { router.refresh(); })} />;
 }
 

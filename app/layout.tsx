@@ -3,6 +3,9 @@ import { Figtree, Fraunces } from "next/font/google";
 import type { JSX, ReactNode } from "react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
+import { CartProvider } from "@/components/cart/CartProvider";
+import { getProducts } from "@/lib/catalog/static-products";
+import type { Product } from "@/types/catalog";
 import "./globals.css";
 
 const displayFont = Fraunces({
@@ -35,9 +38,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
-}: Readonly<{ children: ReactNode }>): JSX.Element {
+}: Readonly<{ children: ReactNode }>): Promise<JSX.Element> {
+  let products: readonly Product[] | null;
+  try { products = await getProducts(); } catch { products = null; }
   return (
     <html lang="tr" className={`${displayFont.variable} ${bodyFont.variable}`}>
       <body>
@@ -47,11 +52,13 @@ export default function RootLayout({
         >
           Ana içeriğe geç
         </a>
+        <CartProvider products={products}>
         <Navbar />
         <div id="ana-icerik" tabIndex={-1} className="scroll-mt-28 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring">
           {children}
         </div>
         <Footer />
+        </CartProvider>
       </body>
     </html>
   );

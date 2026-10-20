@@ -38,7 +38,7 @@ describe("ZEYTİN bootstrap", () => {
     const { default: RootLayout } = await import("../../app/layout");
 
     const html = renderToStaticMarkup(
-      createElement(RootLayout, null, createElement("p", null, "İçerik")),
+      await RootLayout({ children: createElement("p", null, "İçerik") }),
     );
 
     expect(new DOMParser().parseFromString(html, "text/html").documentElement.lang).toBe("tr");

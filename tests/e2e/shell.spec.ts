@@ -27,7 +27,7 @@ test("shell exposes navigation, official copy and destination contracts at every
   await expect(footer).toBeVisible();
   await expect(page.getByRole("main")).toHaveCount(1);
   await expect(header.getByRole("link", { name: "Afina Zeytin ana sayfa" })).toHaveAttribute("href", "/");
-  await expect(header.getByRole("link", { name: "Sepetim" })).toHaveAttribute("href", "/sepet");
+  await expect(header.getByRole("button", { name: "Sepetim, 0 adet" })).toHaveAttribute("aria-haspopup", "dialog");
   await expect(header.getByRole("link", { name: "Hesabım" })).toHaveAttribute("href", "/hesabim");
   await expect(footer.getByText("Toprağın sunduğu lezzet, Afina’nın özeniyle.")).toBeVisible();
   await expect(page.getByText("Kökü toprakta. Yeri sofrada.", { exact: true })).toHaveCount(1);

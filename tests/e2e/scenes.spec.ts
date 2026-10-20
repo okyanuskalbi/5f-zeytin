@@ -108,7 +108,7 @@ test("landing composes ordered hero, story and product scenes with visible SSR c
   const cards = page.locator("#urunler article");
   expect(await cards.locator("h3").allTextContents()).toEqual(["Sofralık Zeytin", "Salamura Zeytin", "Zeytinyağı"]);
   await expect(cards.first().getByText("125,50 ₺", { exact: true })).toBeVisible();
-  await expect(cards.first().getByRole("button", { name: "Sepete ekle", exact: true })).toBeDisabled();
+  await expect(cards.first().getByRole("button", { name: "Sepete ekle", exact: true })).toBeEnabled();
   await expect(cards.nth(1).getByText("Tükendi", { exact: true })).toBeVisible();
   await page.screenshot({ path: testInfo.outputPath("scenes.png"), fullPage: true });
   expect(errors).toEqual([]);

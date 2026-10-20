@@ -4,12 +4,13 @@ import { useId, useRef, useState, type JSX, type SubmitEvent } from "react";
 import { Minus, Plus, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProductCardMotion } from "@/components/catalog/ProductCardMotion";
+import { useCart } from "@/components/cart/CartProvider";
 import type { Product } from "@/types/catalog";
 
 type ProductCardProps = {
   product: Product | null;
   loading?: boolean;
-  /** Supply from a client cart consumer in Task 038; never send a browser price. */
+  /** Optional standalone callback; the application uses its shared cart owner. */
   onAddToCart?: (productId: string, quantity: number) => void | Promise<void>;
 };
 
@@ -37,6 +38,8 @@ export function ProductCard({ product, loading = false, onAddToCart }: ProductCa
 }
 
 function PurchaseCard({ product, onAddToCart }: { product: Product; onAddToCart: ProductCardProps["onAddToCart"] }): JSX.Element {
+  const cart = useCart();
+  const canAdd = !!onAddToCart || !!(cart?.products && cart.state.hydrated);
   const id = useId();
   const [quantity, setQuantity] = useState("1");
   const [pending, setPending] = useState(false);
@@ -56,7 +59,7 @@ function PurchaseCard({ product, onAddToCart }: { product: Product; onAddToCart:
 
   async function addToCart(event: SubmitEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
-    if (soldOut || !onAddToCart || submitting.current) return;
+    if (soldOut || !canAdd || submitting.current) return;
     if (!validQuantity) {
       setInvalidQuantity(true);
       setFeedback({ error: true, message: `Adet 1 ile ${product.stock} arasında tam sayı olmalı.` });
@@ -67,7 +70,8 @@ function PurchaseCard({ product, onAddToCart }: { product: Product; onAddToCart:
     setPending(true);
     setFeedback({ error: false, message: "" });
     try {
-      await onAddToCart(product.id, amount);
+      if (onAddToCart) await onAddToCart(product.id, amount);
+      else cart!.addItem(product.id, amount, event.nativeEvent.submitter instanceof HTMLElement ? event.nativeEvent.submitter : undefined);
       setFeedback({ error: false, message: `${amount} adet ürün sepete eklendi.` });
     } catch {
       setFeedback({ error: true, message: "Ürün sepete eklenemedi. Tekrar deneyin." });
@@ -105,11 +109,11 @@ function PurchaseCard({ product, onAddToCart }: { product: Product; onAddToCart:
             disabled={pending || soldOut || !validQuantity || amount >= product.stock}
             onClick={() => changeQuantity(String(amount + 1))}><Plus aria-hidden="true" /></Button>
         </div>
-        <Button type="submit" className="w-full" disabled={pending || soldOut || !onAddToCart}
-          aria-describedby={!onAddToCart && !soldOut ? `${id}-unavailable` : undefined}>
+        <Button type="submit" className="w-full" disabled={pending || soldOut || !canAdd}
+          aria-describedby={!canAdd && !soldOut ? `${id}-unavailable` : undefined}>
           <ShoppingBag aria-hidden="true" />{pending ? "Ekleniyor…" : "Sepete ekle"}
         </Button>
-        {!onAddToCart && !soldOut && (
+        {!canAdd && !soldOut && (
           <p id={`${id}-unavailable`} className="text-sm text-muted-foreground">Sepete ekleme henüz kullanıma açık değil.</p>
         )}
         <p id={`${id}-feedback`} role={feedback.error ? "alert" : "status"}
