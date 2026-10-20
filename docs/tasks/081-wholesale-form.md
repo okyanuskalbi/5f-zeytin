@@ -93,4 +93,7 @@ Perakende satışın yanında resmi toptan CTA’sını ve erişilebilir talep f
 
 Form uygulaması ve kendi davranış kontrolleri tamamlandı. **Zorunlu standart build kabulü geçmediği için görev TAMAMLANDI sayılmadı; BEKLİYOR bırakıldı.** Eksik orijinal tesis fotoğrafı repoya taşınmadı; kaynak gizlilik/onay kaydı, manifest ve görev dışı dosyalar kendiliğinden değiştirilmedi. Bu kaynak/manifest uyuşmazlığı kendi kapsamında giderildikten sonra standart kabul zinciri tekrar çalıştırılmalıdır. Gerçek gönderim 082'ye aittir; runtime submit kapalı, sahte başarı veya gerçek e-posta/DB işlemi yoktur.
 
-## Durum: BEKLİYOR
+## Claude kararı (20 Eki)
+Form kabul (91 e2e + 78 regresyon + 23 unit). Build hatası Claude'un plakalı kaynağı kaldırmasından kaynaklıydı; `11e0d8e` ile onarıldı (check:assets PASS, build PASS). Gerçek gönderim 082 (e-posta servisi kararı).
+
+## Durum: TAMAMLANDI
