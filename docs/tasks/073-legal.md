@@ -35,4 +35,11 @@ Kullanıcı tarafından onaylanacak hukuk metinlerini sayfala.
 - Kullanıcı yerine açık karar verme; gizli bilgi commit etme; onaysız görseli yayınlama.
 - Gerçek ödeme, üretim DB değişikliği, canlı e-posta veya domain mutasyonu için bu taslağı tek başına yetki sayma.
 
+## Coder Notu
+
+- Başlangıç kontrolü (20 Ekim 2026): `main`, temiz çalışma ağacı; bağımlı Task 024 `TAMAMLANDI`. PLAN açık karar 7 ve resmi `docs/referans/icerik.md` kontrol edildi. Tam şirket unvanı/adresi/iletişimi ve kullanıcı onaylı KVKK, mesafeli satış, iade metinleri repoda bulunmuyor. Bu engel uygulama başlamadan kaydedildi. Adım 2'nin izin verdiği açık taslak sayfalar hazırlanabilir; gerçek hukuk içerikleri uydurulamaz ve bu bilgiler gelmeden görev tamamlanmış sayılamaz.
+- Checkout (`app/odeme`) ve toptan talep formu bu checkout'ta henüz uygulanmamış. Bu akışlardaki bağlantı kabulü 046/081 uygulamaları olmadan doğrulanamaz; task dışı form veya ödeme uygulaması eklenmez. Mevcut footer bağlantıları üç hukuk sayfası için doğrulanacaktır.
+- Araçlar: `frontend-patterns`, `accessibility` ve AGENTS TDD kuralı için `tdd-workflow` okundu. Yerel Next.js 16.4.2 sayfa/layout ve metadata kılavuzları incelendi. 21st MCP `search` + `get_component` ile [Privacy Policy Collapsible Card](https://21st.dev/@cnippet-dev/components/v-collapsible-15) (24952) alındı; başlık ve bölümlere ayrılan kart düzeni AFİNA tokenlarına uyarlanacak. Örneğin hukuk metni kopyalanmaz; taslak içeriği sürekli görünür tutulur. Ek skill/paket/shadcn bileşeni gerekmedi.
+- TDD / RED: `PLAYWRIGHT_BASE_URL=http://localhost:3073 PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" npm run test:e2e -- tests/e2e/legal.spec.ts --project=chromium-320 --grep 'draft /kvkk' --output=.cache/task-073/red-results` → **exit 1; 1 test başarısız**, beklenen HTTP 200 yerine **404**. Test mevcut checkout'tan alınan production build üzerinde çalıştı. İlk macOS MachPort sandbox hatası süreç izniyle çözüldü; geçerli RED eksik sayfa davranışıdır. 3004 portundaki mevcut süreç korunarak ayrı 3073 portu kullanıldı.
+
 ## Durum: BEKLİYOR
