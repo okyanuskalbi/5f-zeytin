@@ -35,7 +35,7 @@ it("presents product slips with the existing quantity, stock and shared cart beh
 it("keeps the poster, official product scope and at most six slips without inventing images", async () => {
   vi.mocked(getProducts).mockResolvedValue(Array.from({ length: 7 }, (_, index) => ({ ...products[0], id: String(index), name: `Ürün ${index + 1}` })));
   render(await Home());
-  const showcase = within(screen.getByRole("region", { name: "Ürünlerimiz", exact: true }));
+  const showcase = within(screen.getByRole("region", { name: "Ürünlerimiz" }));
   expect(showcase.getAllByRole("article")).toHaveLength(6);
   expect(showcase.queryByText("Ürün 7")).toBeNull();
   expect(showcase.getByText(/Sofralık zeytin, salamura zeytin ve zeytinyağı/)).toBeDefined();
@@ -47,7 +47,7 @@ it("keeps the poster, official product scope and at most six slips without inven
 it("retains a readable empty catalog destination", async () => {
   vi.mocked(getProducts).mockResolvedValue([]);
   render(await Home());
-  const showcase = within(screen.getByRole("region", { name: "Ürünlerimiz", exact: true }));
+  const showcase = within(screen.getByRole("region", { name: "Ürünlerimiz" }));
   expect(showcase.getByRole("status").textContent).toContain("Görüntülenecek ürün bulunmuyor.");
   expect(showcase.queryByRole("article")).toBeNull();
 });
