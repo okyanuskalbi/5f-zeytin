@@ -46,4 +46,25 @@ Erişilebilir sepet drawer arayüzünü kur.
 - Klavye odağı açılışta kapatma düğmesine taşınır; Escape, kapatma, dış alan ve alışverişe devam ile geri verilir. Satır silinmeden önce odak kapatma düğmesine alınır. Kayıt hatasında sepet bellekte kullanılabilir; stok kaynaklı düzenleme hatası canlı uyarıyla görünür ve yeniden denenebilir.
 - İlk GREEN: RED ile aynı E2E hedefi `--project=chromium-320` (grep olmadan) → **exit 0; 4/4 başarılı, 2,5 sn**. İlk tarayıcı başlatmasındaki macOS MachPort izin hatası süreç izniyle giderildi. Ara test açık `aria-modal` niteliğini doğrulayınca bileşene eklendi; ikinci motion turunda etkinleşen azalt düğmesi klavye testinin sırasına dahil edildi. `npm run lint && npm run typecheck` → **exit 0**. Tüm tarayıcılar ve production build kabulü henüz sürüyor.
 
-## Durum: BEKLİYOR
+### Nihai kabul — 20 Ekim 2026
+
+- TDD kanıtı: `7df134a` RED, `b4aa619` ilk GREEN; ikisi de aktif `main` geçmişindedir. Tam matris ilk koşuda **40 başarılı / 8 WebKit başarısız** ile Safari'nin tıklanan düğmeye odak vermemesini yakaladı. Trigger ref'i açılışta açıkça kaydedilerek kapanışta doğru düğmeye dönülmesi düzeltildi. Safari klavye testi sınırdaki Radix odak döngüsünü `Shift+Tab`/`Tab`, ara kontrolleri macOS `Alt+Tab` ile doğrular. Dışarıdan kontrollü açılış da önceki odağa döner.
+- CTA testleri `/sepet` ve `/odeme` href'lerini ve gerçek tıklama sonrası URL değişimini doğrular; hedef yanıtları yalnız testte karşılanır. Böylece gelecekteki sayfaların mevcut 404/prefetch döngüsü drawer kabulüne karışmaz. Bu test, 037/046 uygulamasını veya gerçek ödeme başarısını kanıtlamaz. Uygulamadaki CTA'lar normal Next Link'tir.
+
+| Komut / test garantisi | Sonuç |
+| --- | --- |
+| `CART_DRAWER_COVERAGE=1 PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" npm run test:e2e -- tests/e2e/cart-drawer.spec.ts tests/e2e/shell.spec.ts tests/e2e/tokens.spec.ts --config .cache/task-036/playwright.config.ts` | **exit 0; 120/120, 52,7 sn**: drawer **48**, shell **60**, mevcut Dialog/Button/token regresyonları **12**. Chromium/Firefox/WebKit × 320/390/768/1440. |
+| Drawer normal durumlar | Adet artırma/azaltma, alt/üst stok sınırı, kuruş bazlı tahmini ara toplam, yenileme sonrası adet, silme sonrası güvenli odak, boş sepet ve devre dışı ödeme, iki CTA hedefi **PASS**. |
+| Drawer hata ve erişilebilirlik | Bozuk/okunamayan/yazılamayan localStorage, bellekte düzenleme ve kayda toparlanma; eski stoktan gelen hata/yeniden deneme; katalogdan kaldırılan satır; modal ad/açıklama, arka plan izolasyonu, odak tuzağı, Escape/düğme/dış alan/devam ile kapanış, tetikleyiciye odak dönüşü; normal/reduced-motion **PASS**. |
+| Dar/kısa ekran | Altı satır ve uzun ürün adlarıyla her genişlikte **480 px yükseklik**, liste kaydırması, ödeme CTA görünürlüğü, yatay taşma olmaması ve tüm eylemlerde ≥44 px hedef **PASS**. |
+| `npm run lint && npm run typecheck && npm run build` | **exit 0**; ESLint sıfır uyarı, TypeScript ve Next.js 16.4.2 production build başarılı. Prebuild varlık kontrolü **14/14 PASS**. Son Safari/test düzenlemesi bu koşumda dahildir. |
+| `npm run test` | **exit 0; 126/126**, 4 dosya. Sepet store regresyonu dahil; ayrıca `npm run test -- tests/unit/cart-state.test.ts` **55/55**. |
+| `node .cache/task-036/check-coverage.mjs .cache/task-036/results.json` | **exit 0**; 16 Chromium V8 kaydı/source map gerçek `CartDrawer.tsx` kaynağına eşlendi: satır **%96,42**, statement **%96,96**, fonksiyon **%94,11**, dal **%87,23**. Dört eşik de ≥%80; kapsam dışı dosyalar bu ölçüme katılmadı. |
+| `node .cache/task-036/verify-results.mjs` | **exit 0**; hedef **localhost:3036**, **12** proje, dosya bazında **48/60/12**; **0 başarısız, 0 atlanan, 0 flaky**, her test tek deneme. |
+| `git diff --check` | **exit 0**. |
+
+- JSON raporu `.cache/task-036/results.json`, ekranlar `.cache/task-036/results/`, kapsam özeti `.cache/task-036/coverage-summary.json` altında yerel ve commit dışıdır. Masaüstü dolu, mobil boş ve 320×480 ekran görüntüleri açılarak incelendi; CTA ve kaydırma alanları erişilebilir. `CART_DRAWER_COVERAGE` yalnız isteğe bağlı test ölçümüdür; uygulama env sözleşmesi değildir.
+- Production build'in otomatik değiştirdiği `next-env.d.ts` başlangıç içeriğine döndürüldü. Görev kodu/testleri ve bu dosyanın Coder Notu/Durum alanları dışında değişiklik yok. PLAN, diğer task'lar, görseller, `_legacy/`, servis/DB/auth/ödeme/yayın ayarları korunur.
+- **Task 036 kapsamında kalan engel yok.** Bileşen mevcut store'u prop olarak tüketir; global provider/layout ve ürün/navigasyon bağlantısı 038'e bırakıldı. Canlı yayın veya tahsilat doğrulaması yapılmadı.
+
+## Durum: TAMAMLANDI

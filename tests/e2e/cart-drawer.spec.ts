@@ -16,7 +16,7 @@ test.beforeAll(async () => {
   const result = await build({
     configFile: false, root, base: "/__cart-drawer-fixture/", publicDir: false, logLevel: "error",
     resolve: { alias: { "@": root } },
-    build: { write: false, rollupOptions: { input: fileURLToPath(new URL("fixtures/cart-drawer.html", import.meta.url)) } },
+    build: { write: false, sourcemap: !!process.env.CART_DRAWER_COVERAGE, rollupOptions: { input: fileURLToPath(new URL("fixtures/cart-drawer.html", import.meta.url)) } },
   });
   const bundle = Array.isArray(result) ? result[0] : result;
   if (!("output" in bundle)) throw new Error("Expected a completed fixture bundle.");
@@ -26,14 +26,30 @@ test.beforeAll(async () => {
   html = [...assets.keys()].find((name) => name.endsWith("cart-drawer.html"))!;
 });
 
-test.beforeEach(async ({ page, baseURL }, testInfo) => {
+test.beforeEach(async ({ page, baseURL, browserName }, testInfo) => {
+  if (process.env.CART_DRAWER_COVERAGE && browserName === "chromium") {
+    await page.coverage.startJSCoverage({ resetOnNavigation: false });
+  }
   testInfo.annotations.push({ type: "target-host", description: new URL(baseURL!).host });
+  // The destination pages belong to later tasks; isolate the drawer's navigation
+  // from their current 404 shell and its unrelated Next prefetch lifecycle.
+  await page.route(/\/(sepet|odeme)$/, (route) => route.fulfill({
+    contentType: "text/html", body: "<!doctype html><html lang='tr'><title>CTA test hedefi</title><main>CTA test hedefi</main></html>",
+  }));
   await page.route("**/__cart-drawer-fixture/**", async (route) => {
     const name = new URL(route.request().url()).pathname.replace("/__cart-drawer-fixture/", "") || html;
     const body = assets.get(name);
     await route.fulfill({ status: body ? 200 : 404, body: body ?? "Unknown test asset", contentType:
       name.endsWith(".js") ? "application/javascript" : name.endsWith(".css") ? "text/css" : "text/html" });
   });
+});
+
+test.afterEach(async ({ page, browserName }, testInfo) => {
+  if (process.env.CART_DRAWER_COVERAGE && browserName === "chromium") {
+    const coverage = (await page.coverage.stopJSCoverage()).filter((entry) => entry.url.includes("/__cart-drawer-fixture/"));
+    const sourceMaps = Object.fromEntries([...assets].filter(([name]) => name.endsWith(".map")));
+    await testInfo.attach("drawer-v8-coverage", { body: JSON.stringify({ coverage, sourceMaps }), contentType: "application/json" });
+  }
 });
 
 async function loadCart(page: Page, mode = "normal", items: unknown = initialItems): Promise<void> {
@@ -84,7 +100,7 @@ test("cart drawer: quantity, limits, persistence, removal, empty state and CTA d
   await expect(dialog.getByRole("link", { name: "Ödemeye geç" })).toHaveAttribute("href", "/odeme");
   await dialog.getByRole("link", { name: "Sepeti görüntüle" }).click();
   await expect(page).toHaveURL(/\/sepet$/);
-  // These routes belong to Tasks 037/046; this test verifies navigation, not checkout.
+  // Test-only destination responses verify navigation, not checkout readiness.
   await page.goto("/__cart-drawer-fixture/");
   await page.getByRole("button", { name: "Sepeti aç", exact: true }).click();
   await expect(olive.getByRole("status", { name: "Adet" })).toHaveText("2");
@@ -124,9 +140,9 @@ test("cart drawer: keyboard focus trap, all dismissal paths, external opener and
     await expect(dialog).toHaveAttribute("aria-modal", "true");
     await expect(dialog).toHaveAccessibleDescription(/Ürünlerinizi/);
     await expect(page.getByRole("main")).toHaveCount(0);
-    await page.keyboard.press(`Shift+${nextControl}`);
+    await page.keyboard.press("Shift+Tab");
     await expect(last).toBeFocused();
-    await page.keyboard.press(nextControl);
+    await page.keyboard.press("Tab");
     await expect(first).toBeFocused();
     expect(await first.evaluate((element) => parseFloat(getComputedStyle(element).outlineWidth))).toBeGreaterThanOrEqual(2);
     if (reducedMotion === "reduce") {

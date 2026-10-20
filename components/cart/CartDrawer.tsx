@@ -27,6 +27,7 @@ function formatPrice(kurus: number): string { return `${money.format(kurus / 100
 export function CartDrawer({ store, products, open, onOpenChange, trigger }: CartDrawerProps): JSX.Element {
   const state = useSyncExternalStore(store.subscribe, store.getSnapshot, store.getServerSnapshot);
   const id = useId();
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
   const [feedback, setFeedback] = useState({ error: false, message: "" });
@@ -56,22 +57,26 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger }: Car
 
   return (
     <Dialog open={open} onOpenChange={(nextOpen) => {
+      // Safari does not focus clicked buttons. Remember the trigger explicitly.
+      if (nextOpen) openerRef.current = triggerRef.current;
       setFeedback({ error: false, message: "" });
       onOpenChange(nextOpen);
     }}>
-      {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
+      {trigger && <DialogTrigger ref={triggerRef} asChild>{trigger}</DialogTrigger>}
       <DialogContent showCloseButton={false} aria-modal="true"
         className="top-0 right-0 left-auto flex h-dvh max-h-dvh w-[calc(100%-1rem)] max-w-md translate-x-0 translate-y-0 flex-col gap-0 overflow-hidden rounded-none border-y-0 border-r-0 p-0 sm:p-0"
         onOpenAutoFocus={(event) => {
           event.preventDefault();
           // Also cover programmatic opens, whose opener is outside DialogTrigger.
-          openerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+          if (!openerRef.current) openerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
           closeRef.current?.focus();
         }}
         onCloseAutoFocus={(event) => {
-          if (openerRef.current?.isConnected) {
+          const opener = openerRef.current;
+          openerRef.current = null;
+          if (opener?.isConnected && opener !== document.body) {
             event.preventDefault();
-            openerRef.current.focus();
+            opener.focus();
           }
         }}>
         <DialogHeader className="shrink-0 flex-row items-start justify-between gap-3 border-b p-5 pr-5">
