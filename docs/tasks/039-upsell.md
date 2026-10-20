@@ -46,4 +46,6 @@ Sepette ilgili ürün önerisini ve miktar indirimi sunumunu kur.
 
 - Salt okunur kod incelemesi, yenilemeyle stoğa giren önerinin store'un eski stok guard'ı nedeniyle sürekli reddedildiğini buldu. Ek RED: aynı E2E komutu `--project chromium-320 --grep 'newly restocked'` → **exit 1**; öneri görünmesine ve ekle tıklanmasına rağmen beklenen yeni sepet satırı oluşmadı. Güvenli stok guard güncellemesi uygulanmadan bu kanıt kaydedildi.
 
+- Regresyon GREEN: aynı E2E dosyası `--project chromium-320` → **exit 0; 8/8, 3,3 sn**. Öneriler yalnız tüm mevcut satırlar güncel katalog/stokla geçerliyken görünür; bu koşulda stok guard'ı yenilenerek yeniden stoklanan hedef eklenebilir. Geçersiz sepet satırları otomatik budanmaz; hata/yenilemede teklifler kapalı kalır.
+
 ## Durum: BEKLİYOR

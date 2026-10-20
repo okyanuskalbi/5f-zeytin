@@ -54,8 +54,11 @@ export function CartSummary({ store, products, onRefresh, refreshing = false, up
   const showOffers = knownSubtotal && lines.length > 0 && !refreshing;
 
   function addSuggestion(productId: string): void {
+    if (!showOffers) return;
     try {
-      // Do not reconcile here: an unsuccessful add must not prune other lines.
+      // Offers are hidden until every existing line matches current stock.
+      // Updating this guard therefore preserves lines and admits restocked IDs.
+      store.setProducts(products);
       store.addItem(productId, 1);
       headingRef.current?.focus();
       const name = products?.find((product) => product.id === productId)?.name;
