@@ -45,7 +45,7 @@ export function CartProvider({ products, children }: { products: readonly Produc
 
   return <CartContext.Provider value={{ store, state, products, open, openCart, addItem }}>
     {children}
-    {products !== null && <CartDrawer store={store} products={products} open={open} onOpenChange={setOpen} returnFocusRef={returnFocusRef} />}
+    {products !== null && state.hydrated && <CartDrawer store={store} products={products} open={open} onOpenChange={setOpen} returnFocusRef={returnFocusRef} />}
   </CartContext.Provider>;
 }
 

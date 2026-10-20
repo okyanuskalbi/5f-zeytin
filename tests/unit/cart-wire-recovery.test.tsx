@@ -1,4 +1,5 @@
 import { act, cleanup, renderHook } from "@testing-library/react";
+import { useEffect, useState, type ReactNode } from "react";
 import { afterEach, expect, it } from "vitest";
 import { CartProvider, useCart } from "@/components/cart/CartProvider";
 import { CART_STORAGE_KEY } from "@/lib/cart/store";
@@ -11,7 +12,7 @@ it("preserves unread intent when the real drawer mounts after catalog recovery",
   localStorage.setItem(CART_STORAGE_KEY, JSON.stringify([{ productId: "olive", quantity: 2 }]));
   let updateCatalog!: () => void;
   // Real CartDrawer effects are essential here: hydration must wait for stock.
-  function Wrapper({ children }: { children: React.ReactNode }) {
+  function Wrapper({ children }: { children: ReactNode }) {
     const [catalog, setCatalog] = useState<readonly Product[] | null>(null);
     useEffect(() => { updateCatalog = () => setCatalog(products); }, []);
     return <CartProvider products={catalog}>{children}</CartProvider>;
@@ -24,5 +25,3 @@ it("preserves unread intent when the real drawer mounts after catalog recovery",
   act(() => result.current!.addItem("olive", 1));
   expect(result.current!.state.items).toEqual([{ productId: "olive", quantity: 3 }]);
 });
-
-import { useEffect, useState } from "react";

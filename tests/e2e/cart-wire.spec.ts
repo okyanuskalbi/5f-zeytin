@@ -56,6 +56,7 @@ test("cumulative stock failure keeps the cart and quantity, then permits retry",
   await card(page).getByRole("button", { name: "Sepete ekle" }).click();
   await expect(drawer(page).getByRole("status", { name: "Adet" })).toHaveText("12");
   await page.keyboard.press("Escape");
+  await expect(card(page).getByRole("button", { name: "Sepete ekle" })).toBeFocused();
   await card(page).getByRole("spinbutton").fill("1");
   await card(page).getByRole("button", { name: "Sepete ekle" }).click();
   await expect(card(page).getByRole("alert")).toContainText("Ürün sepete eklenemedi");
@@ -68,6 +69,35 @@ test("cumulative stock failure keeps the cart and quantity, then permits retry",
   await page.keyboard.press("Escape");
   await card(page).getByRole("button", { name: "Sepete ekle" }).click();
   await expect(drawer(page).getByRole("status", { name: "Adet" })).toHaveText("12");
+});
+
+test("badge counts all quantities and mobile menu reaches the same restored cart", async ({ page }) => {
+  await page.addInitScript((key) => localStorage.setItem(key, JSON.stringify([
+    { productId: "sample-table-olive", quantity: 1, priceKurus: 1 },
+    { productId: "sample-olive-oil", quantity: 2 },
+    { productId: "unknown", quantity: 99 },
+  ])), CART_STORAGE_KEY);
+  await page.goto("/");
+  await expect(cartButton(page)).toHaveAccessibleName("Sepetim, 3 adet");
+  await expect(cartButton(page).locator('[data-slot="count-badge"]')).toHaveText("3");
+  const expected = [{ productId: "sample-table-olive", quantity: 1 }, { productId: "sample-olive-oil", quantity: 2 }];
+  expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), CART_STORAGE_KEY)).toEqual(expected);
+  if (page.viewportSize()!.width < 1024) {
+    await page.getByRole("button", { name: "Menüyü aç" }).click();
+    await page.getByRole("navigation", { name: "Mobil navigasyon" }).getByRole("link", { name: "Sepetim", exact: true }).click();
+  } else {
+    await cartButton(page).click();
+    await drawer(page).getByRole("link", { name: "Sepeti görüntüle" }).click();
+  }
+  await expect(page).toHaveURL(/\/sepet$/);
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await expect(line(page).getByRole("status", { name: "Adet" })).toHaveText("1");
+  await expect(page.getByRole("group", { name: "Zeytinyağı", exact: true }).getByRole("status", { name: "Adet" })).toHaveText("2");
+  await cartButton(page).click();
+  await expect(drawer(page).getByText("Ara toplam (tahmini) · 3 adet")).toBeVisible();
+  await expect(drawer(page).getByText("825,50 ₺", { exact: true })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(cartButton(page)).toBeFocused();
 });
 
 test("storage write failure keeps a single in-memory cart through client navigation", async ({ page }) => {

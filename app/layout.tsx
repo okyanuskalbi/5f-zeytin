@@ -53,11 +53,11 @@ export default async function RootLayout({
           Ana içeriğe geç
         </a>
         <CartProvider products={products}>
-        <Navbar />
-        <div id="ana-icerik" tabIndex={-1} className="scroll-mt-28 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring">
-          {children}
-        </div>
-        <Footer />
+          <Navbar />
+          <div id="ana-icerik" tabIndex={-1} className="scroll-mt-28 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring">
+            {children}
+          </div>
+          <Footer />
         </CartProvider>
       </body>
     </html>
