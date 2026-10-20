@@ -2,6 +2,7 @@ import type { JSX } from "react";
 import Image from "next/image";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import type { Product } from "@/types/catalog";
+import { heroPoster } from "@/lib/media/hero-poster";
 import styles from "./ProductShowcase.module.css";
 
 // Adapted from 21st shugar/Scroller (3927): an overflowing horizontal flex
@@ -10,8 +11,14 @@ import styles from "./ProductShowcase.module.css";
 export function ProductShowcase({ products }: { products: readonly Product[] }): JSX.Element {
   return <section id="urunler" data-scene="products" aria-labelledby="urunler-title"
     tabIndex={-1} className={styles.showcase}>
-    <Image src="/images/hero/zeytinlik-2400.webp" alt="" fill sizes="100vw"
-      className={styles.poster} />
+    <picture>
+      <source type="image/avif" media="(max-width: 767px) and (orientation: portrait)" srcSet={heroPoster.mobileSrcSet} sizes="100vw" />
+      <source type="image/webp" media="(max-width: 767px) and (orientation: portrait)" srcSet={heroPoster.mobileWebpSrcSet} sizes="100vw" />
+      <source type="image/avif" srcSet={heroPoster.desktopSrcSet} sizes="100vw" />
+      <source type="image/webp" srcSet={heroPoster.desktopWebpSrcSet} sizes="100vw" />
+      <Image src="/images/hero/zeytinlik-2400.webp" alt="" fill sizes="100vw" loading="lazy" fetchPriority="low"
+        className={styles.poster} />
+    </picture>
     <div data-showcase-copy="" className={styles.intro}>
       <h2 id="urunler-title" data-scene-reveal="">Ürünlerimiz</h2>
       <p data-scene-reveal="">Sofralık zeytin, salamura zeytin ve zeytinyağı; perakende ve toptan.</p>

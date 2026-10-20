@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type JSX, type KeyboardEvent, type PointerEvent } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { inView, useAnimate, useReducedMotion } from "motion/react";
+import { useDeferredEnhancement, usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
 import { Button } from "@/components/ui/button";
 import styles from "./Moments.module.css";
 
@@ -24,8 +24,8 @@ export function Moments(): JSX.Element {
   const rowRef = useRef<HTMLUListElement>(null);
   const drag = useRef<{ id: number; x: number; y: number; left: number } | null>(null);
   const [position, setPosition] = useState({ progress: 0, start: true, end: false });
-  const [scope, animate] = useAnimate<HTMLElement>();
-  const reduced = useReducedMotion();
+  const scope = useRef<HTMLElement>(null);
+  const reduced = usePrefersReducedMotion();
   const entered = useRef(false);
 
   const measure = useCallback((): void => {
@@ -90,49 +90,59 @@ export function Moments(): JSX.Element {
     return () => observer.disconnect();
   }, [measure]);
 
+  const enhanced = useDeferredEnhancement(scope, !reduced);
   useEffect(() => {
-    if (typeof window.matchMedia !== "function") return;
-    const root = scope.current;
-    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const layers = [...root.querySelectorAll<HTMLElement>("[data-moment-enter]")];
-    const animations: ReturnType<typeof animate>[] = [];
-    let disconnect: VoidFunction | undefined;
-    function stop(): void {
-      disconnect?.();
-      disconnect = undefined;
-      animations.splice(0).forEach(animation => animation.stop());
-      layers.forEach(layer => {
-        animate(layer, { y: 0 }, { duration: motionTokens.duration.instant });
-        layer.style.transform = "none";
-      });
-    }
-    function interrupt(): void { entered.current = true; stop(); }
-    function start(): void {
-      stop();
-      if (preference.matches || entered.current || navigator.hardwareConcurrency <= 4) return;
-      try {
-        disconnect = inView(root, () => {
-          if (entered.current || root.contains(document.activeElement)) return;
-          entered.current = true;
+    if (!enhanced) return;
+    let disposed = false;
+    let cleanup: VoidFunction | undefined;
+    void import("motion/react").then(({ animate, inView }) => {
+      if (disposed) return;
+      cleanup = (() => {
+        if (typeof window.matchMedia !== "function") return;
+        const root = scope.current!;
+        const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const layers = [...root.querySelectorAll<HTMLElement>("[data-moment-enter]")];
+        const animations: ReturnType<typeof animate>[] = [];
+        let disconnect: VoidFunction | undefined;
+        function stop(): void {
+          disconnect?.();
+          disconnect = undefined;
+          animations.splice(0).forEach(animation => animation.stop());
+          layers.forEach(layer => {
+            animate(layer, { y: 0 }, { duration: motionTokens.duration.instant });
+            layer.style.transform = "none";
+          });
+        }
+        function interrupt(): void { entered.current = true; stop(); }
+        function start(): void {
+          stop();
+          if (preference.matches || entered.current || navigator.hardwareConcurrency <= 4) return;
           try {
-            layers.forEach((layer, index) => animations.push(animate(layer, { y: [motionTokens.distance.md, 0] }, {
-              duration: motionTokens.duration.slow, delay: index * motionTokens.stagger, ease: motionTokens.easing.smooth,
-            })));
+            disconnect = inView(root, () => {
+              if (entered.current || root.contains(document.activeElement)) return;
+              entered.current = true;
+              try {
+                layers.forEach((layer, index) => animations.push(animate(layer, { y: [motionTokens.distance.md, 0] }, {
+                  duration: motionTokens.duration.slow, delay: index * motionTokens.stagger, ease: motionTokens.easing.smooth,
+                })));
+              } catch { stop(); }
+            }, { amount: 0.1 });
           } catch { stop(); }
-        }, { amount: 0.1 });
-      } catch { stop(); }
-    }
-    root.addEventListener("focusin", interrupt);
-    root.addEventListener("pointerdown", interrupt);
-    preference.addEventListener("change", start);
-    start();
-    return () => {
-      root.removeEventListener("focusin", interrupt);
-      root.removeEventListener("pointerdown", interrupt);
-      preference.removeEventListener("change", start);
-      stop();
-    };
-  }, [animate, reduced, scope]);
+        }
+        root.addEventListener("focusin", interrupt);
+        root.addEventListener("pointerdown", interrupt);
+        preference.addEventListener("change", start);
+        start();
+        return () => {
+          root.removeEventListener("focusin", interrupt);
+          root.removeEventListener("pointerdown", interrupt);
+          preference.removeEventListener("change", start);
+          stop();
+        };
+      })();
+    }).catch(() => { /* Optional motion leaves the SSR document available. */ });
+    return () => { disposed = true; cleanup?.(); };
+  }, [enhanced, scope]);
 
   return (
     <section ref={scope} id="topraktan-sofraya" data-scene="moments" data-moments-safe="" aria-labelledby="moments-title" className={styles.section}>

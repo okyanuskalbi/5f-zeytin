@@ -48,11 +48,12 @@ interface FrameLoaderOptions {
   src: string;
   width: number;
   count: number;
+  initialCount?: number;
   onLoad: () => void;
 }
 
 /** A demand-driven window: no timers, duplicate requests or eager full-sequence download. */
-export function createFrameLoader({ src, width, count, onLoad }: FrameLoaderOptions) {
+export function createFrameLoader({ src, width, count, initialCount = 15, onLoad }: FrameLoaderOptions) {
   const images = new Map<number, HTMLImageElement>();
   const loaded = new Map<number, HTMLImageElement>();
   let queue: number[] = [];
@@ -101,7 +102,7 @@ export function createFrameLoader({ src, width, count, onLoad }: FrameLoaderOpti
       else drain();
     },
     preloadInitial(): void {
-      enqueue(Array.from({ length: Math.min(lookAhead, count) }, (_, index) => index));
+      enqueue(Array.from({ length: Math.min(initialCount, count) }, (_, index) => index));
     },
     preloadAround(index: number): void {
       const target = Math.max(0, Math.min(count - 1, index));

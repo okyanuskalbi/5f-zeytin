@@ -1,0 +1,32 @@
+{
+  "source": "/images/hero/zeytinlik-2400.webp",
+  "sourceSha256": "f6d490617df356087f6fbbf88e761ed6d233e35d47f63b1f012cd1a3ededa3ff",
+  "fit": "cover",
+  "position": "right",
+  "files": [
+    {
+      "file": "/images/hero/optimized/mobile.avif",
+      "sha256": "54ac8c8e008fe15c5455567aff2058c3d91c1e96424eebfa35f7cc2c366724b8",
+      "width": 900,
+      "height": 1350
+    },
+    {
+      "file": "/images/hero/optimized/mobile.webp",
+      "sha256": "21d6e24042b5eb5ef808cbb883f73dc5c6a137d589fb8dae8fd9b56fba89358b",
+      "width": 900,
+      "height": 1350
+    },
+    {
+      "file": "/images/hero/optimized/desktop.avif",
+      "sha256": "eb7aa1522b9046d956a7e93d531369b69b9b891a757a546e018f63fb97e17efa",
+      "width": 2400,
+      "height": 1350
+    },
+    {
+      "file": "/images/hero/optimized/desktop.webp",
+      "sha256": "96927233134c5a0eafa658cd6e268736cd9c0741b2f82194ef9aa6b73929f4cf",
+      "width": 2400,
+      "height": 1350
+    }
+  ]
+}

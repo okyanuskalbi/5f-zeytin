@@ -54,7 +54,9 @@ test("confirmed FAQs stay open, channels stay absent and the contact/footer layo
   const stamp = footer.locator("[data-footer-stamp] img");
   await stamp.scrollIntoViewIfNeeded();
   await expect.poll(() => stamp.evaluate((node: HTMLImageElement) => node.complete && node.naturalWidth > 0)).toBe(true);
-  await expect(stamp).toHaveAttribute("src", "/images/hero/zeytinlik-1200.webp");
+  expect(new URL((await stamp.getAttribute("src"))!, page.url()).searchParams.get("url")).toBe("/images/hero/zeytinlik-1200.webp");
+  await expect(stamp).toHaveAttribute("loading", "lazy");
+  await expect(stamp).toHaveAttribute("sizes", "88px");
   await expect(footer).toContainText("AFİNA ZEYTİNCİLİK TARIM ÜRÜNLERİ SAN. VE TİC. LTD. ŞTİ. · Düziçi VD · VKN 0091520061");
   await expect(footer.getByRole("link", { name: "AFİNA Şirketler Topluluğu" })).toHaveAttribute("href", "https://afina.com.tr");
   const metrics = await page.evaluate(() => {

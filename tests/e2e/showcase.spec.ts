@@ -177,7 +177,7 @@ test("without JavaScript the poster, product details and cart link remain availa
     const loadedPosters: string[] = [];
     page.on("response", response => {
       const url = new URL(response.url());
-      if (response.ok() && url.pathname === "/_next/image" && url.searchParams.get("url") === "/images/hero/zeytinlik-2400.webp") loadedPosters.push(response.url());
+      if (response.ok() && ((url.pathname === "/_next/image" && url.searchParams.get("url") === "/images/hero/zeytinlik-2400.webp") || /^\/images\/hero\/optimized\/(mobile|desktop)\.(avif|webp)$/.test(url.pathname))) loadedPosters.push(response.url());
     });
     await page.goto(baseURL!);
     await section(page).evaluate(node => node.scrollIntoView({ block: "start" }));

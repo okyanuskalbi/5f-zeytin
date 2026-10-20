@@ -4,6 +4,7 @@ import { extname, join, relative, resolve, sep } from "node:path";
 import { pathToFileURL } from "node:url";
 import sharp from "sharp";
 import ts from "typescript";
+import { heroDerivativeManifest, verifyHeroDerivatives } from "./optimize-hero.mjs";
 
 const MANIFEST = "public/images/generated/manifest.json";
 const DECISIONS = "docs/gorsel-onay.md";
@@ -279,18 +280,20 @@ export async function checkAssets({ root, id, mode = "all" }) {
     ids.add(asset.id);
     files.add(asset.file);
   }
+  const heroDerivatives = await verifyHeroDerivatives(root, manifest.assets);
+  heroDerivatives.forEach((asset) => files.add(asset.file));
   await walk(root, "public/images/generated", async (file) => {
     requireThat(file === MANIFEST || files.has(`/${relative("public", file).split(sep).join("/")}`), `Kayıtsız dosya: ${file}`);
   });
   await walk(root, "public/images/hero", async (file) => {
-    requireThat(files.has(`/${relative("public", file).split(sep).join("/")}`), `Kayıtsız dosya: ${file}`);
+    requireThat(file === heroDerivativeManifest || files.has(`/${relative("public", file).split(sep).join("/")}`), `Kayıtsız dosya: ${file}`);
   });
   await walk(root, "public/images/tesis", async (file) => {
     requireThat(files.has(`/${relative("public", file).split(sep).join("/")}`), `Kayıtsız dosya: ${file}`);
   });
   const sequenceApproved = await verifyHeroSequence(root, decisions);
   // Selection never bypasses whole-registry integrity or runtime usage checks.
-  await verifyRuntime(root, manifest.assets, sequenceApproved);
+  await verifyRuntime(root, [...manifest.assets, ...heroDerivatives], sequenceApproved);
   const selected = manifest.assets.filter((asset) => (!id || asset.id === id) && (mode === "all" || asset.status === mode));
   requireThat(!id || selected.length > 0, `Görsel bulunamadı: ${id} (${mode}).`);
   return { checked: selected.length, mode };

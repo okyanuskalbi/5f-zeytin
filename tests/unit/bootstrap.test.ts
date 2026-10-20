@@ -9,6 +9,7 @@ vi.mock("next/font/google", () => ({
   Fraunces: () => ({ variable: "font-display" }),
   Figtree: () => ({ variable: "font-body" }),
 }));
+vi.mock("next/font/local", () => ({ default: () => ({ variable: "font-display" }) }));
 
 afterEach(() => {
   cleanup();

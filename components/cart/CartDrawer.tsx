@@ -91,7 +91,8 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
           <DialogClose asChild><Button ref={closeRef} variant="ghost" size="icon" aria-label="Sepeti kapat"><X aria-hidden="true" /></Button></DialogClose>
         </DialogHeader>
 
-        <div className={`${styles.drawerBody} min-h-0 flex-1 space-y-6 overflow-y-auto overscroll-contain`}>
+        {/* Firefox otherwise inserts an implicit tab stop on this scroll container. */}
+        <div tabIndex={-1} className={`${styles.drawerBody} min-h-0 flex-1 space-y-6 overflow-y-auto overscroll-contain`}>
           {!state.hydrated ? <p role="status">Sepet yükleniyor…</p> : lines.length === 0 ? (
             <p role="status" className="py-8 text-muted-foreground">Sepetiniz henüz boş.</p>
           ) : (

@@ -55,7 +55,10 @@ it("prints the seller imprint, twelve scallops, approved orchard stamp and legal
   expect(doc.querySelector("footer")?.textContent).toContain("Kökü toprakta. Yeri sofrada.");
   expect(doc.body.textContent).toContain("AFİNA ZEYTİNCİLİK TARIM ÜRÜNLERİ SAN. VE TİC. LTD. ŞTİ. · Düziçi VD · VKN 0091520061");
   expect(doc.querySelectorAll("[data-footer-scallop]")).toHaveLength(12);
-  expect(doc.querySelector('[data-footer-stamp] img')?.getAttribute("src")).toBe("/images/hero/zeytinlik-1200.webp");
+  const stamp = doc.querySelector('[data-footer-stamp] img')!;
+  expect(new URL(stamp.getAttribute("src")!, "https://assets.invalid").searchParams.get("url")).toBe("/images/hero/zeytinlik-1200.webp");
+  expect(stamp.getAttribute("loading")).toBe("lazy");
+  expect(stamp.getAttribute("sizes")).toBe("88px");
   for (const href of ["/kvkk", "/mesafeli-satis", "/iade", "https://afina.com.tr"]) {
     expect(doc.querySelector(`footer a[href="${href}"]`)).not.toBeNull();
   }

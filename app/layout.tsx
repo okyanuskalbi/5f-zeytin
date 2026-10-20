@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Figtree, Fraunces } from "next/font/google";
+import { Figtree } from "next/font/google";
+import localFont from "next/font/local";
 import type { JSX, ReactNode } from "react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
@@ -8,15 +9,15 @@ import { getProducts } from "@/lib/catalog/static-products";
 import type { Product } from "@/types/catalog";
 import "./globals.css";
 
-const displayFont = Fraunces({
-  subsets: ["latin", "latin-ext"],
+const Fraunces = localFont({
+  src: [
+    { path: "./fonts/Fraunces-normal.woff2", weight: "600", style: "normal" },
+    { path: "./fonts/Fraunces-italic.woff2", weight: "400", style: "italic" },
+  ],
   display: "swap",
-  // Only preload the poster and body face. The variable display faces (including
-  // unused italics) otherwise compete with the first screen's image on mobile.
+  // Only the normal face is used on the landing. Avoid preloading unused italics.
   preload: false,
-  weight: "variable",
-  style: ["normal", "italic"],
-  axes: ["opsz", "SOFT"],
+  adjustFontFallback: "Times New Roman",
   variable: "--font-display",
   fallback: ["Georgia", "Times New Roman", "serif"],
 });
@@ -24,6 +25,7 @@ const displayFont = Fraunces({
 const bodyFont = Figtree({
   subsets: ["latin", "latin-ext"],
   display: "swap",
+  preload: false,
   weight: ["400", "600"],
   variable: "--font-body",
   fallback: ["Helvetica Neue", "Arial", "sans-serif"],
@@ -47,7 +49,7 @@ export default async function RootLayout({
   let products: readonly Product[] | null;
   try { products = await getProducts(); } catch { products = null; }
   return (
-    <html lang="tr" className={`${displayFont.variable} ${bodyFont.variable}`}>
+    <html lang="tr" className={`${Fraunces.variable} ${bodyFont.variable}`}>
       <body>
         <a
           href="#ana-icerik"

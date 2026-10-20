@@ -394,6 +394,33 @@ describe("Task 086 approved hero frame integrity", () => {
 });
 
 describe("unapproved runtime usage protection", () => {
+  it("allows only deterministic poster variants of the approved hero, including after output hashes are rewritten", async () => {
+    await rm(join(root, `public${asset.file}`));
+    asset.file = "/images/hero/zeytinlik-2400.webp";
+    await put(`public${asset.file}`, image);
+    approve();
+    await save();
+    const files = [];
+    for (const [name, width, height, avif, webp] of [["mobile", 900, 1350, 15, 10], ["desktop", 2400, 1350, 60, 75]] as const) {
+      for (const format of ["avif", "webp"] as const) {
+        const bytes = await sharp(image).resize(width, height, { fit: "cover", position: "right" })[format]({ quality: format === "avif" ? avif : webp }).toBuffer();
+        const file = `/images/hero/optimized/${name}.${format}`;
+        await put(`public${file}`, bytes);
+        files.push({ file, sha256: digest(bytes), width, height });
+      }
+    }
+    const receipt = { source: asset.file, sourceSha256: asset.sha256, files };
+    const receiptFile = "public/images/hero/optimized/manifest.json";
+    await put(receiptFile, JSON.stringify(receipt));
+    await put("components/Hero.tsx", `export const poster = "${files[0].file} 900w";`);
+    await expect(checkAssets({ root })).resolves.toEqual({ checked: 1, mode: "all" });
+    const replacement = await sharp({ create: { width: 900, height: 1350, channels: 3, background: "#ff0000" } }).avif().toBuffer();
+    await put(`public${files[0].file}`, replacement);
+    files[0].sha256 = digest(replacement);
+    await put(receiptFile, JSON.stringify(receipt));
+    await expect(checkAssets({ root })).rejects.toThrow(/approved source transform/i);
+  });
+
   it("requires independent approval for hero images, including every responsive srcSet entry", async () => {
     await rm(join(root, `public${asset.file}`));
     asset.file = "/images/hero/approved.webp";

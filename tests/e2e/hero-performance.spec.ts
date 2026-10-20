@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import sharp from "sharp";
 
 test("mobile poster is preloaded in SSR and frames wait for idle or interaction with a ten-frame budget", async ({ page, request }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 900 });
@@ -16,13 +17,18 @@ test("mobile poster is preloaded in SSR and frames wait for idle or interaction 
   await page.goto("/");
   const hero = page.locator("[data-hero-label]");
   const poster = hero.locator("[data-frame-sequence] img");
-  await expect.poll(() => poster.evaluate((node: HTMLImageElement) => node.complete && node.naturalWidth)).toBeGreaterThanOrEqual(1600);
+  await expect.poll(() => poster.evaluate((node: HTMLImageElement) => node.complete && node.naturalWidth > 0)).toBe(true);
   await expect(hero.getByRole("button", { name: "Sepete ekle" })).toBeEnabled();
   expect(frames).toHaveLength(0);
   const currentSrc = await poster.evaluate((node: HTMLImageElement) => node.currentSrc);
   const delivery = await request.get(currentSrc, { headers: { Accept: "image/avif,image/webp" } });
   expect(delivery.headers()["content-type"]).toContain("image/avif");
-  expect((await delivery.body()).length).toBeLessThanOrEqual(60 * 1024);
+  const bytes = await delivery.body();
+  expect(bytes.length).toBeLessThanOrEqual(60 * 1024);
+  expect(await sharp(bytes).metadata()).toMatchObject({ width: 900, height: 1350 });
+  const fallback = await request.get(currentSrc.replace(".avif", ".webp"), { headers: { Accept: "image/webp" } });
+  expect(fallback.headers()["content-type"]).toContain("image/webp");
+  expect((await fallback.body()).length).toBeLessThanOrEqual(60 * 1024);
   await page.screenshot({ path: testInfo.outputPath("mobile-poster.png") });
   await page.keyboard.press("Shift");
   await expect(hero.locator("canvas")).toHaveAttribute("data-frame", "0");

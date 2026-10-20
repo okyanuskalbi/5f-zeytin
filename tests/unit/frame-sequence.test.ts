@@ -150,7 +150,7 @@ describe("sequence lifecycle and fallback content", () => {
     expect(view.container.querySelector("canvas")).toBeNull();
     expect(MockImage.requests).toHaveLength(0);
     act(() => { saveData = false; connectionListeners.forEach((callback) => callback()); });
-    expect(view.container.querySelector("canvas")).not.toBeNull();
+    await waitFor(() => expect(view.container.querySelector("canvas")).not.toBeNull());
     act(() => { saveData = true; connectionListeners.forEach((callback) => callback()); });
     expect(view.container.querySelector("canvas")).toBeNull();
     view.unmount();

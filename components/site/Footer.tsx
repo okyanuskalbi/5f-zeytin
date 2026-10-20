@@ -31,7 +31,7 @@ export function Footer(): JSX.Element {
           </div>
           <div className={styles.destination}>
             <div data-footer-stamp="" className={styles.stamp}>
-              <Image src="/images/hero/zeytinlik-1200.webp" alt="" width={88} height={117} unoptimized />
+              <Image src="/images/hero/zeytinlik-1200.webp" alt="" width={88} height={117} sizes="88px" loading="lazy" />
             </div>
             <address>Şehit Ali Gökçe Mah. Şehit Ömer Halis Demir Sk. No: 35, Ellek Beldesi, Düziçi / Osmaniye</address>
             <nav aria-label="Keşfedin">
@@ -44,7 +44,7 @@ export function Footer(): JSX.Element {
           <div className={styles.bottom}>
             <nav aria-label="Yasal bilgiler"><ul>{legalLinks.map(link => <li key={link.href}><Link className={styles.link} href={link.href}>{link.label}</Link></li>)}</ul></nav>
             <a href="https://afina.com.tr" className={styles.community} aria-label="AFİNA Şirketler Topluluğu">
-              <Image src="/brand/afina-topluluk.svg" alt="AFİNA Şirketler Topluluğu" width={381} height={225} unoptimized />
+              <Image src="/brand/afina-topluluk.svg" alt="AFİNA Şirketler Topluluğu" width={381} height={225} sizes="(max-width: 767px) 88px, 112px" loading="lazy" unoptimized />
             </a>
           </div>
         </div>
