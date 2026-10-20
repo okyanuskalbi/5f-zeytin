@@ -8,11 +8,29 @@ const row = (page: Page) => page.getByRole("region", { name: "Ürün fişleri", 
 const drawer = (page: Page) => page.getByRole("dialog", { name: "Sepetim", exact: true });
 let errors: string[] = [];
 
+async function expectClearStub(page: Page): Promise<void> {
+  await expect.poll(() => section(page).evaluate(node => {
+    const stub = document.querySelector<HTMLElement>('[data-hero-stub][data-visible="true"]');
+    if (!stub) return false;
+    const s = stub.getBoundingClientRect();
+    return [...node.querySelectorAll("article,[data-showcase-copy]")].some(card => {
+      const b = card.getBoundingClientRect();
+      return b.left < s.right && b.right > s.left && b.top < s.bottom && b.bottom > s.top;
+    });
+  })).toBe(false);
+}
+
 test.beforeEach(async ({ page }) => {
   errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
   page.on("console", (message) => {
     if (message.type() === "error" && /hydrat|did not match/i.test(message.text())) errors.push(message.text());
+  });
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "hardwareConcurrency", { configurable: true, get: () => 8 });
+    window.addEventListener("afina:product-card-settled", event => {
+      if (event.target instanceof HTMLElement) event.target.dataset.testMotionSettled = "true";
+    });
   });
   await page.goto("/");
   await section(page).evaluate((node) => node.scrollIntoView({ block: "start" }));
@@ -45,24 +63,19 @@ test("every available slip adds its SKU and quantity to the shared cart; sold ou
 
 test("paper composition keeps every purchase control inside its uncut slip", async ({ page }, testInfo) => {
   await page.evaluate(() => document.fonts.ready);
+  await expect(section(page).locator("[data-product-card-motion]").first().locator("..")).toHaveAttribute("data-test-motion-settled", "true");
   await expect.poll(() => section(page).locator("[data-product-card-motion]").evaluateAll(layers =>
     layers.every(layer => new DOMMatrixReadOnly(getComputedStyle(layer).transform).m42 === 0),
   )).toBe(true);
   // The scroll event schedules the existing stub placement on the next frame.
   // Measure the settled placement, as we do for other asynchronous UI state.
-  await expect.poll(() => section(page).evaluate(node => {
-    const stub = document.querySelector<HTMLElement>('[data-hero-stub][data-visible="true"]');
-    if (!stub) return false;
-    const s = stub.getBoundingClientRect();
-    return [...node.querySelectorAll("article")].some(card => {
-      const b = card.getBoundingClientRect();
-      return b.left < s.right && b.right > s.left && b.top < s.bottom && b.bottom > s.top;
-    });
-  })).toBe(false);
+  await expectClearStub(page);
   const metrics = await section(page).evaluate((node) => {
     const box = node.getBoundingClientRect();
     const track = node.querySelector('[aria-label="Ürün fişleri"]')!;
     const trackBox = track.getBoundingClientRect();
+    const intrinsicHeight = parseFloat(getComputedStyle(node).paddingTop)
+      + (node.querySelector("[data-showcase-copy]") as HTMLElement).offsetHeight + (track as HTMLElement).offsetHeight;
     const slips = [...node.querySelectorAll<HTMLElement>("[data-product-slip]")].map((card) => {
       const rect = card.getBoundingClientRect();
       const title = card.querySelector("h3")!;
@@ -79,20 +92,27 @@ test("paper composition keeps every purchase control inside its uncut slip", asy
     });
     const stub = document.querySelector<HTMLElement>('[data-hero-stub][data-visible="true"]');
     const stubBox = stub?.getBoundingClientRect();
-    const stubOverlapsSlip = !!stubBox && [...node.querySelectorAll("article")].some(card => {
+    const stubOverlapsSlip = !!stubBox && [...node.querySelectorAll("article,[data-showcase-copy]")].some(card => {
       const b = card.getBoundingClientRect();
       return b.left < stubBox.right && b.right > stubBox.left && b.top < stubBox.bottom && b.bottom > stubBox.top;
     });
-    return { width: box.width, height: box.height, viewport: innerWidth, viewportHeight: innerHeight, stubOverlapsSlip,
+    return { width: box.width, height: box.height, intrinsicHeight, minHeight: parseFloat(getComputedStyle(node).minHeight),
+      viewport: innerWidth, viewportHeight: innerHeight, stubOverlapsSlip,
       rowHeight: trackBox.height, scrollWidth: track.scrollWidth, clientWidth: track.clientWidth,
       gap: getComputedStyle(node.querySelector("ul")!).gap, slips,
       documentFits: document.documentElement.scrollWidth <= innerWidth };
   });
   await mkdir("test-results/092", { recursive: true });
   await writeFile(`test-results/092/${testInfo.project.name}-geometry.json`, JSON.stringify(metrics, null, 2));
-  await section(page).screenshot({ path: `test-results/092/${testInfo.project.name}-vitrin.png` });
+  // A tall locator screenshot resizes WebKit's viewport while fixed elements
+  // are being placed. Preserve the actual device viewport and take a second
+  // view for purchase controls instead.
+  await page.screenshot({ path: `test-results/092/${testInfo.project.name}-vitrin.png` });
   expect(metrics.width).toBe(metrics.viewport);
   expect(metrics.height).toBeGreaterThanOrEqual(metrics.viewportHeight * 0.96 - 1);
+  // Short viewports expand to the controls' intrinsic height instead of
+  // cropping the slips. Otherwise the section remains exactly 96svh.
+  expect(Math.abs(metrics.height - Math.max(metrics.minHeight, metrics.intrinsicHeight))).toBeLessThan(2);
   expect(metrics.gap).toBe("12px");
   expect(metrics.documentFits).toBe(true);
   expect(metrics.stubOverlapsSlip).toBe(false);
@@ -115,6 +135,9 @@ test("paper composition keeps every purchase control inside its uncut slip", asy
     expect(next!.x).toBeLessThan(metrics.viewport);
     expect(next!.x).toBeGreaterThan(metrics.viewport * 0.65);
   }
+  await section(page).getByRole("article").first().getByRole("button", { name: "Sepete ekle" }).scrollIntoViewIfNeeded();
+  await expectClearStub(page);
+  await page.screenshot({ path: `test-results/092/${testInfo.project.name}-vitrin-controls.png` });
 });
 
 test("native horizontal scrolling and keyboard focus reach the last slip", async ({ page }) => {

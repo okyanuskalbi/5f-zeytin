@@ -4,7 +4,7 @@
   display: grid;
   grid-template-rows: 1fr auto;
   min-height: 96svh;
-  padding-top: 18svh;
+  padding-top: 64px;
   scroll-margin-top: var(--header-height);
   background: var(--brand-olive);
 }
@@ -47,7 +47,7 @@
   align-items: flex-end;
   gap: 12px;
   margin: 0;
-  padding: 72px var(--page-margin) max(24px, env(safe-area-inset-bottom, 0px));
+  padding: 120px var(--page-margin) max(24px, env(safe-area-inset-bottom, 0px));
   list-style: none;
 }
 
@@ -73,6 +73,7 @@
 }
 
 @media (max-width: 767px) {
+  .showcase { padding-top: 48px; }
   .intro { width: calc(100% - 2 * var(--page-margin)); margin-left: var(--page-margin); padding: 16px; }
   .intro p { font-size: 1.5rem; }
   .item { flex: 0 0 72vw; max-width: none; scroll-snap-align: start; }

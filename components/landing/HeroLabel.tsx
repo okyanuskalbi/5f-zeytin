@@ -106,12 +106,12 @@ export function HeroLabel({ products }: { products: readonly Product[] }): JSX.E
       element.style.removeProperty("--stub-bottom");
       const box = element.getBoundingClientRect();
       const headerBottom = document.querySelector("header")?.getBoundingClientRect().bottom ?? 64;
-      const obstacles = [...document.querySelectorAll<HTMLElement>("h1,h2,h3,p,a,button,input,select,textarea,[data-product-slip]")]
+      const obstacles = [...document.querySelectorAll<HTMLElement>("h1,h2,h3,p,a,button,input,select,textarea,[data-product-slip],[data-showcase-copy]")]
         .filter((node) => !root.current?.contains(node) && node.getClientRects().length > 0)
         .flatMap((node) => {
           // A showcase slip is one paper object, including the space around
           // its purchase controls. Keep the stub outside the whole panel.
-          if (node.hasAttribute("data-product-slip")) return [node.getBoundingClientRect()];
+          if (node.matches("[data-product-slip],[data-showcase-copy]")) return [node.getBoundingClientRect()];
           const range = document.createRange();
           range.selectNodeContents(node);
           return [...range.getClientRects()];
