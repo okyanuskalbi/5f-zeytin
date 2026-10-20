@@ -5,6 +5,9 @@ const scene = (page: Page): Locator => page.locator("[data-frame-sequence]");
 const canvas = (page: Page): Locator => scene(page).locator("canvas");
 
 async function openDemo(page: Page): Promise<void> {
+  // Positive canvas tests require a tall viewport. Short-device poster fallback
+  // is covered by the hero's landscape, reduced-motion and low-end cases.
+  await page.setViewportSize({ width: page.viewportSize()!.width, height: 900 });
   expect((await page.goto(new URL("/__demo/frames", demoURL!).href))?.status()).toBe(200);
   await expect(scene(page)).toHaveAttribute("data-status", "ready");
 }
@@ -107,6 +110,7 @@ test.describe("development frame sequence", () => {
   });
 
   test("contain blur fill, high DPR and resizing preserve the canvas", async ({ page }) => {
+    await page.setViewportSize({ width: page.viewportSize()!.width, height: 900 });
     await page.emulateMedia({ reducedMotion: "no-preference" });
     await page.addInitScript(() => { Object.defineProperty(window, "devicePixelRatio", { get: () => 2 }); });
     await page.goto(new URL("/__demo/frames", demoURL!).href);

@@ -86,10 +86,14 @@ async function expectAA(page: Page): Promise<number> {
   return minimum;
 }
 
-async function seek(page: Page, progress: number): Promise<void> {
-  await sequence(page).evaluate((element, value) => {
+async function seek(page: Page, progress: number): Promise<number> {
+  return sequence(page).evaluate((element, value) => {
     const top = element.getBoundingClientRect().top + scrollY;
-    scrollTo(0, top + (element.clientHeight - innerHeight) * value);
+    const distance = element.clientHeight - innerHeight;
+    scrollTo(0, top + distance * value);
+    // Native scroll offsets are rounded to CSS pixels. A short mobile pin can
+    // advance several frames per pixel, so assert the frame at the actual offset.
+    return Math.round(Math.max(0, Math.min(1, (scrollY - top) / distance)) * 120);
   }, progress);
 }
 
@@ -110,8 +114,9 @@ test("approved grove poster fills the hero and scroll scrubs the real frames in 
   expect((await canvas.boundingBox())!.width).toBe(page.viewportSize()!.width);
   await page.screenshot({ path: testInfo.outputPath("hero-zeytinlik.png") });
   const contrasts = [await expectAA(page)];
-  await seek(page, 0.65);
-  await expect(canvas).toHaveAttribute("data-frame", "78");
+  const middle = await seek(page, 0.65);
+  expect(Math.abs(middle - 78)).toBeLessThanOrEqual(2);
+  await expect(canvas).toHaveAttribute("data-frame", String(middle));
   contrasts.push(await expectAA(page));
   await seek(page, 1);
   await expect(canvas).toHaveAttribute("data-frame", "120");
@@ -313,8 +318,9 @@ test("kit: scrub directions, selected network variant and performance are record
   await expect(canvas).toHaveAttribute("data-frame", "0");
   const samples = [];
   for (const value of [0, 0.25, 0.5, 0.75, 1, 0.75, 0.5, 0.25, 0]) {
-    await seek(page, value);
-    await expect(canvas).toHaveAttribute("data-frame", String(Math.round(value * 120)));
+    const expected = await seek(page, value);
+    expect(Math.abs(expected - Math.round(value * 120))).toBeLessThanOrEqual(2);
+    await expect(canvas).toHaveAttribute("data-frame", String(expected));
     expect(await canvas.evaluate((node: HTMLCanvasElement) => node.getContext("2d")!.getImageData(1, 1, 1, 1).data[3])).toBe(255);
     samples.push({ progress: value, frame: Number(await canvas.getAttribute("data-frame")) });
     if ([0, 0.5, 1].includes(value)) await page.screenshot({ path: testInfo.outputPath(`scrub-${value}.png`) });

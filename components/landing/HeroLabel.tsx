@@ -104,13 +104,22 @@ export function HeroLabel({ products }: { products: readonly Product[] }): JSX.E
     let frame: number | undefined;
     function place(): void {
       frame = undefined;
-      if (element.contains(document.activeElement)) return;
       element.style.removeProperty("--stub-left");
       element.style.removeProperty("--stub-bottom");
       element.style.removeProperty("visibility");
       element.inert = false;
       const box = element.getBoundingClientRect();
       const headerBottom = document.querySelector("header")?.getBoundingClientRect().bottom ?? 64;
+      const footer = document.querySelector("footer")?.getBoundingClientRect();
+      if (footer && footer.top < innerHeight && footer.bottom > headerBottom) {
+        if (element.contains(document.activeElement)) {
+          document.querySelector<HTMLButtonElement>('header button[aria-label^="Sepetim,"]')?.focus({ preventScroll: true });
+        }
+        element.style.visibility = "hidden";
+        element.inert = true;
+        return;
+      }
+      if (element.contains(document.activeElement)) return;
       const obstacles = [...document.querySelectorAll<HTMLElement>("h1,h2,h3,p,a,button,input,select,textarea,[data-product-slip],[data-showcase-copy],[data-facility-safe],[data-moments-safe],[data-reading-safe]")]
         .filter((node) => !root.current?.contains(node) && node.getClientRects().length > 0)
         .flatMap((node) => {

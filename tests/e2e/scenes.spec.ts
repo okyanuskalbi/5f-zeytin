@@ -133,6 +133,9 @@ test("scene entrances follow native scroll once, without moving product controls
   expect((await samples(page)).every(({ y }) => y >= 0 && y <= 16)).toBe(true);
   expect(await page.locator("#urunler article").allTextContents()).toEqual(catalogBefore);
   await expect(page.locator(`${sceneLayers} article, ${sceneLayers} button, ${sceneLayers} input`)).toHaveCount(0);
+  // Finish newly encountered FAQ layers before recording a re-entry. Their
+  // first entrance is independent of whether story/products have entered once.
+  await expectStatic(page.locator(sceneLayers));
   await page.evaluate(() => { (window as unknown as SceneWindow).sceneSamples.length = 0; scrollTo(0, 0); });
   await reveal(page.locator('[data-scene="story"]'));
   await page.evaluate(() => new Promise<void>((resolve) => {

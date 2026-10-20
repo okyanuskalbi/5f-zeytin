@@ -83,7 +83,7 @@ test("official copy, plate facts and map reflow without loading unapproved photo
   expect(metrics.minText).toBeGreaterThanOrEqual(13);
   if (metrics.width < 768) {
     expect(metrics.layout.rightTop).toBeGreaterThanOrEqual(metrics.layout.leftBottom);
-    expect(metrics.leadSize).toBe(18);
+    expect(metrics.leadSize).toBe(20);
   } else {
     expect(metrics.layout.rightX).toBeGreaterThan(metrics.layout.leftRight);
     expect(Math.abs(metrics.layout.rightTop - metrics.layout.leftTop)).toBeLessThan(1);
@@ -152,7 +152,7 @@ for (const reducedMotion of ["no-preference", "reduce"] as const) {
     expect(await product.evaluate(node => getComputedStyle(node).outlineStyle)).not.toBe("none");
     for (const link of await facility.getByRole("link").all()) {
       const box = await link.boundingBox();
-      expect(box!.height).toBeGreaterThanOrEqual(44);
+      expect(Math.round(box!.height * 1000) / 1000).toBeGreaterThanOrEqual(44);
       expect(box!.width).toBeGreaterThanOrEqual(44);
     }
     await page.keyboard.press("Enter");

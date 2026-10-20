@@ -174,9 +174,18 @@ test("without JavaScript the poster, product details and cart link remain availa
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: testInfo.project.use.viewport });
   try {
     const page = await context.newPage();
+    const loadedPosters: string[] = [];
+    page.on("response", response => {
+      const url = new URL(response.url());
+      if (response.ok() && url.pathname === "/_next/image" && url.searchParams.get("url") === "/images/hero/zeytinlik-2400.webp") loadedPosters.push(response.url());
+    });
     await page.goto(baseURL!);
+    await section(page).evaluate(node => node.scrollIntoView({ block: "start" }));
     await expect(section(page).getByRole("article")).toHaveCount(3);
-    await expect(section(page).locator("img")).toHaveJSProperty("complete", true);
+    // Firefox's no-JS realm cannot reliably poll an image JS property. Verify
+    // the approved image response and rendered geometry independently instead.
+    await expect.poll(() => loadedPosters.length).toBeGreaterThan(0);
+    await expect(section(page).locator("img")).toBeVisible();
     for (const card of await section(page).getByRole("article").all()) {
       await expect(card.getByRole("heading")).toBeVisible();
       await expect(card.getByRole("button", { name: "Sepete ekle" })).toBeVisible();

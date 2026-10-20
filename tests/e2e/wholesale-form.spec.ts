@@ -194,7 +194,7 @@ test.describe("injected wholesale form", () => {
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       for (const control of await form(page).locator("input, textarea, button, a").all()) {
         const bounds = (await control.boundingBox())!;
-        expect(bounds.height).toBeGreaterThanOrEqual(44);
+        expect(Math.round(bounds.height * 1000) / 1000).toBeGreaterThanOrEqual(44);
         expect(bounds.x).toBeGreaterThanOrEqual(0);
         expect(bounds.x + bounds.width).toBeLessThanOrEqual(page.viewportSize()!.width + 1);
       }
