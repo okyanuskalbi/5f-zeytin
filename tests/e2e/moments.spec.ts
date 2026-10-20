@@ -116,7 +116,7 @@ test("keyboard and desktop buttons advance actual scroll and the progress bar in
   }
 });
 
-test("mouse dragging over the image advances the strip, restores snap and keeps vertical scroll free", async ({ page }) => {
+test("mouse dragging over the image advances the strip, restores snap and keeps vertical scroll free", async ({ page, isMobile, browserName }) => {
   await open(page);
   const bounds = (await row(page).boundingBox())!;
   const x = Math.min(bounds.x + bounds.width - 32, 360);
@@ -129,7 +129,8 @@ test("mouse dragging over the image advances the strip, restores snap and keeps 
   await expect(row(page)).not.toHaveAttribute("data-dragging");
   await expect(row(page)).toHaveCSS("scroll-snap-type", "x mandatory");
   const before = await page.evaluate(() => scrollY);
-  await page.mouse.wheel(0, 200);
+  if (isMobile && browserName === "webkit") await page.evaluate(() => scrollBy(0, 200));
+  else await page.mouse.wheel(0, 200);
   await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(before);
   await expect(page.locator("body")).not.toHaveCSS("overflow", "hidden");
 });
@@ -138,6 +139,8 @@ test("reduced motion and live preference changes keep every title and control us
   await open(page);
   await page.emulateMedia({ reducedMotion: "reduce" });
   await expect.poll(() => section(page).locator("[data-moment-enter]").evaluateAll(nodes => nodes.every(node => getComputedStyle(node).transform === "none"))).toBe(true);
+  // The preceding pinned hero changes height when its motion mode changes.
+  await row(page).scrollIntoViewIfNeeded();
   await row(page).focus();
   await page.keyboard.press("End");
   await expect(progress(page)).toHaveAttribute("aria-valuenow", "100");
@@ -156,14 +159,16 @@ test("JavaScript disabled and image failure preserve all moments and native keyb
       await page.goto(new URL("/#topraktan-sofraya", baseURL!).href);
       await expect(section(page).getByRole("heading", { level: 3 })).toHaveText(titles);
       await row(page).focus();
-      await page.keyboard.press("End");
+      // Native scroll containers support horizontal arrows without our JS;
+      // End is browser-dependent (it can move the whole document instead).
+      for (let i = 0; i < 8; i++) await page.keyboard.press("ArrowRight");
       await expect.poll(() => row(page).evaluate(node => node.scrollLeft)).toBeGreaterThan(0);
       expect(await section(page).innerText()).not.toMatch(/görsel.*hazırlanıyor|teyit bekliyor/i);
     } finally { await context.close(); }
   }
 });
 
-test("touch pointer events do not capture or cancel native pan gestures", async ({ page }) => {
+test("touch pointer events do not capture or cancel native pan gestures", async ({ page, isMobile, browserName }) => {
   await open(page);
   const result = await row(page).evaluate(node => {
     const down = new PointerEvent("pointerdown", { bubbles: true, cancelable: true, pointerId: 11, pointerType: "touch", clientX: 300, clientY: 300 });
@@ -175,6 +180,24 @@ test("touch pointer events do not capture or cancel native pan gestures", async 
   expect(result).toEqual({ cancelled: false, capture: false, dragging: false, touchAction: "auto" });
   // Real browser wheel scrolling uses the native scroll path, independently of our mouse handlers.
   await page.mouse.move(200, Math.min((await row(page).boundingBox())!.y + 100, 600));
-  await page.mouse.wheel(400, 0);
+  if (isMobile && browserName === "webkit") await row(page).evaluate(node => node.scrollBy({ left: 400 }));
+  else await page.mouse.wheel(400, 0);
   await expect.poll(async () => Number(await progress(page).getAttribute("aria-valuenow"))).toBeGreaterThan(0);
+});
+
+test("the compact cart label leaves the moment strip and its titles unobstructed", async ({ page }) => {
+  await open(page);
+  for (const fraction of [0, 0.25, 0.5, 0.75]) {
+    await section(page).evaluate((node, ratio) => scrollTo(0, node.getBoundingClientRect().top + scrollY + node.clientHeight * ratio - 100), fraction);
+    await expect.poll(() => page.evaluate(() => {
+      const stub = document.querySelector('[aria-label="Etiket koçanı"]');
+      if (!stub || getComputedStyle(stub).visibility === "hidden") return 0;
+      const box = stub.getBoundingClientRect();
+      return [...document.querySelectorAll("#moments-row, #moments-title, #topraktan-sofraya p:not(.sr-only)")].reduce((area, node) => {
+        const target = node.getBoundingClientRect();
+        return area + Math.max(0, Math.min(box.right, target.right) - Math.max(box.left, target.left)) *
+          Math.max(0, Math.min(box.bottom, target.bottom) - Math.max(box.top, target.top));
+      }, 0);
+    })).toBe(0);
+  }
 });
