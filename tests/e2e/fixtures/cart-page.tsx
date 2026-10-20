@@ -18,10 +18,15 @@ const products: readonly Product[] = [
 ];
 const mode = new URLSearchParams(location.search).get("mode");
 let storageFails = mode === "write-error" || mode === "read-error";
-const store = createCartStore({ products, storage: {
+let quantityFails = false;
+const baseStore = createCartStore({ products, storage: {
   getItem(key) { if (storageFails && mode === "read-error") throw new Error("Fixture read failure"); return localStorage.getItem(key); },
   setItem(key, value) { if (storageFails) throw new Error("Fixture write failure"); localStorage.setItem(key, value); },
 } });
+const store = { ...baseStore, setQuantity(productId: string, quantity: number) {
+  if (quantityFails) throw new RangeError("Fixture stock failure");
+  baseStore.setQuantity(productId, quantity);
+} };
 
 function Fixture(): JSX.Element {
   const [catalog, setCatalog] = useState<readonly Product[] | null>(mode === "catalog-error" ? null : products);
@@ -33,8 +38,8 @@ function Fixture(): JSX.Element {
     }} />
     <CartDrawer store={store} products={catalog ?? []} open={open} onOpenChange={setOpen} trigger={<Button>Sepeti aç</Button>} />
     <Button onClick={() => { storageFails = false; }}>Kaydı etkinleştir</Button>
-    <Button onClick={() => store.setProducts(products.map((product) => ({ ...product, stock: 1 })))}>Stok hatasını tetikle</Button>
-    <Button onClick={() => store.setProducts(products)}>Stoğu düzelt</Button>
+    <Button onClick={() => { quantityFails = true; }}>Stok hatasını tetikle</Button>
+    <Button onClick={() => { quantityFails = false; }}>Stoğu düzelt</Button>
   </>;
 }
 createRoot(document.getElementById("root")!).render(<Fixture />);
