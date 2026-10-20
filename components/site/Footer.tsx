@@ -22,7 +22,7 @@ export function Footer(): JSX.Element {
       <svg className={styles.scallops} viewBox="0 0 1200 32" preserveAspectRatio="none" aria-hidden="true" focusable="false">
         {Array.from({ length: 12 }, (_, index) => <path key={index} data-footer-scallop="" d={`M ${index * 100} 32 Q ${index * 100 + 50} -32 ${index * 100 + 100} 32 Z`} />)}
       </svg>
-      <div className={styles.paper}>
+      <div data-reading-safe="" className={styles.paper}>
         <div className={styles.columns}>
           <div className={styles.message}>
             <p className={styles.signature}>Kökü toprakta.<br /> Yeri sofrada.</p>
@@ -35,7 +35,7 @@ export function Footer(): JSX.Element {
             </div>
             <address>Şehit Ali Gökçe Mah. Şehit Ömer Halis Demir Sk. No: 35, Ellek Beldesi, Düziçi / Osmaniye</address>
             <nav aria-label="Keşfedin">
-              <ul>{links.map(link => <li key={link.href}><Link className={styles.link} href={link.href}>{link.label}</Link></li>)}</ul>
+              <ul>{links.map(link => <li key={link.href}><a className={styles.link} href={link.href}>{link.label}</a></li>)}</ul>
             </nav>
           </div>
         </div>

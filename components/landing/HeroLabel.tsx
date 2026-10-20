@@ -108,12 +108,12 @@ export function HeroLabel({ products }: { products: readonly Product[] }): JSX.E
       element.inert = false;
       const box = element.getBoundingClientRect();
       const headerBottom = document.querySelector("header")?.getBoundingClientRect().bottom ?? 64;
-      const obstacles = [...document.querySelectorAll<HTMLElement>("h1,h2,h3,p,a,button,input,select,textarea,[data-product-slip],[data-showcase-copy],[data-facility-safe],[data-moments-safe]")]
+      const obstacles = [...document.querySelectorAll<HTMLElement>("h1,h2,h3,p,a,button,input,select,textarea,[data-product-slip],[data-showcase-copy],[data-facility-safe],[data-moments-safe],[data-reading-safe]")]
         .filter((node) => !root.current?.contains(node) && node.getClientRects().length > 0)
         .flatMap((node) => {
           // A showcase slip is one paper object, including the space around
           // its purchase controls. Keep the stub outside the whole panel.
-          if (node.matches("[data-product-slip],[data-showcase-copy],[data-facility-safe],[data-moments-safe]")) return [node.getBoundingClientRect()];
+          if (node.matches("[data-product-slip],[data-showcase-copy],[data-facility-safe],[data-moments-safe],[data-reading-safe]")) return [node.getBoundingClientRect()];
           const range = document.createRange();
           range.selectNodeContents(node);
           return [...range.getClientRects()];
@@ -132,7 +132,7 @@ export function HeroLabel({ products }: { products: readonly Product[] }): JSX.E
         element.style.setProperty("--stub-left", `${space.left}px`);
         element.style.setProperty("--stub-bottom", `${innerHeight - space.top - box.height}px`);
       } else {
-        const readingSectionVisible = [...document.querySelectorAll("#tesisimiz, #topraktan-sofraya")]
+        const readingSectionVisible = [...document.querySelectorAll("#tesisimiz, #topraktan-sofraya, #sik-sorulanlar, #toptan-iletisim, footer")]
           .some(section => { const rect = section.getBoundingClientRect(); return rect.top < innerHeight && rect.bottom > headerBottom; });
         if (readingSectionVisible) {
           // A narrow reading column can leave no safe 120px space. The header

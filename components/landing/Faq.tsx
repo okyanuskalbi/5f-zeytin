@@ -12,7 +12,7 @@ export const verifiedFaqs = [
 
 export function Faq(): JSX.Element {
   return (
-    <section id="sik-sorulanlar" aria-labelledby="sss-title" className={styles.section}>
+    <section id="sik-sorulanlar" data-reading-safe="" aria-labelledby="sss-title" className={styles.section}>
       <h2 id="sss-title">Sık sorulanlar</h2>
       <div className={styles.answers}>
         {verifiedFaqs.map(item => (
