@@ -107,4 +107,7 @@ AGENTS.md'nin yeniden kurgu ara görev kuralı uyarınca ayrıca kaydedildi:
 - WARN: onaylı krem palet, video öğesi yerine kare dizisi, sonraki süreç bölümünün yatay şeridi; hero'da geometrik olarak fotoğraf üzerinde görünen sticky başlık. Başlığın gerçek opak okuma zemini ve kontrastı ayrıca ölçüldü.
 - `inspect-scope.json` orijinal raporu koruyarak yalnız bu açıkça adlandırılmış dış kapsam FAIL'leri ayırır. Hero inspect FAIL'i sıfır; LCP engeli açık kalır.
 
-## Durum: BEKLİYOR
+## Claude kararı (21 Eki)
+Hero + ışık doğuşu kabul (252 unit, 298 e2e, inspect 0 FAIL). Mobil LCP medyanı 3.30 s → global performans kapısı 107'de (tüm sayfa birlikte; 098 stash iyileştirmeleri referans).
+
+## Durum: TAMAMLANDI
