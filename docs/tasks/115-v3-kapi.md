@@ -31,6 +31,12 @@ v3'ü kullanıcıya göstermeden önce bağımsız kalite kapısından geçirmek
      - Reduced-motion.
    - **Sepet akışı:** hero ekle → kiler ekle → çekmece → sepet → ödeme önizleme.
 
+## Claude'un gerçek iOS Safari bulgusu (21 Eki, Xcode iPhone 17 simülatörü, iOS 27)
+- Hero'daki altın "Sepete ekle" butonu gerçek iOS Safari'de soluk kalıyor: piksel (157,135,97), beklenen #D4B483 (212,180,131). Büyük olasılıkla giriş animasyonu ~0,75 opaklıkta takılıyor. Playwright WebKit taklidinde görünmüyordu.
+  - Animasyonun iOS Safari'de bitmesini garanti et, ya da CTA'yı hiç soluk başlatma (yalnız translate).
+  - Bu madde Claude tarafından simülatörde tekrar doğrulanacak.
+- Kiler bölümü, etiketler ve hero metni iOS Safari'de doğru görünüyor.
+
 ## Kabul kriterleri
 - [ ] Kapı eşikleri:
   - Critique toplamı ≥ 28/36, P0/P1 = 0.
