@@ -13,11 +13,10 @@ import "./globals.css";
 const Fraunces = localFont({
   src: [
     { path: "./fonts/Fraunces-normal.woff2", weight: "500 700", style: "normal" },
-    { path: "./fonts/Fraunces-italic.woff2", weight: "400", style: "italic" },
   ],
   display: "swap",
-  // Only the normal face is used on the landing. Avoid preloading unused italics.
-  preload: false,
+  // Only the normal face is used in runtime; discover the hero headline font early.
+  preload: true,
   adjustFontFallback: "Times New Roman",
   variable: "--font-display",
   fallback: ["Georgia", "Times New Roman", "serif"],

@@ -1,16 +1,20 @@
 import type { JSX } from "react";
+import type { Product } from "@/types/catalog";
 import { V3Picture } from "@/components/media/V3Picture";
 import { v3Image } from "@/lib/media/v3-assets";
-import styles from "./V3Foundation.module.css";
+import { SofraHero } from "./SofraHero";
 
-/** Task 112 owns the measured hero composition and motion. */
-export function Hero(): JSX.Element {
-  return <section data-hero-intro="" aria-labelledby="hero-title" className={styles.hero}>
-    <V3Picture image={v3Image("hero-masaustu")} mobile={v3Image("hero-mobil")} sizes="100vw" className={styles.heroImage} eager decorative />
-    <div className={styles.heroCopy}>
-      <h1 id="hero-title">Düziçi’nden<br /> sofranıza.</h1>
-      <p>Doğal Kırma Yeşil Zeytin, kendi tesisimizde.</p>
-      <a href="#kiler" className={styles.heroLink}>Ürünleri gör</a>
-    </div>
-  </section>;
+/** Keep the art-directed LCP image and its media-matched preload in the SSR. */
+export function Hero({ product }: { product?: Product }): JSX.Element {
+  const desktop = v3Image("hero-masaustu");
+  const mobile = v3Image("hero-mobil");
+  return <>
+    {[mobile, desktop].map((image, index) => <link key={index} rel="preload" as="image" type="image/avif"
+      media={index === 0 ? "(max-width: 767px)" : "(min-width: 768px)"}
+      imageSrcSet={image.outputs.filter(output => output.format === "avif").map(output => `${output.file} ${output.width}w`).join(", ")}
+      imageSizes="100vw" fetchPriority="high" />)}
+    <SofraHero product={product}>
+      <V3Picture image={desktop} mobile={mobile} sizes="100vw" eager decorative />
+    </SofraHero>
+  </>;
 }

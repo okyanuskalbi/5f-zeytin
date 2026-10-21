@@ -9,7 +9,7 @@ import { getProductFamilies } from "@/lib/catalog/static-products";
 export default async function Home(): Promise<JSX.Element> {
   const families = await getProductFamilies();
   return <main>
-    <Hero />
+    <Hero product={families.find(family => family.id === "dogal-kirma")?.variants.find(variant => variant.weight === "10 kg")} />
     <Pantry families={families} />
     <TrustStrip />
     <Facility />

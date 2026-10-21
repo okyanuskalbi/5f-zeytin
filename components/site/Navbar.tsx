@@ -34,7 +34,8 @@ export function Navbar(): JSX.Element {
   const boundary = useRef(0);
   const reduced = usePrefersReducedMotion();
   const { scrollY } = useScroll();
-  const onLight = !landing || light;
+  const onPantry = landing && light;
+  const onLight = !landing;
 
   useMotionValueEvent(scrollY, "change", (value) => {
     if (landing) setLight(value >= boundary.current);
@@ -42,10 +43,10 @@ export function Navbar(): JSX.Element {
 
   useEffect(() => {
     if (!landing) return;
-    const marker = document.querySelector<HTMLElement>("[data-nav-light]");
+
     const hero = document.querySelector<HTMLElement>("[data-hero-intro]");
     function measure(): void {
-      boundary.current = marker ? marker.getBoundingClientRect().top + window.scrollY - (headerRef.current?.offsetHeight ?? 64) : 0;
+      boundary.current = hero ? hero.getBoundingClientRect().bottom + window.scrollY - (headerRef.current?.offsetHeight ?? 60) : 0;
       setLight(window.scrollY >= boundary.current);
     }
     measure();
@@ -77,12 +78,13 @@ export function Navbar(): JSX.Element {
   }, [isOpen]);
 
   return (
-    <header ref={headerRef} data-site-navbar="" data-tone={onLight ? "light" : "dark"}
+    <header ref={headerRef} data-site-navbar="" data-tone={onLight ? "light" : onPantry ? "pantry" : "hero"}
       data-over-hero={landing} className={`site-bar ${styles.bar}`}>
       <div className={styles.row}>
         <Link ref={homeRef} href="/" onClick={() => { if (landing) window.scrollTo({ top: 0, behavior: "instant" }); }} aria-label="Afina Zeytin ana sayfa" className={styles.home}>
-          <Image src={onLight ? "/brand/afina-zeytin.svg" : "/brand/afina-zeytin-dark.svg"}
-            alt="AFİNA ZEYTİN" width={80} height={56} sizes="80px" unoptimized className={styles.logo} />
+          <span className={styles.logoFrame}><Image src={onLight ? "/brand/afina-zeytin.svg" : "/brand/afina-zeytin-dark.svg"}
+            alt="AFİNA ZEYTİN" width={96} height={111} sizes="96px" unoptimized className={styles.logo} /></span>
+          <span aria-hidden="true" className={styles.wordmark}>ZEYTİN</span>
         </Link>
         <nav aria-label="Ana navigasyon" className={styles.desktop}>
           {links.map(link => <Link key={link.href} href={link.href} className={styles.link}>{link.label}</Link>)}

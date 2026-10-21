@@ -1,11 +1,3 @@
-.hero { position: relative; min-height: 100svh; background: var(--brand-olive); color: var(--brand-ivory); display: grid; align-items: center; }
-.heroImage { position: absolute; inset: 0; }
-.heroImage img { width: 100%; height: 100%; object-fit: cover; }
-.heroCopy { position: relative; min-width: 0; margin: calc(var(--header-height) + 32px) var(--page-margin) 64px; padding: 32px; max-width: 640px; background: rgb(28 42 31 / 78%); }
-.heroCopy h1 { font-size: var(--step-display); line-height: 1; letter-spacing: -0.03em; }
-.heroCopy p { margin-block: 24px; max-width: 30ch; }
-.heroLink { display: inline-flex; min-height: 44px; align-items: center; padding: 10px 24px; border: 1px solid currentColor; }
-.heroLink:hover { background: var(--brand-ivory); color: var(--brand-olive); }
 .pantry { padding: 64px var(--page-margin); background: var(--brand-olive) url('/images/v3/kiler-duvar-w1920.webp') center / cover; color: var(--brand-ivory); }
 .pantryHeading { text-align: center; margin-bottom: 48px; scroll-margin-top: calc(var(--header-height) + 24px); }
 .pantryHeading p { margin-top: 16px; }
@@ -34,17 +26,10 @@
 .wholesale { grid-column: 1 / -1; scroll-margin-top: calc(var(--header-height) + 24px); }
 @media (max-width: 1023px) { .products { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 767px) {
-  .hero { align-items: start; }
-  .heroCopy { padding: 24px 16px; margin-inline: 16px; max-width: none; }
-  .heroCopy h1 { font-size: 3.5rem; }
-  .heroCopy p { margin-block: 16px; }
   .products { gap: 32px 12px; }
   .productImage { height: 180px; }
   .label { padding: 16px 12px; }
   .label h3 { overflow-wrap: break-word; }
   .facility { grid-template-columns: 1fr; gap: 32px; padding-block: 48px; }
   .trust { display: grid; justify-content: start; padding-block: 32px; }
-}
-@media (max-width: 359px) {
-  .heroCopy { padding-inline: 0; }
 }

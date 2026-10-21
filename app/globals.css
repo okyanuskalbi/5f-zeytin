@@ -14,7 +14,7 @@
   --body-ink: var(--brand-ink);
   --page-margin: clamp(1.5rem, 2.2vw, 2rem);
   --page-gutter: 1.5rem;
-  --header-height: calc(4rem + env(safe-area-inset-top, 0px));
+  --header-height: calc(3.75rem + env(safe-area-inset-top, 0px));
 
   /* v3: interface, body, product name, section and hero display. */
   --step-small: 0.875rem;
@@ -189,4 +189,8 @@
   --primary-foreground: var(--brand-olive);
   --primary-hover: var(--brand-kraft);
   --ring: var(--brand-gold);
+}
+
+@media (min-width: 1024px) {
+  :root { --header-height: calc(4.5rem + env(safe-area-inset-top, 0px)); }
 }
