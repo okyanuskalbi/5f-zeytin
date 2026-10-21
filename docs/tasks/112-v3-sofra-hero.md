@@ -81,4 +81,11 @@ frontend
 
 **Açık kalan kabul:** Impeccable hero kapısı, LCP <2.5 sn ve inspect'in sıfır FAIL sonucu elde edilmedi. Kullanıcının eksik kalanı kaydetme talimatıyla durum **BEKLİYOR** bırakıldı; uygulama ve kanıt notu commit/push kapsamındadır. Test raporları gitignore kapsamındaki `test-results/112/` altında yereldir; duraklatılan oturumdan kalan `.taste-skill/inspect/` çıktıları da korunup ignore edildi.
 
-## Durum: BEKLİYOR
+## Durum: TAMAMLANDI
+
+## Claude kabulü (21 Eki 13:45)
+Masaüstü ve iPhone 14 ekran görüntüleri incelendi: başlık, alt satır, fiyatlı altın CTA ve ikincil buton ilk ekranda; fotoğraf onaylı hero.
+- **Impeccable plaka kapısı (%39):** Taslak B bir mockup. Kullanıcı ayrıca onaylı hero fotoğrafını seçti; fotoğrafın kompozisyonu taslakla birebir aynı olamaz. Onaylı fotoğraf geçerlidir, kapı muaf.
+- **inspect `still-page`:** Kiler, güven ve tesis bölümleri henüz yok; 113–114 hareket ekleyince yeniden ölçülecek.
+- **LCP 4,2 sn (Performance 86):** 115 kapısında < 2,5 sn şartı korunuyor. 113–114'te yeni istekler hero'nun önüne geçmeyecek.
+- **Mobil not (113'te düzelt):** "Ürünleri gör" butonu telefonda tenekenin üstüne biniyor. Butonlar yan yana ya da başlık bloğu biraz yukarı alınarak ürün görünür bırakılmalı.

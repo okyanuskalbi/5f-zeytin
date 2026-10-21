@@ -62,6 +62,8 @@ Sayfanın ana satış bölümü budur.
    - Sonra etiket sicimden sallanıp durur (döndürme ≤ 4°, en fazla 2 salınım).
    - Reduced-motion'da hepsi yerinde, hareketsiz.
 
+7. **112'den devreden:** Telefonda hero'daki "Ürünleri gör" butonu tenekenin üstüne biniyor. İki buton yan yana olsun ya da metin bloğu sıkılaşsın; ürün görünür kalsın.
+
 ## Kabul kriterleri
 - [ ] e2e (Chromium + WebKit + mobil):
   - Her varyant için fiyat değişir.
