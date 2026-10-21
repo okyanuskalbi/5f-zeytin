@@ -52,4 +52,16 @@ Renk: kiler yeşili zemin. Metin krem, ikincil metin ≥ 4.5:1. Link hover ve od
 - Ödeme mantığına dokunma.
 - American Express / Apple Pay gibi teyitsiz yöntem logosu ekleme.
 
-## Durum: BEKLİYOR
+## Coder Notu
+
+- Footer masaüstünde 4 kolon, tablette 2 kolon, telefonda tek kolon olarak düzenlendi. Marka/topluluk grubu, iki satırlı mevcut adres, alışveriş/yardım linkleri, güven satırı, satıcı/yasal bilgiler ve tek önizleme notu tamamlandı. Boş telefon/e-posta ve toptan iletişim bağlantısı gizli kalır.
+- `impeccable` (craft-floor/layout), `better-layout`, `landing-page-design` ve `ecc:frontend-patterns` okundu. 21st MCP `ecommerce footer` araması ve `shadcnspace/footer-01` (21474) kaynak kodundaki kolon gruplaması mevcut CSS Module/marka tokenlarına uyarlandı. Yeni shadcn bileşeni veya bağımlılık gerekmedi.
+- 21st `search_logo`, Visa/Mastercard/Troy/PayTR için eşleşme vermedi. PayTR ve Troy kendi resmi sitelerinden; Visa ve Mastercard, ödeme sağlayıcısı Datatrans'ın resmi `payment-logos` deposundan alındı. SVG kaynakları, CC BY-SA 4.0 atfı ve viewBox/zemin uyarlaması `public/images/payment/SOURCES.md` içinde kayıtlıdır; marka çizimleri ve renkleri korunur.
+- Görevdeki `#sss` mevcut sayfada bulunmadığından SSS bağlantısı çalışan `/#sik-sorulanlar` hedefine bağlandı. Ürünler `/#kiler`, Kışlık kiler mevcut `/#urunler` hedefine gider.
+- TDD RED: `npm test -- tests/unit/faq-contact-footer.test.tsx --maxWorkers=2` → yeni davranışlar için 4 beklenen hata, 8 geçen test. GREEN: footer ve mevcut önizleme regresyonlarını kapsayan 3 dosya/25 test geçti.
+- Genel doğrulama: `npm test -- --maxWorkers=1 --testTimeout=20000` → **27 dosya, 302 test geçti**. İki worker/varsayılan 5 saniyede yalnız mevcut Playwright yapılandırma import testi süreyi aştı; tek başına 9/9 geçti. Bu test veya global yapılandırma değiştirilmeden genel koşu tek worker ve 20 saniyelik komut parametresiyle doğrulandı; tarayıcı başlatılmadı.
+- `npm run lint`, `npm run typecheck`, `npm run build` ve `git diff --check` geçti. Build öncesi varlık kontrolü 18 kayıt ve 98 v3 çıktıda PASS verdi. Impeccable kaynak taraması `[]`; mevcut renk tokenlarından hesaplanan krem/yeşil kontrastı **11,46:1**, altın/yeşil hover ve odak kontrastı **6,22:1**.
+- **Claude doğrulayacak:** gerçek tarayıcıda 4/2/1 kolon görünümü, 320px taşma, logoların yüklenmesi/32px yüksekliği, kontrast/odak ve görsel kabul. Yeni footer e2e testi yazıldı; eski kabuk/yasal-link/sayfa-sonu beklentileri yeni düzene uyarlandı. Playwright, Lighthouse, inspect, ekran görüntüsü ve kare şeridi çalıştırılmadı.
+- Başlangıçtaki görev dışı `.gitignore` değişikliği korunup görev commit'inin dışında bırakıldı.
+
+## Durum: TAMAMLANDI

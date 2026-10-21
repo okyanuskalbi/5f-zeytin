@@ -48,7 +48,7 @@ test("114: forty-percent scroll filmstrip and 120px steps reach the footer", asy
       else await page.mouse.wheel(0, 120);
       await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
     }
-    await expect(page.getByRole("contentinfo").getByRole("link", { name: "AFİNA Şirketler Topluluğu", exact: true })).toBeInViewport();
+    await expect(page.getByRole("contentinfo").getByText("© 2026 AFİNA ZEYTİN", { exact: true })).toBeInViewport();
     expect(await page.evaluate(() => scrollY + innerHeight >= document.documentElement.scrollHeight - 1)).toBe(true);
     expect(errors).toEqual([]);
   } finally { await context.close(); }

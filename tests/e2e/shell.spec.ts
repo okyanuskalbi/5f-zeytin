@@ -31,7 +31,12 @@ test("shell exposes navigation, official copy and destination contracts at every
   await expect(header.locator('a[aria-label="Hesabım"]')).toHaveAttribute("href", "/hesabim");
   await expect(footer.getByText("Toprağın sunduğu lezzet, Afina’nın özeniyle.")).toBeVisible();
   await expect(footer.getByText("Kökü toprakta. Yeri sofrada.", { exact: true })).toBeVisible();
-  await expectLinks(footer.getByRole("navigation", { name: "Keşfedin" }));
+  const shopping = footer.getByRole("navigation", { name: "Alışveriş", exact: true });
+  for (const [name, href] of [["Ürünler", "/#kiler"], ["Kışlık kiler", "/#urunler"], ["Sepetim", "/sepet"]]) {
+    await expect(shopping.getByRole("link", { name, exact: true })).toHaveAttribute("href", href);
+  }
+  await expect(shopping.locator('a[href="/#toptan-iletisim"]')).toHaveCount(0);
+  await expect(footer.getByRole("link", { name: "Tesisimiz", exact: true })).toHaveAttribute("href", "/#tesisimiz");
   const legal = footer.getByRole("navigation", { name: "Yasal bilgiler" });
   for (const [name, href] of [["KVKK", "/kvkk"], ["Mesafeli Satış Sözleşmesi", "/mesafeli-satis"], ["İade ve İptal", "/iade"]]) {
     await expect(legal.getByRole("link", { name, exact: true })).toHaveAttribute("href", href);

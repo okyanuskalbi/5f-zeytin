@@ -93,7 +93,7 @@ for (const target of targets) {
           else await page.mouse.wheel(0, direction * 120);
           await paint(page);
         }
-        if (direction > 0) await expect(page.getByRole("contentinfo").getByRole("link", { name: "AFİNA Şirketler Topluluğu", exact: true })).toBeInViewport();
+        if (direction > 0) await expect(page.getByRole("contentinfo").getByText("© 2026 AFİNA ZEYTİN", { exact: true })).toBeInViewport();
         else await expect.poll(() => page.evaluate(() => scrollY)).toBeLessThanOrEqual(1);
       }
 

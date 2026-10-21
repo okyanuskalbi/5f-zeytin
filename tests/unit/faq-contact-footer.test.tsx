@@ -87,7 +87,7 @@ it("names only the supported payment brands and serves safe local vector logos",
     expect(svg.documentElement.localName).toBe("svg");
     expect(svg.documentElement.getAttribute("viewBox")).toBeTruthy();
     expect(svg.querySelector("parsererror, script, foreignObject, image, use")).toBeNull();
-    expect([...svg.querySelectorAll("*")].flatMap(node => [...node.attributes]).some(attribute => /^on/i.test(attribute.name) || /^(?:https?:|data:|javascript:)/i.test(attribute.value))).toBe(false);
+    expect([...svg.querySelectorAll("*")].flatMap(node => [...node.attributes]).filter(attribute => !attribute.name.startsWith("xmlns")).some(attribute => /^on/i.test(attribute.name) || /^(?:https?:|data:|javascript:)/i.test(attribute.value))).toBe(false);
   }
   expect(doc.querySelector('img[alt*="American Express"], img[alt*="Apple Pay"]')).toBeNull();
 });

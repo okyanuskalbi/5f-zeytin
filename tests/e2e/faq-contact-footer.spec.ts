@@ -50,7 +50,7 @@ test("one preview note, public seller identity and no unavailable form or fabric
 test("footer legal destinations and focus remain usable", async ({ page }) => {
   for (const [name, href] of [["KVKK", "/kvkk"], ["Mesafeli Satış Sözleşmesi", "/mesafeli-satis"], ["İade ve İptal", "/iade"]]) {
     await page.goto("/");
-    const link = page.getByRole("contentinfo").getByRole("link", { name, exact: true });
+    const link = page.getByRole("contentinfo").getByRole("navigation", { name: "Yasal bilgiler" }).getByRole("link", { name, exact: true });
     await link.focus();
     await expect(link).toBeFocused();
     expect(await link.evaluate(node => parseFloat(getComputedStyle(node).outlineWidth))).toBeGreaterThanOrEqual(2);
@@ -98,4 +98,43 @@ test("footer controls retain hover, press and focus when brand images fail", asy
   }
   await expect(footer.locator("address")).toHaveText(address);
   expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+});
+
+// Task 117: written for Claude's browser acceptance; Coder does not run this suite.
+test("footer columns, payment brands and community attribution adapt without overflow", async ({ page }) => {
+  await page.goto("/");
+  const footer = page.getByRole("contentinfo");
+  for (const width of [320, 768, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    await footer.scrollIntoViewIfNeeded();
+    const headings = footer.getByRole("heading", { level: 2 });
+    await expect(headings).toHaveText(["AFİNA ZEYTİN", "Alışveriş", "Yardım", "İletişim"]);
+    const positions = await headings.evaluateAll(nodes => nodes.slice(1).map(node => {
+      const { x, y } = node.getBoundingClientRect();
+      return { x, y };
+    }));
+    if (width >= 1024) {
+      expect(Math.max(...positions.map(item => item.y)) - Math.min(...positions.map(item => item.y))).toBeLessThan(1);
+    } else if (width < 640) {
+      expect(positions[0].y).toBeLessThan(positions[1].y);
+      expect(positions[1].y).toBeLessThan(positions[2].y);
+    }
+    const payment = footer.getByRole("group", { name: "Güvenli ödeme", exact: true });
+    for (const name of ["PayTR", "Visa", "Mastercard", "Troy"]) {
+      const logo = payment.getByRole("img", { name, exact: true });
+      await expect(logo).toBeVisible();
+      await expect.poll(() => logo.evaluate(image => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
+      expect((await logo.boundingBox())!.height).toBeGreaterThanOrEqual(32);
+      expect((await logo.boundingBox())!.height).toBeLessThanOrEqual(40);
+    }
+    const community = footer.getByRole("link", { name: "AFİNA Şirketler Topluluğu", exact: true });
+    await expect(community).toHaveAttribute("href", "https://afina.com.tr");
+    await expect(community).toHaveAttribute("target", "_blank");
+    await expect(community).toHaveAttribute("rel", "noopener");
+    await expect(page.getByText("Önizleme: fiyatlar ve görseller temsilidir.", { exact: true })).toHaveCount(1);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+  }
+  await footer.getByRole("link", { name: "Sık sorulan sorular", exact: true }).click();
+  await expect(page).toHaveURL(/#sik-sorulanlar$/);
+  await expect(page.getByRole("heading", { name: "Sık sorulanlar", exact: true })).toBeInViewport();
 });
