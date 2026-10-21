@@ -112,8 +112,6 @@ Sayfanın ana satış bölümü budur.
 - Kaynak skill: `/Users/emre/.codex/skills/impeccable/SKILL.md`, uygulanan `reference/new-work.md` §6: **“write nothing for a later phase while an earlier gate is open”**. Task 111/112 ve görsellerin kullanıcı onayı korunarak 113'ün yetkilendirilmiş uygulama/kabul komutları tamamlandı; yerel kapı elle kapatılmadı, sıfırlanmadı veya yeni spec açılarak aşılmadı. Araç yeni sofra görseli üretmeyi istiyor; Task 113 açıkça **“Yeni görsel üretme”** diyor. Bu kalan kapı plan/görsel kararına ihtiyaç duyduğundan durum BEKLİYOR bırakıldı. Yukarıdaki işlevsel testler ve ölçülebilir kabul sonuçları PASS'tır; comp-led faz kabulü iddia edilmez.
 - Vite fixture yalnız test sınırında veri değiştirir; `four/six/long/single/sold/empty` seçicisi production rotası değildir. Resmi katalog, fiyat ve stok örnek kalır; DB/ödeme, onaylı görsel dosyaları, diğer dokümanlar ve başka repolar değiştirilmedi. Yerel kanıtlar `test-results/113/` altında gitignore kapsamındadır.
 
-## Durum: BEKLİYOR
-
 ## Düzeltme 113-a (Claude denetimi, 21 Eki 15:00)
 İncelenen kanıtlar: `test-results/113/desktop-pantry.png`, `iphone-pantry.png`, `desktop-quick-view.png`, `iphone-quick-view.png`.
 
@@ -141,3 +139,37 @@ Telefon düzeni iyi; korunacak. Masaüstünde sorunlar:
 - [ ] Varyant değişince görsel değişir (e2e).
 - [ ] Yeni masaüstü ve iPhone kare şeritleri `test-results/113/` altına. Hızlı görünüm animasyon bittikten sonra çekilir.
 - [ ] Build, lint, unit ve e2e yeşil. Lighthouse mobil medyanı ≥ 85.
+
+## Coder Notu
+
+### Düzeltme 113-a — tamamlanan uygulama (21 Ekim 2026)
+- `4ccf461` RED regresyon commit'i mevcut `main` geçmişinde doğrulandı; çalışma ağacındaki dört yarım dosya korunarak devam edildi. RED tarayıcı testleri bu oturumda yeniden çalıştırılmadı.
+- Kraft etiketler tüm genişliklerde rafın altına taşındı. Ürün alanı masaüstünde 340px, fotoğraf alanı 320px; telefonda mevcut 220px alan ve iki kolon korundu. Sabit görsel kutusu, `object-fit: contain` ve alt hizalama ile görsel yüklenirken ve varyant değişirken raf çizgisi korunur.
+- Masaüstünde dört ürün ailesi ve sağ uçtaki koli tek rafta; beşinci aile ikinci rafı başlatır, koli son rafın sağ ucuna yerleşir. 5–6 aile senaryoları için mevcut test fixture'ı ve kanıt script'i korundu.
+- Ekle zeytin yeşili dolgu/krem metin, hover'da mürekkep dolgu ve belirgin odak çerçevesi kullanır. Tükendi çerçeveli kraft durumunu korur.
+- Doğal Kırma 1/10 kg ve zeytinyağı 1/5 L fotoğrafları seçilen SKU ile değişir. Motion `AnimatePresence` aynı alanda 200ms opacity çapraz geçişi yapar; çıkan görsel erişilebilirlik ağacından gizlenir, reduced-motion'da süre sıfırdır.
+- Mevcut hızlı görünüm 520px masaüstü genişliğini ve Radix odak/kaydırma kilidini korur. E2E regresyonu panelin animasyonu bittikten sonra genişlik, taşma ve kaydırma kilidini ölçer; varyant değişiminden sonra raf temasını da kontrol eder. Görsel kanıt script'i panelin `transform: none` durumunu bekler.
+- Görevde belirtilen tasarım/erişilebilirlik/Motion ve proje ECC skill'leri kullanıldı; ek skill kurulmadı. 21st MCP `animated number digit roll` araması yeniden yapıldı (Rolling Digits 19158); önceki Drawer/galeri uyarlamaları korundu. Yeni UI bağımlılığı veya shadcn bileşeni gerekmedi. Next.js'in yerel lazy-loading ve native History API rehberleri okundu.
+
+### Bu oturumun komut sonuçları
+
+| Kontrol | Sonuç |
+|---|---|
+| `npm test -- tests/unit/pantry-family.test.tsx` | **4 PASS**. Zeytin ve yağ için iki yönde fotoğraf/fiyat değişimi, seçilen SKU'nun sepete yazılması, çekmecenin kapalı kalması, Tükendi ve stok sınırı. |
+| `npm test -- --coverage --maxWorkers=2` | **24 dosya / 275 test PASS**. Yapılandırılmış `app/**` kapsamı: statements %82,85; branches %86,11; functions %88,88; lines %87,93. |
+| `npm run lint` | **PASS**, sıfır uyarı. |
+| `npm run typecheck` | **PASS**; güncellenen e2e dosyası da tip kontrolüne dahil. |
+| `npm run build` | **PASS**; 16 rota üretildi. Ön kapılar: 18 onaylı görsel ve 98 v3 çıktı **PASS**. |
+| `node --input-type=module` ile PostCSS/token kontrast hesabı | Gerçek kaynak CSS'deki Ekle renkleri çözüldü: normal/odak **11,4629:1**, hover **14,0161:1**; eşik ≥4,5 **PASS**. Bu hesap tarayıcıda render ölçümü değildir. |
+| `impeccable detect --json components/catalog/Pantry.module.css components/landing/PantryFamily.tsx` | **[]**, tek mekanik tarama. |
+| `git diff --check` | **PASS**. |
+
+### Claude doğrulayacak — tarayıcı kabulü
+- Ürün/etiket bbox kesişimi 0, görünür ürünün raf teması ve yaklaşık 320px masaüstü yüksekliği; 4/5/6 ailede raf/koli yerleşimi.
+- Render edilmiş Ekle kontrastı, hover/odak, ≥44px hedefler; varyant görselinin 200ms geçişi ve reduced-motion.
+- Hızlı görünümün animasyon sonrası ≥440px genişliği, içerik taşmaması, arka plan kaydırma kilidi, aç/kapa/geri/ESC/klavye/mobil sürükleme.
+- Chromium/WebKit/mobil e2e, yeni masaüstü/iPhone/Pixel kare şeritleri ve break-ui görüntüleri (`test-results/113/`), `inspect.mjs`, üç mobil Lighthouse ölçümünün medyanı ≥85 ve CLS <0,1.
+- AGENTS.md'nin **“Tarayıcı testleri Claude'da”** kuralı gereği Playwright, Lighthouse, inspect ve ekran görüntüsü/kare şeridi bu oturumda çalıştırılmadı. Yukarıdaki eski uygulama bölümünün tarayıcı sonuçları 113-a için güncel kabul kanıtı sayılmaz.
+- Düzeltme 113-a madde 6 plates kapısını muaf tutar; önceki BEKLİYOR gerekçesi artık geçerli değildir. İstenen kod değişikliklerinde açık engel yok; tarayıcı kabulü AGENTS.md gereği TAMAMLANDI durumunu engellemez. DB/ödeme, onaylı varlıklar, plan ve diğer dokümanlar değiştirilmedi.
+
+## Durum: TAMAMLANDI

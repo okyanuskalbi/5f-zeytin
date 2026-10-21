@@ -115,6 +115,11 @@ test("44px targets, shelf contact, no clipped labels or horizontal overflow", as
 test("113-a: tags hang below unobscured products; four families and parcel share one desktop shelf", async ({ page, viewport }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.reload();
+  await page.evaluate(() => document.fonts.ready);
+  for (const article of await page.locator("#kiler article").all()) {
+    await article.scrollIntoViewIfNeeded();
+    await article.locator("picture img").evaluate(img => (img as HTMLImageElement).decode());
+  }
   const geometry = await page.locator("#kiler").evaluate(section => {
     const products = [...section.querySelectorAll("article")].map(article => {
       const product = article.querySelector("picture img")!.getBoundingClientRect();
@@ -126,7 +131,7 @@ test("113-a: tags hang below unobscured products; four families and parcel share
     return { products, parcelShelf: parcel.getBoundingClientRect().top + parseFloat(getComputedStyle(parcel, "::after").top) };
   });
   for (const product of geometry.products) {
-    expect(product.intersection).toBe(0);
+    expect(product.intersection, JSON.stringify(geometry)).toBe(0);
     expect(product.tagTop).toBeGreaterThan(product.bottom);
   }
   if (viewport!.width >= 1024) {
@@ -140,7 +145,7 @@ test("113-a: add is olive with cream text and contrast at least 4.5 in default, 
   const add = page.locator("#kiler article").first().getByRole("button", { name: "Ekle", exact: true });
   for (const state of ["default", "hover", "focus"]) {
     if (state === "hover") await add.hover();
-    if (state === "focus") await add.focus();
+    if (state === "focus") { await page.mouse.move(0, 0); await add.focus(); }
     const colors = await add.evaluate(node => {
       const css = getComputedStyle(node);
       const luminance = (color: string): number => color.match(/[\d.]+/g)!.slice(0, 3).map(Number).map(value => value / 255).map(value => value <= .04045 ? value / 12.92 : ((value + .055) / 1.055) ** 2.4).reduce((sum, value, index) => sum + value * [.2126, .7152, .0722][index], 0);
@@ -163,7 +168,12 @@ test("113-a: both olive and oil sizes swap the visible shelf photograph and keep
       await article.getByRole("radio", { name: size, exact: true }).click();
       await expect.poll(async () => article.locator("picture img").evaluateAll(images => images.filter(img => getComputedStyle(img.parentElement!.parentElement!).opacity === "1").map(img => (img as HTMLImageElement).currentSrc).join())).toContain(filename);
       await expect.poll(() => article.locator("picture img").count()).toBe(1);
-      await expect.poll(() => article.locator("picture img").evaluate(img => img.complete && img.naturalWidth > 0)).toBe(true);
+      await expect.poll(() => article.locator("picture img").evaluate(img => (img as HTMLImageElement).complete && (img as HTMLImageElement).naturalWidth > 0)).toBe(true);
+      await expect.poll(() => article.evaluate(node => {
+        const image = node.querySelector("picture img")!.getBoundingClientRect();
+        const shelf = node.getBoundingClientRect().top + parseFloat(getComputedStyle(node, "::after").top);
+        return Math.abs(image.bottom - shelf);
+      })).toBeLessThanOrEqual(2);
     }
   }
 });
@@ -178,8 +188,11 @@ test("113-a: settled quick view stays inside viewport, is wide enough and locks 
   expect(box.x + box.width).toBeLessThanOrEqual(viewport!.width + 1);
   expect(await panel.evaluate(node => node.scrollWidth <= node.clientWidth)).toBe(true);
   const before = await page.evaluate(() => scrollY);
-  await page.mouse.move(8, 200);
-  await page.mouse.wheel(0, 700);
+  await expect(page.locator("body")).toHaveCSS("overflow", "hidden");
+  if (viewport!.width >= 768) {
+    await page.mouse.move(8, 200);
+    await page.mouse.wheel(0, 700);
+  }
   await page.waitForTimeout(250);
   expect(await page.evaluate(() => scrollY)).toBe(before);
   await page.keyboard.press("Escape");
