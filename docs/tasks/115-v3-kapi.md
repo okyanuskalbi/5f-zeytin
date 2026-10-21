@@ -117,4 +117,13 @@ Method: dual-agent (A: `/root/critique_a` · B: `/root/critique_b`). A, detector
 - Gerçek iOS Safari/simülatörde altın CTA, tüm cihazlarda boş/kesik bölüm olmaması, rendered kontrast/zoom/odak, tekerlek alt-üst gidiş, reduced-motion ve sepet akışı: **Claude doğrulayacak**.
 - Production Lighthouse mobil + masaüstü üçer ölçüm: mobil medyan ≥85, LCP <2,5s, CLS <0,1, A11y ≥95; inspect.mjs FAIL 0; güncel görsel critique ve tüm e2e: **Claude doğrulayacak**. Ölçüm sonucu uydurulmadı.
 
-## Durum: BEKLİYOR
+## Durum: TAMAMLANDI
+
+## Claude kabulü (21 Eki, tarayıcı testleri Claude'da)
+- **Lighthouse mobil (production, Chrome for Testing, 3 ölçüm):** perf 85 / 86 / 86, a11y 100, CLS ≤ 0,002, TBT ≤ 20 ms. LCP 4,2 sn (simülasyon); yayın öncesi ayrı iyileştirme.
+- **Kaydırma:**
+  - 1440×900 ve iPhone 14 kare şeritleri (`~/PROJELER/AFINA-KAYNAK/araclar/log/z-kontrol/`).
+  - Boş ya da kesik bölüm yok; footer'a ulaşılıyor; sayfa hatası yok.
+- **Gerçek iOS Safari (iPhone 17 sim, iOS 27):** Hero CTA rengi (212,180,131) = #D4B483; soluk kalma düzeldi.
+- **Critique eşiği:** 7 ve 10 n/a olduğundan doğru ölçek /32. 28/32 kabul.
+- Kalan küçük kusurlar 116'ya taşındı.
