@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Minus, Plus, RefreshCw, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ProductThumbnail } from "./ProductThumbnail";
 import { useCart } from "@/components/cart/CartProvider";
 import { Upsell, QuantityDiscount, type UpsellConfiguration, type QuantityDiscountConfiguration } from "@/components/cart/Upsell";
 import styles from "./CartExperience.module.css";
@@ -109,7 +110,8 @@ export function CartSummary({ store, products, onRefresh, refreshing = false, up
             : <ul aria-label="Sepetteki ürünler" className="space-y-4">
               {lines.map(({ productId, product, quantity }, index) => {
                 const unavailable = !product || product.stock < quantity;
-                return <li key={productId} className={styles.line}>
+                return <li key={productId} className={`${styles.line} ${styles.withThumbnail}`}>
+                  {product && <ProductThumbnail product={product} />}
                   <div role="group" aria-labelledby={`${id}-line-${index}`} className="space-y-4">
                     <div className="space-y-2">
                       <h2 id={`${id}-line-${index}`} className="text-xl break-words">{product?.name ?? "Kullanılamayan ürün"}</h2>

@@ -32,12 +32,14 @@
 @media (max-width: 767px) {
   .hero { align-items: start; }
   .curtain { background: linear-gradient(180deg, rgb(14 24 16 / 70%) 0%, rgb(14 24 16 / 70%) max(49%, 440px), transparent max(70%, 560px)); }
-  .copy { width: auto; margin: calc(var(--header-height) + 32px) 24px 104px; }
+  .copy { width: auto; margin: calc(var(--header-height) + 16px) 24px 104px; }
   .copy h1 { font-size: clamp(3.5rem, 9vw + 1.3rem, 5rem); }
-  .description { margin-top: 20px; font-size: 1.125rem; max-width: 30ch; line-height: 1.5; }
+  .description { margin-top: 8px; font-size: 1.125rem; max-width: 30ch; line-height: 1.3; }
   .desktopBreak { display: none; }
-  .actions { align-items: start; flex-direction: column; gap: 12px; margin-top: 24px; }
-  .purchase, .browse { min-height: 48px; padding: 12px 20px; font-size: 1rem; }
+  .actions { align-items: center; flex-direction: row; flex-wrap: nowrap; gap: 8px; margin-top: 12px; }
+  .purchase, .browse { min-height: 48px; padding: 8px 12px; font-size: 0.875rem; line-height: 1.3; }
+  .purchase span { white-space: normal; }
+  .browse { flex-shrink: 0; }
 }
 @media (max-height: 500px) and (orientation: landscape) {
   .copy { width: 65%; margin-top: calc(var(--header-height) + 16px); margin-bottom: 56px; }

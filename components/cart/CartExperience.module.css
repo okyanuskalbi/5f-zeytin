@@ -21,6 +21,9 @@
 .line:first-child { padding-top: 8px; }
 .line h2, .line h3 { font-size: var(--step-lead); line-height: 1.2; }
 .line + .line { padding-top: 0; }
+.withThumbnail:has(.thumbnail) { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 16px; }
+.thumbnail { display: flex; align-items: start; justify-content: center; width: 64px; height: 88px; }
+.thumbnail img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
 .lineInfo { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 16px; }
 .resize { display: none; }
 .page { padding: 48px var(--page-margin) 96px; background: var(--brand-ivory); }
@@ -39,11 +42,11 @@
   .layout { grid-template-columns: minmax(0, 1fr) minmax(320px, 0.65fr); }
 }
 @media (max-width: 767px) {
-  .drawer { inset: auto 0 0; width: 100%; height: 60dvh; min-height: min(95dvh, 440px); max-height: 95dvh; }
+  .drawer { inset: auto 0 0; width: 100%; height: 85dvh; min-height: min(95dvh, 560px); max-height: 95dvh; }
   .drawer[data-snap="expanded"] { height: 95dvh; }
   .drawerHeader { padding: 32px 24px 16px; }
   .drawerHeader :global([data-slot="dialog-description"]) { font-size: var(--step-small); }
-  .drawerBody { padding-bottom: 8px; }
+  .drawerBody { padding-bottom: 24px; scroll-padding-block: 16px; }
   .drawerFooter { font-size: var(--step-small); }
   .resize { position: absolute; display: flex; justify-content: center; align-items: start; padding-top: 12px; top: 0; left: calc(50% - 40px); width: 80px; height: 44px; touch-action: none; cursor: ns-resize; }
   .resize span { display: block; height: 4px; width: 32px; background: var(--muted-foreground); }

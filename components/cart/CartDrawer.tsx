@@ -6,6 +6,7 @@ import { Minus, Plus, Trash2, X } from "lucide-react";
 import { Dialog as DialogPrimitive } from "radix-ui";
 import { AnimatePresence, motion, useDragControls, useIsPresent, useReducedMotion, type HTMLMotionProps } from "motion/react";
 import { Button } from "@/components/ui/button";
+import { ProductThumbnail } from "./ProductThumbnail";
 import {
   Dialog, DialogClose, DialogDescription, DialogOverlay, DialogPortal, DialogTitle, DialogTrigger,
 } from "@/components/ui/dialog";
@@ -149,9 +150,10 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
               {lines.map(({ productId, product, quantity }) => {
                 const unavailable = !product || product.stock < quantity;
                 return (
-                  <CartLine key={productId} className={styles.line} layout={reduced ? false : "position"}
+                  <CartLine key={productId} className={`${styles.line} ${styles.withThumbnail}`} layout={reduced ? false : "position"}
                     initial={reduced ? false : { opacity: 0, x: motionTokens.distance.lg }} animate={{ opacity: 1, x: 0 }}
                     exit={reduced ? { opacity: 0 } : { opacity: 0, x: motionTokens.distance.lg }} transition={transition}>
+                    {product && <ProductThumbnail product={product} />}
                     <div role="group" aria-labelledby={`${id}-line-${encodeURIComponent(productId)}`} className="space-y-3">
                       <h3 id={`${id}-line-${encodeURIComponent(productId)}`} className="text-lg break-words">{product?.name ?? "Kullanılamayan ürün"}</h3>
                       {product && <>

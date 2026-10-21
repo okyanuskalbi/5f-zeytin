@@ -1,48 +1,58 @@
 "use client";
 
-import { useId, useState, type JSX } from "react";
-import { useCart } from "@/components/cart/CartProvider";
+import { useId, useRef, useState, useSyncExternalStore, type JSX } from "react";
+import dynamic from "next/dynamic";
+import { motion } from "motion/react";
 import { V3Picture } from "@/components/media/V3Picture";
+import { KraftTag } from "@/components/catalog/KraftTag";
+import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
+import { motionTokens, springs } from "@/lib/ui-motion";
 import type { V3Image } from "@/lib/media/v3-assets";
 import type { ProductFamily } from "@/types/catalog";
-import styles from "./V3Foundation.module.css";
+import styles from "@/components/catalog/Pantry.module.css";
 
-const money = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY" });
+const QuickView = dynamic(() => import("@/components/catalog/QuickView").then(module => module.QuickView));
+const changeEvent = "afina:quick-view";
+function subscribe(listener: () => void): () => void {
+  window.addEventListener("popstate", listener);
+  window.addEventListener(changeEvent, listener);
+  return () => { window.removeEventListener("popstate", listener); window.removeEventListener(changeEvent, listener); };
+}
+const slugSnapshot = (): string | null => new URLSearchParams(window.location.search).get("urun");
+const serverSlug = (): null => null;
 
-/** Basic selection only. Task 113 owns shelf choreography and quick view. */
-export function PantryFamily({ family, images }: { family: ProductFamily; images: readonly V3Image[] }): JSX.Element {
+export function PantryFamily({ family, images, galleries = [], index = 0 }: {
+  family: ProductFamily; images: readonly V3Image[]; galleries?: readonly (readonly V3Image[])[]; index?: number;
+}): JSX.Element {
   const id = useId();
-  const cart = useCart();
+  const opener = useRef<HTMLElement | null>(null);
   const [selected, setSelected] = useState(0);
-  const [quantity, setQuantity] = useState("1");
-  const [feedback, setFeedback] = useState({ error: false, message: "" });
-  const product = family.variants[selected];
-  const count = Number(quantity);
-  const valid = Number.isInteger(count) && count > 0 && count <= product.stock;
-  function add(opener: HTMLElement): void {
-    try {
-      if (!valid || !cart) throw new Error("invalid quantity");
-      cart.addItem(product.id, count, opener);
-      setFeedback({ error: false, message: `${product.name}, ${product.weight} sepetinize eklendi.` });
-    } catch {
-      setFeedback({ error: true, message: "Ürün sepete eklenemedi. Adet ve stok durumunu kontrol edip tekrar deneyin." });
-    }
+  const reduced = usePrefersReducedMotion();
+  const slug = useSyncExternalStore(subscribe, slugSnapshot, serverSlug);
+  const delay = index * motionTokens.stagger.shelf;
+  function open(target: HTMLElement): void {
+    opener.current = target;
+    const url = new URL(window.location.href);
+    url.searchParams.set("urun", family.id);
+    history.pushState({ ...history.state, pantryQuickView: family.id }, "", url);
+    window.dispatchEvent(new Event(changeEvent));
   }
-  return <article aria-labelledby={`${id}-name`} className={styles.family}>
-    <V3Picture image={images[selected]} sizes="(max-width: 767px) 40vw, 22vw" className={styles.productImage} />
-    <div className={styles.label}>
-      <h3 id={`${id}-name`}>{family.name}</h3>
-      <label htmlFor={`${id}-size`}>Boy</label>
-      <select id={`${id}-size`} value={selected} onChange={event => { setSelected(Number(event.target.value)); setQuantity("1"); setFeedback({ error: false, message: "" }); }}>
-        {family.variants.map((variant, index) => <option key={variant.id} value={index}>{variant.weight}</option>)}
-      </select>
-      <p className={styles.price}>{money.format(product.priceKurus / 100)}</p>
-      {product.stock === 0 ? <p>Stokta yok</p> : <>
-        <label htmlFor={`${id}-quantity`}>Adet</label>
-        <input id={`${id}-quantity`} type="number" inputMode="numeric" min={1} max={product.stock} step={1} value={quantity} onChange={event => setQuantity(event.target.value)} />
-      </>}
-      <button type="button" disabled={!cart?.state.hydrated || cart.products === null || !valid} onClick={event => add(event.currentTarget)}>Sepete ekle</button>
-      <p role={feedback.error ? "alert" : "status"} aria-atomic="true" className={styles.feedback}>{feedback.message}</p>
-    </div>
+  function close(wholesale = false): void {
+    if (!wholesale && history.state?.pantryQuickView === family.id) { history.back(); return; }
+    const url = new URL(window.location.href);
+    url.searchParams.delete("urun");
+    if (wholesale) url.hash = "toptan";
+    history.replaceState({ ...history.state, pantryQuickView: null }, "", url);
+    window.dispatchEvent(new Event(changeEvent));
+    if (wholesale) document.getElementById("toptan")?.scrollIntoView({ behavior: "instant" });
+  }
+  return <article aria-labelledby={`${id}-name`} className={styles.family} data-pantry-family={family.id}>
+    <motion.button type="button" className={styles.product} aria-label={`${family.name} hızlı görünüm`} onClick={event => open(event.currentTarget)}
+      initial={false} whileInView={reduced ? undefined : { y: [-motionTokens.distance.shelf, 0] }} viewport={{ once: true, amount: 0.25 }}
+      transition={{ ...springs.shelf, delay }}>
+      <V3Picture image={images[selected]} sizes="(max-width: 767px) 40vw, (max-width: 1023px) 20vw, 13vw" />
+    </motion.button>
+    <KraftTag family={family} selected={selected} onChange={setSelected} onOpen={open} nameId={`${id}-name`} delay={delay} />
+    {slug === family.id && <QuickView family={family} selected={selected} onChange={setSelected} images={galleries[selected] ?? []} onClose={close} opener={opener} />}
   </article>;
 }
