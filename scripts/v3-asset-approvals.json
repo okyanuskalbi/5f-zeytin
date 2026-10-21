@@ -1,0 +1,57 @@
+{
+  "v3": {
+    "file": "AFINA-KAYNAK/zeytin-v3-gorseller/ONAY.md",
+    "date": "2026-10-21",
+    "hashes": {
+      "hero-masaustu.webp": "2d24251e8e1218cc7a20301d816e671657ac7f0158787c84314aeecf4e4b0cc6",
+      "hero-mobil.webp": "76bc519dcffcdd993a9a425fae9de40805ff4e0e93c222cd6d12a0b70f7b0a6d",
+      "kiler-duvar.webp": "7d298a51ebb5f8289b5150f27fcfaec7108a1688e7ee6c58ef4012f6bec87ac1",
+      "kraft-doku.webp": "d5f7613a1fc212b784017c365a55a2453f35eadd9f28cd073e266b2572018d3d",
+      "kargo-kolisi.png": "294007a59c1c17337c0f2f71993d987aed3f3d0ab31dfa33975ebe3bc4f9fce5",
+      "raf-ceviz.png": "e9c65a560bcc866ca0dc313b9858a70ad4155042378cde3f608313ddd03189ed",
+      "urun-01-kirma-10kg.png": "1c6b812821fc55c0c9e89c83bbb3268ce4904da62d85d0bb3b6febf2acf594b9",
+      "urun-02-kirma-1kg.png": "e8902cdfd272a961bb66149e265557e6d997732130315255838d3b6c4b2d3400",
+      "urun-03-siyah-1kg.png": "14bfa2010402d06f60cca5cba00b756c1e15ad802da90a9a33c8c3f407f5f329",
+      "urun-04-yag-1l.png": "a8ef24c78601c90de982bc898c15d0266a46420af5c0b2fdaabb4826723f0eb9",
+      "urun-05-yag-5l.png": "03a69b5d78aa4ba37ce19fd0f4b4ba491237b324cdd615195fcddc078ce77ee4",
+      "urun-06-salamura-yesil-5kg.png": "c0f3befd86f76e709d6ed139aeebc5b1ea4e7d76af30cf8b8fa37ac8fbfb4f90"
+    }
+  },
+  "gallery": {
+    "file": "AFINA-KAYNAK/urun-gorselleri/onayli/ONAY.md",
+    "date": "2026-10-21",
+    "hashes": {
+      "01-dogal-kirma-yesil-zeytin-10kg-sahne.png": "8e238b30b0e1a775d422f3632da02e15bc7ea7566284ef2193d06081c4c242d4",
+      "01-dogal-kirma-yesil-zeytin-10kg-sahne.webp": "877a528754bc702705d89c2ac6369841ed00a01986fedec8f20d2101231c1696",
+      "01-dogal-kirma-yesil-zeytin-10kg-studyo.png": "70c5ec0c4a815a5e42011aebf034e05825f1d7f0ed325467d054cc0fed187dcb",
+      "01-dogal-kirma-yesil-zeytin-10kg-studyo.webp": "c3fc90b966799b7156a07afad6567d8abff89339aa6fb8ea8fa18cd26bfb4105",
+      "02-dogal-kirma-yesil-zeytin-1kg-sahne.png": "fecc149047f48463a7fa1e7c6fd2f87f41be6756da733678defab8c499d13f02",
+      "02-dogal-kirma-yesil-zeytin-1kg-sahne.webp": "e219c010bc20a4c2194b1307335d74a13790246f04c066f50caea14c4a6bf492",
+      "02-dogal-kirma-yesil-zeytin-1kg-studyo.png": "73e45e887ed47d552726ba0f329c4b120d2902c33f86e57f3fe86060cfe330ae",
+      "02-dogal-kirma-yesil-zeytin-1kg-studyo.webp": "91f1e7992f69e30410fae5fc434693f2e38c33b25b849f5f18ebff55ae4a953f",
+      "03-salamura-siyah-zeytin-1kg-sahne.png": "8877905f352d3b6fc9dc94b3bceb94927dd2aeb879fa7fade48cc08bddeed3c1",
+      "03-salamura-siyah-zeytin-1kg-sahne.webp": "79c6430317308b6a79e507e07fc9db5791df78511af19e5c2eaa8f0b4ab78bb1",
+      "03-salamura-siyah-zeytin-1kg-studyo.png": "afa13e16f217e9a199ce1dd69e7c9a414aaaa8b0c6763edc333e2cd1db5c8132",
+      "03-salamura-siyah-zeytin-1kg-studyo.webp": "0910eca2b6ffb8138fd37447e2524558797978675d2699c91b7bf8cbda0b8482",
+      "04-naturel-sizma-zeytinyagi-1l-sahne.png": "fcb2e36edd7c510eefe5f14ebd46ef63e9fdd8988c47b30688e7c536c67abcd4",
+      "04-naturel-sizma-zeytinyagi-1l-sahne.webp": "443a25a4e94dab740fecff0d5605f8e5c925c421720f4cc8c1160cc3394c20f4",
+      "04-naturel-sizma-zeytinyagi-1l-studyo.png": "f83cf038faaac294af71082dcc7717542a184deb135476d1214b3e5d2ab3590b",
+      "04-naturel-sizma-zeytinyagi-1l-studyo.webp": "98fad870f8bdc578c39755d3905bcf00fc0eeb41f45a607661db8a0266c36a1f",
+      "05-naturel-sizma-zeytinyagi-5l-sahne.png": "fadd9abb25e3442f7208d20200a99a31764243fd79afa3fd6f23bdeb40c8b360",
+      "05-naturel-sizma-zeytinyagi-5l-sahne.webp": "62d9269294ff750897a99459d9c8dda0a83470dd39b7ab2f0aa89333140c458b",
+      "05-naturel-sizma-zeytinyagi-5l-studyo.png": "3560ddd379d1b3556ee205454993babdec66490a4be6d1d55cef060bfd9b704f",
+      "05-naturel-sizma-zeytinyagi-5l-studyo.webp": "c208a3839682938ff5ec53d1e7f0b95e065af89f9e25e7f1b160b0a9bf824c52",
+      "06-salamura-yesil-zeytin-5kg-sahne.png": "ce906c5ee9bae2b5c7458a4a1592ed5dffa42276a72021978853c3850eab2d41",
+      "06-salamura-yesil-zeytin-5kg-sahne.webp": "ffc592937371564d2fd2d9a0c318af0f32b6c7c3bceffa161b8f5f04d3b240fe",
+      "06-salamura-yesil-zeytin-5kg-studyo.png": "57c1a7f05216f27885282720aa85b69bd5a3df9ff48d24e688a76ec5a280d6a3",
+      "06-salamura-yesil-zeytin-5kg-studyo.webp": "844983af75dfa6ced455d2b580ae5c2d975b9ca12507b364b8a173f91430ab80"
+    }
+  },
+  "facility": {
+    "file": "AFINA-KAYNAK/urun-gorselleri/onayli/ONAY.md",
+    "date": "2026-10-21",
+    "hashes": {
+      "tesis-osmaniye-plaka-bulanik.jpg": "d35378a93dcbad69c0e62d09e2481af8a82bc6298c2526ab4ee55a594728b67d"
+    }
+  }
+}

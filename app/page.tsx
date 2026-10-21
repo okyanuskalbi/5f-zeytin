@@ -1,32 +1,18 @@
 import type { JSX } from "react";
 import { Hero } from "@/components/landing/Hero";
+import { Pantry } from "@/components/landing/Pantry";
+import { TrustStrip } from "@/components/landing/TrustStrip";
 import { Facility } from "@/components/landing/Facility";
-import { Moments } from "@/components/landing/Moments";
 import { Faq } from "@/components/landing/Faq";
-import { WholesaleContact } from "@/components/landing/WholesaleContact";
-import { WholesaleForm } from "@/components/landing/WholesaleForm";
-import { SceneFlow } from "@/components/landing/SceneFlow";
-import { ProductShowcase } from "@/components/landing/ProductShowcase";
-import { FeaturedProduct } from "@/components/landing/FeaturedProduct";
-import { getProducts } from "@/lib/catalog/static-products";
+import { getProductFamilies } from "@/lib/catalog/static-products";
 
 export default async function Home(): Promise<JSX.Element> {
-  const products = (await getProducts()).slice(0, 6);
-  return (
-    <main>
-      <SceneFlow>
-        <div data-scene="hero"><Hero products={products} /></div>
-        <ProductShowcase products={products} />
-        <FeaturedProduct products={products} />
-        <div className="page-wrap"><Moments /></div>
-        <div id="hikayemiz" data-scene="story" className="scroll-mt-36">
-          <Facility />
-        </div>
-        <div id="toptan" tabIndex={-1} className="scroll-mt-24">
-          <WholesaleContact><WholesaleForm /></WholesaleContact>
-        </div>
-        <div className="page-wrap"><Faq /></div>
-      </SceneFlow>
-    </main>
-  );
+  const families = await getProductFamilies();
+  return <main>
+    <Hero />
+    <Pantry families={families} />
+    <TrustStrip />
+    <Facility />
+    <div className="page-wrap"><Faq /></div>
+  </main>;
 }

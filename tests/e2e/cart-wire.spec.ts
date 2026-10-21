@@ -2,10 +2,10 @@ import { expect, test, type Page } from "@playwright/test";
 import { CART_STORAGE_KEY } from "../../lib/cart/store";
 
 let errors: string[] = [];
-const card = (page: Page) => page.getByRole("article", { name: "Sofralık Zeytin", exact: true });
+const card = (page: Page) => page.getByRole("article", { name: "Doğal Kırma Yeşil Zeytin", exact: true });
 const cartButton = (page: Page) => page.getByRole("banner").getByRole("button", { name: /^Sepetim/ });
 const drawer = (page: Page) => page.getByRole("dialog", { name: "Sepetim", exact: true });
-const line = (page: Page) => page.getByRole("group", { name: "Sofralık Zeytin", exact: true });
+const line = (page: Page) => page.getByRole("group", { name: "Doğal Kırma Yeşil Zeytin", exact: true });
 
 test.beforeEach(async ({ page }) => {
   errors = [];
@@ -64,7 +64,7 @@ test("cumulative stock failure keeps the cart and quantity, then permits retry",
   await expect(drawer(page)).toHaveCount(0);
   await expect(card(page).getByRole("spinbutton")).toHaveValue("1");
   await expect(cartButton(page)).toHaveAccessibleName("Sepetim, 12 adet");
-  await expect(page.getByRole("article", { name: "Salamura Zeytin", exact: true }).getByRole("button", { name: "Sepete ekle" })).toBeDisabled();
+  await expect(page.getByRole("article", { name: "Salamura Siyah Zeytin", exact: true }).getByRole("button", { name: "Sepete ekle" })).toBeDisabled();
   await cartButton(page).click();
   await drawer(page).getByRole("button", { name: "Adedi azalt" }).click();
   await page.keyboard.press("Escape");
@@ -74,14 +74,14 @@ test("cumulative stock failure keeps the cart and quantity, then permits retry",
 
 test("badge counts all quantities and mobile menu reaches the same restored cart", async ({ page }) => {
   await page.addInitScript((key) => localStorage.setItem(key, JSON.stringify([
-    { productId: "sample-table-olive", quantity: 1, priceKurus: 1 },
-    { productId: "sample-olive-oil", quantity: 2 },
+    { productId: "sample-green-olive-1kg", quantity: 1, priceKurus: 1 },
+    { productId: "sample-olive-oil-1l", quantity: 2 },
     { productId: "unknown", quantity: 99 },
   ])), CART_STORAGE_KEY);
   await page.goto("/");
   await expect(cartButton(page)).toHaveAccessibleName("Sepetim, 3 adet");
   await expect(cartButton(page).locator('[data-slot="count-badge"]')).toHaveText("3");
-  const expected = [{ productId: "sample-table-olive", quantity: 1 }, { productId: "sample-olive-oil", quantity: 2 }];
+  const expected = [{ productId: "sample-green-olive-1kg", quantity: 1 }, { productId: "sample-olive-oil-1l", quantity: 2 }];
   expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), CART_STORAGE_KEY)).toEqual(expected);
   if (page.viewportSize()!.width < 1024) {
     await page.getByRole("button", { name: "Menüyü aç" }).click();
@@ -93,10 +93,10 @@ test("badge counts all quantities and mobile menu reaches the same restored cart
   await expect(page).toHaveURL(/\/sepet$/);
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(line(page).getByRole("status", { name: "Adet" })).toHaveText("1");
-  await expect(page.getByRole("group", { name: "Zeytinyağı", exact: true }).getByRole("status", { name: "Adet" })).toHaveText("2");
+  await expect(page.getByRole("group", { name: "Natürel Sızma Zeytinyağı", exact: true }).getByRole("status", { name: "Adet" })).toHaveText("2");
   await cartButton(page).click();
   await expect(drawer(page).getByText("Ara toplam (tahmini) · 3 adet")).toBeVisible();
-  await expect(drawer(page).getByText("825,50 ₺", { exact: true })).toBeVisible();
+  await expect(drawer(page).getByText("920,00 ₺", { exact: true })).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(cartButton(page)).toBeFocused();
 });

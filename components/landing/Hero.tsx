@@ -1,11 +1,16 @@
 import type { JSX } from "react";
-import { preload } from "react-dom";
-import { HeroIntro } from "@/components/landing/HeroIntro";
-import type { Product } from "@/types/catalog";
-import { heroPoster } from "@/lib/media/hero-poster";
+import { V3Picture } from "@/components/media/V3Picture";
+import { v3Image } from "@/lib/media/v3-assets";
+import styles from "./V3Foundation.module.css";
 
-export function Hero({ products }: { products: readonly Product[] }): JSX.Element {
-  preload(heroPoster.mobileSrcSet.split(" ")[0], { as: "image", type: "image/avif", media: "(max-width: 767px) and (orientation: portrait)", imageSrcSet: heroPoster.mobileSrcSet, imageSizes: "100vw", fetchPriority: "high" });
-  preload(heroPoster.desktopSrcSet.split(" ")[0], { as: "image", type: "image/avif", media: "(min-width: 768px), (orientation: landscape)", imageSrcSet: heroPoster.desktopSrcSet, imageSizes: "100vw", fetchPriority: "high" });
-  return <HeroIntro products={products} />;
+/** Task 112 owns the measured hero composition and motion. */
+export function Hero(): JSX.Element {
+  return <section data-hero-intro="" aria-labelledby="hero-title" className={styles.hero}>
+    <V3Picture image={v3Image("hero-masaustu")} mobile={v3Image("hero-mobil")} sizes="100vw" className={styles.heroImage} eager decorative />
+    <div className={styles.heroCopy}>
+      <h1 id="hero-title">Düziçi’nden<br /> sofranıza.</h1>
+      <p>Doğal Kırma Yeşil Zeytin, kendi tesisimizde.</p>
+      <a href="#kiler" className={styles.heroLink}>Ürünleri gör</a>
+    </div>
+  </section>;
 }

@@ -11,7 +11,7 @@ it("production stays upcoming without demo opt-in and never reads PayTR keys", (
   vi.stubEnv("NODE_ENV", "production");
   vi.stubEnv("NEXT_PUBLIC_DEMO", "0");
   const html = renderToStaticMarkup(<Page />);
-  expect(html).toContain("Yakında");
+  expect(html).toContain("Ödeme hazırlıkları sürüyor.");
   expect(html).toContain('href="/sepet"');
   expect(html).not.toContain("<form");
   expect(getPaytrCredentials).not.toHaveBeenCalled();

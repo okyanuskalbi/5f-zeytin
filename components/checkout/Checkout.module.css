@@ -2,12 +2,12 @@
 .header { display: grid; gap: 16px; max-width: 64ch; margin-bottom: 32px; }
 .header h1 { font-size: var(--step-head); }
 .muted { color: var(--muted-foreground); }
-.demo { padding: 16px 24px; background: var(--brand-sand); margin-bottom: 32px; }
+.demo { padding: 16px 24px; background: var(--brand-kraft); margin-bottom: 32px; }
 .steps { display: flex; gap: 8px; margin-bottom: 32px; }
 .steps li { flex: 1; min-width: 0; }
 .steps button { width: 100%; padding: 12px 8px; white-space: normal; min-height: 48px; height: auto; gap: 8px; }
 .steps [aria-current] { background: var(--brand-olive); color: var(--brand-ivory); }
-.progress { height: 4px; background: var(--brand-sand); margin-bottom: 32px; }
+.progress { height: 4px; background: var(--brand-kraft); margin-bottom: 32px; }
 .progress > div { height: 100%; background: var(--brand-olive); transform-origin: left; }
 .layout { display: grid; align-items: start; gap: 48px; }
 .content, .form, .section, .field, .summary { display: grid; min-width: 0; gap: 24px; }
@@ -30,7 +30,7 @@
 .choice a { text-decoration: underline; }
 .actions { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
 .actions button { min-height: 48px; height: auto; white-space: normal; }
-.summary { padding: 32px; background: var(--brand-sand); overflow-wrap: anywhere; }
+.summary { padding: 32px; background: var(--brand-kraft); overflow-wrap: anywhere; }
 .summary ul, .summary dl { display: grid; gap: 24px; }
 .summary li { display: grid; gap: 8px; }
 .summary dl > div { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px; }
@@ -42,7 +42,7 @@
 .errorSummary a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; }
 .errorSummary:focus { outline: 2px solid var(--ring); outline-offset: 4px; }
 .signIn { display: grid; gap: 16px; max-width: 480px; }
-.note { padding: 24px; background: var(--brand-sand); overflow-wrap: anywhere; }
+.note { padding: 24px; background: var(--brand-kraft); overflow-wrap: anywhere; }
 .address { font-style: normal; overflow-wrap: anywhere; }
 .address p + p { margin-top: 8px; }
 .link { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; }

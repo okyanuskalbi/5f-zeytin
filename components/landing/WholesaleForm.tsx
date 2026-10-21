@@ -14,7 +14,7 @@ const empty: WholesaleRequest = { name: "", email: "", phone: "", message: "" };
 const subscribe = () => () => {};
 const clientSnapshot = () => true;
 const serverSnapshot = () => false;
-const unavailable = "Toptan talep gönderimi henüz kullanıma açık değil. Bilgileriniz gönderilmez.";
+const unavailable = "Toptan iletişim bilgileri yakında paylaşılacak. Bilgileriniz gönderilmez.";
 type Status = "idle" | "pending" | "success" | "error";
 
 // Adapted from 21st kevingirelli/Contact Form (35258): two-column layout,

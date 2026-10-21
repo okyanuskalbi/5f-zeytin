@@ -156,12 +156,12 @@ export function CartSummary({ store, products, onRefresh, refreshing = false, up
             <label htmlFor={`${id}-coupon`} className="block text-base font-medium">Kupon kodu</label>
             <input id={`${id}-coupon`} type="text" readOnly value="" aria-describedby={`${id}-coupon-help`}
               className="min-h-11 w-full min-w-0 rounded-none border border-input bg-background px-3 py-2 text-base focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring" />
-            <p id={`${id}-coupon-help`} className="text-base text-muted-foreground">Kupon kullanımı henüz kullanıma açık değil.</p>
+            <p id={`${id}-coupon-help`} className="text-base text-muted-foreground">Kupon ekleme hazırlıkları sürüyor.</p>
             <Button variant="outline" className="w-full" disabled aria-describedby={`${id}-coupon-help`}>Kuponu uygula</Button>
           </div>
           <div className="space-y-3 pt-5">
             {checkoutHref && showOffers ? <Button asChild className="w-full"><Link href={checkoutHref} prefetch={false}>Ödemeye geç</Link></Button> : <Button className="w-full" disabled aria-describedby={`${id}-payment-help`}>Ödemeye geç</Button>}
-            <p id={`${id}-payment-help`} className="text-base text-muted-foreground">{checkoutHref ? "Yerel test ödemesi sepetinizden tahsilat yapmaz." : "Ödeme henüz kullanıma açık değil. Fiyat ve stoklar kesinleşmeden ödeme başlatılmaz."}</p>
+            <p id={`${id}-payment-help`} className="text-base text-muted-foreground">{checkoutHref ? "Yerel test ödemesi sepetinizden tahsilat yapmaz." : "Fiyat ve stoklar kesinleştiğinde ödeme adımına geçebilirsiniz."}</p>
           </div>
         </aside>
       </div>

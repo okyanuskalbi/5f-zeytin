@@ -5,7 +5,7 @@ import { CART_STORAGE_KEY } from "../../lib/cart/store";
 const demo = process.env.NEXT_PUBLIC_DEMO === "1";
 const main = (page: Page) => page.getByRole("main");
 async function seed(page: Page) {
-  await page.addInitScript(key => { if (!localStorage.getItem(key)) localStorage.setItem(key, JSON.stringify([{ productId: "sample-table-olive", quantity: 2 }])); }, CART_STORAGE_KEY);
+  await page.addInitScript(key => { if (!localStorage.getItem(key)) localStorage.setItem(key, JSON.stringify([{ productId: "sample-green-olive-1kg", quantity: 2 }])); }, CART_STORAGE_KEY);
 }
 async function fillDetails(page: Page) {
   for (const [label, value] of [["Ad soyad", "Deniz Sofra"], ["E-posta", "deniz@example.test"], ["Telefon", "+905321234567"], ["Mahalle", "Örnek Mahallesi"], ["Açık adres", "Örnek Sokak No: 12"], ["Posta kodu", "80700"]]) await main(page).getByLabel(label, { exact: true }).fill(value);
@@ -26,7 +26,7 @@ async function photograph(page: Page, state: string, project: string) {
 test("production checkout is upcoming and ignores forged step/payment result parameters", async ({ page }, info) => {
   test.skip(demo, "Requires production without demo opt-in.");
   await page.goto("/odeme?step=3&status=success&paid=true");
-  await expect(main(page)).toContainText("Yakında");
+  await expect(main(page)).toContainText("Ödeme hazırlıkları sürüyor.");
   await expect(main(page).locator("form, input, iframe")).toHaveCount(0);
   await photograph(page, "production", info.project.name);
 });
@@ -112,8 +112,8 @@ test.describe("checkout mock journeys", () => {
     await page.goto("/sepet");
     await main(page).getByRole("link", { name: "Ödemeye geç" }).click();
     await expect(page).toHaveURL(/\/odeme$/);
-    await expect(main(page).getByRole("complementary", { name: "Sipariş özeti" })).toContainText("Sofralık Zeytin");
-    await expect(main(page).getByRole("complementary", { name: "Sipariş özeti" })).toContainText("251,00");
+    await expect(main(page).getByRole("complementary", { name: "Sipariş özeti" })).toContainText("Doğal Kırma Yeşil Zeytin");
+    await expect(main(page).getByRole("complementary", { name: "Sipariş özeti" })).toContainText("440,00");
     await expect(main(page)).toContainText("Misafir olarak devam edebilirsiniz");
     await photograph(page, "details", info.project.name);
     await main(page).getByRole("button", { name: "Google ile devam et", exact: true }).click();

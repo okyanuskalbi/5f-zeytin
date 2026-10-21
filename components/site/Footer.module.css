@@ -1,4 +1,4 @@
-.footer { padding: 64px var(--page-margin) max(32px, env(safe-area-inset-bottom, 0px)); background: var(--brand-earth); color: var(--brand-ivory); }
+.footer { padding: 64px var(--page-margin) max(32px, env(safe-area-inset-bottom, 0px)); background: var(--brand-olive); color: var(--brand-ivory); }
 .columns { display: grid; grid-template-columns: 1.2fr 1fr; gap: 96px; }
 .message { max-width: 38ch; }
 .home { display: inline-flex; margin-bottom: 32px; }
@@ -29,3 +29,5 @@
   .community { flex-basis: auto; }
   .community img { width: 88px; }
 }
+
+.preview { margin-top: 40px; font-size: var(--step-small); }

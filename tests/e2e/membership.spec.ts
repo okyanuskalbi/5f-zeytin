@@ -9,7 +9,7 @@ test("production without demo exposes honest upcoming states", async ({ page }, 
   await mkdir("test-results/108", { recursive: true });
   for (const route of ["/giris", "/hesabim"]) {
     await page.goto(route);
-    await expect(page.getByRole("main")).toContainText("Yakında");
+    await expect(page.getByRole("main")).toContainText("yakında.");
     await expect(page.getByRole("main").locator("form, input")).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Google ile devam et" })).toHaveCount(0);
     await page.screenshot({ path: `test-results/108/production-${route.slice(1)}-${testInfo.project.name}.png`, fullPage: true });
@@ -20,7 +20,7 @@ test.describe("membership mock journeys", () => {
   test.skip(!demo, "Mock journeys require NEXT_PUBLIC_DEMO=1 at build time.");
 
   test("Google adapter, profile, tabs, order link and sign out preserve guest cart", async ({ page }) => {
-    await page.addInitScript(key => { if (!localStorage.getItem(key)) localStorage.setItem(key, JSON.stringify([{ productId: "sample-table-olive", quantity: 2 }])); }, CART_STORAGE_KEY);
+    await page.addInitScript(key => { if (!localStorage.getItem(key)) localStorage.setItem(key, JSON.stringify([{ productId: "sample-green-olive-1kg", quantity: 2 }])); }, CART_STORAGE_KEY);
     await page.goto("/giris");
     await expect(page.getByRole("main")).toContainText("Demo");
     await page.getByRole("button", { name: "Google ile devam et", exact: true }).click();
@@ -97,15 +97,19 @@ test.describe("membership mock journeys", () => {
     for (const [label, value] of [["Adres başlığı", "Ev"], ["Alıcı", "Deniz Test"], ["Telefon", "05321234567"], ["İl", "Osmaniye"], ["İlçe", "Düziçi"], ["Açık adres", "Örnek Mahallesi 12"], ["Posta kodu", "80700"]]) await page.getByLabel(label, { exact: true }).fill(value);
     await page.getByRole("button", { name: "Adresi kaydet" }).click();
     await expect(page.getByRole("tabpanel")).toContainText("Varsayılan");
+    await expect(page.getByRole("form", { name: "Adres bilgileri" })).toHaveCount(0);
     await page.getByRole("button", { name: "Adres ekle" }).click();
+    await expect(page.getByLabel("Adres başlığı", { exact: true })).toHaveValue("");
     for (const [label, value] of [["Adres başlığı", "İş"], ["Alıcı", "Deniz Test"], ["Telefon", "05321234567"], ["İl", "Osmaniye"], ["İlçe", "Düziçi"], ["Açık adres", "İş Mahallesi 24"], ["Posta kodu", "80700"]]) await page.getByLabel(label, { exact: true }).fill(value);
     await page.getByRole("button", { name: "Adresi kaydet" }).click();
-    await page.getByRole("button", { name: "Varsayılan yap" }).click();
+    await expect(page.getByRole("form", { name: "Adres bilgileri" })).toHaveCount(0);
     const work = page.getByRole("listitem").filter({ has: page.getByRole("heading", { name: "İş", exact: true }) });
+    await work.getByRole("button", { name: "Varsayılan yap" }).click();
     await expect(work).toContainText("Varsayılan adres");
     await work.getByRole("button", { name: "Düzenle" }).click();
     await page.getByLabel("Adres başlığı", { exact: true }).fill("Ofis");
     await page.getByRole("button", { name: "Adresi kaydet" }).click();
+    await expect(page.getByRole("heading", { name: "Ofis", exact: true })).toBeVisible();
     await page.reload();
     await page.getByRole("tab", { name: "Adreslerim" }).click();
     await expect(page.getByRole("heading", { name: "Ofis", exact: true })).toBeVisible();

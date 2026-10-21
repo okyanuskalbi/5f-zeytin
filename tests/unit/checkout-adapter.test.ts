@@ -54,14 +54,14 @@ describe("checkout UI boundary", () => {
     const adapter = createMockCheckoutAdapter();
     const products = await getProducts();
     expect(adapter.shippingOptions()).toEqual([{ id: "standard", name: "Standart kargo", description: "Ücret ödeme adımında", priceKurus: null }]);
-    const summary = adapter.summary([{ productId: "sample-table-olive", quantity: 2 }], products);
-    expect(summary.subtotalKurus).toBe(25100);
+    const summary = adapter.summary([{ productId: "sample-green-olive-1kg", quantity: 2 }], products);
+    expect(summary.subtotalKurus).toBe(44000);
     expect(summary.finalTotalKurus).toBeNull();
     expect(summary.lines[0].quantity).toBe(2);
     expect(summary.ready).toBe(true);
-    for (const items of [[], [{ productId: "unknown", quantity: 1 }], [{ productId: "sample-table-olive", quantity: 99 }], [{ productId: "sample-table-olive", quantity: -1 }]]) {
+    for (const items of [[], [{ productId: "unknown", quantity: 1 }], [{ productId: "sample-green-olive-1kg", quantity: 99 }], [{ productId: "sample-green-olive-1kg", quantity: -1 }]]) {
       expect(adapter.summary(items, products).ready).toBe(false);
     }
-    expect(adapter.summary([{ productId: "sample-table-olive", quantity: 2 }], null).subtotalKurus).toBeNull();
+    expect(adapter.summary([{ productId: "sample-green-olive-1kg", quantity: 2 }], null).subtotalKurus).toBeNull();
   });
 });

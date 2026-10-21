@@ -12,12 +12,12 @@ async function seed(page: Page, value: unknown): Promise<void> {
 }
 
 test("cart page: route loads the catalog and preserves edits on server refresh", async ({ page }) => {
-  await seed(page, [{ productId: "sample-table-olive", quantity: 1, priceKurus: 1 }]);
+  await seed(page, [{ productId: "sample-green-olive-1kg", quantity: 1, priceKurus: 1 }]);
   const response = await page.goto("/sepet");
   expect(response?.status()).toBe(200);
   await expect(page.getByRole("heading", { level: 1, name: "Sepetim" })).toBeVisible();
-  const olive = page.getByRole("group", { name: "Sofralık Zeytin", exact: true });
-  await expect(olive.getByText("125,50 ₺ / adet")).toBeVisible();
+  const olive = page.getByRole("group", { name: "Doğal Kırma Yeşil Zeytin", exact: true });
+  await expect(olive.getByText("220,00 ₺ / adet")).toBeVisible();
   await olive.getByRole("button", { name: "Adedi artır" }).click();
   await expect(olive.getByRole("status", { name: "Adet" })).toHaveText("2");
   const refresh = page.waitForRequest((request) => request.url().includes("/sepet") && request.headers()["rsc"] === "1");
@@ -182,8 +182,8 @@ test.describe("cart page component", () => {
       await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
       const coupon = page.getByRole("textbox", { name: "Kupon kodu" });
       await coupon.focus();
-      await expect(coupon).toHaveAccessibleDescription(/henüz kullanıma açık değil/);
-      await expect(page.getByRole("button", { name: "Ödemeye geç" })).toHaveAccessibleDescription(/henüz kullanıma açık değil/);
+      await expect(coupon).toHaveAccessibleDescription(/hazırlıkları sürüyor|Fiyat ve stoklar kesinleştiğinde/);
+      await expect(page.getByRole("button", { name: "Ödemeye geç" })).toHaveAccessibleDescription(/hazırlıkları sürüyor|Fiyat ve stoklar kesinleştiğinde/);
       if (reducedMotion === "reduce") expect(await continueLink.evaluate((element) => getComputedStyle(element).transitionDuration)).toBe("0s");
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       await page.screenshot({ path: testInfo.outputPath(`cart-keyboard-${reducedMotion}.png`), fullPage: true });

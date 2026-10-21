@@ -10,9 +10,9 @@ async function seed(page: Page, items = [{ productId: "olive", quantity: 1 }]): 
 }
 
 test("upsell: real cart has no invented relationship or discount", async ({ page }) => {
-  await seed(page, [{ productId: "sample-table-olive", quantity: 1 }]);
+  await seed(page, [{ productId: "sample-green-olive-1kg", quantity: 1 }]);
   expect((await page.goto("/sepet"))?.status()).toBe(200);
-  await expect(page.getByRole("group", { name: "Sofralık Zeytin", exact: true })).toBeVisible();
+  await expect(page.getByRole("group", { name: "Doğal Kırma Yeşil Zeytin", exact: true })).toBeVisible();
   await expect(page.getByRole("region", { name: "Sofranızı tamamlayın" })).toHaveCount(0);
   await expect(page.getByRole("region", { name: "Miktar indirimi koşulları" })).toHaveCount(0);
   await expect(page.getByText("Henüz hesaplanmadı", { exact: true })).toBeVisible();

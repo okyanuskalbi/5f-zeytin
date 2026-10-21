@@ -35,7 +35,7 @@ for (const [title, Page, metadata] of [["Hesabım", Account, accountMetadata], [
     expect(doc.querySelector("form, input, iframe")).toBeNull();
     if (metadata) {
       expect(metadata.robots).toEqual({ index: false, follow: false });
-      expect(doc.querySelector("main")?.textContent).toContain("henüz kullanıma açık değil.");
+      expect(doc.querySelector("main")?.textContent).toContain("yakında.");
     }
   });
 }

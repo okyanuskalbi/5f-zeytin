@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: "Hesabım | Afina Zeytin", robots: { 
 export default function Page() {
   if (isMembershipDemoEnabled()) return <Account />;
   return <EmptyState title="Hesabım">
-    <p>Yakında. Üyelik ve hesap işlemleri henüz kullanıma açık değil.</p>
+    <p>Üyelik ve hesap işlemleri yakında.</p>
     <p>Ürünlerimizi keşfedebilir, seçtiklerinizi sepetinizde saklayabilirsiniz.</p>
   </EmptyState>;
 }

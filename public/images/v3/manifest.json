@@ -1,0 +1,1231 @@
+{
+  "version": 1,
+  "encoder": {
+    "sharp": "0.35.5",
+    "vips": "8.18.7"
+  },
+  "assets": {
+    "hero-masaustu": {
+      "source": "zeytin-v3-gorseller/hero-masaustu.webp",
+      "sourceSha256": "2d24251e8e1218cc7a20301d816e671657ac7f0158787c84314aeecf4e4b0cc6",
+      "approval": "AFINA-KAYNAK/zeytin-v3-gorseller/ONAY.md",
+      "alt": "Düziçi’nde kahvaltı sofrasında Afina yeşil zeytin tenekesi",
+      "sourceWidth": 3840,
+      "sourceHeight": 2160,
+      "crop": null,
+      "alphaThreshold": null,
+      "outputs": [
+        {
+          "file": "/images/v3/hero-masaustu-w1920.avif",
+          "format": "avif",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 156140,
+          "sha256": "52ee6ef40a2f830e54cf6e3802f480e11d04f2c4fa68e895d717f1936f839945",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/hero-masaustu-w1920.webp",
+          "format": "webp",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 176992,
+          "sha256": "3842854ebe6723d9a837b310b5a06979d6b632ce9c0e6809bd2d13486a96e7e3",
+          "quality": 36
+        },
+        {
+          "file": "/images/v3/hero-masaustu-w2880.avif",
+          "format": "avif",
+          "width": 2880,
+          "height": 1620,
+          "bytes": 155509,
+          "sha256": "9995e91fdb77e557a374c16aa1f32f80a97153d9dac3da34719d25cec559207b",
+          "quality": 35
+        },
+        {
+          "file": "/images/v3/hero-masaustu-w2880.webp",
+          "format": "webp",
+          "width": 2880,
+          "height": 1620,
+          "bytes": 177776,
+          "sha256": "e79423cab99bd8fd87c2e91092e85a707953db62ef119baf5fc30ea822283a65",
+          "quality": 11
+        }
+      ]
+    },
+    "hero-mobil": {
+      "source": "zeytin-v3-gorseller/hero-mobil.webp",
+      "sourceSha256": "76bc519dcffcdd993a9a425fae9de40805ff4e0e93c222cd6d12a0b70f7b0a6d",
+      "approval": "AFINA-KAYNAK/zeytin-v3-gorseller/ONAY.md",
+      "alt": "Sabah ışığında Afina zeytiniyle hazırlanan kahvaltı sofrası",
+      "sourceWidth": 1152,
+      "sourceHeight": 2048,
+      "crop": null,
+      "alphaThreshold": null,
+      "outputs": [
+        {
+          "file": "/images/v3/hero-mobil-w750.avif",
+          "format": "avif",
+          "width": 750,
+          "height": 1333,
+          "bytes": 73770,
+          "sha256": "daa3ddeb3eac0ceb52896d83c2c192723c858d6217f43c0144bafc729305cc47",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/hero-mobil-w750.webp",
+          "format": "webp",
+          "width": 750,
+          "height": 1333,
+          "bytes": 115784,
+          "sha256": "fa678ec5cb04bcd6265764458cc42a6a3f20e0b3e5a4e08055adde6e8275e972",
+          "quality": 66
+        },
+        {
+          "file": "/images/v3/hero-mobil-w1150.avif",
+          "format": "avif",
+          "width": 1150,
+          "height": 2044,
+          "bytes": 108905,
+          "sha256": "747a8f9edfdf2088c76445dc6d7658d8b07596fd650a832c336ec1eb7823aa9d",
+          "quality": 45
+        },
+        {
+          "file": "/images/v3/hero-mobil-w1150.webp",
+          "format": "webp",
+          "width": 1150,
+          "height": 2044,
+          "bytes": 118742,
+          "sha256": "a18ab8413c3a30961fcf1d62e2c58000477f1b8f4d9eb3c2c21e11c201fdc6cf",
+          "quality": 26
+        }
+      ]
+    },
+    "kiler-duvar": {
+      "source": "zeytin-v3-gorseller/kiler-duvar.webp",
+      "sourceSha256": "7d298a51ebb5f8289b5150f27fcfaec7108a1688e7ee6c58ef4012f6bec87ac1",
+      "approval": "AFINA-KAYNAK/zeytin-v3-gorseller/ONAY.md",
+      "alt": "Pencere ışığının vurduğu yeşil badanalı kiler duvarı",
+      "sourceWidth": 3840,
+      "sourceHeight": 2160,
+      "crop": null,
+      "alphaThreshold": null,
+      "outputs": [
+        {
+          "file": "/images/v3/kiler-duvar-w1920.avif",
+          "format": "avif",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 34844,
+          "sha256": "1fbf8853d7ece888127f627b5920d2bc2ca1cf7d8f92767d4c0fe73c79593610",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/kiler-duvar-w1920.webp",
+          "format": "webp",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 39368,
+          "sha256": "4546aea45f6a36861f1005b8f93bb6fc161b89a327afacc045e1e1194fde3cad",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/kiler-duvar-w2880.avif",
+          "format": "avif",
+          "width": 2880,
+          "height": 1620,
+          "bytes": 83519,
+          "sha256": "942f4ea54777a43b7ccd00a5311cca5c5b3bf77227d525f5097270a83325725d",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/kiler-duvar-w2880.webp",
+          "format": "webp",
+          "width": 2880,
+          "height": 1620,
+          "bytes": 84646,
+          "sha256": "f819c5110ee5db25ccfcfadb8c0d5cd8b80eb40a0be27a2e183bcdc56f9c24d7",
+          "quality": 76
+        }
+      ]
+    },
+    "kraft-doku": {
+      "source": "zeytin-v3-gorseller/kraft-doku.webp",
+      "sourceSha256": "d5f7613a1fc212b784017c365a55a2453f35eadd9f28cd073e266b2572018d3d",
+      "approval": "AFINA-KAYNAK/zeytin-v3-gorseller/ONAY.md",
+      "alt": "Kraft kâğıt dokusu",
+      "sourceWidth": 2048,
+      "sourceHeight": 2048,
+      "crop": null,
+      "alphaThreshold": null,
+      "outputs": [
+        {
+          "file": "/images/v3/kraft-doku-w512.avif",
+          "format": "avif",
+          "width": 512,
+          "height": 512,
+          "bytes": 8146,
+          "sha256": "772339d0d6ea28c4b8406087b3dad4598e7ee92bbb700f209c43a97cc4cdaa8b",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/kraft-doku-w512.webp",
+          "format": "webp",
+          "width": 512,
+          "height": 512,
+          "bytes": 14446,
+          "sha256": "e7b158694d4818650ca53c5d898569eb7c43cde25d6571e3db6d537b66db4c59",
+          "quality": 76
+        }
+      ]
+    },
+    "raf-ceviz": {
+      "source": "zeytin-v3-gorseller/raf-ceviz.png",
+      "sourceSha256": "e9c65a560bcc866ca0dc313b9858a70ad4155042378cde3f608313ddd03189ed",
+      "approval": "AFINA-KAYNAK/zeytin-v3-gorseller/ONAY.md",
+      "alt": "Ceviz ağacından yatay kiler rafı",
+      "sourceWidth": 2560,
+      "sourceHeight": 1088,
+      "crop": {
+        "left": 2,
+        "top": 471,
+        "width": 2556,
+        "height": 147
+      },
+      "alphaThreshold": 200,
+      "outputs": [
+        {
+          "file": "/images/v3/raf-ceviz-w1920.avif",
+          "format": "avif",
+          "width": 1920,
+          "height": 110,
+          "bytes": 15598,
+          "sha256": "d96eed1fc60c993d6c04cd4eb6dde4e6c01360f338f389d507eab858aa2247e2",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/raf-ceviz-w1920.webp",
+          "format": "webp",
+          "width": 1920,
+          "height": 110,
+          "bytes": 39980,
+          "sha256": "48aa5fe8e96b2d88c0109f5d24d28867b728f5682d7d5e15837673069ad91b07",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/raf-ceviz-w2880.avif",
+          "format": "avif",
+          "width": 2880,
+          "height": 166,
+          "bytes": 26428,
+          "sha256": "ddf75aeb6cce362fd01add43832406f90c3a1fadb0be25ae793abac69537dcbb",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/raf-ceviz-w2880.webp",
+          "format": "webp",
+          "width": 2880,
+          "height": 166,
+          "bytes": 69762,
+          "sha256": "49aa265d6352f45028bd82bd22108755f869f5598f2da310e8c0e194e3f6dac8",
+          "quality": 76
+        }
+      ]
+    },
+    "kargo-kolisi": {
+      "source": "zeytin-v3-gorseller/kargo-kolisi.png",
+      "sourceSha256": "294007a59c1c17337c0f2f71993d987aed3f3d0ab31dfa33975ebe3bc4f9fce5",
+      "approval": "AFINA-KAYNAK/zeytin-v3-gorseller/ONAY.md",
+      "alt": "Afina logolu kraft kargo kolisi",
+      "sourceWidth": 1536,
+      "sourceHeight": 1024,
+      "crop": {
+        "left": 180,
+        "top": 105,
+        "width": 1177,
+        "height": 810
+      },
+      "alphaThreshold": 40,
+      "outputs": [
+        {
+          "file": "/images/v3/kargo-kolisi-h300.avif",
+          "format": "avif",
+          "width": 436,
+          "height": 300,
+          "bytes": 11454,
+          "sha256": "a95360268f57e15c00d7bf0436206b912fd291a0a2e76ffe70afa0448c25d0c9",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/kargo-kolisi-h300.webp",
+          "format": "webp",
+          "width": 436,
+          "height": 300,
+          "bytes": 19690,
+          "sha256": "dac8cdeddf9780cbef2b5c5aebcc8288cd33479a9d79093a87c96ac9d1af0c25",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/kargo-kolisi-h600.avif",
+          "format": "avif",
+          "width": 872,
+          "height": 600,
+          "bytes": 45384,
+          "sha256": "9e87246a7f75f719ff41ef7f5ab132dd68bfeb587d4a1ad8e795dd13565c31a7",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/kargo-kolisi-h600.webp",
+          "format": "webp",
+          "width": 872,
+          "height": 600,
+          "bytes": 83876,
+          "sha256": "33984f1205b59a7e0e3615171c67fd85af12dcaad97d8e780e18f6a96c1a2e36",
+          "quality": 76
+        }
+      ]
+    },
+    "urun-01-kirma-10kg": {
+      "source": "zeytin-v3-gorseller/urun-01-kirma-10kg.png",
+      "sourceSha256": "1c6b812821fc55c0c9e89c83bbb3268ce4904da62d85d0bb3b6febf2acf594b9",
+      "approval": "AFINA-KAYNAK/zeytin-v3-gorseller/ONAY.md",
+      "alt": "Doğal Kırma Yeşil Zeytin, 10 kg teneke",
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "crop": {
+        "left": 42,
+        "top": 142,
+        "width": 946,
+        "height": 1258
+      },
+      "alphaThreshold": 40,
+      "outputs": [
+        {
+          "file": "/images/v3/urun-01-kirma-10kg-h300.avif",
+          "format": "avif",
+          "width": 226,
+          "height": 300,
+          "bytes": 11138,
+          "sha256": "b54da016633489e53f92d53f7d57b5523d1472c23d143a6cc96f1e9a9dde30eb",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/urun-01-kirma-10kg-h300.webp",
+          "format": "webp",
+          "width": 226,
+          "height": 300,
+          "bytes": 21340,
+          "sha256": "4afc72df908840894f0b6bc6da3d71c286077d7331de705024db00eaf3ec0db8",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/urun-01-kirma-10kg-h600.avif",
+          "format": "avif",
+          "width": 451,
+          "height": 600,
+          "bytes": 27954,
+          "sha256": "2709880e4f9850bce7d05f915619cb6cdb609a66153b41cd1dc3161e84119413",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/urun-01-kirma-10kg-h600.webp",
+          "format": "webp",
+          "width": 451,
+          "height": 600,
+          "bytes": 56528,
+          "sha256": "566461d0a2f7fec8608837261f8b34fef2777329afef494879770145170e2322",
+          "quality": 76
+        }
+      ]
+    },
+    "urun-02-kirma-1kg": {
+      "source": "zeytin-v3-gorseller/urun-02-kirma-1kg.png",
+      "sourceSha256": "e8902cdfd272a961bb66149e265557e6d997732130315255838d3b6c4b2d3400",
+      "approval": "AFINA-KAYNAK/zeytin-v3-gorseller/ONAY.md",
+      "alt": "Doğal Kırma Yeşil Zeytin, 1 kg kavanoz",
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "crop": {
+        "left": 167,
+        "top": 82,
+        "width": 691,
+        "height": 1393
+      },
+      "alphaThreshold": 40,
+      "outputs": [
+        {
+          "file": "/images/v3/urun-02-kirma-1kg-h300.avif",
+          "format": "avif",
+          "width": 149,
+          "height": 300,
+          "bytes": 8637,
+          "sha256": "8a45939300e9168d1f66f7aff0882eef0fcd8b059e4931b75aa1e0f0afbc285d",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/urun-02-kirma-1kg-h300.webp",
+          "format": "webp",
+          "width": 149,
+          "height": 300,
+          "bytes": 15704,
+          "sha256": "bb42b98664f7919b9cacf0aafbc7f049f8155cfab0944f50cc39406be051d211",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/urun-02-kirma-1kg-h600.avif",
+          "format": "avif",
+          "width": 298,
+          "height": 600,
+          "bytes": 23072,
+          "sha256": "5f68b006fb6bb21e2d9f4c6cf08ea806f43fcea6e5ef4b13adab1a0e67b7ff54",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/urun-02-kirma-1kg-h600.webp",
+          "format": "webp",
+          "width": 298,
+          "height": 600,
+          "bytes": 44192,
+          "sha256": "c711f06349f8a070974b4616ea2bdfa174c2200440ce941a6ef25a5340353488",
+          "quality": 76
+        }
+      ]
+    },
+    "urun-03-siyah-1kg": {
+      "source": "zeytin-v3-gorseller/urun-03-siyah-1kg.png",
+      "sourceSha256": "14bfa2010402d06f60cca5cba00b756c1e15ad802da90a9a33c8c3f407f5f329",
+      "approval": "AFINA-KAYNAK/zeytin-v3-gorseller/ONAY.md",
+      "alt": "Salamura Siyah Zeytin, 1 kg kavanoz",
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "crop": {
+        "left": 160,
+        "top": 85,
+        "width": 707,
+        "height": 1388
+      },
+      "alphaThreshold": 40,
+      "outputs": [
+        {
+          "file": "/images/v3/urun-03-siyah-1kg-h300.avif",
+          "format": "avif",
+          "width": 153,
+          "height": 300,
+          "bytes": 8294,
+          "sha256": "22ae410e82cf9698dab51875f448aa479428b3ec7e9174e0d00dd4554cc2295a",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/urun-03-siyah-1kg-h300.webp",
+          "format": "webp",
+          "width": 153,
+          "height": 300,
+          "bytes": 16160,
+          "sha256": "ea03e13b73f5277ed720c497ac3cbd3c176e9475c3d7144134053adba41bda9b",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/urun-03-siyah-1kg-h600.avif",
+          "format": "avif",
+          "width": 306,
+          "height": 600,
+          "bytes": 22416,
+          "sha256": "53d1287f2c57e599079c2e067283a0a98295cff51f56867df3538ac5a3b41aca",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/urun-03-siyah-1kg-h600.webp",
+          "format": "webp",
+          "width": 306,
+          "height": 600,
+          "bytes": 45434,
+          "sha256": "53f7aa4a8c3a8cd43656a6810386da241e63beec3c08ab8465f76e4cc8276b37",
+          "quality": 76
+        }
+      ]
+    },
+    "urun-04-yag-1l": {
+      "source": "zeytin-v3-gorseller/urun-04-yag-1l.png",
+      "sourceSha256": "a8ef24c78601c90de982bc898c15d0266a46420af5c0b2fdaabb4826723f0eb9",
+      "approval": "AFINA-KAYNAK/zeytin-v3-gorseller/ONAY.md",
+      "alt": "Natürel Sızma Zeytinyağı, 1 L cam şişe",
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "crop": {
+        "left": 294,
+        "top": 44,
+        "width": 428,
+        "height": 1449
+      },
+      "alphaThreshold": 40,
+      "outputs": [
+        {
+          "file": "/images/v3/urun-04-yag-1l-h300.avif",
+          "format": "avif",
+          "width": 89,
+          "height": 300,
+          "bytes": 5257,
+          "sha256": "095409900556010812539041360e9dce2d5efac39b9ca09e673a9cc07ab150ad",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/urun-04-yag-1l-h300.webp",
+          "format": "webp",
+          "width": 89,
+          "height": 300,
+          "bytes": 9554,
+          "sha256": "9fe3fc47f152e33d2f305226254e366b48c6cbf69816881efa7da3df6a66c8d7",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/urun-04-yag-1l-h600.avif",
+          "format": "avif",
+          "width": 177,
+          "height": 600,
+          "bytes": 12695,
+          "sha256": "97381303cce584d4db5a8462d5ec3d5e754c3c454ac7bbf2e3767526dead441e",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/urun-04-yag-1l-h600.webp",
+          "format": "webp",
+          "width": 177,
+          "height": 600,
+          "bytes": 25240,
+          "sha256": "da6849ad65e0942cd92a69269b5ccff6bd501e56c0cc3ca85e3cea3b5fdbb2ac",
+          "quality": 76
+        }
+      ]
+    },
+    "urun-05-yag-5l": {
+      "source": "zeytin-v3-gorseller/urun-05-yag-5l.png",
+      "sourceSha256": "03a69b5d78aa4ba37ce19fd0f4b4ba491237b324cdd615195fcddc078ce77ee4",
+      "approval": "AFINA-KAYNAK/zeytin-v3-gorseller/ONAY.md",
+      "alt": "Natürel Sızma Zeytinyağı, 5 L teneke",
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "crop": {
+        "left": 81,
+        "top": 127,
+        "width": 867,
+        "height": 1292
+      },
+      "alphaThreshold": 40,
+      "outputs": [
+        {
+          "file": "/images/v3/urun-05-yag-5l-h300.avif",
+          "format": "avif",
+          "width": 201,
+          "height": 300,
+          "bytes": 10095,
+          "sha256": "4dcb9b47daedfc047cd25af591dbff1e50445cff6ce78189139332e97ed4a2c9",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/urun-05-yag-5l-h300.webp",
+          "format": "webp",
+          "width": 201,
+          "height": 300,
+          "bytes": 20222,
+          "sha256": "4b42280b3b47d3fc9e6484dfa720aaf767a1f44ab390dde8def2fc6fe49dcae0",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/urun-05-yag-5l-h600.avif",
+          "format": "avif",
+          "width": 403,
+          "height": 600,
+          "bytes": 26351,
+          "sha256": "b5ec8a2dbbd4a8c52250170854644ffc5afd4bcac012fec2b37e4dc0661acc25",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/urun-05-yag-5l-h600.webp",
+          "format": "webp",
+          "width": 403,
+          "height": 600,
+          "bytes": 53806,
+          "sha256": "395975c274fe20cfee6806cf50b1aa235c1b16f1739fdf606b9648197edb1672",
+          "quality": 76
+        }
+      ]
+    },
+    "urun-06-salamura-yesil-5kg": {
+      "source": "zeytin-v3-gorseller/urun-06-salamura-yesil-5kg.png",
+      "sourceSha256": "c0f3befd86f76e709d6ed139aeebc5b1ea4e7d76af30cf8b8fa37ac8fbfb4f90",
+      "approval": "AFINA-KAYNAK/zeytin-v3-gorseller/ONAY.md",
+      "alt": "Salamura Yeşil Zeytin, 5 kg teneke",
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "crop": {
+        "left": 57,
+        "top": 142,
+        "width": 915,
+        "height": 1269
+      },
+      "alphaThreshold": 40,
+      "outputs": [
+        {
+          "file": "/images/v3/urun-06-salamura-yesil-5kg-h300.avif",
+          "format": "avif",
+          "width": 216,
+          "height": 300,
+          "bytes": 10426,
+          "sha256": "5f10478b1bf673d581ec19b6ba677927c33e6a816c5fce8b44d819b665f312a3",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/urun-06-salamura-yesil-5kg-h300.webp",
+          "format": "webp",
+          "width": 216,
+          "height": 300,
+          "bytes": 21028,
+          "sha256": "ae8e1ec0a450ded5598987975163ad6f0f7b2eb1b5a7b4d3c7abb76d9abd36f8",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/urun-06-salamura-yesil-5kg-h600.avif",
+          "format": "avif",
+          "width": 433,
+          "height": 600,
+          "bytes": 27092,
+          "sha256": "b5e0e40bfde8b1ac20b2ee404ced1495f9314028741591773d31c753e2ce59d7",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/urun-06-salamura-yesil-5kg-h600.webp",
+          "format": "webp",
+          "width": 433,
+          "height": 600,
+          "bytes": 55402,
+          "sha256": "3b7921212fb53430e2c82a1c63b5d3bcd553d93940267f7a5e22e3e9463090f3",
+          "quality": 76
+        }
+      ]
+    },
+    "tesis-osmaniye": {
+      "source": "docs/referans/tesis/tesis-osmaniye-plaka-bulanik.jpg",
+      "sourceSha256": "d35378a93dcbad69c0e62d09e2481af8a82bc6298c2526ab4ee55a594728b67d",
+      "approval": "AFINA-KAYNAK/urun-gorselleri/onayli/ONAY.md",
+      "alt": "Afina Zeytin’in Ellek, Düziçi’ndeki üretim tesisi",
+      "sourceWidth": 2400,
+      "sourceHeight": 1500,
+      "crop": null,
+      "alphaThreshold": null,
+      "outputs": [
+        {
+          "file": "/images/v3/tesis-osmaniye-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 500,
+          "bytes": 25375,
+          "sha256": "ccca41f9d4a88ea6d3ab1ee8674c8f1b5b0a4feb50fd45ff629d8ff2b27982fd",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/tesis-osmaniye-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 500,
+          "bytes": 39610,
+          "sha256": "bdef1d8c437561cf4ccc4354f51eab0a8448210b322e0f3aa1013c2a5505cc16",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/tesis-osmaniye-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 1000,
+          "bytes": 68487,
+          "sha256": "d53ff3f6a1bd0eba6f9484075500cc1667a4adb2e29a86882a540edec835017f",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/tesis-osmaniye-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 1000,
+          "bytes": 102284,
+          "sha256": "205936deb107ce733cd973ba7d322f4ba981bbe052847df7d4ebbcafd4c15fe8",
+          "quality": 76
+        }
+      ]
+    },
+    "01-dogal-kirma-yesil-zeytin-10kg-sahne": {
+      "source": "urun-gorselleri/onayli/01-dogal-kirma-yesil-zeytin-10kg-sahne.webp",
+      "sourceSha256": "877a528754bc702705d89c2ac6369841ed00a01986fedec8f20d2101231c1696",
+      "approval": "AFINA-KAYNAK/urun-gorselleri/onayli/ONAY.md",
+      "alt": "Doğal Kırma Yeşil Zeytin, 10 kg teneke, sofra sunumu",
+      "sourceWidth": 2000,
+      "sourceHeight": 1125,
+      "crop": null,
+      "alphaThreshold": null,
+      "outputs": [
+        {
+          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-sahne-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 450,
+          "bytes": 20298,
+          "sha256": "840dec2f9cbeb9dcaf69486970052370d336dee7c4c65219c1eaef93bd29ec17",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-sahne-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 450,
+          "bytes": 31406,
+          "sha256": "9962cb2e71c45cf67af5bc5c58a9ec041a8a945ada757cc3a88ffacb712a54b8",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-sahne-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 900,
+          "bytes": 51316,
+          "sha256": "701dccdc9893cff879ecf4f074656f509a5f381ee21cda79c8f3ad12802c5b04",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-sahne-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 900,
+          "bytes": 77368,
+          "sha256": "4b3602e943e144fe70b36d8bb2b8f2dd8b21ef8cfc80a055bc819fb64374921f",
+          "quality": 76
+        }
+      ]
+    },
+    "01-dogal-kirma-yesil-zeytin-10kg-studyo": {
+      "source": "urun-gorselleri/onayli/01-dogal-kirma-yesil-zeytin-10kg-studyo.webp",
+      "sourceSha256": "c3fc90b966799b7156a07afad6567d8abff89339aa6fb8ea8fa18cd26bfb4105",
+      "approval": "AFINA-KAYNAK/urun-gorselleri/onayli/ONAY.md",
+      "alt": "Doğal Kırma Yeşil Zeytin, 10 kg teneke, stüdyo çekimi",
+      "sourceWidth": 1600,
+      "sourceHeight": 2000,
+      "crop": null,
+      "alphaThreshold": null,
+      "outputs": [
+        {
+          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-studyo-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 1000,
+          "bytes": 40209,
+          "sha256": "a1c7e88e581756b5c552a542aa4219b6299d0422ae364953925c767afc0f043c",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-studyo-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 1000,
+          "bytes": 64274,
+          "sha256": "78b65bfdbbbd8ffc6f071725f5b76a209563e6c3b6e65c8e33762ab0e58a1ea5",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-studyo-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 2000,
+          "bytes": 100706,
+          "sha256": "076b2ac3d5e16b7a70f848005322429ad18752927995005babcfcd81f56ab2db",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-studyo-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 2000,
+          "bytes": 160690,
+          "sha256": "eab48d8182dc7c2016f4b43931de3600a06b51538d586829666cd47371ce67fd",
+          "quality": 76
+        }
+      ]
+    },
+    "02-dogal-kirma-yesil-zeytin-1kg-sahne": {
+      "source": "urun-gorselleri/onayli/02-dogal-kirma-yesil-zeytin-1kg-sahne.webp",
+      "sourceSha256": "e219c010bc20a4c2194b1307335d74a13790246f04c066f50caea14c4a6bf492",
+      "approval": "AFINA-KAYNAK/urun-gorselleri/onayli/ONAY.md",
+      "alt": "Doğal Kırma Yeşil Zeytin, 1 kg kavanoz, sofra sunumu",
+      "sourceWidth": 2000,
+      "sourceHeight": 1125,
+      "crop": null,
+      "alphaThreshold": null,
+      "outputs": [
+        {
+          "file": "/images/v3/02-dogal-kirma-yesil-zeytin-1kg-sahne-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 450,
+          "bytes": 22758,
+          "sha256": "167acff629701275694a3fbda72e176572459bea849467f625297ead9e53cd68",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/02-dogal-kirma-yesil-zeytin-1kg-sahne-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 450,
+          "bytes": 37536,
+          "sha256": "64cd47724ab2c6b8427dfc0dab7e551d5c7afdee326688e6287887c21e19b122",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/02-dogal-kirma-yesil-zeytin-1kg-sahne-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 900,
+          "bytes": 57302,
+          "sha256": "a669632b08c23d00cfd484c42e36d262b69a473e6d89140e06ea112616d25add",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/02-dogal-kirma-yesil-zeytin-1kg-sahne-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 900,
+          "bytes": 91564,
+          "sha256": "4eb7b71c26eecc060615afbb55995d70d0210458d444d60d67efdb34444977c7",
+          "quality": 76
+        }
+      ]
+    },
+    "02-dogal-kirma-yesil-zeytin-1kg-studyo": {
+      "source": "urun-gorselleri/onayli/02-dogal-kirma-yesil-zeytin-1kg-studyo.webp",
+      "sourceSha256": "91f1e7992f69e30410fae5fc434693f2e38c33b25b849f5f18ebff55ae4a953f",
+      "approval": "AFINA-KAYNAK/urun-gorselleri/onayli/ONAY.md",
+      "alt": "Doğal Kırma Yeşil Zeytin, 1 kg kavanoz, stüdyo çekimi",
+      "sourceWidth": 1600,
+      "sourceHeight": 2000,
+      "crop": null,
+      "alphaThreshold": null,
+      "outputs": [
+        {
+          "file": "/images/v3/02-dogal-kirma-yesil-zeytin-1kg-studyo-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 1000,
+          "bytes": 31823,
+          "sha256": "e0b1a4c7c9fa76a2187f16cb5fab215f50967d94ecda5e1e75bfb0c1ba4f6c6a",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/02-dogal-kirma-yesil-zeytin-1kg-studyo-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 1000,
+          "bytes": 50050,
+          "sha256": "c941baf72777e4899d9cce5cc07baa9e4606b8309bf2ff94ba0acbc18ed132f9",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/02-dogal-kirma-yesil-zeytin-1kg-studyo-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 2000,
+          "bytes": 86190,
+          "sha256": "6ef45861c11766a17f6a80ce2b604b96a67516f0cacc51168fb03fa9c51abbb0",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/02-dogal-kirma-yesil-zeytin-1kg-studyo-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 2000,
+          "bytes": 127770,
+          "sha256": "f3fa0781ec7e655cb77bfc0bfecfdbb5757a96f2a126f319c339d87da014212d",
+          "quality": 76
+        }
+      ]
+    },
+    "03-salamura-siyah-zeytin-1kg-sahne": {
+      "source": "urun-gorselleri/onayli/03-salamura-siyah-zeytin-1kg-sahne.webp",
+      "sourceSha256": "79c6430317308b6a79e507e07fc9db5791df78511af19e5c2eaa8f0b4ab78bb1",
+      "approval": "AFINA-KAYNAK/urun-gorselleri/onayli/ONAY.md",
+      "alt": "Salamura Siyah Zeytin, 1 kg kavanoz, sofra sunumu",
+      "sourceWidth": 2000,
+      "sourceHeight": 1125,
+      "crop": null,
+      "alphaThreshold": null,
+      "outputs": [
+        {
+          "file": "/images/v3/03-salamura-siyah-zeytin-1kg-sahne-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 450,
+          "bytes": 22160,
+          "sha256": "0f11e68d8550eaddb0c340b33540707ee510f5fb61f34007b8a59a0790188ca0",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/03-salamura-siyah-zeytin-1kg-sahne-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 450,
+          "bytes": 35864,
+          "sha256": "15702a7fe1b0b067fb57e8d0b9d62e29a6fd204bc1ae7a89f5dbb614bce54995",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/03-salamura-siyah-zeytin-1kg-sahne-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 900,
+          "bytes": 59364,
+          "sha256": "37fed6a9e031c741280d6f14b123c8cb6d75102ae1d9eb96711c7bbc2071eff1",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/03-salamura-siyah-zeytin-1kg-sahne-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 900,
+          "bytes": 89564,
+          "sha256": "f6175d0b62e7af8ac4b32c7a6aee4bb1567d03861264dc089b2d10dcd5bc77d3",
+          "quality": 76
+        }
+      ]
+    },
+    "03-salamura-siyah-zeytin-1kg-studyo": {
+      "source": "urun-gorselleri/onayli/03-salamura-siyah-zeytin-1kg-studyo.webp",
+      "sourceSha256": "0910eca2b6ffb8138fd37447e2524558797978675d2699c91b7bf8cbda0b8482",
+      "approval": "AFINA-KAYNAK/urun-gorselleri/onayli/ONAY.md",
+      "alt": "Salamura Siyah Zeytin, 1 kg kavanoz, stüdyo çekimi",
+      "sourceWidth": 1600,
+      "sourceHeight": 2000,
+      "crop": null,
+      "alphaThreshold": null,
+      "outputs": [
+        {
+          "file": "/images/v3/03-salamura-siyah-zeytin-1kg-studyo-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 1000,
+          "bytes": 33581,
+          "sha256": "3b6f9655e5414978c0c23bd17ae2d293cae9ff7df650aab513e6193c2ea68d7b",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/03-salamura-siyah-zeytin-1kg-studyo-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 1000,
+          "bytes": 52854,
+          "sha256": "e75bc90ec7a5db1da198f2236372c3984579fceb5a959756c0146b3b4d83e22a",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/03-salamura-siyah-zeytin-1kg-studyo-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 2000,
+          "bytes": 91266,
+          "sha256": "d470c4abd7b1387433923da533b5f58681d108a984b369f8989766b7d4d5df84",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/03-salamura-siyah-zeytin-1kg-studyo-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 2000,
+          "bytes": 137024,
+          "sha256": "7ba25ab3ffdd5a27aca68781494615518bd8e6a64f344d66e0c79678d9b4e3f1",
+          "quality": 76
+        }
+      ]
+    },
+    "04-naturel-sizma-zeytinyagi-1l-sahne": {
+      "source": "urun-gorselleri/onayli/04-naturel-sizma-zeytinyagi-1l-sahne.webp",
+      "sourceSha256": "443a25a4e94dab740fecff0d5605f8e5c925c421720f4cc8c1160cc3394c20f4",
+      "approval": "AFINA-KAYNAK/urun-gorselleri/onayli/ONAY.md",
+      "alt": "Natürel Sızma Zeytinyağı, 1 L cam şişe, sofra sunumu",
+      "sourceWidth": 2000,
+      "sourceHeight": 1125,
+      "crop": null,
+      "alphaThreshold": null,
+      "outputs": [
+        {
+          "file": "/images/v3/04-naturel-sizma-zeytinyagi-1l-sahne-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 450,
+          "bytes": 17718,
+          "sha256": "b3c14ca828a0c62806912bdfaa7e504d23ba0a104ddf34b4107ecc83b0241b7b",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/04-naturel-sizma-zeytinyagi-1l-sahne-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 450,
+          "bytes": 27710,
+          "sha256": "37d505ca2e52d0da092857cf2bcabd613a71f872e496b56198ce61b5eb19b80a",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/04-naturel-sizma-zeytinyagi-1l-sahne-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 900,
+          "bytes": 43624,
+          "sha256": "f3555b2228c00764e92f09cc0d2b0583a2b3bde53598fca223d00328ec333ed3",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/04-naturel-sizma-zeytinyagi-1l-sahne-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 900,
+          "bytes": 65238,
+          "sha256": "1d077fa4193e60e4e948e2a322fd77383de3c36279d017b2b280f9ee58efc1e8",
+          "quality": 76
+        }
+      ]
+    },
+    "04-naturel-sizma-zeytinyagi-1l-studyo": {
+      "source": "urun-gorselleri/onayli/04-naturel-sizma-zeytinyagi-1l-studyo.webp",
+      "sourceSha256": "98fad870f8bdc578c39755d3905bcf00fc0eeb41f45a607661db8a0266c36a1f",
+      "approval": "AFINA-KAYNAK/urun-gorselleri/onayli/ONAY.md",
+      "alt": "Natürel Sızma Zeytinyağı, 1 L cam şişe, stüdyo çekimi",
+      "sourceWidth": 1600,
+      "sourceHeight": 2000,
+      "crop": null,
+      "alphaThreshold": null,
+      "outputs": [
+        {
+          "file": "/images/v3/04-naturel-sizma-zeytinyagi-1l-studyo-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 1000,
+          "bytes": 19715,
+          "sha256": "2fea0f7f0f1b71ede05df0d503f949a3157d5718e413f08f7d73ed64f6f8c1d1",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/04-naturel-sizma-zeytinyagi-1l-studyo-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 1000,
+          "bytes": 29756,
+          "sha256": "c0c26ed443d370e7c75b44a7d2ec9461e919fde341f902c91d02e66f8b28bc86",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/04-naturel-sizma-zeytinyagi-1l-studyo-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 2000,
+          "bytes": 51528,
+          "sha256": "017ce7eef01f5ab72d247105e37da2b38cb7224a0276384d60d39647ea011dce",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/04-naturel-sizma-zeytinyagi-1l-studyo-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 2000,
+          "bytes": 77600,
+          "sha256": "0d8fd0dceb67ee76ea6619656e6f78f19950103e42d40cdca605327e1a19af3c",
+          "quality": 76
+        }
+      ]
+    },
+    "05-naturel-sizma-zeytinyagi-5l-sahne": {
+      "source": "urun-gorselleri/onayli/05-naturel-sizma-zeytinyagi-5l-sahne.webp",
+      "sourceSha256": "62d9269294ff750897a99459d9c8dda0a83470dd39b7ab2f0aa89333140c458b",
+      "approval": "AFINA-KAYNAK/urun-gorselleri/onayli/ONAY.md",
+      "alt": "Natürel Sızma Zeytinyağı, 5 L teneke, sofra sunumu",
+      "sourceWidth": 2000,
+      "sourceHeight": 1125,
+      "crop": null,
+      "alphaThreshold": null,
+      "outputs": [
+        {
+          "file": "/images/v3/05-naturel-sizma-zeytinyagi-5l-sahne-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 450,
+          "bytes": 19906,
+          "sha256": "1aa1913a81d4b89522382f96530f76881877fd632e683f4e6bd6ac760612e72f",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/05-naturel-sizma-zeytinyagi-5l-sahne-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 450,
+          "bytes": 32296,
+          "sha256": "9b79c0001317ad4ec760fe53746c569de735c93db4a02147e069157e27b1038e",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/05-naturel-sizma-zeytinyagi-5l-sahne-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 900,
+          "bytes": 49756,
+          "sha256": "8322fa3df904064df2fdbe633eaeca038d8e3f4e6638a40c2479a6d32e71a842",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/05-naturel-sizma-zeytinyagi-5l-sahne-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 900,
+          "bytes": 78862,
+          "sha256": "4a4b2d4a55f0fcff2e0b0352a40fd11e0dbb0f30dc2eb0d8fe568180a9abdc74",
+          "quality": 76
+        }
+      ]
+    },
+    "05-naturel-sizma-zeytinyagi-5l-studyo": {
+      "source": "urun-gorselleri/onayli/05-naturel-sizma-zeytinyagi-5l-studyo.webp",
+      "sourceSha256": "c208a3839682938ff5ec53d1e7f0b95e065af89f9e25e7f1b160b0a9bf824c52",
+      "approval": "AFINA-KAYNAK/urun-gorselleri/onayli/ONAY.md",
+      "alt": "Natürel Sızma Zeytinyağı, 5 L teneke, stüdyo çekimi",
+      "sourceWidth": 1600,
+      "sourceHeight": 2000,
+      "crop": null,
+      "alphaThreshold": null,
+      "outputs": [
+        {
+          "file": "/images/v3/05-naturel-sizma-zeytinyagi-5l-studyo-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 1000,
+          "bytes": 40154,
+          "sha256": "d0b92bde0657eadc259bf88bd384a8f2b2c9a9c69b46c0c1ed0304b5e506538e",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/05-naturel-sizma-zeytinyagi-5l-studyo-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 1000,
+          "bytes": 64936,
+          "sha256": "efd62facf971b679bdbcf7367057d8da335318adb2a391c83a2b65dbca433f0b",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/05-naturel-sizma-zeytinyagi-5l-studyo-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 2000,
+          "bytes": 105762,
+          "sha256": "2ce32f097b90dce7e3f0411c817f25c098fc20d02cdc3542497ae525aceec16b",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/05-naturel-sizma-zeytinyagi-5l-studyo-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 2000,
+          "bytes": 163174,
+          "sha256": "108e4213558ed0a658ebf786a4bf9b4bc888d40eed4f1e9dd1915dec0198b741",
+          "quality": 76
+        }
+      ]
+    },
+    "06-salamura-yesil-zeytin-5kg-sahne": {
+      "source": "urun-gorselleri/onayli/06-salamura-yesil-zeytin-5kg-sahne.webp",
+      "sourceSha256": "ffc592937371564d2fd2d9a0c318af0f32b6c7c3bceffa161b8f5f04d3b240fe",
+      "approval": "AFINA-KAYNAK/urun-gorselleri/onayli/ONAY.md",
+      "alt": "Salamura Yeşil Zeytin, 5 kg teneke, sofra sunumu",
+      "sourceWidth": 2000,
+      "sourceHeight": 1125,
+      "crop": null,
+      "alphaThreshold": null,
+      "outputs": [
+        {
+          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-sahne-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 450,
+          "bytes": 23688,
+          "sha256": "c746475161bbd7904283ed03c449613f47a737125fbabafe154a42587de7bf8e",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-sahne-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 450,
+          "bytes": 37954,
+          "sha256": "15a9b15db6e393a1ced77eafa04e2da8d98898851f33755ade9e349ea97eb5bb",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-sahne-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 900,
+          "bytes": 61337,
+          "sha256": "4a9fce91772eb671e9110ca935e3cfc450d8f55a4bc4b93b513514c987bbb4f0",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-sahne-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 900,
+          "bytes": 94152,
+          "sha256": "6e0542cd7acf3624bc31b8d8dd4cf125b8344d3a3c6093c43740a99fae598e4e",
+          "quality": 76
+        }
+      ]
+    },
+    "06-salamura-yesil-zeytin-5kg-studyo": {
+      "source": "urun-gorselleri/onayli/06-salamura-yesil-zeytin-5kg-studyo.webp",
+      "sourceSha256": "844983af75dfa6ced455d2b580ae5c2d975b9ca12507b364b8a173f91430ab80",
+      "approval": "AFINA-KAYNAK/urun-gorselleri/onayli/ONAY.md",
+      "alt": "Salamura Yeşil Zeytin, 5 kg teneke, stüdyo çekimi",
+      "sourceWidth": 1600,
+      "sourceHeight": 2000,
+      "crop": null,
+      "alphaThreshold": null,
+      "outputs": [
+        {
+          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-studyo-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 1000,
+          "bytes": 38092,
+          "sha256": "e66fafb48fca4b751449eafe5cd124e90d7caa07f00b7300e3ef4c3c67a54bdd",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-studyo-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 1000,
+          "bytes": 60988,
+          "sha256": "ae10fc5bcb6a86d46e53174bdeea0957962d14bba2df5bd26be8d9b2fd020567",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-studyo-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 2000,
+          "bytes": 93933,
+          "sha256": "a80e876c9d8b43441efdd0db5ca7aaa70a60401c68ea8be1e07d9bb185681e7c",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-studyo-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 2000,
+          "bytes": 150590,
+          "sha256": "a19d28ca559279599d692131b1aacac6247c29d0dfe8ff81b724d1b88df3b688",
+          "quality": 76
+        }
+      ]
+    }
+  }
+}

@@ -14,7 +14,7 @@
 }
 .drawerHeader { display: flex; flex-shrink: 0; align-items: start; justify-content: space-between; gap: 16px; padding: 24px; }
 .drawerBody { min-height: 0; flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 0 24px 16px; }
-.drawerFooter { display: grid; flex-shrink: 0; gap: 8px; padding: 16px 24px max(16px, env(safe-area-inset-bottom)); background: var(--brand-sand); }
+.drawerFooter { display: grid; flex-shrink: 0; gap: 8px; padding: 16px 24px max(16px, env(safe-area-inset-bottom)); background: var(--brand-kraft); }
 .drawerActions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .drawerActions a { padding-inline: 8px; }
 .line { position: relative; padding-block: 24px; overflow-wrap: anywhere; }
@@ -28,7 +28,7 @@
 .header p { max-width: 48ch; }
 .layout { display: grid; gap: 48px; align-items: start; }
 .contents { min-width: 0; display: grid; gap: 24px; }
-.summary { min-width: 0; display: grid; gap: 24px; padding: 32px; background: var(--brand-sand); }
+.summary { min-width: 0; display: grid; gap: 24px; padding: 32px; background: var(--brand-kraft); }
 .summary h2 { font-size: var(--step-lead); }
 .empty { display: grid; justify-items: start; gap: 16px; padding-block: 32px; }
 .miniReserve { display: none; }
@@ -57,9 +57,9 @@
   .mini p { font-size: var(--step-small); }
   .mini[data-cart-open="true"] { visibility: hidden; pointer-events: none; }
   .mini strong { display: block; font-size: var(--step-body); font-weight: 600; font-variant-numeric: tabular-nums; }
-  .mini button { background: var(--brand-gold); color: var(--brand-earth); min-width: 88px; }
+  .mini button { background: var(--brand-gold); color: var(--brand-ink); min-width: 88px; }
   .mini button:hover { background: var(--brand-ivory); }
   .mini button:focus-visible { outline-color: var(--brand-ivory); }
-  .mini button:active { background: var(--brand-sand); }
+  .mini button:active { background: var(--brand-kraft); }
   :global(html:has([data-mini-cart-reserve])) { scroll-padding-bottom: calc(104px + env(safe-area-inset-bottom)); }
 }

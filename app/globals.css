@@ -6,26 +6,27 @@
 :root {
   color-scheme: light;
   --brand-olive: #243a29;
-  --brand-earth: #0d110d;
-  --brand-ivory: #f6f1e6;
-  --brand-sand: #ede4d1;
-  --factory-green: #6ccb3c;
+  --brand-walnut: #5b3a22;
+  --brand-kraft: #c9a97a;
+  --brand-ink: #1c2a1f;
+  --brand-ivory: #faf7f0;
   --brand-gold: #d4b483;
-  --body-ink: var(--brand-earth);
+  --body-ink: var(--brand-ink);
   --page-margin: clamp(1.5rem, 2.2vw, 2rem);
   --page-gutter: 1.5rem;
   --header-height: calc(4rem + env(safe-area-inset-top, 0px));
 
-  /* Five v2 sizes: caption, body, product, section heading and hero display. */
+  /* v3: interface, body, product name, section and hero display. */
   --step-small: 0.875rem;
-  --step-body: clamp(1.0625rem, 1.3vw, 1.1875rem);
+  --step-body: clamp(1.0625rem, 1.3vw, 1.125rem);
+  --step-product: clamp(1.25rem, 2vw, 1.5rem);
   --step-lead: clamp(1.625rem, 2.1vw, 1.875rem);
-  --step-head: clamp(2.5rem, 5vw, 4.75rem);
-  --step-display: clamp(4rem, 10vw, 10.5rem);
+  --step-head: clamp(2.25rem, 4.5vw, 4rem);
+  --step-display: clamp(3.5rem, 7vw, 7.5rem);
 
   --background: var(--brand-ivory);
   --foreground: var(--brand-olive);
-  --card: #fffcf5;
+  --card: var(--brand-ivory);
   --card-foreground: var(--foreground);
   --popover: var(--card);
   --popover-foreground: var(--foreground);
@@ -35,8 +36,8 @@
   --secondary: var(--brand-ivory);
   --secondary-foreground: var(--brand-olive);
   --secondary-hover: #e5e9df;
-  --muted: var(--brand-sand);
-  --muted-foreground: #5b6558;
+  --muted: var(--brand-kraft);
+  --muted-foreground: var(--brand-walnut);
   --accent: #e5e9df;
   --accent-foreground: var(--brand-olive);
   --destructive: #943b32;
@@ -72,8 +73,9 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-brand-gold: var(--brand-gold);
-  --color-brand-earth: var(--brand-earth);
-  --color-brand-sand: var(--brand-sand);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-kraft: var(--brand-kraft);
+  --color-brand-walnut: var(--brand-walnut);
   --color-body-ink: var(--body-ink);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
@@ -116,6 +118,8 @@
     font-size: var(--step-body);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    caret-color: var(--brand-olive);
+    scrollbar-color: var(--brand-olive) var(--brand-ivory);
   }
 
   h1, h2, h3, .font-serif {
@@ -181,8 +185,8 @@
 
 /* Contextual actions inherit accessible colours from their flat surface. */
 [data-surface="dark"] {
-  --primary: var(--brand-gold);
-  --primary-foreground: var(--brand-earth);
-  --primary-hover: var(--brand-ivory);
+  --primary: var(--brand-ivory);
+  --primary-foreground: var(--brand-olive);
+  --primary-hover: var(--brand-kraft);
   --ring: var(--brand-gold);
 }

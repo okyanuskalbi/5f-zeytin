@@ -1,40 +1,18 @@
 import { readFileSync } from "node:fs";
-import { cleanup, render, screen, within } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, expect, it } from "vitest";
 import { Facility } from "@/components/landing/Facility";
 
-const source = readFileSync("docs/referans/icerik.md", "utf8");
-const story = source.split("### Marka hikâyesi / detay sayfası tanıtımı\n\n")[1]
-  .split("\n\n###")[0].trim().split("\n\n");
-
 afterEach(cleanup);
-
-it("sets the v2 factory headline and the exact second official paragraph", () => {
+it("keeps the official story and uses only the approved blurred facility derivative", () => {
   render(<Facility />);
-  const facility = screen.getByRole("region", { name: "Tesisimiz" });
-  expect(within(facility).getByRole("heading", { name: "Osmaniye’de, kendi tesisimizde.", level: 2 })).toBeDefined();
-  expect(facility.querySelector("[data-facility-lead]")?.textContent).toBe(story[1]);
-  expect(facility.querySelector("[data-facility-definition]")).toBeNull();
-  expect(facility.querySelector("[data-facility-typography] dl")).not.toBeNull();
-});
-
-it("pairs all four official/plate facts with semantic labels and includes an accessible regional map", () => {
-  render(<Facility />);
-  const facility = screen.getByRole("region", { name: "Tesisimiz" });
-  expect([...facility.querySelectorAll("dt")].map(node => node.textContent))
-    .toEqual(["Konum", "Ürünler", "Satış", "Faaliyet"]);
-  expect([...facility.querySelectorAll("dd")].map(node => node.textContent))
-    .toEqual(["Ellek, Düziçi / Osmaniye", "Sofralık zeytin, salamura zeytin, zeytinyağı", "Perakende + toptan", "2021’den bu yana"]);
-  const map = within(facility).getByRole("img", { name: "Osmaniye il sınırı ve Düziçi" });
-  expect(map.querySelectorAll("path")).toHaveLength(1);
-  expect(map.querySelectorAll("circle")).toHaveLength(1);
-});
-
-it("renders a complete typographic section without unapproved photography or placeholders", () => {
-  render(<Facility />);
-  const facility = screen.getByRole("region", { name: "Tesisimiz" });
-  expect(facility.querySelector("img, picture, source, video, canvas, image, iframe")).toBeNull();
-  expect(facility.textContent).not.toMatch(/görsel.*(yakında|hazırlanıyor)|%\s*100|sertifikalı|lider/i);
-  expect(within(facility).getByRole("link", { name: "Ürünlerimizi Keşfedin" }).getAttribute("href")).toBe("#urunler");
-  expect(within(facility).getByRole("link", { name: "Toptan Satış İçin İletişime Geçin" }).getAttribute("href")).toBe("#toptan-iletisim");
+  const facility = screen.getByRole("region", { name: "Osmaniye’de, kendi tesisimizde." });
+  const official = readFileSync("docs/referans/icerik.md", "utf8");
+  const story = [...facility.querySelectorAll("p")].find(node => node.textContent?.startsWith("Osmaniye’de bulunan fabrikasıyla"))!;
+  expect(official).toContain(story.textContent);
+  const image = screen.getByRole("img", { name: "Afina Zeytin’in Ellek, Düziçi’ndeki üretim tesisi" });
+  expect(image.getAttribute("src")).toBe("/images/v3/tesis-osmaniye-w800.webp");
+  expect(facility.querySelector("svg, iframe, form, input")).toBeNull();
+  expect(facility.textContent).toContain("Ellek, Düziçi");
+  expect(facility.textContent).not.toMatch(/%100|organik|sertifikalı|lider/);
 });

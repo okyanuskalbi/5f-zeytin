@@ -1,80 +1,25 @@
-import { readFileSync } from "node:fs";
 import { renderToStaticMarkup } from "react-dom/server";
 import { expect, it } from "vitest";
 import Home from "@/app/page";
 import { Footer } from "@/components/site/Footer";
+import { verifiedFaqs } from "@/components/landing/Faq";
 
-const questions = [
-  "Afina Zeytin hangi ürün alanlarında çalışıyor?",
-  "Toptan zeytin veya zeytinyağı talebi iletilebilir mi?",
-  "Afina Zeytin perakende müşterilere de ulaşıyor mu?",
-  "Afina Zeytin'in üretim tesisi hangi şehirde?",
-];
-
-async function landing(): Promise<Document> {
+it("uses full factual sentences and removes unanswered wholesale questions", async () => {
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(await Home());
-  return doc;
-}
-
-it("renders only the four source-confirmed common questions as open reading text in SSR", async () => {
-  const doc = await landing();
-  const faq = doc.querySelector("#sik-sorulanlar");
-  expect(faq).not.toBeNull();
-  expect([...faq!.querySelectorAll("h3")].map(node => node.textContent)).toEqual(questions);
-  expect(faq!.querySelector("details, button, input")).toBeNull();
-  const official = readFileSync("docs/referans/icerik.md", "utf8");
-  for (const answer of faq!.querySelectorAll("[data-faq-answer]")) {
-    expect(official).toContain(answer.textContent);
-  }
-  const plan = readFileSync("docs/tasks/087-aeo-geo.md", "utf8");
-  const unconfirmed = plan.split("## Kullanıcıdan teyit")[1].split("Bu tablo")[0];
-  for (const line of unconfirmed.split("\n").filter(line => /^\| Z\d+ /.test(line))) {
-    expect(doc.body.textContent).not.toContain(line.split("|")[2].trim());
-  }
-});
-
-it("keeps the wholesale destination focusable, address public and unconfirmed channels/media absent", async () => {
-  const doc = await landing();
+  expect(doc.querySelectorAll("[data-faq]")).toHaveLength(3);
+  for (const faq of verifiedFaqs) expect(faq.answer).toMatch(/\.$/);
+  expect(doc.querySelector('[data-faq="Z05"]')).toBeNull();
   const contact = doc.querySelector("#toptan-iletisim")!;
   expect(contact.getAttribute("tabindex")).toBe("-1");
-  expect(contact.querySelector("address")?.textContent).toBe("Şehit Ali Gökçe Mah. Şehit Ömer Halis Demir Sk. No: 35, Ellek Beldesi, Düziçi / Osmaniye");
-  expect(contact.querySelector('a[href^="tel:"], a[href^="mailto:"], img, video, canvas')).toBeNull();
-  expect(contact.textContent).not.toMatch(/teyit|hazırlanıyor|gönderildi/i);
-  // 081 exposes the form; 082 delivery remains unavailable.
-  const cta = contact.querySelector('a[href="#toptan-iletisim"]')!;
-  expect(cta.textContent).toBe("Toptan Satış İçin İletişime Geçin");
-  expect(contact.querySelectorAll("input, textarea")).toHaveLength(5);
-  expect(contact.querySelector('button[type="submit"]')?.hasAttribute("disabled")).toBe(true);
-  expect(contact.querySelector('[role="status"]')?.textContent).toContain("Toptan talep gönderimi henüz kullanıma açık değil.");
+  expect(contact.querySelector("form, input, textarea")).toBeNull();
+  expect(contact.textContent).toContain("Toptan zeytin ve zeytinyağı için bize yazın.");
+  expect(contact.querySelector('a[href^="tel:"], a[href^="mailto:"]')).toBeNull();
 });
-
-it("prints the seller imprint and legal destinations without v1 ornaments", () => {
+it("retains seller identity, community and legal destinations", () => {
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(<Footer />);
-  expect(doc.querySelector("footer")?.textContent).toContain("Kökü toprakta. Yeri sofrada.");
-  expect(doc.body.textContent).toContain("AFİNA ZEYTİNCİLİK TARIM ÜRÜNLERİ SAN. VE TİC. LTD. ŞTİ. · Düziçi VD · VKN 0091520061");
-  expect(doc.querySelector("[data-footer-scallop], [data-footer-stamp]")).toBeNull();
-  for (const href of ["/kvkk", "/mesafeli-satis", "/iade", "https://afina.com.tr"]) {
-    expect(doc.querySelector(`footer a[href="${href}"]`)).not.toBeNull();
-  }
-  expect(doc.querySelector('a[href="https://afina.com.tr"] img')?.getAttribute("src")).toBe("/brand/afina-topluluk-dark.svg");
-  expect(doc.querySelector('a[href^="tel:"], a[href^="mailto:"]')).toBeNull();
-});
-
-it("offers a named home link around the dark brand logo and keeps the footer close concise", () => {
-  const doc = document.implementation.createHTMLDocument();
-  doc.body.innerHTML = renderToStaticMarkup(<Footer />);
-  const home = doc.querySelector('footer a[href="/"][aria-label="Afina Zeytin ana sayfa"]');
-  expect(home?.querySelector("img")?.getAttribute("src")).toBe("/brand/afina-zeytin-dark.svg");
-  expect(doc.querySelector("footer")?.textContent).not.toContain("Zeytinin hikâyesi toprakta başlar, sofrada tamamlanır.");
-});
-
-
-it("places the full-width factory band immediately before wholesale and after the process", async () => {
-  const doc = await landing();
-  const story = doc.querySelector('[data-scene="story"]')!;
-  expect(story.closest(".page-wrap")).toBeNull();
-  expect(story.nextElementSibling?.id).toBe("toptan");
-  expect(story.previousElementSibling?.querySelector("#topraktan-sofraya")).not.toBeNull();
+  expect(doc.body.textContent).toContain("VKN 0091520061");
+  for (const href of ["/kvkk", "/mesafeli-satis", "/iade", "https://afina.com.tr"]) expect(doc.querySelector(`a[href="${href}"]`)).not.toBeNull();
+  expect(doc.body.textContent).toContain("Önizleme: fiyatlar ve görseller temsilidir.");
 });

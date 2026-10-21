@@ -17,7 +17,7 @@
     "test:e2e": "playwright test",
     "predev": "npm run check:assets",
     "prebuild": "npm run check:assets",
-    "check:assets": "node scripts/check-assets.mjs"
+    "check:assets": "node scripts/check-assets.mjs && node scripts/check-v3-assets.mjs"
   },
   "dependencies": {
     "class-variance-authority": "0.7.1",

@@ -2,8 +2,8 @@ import { expect, test } from "@playwright/test";
 import { CART_STORAGE_KEY } from "../../lib/cart/store";
 
 const routes = [
-  { path: "/hesabim", title: "Hesabım", message: "Üyelik ve hesap işlemleri henüz kullanıma açık değil.", status: 200 },
-  { path: "/siparis-takip", title: "Sipariş takibi", message: "Sipariş ve kargo takibi henüz kullanıma açık değil.", status: 200 },
+  { path: "/hesabim", title: "Hesabım", message: "Üyelik ve hesap işlemleri yakında.", status: 200 },
+  { path: "/siparis-takip", title: "Sipariş takibi", message: "Sipariş ve kargo takibi yakında.", status: 200 },
   { path: "/bulunamayan-sayfa", title: "Sayfa bulunamadı", message: "Aradığınız sayfaya ulaşılamıyor.", status: 404 },
 ];
 
@@ -29,10 +29,10 @@ test("empty account, tracking and 404 retain reading content, recovery and reduc
 test("cart receipt survives quantity edits, modal focus, refresh, removal and empty recovery", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.addInitScript(key => {
-    if (!localStorage.getItem(key)) localStorage.setItem(key, JSON.stringify([{ productId: "sample-table-olive", quantity: 1 }]));
+    if (!localStorage.getItem(key)) localStorage.setItem(key, JSON.stringify([{ productId: "sample-green-olive-1kg", quantity: 1 }]));
   }, CART_STORAGE_KEY);
   await page.goto("/sepet");
-  const line = page.getByRole("group", { name: "Sofralık Zeytin", exact: true });
+  const line = page.getByRole("group", { name: "Doğal Kırma Yeşil Zeytin", exact: true });
   await line.getByRole("button", { name: "Adedi artır" }).click();
   await expect(line.getByRole("status", { name: "Adet" })).toHaveText("2");
   const opener = page.getByRole("banner").getByRole("button", { name: /^Sepetim/ });

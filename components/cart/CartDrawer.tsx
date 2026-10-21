@@ -195,7 +195,7 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
             <DialogClose asChild><Button asChild><Link href={checkoutHref} prefetch={false}>Ödemeye geç</Link></Button></DialogClose>
           ) : <Button disabled>Ödemeye geç</Button>}
           </div>
-          {!checkoutHref && <p className="text-sm text-muted-foreground">Ödeme henüz kullanıma açık değil.</p>}
+          {!checkoutHref && <p className="text-sm text-muted-foreground">Ödeme hazırlıkları sürüyor.</p>}
           {mobile && <button type="button" className={styles.resize} aria-label={expanded ? "Sepeti daralt" : "Sepeti genişlet"} aria-expanded={expanded}
             onPointerDown={event => { if (!reduced) controls.start(event); }}
             onClick={() => setExpanded(value => !value)}><span aria-hidden="true" /></button>}

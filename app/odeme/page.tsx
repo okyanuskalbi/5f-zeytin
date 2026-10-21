@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: "Ödeme | Afina Zeytin", robots: { in
 
 export default function Page() {
   if (!isCheckoutDemoEnabled()) return <EmptyState title="Ödeme" href="/sepet" action="Sepetime dön">
-    <p>Yakında. Ödeme henüz kullanıma açık değil.</p>
+    <p>Ödeme hazırlıkları sürüyor.</p>
     <p>Seçtiklerinizi sepetinizde gözden geçirebilirsiniz.</p>
   </EmptyState>;
   // The existing 001b preview token endpoint is always closed in production.

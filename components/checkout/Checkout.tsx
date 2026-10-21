@@ -44,7 +44,7 @@ export function Checkout({ localPreviewAvailable = false }: { localPreviewAvaila
   }, [step]);
   useEffect(() => { if (Object.keys(errors).length) errorRef.current?.focus(); }, [errors]);
 
-  if (!adapter) return <EmptyState title="Ödeme" href="/sepet" action="Sepetime dön"><p>Yakında. Ödeme henüz kullanıma açık değil.</p></EmptyState>;
+  if (!adapter) return <EmptyState title="Ödeme" href="/sepet" action="Sepetime dön"><p>Ödeme hazırlıkları sürüyor.</p></EmptyState>;
   if (!cart || !cart.state.hydrated) return <EmptyState title="Ödeme" href="/sepet" action="Sepetime dön"><p role="status">Sepet yükleniyor…</p></EmptyState>;
   if (cart.products === null) return <EmptyState title="Ödeme" href="/sepet" action="Sepetime dön"><p role="alert">Katalog yüklenemedi. Sepetiniz korunuyor; sepetten fiyat ve stokları yenileyin.</p></EmptyState>;
   if (!cart.state.items.length) return <EmptyState title="Ödeme" href="/sepet" action="Sepetime dön"><p>Sepetiniz boş. Önce ürünlerinizi seçin.</p></EmptyState>;

@@ -1,7 +1,0 @@
-.showcase { position: relative; padding: 64px var(--page-margin); scroll-margin-top: var(--header-height); background: var(--brand-ivory); color: var(--brand-olive); }
-.intro { max-width: 64ch; margin-bottom: 48px; }
-.intro p { margin-top: 24px; }
-.scroller { min-width: 0; }
-.row { display: flex; flex-wrap: wrap; gap: 48px; margin: 0; padding: 0; list-style: none; }
-.item { flex: 1 1 18rem; min-width: 0; max-width: 32rem; }
-.empty { padding-block: 32px; }

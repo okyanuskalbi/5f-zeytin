@@ -34,6 +34,7 @@ export function Footer(): JSX.Element {
             </nav>
           </div>
         </div>
+        <p className={styles.preview}>Önizleme: fiyatlar ve görseller temsilidir.</p>
         <div className={styles.imprint}>
           <p>AFİNA ZEYTİNCİLİK TARIM ÜRÜNLERİ SAN. VE TİC. LTD. ŞTİ. · Düziçi VD · VKN 0091520061</p>
           <div className={styles.bottom}>
