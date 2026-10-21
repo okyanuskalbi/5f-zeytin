@@ -43,7 +43,7 @@ jobs:
         if: env.VERCEL_TOKEN != ''
         env:
           ASSET_SKIP_REENCODE: "1"
-        run: npx --yes vercel@65.0.0 build --prod --token="$VERCEL_TOKEN"
+        run: npx --yes vercel@65.0.0 build --prod --token="$VERCEL_TOKEN" || (echo "::warning::Derleme yeniden deneniyor (geçici ağ/font hatası)"; sleep 20; npx --yes vercel@65.0.0 build --prod --token="$VERCEL_TOKEN")
       - name: Vercel production yayını
         if: env.VERCEL_TOKEN != ''
         # Hobby ekibinde commit yazarı üye değilse yayın TEAM_ACCESS_REQUIRED ile bloklanır;
