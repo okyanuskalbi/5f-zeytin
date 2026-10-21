@@ -13,68 +13,28 @@ async function fillRequest(page: Page, channel: "email" | "phone" = "email"): Pr
   await form(page).getByLabel("Talep mesajı", { exact: true }).fill("Sofralık zeytin ve zeytinyağı için bilgi rica ederim.");
 }
 
-test("landing CTA reaches the focusable wholesale form and never claims delivery without a service", async ({ page }, testInfo) => {
+test("landing hides the preserved form until a real submission service exists", async ({ page }) => {
+  const writes: string[] = [];
+  page.on("request", request => { if (request.method() !== "GET") writes.push(request.url()); });
   await page.goto("/");
-  const link = page.locator("#toptan-iletisim").getByRole("link", { name: cta, exact: true });
-  await expect(link).toHaveAttribute("href", "#toptan-iletisim");
-  await link.focus();
-  await page.keyboard.press("Enter");
+  await page.getByRole("contentinfo").getByRole("link", { name: cta, exact: true }).click();
   await expect(page).toHaveURL(/#toptan-iletisim$/);
   await expect(page.locator("#toptan-iletisim")).toBeFocused();
-  await expect(form(page)).toBeVisible();
-  await expect(form(page)).toContainText("Sofralık zeytin • Salamura zeytin • Zeytinyağı");
-  await expect(form(page).getByRole("link", { name: "KVKK aydınlatma metni" })).toHaveAttribute("href", "/kvkk");
-  await expect(form(page)).toContainText("KVKK metni taslaktır; onay bekleniyor.");
-  await expect(form(page).getByRole("checkbox")).not.toBeChecked();
-  await expect(form(page).getByRole("status")).toContainText("Toptan talep gönderimi henüz kullanıma açık değil.");
-  await fillRequest(page);
-  await expect(form(page).getByRole("button", { name: "Talebi gönder", exact: true })).toBeDisabled();
-  const requests: string[] = [];
-  page.on("request", request => { if (request.method() !== "GET") requests.push(request.url()); });
-  await form(page).getByLabel("E-posta", { exact: true }).press("Enter");
-  await expect(form(page).getByRole("status")).not.toContainText("Talebiniz gönderildi.");
-  expect(requests).toEqual([]);
-  expect(new URL(page.url()).search).toBe("");
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await form(page).scrollIntoViewIfNeeded();
-  await page.screenshot({ path: testInfo.outputPath("wholesale-landing.png"), fullPage: true });
-  await form(page).getByRole("link", { name: "KVKK aydınlatma metni" }).click();
-  await expect(page.getByRole("heading", { name: "Taslak — onay bekleniyor" })).toBeVisible();
+  await expect(form(page)).toHaveCount(0);
+  await expect(page.locator("#toptan")).toContainText("İletişim bilgileri yakında");
+  await expect(page.locator("#toptan a, #toptan input, #toptan textarea, #toptan button")).toHaveCount(0);
+  expect(writes).toEqual([]);
 });
 
-test("JavaScript-free landing keeps the form, legal link and honest disabled submission", async ({ browser, baseURL, page }) => {
+test("JavaScript-free landing keeps wholesale information without an unavailable form", async ({ browser, baseURL, page }) => {
   const context = await browser.newContext({ baseURL, javaScriptEnabled: false, viewport: page.viewportSize()! });
   try {
     const staticPage = await context.newPage();
-    await staticPage.goto("/#toptan-iletisim");
-    await expect(form(staticPage)).toBeVisible();
-    await expect(form(staticPage).getByRole("button", { name: "Talebi gönder", exact: true })).toBeDisabled();
-    await expect(form(staticPage).getByLabel("İsim / firma", { exact: true })).toBeDisabled();
-    await form(staticPage).getByRole("link", { name: "KVKK aydınlatma metni" }).click();
-    await expect(staticPage.getByRole("heading", { name: "KVKK", exact: true })).toBeVisible();
+    await staticPage.goto("/#toptan");
+    await expect(form(staticPage)).toHaveCount(0);
+    await expect(staticPage.locator("#toptan-title")).toHaveText("Toptan alım için bize yazın");
+    await expect(staticPage.locator("#toptan")).toContainText("İletişim bilgileri yakında");
   } finally { await context.close(); }
-});
-
-test("the v2 shell leaves the whole wholesale form clear during scroll", async ({ page }, testInfo) => {
-  await page.goto("/");
-  await page.evaluate(() => document.fonts.ready);
-  const bounds = await form(page).evaluate(node => ({ top: node.getBoundingClientRect().top + scrollY, height: node.getBoundingClientRect().height }));
-  for (const fraction of [0, 0.5, 1]) {
-    await page.evaluate(({ top, height, fraction }) => scrollTo(0, top + height * fraction - innerHeight / 2), { ...bounds, fraction });
-    await expect(page.locator("[data-hero-stub]")).toHaveCount(0);
-    await expect.poll(() => form(page).evaluate(node => {
-      const stub = document.querySelector<HTMLElement>("[data-hero-stub]");
-      if (!stub || getComputedStyle(stub).visibility !== "visible") return false;
-      const shortcut = stub.getBoundingClientRect();
-      const panel = node.getBoundingClientRect();
-      return shortcut.left < panel.right && shortcut.right > panel.left && shortcut.top < panel.bottom && shortcut.bottom > panel.top;
-    })).toBe(false);
-  }
-  await page.evaluate(top => scrollTo(0, top - 96), bounds.top);
-  await expect(form(page).getByRole("heading", { name: "Toptan talep formu" })).toBeInViewport();
-  await page.screenshot({ path: testInfo.outputPath("wholesale-form-start.png") });
-  await form(page).getByRole("button", { name: "Talebi gönder", exact: true }).scrollIntoViewIfNeeded();
-  await page.screenshot({ path: testInfo.outputPath("wholesale-form-end.png") });
 });
 
 test.describe("injected wholesale form", () => {

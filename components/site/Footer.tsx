@@ -1,9 +1,9 @@
 import type { JSX } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { seller } from "@/lib/site/seller";
 import styles from "./Footer.module.css";
 
-// Existing brand/navigation structure, stripped of the v1 paper ornaments.
 const links = [
   { label: "Ürünlerimizi Keşfedin", href: "/#urunler" },
   { label: "Tesisimiz", href: "/#tesisimiz" },
@@ -28,7 +28,7 @@ export function Footer(): JSX.Element {
             <p>Toprağın sunduğu lezzet, Afina’nın özeniyle.</p>
           </div>
           <div className={styles.destination}>
-            <address>Şehit Ali Gökçe Mah. Şehit Ömer Halis Demir Sk. No: 35, Ellek Beldesi, Düziçi / Osmaniye</address>
+            <address>{seller.address}</address>
             <nav aria-label="Keşfedin">
               <ul>{links.map(link => <li key={link.href}><a className={styles.link} href={link.href}>{link.label}</a></li>)}</ul>
             </nav>
@@ -36,7 +36,7 @@ export function Footer(): JSX.Element {
         </div>
         <p className={styles.preview}>Önizleme: fiyatlar ve görseller temsilidir.</p>
         <div className={styles.imprint}>
-          <p>AFİNA ZEYTİNCİLİK TARIM ÜRÜNLERİ SAN. VE TİC. LTD. ŞTİ. · Düziçi VD · VKN 0091520061</p>
+          <p>{seller.name} · {seller.taxOffice} VD · VKN {seller.taxId}</p>
           <div className={styles.bottom}>
             <nav aria-label="Yasal bilgiler"><ul>{legalLinks.map(link => <li key={link.href}><Link className={styles.link} href={link.href}>{link.label}</Link></li>)}</ul></nav>
             <a href="https://afina.com.tr" className={styles.community} aria-label="AFİNA Şirketler Topluluğu">

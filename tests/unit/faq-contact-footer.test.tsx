@@ -13,7 +13,8 @@ it("uses full factual sentences and removes unanswered wholesale questions", asy
   const contact = doc.querySelector("#toptan-iletisim")!;
   expect(contact.getAttribute("tabindex")).toBe("-1");
   expect(contact.querySelector("form, input, textarea")).toBeNull();
-  expect(contact.textContent).toContain("Toptan zeytin ve zeytinyağı için bize yazın.");
+  expect(contact.textContent).toContain("Toptan alım için bize yazın");
+  expect(contact.textContent).toContain("İletişim bilgileri yakında");
   expect(contact.querySelector('a[href^="tel:"], a[href^="mailto:"]')).toBeNull();
 });
 it("retains seller identity, community and legal destinations", () => {

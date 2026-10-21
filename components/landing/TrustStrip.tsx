@@ -1,11 +1,13 @@
 import type { JSX } from "react";
-import { CreditCard, Factory, Package } from "lucide-react";
+import { CreditCard, Factory, Truck } from "lucide-react";
 import styles from "./V3Foundation.module.css";
 
 export function TrustStrip(): JSX.Element {
   return <section aria-label="Alışveriş bilgileri" className={styles.trust}>
-    <p><Package aria-hidden="true" />Kargo bilgileri ödemede</p>
-    <p><CreditCard aria-hidden="true" />PayTR ile güvenli ödeme</p>
-    <p><Factory aria-hidden="true" />Kendi tesisimizde dolum</p>
+    <ul>
+      <li><Truck aria-hidden="true" /><div><p>Kargo 2–4 iş günü</p><p className={styles.estimate}>Örnek süre</p></div></li>
+      <li><CreditCard aria-hidden="true" /><p>PayTR ile güvenli ödeme</p></li>
+      <li><Factory aria-hidden="true" /><p>Kendi tesisimizde dolum</p></li>
+    </ul>
   </section>;
 }

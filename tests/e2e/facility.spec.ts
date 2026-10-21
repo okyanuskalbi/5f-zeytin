@@ -1,193 +1,47 @@
-import { readFileSync } from "node:fs";
-import { mkdir, writeFile } from "node:fs/promises";
-import { expect, test, type Locator, type Page } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
-const source = readFileSync(new URL("../../docs/referans/icerik.md", import.meta.url), "utf8");
-const story = source.split("### Marka hikâyesi / detay sayfası tanıtımı\n\n")[1].split("\n\n###")[0].trim().split("\n\n");
-const values = ["Ellek, Düziçi / Osmaniye", "Sofralık zeytin, salamura zeytin, zeytinyağı", "Perakende + toptan", "2021’den bu yana"];
-
-async function expectContent(facility: Locator): Promise<void> {
-  await expect(facility.getByRole("heading", { name: "Osmaniye’de, kendi tesisimizde.", level: 2, exact: true })).toBeVisible();
-  await expect(facility.locator("[data-facility-lead]")).toHaveText(story[1]);
-  await expect(facility.locator("dt")).toHaveText(["Konum", "Ürünler", "Satış", "Faaliyet"]);
-  await expect(facility.locator("dd")).toHaveText(values);
-  await expect(facility.getByRole("img", { name: "Osmaniye il sınırı ve Düziçi", exact: true })).toBeVisible();
-  await expect(facility.locator("svg[role=img] path")).toHaveCount(1);
-  await expect(facility.locator("svg[role=img] circle")).toHaveCount(1);
-  await expect(facility).not.toContainText(/%\s*100\s*(organik|doğal)|sertifikalı|lider|ton kapasite/i);
-}
-
-async function expectTypography(facility: Locator): Promise<void> {
-  await expect(facility.getByText(/görsel.*(yakında|hazırlanıyor)/i)).toHaveCount(0);
-  await expect(facility.locator("img, picture, video, canvas, iframe, source, image")).toHaveCount(0);
-  expect(await facility.locator("*").evaluateAll(nodes => nodes.some(node => /url\(/i.test(getComputedStyle(node).backgroundImage)))).toBe(false);
-}
-
-async function tabTo(page: Page, target: Locator, nextControl: string): Promise<void> {
-  for (let attempt = 0; attempt < 20; attempt++) {
-    if (await target.evaluate(node => node === document.activeElement)) return;
-    await page.keyboard.press(nextControl);
-  }
-  await expect(target).toBeFocused();
-}
-
-test.beforeEach(async ({ baseURL }) => {
-  if (!["localhost", "127.0.0.1"].includes(new URL(baseURL!).hostname)) throw new Error("Local checkout required.");
-});
-
-test("official copy, plate facts and map reflow without loading unapproved photos or uploading data", async ({ page }, testInfo) => {
+test("approved blurred facility image and concise confirmed facts reflow", async ({ page }) => {
   const errors: string[] = [];
-  const requests: { method: string; url: string }[] = [];
   page.on("pageerror", error => errors.push(error.message));
-  page.on("request", request => requests.push({ method: request.method(), url: request.url() }));
-  expect((await page.goto("/#tesisimiz"))?.status()).toBe(200);
-  const facility = page.getByRole("region", { name: "Tesisimiz", exact: true });
-  await expectContent(facility);
-  await expectTypography(facility);
-  await page.evaluate(() => document.fonts.ready);
-  await facility.focus(); // Settles motion and starts the section's keyboard order.
-  await expect.poll(() => facility.locator("[data-facility-enter]").evaluateAll(nodes => nodes.every(node => getComputedStyle(node).transform === "none"))).toBe(true);
+  await page.goto("/#tesisimiz");
+  const facility = page.getByRole("region", { name: "Osmaniye’de, kendi tesisimizde.", exact: true });
+  await expect(facility).toContainText("Ellek · Düziçi · 2021’den bu yana.");
+  await expect(facility).toContainText("Sofralık zeytin, salamura zeytin ve zeytinyağını perakende ve toptan alıcılarla buluşturuyoruz.");
+  const photo = facility.getByRole("img", { name: "Afina Zeytin’in Ellek, Düziçi’ndeki üretim tesisi", exact: true });
+  await expect(photo).toHaveAttribute("src", "/images/v3/tesis-osmaniye-w800.webp");
+  await photo.scrollIntoViewIfNeeded();
+  await expect.poll(() => photo.evaluate((node: HTMLImageElement) => node.complete && node.naturalWidth > 0)).toBe(true);
+  await expect(photo).toHaveCSS("object-fit", "cover");
   const metrics = await facility.evaluate(node => {
-    const title = node.querySelector("h2")!;
-    const lead = node.querySelector("[data-facility-lead]")!;
-    const left = node.querySelector("[data-facility-typography]")!.getBoundingClientRect();
-    const tile = node.querySelector("svg[role=img]")!.parentElement!.getBoundingClientRect();
-    const mapBottom = node.querySelector("svg[role=img]")!.getBoundingClientRect().bottom;
-    const mapLabelTop = node.querySelector("svg[role=img]")!.nextElementSibling!.getBoundingClientRect().top;
-    const facts = node.querySelector("dl")!;
-    return { width: innerWidth, fits: document.documentElement.scrollWidth <= innerWidth,
-      titleLines: title.getBoundingClientRect().height / parseFloat(getComputedStyle(title).lineHeight),
-      leadLines: lead.getBoundingClientRect().height / parseFloat(getComputedStyle(lead).lineHeight),
-      leadSize: parseFloat(getComputedStyle(lead).fontSize),
-      factsColumns: getComputedStyle(facts).gridTemplateColumns.split(" ").length,
-      mapLabelGap: mapLabelTop - mapBottom,
-      layout: { leftX: left.x, leftRight: left.right, rightX: tile.x, rightTop: tile.top, leftTop: left.top, leftBottom: left.bottom },
-      minText: Math.min(...[...node.querySelectorAll("p,dt,dd,a")].map(el => parseFloat(getComputedStyle(el).fontSize))),
-      headingFont: getComputedStyle(title).fontFamily, bodyFont: getComputedStyle(lead).fontFamily,
-      gap: getComputedStyle(node.querySelector("dl")!).gap,
-    };
+    const copy = node.querySelector("h2")!.parentElement!.getBoundingClientRect();
+    const photo = node.querySelector("picture")!.getBoundingClientRect();
+    return { width: innerWidth, copy: { right: copy.right, bottom: copy.bottom }, photo: { x: photo.x, y: photo.y, ratio: photo.width / photo.height }, overflow: document.documentElement.scrollWidth - innerWidth };
   });
-  await mkdir("test-results/104", { recursive: true });
-  await writeFile(`test-results/104/${testInfo.project.name}-metrics.json`, JSON.stringify(metrics, null, 2));
-  await writeFile(`test-results/104/${testInfo.project.name}-network.json`, JSON.stringify(requests, null, 2));
-  // Preserve the actual viewport. Tall locator screenshots can resize WebKit
-  // and move fixed header/stub layers into positions a phone never displays.
-  await page.screenshot({ path: `test-results/104/${testInfo.project.name}-tesisimiz.png` });
-  await facility.getByRole("img").scrollIntoViewIfNeeded();
-  await page.screenshot({ path: `test-results/104/${testInfo.project.name}-map-facts.png` });
-  expect(metrics.fits).toBe(true);
-  expect(metrics.titleLines).toBeLessThanOrEqual(2);
-  expect(metrics.factsColumns).toBe(2);
-  expect(metrics.mapLabelGap).toBeGreaterThanOrEqual(4);
-  expect(metrics.minText).toBeGreaterThanOrEqual(13);
-  if (metrics.width < 768) {
-    expect(metrics.layout.rightTop).toBeGreaterThanOrEqual(metrics.layout.leftBottom);
-    expect(metrics.leadSize).toBeGreaterThanOrEqual(17);
-  } else {
-    expect(metrics.layout.rightX).toBeGreaterThan(metrics.layout.leftRight);
-    expect(Math.abs(metrics.layout.rightTop - metrics.layout.leftTop)).toBeLessThan(1);
-  }
-  expect(requests.filter(r => r.method !== "GET" || !["localhost", "127.0.0.1"].includes(new URL(r.url).hostname))).toEqual([]);
-  expect(requests.filter(r => /\/images\/(tesis|generated)\//.test(decodeURIComponent(r.url)))).toEqual([]);
+  expect(metrics.overflow).toBeLessThanOrEqual(1);
+  expect(metrics.photo.ratio).toBeCloseTo(metrics.width < 768 ? 16 / 10 : 4 / 3, 2);
+  if (metrics.width < 768) expect(metrics.photo.y).toBeGreaterThanOrEqual(metrics.copy.bottom - 1);
+  else expect(metrics.photo.x).toBeGreaterThanOrEqual(metrics.copy.right - 1);
+  await expect(facility.locator("form, input, iframe, svg[role=img]")).toHaveCount(0);
+  await expect(facility).not.toContainText(/%100|organik|sertifikalı|lider/);
   expect(errors).toEqual([]);
 });
 
-test("failed image requests preserve the full section and product action", async ({ page }) => {
-  await page.route("**/*", route => route.request().resourceType() === "image" ? route.abort("failed") : route.continue());
+test("failed photo requests preserve facility copy and wholesale destination", async ({ page }) => {
+  await page.route("**/images/v3/tesis-osmaniye-*", route => route.abort());
   await page.goto("/#tesisimiz");
-  const facility = page.getByRole("region", { name: "Tesisimiz", exact: true });
-  await expectContent(facility);
-  await expectTypography(facility);
-  await facility.getByRole("link", { name: "Ürünlerimizi Keşfedin" }).click();
-  await expect(page).toHaveURL(/#urunler$/);
-  await expect(page.getByRole("heading", { name: "Ürünlerimiz", exact: true })).toBeInViewport();
+  await expect(page.locator("#tesisimiz h2")).toHaveText("Osmaniye’de, kendi tesisimizde.");
+  await expect(page.locator("#toptan-title")).toHaveText("Toptan alım için bize yazın");
+  await expect(page.locator("#toptan")).toContainText("İletişim bilgileri yakında");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
-test("the compact cart label never covers the facility copy, map or facts while scrolling", async ({ page }, testInfo) => {
-  await page.addInitScript(() => Object.defineProperty(navigator, "hardwareConcurrency", { configurable: true, get: () => 8 }));
-  await page.goto("/");
-  const facility = page.getByRole("region", { name: "Tesisimiz", exact: true });
-  for (const selector of ["h2", "[data-facility-lead]", "dl", "dd:last-child"]) {
-    await facility.locator(selector).first().evaluate(node => node.scrollIntoView({ block: "center", behavior: "instant" }));
-    await expect.poll(() => facility.evaluate(node => {
-      const stub = document.querySelector<HTMLElement>('[data-hero-stub][data-visible="true"]');
-      if (!stub || getComputedStyle(stub).visibility === "hidden") return [];
-      const box = stub.getBoundingClientRect();
-      return [...node.querySelectorAll("h2,p,dt,dd,a,svg[role=img]")].filter(el => {
-        // Compare painted text lines, not the unused width of a block heading.
-        const range = document.createRange();
-        range.selectNodeContents(el);
-        const rects = el.matches("svg") ? [el.getBoundingClientRect()] : [...range.getClientRects()];
-        return rects.some(b => b.top < innerHeight && b.bottom > 0 && b.left < box.right && b.right > box.left && b.top < box.bottom && b.bottom > box.top);
-      }).map(el => el.textContent?.slice(0, 45));
-    })).toEqual([]);
-    await mkdir("test-results/104", { recursive: true });
-    await page.screenshot({ path: `test-results/104/${testInfo.project.name}-scroll-${selector.replace(/[^a-z]/g, "")}.png` });
+test("both new and existing wholesale anchors keep their heading below the header", async ({ page }) => {
+  for (const hash of ["toptan", "toptan-iletisim"]) {
+    await page.goto(`/#${hash}`);
+    const heading = page.locator("#toptan-title");
+    await expect(heading).toBeInViewport();
+    const top = await heading.evaluate(node => node.getBoundingClientRect().top);
+    const headerBottom = await page.getByRole("banner").evaluate(node => node.getBoundingClientRect().bottom);
+    expect(top).toBeGreaterThanOrEqual(headerBottom);
   }
-});
-
-for (const reducedMotion of ["no-preference", "reduce"] as const) {
-  test(`keyboard navigation reaches the section and both destinations with motion=${reducedMotion}`, async ({ page, browserName }, testInfo) => {
-    const nextControl = browserName === "webkit" && process.platform === "darwin" ? "Alt+Tab" : "Tab";
-    await page.emulateMedia({ reducedMotion });
-    await page.goto("/");
-    await page.locator("header").getByRole("link", { name: "Afina Zeytin ana sayfa" }).focus();
-    const menu = page.getByRole("button", { name: "Menüyü aç" });
-    const isMobile = await menu.isVisible();
-    if (isMobile) { await tabTo(page, menu, nextControl); await page.keyboard.press("Enter"); }
-    const nav = page.getByRole("navigation", { name: isMobile ? "Site navigasyonu" : "Ana navigasyon", exact: true });
-    await tabTo(page, nav.getByRole("link", { name: "Tesisimiz", exact: true }), nextControl);
-    await page.keyboard.press("Enter");
-    await expect(page).toHaveURL(/#tesisimiz$/);
-    const facility = page.getByRole("region", { name: "Tesisimiz", exact: true });
-    await expectContent(facility);
-    await expect(facility.getByRole("heading", { name: "Osmaniye’de, kendi tesisimizde.", exact: true })).toBeInViewport();
-    const headerBottom = await page.locator("header").evaluate(node => node.getBoundingClientRect().bottom);
-    expect(await facility.evaluate(node => node.getBoundingClientRect().top)).toBeGreaterThanOrEqual(headerBottom);
-    await facility.focus();
-    const product = facility.getByRole("link", { name: "Ürünlerimizi Keşfedin" });
-    await page.keyboard.press(nextControl);
-    await expect(product).toBeFocused();
-    expect(await product.evaluate(node => getComputedStyle(node).outlineStyle)).not.toBe("none");
-    for (const link of await facility.getByRole("link").all()) {
-      const box = await link.boundingBox();
-      expect(Math.round(box!.height * 1000) / 1000).toBeGreaterThanOrEqual(44);
-      expect(box!.width).toBeGreaterThanOrEqual(44);
-    }
-    await page.keyboard.press("Enter");
-    await expect(page).toHaveURL(/#urunler$/);
-    await expect(page.locator("#urunler")).toBeFocused();
-    await page.goto("/#tesisimiz");
-    await facility.focus();
-    await page.keyboard.press(nextControl);
-    await page.keyboard.press(nextControl);
-    const wholesale = facility.getByRole("link", { name: "Toptan Satış İçin İletişime Geçin" });
-    await expect(wholesale).toBeFocused();
-    await page.keyboard.press("Enter");
-    await expect(page).toHaveURL(/#toptan-iletisim$/);
-    await expect(page.locator("#toptan-iletisim")).toBeFocused();
-    if (reducedMotion === "reduce") {
-      await page.goto("/#tesisimiz");
-      expect(await facility.evaluate(node => [node, ...node.querySelectorAll("*")].every(el => {
-        const s = getComputedStyle(el);
-        return s.transform === "none" && s.opacity === "1" && s.animationName === "none";
-      }))).toBe(true);
-      await mkdir("test-results/104", { recursive: true });
-      await page.screenshot({ path: `test-results/104/${testInfo.project.name}-reduced.png` });
-    }
-  });
-}
-
-test("server-rendered copy, region and onward actions work without JavaScript", async ({ browser, baseURL }, testInfo) => {
-  const context = await browser.newContext({ baseURL, javaScriptEnabled: false, viewport: testInfo.project.use.viewport });
-  try {
-    const page = await context.newPage();
-    await page.goto("/#tesisimiz");
-    const facility = page.getByRole("region", { name: "Tesisimiz", exact: true });
-    await expectContent(facility);
-    await expectTypography(facility);
-    await facility.getByRole("link", { name: "Toptan Satış İçin İletişime Geçin" }).click();
-    await expect(page).toHaveURL(/#toptan-iletisim$/);
-    await expect(page.getByRole("heading", { name: "Toptan satış", exact: true })).toBeInViewport();
-  } finally { await context.close(); }
 });

@@ -187,7 +187,7 @@ test("404 keeps shell navigation usable and recovers to the landing", async ({ p
   } else await page.getByRole("navigation", { name: "Ana navigasyon" }).getByRole("link", { name: "Tesisimiz", exact: true }).click();
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(page).toHaveURL(/\/#tesisimiz$/);
-  await expect(page.getByRole("region", { name: "Tesisimiz", exact: true })).toBeInViewport();
+  await expect(page.getByRole("region", { name: "Osmaniye’de, kendi tesisimizde.", exact: true })).toBeInViewport();
   await header.getByRole("link", { name: "Afina Zeytin ana sayfa" }).click();
   await expect(page).toHaveURL(/\/$/);
   await expectNoOverflow(page);

@@ -1,0 +1,112 @@
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { afterEach, expect, it } from "vitest";
+import Home from "@/app/page";
+import { Faq, verifiedFaqs } from "@/components/landing/Faq";
+import { Facility } from "@/components/landing/Facility";
+import { TrustStrip } from "@/components/landing/TrustStrip";
+import { WholesaleContact } from "@/components/landing/WholesaleContact";
+import { Footer } from "@/components/site/Footer";
+import { siteContact } from "@/lib/site/contact";
+import manifest from "@/public/images/v3/manifest.json";
+
+afterEach(cleanup);
+
+it("shows the three trust facts and identifies the delivery estimate as an example", () => {
+  render(<TrustStrip />);
+  const strip = screen.getByRole("region", { name: "Alışveriş bilgileri" });
+  expect(strip.textContent).toContain("Kargo 2–4 iş günü");
+  expect(strip.textContent).toContain("PayTR ile güvenli ödeme");
+  expect(strip.textContent).toContain("Kendi tesisimizde dolum");
+  expect(strip.textContent).toMatch(/Örnek süre/);
+  expect(strip.querySelectorAll("svg[aria-hidden=true]")).toHaveLength(3);
+});
+
+it("offers a real wholesale anchor and no form or empty contact links", () => {
+  expect(Object.values(siteContact).every(value => value === "")).toBe(true);
+  render(<Facility />);
+  const target = document.querySelector("#toptan")!;
+  expect(target).not.toBeNull();
+  expect(target.textContent).toContain("Toptan alım için bize yazın");
+  expect(target.textContent).toContain("İletişim bilgileri yakında");
+  expect(target.querySelector("form, input, textarea, button, a")).toBeNull();
+  expect(document.querySelector("#toptan-iletisim")).not.toBeNull();
+});
+
+it("does not turn whitespace-only contact values into empty buttons", () => {
+  render(<WholesaleContact contact={{ phone: " ", whatsapp: " ", email: " " }} />);
+  expect(screen.queryAllByRole("link")).toHaveLength(0);
+  expect(screen.getByText("İletişim bilgileri yakında")).not.toBeNull();
+});
+
+it.each([
+  ["phone", "+90 555 010 00 00", "Telefon edin", "tel:+905550100000"],
+  ["whatsapp", "+90 555 010 00 00", "WhatsApp’tan yazın", "https://wa.me/905550100000"],
+  ["email", " contact@example.com ", "E-posta gönderin", "mailto:contact@example.com"],
+])("renders only the configured %s contact channel", (channel, value, label, href) => {
+  render(<WholesaleContact contact={{ phone: "", whatsapp: "", email: "", [channel]: value }} />);
+  expect(screen.getAllByRole("link")).toHaveLength(1);
+  expect(screen.getByRole("link", { name: label }).getAttribute("href")).toBe(href);
+  expect(screen.queryByText("İletişim bilgileri yakında")).toBeNull();
+});
+
+it("keeps at most six verified answers as standalone complete sentences", () => {
+  expect(verifiedFaqs.length).toBeGreaterThan(0);
+  expect(verifiedFaqs.length).toBeLessThanOrEqual(6);
+  for (const { answer } of verifiedFaqs) {
+    expect(answer).toMatch(/^\p{Lu}/u);
+    expect(answer).toMatch(/\.$/);
+    expect(answer.trim().split(/\s+/).length).toBeGreaterThanOrEqual(6);
+  }
+});
+
+it("keeps native FAQ disclosures usable with synchronized expanded state", () => {
+  render(<Faq />);
+  for (const { question, answer } of verifiedFaqs) {
+    const summary = screen.getByText(question, { selector: "summary" });
+    const details = summary.closest("details")!;
+    expect(summary.getAttribute("aria-expanded")).toBe("false");
+    const content = document.getElementById(summary.getAttribute("aria-controls")!);
+    expect(content?.textContent).toBe(answer);
+    details.open = true;
+    fireEvent(details, new Event("toggle"));
+    expect(summary.getAttribute("aria-expanded")).toBe("true");
+    details.open = false;
+    fireEvent(details, new Event("toggle"));
+    expect(summary.getAttribute("aria-expanded")).toBe("false");
+  }
+});
+
+it("keeps FAQ answers in the server HTML for native JavaScript-free disclosure", () => {
+  const doc = document.implementation.createHTMLDocument();
+  doc.body.innerHTML = renderToStaticMarkup(<Faq />);
+  expect(doc.querySelectorAll("details > summary")).toHaveLength(verifiedFaqs.length);
+  for (const { answer } of verifiedFaqs) expect(doc.body.textContent).toContain(answer);
+  // Native details owns expansion until hydration; no stale ARIA override without JS.
+  expect(doc.querySelector("summary[aria-expanded]")).toBeNull();
+});
+
+it("publishes one preview note and business schema without address, tax IDs or sample Product data", async () => {
+  const doc = document.implementation.createHTMLDocument();
+  doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}<Footer /></>);
+  expect(doc.body.textContent?.match(/Önizleme: fiyatlar ve görseller temsilidir\./g)).toHaveLength(1);
+  expect(doc.body.textContent).not.toMatch(/henüz kullanıma açık değil|Gerçek satış kataloğu/);
+  const scripts = [...doc.querySelectorAll('script[type="application/ld+json"]')];
+  expect(scripts).toHaveLength(1);
+  const schema = JSON.parse(scripts[0].textContent!);
+  expect(schema["@context"]).toBe("https://schema.org");
+  expect(schema["@graph"].map((item: Record<string, unknown>) => item["@type"])).toEqual(["Organization", "LocalBusiness"]);
+  expect(schema["@graph"][1].parentOrganization["@id"]).toBe(schema["@graph"][0]["@id"]);
+  expect(JSON.stringify(schema)).not.toMatch(/"(?:address|taxID|vatID|Product|Offer|price|telephone|email)"|0091520061|Şehit Ali/);
+});
+
+it("uses only the pinned blurred facility source and unmodified optimized derivatives", () => {
+  const asset = manifest.assets["tesis-osmaniye"];
+  const sha = (bytes: Buffer) => createHash("sha256").update(bytes).digest("hex");
+  expect(asset.source).toBe("docs/referans/tesis/tesis-osmaniye-plaka-bulanik.jpg");
+  expect(sha(readFileSync(asset.source))).toBe(asset.sourceSha256);
+  expect(asset.crop).toBeNull();
+  for (const output of asset.outputs) expect(sha(readFileSync(`public${output.file}`))).toBe(output.sha256);
+});
