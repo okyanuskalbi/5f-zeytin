@@ -1,0 +1,48 @@
+name: Test ve Vercel yayın
+
+# main'e her push'ta: lint + typecheck + unit test + build, geçerse Vercel'e production yayını.
+# Tarayıcı (Playwright/Lighthouse) testleri burada koşmaz; Claude yerelde yapar.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: vercel-production
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  VERCEL_ORG_ID: team_IWBdFFE1yrN06w4L0BQxK1Cz
+  VERCEL_PROJECT_ID: prj_4nr3Qeu05CcoMgDXt7MeAfnflyPp
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+  NEXT_TELEMETRY_DISABLED: "1"
+
+jobs:
+  test-ve-yayin:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - name: Vercel ayarlarını çek
+        if: env.VERCEL_TOKEN != ''
+        run: npx --yes vercel@65.0.0 pull --yes --environment=production --token="$VERCEL_TOKEN"
+      - name: Vercel build
+        if: env.VERCEL_TOKEN != ''
+        run: npx --yes vercel@65.0.0 build --prod --token="$VERCEL_TOKEN"
+      - name: Vercel production yayını
+        if: env.VERCEL_TOKEN != ''
+        run: npx --yes vercel@65.0.0 deploy --prebuilt --prod --token="$VERCEL_TOKEN"
+      - name: Token yok uyarısı
+        if: env.VERCEL_TOKEN == ''
+        run: echo "::warning::VERCEL_TOKEN secret tanımlı değil; testler geçti ama yayın atlandı."
