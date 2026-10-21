@@ -48,6 +48,8 @@ Sen uygulayıcısın. Planı Claude yazar, sen kodlarsın.
 
 ## Projeye özel ek kurallar
 
+- **Tarayıcı testleri Claude'da (kullanıcı kuralı, 21 Eki):** Playwright e2e, Lighthouse, inspect.mjs, ekran görüntüsü/kare şeridi ÇALIŞTIRMA. Yalnız kodu yaz, e2e testlerini yaz/güncelle (çalıştırmadan) ve `npm test` (unit), lint, typecheck, build çalıştır. Tarayıcı kabul kriterlerini "Claude doğrulayacak" diye işaretle; yalnız bunlar yüzünden Durum'u BEKLİYOR bırakma, unit/lint/typecheck/build yeşilse TAMAMLANDI yap.
+
 - UI işlerinde önce 21st MCP ile ara/üret, sonra projenin token’larına uyarla; varsayılan halde bırakma. Erişim yoksa bunu Coder Notu’na yaz.
 - Animasyon: Framer Motion (`motion`) + ECC `motion-foundations`, `motion-patterns`, `motion-advanced`; `prefers-reduced-motion` zorunlu, sade modda içerik ve CTA erişilir kalır.
 - shadcn/ui için MCP YOK. Resmi CLI ile `npx shadcn@latest search/view/docs <bileşen>` kullan; `add <bileşen>` ile ekle, gerekiyorsa `init --preset <kod>` / `apply <preset>` ile ui.shadcn.com/create temasını uygula. Bileşenleri proje token’larına göre özelleştir.
