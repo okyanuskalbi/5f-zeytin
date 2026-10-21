@@ -48,6 +48,8 @@ Sen uygulayıcısın. Planı Claude yazar, sen kodlarsın.
 
 ## Projeye özel ek kurallar
 
+- **Push kuralı (21 Eki):** main'e her push GitHub Actions ile canlıya yayınlanır. RED/ara commit'leri yerelde tut; `git push` yalnız `npm test`, lint, typecheck ve build yeşilken, görev sonunda yap. Kırmızı test içeren commit'i asla push etme.
+
 - **Tarayıcı testleri Claude'da (kullanıcı kuralı, 21 Eki):** Playwright e2e, Lighthouse, inspect.mjs, ekran görüntüsü/kare şeridi ÇALIŞTIRMA. Yalnız kodu yaz, e2e testlerini yaz/güncelle (çalıştırmadan) ve `npm test` (unit), lint, typecheck, build çalıştır. Tarayıcı kabul kriterlerini "Claude doğrulayacak" diye işaretle; yalnız bunlar yüzünden Durum'u BEKLİYOR bırakma, unit/lint/typecheck/build yeşilse TAMAMLANDI yap.
 
 - UI işlerinde önce 21st MCP ile ara/üret, sonra projenin token’larına uyarla; varsayılan halde bırakma. Erişim yoksa bunu Coder Notu’na yaz.

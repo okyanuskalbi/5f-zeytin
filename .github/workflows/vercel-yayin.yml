@@ -5,6 +5,9 @@ name: Test ve Vercel yayın
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
   workflow_dispatch:
 
 concurrency:
