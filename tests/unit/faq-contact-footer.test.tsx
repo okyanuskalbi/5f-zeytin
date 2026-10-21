@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, expect, it } from "vitest";
 import Home from "@/app/page";
@@ -49,4 +50,66 @@ it("retains seller identity, community and legal destinations", () => {
   expect(doc.body.textContent).toContain("VKN 0091520061");
   for (const href of ["/kvkk", "/mesafeli-satis", "/iade", "https://afina.com.tr"]) expect(doc.querySelector(`a[href="${href}"]`)).not.toBeNull();
   expect(doc.body.textContent).toContain("Önizleme: fiyatlar ve görseller temsilidir.");
+});
+
+it("groups brand, shopping, help and contact before the payment and legal rows", () => {
+  const doc = document.implementation.createHTMLDocument();
+  doc.body.innerHTML = renderToStaticMarkup(<Footer />);
+  const footer = doc.querySelector("footer")!;
+  expect([...footer.querySelectorAll("h2")].map(heading => heading.textContent)).toEqual([
+    "AFİNA ZEYTİN", "Alışveriş", "Yardım", "İletişim",
+  ]);
+  for (const [label, href] of [
+    ["Ürünler", "/#kiler"], ["Kışlık kiler", "/#urunler"], ["Sepetim", "/sepet"],
+    ["Sipariş takibi", "/siparis-takip"], ["Hesabım", "/hesabim"],
+    ["Sık sorulan sorular", "/#sik-sorulanlar"], ["Tesisimiz", "/#tesisimiz"],
+  ]) {
+    expect([...footer.querySelectorAll("a")].find(link => link.textContent === label)?.getAttribute("href")).toBe(href);
+  }
+  const contact = footer.querySelector('[aria-labelledby="footer-contact-title"]')!;
+  expect(contact.querySelector("address")?.textContent).toBe("Şehit Ali Gökçe Mah. Şehit Ömer Halis Demir Sk. No: 35, Ellek Beldesi, Düziçi / Osmaniye");
+  expect(contact.querySelectorAll("address span")).toHaveLength(2);
+  expect(contact.querySelector('a[href^="tel:"], a[href^="mailto:"]')).toBeNull();
+  expect(footer.textContent).toContain("© 2026 AFİNA ZEYTİN");
+});
+
+it("names only the supported payment brands and serves safe local vector logos", () => {
+  const doc = document.implementation.createHTMLDocument();
+  doc.body.innerHTML = renderToStaticMarkup(<Footer />);
+  const payment = doc.querySelector('[aria-label="Güvenli ödeme"]')!;
+  expect(payment).not.toBeNull();
+  expect(payment.textContent).toContain("Güvenli ödeme");
+  expect([...payment.querySelectorAll("img")].map(image => image.alt)).toEqual(["PayTR", "Visa", "Mastercard", "Troy"]);
+  for (const image of payment.querySelectorAll("img")) {
+    expect(image.getAttribute("src")).toBe(`/images/payment/${image.alt.toLowerCase()}.svg`);
+    expect(image.getAttribute("aria-hidden")).not.toBe("true");
+    const svg = new DOMParser().parseFromString(readFileSync(`public${image.getAttribute("src")}`, "utf8"), "image/svg+xml");
+    expect(svg.documentElement.localName).toBe("svg");
+    expect(svg.documentElement.getAttribute("viewBox")).toBeTruthy();
+    expect(svg.querySelector("parsererror, script, foreignObject, image, use")).toBeNull();
+    expect([...svg.querySelectorAll("*")].flatMap(node => [...node.attributes]).some(attribute => /^on/i.test(attribute.name) || /^(?:https?:|data:|javascript:)/i.test(attribute.value))).toBe(false);
+  }
+  expect(doc.querySelector('img[alt*="American Express"], img[alt*="Apple Pay"]')).toBeNull();
+});
+
+it("keeps the community identity with the brand and opens its destination safely", () => {
+  const doc = document.implementation.createHTMLDocument();
+  doc.body.innerHTML = renderToStaticMarkup(<Footer />);
+  const brand = doc.querySelector('[aria-labelledby="footer-brand-title"]')!;
+  expect(brand).not.toBeNull();
+  expect(brand.textContent).toContain("Bir AFİNA Şirketler Topluluğu markası");
+  const community = brand.querySelector('a[href="https://afina.com.tr"]')!;
+  expect(community.getAttribute("target")).toBe("_blank");
+  expect(community.getAttribute("rel")).toBe("noopener");
+  expect(doc.querySelectorAll('a[href="https://afina.com.tr"]')).toHaveLength(1);
+  expect(community.querySelector("img")?.alt).toBe("AFİNA Şirketler Topluluğu");
+});
+
+it("shows only approved phone and email channels when configured", () => {
+  Object.assign(siteContact, { phone: " +90 555 010 00 00 ", email: " contact@example.com " });
+  const doc = document.implementation.createHTMLDocument();
+  doc.body.innerHTML = renderToStaticMarkup(<Footer />);
+  const contact = doc.querySelector('[aria-labelledby="footer-contact-title"]')!;
+  expect(contact.querySelector('a[href="tel:+905550100000"]')?.textContent).toBe("+90 555 010 00 00");
+  expect(contact.querySelector('a[href="mailto:contact@example.com"]')?.textContent).toBe("contact@example.com");
 });
