@@ -22,13 +22,14 @@ async function load(page: Page) {
   await expect(headerCart(page)).toContainText("1");
 }
 
-test("v2 drawer: totals after quantity/remove, modal focus, escape and scroll lock at every width", async ({ page }, info) => {
+test("v3 drawer: totals after quantity/remove, modal focus, escape and scroll lock at every width", async ({ page }, info) => {
   await load(page);
   await headerCart(page).click();
   const panel = drawer(page);
   const close = panel.getByRole("button", { name: "Sepeti kapat" });
   await expect(close).toBeFocused();
-  await expect(panel.getByRole("button", { name: "Ödemeye geç" })).toBeDisabled();
+  if (process.env.NEXT_PUBLIC_DEMO === "1") await expect(panel.getByRole("link", { name: "Ödemeye geç" })).toHaveAttribute("href", "/odeme");
+  else await expect(panel.getByRole("button", { name: "Ödemeye geç" })).toBeDisabled();
   await expect(page.locator("body")).toHaveAttribute("data-scroll-locked");
   const line = panel.getByRole("group", { name: "Doğal Kırma Yeşil Zeytin", exact: true });
   await line.getByRole("button", { name: "Adedi artır" }).click();
@@ -59,10 +60,9 @@ test("mini cart: first add, responsive/footer/route visibility and focus return;
   await page.goto("/");
   await expect(mini(page)).toHaveCount(0);
   const card = page.getByRole("region", { name: "Kışlık kiler", exact: true }).getByRole("article").first();
-  const add = card.getByRole("button", { name: "Sepete ekle", exact: true });
+  const add = card.getByRole("button", { name: "Ekle", exact: true });
   await add.click();
-  await expect(drawer(page)).toBeVisible();
-  await page.keyboard.press("Escape");
+  await expect(card.getByRole("status")).toContainText("sepete eklendi");
   await expect(drawer(page)).toHaveCount(0);
   if (page.viewportSize()!.width >= 768) { await expect(mini(page)).toHaveCount(0); return; }
   await expect(mini(page)).toBeVisible();
@@ -84,14 +84,14 @@ test("mini cart: first add, responsive/footer/route visibility and focus return;
   await page.screenshot({ path: `test-results/106/${info.project.name}-page.png`, fullPage: true });
 });
 
-test("mobile sheet: 60/95 percent snaps, button alternative and drag dismissal", async ({ page }) => {
+test("mobile sheet: 85/95 percent snaps, button alternative and drag dismissal", async ({ page }) => {
   test.skip(page.viewportSize()!.width >= 768);
   await load(page);
   await headerCart(page).click();
   const panel = drawer(page);
   const viewport = page.viewportSize()!;
   await expect(panel).toHaveAttribute("data-snap", "compact");
-  await expect.poll(async () => Math.round((await panel.boundingBox())!.height)).toBe(Math.max(Math.round(viewport.height * 0.6), Math.min(Math.round(viewport.height * 0.95), 440)));
+  await expect.poll(async () => Math.round((await panel.boundingBox())!.height)).toBe(Math.max(Math.round(viewport.height * 0.85), Math.min(Math.round(viewport.height * 0.95), 560)));
   await panel.getByRole("button", { name: "Sepeti genişlet" }).click();
   await expect(panel).toHaveAttribute("data-snap", "expanded");
   await expect.poll(async () => Math.round((await panel.boundingBox())!.height)).toBe(Math.round(viewport.height * 0.95));

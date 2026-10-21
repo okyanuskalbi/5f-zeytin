@@ -7,6 +7,17 @@ const cartButton = (page: Page) => page.getByRole("banner").getByRole("button", 
 const drawer = (page: Page) => page.getByRole("dialog", { name: "Sepetim", exact: true });
 const line = (page: Page) => page.getByRole("group", { name: "Doğal Kırma Yeşil Zeytin", exact: true });
 
+async function addQuantity(page: Page, quantity: number): Promise<void> {
+  await card(page).getByRole("button", { name: "Doğal Kırma Yeşil Zeytin hızlı görünüm", exact: true }).click();
+  const view = page.getByRole("dialog", { name: "Doğal Kırma Yeşil Zeytin", exact: true });
+  await view.getByRole("spinbutton", { name: "Adet", exact: true }).fill(String(quantity));
+  await view.getByRole("button", { name: "Sepete ekle", exact: true }).click();
+  await expect(view.getByRole("status")).toContainText("sepete eklendi");
+  await view.getByRole("button", { name: "Hızlı görünümü kapat", exact: true }).click();
+  await expect(view).toHaveCount(0);
+  await expect(drawer(page)).toHaveCount(0);
+}
+
 test.beforeEach(async ({ page }) => {
   errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
@@ -22,8 +33,8 @@ test("product, badge, drawer and page share quantities across navigation and rel
   await page.goto("/");
   await expect(cartButton(page)).toHaveAccessibleName("Sepetim, 0 adet");
   await expect(cartButton(page).locator('[data-slot="count-badge"]')).toHaveCount(0);
-  await card(page).getByRole("spinbutton", { name: "Adet" }).fill("2");
-  await card(page).getByRole("button", { name: "Sepete ekle" }).click();
+  await addQuantity(page, 2);
+  await cartButton(page).click();
   await expect(drawer(page)).toBeVisible();
   await expect(drawer(page).getByRole("status", { name: "Adet" })).toHaveText("2");
   await drawer(page).getByRole("button", { name: "Adedi artır" }).click();
@@ -53,22 +64,22 @@ test("product, badge, drawer and page share quantities across navigation and rel
 
 test("cumulative stock failure keeps the cart and quantity, then permits retry", async ({ page }) => {
   await page.goto("/");
-  await card(page).getByRole("spinbutton").fill("12");
-  await card(page).getByRole("button", { name: "Sepete ekle" }).click();
+  await addQuantity(page, 12);
+  await cartButton(page).click();
   await expect(drawer(page).getByRole("status", { name: "Adet" })).toHaveText("12");
   await page.keyboard.press("Escape");
-  await expect(card(page).getByRole("button", { name: "Sepete ekle" })).toBeFocused();
-  await card(page).getByRole("spinbutton").fill("1");
-  await card(page).getByRole("button", { name: "Sepete ekle" }).click();
-  await expect(card(page).getByRole("alert")).toContainText("Ürün sepete eklenemedi");
+  await expect(cartButton(page)).toBeFocused();
+  await card(page).getByRole("button", { name: "Ekle", exact: true }).click();
+  await expect(card(page).getByRole("alert")).toContainText("Stok sınırını veya adedi kontrol edip tekrar deneyin");
   await expect(drawer(page)).toHaveCount(0);
-  await expect(card(page).getByRole("spinbutton")).toHaveValue("1");
   await expect(cartButton(page)).toHaveAccessibleName("Sepetim, 12 adet");
-  await expect(page.getByRole("article", { name: "Salamura Siyah Zeytin", exact: true }).getByRole("button", { name: "Sepete ekle" })).toBeDisabled();
+  await expect(page.getByRole("article", { name: "Salamura Siyah Zeytin", exact: true }).getByRole("button", { name: "Tükendi", exact: true })).toBeDisabled();
   await cartButton(page).click();
   await drawer(page).getByRole("button", { name: "Adedi azalt" }).click();
   await page.keyboard.press("Escape");
-  await card(page).getByRole("button", { name: "Sepete ekle" }).click();
+  await card(page).getByRole("button", { name: "Ekle", exact: true }).click();
+  await expect(card(page).getByRole("status")).toContainText("sepete eklendi");
+  await cartButton(page).click();
   await expect(drawer(page).getByRole("status", { name: "Adet" })).toHaveText("12");
 });
 
@@ -110,7 +121,9 @@ test("storage write failure keeps a single in-memory cart through client navigat
     };
   });
   await page.goto("/");
-  await card(page).getByRole("button", { name: "Sepete ekle" }).click();
+  await card(page).getByRole("button", { name: "Ekle", exact: true }).click();
+  await expect(card(page).getByRole("status")).toContainText("sepete eklendi");
+  await cartButton(page).click();
   await expect(drawer(page).getByRole("alert")).toContainText("kaydedilemiyor");
   await page.evaluate(() => { Object.assign(window, { cartWireDocument: "same-document" }); });
   await drawer(page).getByRole("link", { name: "Sepeti görüntüle" }).click();
@@ -134,7 +147,9 @@ test("corrupt and blocked storage recover without breaking global cart controls"
     Object.defineProperty(window, "localStorage", { configurable: true, get() { throw new DOMException("Test blocked", "SecurityError"); } });
   });
   await page.reload();
-  await card(page).getByRole("button", { name: "Sepete ekle" }).click();
+  await card(page).getByRole("button", { name: "Ekle", exact: true }).click();
+  await expect(card(page).getByRole("status")).toContainText("sepete eklendi");
+  await cartButton(page).click();
   await expect(drawer(page).getByRole("status", { name: "Adet" })).toHaveText("1");
   await expect(drawer(page).getByRole("alert")).toContainText("kaydedilemiyor");
 });
@@ -144,10 +159,14 @@ test("keyboard and reduced motion preserve opener focus and modal isolation", as
   for (const reducedMotion of ["no-preference", "reduce"] as const) {
     await page.emulateMedia({ reducedMotion });
     await page.goto("/");
-    const add = card(page).getByRole("button", { name: "Sepete ekle" });
+    const add = card(page).getByRole("button", { name: /^(Ekle|Eklendi ✓)$/ });
     await expect(add).toBeEnabled();
     await add.focus();
     await page.keyboard.press("Enter");
+    await expect(card(page).getByRole("status")).toContainText("sepete eklendi");
+    await expect(drawer(page)).toHaveCount(0);
+    await cartButton(page).focus();
+    await page.keyboard.press("Space");
     const close = drawer(page).getByRole("button", { name: "Sepeti kapat" });
     await expect(close).toBeFocused();
     await page.keyboard.press("Shift+Tab");
@@ -155,7 +174,7 @@ test("keyboard and reduced motion preserve opener focus and modal isolation", as
     await page.keyboard.press("Tab");
     await expect(close).toBeFocused();
     await page.keyboard.press("Escape");
-    await expect(add).toBeFocused();
+    await expect(cartButton(page)).toBeFocused();
     await cartButton(page).focus();
     await page.keyboard.press("Space");
     await expect(close).toBeFocused();
