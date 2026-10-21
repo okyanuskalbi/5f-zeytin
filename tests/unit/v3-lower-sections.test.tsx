@@ -14,31 +14,30 @@ import manifest from "@/public/images/v3/manifest.json";
 
 afterEach(cleanup);
 
-it("shows the three trust facts and identifies the delivery estimate as an example", () => {
+it("shows the three trust facts without a draft delivery label", () => {
   render(<TrustStrip />);
   const strip = screen.getByRole("region", { name: "Alışveriş bilgileri" });
   expect(strip.textContent).toContain("Kargo 2–4 iş günü");
   expect(strip.textContent).toContain("PayTR ile güvenli ödeme");
   expect(strip.textContent).toContain("Kendi tesisimizde dolum");
-  expect(strip.textContent).toMatch(/Örnek süre/);
+  expect(strip.textContent).not.toMatch(/Örnek süre/);
   expect(strip.querySelectorAll("svg[aria-hidden=true]")).toHaveLength(3);
 });
 
-it("offers a real wholesale anchor and no form or empty contact links", () => {
+it("omits the whole wholesale row and footer destination when contact details are empty", () => {
   expect(Object.values(siteContact).every(value => value === "")).toBe(true);
-  render(<Facility />);
-  const target = document.querySelector("#toptan")!;
-  expect(target).not.toBeNull();
-  expect(target.textContent).toContain("Toptan alım için bize yazın");
-  expect(target.textContent).toContain("İletişim bilgileri yakında");
-  expect(target.querySelector("form, input, textarea, button, a")).toBeNull();
-  expect(document.querySelector("#toptan-iletisim")).not.toBeNull();
+  render(<><Facility /><Footer /></>);
+  expect(document.querySelector("#toptan, #toptan-iletisim")).toBeNull();
+  expect(screen.queryByText("Toptan alım için bize yazın")).toBeNull();
+  expect(screen.queryByText("İletişim bilgileri yakında")).toBeNull();
+  expect(screen.queryByRole("link", { name: "Toptan Satış İçin İletişime Geçin" })).toBeNull();
 });
 
-it("does not turn whitespace-only contact values into empty buttons", () => {
+it("omits wholesale markup when all contact values contain only whitespace", () => {
   render(<WholesaleContact contact={{ phone: " ", whatsapp: " ", email: " " }} />);
   expect(screen.queryAllByRole("link")).toHaveLength(0);
-  expect(screen.getByText("İletişim bilgileri yakında")).not.toBeNull();
+  expect(document.querySelector("#toptan, #toptan-iletisim")).toBeNull();
+  expect(screen.queryByRole("heading", { name: "Toptan alım için bize yazın" })).toBeNull();
 });
 
 it.each([
@@ -49,6 +48,8 @@ it.each([
   render(<WholesaleContact contact={{ phone: "", whatsapp: "", email: "", [channel]: value }} />);
   expect(screen.getAllByRole("link")).toHaveLength(1);
   expect(screen.getByRole("link", { name: label }).getAttribute("href")).toBe(href);
+  expect(screen.getByRole("region", { name: "Toptan alım için bize yazın" }).id).toBe("toptan");
+  expect(document.querySelector("#toptan-iletisim")?.getAttribute("tabindex")).toBe("-1");
   expect(screen.queryByText("İletişim bilgileri yakında")).toBeNull();
 });
 

@@ -26,22 +26,19 @@ test("approved blurred facility image and concise confirmed facts reflow", async
   expect(errors).toEqual([]);
 });
 
-test("failed photo requests preserve facility copy and wholesale destination", async ({ page }) => {
+test("failed photo requests preserve facility copy without an empty wholesale destination", async ({ page }) => {
   await page.route("**/images/v3/tesis-osmaniye-*", route => route.abort());
   await page.goto("/#tesisimiz");
   await expect(page.locator("#tesisimiz h2")).toHaveText("Osmaniye’de, kendi tesisimizde.");
-  await expect(page.locator("#toptan-title")).toHaveText("Toptan alım için bize yazın");
-  await expect(page.locator("#toptan")).toContainText("İletişim bilgileri yakında");
+  await expect(page.locator("#toptan, #toptan-title")).toHaveCount(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
-test("both new and existing wholesale anchors keep their heading below the header", async ({ page }) => {
+test("old wholesale bookmarks leave the landing usable without placeholder contact", async ({ page }) => {
   for (const hash of ["toptan", "toptan-iletisim"]) {
     await page.goto(`/#${hash}`);
-    const heading = page.locator("#toptan-title");
-    await expect(heading).toBeInViewport();
-    const top = await heading.evaluate(node => node.getBoundingClientRect().top);
-    const headerBottom = await page.getByRole("banner").evaluate(node => node.getBoundingClientRect().bottom);
-    expect(top).toBeGreaterThanOrEqual(headerBottom);
+    await expect(page.locator("#toptan, #toptan-iletisim, #toptan-title")).toHaveCount(0);
+    await expect(page.locator("[data-hero-intro] h1")).toBeInViewport();
+    await expect(page.getByRole("banner")).toBeVisible();
   }
 });

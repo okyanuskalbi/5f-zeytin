@@ -3,13 +3,13 @@ import { expect, test, type Locator, type Page } from "@playwright/test";
 const landingLinks = [
   ["Ürünlerimizi Keşfedin", "/#urunler"],
   ["Tesisimiz", "/#tesisimiz"],
-  ["Toptan Satış İçin İletişime Geçin", "/#toptan-iletisim"],
 ] as const;
 
 async function expectLinks(navigation: Locator, compact = false): Promise<void> {
   for (const [name, href] of landingLinks) {
-    await expect(navigation.getByRole("link", { name: compact ? (href === "/#urunler" ? "Ürünler" : href === "/#toptan-iletisim" ? "Toptan" : name) : name, exact: true })).toHaveAttribute("href", href);
+    await expect(navigation.getByRole("link", { name: compact && href === "/#urunler" ? "Ürünler" : name, exact: true })).toHaveAttribute("href", href);
   }
+  await expect(navigation.locator('a[href="/#toptan-iletisim"]')).toHaveCount(0);
 }
 
 async function expectNoOverflow(page: Page): Promise<void> {

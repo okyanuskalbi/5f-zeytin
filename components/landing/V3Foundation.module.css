@@ -4,7 +4,6 @@
 .trust li + li { border-inline-start: 1px solid var(--border); }
 .trust svg { width: 40px; height: 40px; flex-shrink: 0; stroke-width: 1.5; }
 .trust p { text-wrap: pretty; }
-.estimate { font-size: var(--step-small); }
 .facility { background: var(--brand-ivory); color: var(--brand-ink); scroll-margin-top: calc(var(--header-height) + 24px); }
 /* Adapted from 21st Split Feature Section (29418) to the approved photo/copy split. */
 .facilityLayout { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; }
@@ -17,7 +16,6 @@
 .wholesale { padding: 48px var(--page-margin); scroll-margin-top: calc(var(--header-height) + 24px); }
 .contact { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px 48px; scroll-margin-top: calc(var(--header-height) + 24px); }
 .contact h3 { max-width: 28ch; }
-.contact p { font-size: var(--step-body); text-wrap: pretty; }
 .channels { display: flex; flex-wrap: wrap; gap: 12px; }
 .contactLink { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; padding: 8px 16px; border: 1px solid var(--brand-olive); color: var(--brand-olive); font-weight: 600; text-wrap: pretty; }
 .contactLink:hover { background: var(--brand-olive); color: var(--brand-ivory); }

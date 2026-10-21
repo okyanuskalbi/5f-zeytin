@@ -13,27 +13,24 @@ async function fillRequest(page: Page, channel: "email" | "phone" = "email"): Pr
   await form(page).getByLabel("Talep mesajı", { exact: true }).fill("Sofralık zeytin ve zeytinyağı için bilgi rica ederim.");
 }
 
-test("landing hides the preserved form until a real submission service exists", async ({ page }) => {
+test("landing hides wholesale contact and its footer link until details exist", async ({ page }) => {
   const writes: string[] = [];
   page.on("request", request => { if (request.method() !== "GET") writes.push(request.url()); });
   await page.goto("/");
-  await page.getByRole("contentinfo").getByRole("link", { name: cta, exact: true }).click();
-  await expect(page).toHaveURL(/#toptan-iletisim$/);
-  await expect(page.locator("#toptan-iletisim")).toBeFocused();
+  await expect(page.getByRole("contentinfo").getByRole("link", { name: cta, exact: true })).toHaveCount(0);
   await expect(form(page)).toHaveCount(0);
-  await expect(page.locator("#toptan")).toContainText("İletişim bilgileri yakında");
-  await expect(page.locator("#toptan a, #toptan input, #toptan textarea, #toptan button")).toHaveCount(0);
+  await expect(page.locator("#toptan, #toptan-iletisim")).toHaveCount(0);
   expect(writes).toEqual([]);
 });
 
-test("JavaScript-free landing keeps wholesale information without an unavailable form", async ({ browser, baseURL, page }) => {
+test("JavaScript-free landing omits the unavailable wholesale contact", async ({ browser, baseURL, page }) => {
   const context = await browser.newContext({ baseURL, javaScriptEnabled: false, viewport: page.viewportSize()! });
   try {
     const staticPage = await context.newPage();
     await staticPage.goto("/#toptan");
     await expect(form(staticPage)).toHaveCount(0);
-    await expect(staticPage.locator("#toptan-title")).toHaveText("Toptan alım için bize yazın");
-    await expect(staticPage.locator("#toptan")).toContainText("İletişim bilgileri yakında");
+    await expect(staticPage.locator("#toptan, #toptan-iletisim, #toptan-title")).toHaveCount(0);
+    await expect(staticPage.getByRole("contentinfo").getByRole("link", { name: cta, exact: true })).toHaveCount(0);
   } finally { await context.close(); }
 });
 

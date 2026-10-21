@@ -8,6 +8,7 @@ import { ShoppingBag, UserRound } from "lucide-react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
 import { springs, motionTokens } from "@/lib/ui-motion";
+import { hasSiteContact, siteContact } from "@/lib/site/contact";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/cart/CartProvider";
 import {
@@ -19,10 +20,10 @@ import styles from "./Navbar.module.css";
 const links = [
   { label: "Ürünler", href: "/#urunler" },
   { label: "Tesisimiz", href: "/#tesisimiz" },
-  { label: "Toptan", href: "/#toptan-iletisim" },
 ];
 
 export function Navbar(): JSX.Element {
+  const navigation = hasSiteContact(siteContact) ? [...links, { label: "Toptan", href: "/#toptan-iletisim" }] : links;
   const landing = usePathname() === "/";
   const cart = useCart();
   const itemCount = cart?.state.items.reduce((count, item) => count + item.quantity, 0) ?? 0;
@@ -30,32 +31,22 @@ export function Navbar(): JSX.Element {
   const [light, setLight] = useState(false);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
   const homeRef = useRef<HTMLAnchorElement>(null);
-  const headerRef = useRef<HTMLElement>(null);
-  const boundary = useRef(0);
   const reduced = usePrefersReducedMotion();
   const { scrollY } = useScroll();
   const onPantry = landing && light;
   const onLight = !landing;
 
   useMotionValueEvent(scrollY, "change", (value) => {
-    if (landing) setLight(value >= boundary.current);
+    if (landing) setLight(value > 0);
   });
 
   useEffect(() => {
     if (!landing) return;
 
-    const hero = document.querySelector<HTMLElement>("[data-hero-intro]");
-    function measure(): void {
-      boundary.current = hero ? hero.getBoundingClientRect().bottom + window.scrollY - (headerRef.current?.offsetHeight ?? 60) : 0;
-      setLight(window.scrollY >= boundary.current);
-    }
-    measure();
-    const observer = new ResizeObserver(measure);
-    if (hero) observer.observe(hero);
-    if (headerRef.current) observer.observe(headerRef.current);
-    window.addEventListener("resize", measure);
-    window.addEventListener("pageshow", measure);
-    return () => { observer.disconnect(); window.removeEventListener("resize", measure); window.removeEventListener("pageshow", measure); };
+    const syncSurface = (): void => { setLight(window.scrollY > 0); };
+    syncSurface();
+    window.addEventListener("pageshow", syncSurface);
+    return () => { window.removeEventListener("pageshow", syncSurface); };
   }, [landing]);
 
   useEffect(() => {
@@ -78,7 +69,7 @@ export function Navbar(): JSX.Element {
   }, [isOpen]);
 
   return (
-    <header ref={headerRef} data-site-navbar="" data-tone={onLight ? "light" : onPantry ? "pantry" : "hero"}
+    <header data-site-navbar="" data-tone={onLight ? "light" : onPantry ? "pantry" : "hero"}
       data-over-hero={landing} className={`site-bar ${styles.bar}`}>
       <div className={styles.row}>
         <Link ref={homeRef} href="/" onClick={() => { if (landing) window.scrollTo({ top: 0, behavior: "instant" }); }} aria-label="Afina Zeytin ana sayfa" className={styles.home}>
@@ -87,7 +78,7 @@ export function Navbar(): JSX.Element {
           <span aria-hidden="true" className={styles.wordmark}>ZEYTİN</span>
         </Link>
         <nav aria-label="Ana navigasyon" className={styles.desktop}>
-          {links.map(link => <Link key={link.href} href={link.href} className={styles.link}>{link.label}</Link>)}
+          {navigation.map(link => <Link key={link.href} href={link.href} className={styles.link}>{link.label}</Link>)}
         </nav>
         <div className={styles.actions}>
           <Button asChild variant="ghost" size="icon" className={`${styles.control} ${styles.account}`}>
@@ -118,10 +109,10 @@ export function Navbar(): JSX.Element {
               }}>
               <DialogHeader className="sr-only">
                 <DialogTitle>Site menüsü</DialogTitle>
-                <DialogDescription>Ürünler, tesisimiz ve toptan satış bağlantıları.</DialogDescription>
+                <DialogDescription>Ürünler ve tesisimiz hakkında bağlantılar.</DialogDescription>
               </DialogHeader>
               <nav aria-label="Site navigasyonu" className={styles.menuLinks}>
-                {links.map((link, index) => <DialogClose key={link.href} asChild>
+                {navigation.map((link, index) => <DialogClose key={link.href} asChild>
                   <Link ref={index === 0 ? firstLinkRef : undefined} href={link.href} className={styles.link}>{link.label}</Link>
                 </DialogClose>)}
                 <DialogClose asChild><Link href="/hesabim" className={styles.link}>Hesabım</Link></DialogClose>

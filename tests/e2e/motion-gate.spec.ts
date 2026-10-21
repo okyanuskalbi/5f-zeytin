@@ -20,14 +20,10 @@ test("097: the process strip is typographic until distinct process imagery is ap
   expect(await section.locator("li h3").first().evaluate(node => parseFloat(getComputedStyle(node).fontSize))).toBeGreaterThanOrEqual(28);
 });
 
-test("114: wholesale uses the facility edge and hides the unavailable form", async ({ page }) => {
+test("116: unavailable wholesale contact leaves no empty row or destination", async ({ page }) => {
   await page.goto("/#toptan-iletisim");
-  const card = page.locator("#toptan-iletisim");
-  const geometry = await card.evaluate(node => ({ left: node.getBoundingClientRect().left, viewport: innerWidth }));
-  expect(geometry.left).toBeLessThan(geometry.viewport * 0.2);
-  await expect(card).toContainText("Toptan alım için bize yazın");
-  await expect(card).toContainText("İletişim bilgileri yakında");
-  await expect(card.locator("form, input, textarea, button, a")).toHaveCount(0);
+  await expect(page.locator("#toptan, #toptan-iletisim")).toHaveCount(0);
+  await expect(page.locator('a[href="/#toptan-iletisim"], a[href="#toptan"]')).toHaveCount(0);
 });
 
 test("100: the persistent cart preserves focus while the footer enters", async ({ page }) => {

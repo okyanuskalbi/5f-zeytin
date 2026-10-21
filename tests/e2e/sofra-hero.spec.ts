@@ -73,15 +73,24 @@ test("hero art direction preloads only its matching AVIF and loads no frame sequ
   expect(images).toHaveLength(1);
 });
 
-test("navbar is transparent above the hero and switches once to pantry green", async ({ page }) => {
+test("116: navbar is transparent only at the top and stays opaque over scrolling hero actions", async ({ page }) => {
   await page.goto("/");
   const nav = page.locator("[data-site-navbar]");
   await expect(nav).toHaveAttribute("data-tone", "hero");
   expect(await nav.evaluate(node => getComputedStyle(node).backgroundColor)).toBe("rgba(0, 0, 0, 0)");
   expect((await nav.boundingBox())!.height).toBeLessThanOrEqual(page.viewportSize()!.width >= 1024 ? 72 : 60);
+  await expect(nav).toHaveCSS("transition-duration", "0s");
+  await page.evaluate(() => scrollTo({ top: 1, behavior: "instant" }));
+  await expect(nav).toHaveAttribute("data-tone", "pantry");
+  await expect(nav).toHaveCSS("background-color", "rgb(36, 58, 41)");
+  const actions = page.locator("[data-hero-intro]").getByRole("link", { name: "Ürünleri gör", exact: true });
+  await actions.evaluate(node => scrollTo({ top: node.getBoundingClientRect().top + scrollY - 8, behavior: "instant" }));
+  await expect(nav).toHaveCSS("background-color", "rgb(36, 58, 41)");
+  await expect(nav).toHaveCSS("opacity", "1");
   await page.locator("[data-hero-intro]").evaluate(node => scrollTo(0, node.clientHeight));
   await expect(nav).toHaveAttribute("data-tone", "pantry");
   await expect.poll(() => nav.evaluate(node => getComputedStyle(node).backgroundColor)).toBe("rgb(36, 58, 41)");
   await page.evaluate(() => scrollTo(0, 0));
   await expect(nav).toHaveAttribute("data-tone", "hero");
+  await expect(nav).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
 });

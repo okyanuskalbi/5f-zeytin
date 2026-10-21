@@ -51,7 +51,8 @@ test("quick view click, gallery, quantity, focus trap, ESC, back, forward and de
   await panel.getByRole("button", { name: "Sepete ekle", exact: true }).click();
   await expect(panel.getByRole("status").filter({ hasText: "sepete eklendi" })).toBeVisible();
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem("afina-zeytin:cart")!))).toEqual([{ productId: "sample-green-olive-10kg", quantity: 2 }]);
-  await panel.getByRole("link", { name: "Toptan teklif iste" }).focus();
+  await expect(panel.getByRole("link", { name: "Toptan teklif iste" })).toHaveCount(0);
+  await panel.getByRole("button", { name: "Sepete ekle", exact: true }).focus();
   await page.keyboard.press("Tab");
   expect(await panel.evaluate(node => node.contains(document.activeElement))).toBe(true);
   await page.keyboard.press("Escape");

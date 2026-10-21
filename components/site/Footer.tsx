@@ -2,12 +2,12 @@ import type { JSX } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { seller } from "@/lib/site/seller";
+import { hasSiteContact, siteContact } from "@/lib/site/contact";
 import styles from "./Footer.module.css";
 
 const links = [
   { label: "Ürünlerimizi Keşfedin", href: "/#urunler" },
   { label: "Tesisimiz", href: "/#tesisimiz" },
-  { label: "Toptan Satış İçin İletişime Geçin", href: "/#toptan-iletisim" },
 ];
 const legalLinks = [
   { label: "KVKK", href: "/kvkk" },
@@ -30,7 +30,10 @@ export function Footer(): JSX.Element {
           <div className={styles.destination}>
             <address>{seller.address}</address>
             <nav aria-label="Keşfedin">
-              <ul>{links.map(link => <li key={link.href}><a className={styles.link} href={link.href}>{link.label}</a></li>)}</ul>
+              <ul>
+                {links.map(link => <li key={link.href}><a className={styles.link} href={link.href}>{link.label}</a></li>)}
+                {hasSiteContact(siteContact) && <li><Link className={styles.link} href="/#toptan-iletisim">Toptan Satış İçin İletişime Geçin</Link></li>}
+              </ul>
             </nav>
           </div>
         </div>

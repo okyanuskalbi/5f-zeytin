@@ -37,20 +37,14 @@ test("verified native disclosures support pointer and keyboard with expanded sta
 
 test("one preview note, public seller identity and no unavailable form or fabricated channels", async ({ page }) => {
   await page.goto("/");
-  const contact = page.locator("#toptan");
-  await expect(contact).toContainText("Toptan alım için bize yazın");
-  await expect(contact).toContainText("İletişim bilgileri yakında");
-  await expect(contact.locator("form, input, textarea, button, a")).toHaveCount(0);
+  await expect(page.locator("#toptan, #toptan-iletisim, #toptan-title")).toHaveCount(0);
   await expect(page.getByText("Önizleme: fiyatlar ve görseller temsilidir.", { exact: true })).toHaveCount(1);
-  await expect(page.locator("body")).not.toContainText(/henüz kullanıma açık değil|Gerçek satış kataloğu/);
+  await expect(page.locator("body")).not.toContainText(/henüz kullanıma açık değil|Gerçek satış kataloğu|Örnek süre|İletişim bilgileri yakında/);
   const footer = page.getByRole("contentinfo");
   await expect(footer.locator("address")).toHaveText(address);
   await expect(footer).toContainText("AFİNA ZEYTİNCİLİK TARIM ÜRÜNLERİ SANAYİ VE TİCARET LİMİTED ŞİRKETİ · Düziçi VD · VKN 0091520061");
   await expect(footer.getByRole("link", { name: "AFİNA Şirketler Topluluğu", exact: true })).toHaveAttribute("href", "https://afina.com.tr");
-  await footer.getByRole("link", { name: "Toptan Satış İçin İletişime Geçin", exact: true }).click();
-  await expect(page).toHaveURL(/#toptan-iletisim$/);
-  await expect(page.locator("#toptan-iletisim")).toBeFocused();
-  await expect(page.locator("#toptan-title")).toBeInViewport();
+  await expect(footer.getByRole("link", { name: "Toptan Satış İçin İletişime Geçin", exact: true })).toHaveCount(0);
 });
 
 test("footer legal destinations and focus remain usable", async ({ page }) => {
@@ -79,7 +73,8 @@ test("FAQ disclosure and footer destinations work without JavaScript", async ({ 
       await details.locator("summary").click();
       await expect(details.locator("[data-faq-answer]")).toBeVisible();
     }
-    await expect(staticPage.locator("#toptan form")).toHaveCount(0);
+    await expect(staticPage.locator("#toptan, #toptan-iletisim")).toHaveCount(0);
+    await expect(staticPage.getByRole("contentinfo").getByRole("link", { name: "Toptan Satış İçin İletişime Geçin", exact: true })).toHaveCount(0);
     await staticPage.getByRole("contentinfo").getByRole("link", { name: "KVKK", exact: true }).click();
     await expect(staticPage.getByRole("heading", { level: 1, name: "KVKK", exact: true })).toBeVisible();
   } finally { await context.close(); }

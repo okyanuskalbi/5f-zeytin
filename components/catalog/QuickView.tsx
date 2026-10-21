@@ -8,6 +8,7 @@ import { V3Picture } from "@/components/media/V3Picture";
 import { useCartViewport } from "@/components/cart/useCartViewport";
 import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
 import { springs } from "@/lib/ui-motion";
+import { hasSiteContact, siteContact } from "@/lib/site/contact";
 import { VariantChips } from "./VariantChips";
 import { RollingPrice } from "./RollingPrice";
 import { AddToCart } from "./AddToCart";
@@ -76,10 +77,10 @@ export function QuickView({ family, selected, onChange, images, onClose, opener 
               {invalid && <p id={`${id}-error`} role="alert">1–{product.stock} arasında tam sayı girin.</p>}
             </div>}
             <AddToCart key={product.id} product={product} quantity={Number(quantity)} />
-            <a className={styles.wholesale} href="#toptan" onClick={event => {
+            {hasSiteContact(siteContact) && <a className={styles.wholesale} href="#toptan" onClick={event => {
               if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
               event.preventDefault(); onClose(true);
-            }}>Toptan teklif iste</a>
+            }}>Toptan teklif iste</a>}
           </div>
           {mobile && <button type="button" className={styles.handle} aria-label={expanded ? "Görünümü daralt" : "Görünümü genişlet"} aria-expanded={expanded}
             onPointerDown={event => { if (!reduced) controls.start(event); }} onClick={() => setExpanded(value => !value)}><span aria-hidden="true" /></button>}

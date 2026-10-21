@@ -2,7 +2,6 @@
 .bar[data-over-hero="true"] { position: fixed; inset: 0 0 auto; }
 .bar[data-tone="hero"] { background: transparent; color: var(--brand-ivory); }
 .bar[data-tone="pantry"] { background: var(--brand-olive); color: var(--brand-ivory); }
-.bar { transition: background-color 150ms ease; }
 .row { display: flex; height: 60px; align-items: center; justify-content: space-between; gap: 24px; }
 .home { display: inline-flex; align-items: center; flex-direction: column; justify-content: center; gap: 3px; min-width: 96px; min-height: 48px; }
 .logoFrame { display: block; width: 96px; height: 26px; overflow: hidden; }
