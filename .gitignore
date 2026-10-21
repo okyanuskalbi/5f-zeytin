@@ -11,3 +11,6 @@ test-results/
 coverage/
 .cache/
 *.tsbuildinfo
+
+# tasarım taslakları (yerel, repoya girmez)
+.impeccable/
