@@ -10,7 +10,7 @@ const original = await getProductFamilies();
 const mode = new URLSearchParams(location.search).get("data") ?? "four";
 const six = original.flatMap(family => family.variants.map(variant => ({ ...family, id: variant.id, variants: [variant] })));
 const data: Record<string, readonly ProductFamily[]> = {
-  four: original, six,
+  four: original, five: six.slice(0, 5), six,
   long: original.map((family, index) => index ? family : { ...family, name: "Düziçi Geleneksel Doğal Kırma Yeşil Zeytin — Aile Boyu Kışlık Sofra Seçimi" }),
   single: [original[0]].map(family => ({ ...family, variants: [family.variants[0]] })),
   sold: original.map(family => ({ ...family, variants: family.variants.map(variant => ({ ...variant, stock: 0 })) })),

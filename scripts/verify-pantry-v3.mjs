@@ -18,7 +18,7 @@ for(const [name,engine,options] of [
   ['iphone',webkit,{...devices['iPhone 14']}],
   ['pixel',chromium,{...devices['Pixel 7']}],
 ]) {
- const browser=await engine.launch();
+ const browser=await engine.launch({headless:true});
  try {
   const page=await browser.newPage(options); const errors=[]; console.log(`${name}: start`);
   page.on('pageerror',error=>errors.push(error.message));
@@ -46,13 +46,19 @@ for(const [name,engine,options] of [
   await page.getByRole('button',{name:'Doğal Kırma Yeşil Zeytin hızlı görünüm',exact:true}).click();
   await page.getByRole('dialog').waitFor();
   await page.getByRole('dialog').locator('picture img').evaluateAll(images=>Promise.all(images.map(img=>img.decode())));
+  await page.waitForFunction(()=>getComputedStyle(document.querySelector('[data-quick-view]')).transform==='none');
+  const panel=page.getByRole('dialog'); const panelBox=await panel.boundingBox();
+  assert(panelBox.x>=0&&panelBox.x+panelBox.width<=viewport.width+1,`${name}: panel clipped`);
+  if(viewport.width>=768)assert(panelBox.width>=440,`${name}: narrow panel`);
+  assert(await panel.evaluate(node=>node.scrollWidth<=node.clientWidth),`${name}: panel content clipped`);
   await page.screenshot({path:resolve(output,`${name}-quick-view.png`)});
   await page.keyboard.press('Escape');
   await page.route('**/__pantry-fixture/**',async route=>{
    const key=new URL(route.request().url()).pathname.replace('/__pantry-fixture/','')||html;
    const body=assets.get(key); await route.fulfill({status:body?200:404,body:body??'Unknown fixture asset',contentType:key.endsWith('.js')?'application/javascript':key.endsWith('.css')?'text/css':'text/html'});
   });
-  for(const mode of ['four','six','long','single','sold','empty']) {
+  const layouts=[];
+  for(const mode of ['four','five','six','long','single','sold','empty']) {
    console.log(`${name}: ${mode}`);
    await page.goto(`${base}/__pantry-fixture/?data=${mode}`);
    await page.locator('#kiler-title').waitFor();
@@ -64,12 +70,17 @@ for(const [name,engine,options] of [
    await page.waitForTimeout(1250);
    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${name}/${mode}: overflow`);
    if(mode==='sold') assert.equal(await page.getByRole('button',{name:'Tükendi',exact:true}).count(),4);
-   if(mode==='six') {
-    assert.equal(await page.getByRole('article').count(),6);
-    if(page.viewportSize().width>=1024) {
-     const contact=await page.evaluate(()=>{const last=document.querySelector('#kiler article:last-of-type');const parcel=document.querySelector('[data-pantry-parcel]');return [last,parcel].map(node=>node.getBoundingClientRect().top+parseFloat(getComputedStyle(node,'::after').top));});
-     assert(Math.abs(contact[0]-contact[1])<=1,`${name}: parcel and product shelf mismatch`);
-    }
+   const geometry=await page.locator('#kiler article').evaluateAll(nodes=>nodes.map(node=>{
+    const img=node.querySelector('picture img').getBoundingClientRect();const tag=node.querySelector('[data-kraft-tag]').getBoundingClientRect();
+    return {shelf:node.getBoundingClientRect().top+parseFloat(getComputedStyle(node,'::after').top),height:img.height,intersection:Math.max(0,Math.min(img.right,tag.right)-Math.max(img.left,tag.left))*Math.max(0,Math.min(img.bottom,tag.bottom)-Math.max(img.top,tag.top))};
+   }));
+   for(const product of geometry)assert.equal(product.intersection,0,`${name}/${mode}: tag covers product`);
+   if(['four','five','six'].includes(mode)&&viewport.width>=1024){
+    const count={four:4,five:5,six:6}[mode];assert.equal(geometry.length,count);
+    const parcelShelf=await page.locator('[data-pantry-parcel]').evaluate(node=>node.getBoundingClientRect().top+parseFloat(getComputedStyle(node,'::after').top));
+    assert(Math.abs(geometry.at(-1).shelf-parcelShelf)<=1,`${name}/${mode}: parcel not on last shelf`);
+    const shelves=new Set(geometry.map(product=>Math.round(product.shelf)));assert.equal(shelves.size,count>4?2:1,`${name}/${mode}: wrong shelf count`);
+    layouts.push({mode,shelves:shelves.size,parcelShelf,products:geometry});
    }
    if(mode==='single') assert.equal(await page.getByRole('radio').count(),1);
    for(const control of await page.locator('#kiler button').all()) {
@@ -77,7 +88,7 @@ for(const [name,engine,options] of [
    }
    await page.screenshot({path:resolve(output,'break',`${name}-${mode}.png`),fullPage:true});
   }
-  assert.deepEqual(errors,[]); report.push({name,frames:frames.length,breakCases:6,errors});
+  assert.deepEqual(errors,[]); report.push({name,frames:frames.length,breakCases:7,panel:panelBox,layouts,errors});
  }finally{await browser.close();}
 }
 // Pixel-level check against the actual kraft texture, taking its darkest pixel.
