@@ -30,7 +30,7 @@ export async function verifyHeroDerivatives(root, assets) {
     const metadata = await sharp(bytes).metadata();
     if (hash(bytes) !== entry.sha256 || metadata.width !== expected.width || metadata.height !== expected.height || ((entry.file.includes("mobile") || expected.format === "avif") && bytes.length > 60 * 1024)) throw new Error("Invalid hero derivative hash, dimensions or budget.");
     // Encoder output is byte-identical only on the platform that produced it; CI (Linux) checks hash, size and budget above.
-    if (process.env.CI) continue;
+    if (process.env.ASSET_SKIP_REENCODE === "1") continue;
     const derived = await sharp(sourceBytes).resize(expected.width, expected.height, { fit: "cover", position: "right" })[expected.format]({ quality: expected.quality }).toBuffer();
     if (hash(derived) !== entry.sha256) throw new Error("Hero derivative does not match the approved source transform.");
   }

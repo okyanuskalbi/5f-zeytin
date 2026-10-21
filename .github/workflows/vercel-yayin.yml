@@ -41,6 +41,8 @@ jobs:
         run: npx --yes vercel@65.0.0 pull --yes --environment=production --token="$VERCEL_TOKEN"
       - name: Vercel build
         if: env.VERCEL_TOKEN != ''
+        env:
+          ASSET_SKIP_REENCODE: "1"
         run: npx --yes vercel@65.0.0 build --prod --token="$VERCEL_TOKEN"
       - name: Vercel production yayını
         if: env.VERCEL_TOKEN != ''
