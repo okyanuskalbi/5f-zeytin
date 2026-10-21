@@ -113,3 +113,31 @@ Sayfanın ana satış bölümü budur.
 - Vite fixture yalnız test sınırında veri değiştirir; `four/six/long/single/sold/empty` seçicisi production rotası değildir. Resmi katalog, fiyat ve stok örnek kalır; DB/ödeme, onaylı görsel dosyaları, diğer dokümanlar ve başka repolar değiştirilmedi. Yerel kanıtlar `test-results/113/` altında gitignore kapsamındadır.
 
 ## Durum: BEKLİYOR
+
+## Düzeltme 113-a (Claude denetimi, 21 Eki 15:00)
+İncelenen kanıtlar: `test-results/113/desktop-pantry.png`, `iphone-pantry.png`, `desktop-quick-view.png`, `iphone-quick-view.png`.
+
+Telefon düzeni iyi; korunacak. Masaüstünde sorunlar:
+
+1. **Etiket ürünü kapatıyor.** Masaüstünde kraft etiket ürünün sağ yarısının üstüne biniyor; kavanoz ve teneke yarı yarıya örtülü.
+   - Telefondaki gibi yap: etiket rafın ön kenarından sicimle **rafın altına** sarksın, ürün rafın üstünde tamamen görünsün.
+   - Ürün görselleri masaüstünde daha büyük olsun: rafta en büyük ürün ~320px yükseklik.
+2. **"Ekle" görünmüyor.** Kraft üstünde kraft tonlu buton kontrastsız.
+   - Ekle butonu kiler yeşili (`#243A29`) dolgu + krem yazı olsun. Hover ve odak durumu net.
+   - Tükendi durumu çerçeveli ve soluk kalsın.
+3. **Boş ikinci raf.** Masaüstünde alt rafta yalnız koli var, boş görünüyor.
+   - Masaüstünde tek raf kullan: 4 ürün + rafın sağ ucunda kargo kolisi.
+   - Ürün sayısı 5–6 olursa ikinci raf otomatik açılır ve koli son rafa gider.
+4. **Hızlı görünüm kanıtı.** Masaüstü ekran görüntüsünde panel sağda ~60px kesik görünüyor; büyük olasılıkla açılış animasyonu sırasında çekilmiş.
+   - Animasyon bitince çek.
+   - Panel genişliği ≥ 440px olmalı, içerik kesilmemeli (test et).
+   - Panel açıkken arka plan kaydırması kilitli olsun.
+5. **Varyant görseli.** Doğal Kırma'da "10 kg" seçilince raftaki görsel tenekeye, "1 kg" seçilince kavanoza geçsin (çapraz geçiş 200ms). Zeytinyağı 1 L / 5 L için de aynı.
+6. **Impeccable build-phase:** "plates" kapısı Claude tarafından muaf tutuldu (bkz. 112 Claude kabulü). Bu kapı yüzünden BEKLİYOR'da kalma; `inspect.mjs` + ekran görüntüsü + e2e yeterli kanıttır.
+
+### Kabul kriterleri (113-a)
+- [ ] Ürün ve etiket çakışmıyor (Playwright ile bbox kesişimi 0). Ürün görseli raf üstünde tamamen görünür.
+- [ ] Ekle butonu kontrastı ≥ 4.5:1.
+- [ ] Varyant değişince görsel değişir (e2e).
+- [ ] Yeni masaüstü ve iPhone kare şeritleri `test-results/113/` altına. Hızlı görünüm animasyon bittikten sonra çekilir.
+- [ ] Build, lint, unit ve e2e yeşil. Lighthouse mobil medyanı ≥ 85.
