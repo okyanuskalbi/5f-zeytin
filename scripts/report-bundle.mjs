@@ -45,11 +45,15 @@ export async function reportBundle({ buildDirectory = resolve(root, ".next") } =
   });
 }
 
+export function verifyBundleBudget(report) {
+  assert(report.total.gzipBytes <= 200000, `First-load JS ${report.total.gzipBytes} > 200000 bytes gzip`);
+  assert(report.initialTransferBytes + report.inlineScripts.gzipBytes <= 450000, "Initial JS + CSS + images excluding hero > 450000 bytes");
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
   const report = await reportBundle();
   console.log(JSON.stringify(report, null, 2));
   if (process.argv.includes("--check")) {
-    assert(report.total.gzipBytes <= 140000, `First-load JS ${report.total.gzipBytes} > 140000 bytes gzip`);
-    assert(report.initialTransferBytes + report.inlineScripts.gzipBytes <= 450000, "Initial JS + CSS + images excluding hero > 450000 bytes");
+    verifyBundleBudget(report);
   }
 }

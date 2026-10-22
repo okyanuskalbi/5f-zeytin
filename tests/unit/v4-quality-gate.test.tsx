@@ -38,6 +38,24 @@ describe("v4 offline quality gate", () => {
   ])("rejects %s", async (_name, mutate) => {
     expect(() => verifyV4Html(mutate(awaitableHtml))).toThrow();
   });
+
+  it.each([
+    ["lazy hero card", "[data-hero-card] img", "loading", "lazy"],
+    ["low-priority hero card", "[data-hero-card] img", "fetchpriority", "auto"],
+    ["mismatched preload sizes", 'link[rel="preload"][as="image"]', "imagesizes", "1px"],
+    ["high-priority below-fold image", "article[data-product-id] img", "fetchpriority", "high"],
+    ["missing mobile density candidates", '[data-hero-card] source[type="image/avif"]', "srcset", "/images/v3/urun-01-kirma-10kg-w72.avif 72w"],
+  ])("rejects %s", (_name, selector, attribute, value) => {
+    const doc = new DOMParser().parseFromString(awaitableHtml, "text/html");
+    doc.querySelector(selector)!.setAttribute(attribute, value);
+    expect(() => verifyV4Html(doc.documentElement.outerHTML)).toThrow();
+  });
+
+  it("rejects a missing card preload even when the background preloads remain", () => {
+    const doc = new DOMParser().parseFromString(awaitableHtml, "text/html");
+    doc.querySelector('link[imagesizes="(max-width: 900px) 72px, 96px"]')?.remove();
+    expect(() => verifyV4Html(doc.documentElement.outerHTML)).toThrow();
+  });
   it("keeps one h1 and no skipped heading levels, with labelled sections", async () => {
     const doc = new DOMParser().parseFromString(await pageHtml(), "text/html");
     expect(doc.querySelectorAll("h1")).toHaveLength(1);

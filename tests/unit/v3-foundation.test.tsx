@@ -70,7 +70,9 @@ it("keeps matching SSR preloads and all hero sources within byte budgets", async
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(await Home());
   const preloads = [...doc.querySelectorAll<HTMLLinkElement>('link[rel="preload"][as="image"]')];
-  expect(preloads.map(link => link.media)).toEqual(["(max-width: 900px)", "(min-width: 901px)"]);
+  expect(preloads.map(link => link.media)).toEqual([
+    "(max-width: 900px)", "(min-width: 901px)", "(max-width: 900px)", "(min-width: 901px)",
+  ]);
   expect(preloads.every(link => link.getAttribute("fetchpriority") === "high")).toBe(true);
   const photo = doc.querySelector("[data-hero-photo]")!;
   expect(photo.querySelector("img")?.getAttribute("fetchPriority")).toBe("high");

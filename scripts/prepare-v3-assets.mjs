@@ -3,7 +3,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import sharp from "sharp";
-import { approvals, formats, specs } from "./v3-asset-specs.mjs";
+import { approvals, formats, outputDimensions, specs } from "./v3-asset-specs.mjs";
 
 export const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 export const sourceRoot = resolve(process.env.V3_SOURCE_ROOT ?? resolve(repoRoot, "../AFINA-KAYNAK"));
@@ -40,6 +40,19 @@ export async function alphaBounds(bytes, threshold) {
   return { left, top, width: right - left + 1, height: bottom - top + 1 };
 }
 
+export async function encodeV3Output(input, spec, crop, dimensions, format) {
+  const resize = dimensions.height ? dimensions : { ...dimensions, ...(spec.square ? { height: dimensions.width } : spec.aspect ? { height: Math.round(dimensions.width / spec.aspect), fit: "cover" } : {}) };
+  let quality = format === "avif" ? 50 : 76;
+  while (true) {
+    let pipeline = sharp(input);
+    if (crop) pipeline = pipeline.extract(crop);
+    const output = await pipeline.resize(resize)[format]({ quality, effort: format === "webp" ? 6 : 4 }).toBuffer({ resolveWithObject: true });
+    if (!spec.budget || output.data.length <= spec.budget) return { ...output, quality };
+    quality -= 5;
+    if (quality < 5) throw new Error(`Bayt bütçesi karşılanamıyor: ${spec.id} ${JSON.stringify(dimensions)} ${format}`);
+  }
+}
+
 export async function prepareV3Assets() {
   // Validate the entire approval set before writing any derivative.
   const sources = new Map();
@@ -57,22 +70,11 @@ export async function prepareV3Assets() {
       alt: spec.alt, sourceWidth: metadata.width, sourceHeight: metadata.height,
       crop, alphaThreshold: spec.threshold ?? null, outputs: [],
     };
-    for (const size of spec.widths ?? spec.heights) for (const format of formats) {
-      const resize = spec.heights ? { height: size } : { width: size, ...(spec.square ? { height: size } : spec.aspect ? { height: Math.round(size / spec.aspect), fit: "cover" } : {}) };
-      let quality = format === "avif" ? 50 : 76;
-      let output;
-      while (true) {
-        let pipeline = sharp(input);
-        if (crop) pipeline = pipeline.extract(crop);
-        pipeline = pipeline.resize(resize);
-        output = await pipeline[format]({ quality, effort: format === "webp" ? 6 : 4 }).toBuffer({ resolveWithObject: true });
-        if (!spec.budget || output.data.length <= spec.budget) break;
-        quality -= 5;
-        if (quality < 5) throw new Error(`Bayt bütçesi karşılanamıyor: ${spec.id} ${size} ${format}`);
-      }
-      const file = `/images/v3/${spec.id}-${spec.heights ? "h" : "w"}${size}.${format}`;
+    for (const dimensions of outputDimensions(spec)) for (const format of formats) {
+      const output = await encodeV3Output(input, spec, crop, dimensions, format);
+      const file = `/images/v3/${spec.id}-${dimensions.height ? "h" : "w"}${dimensions.height ?? dimensions.width}.${format}`;
       await writeFile(resolve(repoRoot, `public${file}`), output.data);
-      entry.outputs.push({ file, format, width: output.info.width, height: output.info.height, bytes: output.data.length, sha256: sha256(output.data), quality });
+      entry.outputs.push({ file, format, width: output.info.width, height: output.info.height, bytes: output.data.length, sha256: sha256(output.data), quality: output.quality });
     }
     manifest.assets[spec.id] = entry;
     process.stdout.write(`${spec.id}: ${entry.outputs.length} çıktı\n`);

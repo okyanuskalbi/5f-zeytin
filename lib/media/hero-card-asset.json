@@ -1,0 +1,77 @@
+{
+  "alt": "Doğal Kırma Yeşil Zeytin, 10 kg teneke",
+  "outputs": [
+    {
+      "file": "/images/v3/urun-01-kirma-10kg-w72.avif",
+      "format": "avif",
+      "width": 72,
+      "height": 96
+    },
+    {
+      "file": "/images/v3/urun-01-kirma-10kg-w72.webp",
+      "format": "webp",
+      "width": 72,
+      "height": 96
+    },
+    {
+      "file": "/images/v3/urun-01-kirma-10kg-w96.avif",
+      "format": "avif",
+      "width": 96,
+      "height": 128
+    },
+    {
+      "file": "/images/v3/urun-01-kirma-10kg-w96.webp",
+      "format": "webp",
+      "width": 96,
+      "height": 128
+    },
+    {
+      "file": "/images/v3/urun-01-kirma-10kg-w144.avif",
+      "format": "avif",
+      "width": 144,
+      "height": 191
+    },
+    {
+      "file": "/images/v3/urun-01-kirma-10kg-w144.webp",
+      "format": "webp",
+      "width": 144,
+      "height": 191
+    },
+    {
+      "file": "/images/v3/urun-01-kirma-10kg-w192.avif",
+      "format": "avif",
+      "width": 192,
+      "height": 255
+    },
+    {
+      "file": "/images/v3/urun-01-kirma-10kg-w192.webp",
+      "format": "webp",
+      "width": 192,
+      "height": 255
+    },
+    {
+      "file": "/images/v3/urun-01-kirma-10kg-w216.avif",
+      "format": "avif",
+      "width": 216,
+      "height": 287
+    },
+    {
+      "file": "/images/v3/urun-01-kirma-10kg-w216.webp",
+      "format": "webp",
+      "width": 216,
+      "height": 287
+    },
+    {
+      "file": "/images/v3/urun-01-kirma-10kg-w288.avif",
+      "format": "avif",
+      "width": 288,
+      "height": 383
+    },
+    {
+      "file": "/images/v3/urun-01-kirma-10kg-w288.webp",
+      "format": "webp",
+      "width": 288,
+      "height": 383
+    }
+  ]
+}

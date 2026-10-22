@@ -14,6 +14,7 @@ before(async () => {
   await mkdir(resolve(root, "public/images"), { recursive: true });
   await mkdir(resolve(root, "lib/media"), { recursive: true });
   await cp(resolve(repoRoot, "lib/media/v4-assets.json"), resolve(root, "lib/media/v4-assets.json"));
+  await cp(resolve(repoRoot, "lib/media/hero-card-asset.json"), resolve(root, "lib/media/hero-card-asset.json"));
   await cp(resolve(repoRoot, "public/images/v3"), resolve(root, "public/images/v3"), { recursive: true });
   await cp(resolve(repoRoot, "public/images/tesis"), resolve(root, "public/images/tesis"), { recursive: true });
   await cp(resolve(repoRoot, "public/images/tesis-v4-manifest.json"), resolve(root, "public/images/tesis-v4-manifest.json"));

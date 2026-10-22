@@ -335,6 +335,114 @@
           "bytes": 56528,
           "sha256": "566461d0a2f7fec8608837261f8b34fef2777329afef494879770145170e2322",
           "quality": 76
+        },
+        {
+          "file": "/images/v3/urun-01-kirma-10kg-w72.avif",
+          "format": "avif",
+          "width": 72,
+          "height": 96,
+          "bytes": 2437,
+          "sha256": "12c66f6a3d30443759ddb52fbe24cf5a702e5da956dbdb8fe5425a1c5106bd32",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/urun-01-kirma-10kg-w72.webp",
+          "format": "webp",
+          "width": 72,
+          "height": 96,
+          "bytes": 4198,
+          "sha256": "b5f1838414489f40568770340775c5c5a2966e196e7ced1e7fa47ed59708bd64",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/urun-01-kirma-10kg-w96.avif",
+          "format": "avif",
+          "width": 96,
+          "height": 128,
+          "bytes": 3442,
+          "sha256": "a4575dc7933584825ddbaa7e230ebbbbc9d07db3c033efd29fcc52847d57ba18",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/urun-01-kirma-10kg-w96.webp",
+          "format": "webp",
+          "width": 96,
+          "height": 128,
+          "bytes": 6424,
+          "sha256": "61ca59c45c1e5a4d61d8781acfa8f14b2b04dc2a0ab014fcea8e7216cfdcea2f",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/urun-01-kirma-10kg-w144.avif",
+          "format": "avif",
+          "width": 144,
+          "height": 191,
+          "bytes": 5914,
+          "sha256": "2f4a60e4a898683774fc773522a70d2313ee8ddf428df38a75c25aba04f27b19",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/urun-01-kirma-10kg-w144.webp",
+          "format": "webp",
+          "width": 144,
+          "height": 191,
+          "bytes": 11360,
+          "sha256": "6af2ad6894c74bdb7043680677c4058c7e64c9fa253d7c2064c4ea4ea51fd922",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/urun-01-kirma-10kg-w192.avif",
+          "format": "avif",
+          "width": 192,
+          "height": 255,
+          "bytes": 8490,
+          "sha256": "472bd932ad3575e68341d251f7e00fbf1e319686e545187649382df15c9eb725",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/urun-01-kirma-10kg-w192.webp",
+          "format": "webp",
+          "width": 192,
+          "height": 255,
+          "bytes": 16890,
+          "sha256": "2b0e289c86b625c2f6cf7ba559c34d3d0c8c09000d0499b545ef4c36a47f3499",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/urun-01-kirma-10kg-w216.avif",
+          "format": "avif",
+          "width": 216,
+          "height": 287,
+          "bytes": 10545,
+          "sha256": "0f8673a532e9532ad3237237ce5ca6002ecd0dc23ba0c4e5b136335e2064de9c",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/urun-01-kirma-10kg-w216.webp",
+          "format": "webp",
+          "width": 216,
+          "height": 287,
+          "bytes": 20054,
+          "sha256": "8090356e26a37d541c8e5d7fbb4983ede392f9d7599b9fde9ef41e89e75db085",
+          "quality": 76
+        },
+        {
+          "file": "/images/v3/urun-01-kirma-10kg-w288.avif",
+          "format": "avif",
+          "width": 288,
+          "height": 383,
+          "bytes": 15288,
+          "sha256": "0d51615ec2d39fbc871a7d741eee107a90beb6c4be6466fdf22962b17c773635",
+          "quality": 50
+        },
+        {
+          "file": "/images/v3/urun-01-kirma-10kg-w288.webp",
+          "format": "webp",
+          "width": 288,
+          "height": 383,
+          "bytes": 30286,
+          "sha256": "90d827900a872fa14db9302218912cf2f75e1659c20e56ba090c89d10a508221",
+          "quality": 76
         }
       ]
     },

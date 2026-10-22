@@ -4,6 +4,10 @@ import approvals from "./v3-asset-approvals.json" with { type: "json" };
 // Original images and approval documents remain read-only outside this repo.
 export { approvals };
 export const formats = ["avif", "webp"];
+export const outputDimensions = spec => [
+  ...(spec.heights ?? []).map(height => ({ height })),
+  ...(spec.widths ?? []).map(width => ({ width })),
+];
 const background = (id, alt, widths, budget) => ({ id, group: "v3", source: `${id}.webp`, alt, widths, budget });
 const cutout = (id, alt, threshold = 40) => ({ id, group: "v3", source: `${id}.png`, alt, heights: [300, 600], threshold, budget: id.startsWith("urun-") ? 60_000 : 90_000 });
 export const specs = [
@@ -13,7 +17,7 @@ export const specs = [
   { ...background("kraft-doku", "Kraft kâğıt dokusu", [512]), square: true },
   { id: "raf-ceviz", group: "v3", source: "raf-ceviz.png", alt: "Ceviz ağacından yatay kiler rafı", widths: [1920, 2880], threshold: 200 },
   cutout("kargo-kolisi", "Afina logolu kraft kargo kolisi"),
-  cutout("urun-01-kirma-10kg", "Doğal Kırma Yeşil Zeytin, 10 kg teneke"),
+  { ...cutout("urun-01-kirma-10kg", "Doğal Kırma Yeşil Zeytin, 10 kg teneke"), widths: [72, 96, 144, 192, 216, 288] },
   cutout("urun-02-kirma-1kg", "Doğal Kırma Yeşil Zeytin, 1 kg kavanoz"),
   cutout("urun-03-siyah-1kg", "Salamura Siyah Zeytin, 1 kg kavanoz"),
   cutout("urun-04-yag-1l", "Natürel Sızma Zeytinyağı, 1 L cam şişe"),
