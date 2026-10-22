@@ -4,7 +4,9 @@
 frontend
 
 ## Amaç
-Kullanıcı (22 Eki, ekran görüntüsü `docs/referans/geri-bildirim/133-popup-gorsel.png`): "tam ekrana oturt."
+Kullanıcı (22 Eki), iki ekran görüntüsüyle:
+- `docs/referans/geri-bildirim/133-popup-gorsel.png`: "tam ekrana oturt."
+- `docs/referans/geri-bildirim/133-popup-sahne-bosluk.png`: "burayı doldur, altta boşluk olmasın." Sahne görseli (16:9) seçiliyken görselin üstünde ve altında yeşil bant var, küçük resim şeridinin altında da sol kolonda büyük boş alan kalıyor.
 130'daki ürün detay penceresinde büyük stüdyo görseli (krem zeminli teneke) koyu yeşil çerçevenin içinde küçük kalıyor. Solda, sağda ve altta yeşil boşluk var. Görsel, ayrılan alanı kenardan kenara doldurmalı.
 
 ## Kullanılacak araçlar
@@ -12,16 +14,18 @@ Kullanıcı (22 Eki, ekran görüntüsü `docs/referans/geri-bildirim/133-popup-
 - `tdd-workflow`.
 
 ## İstenen
-1. Büyük görsel alanı (pencerenin sol kolonu, telefonda üst kısım) **görselle tamamen dolu**. İç boşluk/padding, yeşil kenar ya da harf kutusu (letterbox) yok. Görsel alanının köşe yuvarlaklığı pencereyle uyumlu.
-2. **Oran, seçili görselin oranına uyar:** stüdyo görselleri 4:5 (ya da kaynak oranı) → alan 4:5. Sahne görseli 16:9 seçilince alan 16:9'a geçer (yükseklik geçişi yumuşak, 200–250 ms, reduced-motion'da anında). Böylece hiçbir görsel kırpılmaz ve boşluk kalmaz (`object-fit: cover` + aynı oran).
-3. Masaüstünde pencere iki kolon: sol görsel kolonu pencerenin tam yüksekliğini kullanır. Görsel kolonun üstüne ve altına dayanır, küçük resim şeridi görselin **altında** ayrı, ince bir satırda kalır (görsel alanını küçültmez). Pencere `max-height: calc(100dvh - 48px)` içinde kalır. Sağ kolon gerekirse kendi içinde kayar.
-4. Telefonda görsel tam genişlik (kenar boşluğu 0), pencerenin en üstünde. Küçük resimler altında.
-5. Küçük resimler: seçili olan altın çerçeveli, 56–64px.
-6. CLS 0: görsel kabı `aspect-ratio` ile; görseller `width/height` taşır.
+1. **Sol görsel kolonu baştan sona dolu.** Masaüstünde (≥ 768) görsel kolonu, pencerenin sağ kolonuyla **aynı yükseklikte** (pencere yüksekliği). Büyük görsel bu kolonu **üstten alta, kenardan kenara** doldurur: `position: absolute; inset: 0; object-fit: cover`. Yeşil bant, letterbox, padding ya da görselin altında boş alan yok.
+2. **Odak noktası:** `object-fit: cover` ile kırpılan görsellerde ürün her zaman görünür kalsın. Stüdyo görsellerinde `object-position: center`. Sahne görsellerinde ürün kadrajın neresindeyse ona göre `object-position` ayarla (ör. kavanoz/teneke merkezdeyse `center`, sağdaysa `70% center`). Değerleri varyant/görsel başına bir haritada tut.
+3. **Küçük resimler görselin üstünde:** şerit, büyük görselin alt kenarına **bindirilir** (görselin içinde, alttan 16px), arkasında hafif koyu degrade (yalnız şerit okunurluğu için). Şerit ayrı bir satır kaplamaz, kolonun altında boş alan bırakmaz. Seçili küçük resim altın çerçeveli, 56–64px.
+4. **Telefon (< 768):** görsel tam genişlik, en üstte, yüksekliği `min(62svh, 125vw)`. Görsel bu alanı `cover` ile doldurur. Küçük resimler yine görselin altına bindirilir. Altında içerik başlar, aradaki boşluk 16px.
+5. Görsel değiştirildiğinde kap boyutu **değişmez** (yükseklik zıplaması yok), yalnız görsel yumuşak geçişle değişir (opacity 150–200 ms, reduced-motion'da anında).
+6. Köşe yuvarlaklığı pencereyle uyumlu (masaüstünde sol üst ve sol alt köşe, telefonda üst köşeler). CLS 0.
+7. Pencere `max-height: calc(100dvh - 48px)` içinde. Sağ kolon gerekirse kendi içinde kayar, sol görsel kolonu sabit kalır.
 
 ## Kabul kriterleri
-- [ ] Unit/CSS: görsel kabında padding yok, `aspect-ratio` seçili görsele göre (4/5 ↔ 16/9).
-- [ ] E2E (yaz, çalıştırma) `tests/e2e/product-image-133.spec.ts`: 1440 ve 390'da pencere açılınca büyük `img` sınırları kabın sınırlarıyla ±1px eşit (boşluk yok); sahne küçük resmi seçilince kap 16:9 olur.
+- [ ] Unit/CSS: görsel kabı kolonun tamamını kaplıyor (`inset: 0` + `cover`), padding yok. Küçük resim şeridi görsel kabının içinde, mutlak konumlu.
+- [ ] Unit: sahne görselleri için `object-position` haritası var.
+- [ ] E2E (yaz, çalıştırma) `tests/e2e/product-image-133.spec.ts`: 1440×900 ve 390×844'te pencere açılınca, stüdyo ve sahne görseli seçiliyken büyük `img` sınırları görsel kolonunun sınırlarıyla ±1px eşit. Görsel kolonunun alt kenarı sağ kolonun alt kenarıyla ±2px aynı (masaüstü). Küçük resim şeridi büyük görselin içinde.
 - [ ] `npm test`, lint, typecheck, build yeşil; 130 testleri korunur.
 - [ ] Tarayıcı doğrulaması Claude'da.
 
