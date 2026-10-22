@@ -37,7 +37,8 @@ export default defineConfig({
       name: `${browserName}-${width}`,
       use: { browserName, viewport: { width, height: 900 } },
     })),
-  ), { name: "webkit-iphone14", use: { ...devices["iPhone 14"] } }],
+  ), { name: "webkit-iphone14", use: { ...devices["iPhone 14"] } },
+  { name: "chromium-pixel7-story", testMatch: "story-v4.spec.ts", use: { ...devices["Pixel 7"] } }],
   webServer:
     externalBaseURL !== undefined
       ? undefined

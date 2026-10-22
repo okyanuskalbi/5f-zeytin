@@ -12,6 +12,8 @@ Claude denetim notları (uygula):
 - **Kahraman band hero ile aynı işi tekrar ediyordu:** band başlığı "Doğal Kırma Yeşil Zeytin" yerine kullanım anını anlatır: kicker "KAHRAMAN ÜRÜN", `h2` "Kışlık kiler için / 10 kg teneke.", metin "Aynı zeytin, aynı tesis. Günlük sofra için 1 kg kavanoz da var." Fiyat kutusu (small "10 kg teneke" + ₺ fiyat) + "Sepete ekle" + ikinci hayalet düğme "1 kg kavanoz" (1 kg varyantını ekler). Böylece band hero'yu tekrar etmez, boy kararını satar.
 
 ## Kullanılacak araçlar
+- **Kullanıcı isteği (22 Eki), hepsini fiilen yükle:** `ui-ux-pro-max` (genel yön: "Trust & Authority" + dönüşüm kalıbı), `frontend-design` (renk, yazı tipi, düzen), `motion-framer` (Framer Motion animasyonları), `shadcn-ui` (bileşen gerekirse; resmi CLI, proje token'larına uyarlanmış), 21st MCP (bileşen arama/üretme, uyarla). Coder Notu'na "Skill / nerede kullanıldı" tablosu ekle.
+- **Kullanıcı isteği (22 Eki), yerleşim:** `ui-ux-pro-max` §5 "Layout \& Responsive" (mobil-first kırılımlar, yatay kaydırma yok, dokunma hedefi ≥ 44px) ve `better-layout` (yerleşim düzeltmeleri) fiilen yüklenir. `responsiveness-check` (320/375/390/430/768/1024/1440 genişlik kontrolü) tarayıcı testidir; Claude çalıştırır, sen kodu bu genişliklere göre yaz.
 - Skill: `frontend-patterns`, `tdd-workflow`, `motion-advanced` (scroll-linked), `cinematic-scroll-storytelling`, `impeccable` (craft-floor).
 
 ## Varlıklar (onaylı)
@@ -41,4 +43,44 @@ Claude denetim notları (uygula):
 - Scroll kilidi/pin kütüphanesi; yalnız sticky + IO + `motion`.
 - `docs/` değiştirme (yalnız Coder Notu/Durum).
 
-## Durum: BEKLİYOR
+## Coder Notu
+
+- `Facility` yerine `Story` ve `HeroBand` eklendi; `#tesisimiz` korunur. Sayfa sırası ürünler → üç adımlı öykü → kahraman band → mevcut toptan hedefi → SSS şeklindedir. İletişim kanalı veya ürün/fiyat/stok uydurulmadı.
+- Öykü masaüstünde 4:5 sticky çerçeve, 64px kolon aralığı, üç fotoğraf/caption ve geri kaydırmayı da izleyen IO kullanır. IO yüzde margin'lerinin genişliğe göre hesaplanması nedeniyle masaüstünde aynı %45/%45 okuma bandı viewport yüksekliğinden piksel olarak hesaplanır. Telefonda okuma bandı fotoğrafın altında tutulur; çerçeve 4:3/en fazla 42svh, adım başlangıcı 24px, adımlar en az 52svh'dir. 320/375/390/430/768/1024/1440px için mobil-first CSS yazıldı.
+- SSR/no-JS/reduced-motion halinde sabit ölçülü çerçevede üç fotoğraf/caption birlikte, adımlar tam opak görünür; JS geliştirmesi aynı çerçeve ölçüsünde katmanlı çapraz geçişe dönüşür. İlk fotoğraf ilk aktiftir. Görsellerin width/height ve çerçevenin aspect-ratio/yükseklik alanı ayrılmıştır; gerçek CLS ölçümü Claude'dadır.
+- `scripts/prepare-facility-v4.mjs` yalnız SHA'sı sabitlenmiş `docs/referans/tesis/tesis-osmaniye-plaka-bulanik.jpg` kaynağını okur. `saturation: .7`, RGB çarpanları `[1.025, 1, .97]` ile sıcak ton ve 1200/2400px WebP türevleri üretir. Kaynak değişmeden kaldı; **iki çıktı da dosyadan açılıp incelendi, plaka okunmuyor**. Manifest `public/images/tesis-v4-manifest.json`; kaynak/renk/çıktı SHA/ölçü doğrulaması hem `check-assets` hem `check-v3-assets` akışına bağlandı. Eski bulanık türevler korundu.
+- Bandın katalogdan gelen 10 kg fiyatı, birincil `Sepete ekle` ve hayalet `1 kg kavanoz` düğmesi ortak `AddToCart` kullanır. İki ayrı varyant ID'si, stok sınırı, 2400ms başarı geri bildirimi, `role=status` ve yerel hata korunur; drawer kendiliğinden açılmaz. Arka plan `useScroll`/`useTransform` ile ±60px sınırındadır; reduced-motion'da transform yoktur. Kicker/h2/p/buy reveal'i 80ms aralıkla bir kez çalışır; SSR'de içerik görünürdür.
+- 21st MCP bu oturumdaki etkin araç listesinde bulunamadı. AGENTS.md'deki erişim yoksa Coder Notu'na yazma yolu uygulandı; onaylı `d.html`, proje bileşenleri ve token'ları esas alındı. Yeni UI primitive'i/bağımlılığı gerekmedi; shadcn resmi CLI `docs button` ile incelendi, mevcut satın alma kontrolü genişletildi.
+
+| Skill / araç | Nerede kullanıldı |
+| --- | --- |
+| `ui-ux-pro-max` | Skill ve §5 Layout & Responsive yüklendi; `trust-authority-conversion` landing kaydı sorgulandı. Doğrulanmış tesis bilgisi → açık fiyat → düşük sürtünmeli satın alma, mobil-first kırılımlar, taşmayan düzen ve 44px hedefler. |
+| `frontend-design` | D provasındaki koyu zeytin/süt/altın, Fraunces/Figtree, fotoğraf çerçevesi ve metin hiyerarşisi. |
+| `motion-framer` | Motion reveal ve scroll değerleri; yalnız transform/opacity animasyonu. |
+| `shadcn-ui` | Bileşen/token rehberi ve resmi CLI `docs button`; mevcut AddToCart üzerinden birincil/hayalet eylemler, yeni kurulum gerekmedi. |
+| `better-layout` | `minmax(0, 1fr)`, `min-width: 0`, mantıksal boşluklar, mobil çerçeve yüksekliği, sarılan fiyat/CTA ve masaüstü kolon düzeni. |
+| `frontend-patterns` | Sunucu sayfadan katalog prop'ları; ayrı istemci öykü/band; ortak AddToCart bileşimi. |
+| `tdd-workflow` | Eksik iki bileşen için RED, davranış testleriyle GREEN; yalnız yerel checkpoint'ler, nihai yeşil commit'e birleştirme. |
+| `motion-foundations` | Ortak `lib/ui-motion.ts` token'ları, SSR görünür varsayılan ve reduced-motion. |
+| `motion-patterns` | `once` reveal, 80ms stagger, fotoğraf çapraz geçişi ve geri bildirim. |
+| `motion-advanced` | `useScroll`/`useTransform` ile render tetiklemeden sınırlı paralaks; IO/resize cleanup. |
+| `cinematic-scroll-storytelling` | Sticky sahne değişimi, eşleşen caption ve sonraki bandın paralaksı; native scroll + IO + Motion kullanıldı. |
+| `impeccable` | `context`, `craft-floor`, mevcut PRODUCT.md ve görevdeki `docs/DESIGN.md`; tamamlanan UI'da mekanik `detect --json` sonucu `[]`. Skill'in kök DESIGN.md/yerel config beklentisi nedeniyle proje belgeleri veya config'i değiştirilmedi. |
+| 21st MCP | Erişim yok; AGENTS.md fallback'iyle onaylı D provası ve mevcut proje bileşenleri kullanıldı. |
+
+Komut kanıtları:
+
+- RED: `npm test -- tests/unit/story.test.tsx tests/unit/hero-band.test.tsx` → eksik Story/HeroBand import'ları nedeniyle iki suite FAIL (üretim kodundan önce). Yerel checkpoint `d4bce79`; RED/ara commit'ler push edilmeden nihai task commit'ine birleştirildi.
+- GREEN: aynı iki dosyada **10 test PASS**. Üç metin/caption, SSR/no-JS, reduced-motion/IO yokluğu, 0→1→2→1→0 aktif görsel/caption, cleanup, iki SKU, katalog fiyatı, stok/eksik varyant, süreli geri bildirim ve paralaksın normal aralık dışındaki scroll değerlerinde dahi −60/+60px'e sıkışması doğrulandı.
+- `npm test -- --coverage --coverage.include=components/landing/Story.tsx --coverage.include=components/landing/HeroBand.tsx --coverage.include=components/catalog/AddToCart.tsx` → **28 dosya / 323 test PASS**; bu üç dosyada statements **%95,71**, branches **%90,90**, functions **%94,44**, lines **%100**.
+- `npm test -- --coverage` → **28 dosya / 323 test PASS**; mevcut `app/**` kapsamındaki global %80 kapıları geçti: statements **%83,09**, branches **%84,21**, functions **%89,47**, lines **%88,33**.
+- `npm run lint`, `npm run typecheck`, `npm run build` → **PASS**. `npm run check:assets` → **18 mevcut görsel + 100 çıktı (98 v3 + 2 v4 tesis) PASS**.
+- `node --test scripts/check-v3-assets.test.mjs` → **5 test PASS**; sahte kaynak SHA/renk işlemi, değiştirilmiş v4 çıktı pikselleri ve mevcut varlık bütçe/onay olumsuz senaryoları reddedildi. `git diff --check` → temiz.
+
+Claude doğrulayacak:
+
+- `facility*.spec.ts` yerine `story-v4.spec.ts` yazıldı. İleri/geri geçiş, caption, yedi genişlikte çerçeve/metin aralığı ve taşma, ≥44px düğmeler, iki SKU/persist, ±60px paralaks, reduced-motion, no-JS ve görsel yüklenmeme senaryolarını içerir. Mevcut masaüstü/iPhone 14 projelerine ek olarak yalnız bu spec için Pixel 7 projesi tanımlandı. **E2E çalıştırılmadı.**
+- Masaüstü + iPhone + Pixel kaydırma şeritleri/prova karşılaştırması, mobil 01 metninin örtülmemesi, gerçek render/kontrast ve **CLS < 0.1** Lighthouse ölçümü **Claude doğrulayacak**. Playwright, Lighthouse, inspect, ekran görüntüsü veya tarayıcı açılmadı.
+- Uygulamada açık engel yok; bu tarayıcı kabul maddeleri AGENTS.md gereği TAMAMLANDI'yı engellemez. Komut sonuçları canlı yayın veya cihaz kabulü olarak sunulmaz. Önceden mevcut 121–122 görev dosyası değişiklikleri korunur, bu commit'e alınmaz.
+
+## Durum: TAMAMLANDI

@@ -5,6 +5,7 @@ import { resolve } from "node:path";
 import sharp from "sharp";
 import { checkV3Assets } from "./check-v3-assets.mjs";
 import { alphaBounds, repoRoot, sha256 } from "./prepare-v3-assets.mjs";
+import { checkFacilityV4 } from "./prepare-facility-v4.mjs";
 
 const root = resolve(repoRoot, "test-results/111-asset-negative");
 const manifestFile = resolve(root, "public/images/v3/manifest.json");
@@ -12,6 +13,8 @@ let original;
 before(async () => {
   await mkdir(resolve(root, "public/images"), { recursive: true });
   await cp(resolve(repoRoot, "public/images/v3"), resolve(root, "public/images/v3"), { recursive: true });
+  await cp(resolve(repoRoot, "public/images/tesis"), resolve(root, "public/images/tesis"), { recursive: true });
+  await cp(resolve(repoRoot, "public/images/tesis-v4-manifest.json"), resolve(root, "public/images/tesis-v4-manifest.json"));
   original = await readFile(manifestFile, "utf8");
 });
 after(async () => { await rm(root, { recursive: true, force: true }); });
@@ -47,4 +50,25 @@ test("rejects over-budget bytes even when the output hash and size are updated",
   await assert.rejects(checkV3Assets({ root }), /180001 > 180000 bayt/);
   await writeFile(file, bytes);
   await writeFile(manifestFile, original);
+});
+
+test("accepts pinned v4 facility derivatives and rejects a forged source or colour operation", async () => {
+  assert.equal(await checkFacilityV4({ root }), 2);
+  const path = resolve(root, "public/images/tesis-v4-manifest.json");
+  const original = await readFile(path, "utf8");
+  for (const change of [entry => { entry.sourceSha256 = "0".repeat(64); }, entry => { entry.operation.saturation = 1; }]) {
+    const entry = JSON.parse(original);
+    change(entry);
+    await writeFile(path, JSON.stringify(entry));
+    await assert.rejects(checkFacilityV4({ root }), /kaynak\/renk/);
+  }
+  await writeFile(path, original);
+});
+
+test("rejects changed v4 facility pixels against the registered output hash", async () => {
+  const path = resolve(root, "public/images/tesis/tesis-osmaniye-v4-1200.webp");
+  const bytes = await readFile(path);
+  await writeFile(path, Buffer.concat([bytes, Buffer.from("changed")]));
+  await assert.rejects(checkFacilityV4({ root }), /çıktı SHA/);
+  await writeFile(path, bytes);
 });

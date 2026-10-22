@@ -5,6 +5,7 @@ import { pathToFileURL } from "node:url";
 import sharp from "sharp";
 import { approvals, formats, specs } from "./v3-asset-specs.mjs";
 import { alphaBounds, approvedSource, repoRoot, sha256, sourceRoot } from "./prepare-v3-assets.mjs";
+import { checkFacilityV4 } from "./prepare-facility-v4.mjs";
 
 /** Offline CI uses pinned approval rows; local acceptance also verifies originals. */
 export async function checkV3Assets({ root = repoRoot, requireSources = false } = {}) {
@@ -58,6 +59,7 @@ export async function checkV3Assets({ root = repoRoot, requireSources = false } 
     }
   }
   assert.deepEqual((await readdir(resolve(root, "public/images/v3"))).sort(), registered.sort(), "Kayıtsız v3 dosyası");
+  count += await checkFacilityV4({ root });
   return { count, sourcesAvailable };
 }
 

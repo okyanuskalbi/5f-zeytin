@@ -55,7 +55,7 @@ describe("Playwright target selection", () => {
     expect(scripts.start).toBe("next start -p 3004");
   });
 
-  it("starts a local server on 3004 with three browsers, four widths and iPhone 14", async () => {
+  it("starts a local server on 3004 with three browsers, four widths, iPhone 14 and the Pixel 7 story target", async () => {
     vi.stubEnv("PLAYWRIGHT_BASE_URL", undefined);
     vi.stubEnv("PLAYWRIGHT_PORT", undefined);
     const { default: config } = await import("../../playwright.config");
@@ -67,10 +67,14 @@ describe("Playwright target selection", () => {
       reuseExistingServer: false,
     });
     expect(config.metadata).toMatchObject({ targetHost: "localhost:3004" });
-    expect(config.projects).toHaveLength(13);
+    expect(config.projects).toHaveLength(14);
     expect(config.projects).toContainEqual(expect.objectContaining({
       name: "webkit-iphone14",
       use: expect.objectContaining({ defaultBrowserType: "webkit", isMobile: true, hasTouch: true }),
+    }));
+    expect(config.projects).toContainEqual(expect.objectContaining({
+      name: "chromium-pixel7-story", testMatch: "story-v4.spec.ts",
+      use: expect.objectContaining({ defaultBrowserType: "chromium", isMobile: true, hasTouch: true }),
     }));
     for (const browserName of ["chromium", "firefox", "webkit"]) {
       for (const width of [320, 390, 768, 1440]) {

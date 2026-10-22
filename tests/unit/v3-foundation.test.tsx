@@ -10,7 +10,7 @@ it("renders the new contentful sections in order with one footer preview note", 
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}<Footer /></>);
   expect([...doc.querySelectorAll("main > section, main > div > section")].map(section => section.getAttribute("aria-labelledby") ?? section.getAttribute("aria-label"))).toEqual([
-    "hero-title", "Alışveriş bilgileri", "urunler-title", "tesisimiz-title", "sss-title",
+    "hero-title", "Alışveriş bilgileri", "urunler-title", "tesisimiz-title", "kahraman-title", "sss-title",
   ]);
   expect(doc.querySelectorAll("article")).toHaveLength(6);
   expect(doc.querySelectorAll("picture source").length).toBeGreaterThan(5);

@@ -3,6 +3,8 @@
 .add:disabled { opacity: 1; -webkit-text-fill-color: var(--ink); cursor: not-allowed; }
 .add:focus-visible { outline: 2px solid var(--altin-2); outline-offset: 4px; }
 .add:not(:disabled):active { background: var(--altin-2); }
+.add[data-variant="ghost"] { background: transparent; border-color: var(--altin); color: var(--sut); -webkit-text-fill-color: var(--sut); }
+.add[data-variant="ghost"]:not(:disabled):is(:hover, :active) { background: var(--zeytin); }
 .notice { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .error { margin-top: 8px; font-size: 14px; color: var(--sut); line-height: 1.4; overflow-wrap: anywhere; }
 @media (hover: hover) and (pointer: fine) {

@@ -5,7 +5,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, expect, it } from "vitest";
 import Home from "@/app/page";
 import { Faq, verifiedFaqs } from "@/components/landing/Faq";
-import { Facility } from "@/components/landing/Facility";
+import { Story } from "@/components/landing/Story";
 import { TrustStrip } from "@/components/landing/TrustStrip";
 import { WholesaleContact } from "@/components/landing/WholesaleContact";
 import { Footer } from "@/components/site/Footer";
@@ -28,7 +28,7 @@ it("shows the four trust facts without a draft delivery label", () => {
 
 it("omits the whole wholesale row and footer destination when contact details are empty", () => {
   expect(Object.values(siteContact).every(value => value === "")).toBe(true);
-  render(<><Facility /><Footer /></>);
+  render(<><Story /><WholesaleContact preserveAnchor /><Footer /></>);
   expect(document.querySelector("#toptan")).toBeNull();
   expect(document.querySelector("#toptan-iletisim")?.textContent).toBe("");
   expect(screen.queryByText("Toptan alım için bize yazın")).toBeNull();
