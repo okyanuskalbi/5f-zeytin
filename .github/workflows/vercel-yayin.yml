@@ -34,7 +34,16 @@ jobs:
           node-version: 24
           cache: npm
       - name: ffmpeg (video testleri için)
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+        timeout-minutes: 6
+        run: |
+          if command -v ffmpeg >/dev/null 2>&1; then ffmpeg -version | head -1; exit 0; fi
+          if curl -fsSL --retry 3 --max-time 150 https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz -o /tmp/ff.tar.xz \
+            && tar -xJf /tmp/ff.tar.xz -C /tmp; then
+            sudo cp /tmp/ffmpeg-*-static/ffmpeg /tmp/ffmpeg-*-static/ffprobe /usr/local/bin/
+          else
+            sudo apt-get install -y -qq --no-install-recommends ffmpeg || (sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends ffmpeg)
+          fi
+          ffmpeg -version | head -1
       - run: npm install --no-audit --no-fund
       - run: npm run lint
       - run: npm run typecheck
