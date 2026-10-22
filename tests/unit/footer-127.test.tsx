@@ -36,7 +36,7 @@ it("places all four columns and three imprint groups in source order without los
   expect(doc.querySelector('a[href^="tel:"], a[href^="mailto:"]')).toBeNull();
 });
 
-it("preserves all Task 123 text, link destinations and images against the frozen baseline", () => {
+it("preserves all Task 123 text, link destinations and images except the Task 129 brand replacement", () => {
   const parse = (html: string): Document => new DOMParser().parseFromString(html, "text/html");
   const before = parse(readFileSync("tests/e2e/fixtures/footer-123.html", "utf8"));
   const after = parse(renderToStaticMarkup(<Footer />));
@@ -44,7 +44,10 @@ it("preserves all Task 123 text, link destinations and images against the frozen
   const links = (doc: Document) => [...doc.querySelectorAll("a")].map(link => ({
     text: link.textContent, href: link.getAttribute("href"), rel: link.rel, target: link.target,
   }));
-  const images = (doc: Document) => [...doc.images].map(img => ({ alt: img.alt, src: img.getAttribute("src") }));
+  // Only the brand artwork is replaced by Task 129; keep the frozen baseline intact.
+  const images = (doc: Document) => [...doc.images]
+    .filter(img => !img.closest('a[aria-label="Afina Zeytin ana sayfa"]'))
+    .map(img => ({ alt: img.alt, src: img.getAttribute("src") }));
   expect(links(after)).toEqual(links(before));
   expect(images(after)).toEqual(images(before));
   expect(before.querySelector(".columns > .navigation")).not.toBeNull();
@@ -63,7 +66,7 @@ it("uses the requested compact rhythm and keeps separate mobile and desktop targ
   expect(declarations(".link")["min-height"]).toBe("var(--footer-link-target)");
   expect(declarations(".footer", "(min-width: 1024px)")["--footer-link-target"]).toBe("32px");
   expect(declarations(".logo")["height"]).toBe("48px");
-  expect(declarations(".logo", "(min-width: 768px)")["height"]).toBe("56px");
+  expect(declarations(".logo", "(min-width: 768px)")["height"] ?? declarations(".logo")["height"]).toBe("48px");
   expect(declarations(".signature")["font-size"]).toBe("24px");
   expect(declarations(".signature", "(min-width: 768px)")["font-size"]).toBe("28px");
 });

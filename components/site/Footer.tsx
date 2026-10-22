@@ -3,6 +3,7 @@ import type { JSX } from "react";
 import Link from "next/link";
 import { seller } from "@/lib/site/seller";
 import { siteContact } from "@/lib/site/contact";
+import { BrandLogo } from "./BrandLogo";
 import styles from "./Footer.module.css";
 
 // Agency Footer, 21st.dev/@shadcnspace/components/footer-01 (demo 21474).
@@ -41,7 +42,7 @@ export function Footer(): JSX.Element {
           <div className={styles.message} aria-labelledby="footer-brand-title">
             <h2 id="footer-brand-title" className="sr-only">AFİNA ZEYTİN</h2>
             <Link href="/" aria-label="Afina Zeytin ana sayfa" className={styles.home}>
-              <img src="/brand/afina-zeytin-dark.svg" alt="Afina Zeytin" width={104} height={80} loading="lazy" decoding="async" className={styles.logo} />
+              <BrandLogo loading="lazy" className={styles.logo} />
             </Link>
             <p className={styles.signature}>Kökü toprakta.<br /> Yeri sofrada.</p>
             <p>Toprağın sunduğu lezzet, Afina’nın özeniyle.</p>

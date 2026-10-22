@@ -21,7 +21,7 @@
 .home:hover, .community:hover { outline: 2px solid var(--brand-gold); outline-offset: 4px; }
 .home:focus-visible, .link:focus-visible, .community:focus-visible { outline: 2px solid var(--brand-gold); outline-offset: 4px; }
 .home:active, .community:active { opacity: 0.8; }
-.logo { display: block; width: auto; height: 48px; object-fit: contain; }
+.logo { display: block; width: 180px; height: 48px; object-fit: contain; }
 .signature { font-family: var(--font-display, var(--font-display-fallback)); font-size: 24px; color: var(--sut); font-weight: 500; line-height: 1.15; }
 .message > p + p { grid-column: 1 / -1; text-wrap: pretty; }
 .community { display: inline-flex; grid-column: 1 / -1; align-items: center; gap: 12px; max-width: 100%; min-width: 44px; min-height: 44px; color: var(--footer-muted); font-size: 12px; }
@@ -54,10 +54,12 @@
 @media (min-width: 768px) {
   .columns { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 32px; }
   .message { width: min(100%, 480px); }
-  .logo { height: 56px; }
   .signature { font-size: 28px; }
   .destination { grid-column: auto; }
   .payment { flex-direction: row; align-items: center; justify-content: space-between; }
+}
+@media (max-width: 359px) {
+  .message { grid-template-columns: minmax(0, 1fr); }
 }
 @media (min-width: 1024px) {
   .footer { --footer-link-target: 32px; }

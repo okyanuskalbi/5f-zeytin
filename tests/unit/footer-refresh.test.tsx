@@ -21,7 +21,7 @@ it("names secure payment without a provider in the four unchanged trust facts", 
 it("keeps the three navigation columns beside the complete brand block in one grid", () => {
   const doc = footerDocument();
   const brand = doc.querySelector('[aria-labelledby="footer-brand-title"]')!;
-  expect(brand.querySelector('img[alt="Afina Zeytin"]')).not.toBeNull();
+  expect(brand.querySelector('img[alt="AFİNA ZEYTİN"]')).not.toBeNull();
   expect(brand.textContent?.replace(/\s+/g, " ")).toContain("Kökü toprakta. Yeri sofrada.");
   expect(brand.textContent).toContain("Toprağın sunduğu lezzet, Afina’nın özeniyle.");
   const headings = ["footer-shopping-title", "footer-help-title", "footer-contact-title"].map(id => doc.getElementById(id)!);

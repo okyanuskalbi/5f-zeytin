@@ -10,6 +10,7 @@ import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
 import { springs, motionTokens } from "@/lib/ui-motion";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/cart/CartProvider";
+import { BrandLogo } from "./BrandLogo";
 import styles from "./Navbar.module.css";
 
 const NavbarMenu = dynamic(() => import("./NavbarMenu").then(module => module.NavbarMenu));
@@ -69,7 +70,7 @@ export function Navbar(): JSX.Element {
       data-over-hero={landing} className={`site-bar ${styles.bar}`}>
       <div className={styles.row}>
         <Link ref={homeRef} href="/" onClick={() => { if (landing) window.scrollTo({ top: 0, behavior: "instant" }); }} aria-label="Afina Zeytin ana sayfa" className={styles.home}>
-          <span className={styles.logo}>AFİNA<small>ZEYTİN</small></span>
+          <BrandLogo className={styles.logo} />
         </Link>
         <nav aria-label="Ana navigasyon" className={styles.desktop}>
           {links.map(link => <Link key={link.href} href={link.href} className={styles.link}>{link.label}</Link>)}

@@ -58,8 +58,8 @@ test("1440px has four aligned columns and an upper section no taller than 260px"
   expect(layout.gap).toBe("48px");
   expect(Math.max(...layout.tops) - Math.min(...layout.tops)).toBeLessThanOrEqual(1);
   expect(layout.height).toBeLessThanOrEqual(260);
-  const brandLogo = footer.getByRole("img", { name: "Afina Zeytin", exact: true });
-  await expect(brandLogo).toHaveCSS("height", "56px");
+  const brandLogo = footer.getByRole("img", { name: "AFİNA ZEYTİN", exact: true });
+  await expect(brandLogo).toHaveCSS("height", "48px");
   const payment = footer.getByRole("group", { name: "Güvenli ödeme", exact: true });
   await expect(payment).toHaveCSS("margin-top", "32px");
   await expect(payment).toHaveCSS("padding-top", "16px");
@@ -84,7 +84,7 @@ test("390px is at least 30 percent shorter than the complete Task 123 footer", a
   });
   expect(before.total).toBeGreaterThan(before.upper);
   expect(after.total).toBeLessThanOrEqual(before.total * .7);
-  await expect(footer.getByRole("img", { name: "Afina Zeytin", exact: true })).toHaveCSS("height", "48px");
+  await expect(footer.getByRole("img", { name: "AFİNA ZEYTİN", exact: true })).toHaveCSS("height", "48px");
 });
 
 test("320–1920px preserves responsive order, touch targets and horizontal fit", async ({ page }) => {

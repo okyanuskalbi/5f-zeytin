@@ -1,15 +1,14 @@
 .bar { position: fixed; inset: 0 0 auto; z-index: 30; background: transparent; color: var(--sut); padding-block: 18px; padding-top: calc(18px + env(safe-area-inset-top, 0px)); border-bottom: 1px solid transparent; transition: backdrop-filter .4s; }
 .bar[data-tone="solid"] { background: rgba(14,21,16,.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom-color: rgba(255,255,255,.08); }
 .row { display: flex; min-height: 44px; align-items: center; justify-content: space-between; gap: 24px; }
-.home { display: inline-flex; align-items: center; min-height: 44px; }
-.logo { font-weight: 800; letter-spacing: .16em; font-size: 20px; line-height: .9; }
-.logo small { display: block; margin: 2px 0 0 2px; font-weight: 500; letter-spacing: .34em; font-size: 9px; color: var(--altin); }
+.home { display: inline-flex; flex: none; align-items: center; min-height: 44px; }
+.logo { display: block; width: 150px; height: 40px; object-fit: contain; }
 .home:hover { opacity: .8; }
 .desktop { position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 28px; }
 .link { display: inline-flex; align-items: center; min-height: 44px; padding-block: 8px; font-weight: 500; font-size: 15px; }
 .link:hover { text-decoration: underline; text-underline-offset: 6px; }
 .link:active { text-decoration: underline; text-decoration-thickness: 2px; }
-.actions { display: flex; align-items: center; gap: 8px; }
+.actions { display: flex; flex: none; align-items: center; gap: 8px; }
 .control { position: relative; background: transparent; color: inherit; outline-color: var(--altin); transition: none; padding: 8px; font-size: 14px; }
 .control:hover { background: transparent; color: inherit; text-decoration: underline; }
 .control:active { background: transparent; color: inherit; }
@@ -23,7 +22,8 @@
 @media (max-width: 900px) {
   .bar { padding-block: 14px; padding-top: calc(14px + env(safe-area-inset-top, 0px)); padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
   .desktop, .account { display: none; }
+  .logo { width: 120px; height: 32px; }
   .trigger { display: inline-flex; }
 }
-@media (max-width: 359px) { .row { gap: 8px; } .actions { gap: 0; } }
+@media (max-width: 359px) { .row { gap: 8px; } .actions { gap: 0; } .cart { padding-inline: 8px; } }
 @media (prefers-reduced-motion: reduce) { .bar { transition: none; } .badge { transform: none !important; } }

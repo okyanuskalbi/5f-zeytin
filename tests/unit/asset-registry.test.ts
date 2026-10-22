@@ -90,6 +90,26 @@ afterEach(async () => {
   if (root) await rm(root, { recursive: true, force: true });
 });
 
+describe("Task 129 horizontal logo derivatives", () => {
+  it("accepts only the pinned source and its exact approved letter-color derivatives", async () => {
+    const sourceFile = "docs/referans/logolar/afina-zeytin-yatay.svg";
+    const source = await readFile(join(projectRoot, sourceFile));
+    await put(sourceFile, source);
+    for (const tone of ["", "-dark"]) for (const scale of [2, 3]) {
+      const file = `public/brand/afina-zeytin-yatay${tone}@${scale}x.webp`;
+      await put(file, await readFile(join(projectRoot, file)));
+    }
+    const output = "public/brand/afina-zeytin-yatay-dark@2x.webp";
+    await put("components/BrandLogo.tsx", '<picture><source srcSet="/brand/afina-zeytin-yatay-dark@2x.webp 2x, /brand/afina-zeytin-yatay-dark@3x.webp 3x" /><img src="/brand/afina-zeytin-yatay-dark@2x.webp" /></picture>');
+    await expect(checkAssets({ root })).resolves.toEqual({ checked: 1, mode: "all" });
+    await put(sourceFile, Buffer.concat([source, Buffer.from("\n")]));
+    await expect(checkAssets({ root })).rejects.toThrow(/logo|source|kaynak|artwork/i);
+    await put(sourceFile, source);
+    await put(output, image);
+    await expect(checkAssets({ root })).rejects.toThrow(/logo|source|kaynak|artwork/i);
+  });
+});
+
 describe("asset registry CLI", () => {
   it("supports exact ID and mutually exclusive candidate/approved modes", () => {
     expect(parseArgs([])).toEqual({ mode: "all" });
