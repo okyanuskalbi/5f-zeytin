@@ -59,7 +59,7 @@ for (const target of targets) {
       if (target.name === "desktop" || target.name === "iphone14") await reviewScreens(page, target.name);
 
       // Horizontal bounds catch clipped words; the filmstrip still needs a
-      // human check for blank scenes, overlap and the approved B composition.
+      // human check for blank scenes, overlap and the approved D composition.
       for (const heading of await page.locator("main h1, main h2, main h3").all()) {
         expect(await heading.evaluate(node => {
           const box = node.getBoundingClientRect();
@@ -102,7 +102,7 @@ for (const target of targets) {
       const hero = page.locator("[data-hero-intro]");
       await expect(hero.getByRole("button", { name: /Sepete ekle/ })).toBeEnabled();
       await expect(hero.locator("[data-hero-photo]")).toHaveCSS("transform", "none");
-      for (const word of await hero.locator("[data-hero-word]").all()) {
+      for (const word of await hero.locator("h1 span, h1 em").all()) {
         await expect(word).toHaveCSS("opacity", "1");
         await expect(word).toHaveCSS("transform", "none");
       }
@@ -111,7 +111,7 @@ for (const target of targets) {
   });
 }
 
-test("115: hero CTA is gold before hydration, after hydration and after press", async ({ browser, baseURL }, info) => {
+test("115: v4 hero CTA stays solid olive before hydration, after hydration and after press", async ({ browser, baseURL }, info) => {
   test.skip(!["chromium-1440", "webkit-iphone14"].includes(info.project.name), "Use desktop Chromium and iPhone WebKit.");
   await mkdir("test-results/115", { recursive: true });
   for (const javaScriptEnabled of [false, true]) {
@@ -123,22 +123,22 @@ test("115: hero CTA is gold before hydration, after hydration and after press", 
       const page = await context.newPage();
       await page.goto("/");
       // The label changes to Eklendi after press; keep the same DOM target.
-      const button = page.locator("[data-hero-intro] button");
+      const button = page.locator("[data-hero-card]").getByRole("button");
       await expect(button).toHaveCSS("opacity", "1");
-      await expect(button).toHaveCSS("background-color", "rgb(212, 180, 131)");
+      await expect(button).toHaveCSS("background-color", "rgb(31, 51, 36)");
       if (javaScriptEnabled) await expect(button).toBeEnabled();
       else await expect(button).toBeDisabled();
       await page.mouse.move(0, 0);
       const capture = await button.screenshot({ path: `test-results/115/cta-${info.project.name}-${javaScriptEnabled ? "hydrated" : "ssr"}.png`, animations: "disabled", scale: "css" });
       const { height } = await sharp(capture).metadata();
       const pixel = await sharp(capture).extract({ left: 8, top: Math.floor(height! / 2), width: 1, height: 1 }).removeAlpha().raw().toBuffer();
-      expect([...pixel]).toEqual([212, 180, 131]);
+      expect([...pixel]).toEqual([31, 51, 36]);
       if (javaScriptEnabled) {
         await button.click();
         await page.mouse.move(0, 0);
         await expect(page.locator("[data-hero-intro]").getByRole("status")).toContainText("sepete eklendi");
         await expect(button).toHaveCSS("opacity", "1");
-        await expect(button).toHaveCSS("background-color", "rgb(212, 180, 131)");
+        await expect(button).toHaveCSS("background-color", "rgb(31, 51, 36)");
         await expect(page.getByRole("dialog", { name: "Sepetim", exact: true })).toHaveCount(0);
       }
     } finally { await context.close(); }
@@ -149,7 +149,8 @@ test("115: hero → pantry → drawer → cart preserves both variants and check
   test.skip(!["chromium-1440", "webkit-iphone14"].includes(info.project.name), "Use desktop Chromium and iPhone WebKit.");
   await page.goto("/");
   await page.locator("[data-hero-intro]").getByRole("button", { name: /Sepete ekle/ }).click();
-  await page.getByRole("link", { name: "Ürünleri gör", exact: true }).click();
+  if (page.viewportSize()!.width > 900) await page.locator("[data-hero-intro]").getByRole("link", { name: "Ürünleri gör", exact: true }).click();
+  else await page.locator("#kiler").scrollIntoViewIfNeeded();
   const family = page.locator('[data-pantry-family="dogal-kirma"]');
   await family.getByRole("radio", { name: "1 kg", exact: true }).click();
   await family.getByRole("button", { name: "Ekle", exact: true }).click();

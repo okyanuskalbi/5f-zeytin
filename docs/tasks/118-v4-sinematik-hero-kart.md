@@ -56,4 +56,37 @@ Prova HTML'i kopyalanmaz; React/CSS Module ile aynı ölçülere getirilir.
 - Ödeme, sepet mantığı, Supabase'e dokunma.
 - `docs/` değiştirme (yalnız bu dosyanın Coder Notu/Durum).
 
-## Durum: BEKLİYOR
+## Coder Notu
+
+- v4 tokenları, koyu UI yüzeyleri, sabit navbar ve D provasının React/CSS Module hero düzeni uygulandı. Fraunces'ın mevcut gerçek italik dosyası kullanıldı; normal yüz 400–700 ağırlık aralığında, Figtree'de 400/500/600/700/800 yüklenir. İç sayfaların üst boşluğu sabit navbar yüksekliğini içerir.
+- Kartta `1 kg` / `10 kg teneke` radio hapları gerçek SKU'yu seçer; fiyat katalogdan gelir (`₺220` / `₺2.200`). Sepet store'u değiştirilmedi; inline başarı, stok hatası ve opak disabled görünümü korunur. Mobilde mevcut MiniCart'ın hero kartını kapatması görünürlük sinyaliyle önlenir; hero geçilince MiniCart yeniden görünür.
+- Ken Burns 18 saniye, ters yönlü tekrar ve kaydırma ipucu Motion ile çalışır; reduced-motion'da durur, gizli sekmede pause edilir ve unmount'ta temizlenir. SSR fotoğrafı, içerik ve CTA görünür kalır. Hero'nun mobil fotoğraf/preload kırılımı birlikte 900px'e taşındı.
+- Geçici sıra: Hero → TrustStrip → Pantry → Facility (mevcut toptan alanı) → Faq → Footer. Toptan nav hedefi iletişim bilgileri eklenmeden de korunur; kanal/telefon/e-posta uydurulmadı. 119–121'in yeniden tasarımı bu göreve alınmadı.
+- 21st MCP'de `hero with product card` araması üç kez denendi; düzen kaynağı alınamadığı için onaylı D HTML'i ve mevcut prova kareleri esas alındı. Mevcut Button/Dialog ve Radix RadioGroup kullanıldı; yeni shadcn bileşeni/bağımlılığı eklenmedi.
+
+| Skill | Kullanıldığı yer |
+|---|---|
+| frontend-patterns | SSR Hero/V3Picture ile istemci kartı ve navbar sınırı |
+| tdd-workflow | RED → GREEN, varyant/fiyat/sepete ekleme/stok/nav/token testleri |
+| motion-foundations, motion-patterns, motion-advanced | Ortak hareket tokenları, reduced-motion, döngü/sekme duraklatma ve cleanup |
+| impeccable (craft-floor) | D provası, okunurluk, dokunma hedefleri ve statik tasarım denetimi |
+| cinematic-hero-video (Mod A scrim/poster) | Koyu başlangıç zemini ve masaüstü/telefon scrim'leri; video eklenmedi |
+
+### Komut kanıtları
+
+- RED: `npm test -- tests/unit/sofra-hero.test.tsx tests/unit/v3-foundation.test.tsx tests/unit/navbar-scroll.test.tsx` → 14 FAIL / 1 PASS (eksik v4 davranışları). Aynı hedef GREEN'de 15/15; sonradan döngü/sekme testi eklendi. RED/ara checkpoint'ler yalnız yerelde tutuldu; push için tek yeşil task commit'inde birleştirildi.
+- `npm test` → **27 dosya, 309 test PASS**.
+- `npm test -- --coverage` → PASS; statements **%82,60**, branches **%86,11**, functions **%88,23**, lines **%87,93** (mevcut `app/**` coverage kapsamı).
+- `npm run lint` → PASS (0 uyarı); `npm run typecheck` → PASS; `npm run build` → PASS.
+- Build ön kontrolü: **98 v3 görsel çıktısı PASS** (SHA/onay/alpha/ölçü/bayt bütçeleri). Hero maksimumları: masaüstü **177.776 bayt**, telefon **118.742 bayt**; yeni görsel/sıkıştırma gerekmedi.
+- Token çiftleri WCAG formülüyle unit/Node üzerinden hesaplandı: sayfa **16,73:1**, card/popover **12,18:1**, birincil düğme **9,40:1**, muted **5,65:1**; test edilen sekiz çiftin tamamı ≥ 4,5:1. Bu hesap, tarayıcıdaki gerçek piksel kontrast ölçümünün yerine geçmez.
+- `impeccable detect --json …` → `[]`; `git diff --check` → PASS.
+
+### Claude doğrulayacak
+
+- Playwright/Lighthouse/inspect/ekran görüntüsü çalıştırılmadı. E2E dosyaları yeni seçicilere, iki boylu karta, 40px navbar geçişine ve koyu temaya güncellendi.
+- 390/768/1440'ta başlığın en fazla iki satırı; iPhone SE/14 ve Pixel 7'de başlık-kart aralığı, kartın hero içinde kalması ve D prova karşılaştırması **Claude doğrulayacak**.
+- Sepet çekmecesi, dialog ve `/sepet`, `/odeme`, `/hesabim`, `/kvkk` yüzeylerinin gerçek render kontrastı; reduced-motion ve dinamik tercih değişimi; cihaz klavye/dokunma kabulü **Claude doğrulayacak**.
+- Uygulama kapsamında açık engel yok. Tarayıcı kabulünün Claude'da olması, AGENTS.md gereği TAMAMLANDI durumunu engellemez. Canlı yayın/cihaz kabulü bu komutlarla doğrulanmış sayılmaz.
+
+## Durum: TAMAMLANDI

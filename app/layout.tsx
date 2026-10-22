@@ -12,10 +12,11 @@ import "./globals.css";
 
 const Fraunces = localFont({
   src: [
-    { path: "./fonts/Fraunces-normal.woff2", weight: "500 700", style: "normal" },
+    { path: "./fonts/Fraunces-normal.woff2", weight: "400 700", style: "normal" },
+    { path: "./fonts/Fraunces-italic.woff2", weight: "400", style: "italic" },
   ],
   display: "swap",
-  // Only the normal face is used in runtime; discover the hero headline font early.
+  // Both real faces are local; the hero emphasis never synthesizes an italic.
   preload: true,
   adjustFontFallback: "Times New Roman",
   variable: "--font-display",
@@ -26,7 +27,7 @@ const bodyFont = Figtree({
   subsets: ["latin", "latin-ext"],
   display: "swap",
   preload: false,
-  weight: ["400", "600", "800"],
+  weight: ["400", "500", "600", "700", "800"],
   variable: "--font-body",
   fallback: ["Helvetica Neue", "Arial", "sans-serif"],
 });

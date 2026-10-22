@@ -7,7 +7,7 @@ afterEach(() => { document.head.innerHTML = ""; document.body.innerHTML = ""; })
 
 // Exercise the real stylesheet's cascade, including the pre-hydration disabled
 // state. Pixel colour and WebKit compositing remain Claude's browser acceptance.
-it.each([false, true])("keeps the gold hero CTA opaque when disabled=%s", disabled => {
+it.each([false, true])("keeps the solid hero CTA opaque when disabled=%s", disabled => {
   const style = document.createElement("style");
   style.textContent = css;
   document.head.append(style);

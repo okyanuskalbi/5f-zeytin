@@ -14,7 +14,8 @@ it("uses full factual sentences and removes unanswered wholesale questions", asy
   expect(doc.querySelectorAll("[data-faq]")).toHaveLength(3);
   for (const faq of verifiedFaqs) expect(faq.answer).toMatch(/\.$/);
   expect(doc.querySelector('[data-faq="Z05"]')).toBeNull();
-  expect(doc.querySelector("#toptan, #toptan-iletisim")).toBeNull();
+  expect(doc.querySelector("#toptan")).toBeNull();
+  expect(doc.querySelector("#toptan-iletisim")?.textContent).toBe("");
   expect(doc.body.textContent).not.toMatch(/Toptan alım için bize yazın|İletişim bilgileri yakında/);
 });
 

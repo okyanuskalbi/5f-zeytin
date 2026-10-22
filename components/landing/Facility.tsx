@@ -14,6 +14,6 @@ export function Facility(): JSX.Element {
       </div>
       <V3Picture image={v3Image("tesis-osmaniye")} sizes="(max-width: 767px) 100vw, 50vw" className={styles.facilityPhoto} />
     </div>
-    <WholesaleContact />
+    <WholesaleContact preserveAnchor />
   </section>;
 }

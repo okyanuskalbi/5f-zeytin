@@ -1,5 +1,5 @@
 .page {
-  padding: 48px var(--page-margin) 96px;
+  padding: calc(var(--header-height) + 48px) var(--page-margin) 96px;
 }
 
 .header {
@@ -15,10 +15,10 @@
   min-width: 0;
   padding: 32px;
   background: var(--card);
-  color: var(--body-ink);
+  color: var(--foreground);
 }
 
-.paper h1, .paper h2, .paper h3 { color: var(--brand-olive); }
+.paper h1, .paper h2, .paper h3 { color: var(--foreground); }
 
 .layout {
   display: grid;
@@ -30,7 +30,7 @@
 .receipt > ul { display: grid; gap: 24px; }
 .line { padding: 24px 0; }
 .line + .line { padding-top: 0; }
-.ribbon { margin: 0 -32px; padding: 16px 32px; background: var(--brand-gold); }
+.ribbon { margin: 0 -32px; padding: 16px 32px; background: var(--altin); color: var(--ink); }
 .summary { display: grid; gap: 24px; }
 .summary h2 { font-size: var(--step-lead); }
 .empty { padding-block: 32px; }
@@ -56,7 +56,7 @@
 .legalNav ul { display: flex; flex-wrap: wrap; column-gap: 24px; }
 .textLink { display: inline-flex; min-height: 44px; align-items: center; padding-block: 8px; text-decoration: underline; }
 .textLink:hover { color: var(--primary-hover); text-decoration-thickness: 2px; }
-.textLink:active { color: var(--body-ink); }
+.textLink:active { color: var(--foreground); }
 .textLink:focus-visible { outline: 2px solid var(--ring); outline-offset: 4px; }
 
 .previewCard {
@@ -76,7 +76,7 @@
 
 .drawer {
   background: var(--card);
-  color: var(--body-ink);
+  color: var(--foreground);
 }
 
 .drawerHeader { padding: 24px; }
@@ -93,7 +93,7 @@
 }
 
 @media (max-width: 599px) {
-  .page { padding-block: 32px 64px; }
+  .page { padding-block: calc(var(--header-height) + 32px) 64px; }
   .paper { padding: 24px; }
   .ribbon { margin-inline: -24px; padding-inline: 24px; }
   .header h1 { font-size: var(--step-head); }

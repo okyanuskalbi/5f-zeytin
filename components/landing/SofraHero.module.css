@@ -1,69 +1,59 @@
-/* Task 112: B comp hero bounds are 1152 × 654; copy starts at x 6.6%, y 23%. */
-.hero { position: relative; isolation: isolate; display: grid; align-items: center; min-height: 100svh; overflow: clip; background: var(--brand-olive); color: var(--brand-ivory); }
-.hero::before { content: ""; position: absolute; z-index: -1; inset: 0 0 auto; height: var(--header-height); background: rgb(14 24 16 / 66%); }
-.photo { position: absolute; z-index: -2; inset: 0; transform-origin: center; }
+.hero { position: relative; isolation: isolate; display: flex; align-items: flex-end; height: 100svh; min-height: 640px; overflow: hidden; background: var(--ink); color: var(--sut); }
+.photo { position: absolute; z-index: -2; inset: 0; transform-origin: center; transform: scale(1.02); }
 .photo picture, .photo img { display: block; width: 100%; height: 100%; }
 .photo img { object-fit: cover; object-position: center; }
-.curtain { position: absolute; z-index: -1; inset: 0; background: linear-gradient(90deg, rgb(14 24 16 / 66%) 0%, rgb(14 24 16 / 66%) 43%, transparent 62%); }
-.copy { position: relative; width: 46%; margin: max(112px, 22svh) 0 104px 6.6%; align-self: start; }
-.copy h1 { font-size: var(--step-display); line-height: 1.02; letter-spacing: -0.03em; text-wrap: initial; }
-.copy h1 span { display: block; white-space: nowrap; }
-.description { margin-top: 24px; font-size: clamp(1.0625rem, 2.4vw, 1.875rem); line-height: 1.3; }
-.actions { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-top: 28px; }
-.purchase, .browse { display: inline-flex; justify-content: center; align-items: center; min-height: 56px; padding: 14px 24px; font-size: 1.0625rem; font-weight: 600; line-height: 1.4; border-radius: 16px; cursor: pointer; }
-/* Keep the CTA gold from SSR through hydration, including native iOS disabled
-   painting. Only press transforms animate; its colour never depends on a fade. */
-.purchase { appearance: none; opacity: 1; background: var(--brand-gold); color: var(--brand-ink); font-variant-numeric: tabular-nums; column-gap: 4px; border: 1px solid transparent; }
-.purchase span { display: inline-flex; align-items: center; gap: 6px; white-space: pre; }
-.purchase:disabled { cursor: not-allowed; }
-.browse { border: 2px solid var(--brand-ivory); color: var(--brand-ivory); border-radius: 999px; }
-.purchase:focus-visible, .browse:focus-visible { outline-color: var(--brand-ivory); }
-.feedback { position: absolute; inset: calc(100% + 12px) 0 auto; font-size: var(--step-small); line-height: 1.4; }
-.feedback p:empty { display: none; }
-.feedback p:not(:empty) { width: fit-content; max-width: 100%; padding: 8px 12px; background: var(--brand-olive); color: var(--brand-ivory); }
+.curtain { position: absolute; z-index: -1; inset: 0; background: linear-gradient(180deg, rgba(10,16,11,.55) 0%, rgba(10,16,11,.05) 35%, rgba(10,16,11,.15) 60%, rgba(10,16,11,.85) 100%); }
+.layout { position: relative; width: min(1280px, calc(100% - 64px)); margin: 0 auto 56px; display: grid; grid-template-columns: 1.2fr .8fr; gap: 40px; align-items: end; }
+.copy, .details { min-width: 0; }
+.kicker { font-size: 13px; letter-spacing: .22em; text-transform: uppercase; color: var(--altin); font-weight: 600; }
+.copy h1 { font-size: var(--step-display); max-width: 9ch; line-height: .96; margin: 16px 0 18px; letter-spacing: -.01em; text-wrap: initial; }
+.copy h1 span, .copy h1 em { display: block; white-space: nowrap; }
+.copy h1 em { font-style: italic; font-weight: 400; color: var(--altin-2); }
+.description { font-size: 19px; color: #E4E0D4; max-width: 48ch; line-height: normal; }
+.actions { display: flex; gap: 12px; margin-top: 26px; }
+.browse, .purchase { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 14px 22px; border-radius: 999px; font-size: 15px; font-weight: 700; line-height: 1.2; cursor: pointer; }
+.browse { border: 1.5px solid rgba(255,255,255,.5); color: #fff; background: transparent; }
+.card { background: rgba(247,243,234,.96); color: var(--ink); border-radius: 20px; padding: 22px 22px 20px; display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 18px; align-items: center; box-shadow: 0 30px 60px rgba(0,0,0,.45); }
+.productImage, .productImage picture { display: block; width: 96px; height: 118px; }
+.productImage img { display: block; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 12px 18px rgba(0,0,0,.25)); }
+.card h3 { font-size: 24px; line-height: 1.05; font-weight: 600; letter-spacing: -.01em; text-wrap: initial; }
+.sizes { display: flex; gap: 6px; margin: 10px 0 12px; }
+.size { flex-shrink: 0; min-height: 44px; padding: 6px 12px; font-size: 13px; font-weight: 600; line-height: 1.2; border: 1.5px solid #CBD0C4; border-radius: 999px; cursor: pointer; }
+.size[data-state="checked"] { background: var(--zeytin); border-color: var(--zeytin); color: #fff; }
+.buyRow { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.price { font-size: 30px; font-weight: 800; letter-spacing: -.02em; line-height: 1.2; font-variant-numeric: tabular-nums; }
+/* Retain solid SSR/disabled painting on iOS; never fade the purchase control. */
+.purchase { appearance: none; opacity: 1; background: var(--zeytin); color: #fff; border: 0; }
+.purchase:disabled { opacity: 1; -webkit-text-fill-color: #fff; cursor: not-allowed; }
+.feedback { font-size: var(--step-small); line-height: 1.4; margin-top: 8px; }
+.feedback:empty { display: none; }
+.scrollHint { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); font-size: 11px; letter-spacing: .2em; color: rgba(255,255,255,.6); display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.scrollHint i { display: block; width: 1px; height: 38px; transform-origin: top; background: linear-gradient(180deg, rgba(255,255,255,.6), transparent); }
 @media (hover: hover) and (pointer: fine) {
-  .purchase:not(:disabled):hover { background: #e4c69a; }
-  .browse:hover { background: var(--brand-ivory); color: var(--brand-olive); }
+  .purchase:not(:disabled):hover { background: var(--zeytin-2); }
+  .browse:hover { background: var(--sut); color: var(--ink); }
+  .size:hover { border-color: var(--zeytin); }
 }
-@media (max-width: 1023px) and (min-width: 768px) {
-  .copy { width: 55%; }
-  .copy h1 { font-size: clamp(3.5rem, 7vw, 7.5rem); }
-  .actions { gap: 12px; }
-  .purchase, .browse { padding-inline: 20px; }
+@media (max-width: 900px) {
+  .hero { align-items: flex-start; min-height: max(640px, 100svh); }
+  .layout { display: block; position: static; width: calc(100% - 36px); padding-top: 100px; margin-bottom: 0; }
+  .curtain { background: linear-gradient(180deg, rgba(10,16,11,.78) 0%, rgba(10,16,11,.35) 38%, rgba(10,16,11,.1) 55%, rgba(10,16,11,.85) 100%); }
+  .copy h1 { font-size: clamp(44px, 13vw, 64px); }
+  .description, .actions { display: none; }
+  .card { position: absolute; left: 18px; right: 18px; bottom: 22px; grid-template-columns: 72px minmax(0, 1fr); padding: 16px; border-radius: 16px; }
+  .productImage, .productImage picture { width: 72px; height: 92px; }
+  .card h3 { font-size: 19px; }
+  .price { font-size: 24px; }
+  .scrollHint { display: none; }
 }
-@media (max-width: 767px) {
-  .hero { align-items: start; }
-  .curtain { background: linear-gradient(180deg, rgb(14 24 16 / 70%) 0%, rgb(14 24 16 / 70%) max(49%, 440px), transparent max(70%, 560px)); }
-  .copy { width: auto; margin: calc(var(--header-height) + 16px) 24px 104px; }
-  .copy h1 { font-size: clamp(3.5rem, 9vw + 1.3rem, 5rem); }
-  .description { margin-top: 8px; font-size: 1.125rem; max-width: 30ch; line-height: 1.3; }
-  .desktopBreak { display: none; }
-  .actions { align-items: center; flex-direction: row; flex-wrap: nowrap; gap: 8px; margin-top: 12px; }
-  .purchase, .browse { min-height: 48px; padding: 8px 12px; font-size: 0.875rem; line-height: 1.3; }
-  .purchase span { white-space: normal; }
-  .browse { flex-shrink: 0; }
-}
-@media (max-height: 500px) and (orientation: landscape) {
-  .copy { width: 65%; margin-top: calc(var(--header-height) + 16px); margin-bottom: 56px; }
-  .copy h1 { font-size: 3.5rem; }
-  .description { margin-top: 12px; font-size: 1.0625rem; }
-  .actions { margin-top: 16px; gap: 12px; flex-direction: row; }
-  .purchase, .browse { min-height: 44px; padding: 10px 16px; }
+@media (max-width: 390px) {
+  .buyRow { gap: 8px; }
+  .purchase { padding-inline: 14px; font-size: 14px; }
+  .size { padding-inline: 8px; font-size: 12px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .photo, .purchase, .copy h1 span { transform: none !important; }
-  .copy h1 span { opacity: 1 !important; }
+  .photo, .purchase, .scrollHint i { transform: none !important; animation: none !important; }
 }
-
-@media (max-width: 359px) { .purchase { padding-inline: 16px; } }
-
-/* Start readable at first paint, including before hydration. An invisible first
-   frame delays the heading's LCP until a later repaint. Keep the 60ms stagger. */
-@media (prefers-reduced-motion: no-preference) {
-  .copy h1 span { animation: word-in 300ms cubic-bezier(0.16, 1, 0.3, 1) backwards; }
-  .copy h1 span:nth-of-type(2) { animation-delay: 60ms; }
-}
-@keyframes word-in {
-  from { opacity: 0.75; transform: translateY(8px); }
-  to { opacity: 1; transform: none; }
-}
+.hero[data-reduced-motion="true"] .photo, .hero[data-reduced-motion="true"] .scrollHint i { transform: none !important; }
+/* The later mobile bar task can reuse this visibility signal. */
+:global(html:has([data-hero-visible]) [data-mini-cart]) { visibility: hidden; pointer-events: none; }

@@ -1,38 +1,27 @@
 import { expect, test } from "@playwright/test";
-import sharp from "sharp";
+import manifest from "../../public/images/v3/manifest.json";
 
-test("mobile poster is preloaded in SSR and frames wait for idle or interaction with a ten-frame budget", async ({ page, request }, testInfo) => {
-  await page.setViewportSize({ width: 390, height: 900 });
-  await page.emulateMedia({ reducedMotion: "no-preference" });
-  await page.addInitScript(() => {
-    Object.defineProperty(navigator, "hardwareConcurrency", { configurable: true, get: () => 8 });
-    // Hold browser idle work: the SSR poster and purchase controls must stand alone.
-    window.requestIdleCallback = () => 1;
-    window.cancelIdleCallback = () => {};
+for (const width of [390, 768, 900, 901, 1440]) {
+  test(`v4: matching SSR art direction and budget at ${width}px`, async ({ page, request }) => {
+    await page.setViewportSize({ width, height: 900 });
+    const html = await (await request.get("/")).text();
+    expect(html).toMatch(/rel="preload"[^>]+as="image"[^>]+type="image\/avif"[^>]+media="\(max-width: 900px\)"/);
+    const images: string[] = [];
+    page.on("request", entry => { if (/\/images\/v3\/hero-|\/frames\//.test(entry.url())) images.push(entry.url()); });
+    await page.goto("/");
+    const photo = page.locator("[data-hero-photo] img");
+    await expect(photo).toHaveAttribute("fetchpriority", "high");
+    await expect.poll(() => photo.evaluate((node: HTMLImageElement) => node.complete && node.naturalWidth > 0)).toBe(true);
+    const currentSrc = await photo.evaluate((node: HTMLImageElement) => node.currentSrc);
+    const key = width <= 900 ? "hero-mobil" : "hero-masaustu";
+    expect(currentSrc).toContain(key);
+    expect(currentSrc).toMatch(/\.avif$/);
+    expect(images).toHaveLength(1);
+    for (const output of manifest.assets[key].outputs) {
+      const response = await request.get(output.file);
+      expect(response.ok()).toBe(true);
+      expect((await response.body()).length).toBeLessThanOrEqual(width <= 900 ? 120000 : 180000);
+    }
+    await expect(page.locator("[data-hero-intro] canvas, [data-hero-intro] video")).toHaveCount(0);
   });
-  const frames: string[] = [];
-  page.on("request", (entry) => { if (/\/frames\/hero-zeytin\/\d+\/frame-/.test(entry.url())) frames.push(entry.url()); });
-  const html = await (await request.get("/")).text();
-  expect(html).toMatch(/<link[^>]+rel="preload"[^>]+as="image"[^>]+imageSrcSet=/i);
-  await page.goto("/");
-  const hero = page.locator("[data-hero-intro]");
-  const poster = hero.locator("[data-frame-sequence] img");
-  await expect.poll(() => poster.evaluate((node: HTMLImageElement) => node.complete && node.naturalWidth > 0)).toBe(true);
-  await expect(hero.getByRole("button", { name: "Sepete ekle" })).toBeEnabled();
-  expect(frames).toHaveLength(0);
-  const currentSrc = await poster.evaluate((node: HTMLImageElement) => node.currentSrc);
-  const delivery = await request.get(currentSrc, { headers: { Accept: "image/avif,image/webp" } });
-  expect(delivery.headers()["content-type"]).toContain("image/avif");
-  const bytes = await delivery.body();
-  expect(bytes.length).toBeLessThanOrEqual(60 * 1024);
-  expect(await sharp(bytes).metadata()).toMatchObject({ width: 900, height: 1350 });
-  const fallback = await request.get(currentSrc.replace(".avif", ".webp"), { headers: { Accept: "image/webp" } });
-  expect(fallback.headers()["content-type"]).toContain("image/webp");
-  expect((await fallback.body()).length).toBeLessThanOrEqual(60 * 1024);
-  await page.screenshot({ path: testInfo.outputPath("mobile-poster.png") });
-  await page.keyboard.press("Shift");
-  await expect(hero.locator("canvas")).toHaveAttribute("data-frame", "0");
-  await expect.poll(() => frames.length).toBe(10);
-  await page.waitForTimeout(300);
-  expect(frames).toHaveLength(10);
-});
+}

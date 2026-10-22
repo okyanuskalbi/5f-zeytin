@@ -1,72 +1,35 @@
 import { expect, test } from "@playwright/test";
 
-test("scroll adapts the persistent cart bar and reverses without the v1 label or stub", async ({ page }) => {
+test("v4: 18 second alternating Ken Burns switches off with reduced motion", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/");
+  const photo = page.locator("[data-hero-photo]");
+  await expect.poll(() => photo.evaluate(node => node.getAnimations().some(animation => animation.playState === "running"))).toBe(true);
+  const timing = await photo.evaluate(node => node.getAnimations()[0].effect!.getTiming());
+  expect(timing.duration).toBe(18000);
+  expect(timing.direction).toBe("alternate");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(photo).toHaveCSS("transform", "none");
+  await expect(page.locator("[data-scroll-line]")).toHaveCSS("transform", "none");
+  await expect.poll(() => photo.evaluate(node => node.getAnimations().filter(animation => animation.playState === "running").length)).toBe(0);
+  await expect(page.locator("[data-hero-card]").getByRole("button", { name: "Sepete ekle", exact: true })).toBeEnabled();
+});
+
+test("v4: cart badge persists while navigation switches at 40px and reverses", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
   const header = page.getByRole("banner");
-  await expect(header).toHaveAttribute("data-tone", "dark");
-  await page.locator("[data-hero-intro]").getByRole("button", { name: "Sepete ekle" }).click();
-  await page.keyboard.press("Escape");
-  await page.locator("#urunler").scrollIntoViewIfNeeded();
-  await expect(header).toHaveAttribute("data-tone", "light");
+  await expect(header).toHaveAttribute("data-tone", "hero");
+  await page.locator("[data-hero-intro]").getByRole("button", { name: "Sepete ekle", exact: true }).click();
+  await page.evaluate(() => scrollTo(0, 40));
+  await expect(header).toHaveAttribute("data-tone", "hero");
+  await page.evaluate(() => scrollTo(0, 41));
+  await expect(header).toHaveAttribute("data-tone", "solid");
+  await expect(header).toHaveCSS("background-color", "rgba(14, 21, 16, 0.72)");
+  await expect(header).toHaveCSS("backdrop-filter", "blur(14px)");
   await expect(header.getByRole("button", { name: "Sepetim, 1 adet" })).toBeInViewport();
-  await expect(page.locator("[data-hero-card], [data-hero-stub]")).toHaveCount(0);
+  await page.reload();
+  await expect(header.getByRole("button", { name: "Sepetim, 1 adet" })).toBeEnabled();
   await page.evaluate(() => scrollTo(0, 0));
-  await expect(header).toHaveAttribute("data-tone", "dark");
-});
-
-test("empty cart and restored badge update through the existing header drawer", async ({ page }) => {
-  await page.goto("/");
-  await page.locator("#urunler").getByRole("article").first().getByRole("button", { name: "Sepete ekle" }).click();
-  await page.keyboard.press("Escape");
-  const cart = page.getByRole("banner").getByRole("button", { name: "Sepetim, 1 adet" });
-  await expect(cart.locator('[data-slot="count-badge"]')).toHaveText("1");
-  await cart.click();
-  await page.getByRole("dialog", { name: "Sepetim" }).getByRole("button", { name: "Sepetten sil" }).click();
-  await page.keyboard.press("Escape");
-  await expect(page.getByRole("button", { name: "Sepetim, 0 adet" }).locator('[data-slot="count-badge"]')).toHaveCount(0);
-});
-
-test("reduced motion requests no frames and keeps the badge and purchase controls static", async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  const frames: string[] = [];
-  page.on("request", request => { if (/\/frame-\d+\.webp/.test(request.url())) frames.push(request.url()); });
-  await page.goto("/");
-  const hero = page.locator("[data-hero-intro]");
-  await hero.getByRole("radio", { name: "Zeytinyağı" }).click();
-  await hero.getByRole("button", { name: "Sepete ekle" }).click();
-  await page.keyboard.press("Escape");
-  await expect(page.locator('[data-slot="count-badge"]')).toHaveCSS("transform", "none");
-  await expect(page.locator("[data-frame-sequence] canvas")).toHaveCount(0);
-  expect(frames).toEqual([]);
-});
-
-test("live preference changes and media failure preserve the intro and its controls", async ({ page }) => {
-  await page.route("**/frames/hero-zeytin/manifest.json", route => route.fulfill({ status: 500 }));
-  await page.goto("/");
-  await expect(page.locator("[data-frame-sequence]")).toHaveAttribute("data-status", "error");
-  await expect(page.locator("#hero-title")).toBeVisible();
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.locator("[data-hero-intro]").getByRole("button", { name: "Sepete ekle" }).click();
-  await page.keyboard.press("Escape");
-  await expect(page.locator('[data-slot="count-badge"]')).toHaveCSS("transform", "none");
-  await page.emulateMedia({ reducedMotion: "no-preference" });
-  await expect(page.locator("[data-hero-card], [data-hero-stub]")).toHaveCount(0);
-});
-
-test("restored mixed cart uses catalog prices through the persistent bar across sections", async ({ page }) => {
-  await page.addInitScript(() => localStorage.setItem("afina-zeytin:cart", JSON.stringify([
-    { productId: "sample-table-olive", quantity: 1, priceKurus: 1 },
-    { productId: "sample-olive-oil", quantity: 2 },
-  ])));
-  await page.goto("/");
-  for (const selector of ["#urunler", "#sik-sorulanlar", "footer"]) {
-    await page.locator(selector).scrollIntoViewIfNeeded();
-    const cart = page.getByRole("banner").getByRole("button", { name: "Sepetim, 3 adet" });
-    await expect(cart).toBeInViewport();
-    await cart.click();
-    const drawer = page.getByRole("dialog", { name: "Sepetim" });
-    await expect(drawer).toContainText("825,50 ₺");
-    await drawer.getByRole("button", { name: "Sepeti kapat", exact: true }).click();
-    await expect(cart).toBeFocused();
-  }
+  await expect(header).toHaveAttribute("data-tone", "hero");
 });

@@ -4,49 +4,58 @@
 @source "../components";
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
+  --ink: #0E1510;
+  --zeytin: #1F3324;
+  --zeytin-2: #2A4532;
+  --altin: #D4B483;
+  --altin-2: #E6CB97;
+  --sut: #F7F3EA;
+  --gri: #B9C0B6;
+  --surface: var(--sut);
   --brand-olive: #243a29;
   --brand-walnut: #5b3a22;
   --brand-kraft: #c9a97a;
-  --brand-ink: #1c2a1f;
-  --brand-ivory: #faf7f0;
-  --brand-gold: #d4b483;
+  --brand-ink: var(--ink);
+  --brand-ivory: var(--sut);
+  --brand-gold: var(--altin);
   --body-ink: var(--brand-ink);
   --page-margin: clamp(1.5rem, 2.2vw, 2rem);
   --page-gutter: 1.5rem;
-  --header-height: calc(3.75rem + env(safe-area-inset-top, 0px));
+  --header-height: calc(4.5rem + env(safe-area-inset-top, 0px));
 
-  /* v3: interface, body, product name, section and hero display. */
+  /* v4: 8px spacing rhythm; display values follow docs/DESIGN.md. */
+  --space-unit: 8px;
   --step-small: 0.875rem;
   --step-body: clamp(1.0625rem, 1.3vw, 1.125rem);
-  --step-product: clamp(1.25rem, 2vw, 1.5rem);
+  --step-product: 1.5rem;
   --step-lead: clamp(1.625rem, 2.1vw, 1.875rem);
-  --step-head: clamp(2.25rem, 4.5vw, 4rem);
-  --step-display: clamp(3.5rem, 7vw, 7.5rem);
+  --step-head: clamp(40px, 5vw, 68px);
+  --step-display: clamp(52px, 6.4vw, 96px);
 
-  --background: var(--brand-ivory);
-  --foreground: var(--brand-olive);
-  --card: var(--brand-ivory);
+  --background: var(--ink);
+  --foreground: var(--sut);
+  --card: var(--zeytin);
   --card-foreground: var(--foreground);
   --popover: var(--card);
   --popover-foreground: var(--foreground);
-  --primary: var(--brand-olive);
-  --primary-foreground: var(--brand-ivory);
-  --primary-hover: #354e3b;
-  --secondary: var(--brand-ivory);
-  --secondary-foreground: var(--brand-olive);
-  --secondary-hover: #e5e9df;
-  --muted: var(--brand-kraft);
-  --muted-foreground: var(--brand-walnut);
-  --accent: #e5e9df;
-  --accent-foreground: var(--brand-olive);
-  --destructive: #943b32;
-  --destructive-foreground: #fffcf5;
-  --destructive-hover: #7e3029;
-  --border: #d1cabb;
-  --input: #7b856e;
-  --ring: var(--brand-olive);
-  --overlay: #14261a;
+  --primary: var(--altin);
+  --primary-foreground: var(--ink);
+  --primary-hover: var(--altin-2);
+  --secondary: var(--zeytin);
+  --secondary-foreground: var(--sut);
+  --secondary-hover: var(--zeytin-2);
+  --muted: var(--zeytin-2);
+  --muted-foreground: var(--gri);
+  --accent: var(--zeytin-2);
+  --accent-foreground: var(--sut);
+  --destructive: #F5B4A8;
+  --destructive-foreground: var(--ink);
+  --destructive-hover: #F9CCBF;
+  --border: #536451;
+  --input: #81927D;
+  --ring: var(--altin);
+  --overlay: var(--ink);
 
   /* Also used by isolated component fixtures without the next/font layout. */
   --font-body-fallback: "Helvetica Neue", Arial, sans-serif;
@@ -118,14 +127,15 @@
     font-size: var(--step-body);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
-    caret-color: var(--brand-olive);
-    scrollbar-color: var(--brand-olive) var(--brand-ivory);
+    caret-color: var(--altin);
+    scrollbar-color: var(--altin) var(--ink);
   }
 
   h1, h2, h3, .font-serif {
     font-family: var(--font-display, var(--font-display-fallback));
     font-optical-sizing: auto;
     font-variation-settings: "SOFT" 50;
+    font-synthesis: none;
   }
 
   h1, h2, h3 {
@@ -152,8 +162,8 @@
   }
 
   ::selection {
-    background: var(--brand-olive);
-    color: var(--brand-ivory);
+    background: var(--altin);
+    color: var(--ink);
   }
 }
 
@@ -185,12 +195,12 @@
 
 /* Contextual actions inherit accessible colours from their flat surface. */
 [data-surface="dark"] {
-  --primary: var(--brand-ivory);
-  --primary-foreground: var(--brand-olive);
-  --primary-hover: var(--brand-kraft);
-  --ring: var(--brand-gold);
+  --primary: var(--altin);
+  --primary-foreground: var(--ink);
+  --primary-hover: var(--altin-2);
+  --ring: var(--altin);
 }
 
-@media (min-width: 1024px) {
-  :root { --header-height: calc(4.5rem + env(safe-area-inset-top, 0px)); }
+@media (min-width: 901px) {
+  :root { --header-height: calc(5rem + env(safe-area-inset-top, 0px)); }
 }

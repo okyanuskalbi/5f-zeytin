@@ -27,7 +27,8 @@ it("shows the three trust facts without a draft delivery label", () => {
 it("omits the whole wholesale row and footer destination when contact details are empty", () => {
   expect(Object.values(siteContact).every(value => value === "")).toBe(true);
   render(<><Facility /><Footer /></>);
-  expect(document.querySelector("#toptan, #toptan-iletisim")).toBeNull();
+  expect(document.querySelector("#toptan")).toBeNull();
+  expect(document.querySelector("#toptan-iletisim")?.textContent).toBe("");
   expect(screen.queryByText("Toptan alım için bize yazın")).toBeNull();
   expect(screen.queryByText("İletişim bilgileri yakında")).toBeNull();
   expect(screen.queryByRole("link", { name: "Toptan Satış İçin İletişime Geçin" })).toBeNull();

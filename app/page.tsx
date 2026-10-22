@@ -11,9 +11,9 @@ export default async function Home(): Promise<JSX.Element> {
   const families = await getProductFamilies();
   return <main>
     <BusinessJsonLd />
-    <Hero product={families.find(family => family.id === "dogal-kirma")?.variants.find(variant => variant.weight === "10 kg")} />
-    <Pantry families={families} />
+    <Hero products={families.find(family => family.id === "dogal-kirma")?.variants} />
     <TrustStrip />
+    <Pantry families={families} />
     <Facility />
     <div className="page-wrap"><Faq /></div>
   </main>;

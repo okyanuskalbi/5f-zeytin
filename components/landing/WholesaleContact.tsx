@@ -2,8 +2,8 @@ import type { JSX } from "react";
 import { hasSiteContact, siteContact, type SiteContact } from "@/lib/site/contact";
 import styles from "./V3Foundation.module.css";
 
-export function WholesaleContact({ contact = siteContact }: { contact?: SiteContact }): JSX.Element | null {
-  if (!hasSiteContact(contact)) return null;
+export function WholesaleContact({ contact = siteContact, preserveAnchor = false }: { contact?: SiteContact; preserveAnchor?: boolean }): JSX.Element | null {
+  if (!hasSiteContact(contact)) return preserveAnchor ? <div id="toptan-iletisim" tabIndex={-1} className={styles.wholesaleAnchor} /> : null;
 
   const phone = contact.phone.trim();
   const whatsapp = contact.whatsapp.replace(/\D/g, "");

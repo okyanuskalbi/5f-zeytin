@@ -5,9 +5,9 @@
   grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
   padding-block: 96px;
   scroll-margin-top: calc(var(--header-height) + 24px);
-  background: var(--brand-ivory);
+  background: var(--ink);
 }
-.answers { min-width: 0; color: var(--body-ink); }
+.answers { min-width: 0; color: var(--gri); }
 .answer + .answer { margin-top: 16px; }
 .question {
   display: flex;
@@ -21,12 +21,12 @@
   font-size: var(--step-body);
   font-weight: 600;
   text-wrap: pretty;
-  color: var(--brand-olive);
+  color: var(--sut);
 }
 .question::-webkit-details-marker { display: none; }
 .question:hover { text-decoration: underline; }
-.question:focus-visible { outline: 2px solid var(--brand-olive); outline-offset: 4px; }
-.question:active { color: var(--brand-walnut); }
+.question:focus-visible { outline: 2px solid var(--altin); outline-offset: 4px; }
+.question:active { color: var(--altin); }
 .indicator { width: 24px; height: 24px; flex-shrink: 0; stroke-width: 1.5; }
 .answer[open] .indicator { rotate: 180deg; }
 .answer p { max-width: 65ch; padding-block: 8px 16px; font-size: var(--step-body); text-wrap: pretty; }
