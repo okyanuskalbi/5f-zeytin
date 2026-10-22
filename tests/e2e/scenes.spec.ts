@@ -55,7 +55,8 @@ test("JavaScript-disabled SSR retains every section and the product destination"
     const page = await context.newPage();
     await page.goto(new URL("/", baseURL!).href);
     await expect(page.getByRole("heading", { name: "Düziçi'nden sofranıza.", exact: true })).toBeVisible();
-    await expect(page.getByRole("article")).toHaveCount(6);
+    await expect(page.locator("article[data-product-id]")).toHaveCount(6);
+    await expect(page.locator("#tesisimiz article")).toHaveCount(3);
     await page.goto(new URL("/#urunler", baseURL!).href);
     await expect(page.getByRole("heading", { name: "Sofranız için altı ürün.", exact: true })).toBeInViewport();
     await page.getByRole("contentinfo").scrollIntoViewIfNeeded();

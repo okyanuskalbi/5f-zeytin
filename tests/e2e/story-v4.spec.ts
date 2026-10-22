@@ -5,24 +5,16 @@ import { CART_STORAGE_KEY } from "../../lib/cart/store";
 const captions = ["Düziçi, Osmaniye", "Tesisimiz · Ellek", "Natürel sızma · 1 L"];
 
 async function readStep(page: Page, index: number): Promise<void> {
-  await page.locator(`[data-story-step="${index}"]`).evaluate(node => {
-    const sticky = document.querySelector<HTMLElement>("[data-story-sticky]")!;
-    const mobile = innerWidth < 768;
-    const top = mobile ? sticky.offsetHeight + parseFloat(getComputedStyle(sticky).top) + 24 : innerHeight * .45;
-    const bottom = mobile ? innerHeight * .1 : innerHeight * .45;
-    const center = (top + innerHeight - bottom) / 2;
-    const box = node.getBoundingClientRect();
-    scrollTo({ top: scrollY + box.top + box.height / 2 - center, behavior: "instant" });
-  });
-  await expect(page.locator(`[data-story-step="${index}"]`)).toHaveAttribute("data-active", "true");
-  const active = page.locator('#tesisimiz figure[data-active="true"]');
-  await expect(active).toHaveCSS("opacity", "1");
-  await expect(active.locator("figcaption")).toHaveText(captions[index]);
-  await expect(active.locator("img")).toBeVisible();
-  await expect.poll(() => active.locator("img").evaluate((node: HTMLImageElement) => node.complete && node.naturalWidth > 0)).toBe(true);
+  const row = page.locator(`article[data-story-step="${index}"]`);
+  const photo = row.locator("figure");
+  await photo.scrollIntoViewIfNeeded();
+  await expect(photo).toHaveCSS("opacity", "1");
+  await expect(photo.locator("figcaption")).toHaveText(captions[index]);
+  await expect(photo.locator("img")).toBeVisible();
+  await expect.poll(() => photo.locator("img").evaluate((node: HTMLImageElement) => node.complete && node.naturalWidth > 0)).toBe(true);
 }
 
-test("sticky story advances and reverses with its captions and approved v4 facility photo", async ({ page }) => {
+test("story rows retain their captions and approved v4 facility photo in both scroll directions", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
   await page.goto("/");
@@ -35,20 +27,19 @@ test("sticky story advances and reverses with its captions and approved v4 facil
 });
 
 for (const width of [320, 375, 390, 430, 768, 1024, 1440]) {
-  test(`story frame, text, band and touch targets reflow at ${width}px`, async ({ page }) => {
+  test(`story rows, text, band and touch targets reflow at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
     for (const index of [0, 1, 2]) {
       await readStep(page, index);
-      if (width < 768) {
-        const layout = await page.locator(`[data-story-step="${index}"]`).evaluate(node => {
-          const frame = document.querySelector("[data-story-sticky]")!.getBoundingClientRect();
-          const heading = node.querySelector("h2")!.getBoundingClientRect();
-          return { frameBottom: frame.bottom, height: frame.height, headingTop: heading.top, viewportHeight: innerHeight };
-        });
-        expect(layout.height).toBeLessThanOrEqual(layout.viewportHeight * .42 + 1);
-        expect(layout.headingTop).toBeGreaterThanOrEqual(layout.frameBottom + 23);
-      }
+      const layout = await page.locator(`article[data-story-step="${index}"]`).evaluate(node => {
+        const photo = node.querySelector("figure")!.getBoundingClientRect();
+        const copy = node.querySelector("h2")!.parentElement!.getBoundingClientRect();
+        return { photoBottom: photo.bottom, photoLeft: photo.left, photoRight: photo.right, copyTop: copy.top, copyLeft: copy.left, copyRight: copy.right };
+      });
+      if (width < 768) expect(layout.copyTop).toBeGreaterThanOrEqual(layout.photoBottom);
+      else if (index === 1) expect(layout.photoLeft).toBeGreaterThan(layout.copyRight);
+      else expect(layout.copyLeft).toBeGreaterThan(layout.photoRight);
     }
     const band = page.locator("[data-hero-band]");
     await band.scrollIntoViewIfNeeded();
@@ -94,7 +85,8 @@ test("band parallax stays within 60px and reduced motion keeps every image and t
     await expect(node).toHaveCSS("transform", "none");
     await expect(node).toHaveCSS("opacity", "1");
   }
-  await expect(page.locator("#tesisimiz")).toHaveAttribute("data-story-enhanced", "false");
+  await expect(page.locator("#tesisimiz article")).toHaveCount(3);
+  await expect(page.locator("[data-story-sticky]")).toHaveCount(0);
   for (const figure of await page.locator("#tesisimiz figure").all()) await expect(figure).toHaveCSS("opacity", "1");
   await expect(page.locator("#tesisimiz h2")).toHaveCount(3);
 });
@@ -104,7 +96,8 @@ test("JavaScript-free story shows all three photos, captions and complete copy",
   try {
     const page = await context.newPage();
     await page.goto(new URL("/#tesisimiz", baseURL!).href);
-    await expect(page.locator("#tesisimiz")).toHaveAttribute("data-story-enhanced", "false");
+    await expect(page.locator("#tesisimiz article")).toHaveCount(3);
+    await expect(page.locator("[data-story-sticky]")).toHaveCount(0);
     for (const figure of await page.locator("#tesisimiz figure").all()) {
       await expect(figure).toHaveCSS("opacity", "1");
       await expect(figure).toHaveCSS("transform", "none");

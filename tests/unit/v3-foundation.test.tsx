@@ -12,7 +12,8 @@ it("renders the new contentful sections in order with one footer preview note", 
   expect([...doc.querySelectorAll("main > section, main > div > section")].map(section => section.getAttribute("aria-labelledby") ?? section.getAttribute("aria-label"))).toEqual([
     "hero-title", "trust-title", "urunler-title", "tesisimiz-title", "kahraman-title", "toptan-title", "sss-title",
   ]);
-  expect(doc.querySelectorAll("article")).toHaveLength(6);
+  expect(doc.querySelectorAll("article[data-product-id]")).toHaveLength(6);
+  expect(doc.querySelectorAll("#tesisimiz article")).toHaveLength(3);
   expect(doc.querySelectorAll("picture source").length).toBeGreaterThan(5);
   expect(doc.querySelector("#hero-title")?.textContent).toBe("Düziçi'nden sofranıza.");
   expect(doc.body.textContent?.match(/Önizleme: fiyatlar ve görseller temsilidir\./g)).toHaveLength(1);

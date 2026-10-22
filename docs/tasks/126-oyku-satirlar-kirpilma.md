@@ -47,4 +47,43 @@ Sticky çerçeve + çapraz geçiş **kaldırılır**. Öykü, üç ayrı satır 
 - Diğer bölümlerin tasarımına dokunma.
 - `docs/` değiştirme (yalnız Coder Notu/Durum).
 
-## Durum: BEKLİYOR
+## Coder Notu
+
+- Sticky çerçeve, etkin adım state'i, özel IntersectionObserver/resize kodu ve çapraz geçiş kaldırıldı. `#tesisimiz` ve `data-story-step` sözleşmesi korundu; üç ayrı, başlığıyla etiketli `article` oluşturuldu. Metinler, caption'lar, alt metinler ve plakası bulanık tesis manifesti aynı kaldı.
+- Telefon: fotoğraf önce, metin sonra; 16px kenar ve 56px satır aralığı. Tablet: 1/1 kolon ve 72px aralık. Masaüstü: dönüşümlü 7/5–5/7 kolon, 96px aralık, 112px bölüm padding'i. Masaüstünde wrapper'ın sonundaki -40px pay, fotoğrafın 12px rezervi ve ±12px paralaksıyla birlikte band öncesi görünür boşluğu en çok 96px tutar. HeroBand ve diğer bölüm bileşenleri değiştirilmedi.
+- Fotoğraflar 16/9–16/10–16/9 oranında; radius 24px ve mevcut gölge korunuyor. İki ürün de kaynak görselin sağında olduğundan caption sol altta, genişliği fotoğrafın sol %58'iyle sınırlı. Fotoğrafın tamamı ±12px hareket ediyor; görsel kırpma penceresinin içinde kaydırılmıyor.
+- Her satırda `whileInView`, `once`, 24px giriş ve 80ms fotoğraf/metin aralığı var. Hareket değerleri `motionTokens.story` içinde. Reduced-motion, SSR ve hareket API'si bulunmayan durumda tüm fotoğraflar/metinler görünür, transform yok.
+
+### Skill / nerede kullanıldı
+
+| Skill / araç | Nerede kullanıldı |
+|---|---|
+| `ui-ux-pro-max` | Fiilen yüklendi; §5 Layout & Responsive ve yerel UX/Next.js aramaları: mobil öncelik, taşma/kırpılma, doğal oran ve boyut rezervi. |
+| `frontend-design` | Fiilen yüklendi; mevcut AFİNA renk, font, numara ve fotoğraf dilini koruyan üç satır. |
+| `better-layout` | Fiilen yüklendi; `minmax(0, ...)`, `min-width: 0`, mantıksal kenar özellikleri ve telefon okuma sırası. Görevin istediği dönüşümlü masaüstü yerleşimi korundu. |
+| `motion-framer` | Fiilen yüklendi; satır başına `whileInView` varyantları ve 80ms aralık. |
+| 21st MCP | İstenen `feature section alternating image text` ve `story timeline` sorguları, toplam üç arama çağrısı. Kullanılabilir bileşen kaynağı alınamadı; yeni bileşen eklenmeden mevcut Story proje token'larıyla uyarlandı. |
+| `shadcn-ui` | Fiilen yüklendi; bu düzenleme yeni shadcn bileşeni gerektirmediğinden CLI ile bileşen eklenmedi. |
+| `frontend-patterns` | Fiilen yüklendi; küçük `StoryRow` bileşeni ve sabit içerik listesi. |
+| `tdd-workflow` | Fiilen yüklendi; önce altı başarısız regresyon testi, sonra uygulama ve yeşil doğrulama. |
+| `animation-performance` | Fiilen yüklendi; yalnız transform/opacity, React state'i üzerinden kare/scroll güncellemesi yok; zoom kaldırıldı. Gerçek cihaz performansı Claude doğrulayacak. |
+| `motion-foundations` | Fiilen yüklendi; ortak token'lar, SSR'de görünür içerik ve reduced-motion kapısı. |
+| `motion-patterns` | Fiilen yüklendi; bir kez çalışan satır girişi ve varyant aktarımı. |
+| `motion-advanced` | Fiilen yüklendi; satıra bağlı `useScroll` + clamp edilen `useTransform`, bağımsız fotoğraf hareketi. |
+| `responsiveness-check` | Görev gereği Claude doğrulayacak. |
+
+### Komutla doğrulama / kabul kanıtı
+
+| Kontrol | Sonuç |
+|---|---|
+| RED: `npm test -- tests/unit/story.test.tsx` | 6 test beklenen nedenlerle başarısız: bağımsız article yok, doğru fotoğraf kabı oranı yok, eski sticky/etkin adım yapısı var. RED checkpoint yalnız yerelde tutuldu, son yeşil commit'e birleştirildi. |
+| GREEN: öykü unit testleri | 6/6 geçti: değişmeyen içerik/numara/alt metin, doğal oranlar ve bulanık tesis kaynağı, sticky yokluğu, reduced-motion/SSR, bir kez giriş, bağımsız ±12px paralaks ve observer temizliği. |
+| `npm test -- --maxWorkers=2 --coverage --coverage.include=components/landing/Story.tsx` | 34 dosya, 390/390 test geçti. Story: statement/branch/function/line kapsamı %100. Kapsam ölçümü yalnız Story için; genel uygulama coverage iddiası değildir. 118–125 testleri korundu; genel ürün article sayımı ürünlerle sınırlandı, öykünün üç article'ı ayrıca doğrulandı. |
+| `npm run lint` | PASS, sıfır uyarı. |
+| `npm run typecheck` | PASS; yeni/güncellenen e2e dosyaları da TypeScript kontrolünden geçti. |
+| `npm run build` | PASS; prebuild varlık kontrolleri de geçti: 18 görsel + 112 v3 çıktı. |
+| `git diff --check` | PASS. |
+| E2E — yazıldı, çalıştırılmadı | `tests/e2e/story-126.spec.ts`: 390/768/1440, normal/reduced-motion, her 200px'te görünür medya/metin sınırlarından %30 boş şerit, fotoğraf çakışması, tam kaynak görselinin kap içinde kalması, oran/kolon/kenar ölçüleri ve band boşluğu. `story-v4`, `v4-quality-gate` ve `scenes` içindeki ilgili eski kabuller yeni article yapısına uyarlandı. |
+| Tarayıcı kabulü | **Claude doğrulayacak:** iPhone + Pixel + 1440 + 768 kaydırma şeritleri, gerçek kadraj/caption/boşluk ve hareket görünümü. Playwright, Lighthouse, inspect, ekran görüntüsü veya tarayıcı çalıştırılmadı. AGENTS.md gereği bu kapı TAMAMLANDI durumunu engellemez. |
+
+## Durum: TAMAMLANDI

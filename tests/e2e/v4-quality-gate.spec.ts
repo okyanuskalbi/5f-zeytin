@@ -7,17 +7,10 @@ test.beforeEach(async ({ browserName }, info) => {
 });
 
 async function readStep(page: Page, index: number): Promise<void> {
-  await page.locator(`[data-story-step="${index}"]`).evaluate(node => {
-    const sticky = document.querySelector<HTMLElement>("[data-story-sticky]")!;
-    const mobile = innerWidth < 768;
-    const top = mobile ? sticky.offsetHeight + parseFloat(getComputedStyle(sticky).top) + 24 : innerHeight * .45;
-    const bottom = mobile ? innerHeight * .1 : innerHeight * .45;
-    const center = (top + innerHeight - bottom) / 2;
-    const box = node.getBoundingClientRect();
-    scrollTo({ top: scrollY + box.top + box.height / 2 - center, behavior: "instant" });
-  });
-  await expect(page.locator(`[data-story-step="${index}"]`)).toHaveAttribute("data-active", "true");
-  await expect(page.locator('#tesisimiz figure[data-active="true"]')).toHaveCSS("opacity", "1");
+  const row = page.locator(`article[data-story-step="${index}"]`);
+  await row.locator("figure").scrollIntoViewIfNeeded();
+  await expect(row.locator("figure")).toHaveCSS("opacity", "1");
+  await expect(row.locator("img")).toBeVisible();
 }
 
 for (const width of [320, 375, 390, 430, 768, 1024, 1440]) {
@@ -62,13 +55,14 @@ for (const width of [320, 375, 390, 430, 768, 1024, 1440]) {
 }
 
 for (const width of [390, 768, 1440]) {
-  test(`v4 story crossfades in both directions at ${width}px`, async ({ page }) => {
+  test(`v4 independent story rows stay readable in both scroll directions at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.emulateMedia({ reducedMotion: "no-preference" });
     await page.goto("/");
     for (const index of [0, 1, 2, 1, 0]) await readStep(page, index);
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await expect(page.locator("#tesisimiz")).toHaveAttribute("data-story-enhanced", "false");
+    await expect(page.locator("#tesisimiz article")).toHaveCount(3);
+    await expect(page.locator("[data-story-sticky]")).toHaveCount(0);
     for (const node of await page.locator("#tesisimiz figure, [data-hero-photo], [data-band-photo], [data-product-reveal]").all()) {
       await expect(node).toHaveCSS("transform", "none");
       await expect(node).toHaveCSS("opacity", "1");
