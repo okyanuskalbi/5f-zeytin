@@ -1,0 +1,9 @@
+.shell { max-width: 880px; }
+.title { font-size: var(--step-head); }
+.profile { margin-block: 32px; padding: clamp(20px, 4vw, 40px); background: var(--card); }
+.profile h2 { font-size: var(--step-lead); margin-bottom: 24px; }
+.profile dl { display: grid; gap: 24px; }
+.profile dl > div { display: grid; gap: 8px; min-width: 0; }
+.profile dt { color: var(--muted-foreground); font-size: var(--step-small); }
+.profile dd { overflow-wrap: anywhere; }
+.failure { display: grid; gap: 24px; margin-block: 32px; }

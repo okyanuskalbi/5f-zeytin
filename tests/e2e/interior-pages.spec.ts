@@ -2,12 +2,12 @@ import { expect, test } from "@playwright/test";
 import { CART_STORAGE_KEY } from "../../lib/cart/store";
 
 const routes = [
-  { path: "/hesabim", title: "Hesabım", message: "Üyelik ve hesap işlemleri yakında.", status: 200 },
   { path: "/siparis-takip", title: "Sipariş takibi", message: "Sipariş ve kargo takibi yakında.", status: 200 },
   { path: "/bulunamayan-sayfa", title: "Sayfa bulunamadı", message: "Aradığınız sayfaya ulaşılamıyor.", status: 404 },
 ];
 
-test("empty account, tracking and 404 retain reading content, recovery and reduced-motion access", async ({ page }) => {
+// Account's verified/anonymous states are covered in account.spec.ts.
+test("empty tracking and 404 retain reading content, recovery and reduced-motion access", async ({ page }) => {
   for (const reducedMotion of ["no-preference", "reduce"] as const) {
     await page.emulateMedia({ reducedMotion });
     for (const route of routes) {

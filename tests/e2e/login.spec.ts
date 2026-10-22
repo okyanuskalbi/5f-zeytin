@@ -98,8 +98,11 @@ for (const status of [401, 429, 503]) {
 test("an external return URL is sanitized in both request and response", async ({ page }) => {
   const requests = await mockLogin(page, 200, { data: { status: "signed_in", redirectTo: "https://evil.example" } });
   await page.goto("/giris?next=https%3A%2F%2Fevil.example"); await fill(page);
+  const accountNavigation = page.waitForRequest(request => new URL(request.url()).pathname === "/hesabim");
   await page.getByRole("button", { name: "E-posta ile giriş yap" }).click();
-  await expect(page).toHaveURL(/\/hesabim$/);
+  await accountNavigation;
+  // The login response is mocked, so task 043 correctly treats us as anonymous.
+  await expect(page).toHaveURL(/\/giris\?next=\/hesabim$/);
   expect(requests[0].next).toBe("/hesabim");
 });
 

@@ -1,5 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
+import { accountFixturePath, serveAccountFixture } from "./helpers/account-fixture";
 
 const demo = process.env.NEXT_PUBLIC_DEMO === "1";
 const main = (page: Page) => page.getByRole("main");
@@ -105,8 +106,11 @@ test.describe("tracking mock journeys", () => {
   });
 
   test("account links open owned orders directly; sign-out and other demo users cannot", async ({ page }) => {
-    await page.goto("/giris");
-    await page.getByRole("button", { name: "Google ile devam et", exact: true }).click();
+    await serveAccountFixture(page);
+    const demoAccountURL = `${accountFixturePath}?demo=1`;
+    await page.goto(demoAccountURL);
+    await page.evaluate(() => sessionStorage.setItem("afina:membership:demo-session:v1", JSON.stringify({ id: "demo-google", name: "Demo Misafir", email: "demo@example.test", phone: "" })));
+    await page.reload();
     await page.getByRole("tab", { name: "Siparişlerim" }).click();
     await page.getByRole("link", { name: "Takip et" }).first().click();
     await expect(main(page).getByRole("article")).toContainText("DEMO-10801");
@@ -115,7 +119,7 @@ test.describe("tracking mock journeys", () => {
     await page.goto("/siparis-takip");
     await page.getByRole("navigation", { name: "Siparişleriniz" }).getByRole("button", { name: /DEMO-10801/ }).click();
     await expect(main(page).getByRole("article")).toContainText("DEMO-10801");
-    await page.goto("/hesabim");
+    await page.goto(demoAccountURL);
     await page.getByRole("button", { name: "Çıkış yap" }).click();
     await expect(page).toHaveURL(/\/giris$/);
     await page.goto("/siparis-takip?no=DEMO-10801");

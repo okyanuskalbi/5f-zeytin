@@ -1,35 +1,34 @@
 import { expect, test, type Page } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 import { CART_STORAGE_KEY } from "../../lib/cart/store";
+import { accountFixturePath, serveAccountFixture } from "./helpers/account-fixture";
 
 const demo = process.env.NEXT_PUBLIC_DEMO === "1";
 
-// Preserve account demo acceptance without depending on removed Google mock UI.
+const demoAccountURL = `${accountFixturePath}?demo=1`;
+
+// The old demo stays test-only; /hesabim always uses the verified server gate.
 async function seedDemoSession(page: Page) {
   // Seed once on this page, so logout and reload cannot silently sign in again.
-  await page.goto("/hesabim");
+  await page.goto(demoAccountURL);
   await page.evaluate(() => sessionStorage.setItem("afina:membership:demo-session:v1", JSON.stringify({ id: "demo-google", name: "Demo Misafir", email: "demo@example.test", phone: "" })));
 }
 
-test("production without demo exposes honest upcoming states", async ({ page }, testInfo) => {
-  test.skip(demo, "Production gate is checked on the build without the demo opt-in.");
-  await mkdir("test-results/108", { recursive: true });
-  for (const route of ["/hesabim"]) {
-    await page.goto(route);
-    await expect(page.getByRole("main")).toContainText("yakında.");
-    await expect(page.getByRole("main").locator("form, input")).toHaveCount(0);
-    await expect(page.getByRole("button", { name: "Google ile devam et" })).toHaveCount(0);
-    await page.screenshot({ path: `test-results/108/production-${route.slice(1)}-${testInfo.project.name}.png`, fullPage: true });
-  }
+test("the account page redirects anonymous visitors with or without demo opt-in", async ({ page }) => {
+  await page.goto("/hesabim");
+  await expect(page).toHaveURL(/\/giris\?next=\/hesabim$/);
+  await expect(page.getByRole("form", { name: "E-posta ile giriş" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Google ile devam et" })).toHaveCount(0);
 });
 
 test.describe("membership mock journeys", () => {
   test.skip(!demo, "Mock journeys require NEXT_PUBLIC_DEMO=1 at build time.");
+  test.beforeEach(async ({ page }) => { await serveAccountFixture(page); });
 
   test("demo profile, tabs, order link and sign out preserve guest cart", async ({ page }) => {
     await page.addInitScript(key => { if (!localStorage.getItem(key)) localStorage.setItem(key, JSON.stringify([{ productId: "sample-green-olive-1kg", quantity: 2 }])); }, CART_STORAGE_KEY);
     await seedDemoSession(page);
-    await page.goto("/hesabim");
+    await page.goto(demoAccountURL);
     await expect(page.getByLabel("E-posta", { exact: true })).toHaveValue("demo@example.test");
     await page.getByLabel("Ad soyad", { exact: true }).fill("Deniz Sofra");
     await page.getByLabel("Telefon", { exact: true }).fill("05321234567");
@@ -44,7 +43,7 @@ test.describe("membership mock journeys", () => {
     await expect(page.getByRole("tab", { name: "Adreslerim" })).toBeFocused();
     await page.getByRole("button", { name: "Çıkış yap" }).click();
     await expect(page).toHaveURL(/\/giris$/);
-    await page.goto("/hesabim");
+    await page.goto(demoAccountURL);
     await expect(page.getByRole("link", { name: "Giriş yap" })).toBeVisible();
     await page.goto("/sepet");
     await expect(page.getByRole("main")).toContainText("Sepetim");
@@ -55,7 +54,7 @@ test.describe("membership mock journeys", () => {
 
   test("addresses create edit default delete, persistence and validation", async ({ page }) => {
     await seedDemoSession(page);
-    await page.goto("/hesabim");
+    await page.goto(demoAccountURL);
     await page.getByRole("tab", { name: "Adreslerim" }).click();
     await page.getByRole("button", { name: "Adres ekle" }).click();
     await page.getByRole("button", { name: "Adresi kaydet" }).click();
@@ -109,7 +108,7 @@ test.describe("membership mock journeys", () => {
     await page.goto("/kayit");
     await page.screenshot({ path: `test-results/108/kayit-${testInfo.project.name}.png`, fullPage: true });
     await seedDemoSession(page);
-    await page.goto("/hesabim");
+    await page.goto(demoAccountURL);
     await expect(page.getByLabel("Ad soyad", { exact: true })).toBeVisible();
     await page.screenshot({ path: `test-results/108/profil-${testInfo.project.name}.png`, fullPage: true });
     await page.getByRole("tab", { name: "Adreslerim" }).click();
