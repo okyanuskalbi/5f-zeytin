@@ -18,7 +18,7 @@ it("names secure payment without a provider in the four unchanged trust facts", 
   expect(doc.body.textContent).not.toContain("PayTR ile");
 });
 
-it("keeps the three navigation columns together beside the complete brand block", () => {
+it("keeps the three navigation columns beside the complete brand block in one grid", () => {
   const doc = footerDocument();
   const brand = doc.querySelector('[aria-labelledby="footer-brand-title"]')!;
   expect(brand.querySelector('img[alt="Afina Zeytin"]')).not.toBeNull();
@@ -28,7 +28,8 @@ it("keeps the three navigation columns together beside the complete brand block"
   expect(headings.map(node => node.textContent)).toEqual(["Alışveriş", "Yardım", "İletişim"]);
   const navigation = headings[0].parentElement!.parentElement!;
   expect(headings.every(node => node.parentElement!.parentElement === navigation)).toBe(true);
-  expect(navigation.contains(brand)).toBe(false);
+  expect(navigation.contains(brand)).toBe(true);
+  expect(navigation.children).toHaveLength(4);
 });
 
 it("puts the small community logo and attribution in one safe external link", () => {

@@ -37,4 +37,53 @@ Kanıt: `~/PROJELER/AFINA-KAYNAK/araclar/log/z-123/footer-d1440.png`, `footer-ip
 - Ödeme mantığı; yeni logo.
 - `docs/` değiştirme (yalnız Coder Notu/Durum).
 
-## Durum: BEKLİYOR
+## Coder Notu
+
+### Uygulama ve 21st kaynağı
+
+- 21st MCP `footer` araması çağrıldı; aşağıdaki üç adayın tam kaynak/component kodu `get_component` ile fiilen incelendi. Seçilen **Agency Footer — ShadcnSpace, demo 21474 / component 10510**. Marka + üç bağlantı/iletişim kolonu tek CSS Module ızgarasına alındı; örnek aralıklar v4 tokenlarına ve bu görevin ölçülerine uyarlandı.
+
+| Aday | Demo / component ID | Değerlendirme |
+|---|---|---|
+| [Agency Footer — ShadcnSpace](https://21st.dev/@shadcnspace/components/footer-01) | 21474 / 10510 | Seçildi; marka ve üç bilgi kolonu mevcut içerikle uyumlu. Kaynaktaki boş kolon ve geniş dikey aralıklar kullanılmadı. |
+| [Footer with Navigation Grid — shadcnui-blocks](https://21st.dev/@shadcnui-blocks/components/footer-01) | 28291 / 14678 | Izgara ve ayrı alt bar incelendi; altı link kolonu mevcut içerik için gereksiz. |
+| [Footer — Méschac Irung](https://21st.dev/@meschacirung/components/footer) | 4711 / 3574 | Ortalanmış link satırı incelendi; dört kolon hiyerarşisine uymuyor. |
+
+- Dış dikey padding 56/24px (alt güvenli alan korunur); başlık–liste 14px, masaüstü link arası 8px, hedef yüksekliği 32px. Telefon/tablet hedefleri en az 44px; telefonda ek liste boşluğu kaldırılıp padding hedefin içinde bırakıldı.
+- ≥1024px tek ızgara: 1.4/1/1/1.2fr, 48px kolon arası. 768–1023px marka tam genişlik ve altında üç kolon. <768px marka logo/slogan yan yana; Alışveriş/Yardım iki sütun; İletişim tam genişlik, adres ve Tesisimiz bağlantısı aynı sırada.
+- Marka içi 12px aralık, logo telefon/diğer 48/56px, Fraunces slogan 24/28px. Ödeme üst boşluğu 32px, dikey padding 16px; alt bilgi üst boşluğu 16px, telefon grupları 8px aralıklı.
+- Satıcı unvanı/adresi/vergi bilgileri, bütün linkler, dört ödeme logosu ve alt metinleri, güvenli topluluk bağlantısı, tek önizleme notu aynen korundu. Yeni iletişim bilgisi, logo, bağımlılık veya animasyon eklenmedi; 121 mobil çubuk davranışı korundu.
+
+### Skill / nerede kullanıldı
+
+| Skill | Nerede kullanıldı |
+|---|---|
+| `ui-ux-pro-max` | SKILL.md, quick-reference §1–3 ve §5, pro-rules okundu; `touch target spacing compact --domain ux` ve `responsive grid overflow --stack nextjs` çalıştırıldı. Mobil hedefler, 768/1024 kırılımları ve taşma önlemleri. |
+| `frontend-design` | Mevcut v4 koyu yüzey, Fraunces/Figtree ve altın odak rengi korundu; yeni görsel yön oluşturulmadan yoğunluk düzenlendi. |
+| `better-layout` | Marka/link grupları ortak ızgara kenarlarına hizalandı; DOM ve görsel okuma sırası eşleştirildi, `minmax(0, …)` ile esnek kolonlar tanımlandı. |
+| `shadcn-ui` | SKILL.md yüklendi, ihtiyaç değerlendirmesi yapıldı; mevcut sunucu footer'ı ve CSS Module yeterli olduğundan yeni primitive/CLI kurulumu gerekmedi. |
+| `tdd-workflow` | Üç yeni yapı/CSS testiyle RED doğrulandı, uygulama sonrası GREEN ve tüm unit regresyonları çalıştırıldı. |
+| 21st MCP | Üç adayın kaynak kodu incelendi; Agency Footer 21474 proje tokenlarına uyarlandı. |
+| `responsiveness-check` | Görev gereği Claude doğrulayacak. |
+
+### Komutla doğrulama
+
+| Komut | Sonuç |
+|---|---|
+| `npm test -- tests/unit/footer-127.test.tsx --maxWorkers=2` | Uygulama öncesi RED: 3 beklenen hata (kolon/alt satır yapısı, aralık tokenları, responsive ızgara). Yerel RED kaydı 1884e62; uzak geçmişe alınmadan nihai commit'te birleştirildi. |
+| `npm test -- tests/unit/footer-127.test.tsx tests/unit/footer-refresh.test.tsx tests/unit/faq-contact-footer.test.tsx --maxWorkers=2` | Uygulama sonrası GREEN: 23/23. |
+| `npm test -- --maxWorkers=2` | Nihai GREEN: 35 dosya, 394/394 test. 118–126 regresyonları dahil. Eski footer ile tüm metin/link/görsellerin eşitliği ayrıca test edildi. |
+| `npm run lint` | Geçti; uyarı yok. |
+| `npm run typecheck` | Geçti; yeni e2e TypeScript'i dahil. |
+| `npm run build` | Geçti; 18 + 112 görselin kaynak/onay/hash kontrolleri ve production derlemesi başarılı. |
+| `git diff --check` | Geçti. |
+
+### Claude doğrulayacak
+
+- `tests/e2e/footer-127.spec.ts` yazıldı, **çalıştırılmadı**: 1440px üst bölüm ≤260px; 390px tam footer yüksekliğinde ≥%30 azalma; 320–1920px yatay taşma; mobil hedefler ≥44px; son satırların mobil satın alma çubuğunca örtülmemesi.
+- Önce/sonra karşılaştırması için değişiklik öncesi (`247a01c`) gerçek footer HTML'i ve CSS'i `tests/e2e/fixtures/footer-123.html` / `footer-123.css` içine tarayıcı açmadan kaydedildi. Test eski footer'ı aynı build'in font/reset/tokenlarıyla izole iframe'de ölçer, yeni footer ile karşılaştırır ve `footer-123-vs-127-css-px` JSON ekine önce/sonra üst bölüm/toplam yüksekliklerini ve azalma oranını yazar.
+- Görevdeki yaklaşık 663 CSS px bilgisi üst bölüm kırpımıdır; tam footer ölçümü olarak kullanılmadı. Bu oturumda tarayıcı çalıştırılmadığı için önce/sonra sayısal yükseklik veya %30 kabulü doğrulanmış sayılmaz; ölçümü Claude yapacak.
+- Eski footer e2e beklentileri 768px tablet eşiğine ve masaüstü 32px/mobil 44px hedeflerine uyarlandı; içerik/logo/odak kontrolleri korundu. Playwright, Lighthouse, inspect, ekran görüntüsü ve kare şeridi çalıştırılmadı.
+- AGENTS.md'nin tarayıcı kabulünü Claude'a bırakan kuralı gereğince unit/lint/typecheck/build yeşil olduğundan uygulama TAMAMLANDI olarak işaretlendi.
+
+## Durum: TAMAMLANDI

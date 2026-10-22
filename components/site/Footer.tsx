@@ -6,7 +6,7 @@ import { siteContact } from "@/lib/site/contact";
 import styles from "./Footer.module.css";
 
 // Agency Footer, 21st.dev/@shadcnspace/components/footer-01 (demo 21474).
-// Brand + navigation grid adapted to v4 tokens, native links and CSS Modules (Task 123).
+// Compact four-column grid adapted to v4 tokens, native links and CSS Modules (Tasks 123/127).
 const shoppingLinks = [
   { label: "Ürünler", href: "/#kiler" },
   { label: "Kışlık kiler", href: "/#urunler" },
@@ -50,27 +50,25 @@ export function Footer(): JSX.Element {
               <span>Bir AFİNA Şirketler Topluluğu markası</span>
             </a>
           </div>
-          <div className={styles.navigation}>
-            <nav aria-labelledby="footer-shopping-title">
-              <h2 id="footer-shopping-title" className={styles.heading}>Alışveriş</h2>
-              <ul>
-                {shoppingLinks.map(link => <li key={link.href}><Link className={styles.link} href={link.href}>{link.label}</Link></li>)}
-                <li><Link className={styles.link} href="/#toptan-iletisim">Toptan Satış İçin İletişime Geçin</Link></li>
-              </ul>
-            </nav>
-            <nav aria-labelledby="footer-help-title">
-              <h2 id="footer-help-title" className={styles.heading}>Yardım</h2>
-              <ul>{helpLinks.map(link => <li key={link.href}><Link className={styles.link} href={link.href}>{link.label}</Link></li>)}</ul>
-            </nav>
-            <div className={styles.destination} aria-labelledby="footer-contact-title">
-              <h2 id="footer-contact-title" className={styles.heading}>İletişim</h2>
-              <address><span>{street}, </span><span>{locality.join(", ")}</span></address>
-              <ul>
-                {phone && <li><a className={styles.link} href={`tel:${phone.replace(/\s/g, "")}`}>{phone}</a></li>}
-                {email && <li><a className={styles.link} href={`mailto:${email}`}>{email}</a></li>}
-                <li><Link className={styles.link} href="/#tesisimiz">Tesisimiz</Link></li>
-              </ul>
-            </div>
+          <nav className={styles.column} aria-labelledby="footer-shopping-title">
+            <h2 id="footer-shopping-title" className={styles.heading}>Alışveriş</h2>
+            <ul>
+              {shoppingLinks.map(link => <li key={link.href}><Link className={styles.link} href={link.href}>{link.label}</Link></li>)}
+              <li><Link className={styles.link} href="/#toptan-iletisim">Toptan Satış İçin İletişime Geçin</Link></li>
+            </ul>
+          </nav>
+          <nav className={styles.column} aria-labelledby="footer-help-title">
+            <h2 id="footer-help-title" className={styles.heading}>Yardım</h2>
+            <ul>{helpLinks.map(link => <li key={link.href}><Link className={styles.link} href={link.href}>{link.label}</Link></li>)}</ul>
+          </nav>
+          <div className={`${styles.column} ${styles.destination}`} aria-labelledby="footer-contact-title">
+            <h2 id="footer-contact-title" className={styles.heading}>İletişim</h2>
+            <address><span>{street}, </span><span>{locality.join(", ")}</span></address>
+            <ul>
+              {phone && <li><a className={styles.link} href={`tel:${phone.replace(/\s/g, "")}`}>{phone}</a></li>}
+              {email && <li><a className={styles.link} href={`mailto:${email}`}>{email}</a></li>}
+              <li><Link className={styles.link} href="/#tesisimiz">Tesisimiz</Link></li>
+            </ul>
           </div>
         </div>
         <div className={styles.payment} role="group" aria-label="Güvenli ödeme">
@@ -83,10 +81,8 @@ export function Footer(): JSX.Element {
           </ul>
         </div>
         <div className={styles.imprint}>
-          <div className={styles.bottom}>
-            <p>{seller.name} · {seller.taxOffice} VD · VKN {seller.taxId}</p>
-            <nav aria-label="Yasal bilgiler"><ul>{legalLinks.map(link => <li key={link.href}><Link className={styles.link} href={link.href}>{link.label}</Link></li>)}</ul></nav>
-          </div>
+          <p>{seller.name} · {seller.taxOffice} VD · VKN {seller.taxId}</p>
+          <nav aria-label="Yasal bilgiler"><ul>{legalLinks.map(link => <li key={link.href}><Link className={styles.link} href={link.href}>{link.label}</Link></li>)}</ul></nav>
           <div className={styles.notice}>
             <p>© 2026 AFİNA ZEYTİN</p>
             <p>Önizleme: fiyatlar ve görseller temsilidir.</p>

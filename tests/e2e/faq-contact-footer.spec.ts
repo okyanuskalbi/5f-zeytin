@@ -55,7 +55,7 @@ test("footer legal destinations and focus remain usable", async ({ page }) => {
     await link.focus();
     await expect(link).toBeFocused();
     expect(await link.evaluate(node => parseFloat(getComputedStyle(node).outlineWidth))).toBeGreaterThanOrEqual(2);
-    expect((await link.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    expect((await link.boundingBox())!.height).toBeGreaterThanOrEqual(page.viewportSize()!.width >= 1024 ? 32 : 44);
     await page.keyboard.press("Enter");
     await expect(page).toHaveURL(new RegExp(`${href}$`));
     await expect(page.getByRole("heading", { level: 1, name, exact: true })).toBeVisible();
@@ -90,7 +90,7 @@ test("footer controls retain hover, press and focus when brand images fail", asy
     await link.focus();
     await expect(link).toBeFocused();
     expect(await link.evaluate(node => parseFloat(getComputedStyle(node).outlineWidth))).toBeGreaterThanOrEqual(2);
-    expect((await link.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    expect((await link.boundingBox())!.height).toBeGreaterThanOrEqual(page.viewportSize()!.width >= 1024 ? 32 : 44);
     await link.hover();
     await page.mouse.down();
     expect(await link.evaluate(node => node.matches(":active"))).toBe(true);
@@ -114,9 +114,9 @@ test("footer columns, payment brands and community attribution adapt without ove
       const { x, y } = node.getBoundingClientRect();
       return { x, y };
     }));
-    if (width >= 640) {
+    if (width >= 768) {
       expect(Math.max(...positions.map(item => item.y)) - Math.min(...positions.map(item => item.y))).toBeLessThan(1);
-    } else if (width < 640) {
+    } else if (width < 768) {
       expect(Math.abs(positions[0].y - positions[1].y)).toBeLessThan(1);
       expect(positions[1].y).toBeLessThan(positions[2].y);
     }
@@ -141,7 +141,7 @@ test("footer columns, payment brands and community attribution adapt without ove
     }
     const provider = (await payment.getByRole("img", { name: "PayTR", exact: true }).boundingBox())!;
     const cards = (await payment.getByRole("list", { name: "Kabul edilen kartlar" }).boundingBox())!;
-    if (width < 640) {
+    if (width < 768) {
       expect(provider.y + provider.height).toBeLessThan(cards.y);
       expect(Math.abs(cards.x - (await payment.boundingBox())!.x)).toBeLessThan(1);
     }
@@ -156,7 +156,7 @@ test("footer columns, payment brands and community attribution adapt without ove
     for (const link of await footer.getByRole("link").all()) {
       const box = (await link.boundingBox())!;
       expect(box.width).toBeGreaterThanOrEqual(44);
-      expect(box.height).toBeGreaterThanOrEqual(44);
+      expect(box.height).toBeGreaterThanOrEqual(width >= 1024 ? 32 : 44);
     }
     await expect(page.getByText("Önizleme: fiyatlar ve görseller temsilidir.", { exact: true })).toHaveCount(1);
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
