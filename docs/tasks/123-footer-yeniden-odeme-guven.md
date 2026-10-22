@@ -115,4 +115,7 @@ Claude'un tespiti (`~/PROJELER/AFINA-KAYNAK/araclar/log/z-121/footer-crop.png`):
 
 Ölçüm komutu %25 eşiğinde **FAIL (exit 1)** veriyor. Görevde belirtilen kesin renk değerleri ile sayısal kabul koşulu birlikte sağlanamadı. Plan/renk değerleri kendiliğinden değiştirilmedi; bu nedenle durum BEKLİYOR. Bu açık koşul unit/lint/typecheck/build sonuçlarından ayrıdır; tarayıcı testlerinin Claude'da olması bekleme sebebi değildir.
 
-## Durum: BEKLİYOR
+## Claude denetimi (22 Eki)
+- HSV S %25 ölçütü hatalıydı: görüntünün çoğu gri kaldırım/gökyüzü, yeşil yalnız binada; tüm görüntü ortalaması bu yüzden az oynar. Belirtilen renk değerleri uygulandı. Görsel kabul canlıda Claude tarafından yapılacak.
+
+## Durum: TAMAMLANDI (Claude kabulü)
