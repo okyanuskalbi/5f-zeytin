@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Boxes, ClipboardList, LayoutDashboard, Menu, Search, ShoppingBasket, Tags, Truck, Users } from "lucide-react";
@@ -18,7 +18,7 @@ export type AdminOverview =
 
 const fixture: AdminOverview = { status: "fixture", activeProducts: 3, awaitingPayment: 2, readyToShip: 1 };
 const areas = [
-  { id: "admin-urunler", label: "Ürünler", group: "Operasyon", icon: Boxes, description: "En fazla 6 aktif ürünün katalog ve stok bilgileri burada yönetilecek." },
+  { id: "admin-urunler", label: "Ürünler", group: "Operasyon", icon: Boxes, description: "En fazla 6 aktif ürünün katalog ve stok bilgilerini yönetin." },
   { id: "admin-siparisler", label: "Siparişler", group: "Operasyon", icon: ClipboardList, description: "Sipariş ve ödeme durumları burada görüntülenecek." },
   { id: "admin-kargo", label: "Kargo", group: "Operasyon", icon: Truck, description: "Siparişlerin kargo ve takip bilgileri burada yönetilecek." },
   { id: "admin-kampanyalar", label: "Kupon / Kampanya", group: "Pazarlama", icon: Tags, description: "Kupon ve kampanya koşulları burada yönetilecek." },
@@ -34,13 +34,13 @@ function isValid(overview: AdminOverview) {
   );
 }
 
-/** Only local navigation and explicitly labelled fixtures. Data reads and writes
- * belong to the individually authorized operation tasks, never to this client. */
-export function AdminShell({ overview = fixture }: { overview?: AdminOverview }) {
+/** Shared operation navigation and explicitly labelled overview fixtures.
+ * Each operation page and API independently enforce server authorization. */
+export function AdminShell({ overview = fixture, children, area }: { overview?: AdminOverview; children?: ReactNode; area?: "admin-urunler" }) {
   const router = useRouter();
   const searchId = useId();
   const [query, setQuery] = useState("");
-  const [active, setActive] = useState("admin-genel-bakis");
+  const [active, setActive] = useState(area ?? "admin-genel-bakis");
   const [menuOpen, setMenuOpen] = useState(false);
   const pendingFocus = useRef<string | null>(null);
   const search = query.trim().toLocaleLowerCase("tr-TR");
@@ -60,14 +60,18 @@ export function AdminShell({ overview = fixture }: { overview?: AdminOverview })
   useEffect(() => {
     const updateLocation = () => {
       const id = window.location.hash.slice(1);
-      setActive(areas.some(area => area.id === id) ? id : "admin-genel-bakis");
+      setActive(area ?? (areas.some(area => area.id === id) ? id : "admin-genel-bakis"));
     };
     window.addEventListener("hashchange", updateLocation);
     return () => window.removeEventListener("hashchange", updateLocation);
-  }, []);
+  }, [area]);
+
+  function href(id: string) {
+    return id === "admin-urunler" ? "/admin/urunler" : `${children ? "/admin" : ""}#${id}`;
+  }
 
   function navigate(id: string) {
-    setActive(id);
+    if (id !== "admin-urunler" && !children) setActive(id);
     setQuery("");
     if (menuOpen) {
       pendingFocus.current = id;
@@ -80,9 +84,9 @@ export function AdminShell({ overview = fixture }: { overview?: AdminOverview })
       <SidebarGroup>
         <SidebarMenu>
           <SidebarMenuItem><SidebarMenuButton asChild data-active={active === "admin-genel-bakis"}>
-            <a href="#admin-genel-bakis" aria-current={active === "admin-genel-bakis" ? "location" : undefined} onClick={() => navigate("admin-genel-bakis")}>
+            <Link href={href("admin-genel-bakis")} aria-current={active === "admin-genel-bakis" ? "location" : undefined} onClick={() => navigate("admin-genel-bakis")}>
               <LayoutDashboard aria-hidden="true" />Genel Bakış
-            </a>
+            </Link>
           </SidebarMenuButton></SidebarMenuItem>
         </SidebarMenu>
       </SidebarGroup>
@@ -90,9 +94,9 @@ export function AdminShell({ overview = fixture }: { overview?: AdminOverview })
         <SidebarGroupLabel>{group}</SidebarGroupLabel>
         <SidebarMenu>{areas.filter(area => area.group === group).map(area => <SidebarMenuItem key={area.id}>
           <SidebarMenuButton asChild data-active={active === area.id}>
-            <a href={`#${area.id}`} aria-current={active === area.id ? "location" : undefined} onClick={() => navigate(area.id)}>
+            <Link href={href(area.id)} aria-current={active === area.id ? "location" : undefined} onClick={() => navigate(area.id)}>
               <area.icon aria-hidden="true" />{area.label}
-            </a>
+            </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>)}</SidebarMenu>
       </SidebarGroup>)}
@@ -141,12 +145,12 @@ export function AdminShell({ overview = fixture }: { overview?: AdminOverview })
           <span id={`${searchId}-hint`} className="sr-only">Yalnız bu sayfadaki yönetim alanlarında arar; müşteri verilerinde arama yapmaz.</span>
           {search && <div className={styles.searchResults}>
             <p role="status">{matches.length ? `${matches.length} yönetim alanı bulundu.` : "Eşleşen yönetim alanı bulunamadı."}</p>
-            <nav id={`${searchId}-results`} aria-label="Arama sonuçları">{matches.map(area => <a key={area.id} href={`#${area.id}`} onClick={() => navigate(area.id)}>{area.label}</a>)}</nav>
+            <nav id={`${searchId}-results`} aria-label="Arama sonuçları">{matches.map(area => <Link key={area.id} href={href(area.id)} onClick={() => navigate(area.id)}>{area.label}</Link>)}</nav>
           </div>}
         </div>
       </header>
       <main className={styles.content}>
-        <section aria-labelledby="admin-genel-bakis" className={styles.overview}>
+        {children ?? <><section aria-labelledby="admin-genel-bakis" className={styles.overview}>
           <div><p className={styles.eyebrow}>AFİNA ZEYTİN</p><h1 id="admin-genel-bakis" tabIndex={-1}>Genel Bakış</h1><p className={styles.muted}>Ürün, sipariş ve sevkiyat işlemlerinin yönetim alanı.</p></div>
           {sample && <p className={styles.notice}>Bu özet test verisi kullanır. Canlı operasyon verisi bağlı değildir.</p>}
           {loading && <p role="status">Özet yükleniyor…</p>}
@@ -163,8 +167,8 @@ export function AdminShell({ overview = fixture }: { overview?: AdminOverview })
           </div>
         </section>
         <div className={styles.areas}>{areas.map(area => <section key={area.id} aria-labelledby={area.id} className={styles.panel}>
-          <h2 id={area.id} tabIndex={-1}>{area.label}</h2><p>{area.description}</p><p className={styles.muted}>Henüz operasyon verisi bağlı değil.</p>
-        </section>)}</div>
+          <h2 id={area.id} tabIndex={-1}>{area.label}</h2><p>{area.description}</p>{area.id === "admin-urunler" ? <Link href="/admin/urunler" className={styles.storeLink}>Ürünleri yönet</Link> : <p className={styles.muted}>Henüz operasyon verisi bağlı değil.</p>}
+        </section>)}</div></>}
       </main>
     </div>
   </div>;

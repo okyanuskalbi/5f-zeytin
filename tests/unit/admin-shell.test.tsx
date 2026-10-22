@@ -39,8 +39,11 @@ describe("protected admin shell", () => {
     expect(nav.getByRole("link", { name: "Genel Bakış" }).getAttribute("aria-current")).toBe("location");
     for (const area of areas) {
       const link = nav.getByRole("link", { name: area });
-      expect(link.getAttribute("href")).toMatch(/^#admin-/);
-      expect(document.getElementById(link.getAttribute("href")!.slice(1))).toBeTruthy();
+      if (area === "Ürünler") expect(link.getAttribute("href")).toBe("/admin/urunler");
+      else {
+        expect(link.getAttribute("href")).toMatch(/^#admin-/);
+        expect(document.getElementById(link.getAttribute("href")!.slice(1))).toBeTruthy();
+      }
       expect(screen.getByRole("region", { name: area })).toBeTruthy();
     }
     expect(nav.getByText("Operasyon")).toBeTruthy();
@@ -48,7 +51,7 @@ describe("protected admin shell", () => {
     fireEvent.click(nav.getByRole("link", { name: "Siparişler" }));
     expect(nav.getByRole("link", { name: "Siparişler" }).getAttribute("aria-current")).toBe("location");
     expect(screen.getByRole("region", { name: "Siparişler" }).contains(document.activeElement)).toBe(true);
-    expect(document.querySelector('a[href^="/admin/"]')).toBeNull();
+    expect(screen.getByRole("link", { name: "Ürünleri yönet" }).getAttribute("href")).toBe("/admin/urunler");
   });
   it("labels all three sample summaries and keeps unavailable analysis honest", () => {
     render(<AdminShell overview={fixture} />);

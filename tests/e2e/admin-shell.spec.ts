@@ -27,7 +27,8 @@ test.describe("admin client acceptance", () => {
         await expect(page.getByRole("region", { name: "Operasyon özeti" }).getByText("TEST VERİSİ", { exact: true })).toHaveCount(3);
         await expect(page.getByRole("region", { name: "Aktif ürün", exact: true })).toContainText("3 / 6");
         await expect(page.getByRole("region", { name: "Sipariş görünümü" })).toContainText("Henüz sipariş verisi yok");
-        await expect(page.locator("table, canvas, a[href^='/admin/']")).toHaveCount(0);
+        await expect(page.locator("table, canvas")).toHaveCount(0);
+        await expect(page.getByRole("link", { name: "Ürünleri yönet" })).toHaveAttribute("href", "/admin/urunler");
         const menu = page.getByRole("button", { name: "Yönetim menüsünü aç" });
         if (width < 1024) {
           await menu.focus(); await page.keyboard.press("Enter");
