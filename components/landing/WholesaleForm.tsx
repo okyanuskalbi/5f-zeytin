@@ -30,12 +30,29 @@ export function WholesaleForm({ submitRequest }: { submitRequest?: WholesaleSubm
   const inFlight = useRef(false);
   const statusRef = useRef<HTMLParagraphElement>(null);
   const alertRef = useRef<HTMLParagraphElement>(null);
+  const messageRef = useRef<HTMLTextAreaElement>(null);
   const pending = status === "pending";
 
   useEffect(() => {
     if (status === "success") statusRef.current?.focus({ preventScroll: true });
     if (status === "error") alertRef.current?.focus({ preventScroll: true });
   }, [status]);
+
+  useEffect(() => {
+    const textarea = messageRef.current;
+    if (!textarea) return;
+    function resize(): void {
+      const style = getComputedStyle(textarea!);
+      // Start at the responsive CSS minimum; height:auto retains rows=3 on SE.
+      textarea!.style.height = style.minHeight;
+      const border = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
+      const height = Math.max(parseFloat(style.minHeight), Math.min(textarea!.scrollHeight + border, parseFloat(style.maxHeight)));
+      if (Number.isFinite(height)) textarea!.style.height = `${height}px`;
+    }
+    resize();
+    window.addEventListener("resize", resize);
+    return () => window.removeEventListener("resize", resize);
+  }, [values.message]);
 
   function update(field: WholesaleField, value: string): void {
     setValues(previous => ({ ...previous, [field]: value }));
@@ -91,43 +108,38 @@ export function WholesaleForm({ submitRequest }: { submitRequest?: WholesaleSubm
   }
 
   return (
-    <form data-reading-safe="" aria-labelledby={`${id}-title`} aria-describedby={`${id}-scope ${id}-availability`}
+    <form data-reading-safe="" aria-label="Toptan teklif isteyin" aria-describedby={`${id}-availability`}
       aria-busy={pending} onSubmit={handleSubmit} noValidate method="post"
-      className={`${styles.form} space-y-6`}>
-      <h3 id={`${id}-title`}>Toptan talep formu</h3>
-      <p id={`${id}-scope`}>Sofralık zeytin • Salamura zeytin • Zeytinyağı</p>
-      <p id={`${id}-availability`} className="text-muted-foreground">
-        {submitRequest ? "İsim / firma ve talep mesajı zorunludur. Size ulaşabilmemiz için e-posta veya telefon bilgilerinden en az birini girin." : unavailable}
-      </p>
+      className={styles.form}>
+      <span id={`${id}-name-hint`} className="sr-only">Zorunlu, 2–120 karakter.</span>
+      <span id={`${id}-email-hint`} className="sr-only">E-posta veya telefondan en az birini girin. E-posta en fazla 254 karakter.</span>
+      <span id={`${id}-phone-hint`} className="sr-only">E-posta veya telefondan en az birini girin. Telefon 7–15 rakam, en fazla 30 karakter.</span>
+      <span id={`${id}-message-hint`} className="sr-only">Zorunlu, 10–2000 karakter. En az 10 karakter.</span>
       {/* SSR/JavaScript-free fields cannot trigger a native submit or leak values. */}
-      <fieldset disabled={!hydrated || pending} className="min-w-0 space-y-6">
-        <div className="space-y-2">
-          <label htmlFor={`${id}-name`} className="font-semibold">İsim / firma</label>
-          <Input {...fieldProps("name")} autoComplete="organization" required minLength={2} />
-          <p id={`${id}-name-hint`} className="text-sm text-muted-foreground">Zorunlu · 2–120 karakter</p>
+      <fieldset disabled={!hydrated || pending} className={styles.fields}>
+        <div className={styles.field}>
+          <label htmlFor={`${id}-name`}>İsim / firma<span aria-hidden="true"> *</span></label>
+          <Input {...fieldProps("name")} inputMode="text" autoComplete="organization" placeholder="İsim veya firma adı" required minLength={2} />
           {error("name")}
         </div>
-        <div className="grid min-w-0 gap-6 sm:grid-cols-2">
-          <div className="min-w-0 space-y-2">
-            <label htmlFor={`${id}-email`} className="font-semibold">E-posta</label>
-            <Input {...fieldProps("email")} type="email" autoComplete="email" autoCapitalize="none" spellCheck={false} />
-            <p id={`${id}-email-hint`} className="text-sm text-muted-foreground">E-posta veya telefon bilgilerinden biri yeterlidir.</p>
+        <div className={styles.channels}>
+          <div className={styles.field}>
+            <label htmlFor={`${id}-email`}>E-posta</label>
+            <Input {...fieldProps("email")} type="email" inputMode="email" autoComplete="email" autoCapitalize="none" spellCheck={false} placeholder="E-posta veya telefon" />
             {error("email")}
           </div>
-          <div className="min-w-0 space-y-2">
-            <label htmlFor={`${id}-phone`} className="font-semibold">Telefon</label>
-            <Input {...fieldProps("phone")} type="tel" autoComplete="tel" />
-            <p id={`${id}-phone-hint`} className="text-sm text-muted-foreground">7–15 rakam; ülke kodu ekleyebilirsiniz.</p>
+          <div className={styles.field}>
+            <label htmlFor={`${id}-phone`}>Telefon</label>
+            <Input {...fieldProps("phone")} type="tel" inputMode="tel" autoComplete="tel" placeholder="Ülke koduyla, 7–15 rakam" />
             {error("phone")}
           </div>
         </div>
-        <div className="space-y-2">
-          <label htmlFor={`${id}-message`} className="font-semibold">Talep mesajı</label>
-          <Textarea {...fieldProps("message")} rows={5} required minLength={10} />
-          <p id={`${id}-message-hint`} className="text-sm text-muted-foreground">Zorunlu · 10–2000 karakter</p>
+        <div className={styles.field}>
+          <label htmlFor={`${id}-message`}>Talep mesajı<span aria-hidden="true"> *</span></label>
+          <Textarea ref={messageRef} {...fieldProps("message")} rows={3} required minLength={10} placeholder="Miktar ve teslimat bilgisi. En az 10 karakter." />
           {error("message")}
         </div>
-        <div className="space-y-2">
+        <div className={styles.consentGroup}>
           <label className={styles.consent}>
             <input type="checkbox" name="kvkk" checked={acknowledged} required
               aria-invalid={acknowledgementError || undefined}
@@ -136,22 +148,22 @@ export function WholesaleForm({ submitRequest }: { submitRequest?: WholesaleSubm
             <span>KVKK aydınlatma metnini okudum.</span>
           </label>
           {acknowledgementError && <p id={`${id}-kvkk-error`} className="text-base text-destructive">Devam etmek için KVKK aydınlatma metnini okuduğunuzu belirtin.</p>}
+          <a href="/kvkk" className={styles.legal}>KVKK aydınlatma metni</a>
+          <span id={`${id}-kvkk-hint`} className="sr-only">KVKK metni taslaktır; onay bekleniyor.</span>
         </div>
       </fieldset>
-      <p>
-        <a href="/kvkk" className="inline-flex min-h-11 items-center underline underline-offset-4 hover:decoration-2">KVKK aydınlatma metni</a>
-        <span id={`${id}-kvkk-hint`} className="block text-sm text-muted-foreground">KVKK metni taslaktır; onay bekleniyor.</span>
-      </p>
-      <Button type="submit" disabled={!hydrated || pending || !submitRequest} aria-describedby={`${id}-availability`}>
-        {pending ? "Gönderiliyor…" : "Talebi gönder"}
-      </Button>
-      <p ref={statusRef} role="status" tabIndex={-1} className="empty:mt-0">
-        {!submitRequest ? unavailable : pending ? "Talebiniz gönderiliyor…" : status === "success" ? "Talebiniz gönderildi." : ""}
-      </p>
-      <p ref={alertRef} role="alert" tabIndex={-1} className="text-destructive empty:mt-0">
-        {status === "error" ? "Talebiniz gönderilemedi. Bilgilerinizi kontrol edip tekrar deneyin."
-          : acknowledgementError || Object.values(errors).some(Boolean) ? "Lütfen işaretli alanları kontrol edin." : ""}
-      </p>
+      <div data-wholesale-actions="" className={`${styles.actions} sticky bottom-0`}>
+        <Button type="submit" disabled={!hydrated || pending || !submitRequest} aria-describedby={`${id}-availability`}>
+          {pending ? "Gönderiliyor…" : "Talebi gönder"}
+        </Button>
+        <p id={`${id}-availability`} ref={statusRef} role="status" tabIndex={-1}>
+          {!submitRequest ? unavailable : pending ? "Talebiniz gönderiliyor…" : status === "success" ? "Talebiniz gönderildi." : ""}
+        </p>
+        <p ref={alertRef} role="alert" tabIndex={-1} className="text-destructive">
+          {status === "error" ? "Talebiniz gönderilemedi. Bilgilerinizi kontrol edip tekrar deneyin."
+            : acknowledgementError || Object.values(errors).some(Boolean) ? "Lütfen işaretli alanları kontrol edin." : ""}
+        </p>
+      </div>
     </form>
   );
 }

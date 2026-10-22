@@ -1,14 +1,40 @@
-.form { width: 100%; min-width: 0; max-width: 640px; color: inherit; }
-.consent { display: flex; align-items: start; gap: 8px; cursor: pointer; }
+.form { display: flex; flex: 1 1 auto; flex-direction: column; width: 100%; min-width: 0; min-height: 0; overflow: hidden; color: inherit; }
+.fields { display: grid; flex: 1 1 auto; align-content: start; gap: 10px; min-width: 0; min-height: 0; padding: 0 16px 4px; overflow-y: auto; overscroll-behavior: contain; scroll-padding-block: 12px; }
+.field { display: grid; gap: 4px; min-width: 0; }
+.field > label { font-size: 14px; font-weight: 600; line-height: 20px; }
+.field > input { min-height: 48px; }
+.field > textarea { min-height: 90px; max-height: 162px; resize: none; padding-block: 8px; line-height: 24px; overflow-y: auto; }
+.field > p, .consentGroup > p { font-size: 13px; line-height: 18px; }
+.channels { display: grid; gap: 10px; min-width: 0; }
+.consentGroup { min-width: 0; }
+.consent { display: flex; min-height: 44px; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; cursor: pointer; }
 .consent input { appearance: none; flex: 0 0 44px; width: 44px; height: 44px; margin: 0; border: 2px solid var(--input); background: var(--background); cursor: pointer; }
 .consent input:checked { background: var(--primary); border-color: var(--primary); }
 .consent input:checked::after { content: ""; display: block; width: 12px; height: 20px; margin: 6px 13px; border: solid var(--primary-foreground); border-width: 0 3px 3px 0; transform: rotate(45deg); }
 .consent input[aria-invalid="true"] { border-color: var(--destructive); }
 .consent input:disabled, .consent:has(input:disabled) { cursor: not-allowed; }
 .consent input:active:not(:disabled) { border-color: var(--ring); }
-.consent span { padding-block: 8px; }
+.consent span { padding-block: 4px; }
+.legal { display: inline-flex; min-height: 44px; align-items: center; font-size: 13px; line-height: 18px; text-decoration: underline; text-underline-offset: 4px; }
+.actions { z-index: 1; display: flex; flex: 0 0 auto; flex-direction: column; gap: 6px; margin-top: auto; padding: 8px 16px max(12px, env(safe-area-inset-bottom)); background: var(--ink); }
+.actions > button { width: 100%; min-height: 48px; background: var(--altin); color: var(--ink); }
+.actions > button:hover:not(:disabled) { background: var(--altin-2); }
+.actions > button:disabled { background: var(--altin); color: var(--ink); opacity: .65; }
+.actions > p { font-size: 12px; line-height: 16px; }
+.actions > [role="status"] { color: var(--gri); }
+.actions > p:empty { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .form a:active { text-decoration-thickness: 2px; }
 .form [role="status"]:focus, .form [role="alert"]:focus { outline: 2px solid var(--ring); outline-offset: 4px; }
 @media (hover: hover) and (pointer: fine) {
   .consent:hover input:not(:disabled) { border-color: var(--ring); }
+}
+@media (max-width: 767px) and (max-height: 700px) {
+  /* Keep inputs and touch targets intact on SE; only the message gets shorter. */
+  .field > textarea { min-height: 66px; }
+}
+@media (min-width: 768px) {
+  .fields { gap: 12px; padding-inline: 24px; padding-bottom: 8px; }
+  .channels { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .actions { align-items: flex-end; padding: 8px 24px 20px; }
+  .actions > button { width: auto; }
 }

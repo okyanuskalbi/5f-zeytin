@@ -2,6 +2,7 @@ import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testi
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { MobileBuyBar } from "@/components/landing/MobileBuyBar";
+import { WholesaleDialog } from "@/components/landing/WholesaleDialog";
 import { CartProvider, useCart } from "@/components/cart/CartProvider";
 import { CART_STORAGE_KEY } from "@/lib/cart/store";
 import type { Product } from "@/types/catalog";
@@ -123,6 +124,22 @@ it("observes portal dialogs opening and closing without another scroll", async (
   await waitFor(() => expect(screen.queryByRole("region", { name: "Hızlı satın alma" })).toBeNull());
   act(() => { dialog.remove(); });
   await waitFor(() => expect(screen.getByRole("region", { name: "Hızlı satın alma" })).toBeDefined());
+});
+
+it("stays hidden and inert while the actual wholesale Sheet is open, then returns without scrolling", async () => {
+  state.reduced = true;
+  vi.stubGlobal("matchMedia", () => ({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() }));
+  setup();
+  scroll(1000);
+  const bar = document.querySelector("[data-mobile-buy-bar]")!;
+  expect(bar.getAttribute("data-visible")).toBe("true");
+  const modal = render(<WholesaleDialog onClose={() => modal.unmount()} onRestoreFocus={() => {}} />);
+  expect(screen.getByRole("dialog").getAttribute("data-slot")).toBe("sheet-content");
+  await waitFor(() => expect(bar.getAttribute("data-visible")).toBe("false"));
+  expect(bar.hasAttribute("inert")).toBe(true);
+  fireEvent.click(screen.getByRole("button", { name: "Kapat" }));
+  await waitFor(() => expect(bar.getAttribute("data-visible")).toBe("true"));
+  expect(bar.hasAttribute("inert")).toBe(false);
 });
 
 it("adds the supplied product through the shared cart pattern with inline feedback and stock protection", () => {

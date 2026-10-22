@@ -38,4 +38,49 @@ Kullanıcı (22 Eki, canlı form ekran görüntüsüyle): "lead formu tek sayfad
 - Doğrulama kurallarını gevşetme.
 - `docs/` değiştirme (yalnız Coder Notu/Durum).
 
-## Durum: BEKLİYOR
+## Coder Notu
+
+22 Ekim 2026 — uygulama ve komut doğrulamaları tamamlandı.
+
+- Tek `h2` ve istenen açıklama kullanıldı; ikinci başlık, ayrı kapsam satırı ve görünür alan ipuçları kaldırıldı. Sınırlar ekran okuyucuya bağlı açıklamalarda ve placeholder'larda; mevcut hata metinleri ve doğrulama sözleşmesi korundu.
+- Masaüstünde 720px Dialog, 768px altında tam yükseklik Sheet kullanılıyor. shadcn Sheet, projenin token uygulanmış ortak Radix Dialog temeline uyarlandı; eşik geçişinde form yeniden mount edilmez, yazılan değerler ve odak korunur.
+- Mobil alanlar en az 48px; KVKK etiketi, bağlantı ve kapat düğmesi en az 44px. Gönder ve tek kullanılabilirlik notu, kayan fieldset'in dışında yapışık alt alanda. Safe-area ve `visualViewport` resize/scroll takibi klavye açılışını karşılıyor.
+- Mesaj `rows=3`, otomatik büyüme en çok altı satır; SE boyunda yalnız mesajın asgari yüksekliği iki satıra iner. İlk alan odağı, Esc/arka plan/kapat ile kapanma, tetikleyiciye odak dönüşü, animasyonsuz reduced-motion ve gerçek Sheet açıkken mobil satın alma çubuğunun gizlenmesi unit testlerle doğrulandı.
+- Gönderim bağımlılığı eklenmedi; mevcut pending/success/error davranışı ve gönderim yokken düğmenin devre dışı olması korundu.
+
+### Skill / nerede kullanıldı
+
+| Skill / araç | Nerede kullanıldı |
+| --- | --- |
+| `ui-ux-pro-max` | Mevcut yerel skill yüklendi; `compact mobile form responsive --domain ux` araması, mobil önce düzen, 48px alan ve 44px dokunma hedefleri. |
+| `frontend-design` | Mevcut Fraunces/Figtree, ink/süt/altın tokenları ve tek başlık hiyerarşisi. |
+| `better-layout` | 768px kolon geçişi, iç alanın kayması, sabit eylem alanı, safe-area ve SE mesaj yüksekliği. |
+| `shadcn-ui` | Yerel skill yüklendi; resmi CLI `view sheet`, `docs dialog sheet`, `add sheet --yes`; Sheet ortak Dialog temeline ve proje tokenlarına uyarlandı. |
+| 21st MCP | `contact form modal` ve `lead form` aramaları yapıldı; mevcut formun kaynak bileşeni `kevingirelli/Contact Form` (35258) bu oturumda MCP ile tekrar alındı. Footer içinde kalıcı durum bölgeleri ve iki kolonlu form düzeni uyarlandı. |
+| `motion-framer` | Panelin alttan açılışı ve kapanışı, kapanış bitene kadar modalın korunması. |
+| `motion-foundations`, `motion-patterns`, `motion-advanced` | Mevcut `motionTokens`, `useAnimate`, animasyon temizliği ve reduced-motion'da sıfır animasyon. |
+| `tdd-workflow` | Önce başarısız davranış testleri, sonra uygulama; RED/GREEN kanıtı aşağıda. |
+| `better-accessibility` | Native etiketler, `aria-modal`, hata/sınır bağlantıları, odak yönetimi, kalıcı canlı bölgeler ve dokunma hedefleri. |
+| `responsiveness-check` | Tarayıcı kabulü kapsamında Claude doğrulayacak. |
+
+### Komut kanıtı ve TDD
+
+- İlk RED: yeni testler mevcut kodda çift başlığı, eksik mobil Sheet'i, yapışık alt alanı ve visualViewport eksiklerini gösterdi. RED checkpoint'i yalnız yerelde tutuldu; push öncesi GREEN ile tek final commit'te birleştirildi.
+- Ek RED: `npm test -- tests/unit/wholesale-form-124.test.tsx -t 'two-line SE minimum'` → beklenen `66px`, mevcut `90px`. Otomatik büyüme ölçümü responsive CSS minimumundan başlatılarak düzeltildi.
+- GREEN: Task 124 için 22 unit test; formun eski doğrulama/durum testleri ve 118–123 kapsamındaki mevcut regresyon testleri korunuyor.
+
+| Komut | Sonuç |
+| --- | --- |
+| `npm test` | PASS — 33 dosya, 377 test; atlanan test yok. |
+| `npm run lint` | PASS — sıfır uyarı. |
+| `npm run typecheck` | PASS — E2E dosyaları dahil TypeScript doğrulandı. |
+| `npm run build` | PASS — production build ve 16 sayfa tamamlandı. Ön build varlık kontrolleri: 18 görsel + 100 v3 çıktı PASS. |
+| `git diff --check` | PASS. |
+
+### Claude doğrulayacak
+
+`tests/e2e/wholesale-form-124.spec.ts` yazıldı; 1366×768, 1440×900, 390×844 ve 375×667 için normal/reduced-motion toplam sekiz senaryo içeriyor: başlık/ilk alan/Gönder aynı anda görünür, iç kaydırma yok, dokunma hedefleri, kolon düzeni, mesajın altı satır sınırı, mobil satın alma çubuğu ve odak dönüşü. Eski E2E form seçicileri tek başlığa ve erişilebilir alan adlarına uyarlandı.
+
+AGENTS.md gereği Playwright, Lighthouse, inspect veya ekran görüntüsü çalıştırılmadı. Gerçek iPhone/SE ve Pixel klavyesi açıkken alt çubuğun görünürlüğü, kaydırmasız sığma ve masaüstü görsel kabulü **Claude doğrulayacak**. Bu tarayıcı kriterleri dışındaki uygulama veya komut kapılarında açık engel yok.
+
+## Durum: TAMAMLANDI

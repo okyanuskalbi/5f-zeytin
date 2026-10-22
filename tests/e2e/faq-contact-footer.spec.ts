@@ -174,7 +174,7 @@ test("wholesale CTA opens the labelled existing form and restores keyboard focus
   await trigger.focus();
   await page.keyboard.press("Enter");
   const dialog = page.getByRole("dialog", { name: "Toptan teklif isteyin", exact: true });
-  await expect(dialog.getByRole("heading", { name: "Toptan talep formu" })).toBeVisible();
+  await expect(dialog.getByRole("heading", { name: "Toptan teklif isteyin" })).toBeVisible();
   await expect(dialog.getByRole("button", { name: "Talebi gönder" })).toBeDisabled();
   await expect(dialog).toContainText("Bilgileriniz gönderilmez.");
   await page.keyboard.press("Escape");

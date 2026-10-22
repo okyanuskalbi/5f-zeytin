@@ -74,7 +74,7 @@ test("native scrolling keeps desktop image pinned, mobile image above content an
   await stage(page).getByRole("link", { name: "Toptan alım için teklif isteyin" }).click();
   await expect(page).toHaveURL(/#toptan$/);
   await expect(page.locator("#toptan")).toBeFocused();
-  await expect(page.getByRole("form", { name: "Toptan talep formu" })).toBeVisible();
+  await expect(page.getByRole("form", { name: "Toptan teklif isteyin" })).toBeVisible();
 });
 
 test("reduced motion and keyboard changes keep details and add-to-cart available", async ({ page }, info) => {

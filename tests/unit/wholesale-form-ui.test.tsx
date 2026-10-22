@@ -4,8 +4,8 @@ import { WholesaleForm } from "@/components/landing/WholesaleForm";
 import type { WholesaleResult } from "@/lib/contracts/wholesale";
 
 afterEach(cleanup);
-const input = (name: string) => screen.getByLabelText(name, { exact: true });
-const form = () => screen.getByRole("form", { name: "Toptan talep formu" });
+const input = (name: string) => screen.getByRole("textbox", { name: name });
+const form = () => screen.getByRole("form", { name: "Toptan teklif isteyin" });
 function fill(): void {
   fireEvent.click(screen.getByRole("checkbox", { name: "KVKK aydınlatma metnini okudum." }));
   fireEvent.change(input("İsim / firma"), { target: { value: "  Örnek Firma  " } });

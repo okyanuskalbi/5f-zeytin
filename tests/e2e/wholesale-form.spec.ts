@@ -3,14 +3,14 @@ import { expect, test, type Page } from "@playwright/test";
 import { build } from "vite";
 
 const cta = "Toptan Satış İçin İletişime Geçin";
-const form = (page: Page) => page.getByRole("form", { name: "Toptan talep formu" });
+const form = (page: Page) => page.getByRole("form", { name: "Toptan teklif isteyin" });
 
 async function fillRequest(page: Page, channel: "email" | "phone" = "email"): Promise<void> {
   await form(page).getByRole("checkbox").check();
-  await form(page).getByLabel("İsim / firma", { exact: true }).fill("Örnek Firma");
-  if (channel === "email") await form(page).getByLabel("E-posta", { exact: true }).fill("talep@example.test");
-  else await form(page).getByLabel("Telefon", { exact: true }).fill("+90 (555) 123 45 67");
-  await form(page).getByLabel("Talep mesajı", { exact: true }).fill("Sofralık zeytin ve zeytinyağı için bilgi rica ederim.");
+  await form(page).getByRole("textbox", { name: "İsim / firma", exact: true }).fill("Örnek Firma");
+  if (channel === "email") await form(page).getByRole("textbox", { name: "E-posta", exact: true }).fill("talep@example.test");
+  else await form(page).getByRole("textbox", { name: "Telefon", exact: true }).fill("+90 (555) 123 45 67");
+  await form(page).getByRole("textbox", { name: "Talep mesajı", exact: true }).fill("Sofralık zeytin ve zeytinyağı için bilgi rica ederim.");
 }
 
 test("landing hides wholesale contact and its footer link until details exist", async ({ page }) => {
@@ -64,10 +64,10 @@ test.describe("injected wholesale form", () => {
 
   test("invalid fields expose associated errors, length limits and first-invalid focus without sending", async ({ page }) => {
     await form(page).getByRole("button", { name: "Talebi gönder", exact: true }).click();
-    const name = form(page).getByLabel("İsim / firma", { exact: true });
-    const email = form(page).getByLabel("E-posta", { exact: true });
-    const phone = form(page).getByLabel("Telefon", { exact: true });
-    const message = form(page).getByLabel("Talep mesajı", { exact: true });
+    const name = form(page).getByRole("textbox", { name: "İsim / firma", exact: true });
+    const email = form(page).getByRole("textbox", { name: "E-posta", exact: true });
+    const phone = form(page).getByRole("textbox", { name: "Telefon", exact: true });
+    const message = form(page).getByRole("textbox", { name: "Talep mesajı", exact: true });
     await expect(name).toBeFocused();
     for (const field of [name, email, phone, message]) await expect(field).toHaveAttribute("aria-invalid", "true");
     await expect(name).toHaveAccessibleDescription(/2–120/);
@@ -112,20 +112,20 @@ test.describe("injected wholesale form", () => {
     await submit.dblclick({ force: true });
     await expect(form(page)).toHaveAttribute("aria-busy", "true");
     await expect(form(page).getByRole("status")).toHaveText("Talebiniz gönderiliyor…");
-    await expect(form(page).getByLabel("Talep mesajı", { exact: true })).toBeDisabled();
+    await expect(form(page).getByRole("textbox", { name: "Talep mesajı", exact: true })).toBeDisabled();
     await expect(form(page).getByRole("button", { name: "Gönderiliyor…", exact: true })).toBeDisabled();
     await expect(page.getByRole("status", { name: "Mock çağrı sayısı" })).toHaveText("1");
     await page.getByRole("button", { name: "Mock başarı" }).click();
     await expect(form(page).getByRole("status")).toHaveText("Talebiniz gönderildi.");
     await expect(form(page).getByRole("status")).toBeFocused();
     for (const label of ["İsim / firma", "E-posta", "Telefon", "Talep mesajı"]) {
-      await expect(form(page).getByLabel(label, { exact: true })).toHaveValue("");
+      await expect(form(page).getByRole("textbox", { name: label, exact: true })).toHaveValue("");
     }
     const payload = JSON.parse(await page.getByTestId("mock-payload").textContent() ?? "{}");
     expect(payload).toEqual({ name: "Örnek Firma", email: "talep@example.test", phone: "", message: "Sofralık zeytin ve zeytinyağı için bilgi rica ederim." });
     await form(page).getByRole("button", { name: "Talebi gönder", exact: true }).click();
     await expect(form(page).getByRole("status")).toHaveText("");
-    await expect(form(page).getByLabel("İsim / firma", { exact: true })).toBeFocused();
+    await expect(form(page).getByRole("textbox", { name: "İsim / firma", exact: true })).toBeFocused();
     await expect(page.getByRole("status", { name: "Mock çağrı sayısı" })).toHaveText("1");
   });
 
@@ -136,9 +136,9 @@ test.describe("injected wholesale form", () => {
       await page.getByRole("button", { name: outcome, exact: true }).click();
       await expect(form(page).getByRole("alert")).toContainText("Talebiniz gönderilemedi. Bilgilerinizi kontrol edip tekrar deneyin.");
       await expect(form(page).getByRole("alert")).toBeFocused();
-      await expect(form(page).getByLabel("Telefon", { exact: true })).toHaveValue("+90 (555) 123 45 67");
-      await expect(form(page).getByLabel("E-posta", { exact: true })).toHaveValue("");
-      await expect(form(page).getByLabel("Talep mesajı", { exact: true })).toHaveValue("Sofralık zeytin ve zeytinyağı için bilgi rica ederim.");
+      await expect(form(page).getByRole("textbox", { name: "Telefon", exact: true })).toHaveValue("+90 (555) 123 45 67");
+      await expect(form(page).getByRole("textbox", { name: "E-posta", exact: true })).toHaveValue("");
+      await expect(form(page).getByRole("textbox", { name: "Talep mesajı", exact: true })).toHaveValue("Sofralık zeytin ve zeytinyağı için bilgi rica ederim.");
       await expect(form(page).getByRole("status")).not.toContainText("Talebiniz gönderildi.");
     }
     await form(page).getByRole("button", { name: "Talebi gönder", exact: true }).click();
@@ -152,11 +152,11 @@ test.describe("injected wholesale form", () => {
     await page.setViewportSize({ width: page.viewportSize()!.width, height: 480 });
     for (const reducedMotion of ["no-preference", "reduce"] as const) {
       await page.emulateMedia({ reducedMotion });
-      const name = form(page).getByLabel("İsim / firma", { exact: true });
+      const name = form(page).getByRole("textbox", { name: "İsim / firma", exact: true });
       await name.focus();
       for (const label of ["E-posta", "Telefon", "Talep mesajı"]) {
         await page.keyboard.press(next);
-        const field = form(page).getByLabel(label, { exact: true });
+        const field = form(page).getByRole("textbox", { name: label, exact: true });
         await expect(field).toBeFocused();
         expect(await field.evaluate(node => parseFloat(getComputedStyle(node).outlineWidth))).toBeGreaterThanOrEqual(2);
       }
