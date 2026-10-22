@@ -20,10 +20,10 @@ it("adds an approved drawer suggestion, updates totals, and preserves modal focu
       upsell={{ activeProductIds: ["olive", "oil"], relations: [{ sourceProductId: "olive", targetProductId: "oil" }] }} />;
   }
   render(<Fixture />);
-  const dialog = within(screen.getByRole("dialog", { name: "Sepetim" }));
+  const dialog = within(screen.getByRole("dialog", { name: /^Sepetim \(/ }));
   fireEvent.click(dialog.getByRole("button", { name: "Test Zeytinyağı sepete ekle" }));
   expect(store.getSnapshot().items).toEqual([{ productId: "olive", quantity: 1 }, { productId: "oil", quantity: 1 }]);
-  expect(dialog.getByText("425,50 ₺", { exact: true })).toBeDefined();
+  expect(dialog.getByLabelText("Ara toplam").textContent).toBe("425,50 ₺");
   expect(dialog.queryByRole("button", { name: "Test Zeytinyağı sepete ekle" })).toBeNull();
   expect(document.activeElement).toBe(dialog.getByRole("button", { name: "Sepeti kapat" }));
 });
@@ -32,7 +32,7 @@ it("does not infer suggestions without approved relationships", () => {
   const store = createCartStore({ products, storage: null });
   store.addItem("olive");
   render(<CartDrawer store={store} products={products} open onOpenChange={() => {}} />);
-  expect(screen.queryByRole("region", { name: "Sofranızı tamamlayın" })).toBeNull();
+  expect(screen.queryByRole("region", { name: "Sofranıza ekleyin" })).toBeNull();
 });
 
 it("keeps checkout unavailable when no approved checkout destination is supplied", () => {

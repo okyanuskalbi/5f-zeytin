@@ -18,14 +18,14 @@ test("cart checkout entry reaches the demo checkout details without treating car
   await page.addInitScript(() => localStorage.setItem("afina-zeytin:cart", JSON.stringify([{ productId: "sample-table-olive", quantity: 1 }])));
   await page.goto(new URL("/", devURL).href);
   await page.getByRole("banner").getByRole("button", { name: /^Sepetim/ }).click();
-  const panel = page.getByRole("dialog", { name: "Sepetim", exact: true });
+  const panel = page.getByRole("dialog", { name: /^Sepetim \(/ });
   await expect(panel.getByRole("link", { name: "Ödemeye geç" })).toHaveAttribute("href", "/odeme");
   await panel.getByRole("link", { name: "Ödemeye geç" }).click();
   await expect(page).toHaveURL(/\/odeme$/);
   await expect(page.getByRole("main").getByRole("heading", { name: "İletişim ve adres", exact: true })).toBeVisible();
   await expect(page.getByRole("main").locator("iframe")).toHaveCount(0);
   await page.goto(new URL("/sepet", devURL).href);
-  await expect(page.getByRole("link", { name: "Ödemeye geç" })).toHaveAttribute("href", "/odeme");
+  await expect(page.getByRole("link", { name: "Ödemeye geç" }).filter({ visible: true })).toHaveAttribute("href", "/odeme");
   await expect(page.getByText("Yerel test ödemesi sepetinizden tahsilat yapmaz.")).toBeVisible();
 });
 

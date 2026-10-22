@@ -4,7 +4,7 @@ import { CART_STORAGE_KEY } from "../../lib/cart/store";
 let errors: string[] = [];
 const card = (page: Page) => page.locator('[data-product-id="sample-green-olive-1kg"]');
 const cartButton = (page: Page) => page.getByRole("banner").getByRole("button", { name: /^Sepetim/ });
-const drawer = (page: Page) => page.getByRole("dialog", { name: "Sepetim", exact: true });
+const drawer = (page: Page) => page.getByRole("dialog", { name: /^Sepetim \(/ });
 const line = (page: Page) => page.getByRole("group", { name: "Doğal Kırma Yeşil Zeytin", exact: true });
 
 async function addQuantity(page: Page, quantity: number): Promise<void> {
@@ -52,7 +52,7 @@ test("product, badge, drawer and page share quantities across navigation and rel
   await drawer(page).getByRole("button", { name: "Sepetten sil" }).click();
   await page.keyboard.press("Escape");
   await expect(page.locator("[data-cart-drawer]")).toHaveCount(0);
-  await expect(page.getByText("Sepetiniz henüz boş.")).toBeVisible();
+  await expect(page.getByText("Sepetiniz boş")).toBeVisible();
   await expect(cartButton(page)).toHaveAccessibleName("Sepetim, 0 adet");
   expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), CART_STORAGE_KEY)).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -104,7 +104,7 @@ test("badge counts all quantities and mobile menu reaches the same restored cart
   await expect(page.getByRole("group", { name: "Natürel Sızma Zeytinyağı", exact: true }).getByRole("status", { name: "Adet" })).toHaveText("2");
   await cartButton(page).click();
   await expect(drawer(page).getByText("Ara toplam (tahmini) · 3 adet")).toBeVisible();
-  await expect(drawer(page).getByText("920,00 ₺", { exact: true })).toBeVisible();
+  await expect(drawer(page).getByLabel("Ara toplam", { exact: true }).filter({ hasText: "920,00 ₺" })).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(cartButton(page)).toBeFocused();
 });
@@ -138,7 +138,7 @@ test("corrupt and blocked storage recover without breaking global cart controls"
   await page.addInitScript((key) => { localStorage.setItem(key, "broken-json"); }, CART_STORAGE_KEY);
   await page.goto("/");
   await cartButton(page).click();
-  await expect(drawer(page).getByText("Sepetiniz henüz boş.")).toBeVisible();
+  await expect(drawer(page).getByText("Sepetiniz boş")).toBeVisible();
   await page.keyboard.press("Escape");
   await page.addInitScript(() => {
     Object.defineProperty(window, "localStorage", { configurable: true, get() { throw new DOMException("Test blocked", "SecurityError"); } });
@@ -167,7 +167,7 @@ test("keyboard and reduced motion preserve opener focus and modal isolation", as
     const close = drawer(page).getByRole("button", { name: "Sepeti kapat" });
     await expect(close).toBeFocused();
     await page.keyboard.press("Shift+Tab");
-    await expect(drawer(page).getByRole("button", { name: "Alışverişe devam et" })).toBeFocused();
+    await expect(drawer(page).getByRole("link", { name: "Sepeti görüntüle" })).toBeFocused();
     await page.keyboard.press("Tab");
     await expect(close).toBeFocused();
     await page.keyboard.press("Escape");

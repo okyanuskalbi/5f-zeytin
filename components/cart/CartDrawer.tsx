@@ -2,16 +2,15 @@
 
 import { forwardRef, useEffect, useId, useRef, useState, useSyncExternalStore, type JSX, type ReactElement, type RefObject } from "react";
 import Link from "next/link";
-import { Minus, Plus, Trash2, X } from "lucide-react";
+import { ArrowRight, X } from "lucide-react";
 import { Dialog as DialogPrimitive } from "radix-ui";
-import { AnimatePresence, motion, useDragControls, useIsPresent, useReducedMotion, type HTMLMotionProps } from "motion/react";
+import { AnimatePresence, motion, useIsPresent, useReducedMotion, type HTMLMotionProps } from "motion/react";
 import { Button } from "@/components/ui/button";
-import { ProductThumbnail } from "./ProductThumbnail";
+import { CartEmpty, CartLineItem, CartTotals, CartTrust } from "./CartPresentation";
 import {
   Dialog, DialogClose, DialogDescription, DialogOverlay, DialogPortal, DialogTitle, DialogTrigger,
 } from "@/components/ui/dialog";
 import { Upsell, type UpsellConfiguration } from "@/components/cart/Upsell";
-import { useCartViewport } from "@/components/cart/useCartViewport";
 import { motionTokens, springs } from "@/lib/ui-motion";
 import styles from "./CartExperience.module.css";
 import type { CartStore } from "@/lib/cart/types";
@@ -30,21 +29,13 @@ type CartDrawerProps = {
   checkoutHref?: string | null;
 };
 
-const money = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-function formatPrice(kurus: number): string { return `${money.format(kurus / 100)} ₺`; }
-
 // Exiting content stays visible for its animation, but cannot receive focus.
 const CartPanel = forwardRef<HTMLDivElement, HTMLMotionProps<"div">>(function CartPanel(props, ref) {
   const present = useIsPresent();
   return <motion.div {...props} ref={ref} aria-hidden={!present} inert={!present} />;
 });
-const CartLine = forwardRef<HTMLLIElement, HTMLMotionProps<"li">>(function CartLine(props, ref) {
-  const present = useIsPresent();
-  return <motion.li {...props} ref={ref} aria-hidden={!present} inert={!present} />;
-});
-
-// 21st ddoemonn/Drawer 23558 (modal/focus/scroll) + wensity/Drawer 31360
-// (bottom sheet/snap/scroll body), adapted to the existing Radix and Motion stack.
+// 21st ddoemonn/Drawer 23558: right panel, scroll body and anchored footer.
+// Radix retains the modal/focus/scroll behavior; mobile uses the full viewport.
 export function CartDrawer({ store, products, open, onOpenChange, trigger, returnFocusRef, upsell, checkoutHref = null }: CartDrawerProps): JSX.Element {
   const state = useSyncExternalStore(store.subscribe, store.getSnapshot, store.getServerSnapshot);
   const id = useId();
@@ -52,10 +43,7 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
   const closeRef = useRef<HTMLButtonElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
   const [feedback, setFeedback] = useState({ error: false, message: "" });
-  const mobile = useCartViewport();
   const reduced = useReducedMotion();
-  const controls = useDragControls();
-  const [expanded, setExpanded] = useState(false);
   const transition = reduced ? { duration: 0 } : springs.drawer;
   useEffect(() => { store.hydrate(); }, [store]);
 
@@ -96,7 +84,6 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
     <Dialog open={open} onOpenChange={(nextOpen) => {
       // Safari does not focus clicked buttons. Remember the trigger explicitly.
       if (nextOpen) openerRef.current = triggerRef.current;
-      if (!nextOpen) setExpanded(false);
       setFeedback({ error: false, message: "" });
       onOpenChange(nextOpen);
     }}>
@@ -120,59 +107,30 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
             opener.focus();
           }
         }}>
-      <CartPanel data-slot="dialog-content" data-cart-drawer="" data-snap={expanded ? "expanded" : "compact"}
+      <CartPanel data-slot="dialog-content" data-cart-drawer=""
         className={styles.drawer} layoutRoot
-        initial={reduced ? false : mobile ? { y: "100%" } : { x: "100%" }}
-        animate={{ x: 0, y: 0 }} exit={reduced ? { opacity: 0 } : mobile ? { y: "100%" } : { x: "100%" }} transition={transition}
-        drag={mobile && !reduced ? "y" : false} dragControls={controls} dragListener={false} dragMomentum={false}
-        dragConstraints={{ top: 0, bottom: 0 }} dragElastic={0.2} dragSnapToOrigin
-        onDragEnd={(_, info) => {
-          if (info.offset.y < -48 || (info.offset.y < -12 && info.velocity.y < -400)) setExpanded(true);
-          else if (info.offset.y > 96 || (info.offset.y > 24 && info.velocity.y > 650)) {
-            if (expanded) setExpanded(false); else onOpenChange(false);
-          } else if (info.offset.y > 48) setExpanded(false);
-        }}>
+        initial={reduced ? false : { x: "100%" }}
+        animate={{ x: 0 }} exit={reduced ? { opacity: 0 } : { x: "100%" }} transition={transition}>
         <div className={styles.drawerHeader}>
           <div className="min-w-0 space-y-2">
-            <DialogTitle className="flex items-center gap-2">Sepetim</DialogTitle>
-            <DialogDescription className="text-base">Ürünlerinizi gözden geçirin, adetleri düzenleyin.</DialogDescription>
+            <DialogTitle className={styles.drawerTitle}>Sepetim ({itemCount})</DialogTitle>
+            <DialogDescription className={styles.drawerDescription}>Sofranız için seçtikleriniz.</DialogDescription>
           </div>
           <DialogClose asChild><Button ref={closeRef} variant="ghost" size="icon" aria-label="Sepeti kapat"><X aria-hidden="true" /></Button></DialogClose>
         </div>
 
         {/* Firefox otherwise inserts an implicit tab stop on this scroll container. */}
-        <div tabIndex={-1} className={`${styles.drawerBody} min-h-0 flex-1 space-y-6 overflow-y-auto overscroll-contain`}>
+        <motion.div layoutScroll tabIndex={-1} className={styles.drawerBody}>
           {!state.hydrated ? <p role="status">Sepet yükleniyor…</p> : lines.length === 0 ? (
-            <p role="status" className="py-8 text-muted-foreground">Sepetiniz henüz boş.</p>
+            <CartEmpty onBrowse={() => onOpenChange(false)} />
           ) : (
-            <ul aria-label="Sepetteki ürünler">
+            <ul aria-label="Sepetteki ürünler" className={styles.lines}>
               <AnimatePresence initial={false} mode="popLayout">
               {lines.map(({ productId, product, quantity }) => {
                 const unavailable = !product || product.stock < quantity;
                 return (
-                  <CartLine key={productId} className={`${styles.line} ${styles.withThumbnail}`} layout={reduced ? false : "position"}
-                    initial={reduced ? false : { opacity: 0, x: motionTokens.distance.lg }} animate={{ opacity: 1, x: 0 }}
-                    exit={reduced ? { opacity: 0 } : { opacity: 0, x: motionTokens.distance.lg }} transition={transition}>
-                    {product && <ProductThumbnail product={product} />}
-                    <div role="group" aria-labelledby={`${id}-line-${encodeURIComponent(productId)}`} className="space-y-3">
-                      <h3 id={`${id}-line-${encodeURIComponent(productId)}`} className="text-lg break-words">{product?.name ?? "Kullanılamayan ürün"}</h3>
-                      {product && <>
-                        <p className="text-base text-foreground">{product.weight}</p>
-                        <p className="text-base tabular-nums">{formatPrice(product.priceKurus)} / adet</p>
-                      </>}
-                      {unavailable && <p className="text-base text-destructive">Bu ürün artık kullanılamıyor.</p>}
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <div className="flex items-center gap-1">
-                          <Button variant="outline" size="icon" aria-label="Adedi azalt" disabled={unavailable || quantity <= 1}
-                            onClick={() => changeQuantity(productId, quantity - 1)}><Minus aria-hidden="true" /></Button>
-                          <output aria-label="Adet" className="min-w-9 text-center tabular-nums"><AnimatePresence initial={false} mode="popLayout"><motion.span key={quantity} className="inline-block" initial={reduced ? false : { opacity: 0, y: motionTokens.distance.xs }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={transition}>{quantity}</motion.span></AnimatePresence></output>
-                          <Button variant="outline" size="icon" aria-label="Adedi artır" disabled={unavailable || quantity >= (product?.stock ?? 0)}
-                            onClick={() => changeQuantity(productId, quantity + 1)}><Plus aria-hidden="true" /></Button>
-                        </div>
-                        <Button variant="ghost" size="icon" aria-label="Sepetten sil" onClick={() => removeItem(productId)}><Trash2 aria-hidden="true" /></Button>
-                      </div>
-                    </div>
-                  </CartLine>
+                  <CartLineItem key={productId} product={product} quantity={quantity} unavailable={unavailable} disabled={unavailable}
+                    onQuantity={next => changeQuantity(productId, next)} onRemove={() => removeItem(productId)} />
                 );
               })}
               </AnimatePresence>
@@ -183,25 +141,17 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
           <p role={feedback.error ? "alert" : "status"} aria-atomic="true" className={`text-base ${feedback.error ? "text-destructive" : "text-muted-foreground"}`}>
             {feedback.message}
           </p>
-        </div>
+        </motion.div>
 
         <div className={styles.drawerFooter}>
-          <div className="flex flex-wrap items-baseline justify-between gap-2 text-base">
-            <p>Ara toplam (tahmini) · {itemCount} adet</p>
-            <p className="text-lg font-medium tabular-nums">{state.hydrated && (lines.length === 0 || validCart) ? formatPrice(subtotal) : "—"}</p>
-          </div>
-          <p className="text-sm text-muted-foreground">Kargo ve indirimler dahil değildir.</p>
-          <div className={styles.drawerActions}>
-          <DialogClose asChild><Button asChild variant="outline"><Link href="/sepet" prefetch={false}>Sepeti görüntüle</Link></Button></DialogClose>
+          <CartTotals subtotal={state.hydrated && (lines.length === 0 || validCart) ? subtotal : null} itemCount={itemCount} />
+          <p className={styles.estimate}>Kargo ve indirimler dahil değildir.</p>
           {validCart && checkoutHref ? (
-            <DialogClose asChild><Button asChild><Link href={checkoutHref} prefetch={false}>Ödemeye geç</Link></Button></DialogClose>
-          ) : <Button disabled>Ödemeye geç</Button>}
-          </div>
-          {!checkoutHref && <p className="text-sm text-muted-foreground">Ödeme hazırlıkları sürüyor.</p>}
-          {mobile && <button type="button" className={styles.resize} aria-label={expanded ? "Sepeti daralt" : "Sepeti genişlet"} aria-expanded={expanded}
-            onPointerDown={event => { if (!reduced) controls.start(event); }}
-            onClick={() => setExpanded(value => !value)}><span aria-hidden="true" /></button>}
-          <DialogClose asChild><Button variant="ghost">Alışverişe devam et</Button></DialogClose>
+            <DialogClose asChild><Button asChild className={styles.checkout}><Link href={checkoutHref} prefetch={false}>Ödemeye geç<ArrowRight aria-hidden="true" /></Link></Button></DialogClose>
+          ) : <Button disabled className={styles.checkout} aria-describedby={`${id}-payment-help`}>Ödemeye geç</Button>}
+          <p id={`${id}-payment-help`} className={styles.paymentHelp}>{checkoutHref ? "Kesin tutar ödeme öncesinde doğrulanır." : "Ödeme hazırlıkları sürüyor."}</p>
+          <CartTrust />
+          <DialogClose asChild><Button asChild variant="link" className={styles.secondaryLink}><Link href="/sepet" prefetch={false}>Sepeti görüntüle</Link></Button></DialogClose>
         </div>
       </CartPanel>
       </DialogPrimitive.Content>

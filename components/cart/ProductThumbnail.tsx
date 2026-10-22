@@ -6,5 +6,5 @@ import styles from "./CartExperience.module.css";
 
 export function ProductThumbnail({ product }: { product: Product }): JSX.Element | null {
   if (!("imageKey" in product) || typeof product.imageKey !== "string") return null;
-  return <V3Picture image={v3Image(product.imageKey)} sizes="64px" decorative className={styles.thumbnail} />;
+  return <V3Picture image={v3Image(product.imageKey)} sizes="72px" decorative className={styles.thumbnail} />;
 }

@@ -3,7 +3,7 @@ import { getProducts } from "../../lib/catalog/static-products";
 import { CART_STORAGE_KEY } from "../../lib/cart/store";
 
 const stage = (page: Page) => page.locator("#one-cikan");
-const drawer = (page: Page) => page.getByRole("dialog", { name: "Sepetim", exact: true });
+const drawer = (page: Page) => page.getByRole("dialog", { name: /^Sepetim \(/ });
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => Object.defineProperty(navigator, "hardwareConcurrency", { configurable: true, value: 8 }));
 });

@@ -16,11 +16,11 @@ test("v4: both size pills select the real SKU and confirm inline", async ({ page
   expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key)!), CART_STORAGE_KEY)).toEqual([
     { productId: "sample-green-olive-10kg", quantity: 1 }, { productId: "sample-green-olive-1kg", quantity: 1 },
   ]);
-  await expect(page.getByRole("dialog", { name: "Sepetim", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("dialog", { name: /^Sepetim \(/ })).toHaveCount(0);
   const cart = page.getByRole("banner").getByRole("button", { name: "Sepetim, 2 adet" });
   await expect(cart).toContainText("Sepet");
   await cart.click();
-  await expect(page.getByRole("dialog", { name: "Sepetim", exact: true })).toBeVisible();
+  await expect(page.getByRole("dialog", { name: /^Sepetim \(/ })).toBeVisible();
 });
 
 test("v4: ghost links scroll to existing anchors without a URL hash", async ({ page }) => {

@@ -139,7 +139,7 @@ test("115: v4 hero CTA stays solid olive before hydration, after hydration and a
         await expect(page.locator("[data-hero-intro]").getByRole("status")).toContainText("sepete eklendi");
         await expect(button).toHaveCSS("opacity", "1");
         await expect(button).toHaveCSS("background-color", "rgb(31, 51, 36)");
-        await expect(page.getByRole("dialog", { name: "Sepetim", exact: true })).toHaveCount(0);
+        await expect(page.getByRole("dialog", { name: /^Sepetim \(/ })).toHaveCount(0);
       }
     } finally { await context.close(); }
   }
@@ -156,20 +156,20 @@ test("hero → products → drawer → cart preserves both variants and checkout
   await expect(family.getByRole("status")).toContainText("sepete eklendi");
   const expected = [{ productId: "sample-green-olive-10kg", quantity: 1 }, { productId: "sample-green-olive-1kg", quantity: 1 }];
   expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key)!), CART_STORAGE_KEY)).toEqual(expected);
-  await expect(page.getByRole("dialog", { name: "Sepetim", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("dialog", { name: /^Sepetim \(/ })).toHaveCount(0);
   await page.getByRole("button", { name: "Sepetim, 2 adet", exact: true }).click();
-  const drawer = page.getByRole("dialog", { name: "Sepetim", exact: true });
+  const drawer = page.getByRole("dialog", { name: /^Sepetim \(/ });
   await expect(drawer.getByRole("status", { name: "Adet" })).toHaveText(["1", "1"]);
   await drawer.getByRole("link", { name: "Sepeti görüntüle" }).click();
   await expect(page).toHaveURL(/\/sepet$/);
   await expect(page.getByRole("main").getByRole("group", { name: "Doğal Kırma Yeşil Zeytin", exact: true })).toHaveCount(2);
   if (process.env.NEXT_PUBLIC_DEMO === "1") {
-    await page.getByRole("main").getByRole("link", { name: "Ödemeye geç", exact: true }).click();
+    await page.getByRole("main").getByRole("link", { name: "Ödemeye geç", exact: true }).filter({ visible: true }).click();
     await expect(page).toHaveURL(/\/odeme$/);
     await expect(page.getByRole("main").getByRole("complementary", { name: "Sipariş özeti" })).toContainText("Doğal Kırma Yeşil Zeytin");
     await expect(page.getByRole("main").getByLabel("Ad soyad", { exact: true })).toBeVisible();
   } else {
-    await expect(page.getByRole("main").getByRole("button", { name: "Ödemeye geç", exact: true })).toBeDisabled();
+    await expect(page.getByRole("main").getByRole("button", { name: "Ödemeye geç", exact: true }).filter({ visible: true })).toBeDisabled();
   }
   expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key)!), CART_STORAGE_KEY)).toEqual(expected);
 });

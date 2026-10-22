@@ -90,7 +90,7 @@ test("mobile buy bar reserves space, hides at hero/footer/dialogs and remains op
   await expect(page.getByRole("button", { name: "Menüyü aç" })).toBeFocused();
   await expect(bar).toHaveAttribute("data-visible", "true");
   await page.getByRole("button", { name: /Sepetim,/ }).click();
-  await expect(page.getByRole("dialog", { name: "Sepetim" })).toBeVisible();
+  await expect(page.getByRole("dialog", { name: /^Sepetim \(/ })).toBeVisible();
   await expect(bar).toHaveAttribute("data-visible", "false");
   await page.keyboard.press("Escape");
   await page.evaluate(() => scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" }));

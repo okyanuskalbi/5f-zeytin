@@ -13,7 +13,7 @@ test("upsell: real cart has no invented relationship or discount", async ({ page
   await seed(page, [{ productId: "sample-green-olive-1kg", quantity: 1 }]);
   expect((await page.goto("/sepet"))?.status()).toBe(200);
   await expect(page.getByRole("group", { name: "Doğal Kırma Yeşil Zeytin", exact: true })).toBeVisible();
-  await expect(page.getByRole("region", { name: "Sofranızı tamamlayın" })).toHaveCount(0);
+  await expect(page.getByRole("region", { name: "Sofranıza ekleyin" })).toHaveCount(0);
   await expect(page.getByRole("region", { name: "Miktar indirimi koşulları" })).toHaveCount(0);
   await expect(page.getByText("Henüz hesaplanmadı", { exact: true })).toBeVisible();
 });
@@ -58,7 +58,7 @@ test.describe("upsell configured presentation", () => {
     await page.goto(`/__upsell-fixture/?mode=${mode}`);
     await expect(page.getByRole("heading", { level: 1, name: "Sepetim" })).toBeVisible();
   }
-  const recommendations = (page: Page) => page.getByRole("region", { name: "Sofranızı tamamlayın" });
+  const recommendations = (page: Page) => page.getByRole("region", { name: "Sofranıza ekleyin" });
   const discount = (page: Page) => page.getByRole("region", { name: "Miktar indirimi koşulları" });
 
   test("approved relations: only active stocked distinct targets; add uses shared cart and persists", async ({ page }, testInfo) => {
@@ -94,7 +94,7 @@ test.describe("upsell configured presentation", () => {
     await expect(discount(page)).toHaveCount(0);
     await page.getByRole("button", { name: "Sepetten sil" }).click();
     await page.getByRole("button", { name: "Yapılandırmayı değiştir" }).click();
-    await expect(page.getByText("Sepetiniz henüz boş.")).toBeVisible();
+    await expect(page.getByText("Sepetiniz boş")).toBeVisible();
     await expect(recommendations(page)).toHaveCount(0);
     await expect(discount(page)).toHaveCount(0);
     await page.evaluate((key) => localStorage.setItem(key, JSON.stringify([{ productId: "unrelated", quantity: 1 }])), CART_STORAGE_KEY);

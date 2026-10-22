@@ -37,7 +37,7 @@ test("cart receipt survives quantity edits, modal focus, refresh, removal and em
   await expect(line.getByRole("status", { name: "Adet" })).toHaveText("2");
   const opener = page.getByRole("banner").getByRole("button", { name: /^Sepetim/ });
   await opener.click();
-  const modal = page.getByRole("dialog", { name: "Sepetim", exact: true });
+  const modal = page.getByRole("dialog", { name: /^Sepetim \(/ });
   await expect(modal.getByRole("status", { name: "Adet" })).toHaveText("2");
   await expect(modal.getByRole("button", { name: "Sepeti kapat" })).toBeFocused();
   await page.keyboard.press("Escape");
@@ -45,8 +45,8 @@ test("cart receipt survives quantity edits, modal focus, refresh, removal and em
   await page.reload();
   await expect(line.getByRole("status", { name: "Adet" })).toHaveText("2");
   await line.getByRole("button", { name: "Sepetten sil" }).click();
-  await expect(page.getByRole("main").getByRole("status").filter({ hasText: "Sepetiniz henüz boş." })).toBeVisible();
-  await expect(page.getByRole("main").getByRole("link", { name: "Ürünlerimizi keşfedin" })).toHaveAttribute("href", "/#urunler");
+  await expect(page.getByRole("main").getByRole("heading", { name: "Sepetiniz boş", exact: true })).toBeVisible();
+  await expect(page.getByRole("main").getByRole("link", { name: "Ürünlere göz atın" })).toHaveAttribute("href", "/#urunler");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 

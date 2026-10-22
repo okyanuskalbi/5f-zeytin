@@ -4,7 +4,7 @@ import { CART_STORAGE_KEY } from "../../lib/cart/store";
 
 const section = (page: Page) => page.getByRole("region", { name: "Ürünlerimiz", exact: true });
 const row = (page: Page) => page.getByRole("region", { name: "Ürün listesi", exact: true });
-const drawer = (page: Page) => page.getByRole("dialog", { name: "Sepetim", exact: true });
+const drawer = (page: Page) => page.getByRole("dialog", { name: /^Sepetim \(/ });
 let errors: string[] = [];
 
 test.beforeEach(async ({ page }) => {

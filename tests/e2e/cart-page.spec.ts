@@ -29,7 +29,7 @@ test("cart page: route loads the catalog and preserves edits on server refresh",
   await expect(olive.getByRole("status", { name: "Adet" })).toHaveText("2");
   await expect(page.getByRole("textbox", { name: "Kupon kodu" })).toHaveAttribute("readonly", "");
   await expect(page.getByRole("button", { name: "Kuponu uygula" })).toBeDisabled();
-  await expect(page.getByRole("button", { name: "Ödemeye geç" })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "Ödemeye geç" }).filter({ visible: true })).toBeDisabled();
   await expect(page.getByRole("link", { name: "Alışverişe devam et" })).toHaveAttribute("href", "/#urunler");
 });
 
@@ -76,13 +76,13 @@ test.describe("cart page component", () => {
     await load(page);
     const olive = page.getByRole("group", { name: "Sofralık Zeytin", exact: true });
     await expect(olive.getByRole("button", { name: "Adedi azalt" })).toBeDisabled();
-    await expect(page.getByText("725,50 ₺", { exact: true })).toBeVisible();
+    await expect(page.getByLabel("Ara toplam", { exact: true }).filter({ hasText: "725,50 ₺" })).toBeVisible();
     await olive.getByRole("button", { name: "Adedi artır" }).click();
     await olive.getByRole("button", { name: "Adedi artır" }).click();
     await expect(olive.getByRole("button", { name: "Adedi artır" })).toBeDisabled();
-    await expect(page.getByText("976,50 ₺", { exact: true })).toBeVisible();
+    await expect(page.getByLabel("Ara toplam", { exact: true }).filter({ hasText: "976,50 ₺" })).toBeVisible();
     await page.getByRole("button", { name: "Sepeti aç", exact: true }).click();
-    const dialog = page.getByRole("dialog", { name: "Sepetim" });
+    const dialog = page.getByRole("dialog", { name: /^Sepetim \(/ });
     await expect(dialog.getByRole("status", { name: "Adet" }).first()).toHaveText("3");
     await dialog.getByRole("button", { name: "Adedi azalt" }).first().click();
     await page.keyboard.press("Escape");
@@ -95,8 +95,8 @@ test.describe("cart page component", () => {
     await olive.getByRole("button", { name: "Sepetten sil" }).click();
     await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
     await page.getByRole("button", { name: "Sepetten sil" }).click();
-    await expect(page.getByText("Sepetiniz henüz boş.")).toBeVisible();
-    await expect(page.getByRole("button", { name: "Ödemeye geç" })).toBeDisabled();
+    await expect(page.getByText("Sepetiniz boş")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Ödemeye geç" }).filter({ visible: true })).toBeDisabled();
     expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), CART_STORAGE_KEY)).toEqual([]);
     await page.screenshot({ path: testInfo.outputPath("cart-empty.png"), fullPage: true });
   });
@@ -107,11 +107,11 @@ test.describe("cart page component", () => {
     await expect(olive.getByText("150,75 ₺ / adet")).toBeVisible();
     await expect(olive.getByText(/Stok değişti/)).toBeVisible();
     await expect(page.getByRole("group", { name: "Kullanılamayan ürün" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Ödemeye geç" })).toBeDisabled();
+    await expect(page.getByRole("button", { name: "Ödemeye geç" }).filter({ visible: true })).toBeDisabled();
     await page.getByRole("button", { name: "Stok değişikliklerini uygula" }).click();
     await expect(olive.getByRole("status", { name: "Adet" })).toHaveText("1");
     await expect(olive.getByRole("button", { name: "Adedi artır" })).toBeDisabled();
-    await expect(page.getByText("150,75 ₺", { exact: true })).toBeVisible();
+    await expect(page.getByLabel("Ara toplam", { exact: true }).filter({ hasText: "150,75 ₺" })).toBeVisible();
     await expect(page.getByRole("group", { name: "Kullanılamayan ürün" })).toHaveCount(0);
     await expect(page.getByRole("status", { name: "Sepet bildirimi" })).toContainText("Stok değişiklikleri uygulandı");
     expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), CART_STORAGE_KEY))
@@ -122,10 +122,10 @@ test.describe("cart page component", () => {
     await expect(page.getByRole("alert")).toContainText("Katalog yüklenemedi");
     expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), CART_STORAGE_KEY)).toEqual(items);
     await page.getByRole("button", { name: "Fiyat ve stokları yenile" }).click();
-    await expect(page.getByText("725,50 ₺", { exact: true })).toBeVisible();
+    await expect(page.getByLabel("Ara toplam", { exact: true }).filter({ hasText: "725,50 ₺" })).toBeVisible();
     await page.getByRole("button", { name: "Fiyat ve stokları yenile" }).click();
     await expect(page.getByRole("alert")).toContainText("Katalog yüklenemedi");
-    await expect(page.getByText("725,50 ₺", { exact: true })).toHaveCount(0);
+    await expect(page.getByLabel("Ara toplam", { exact: true }).filter({ hasText: "725,50 ₺" })).toHaveCount(0);
     expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), CART_STORAGE_KEY)).toEqual(items);
   });
   test("stock mismatch keeps unrelated edits from silently pruning other lines", async ({ page }) => {
@@ -158,11 +158,11 @@ test.describe("cart page component", () => {
   });
   test("corrupt and blocked storage do not expose a false total or payment action", async ({ page }) => {
     await load(page, "normal", "broken-json");
-    await expect(page.getByText("Sepetiniz henüz boş.")).toBeVisible();
-    await expect(page.getByRole("button", { name: "Ödemeye geç" })).toBeDisabled();
+    await expect(page.getByText("Sepetiniz boş")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Ödemeye geç" }).filter({ visible: true })).toBeDisabled();
     await page.goto("/__cart-page-fixture/?mode=read-error");
     await expect(page.getByRole("alert")).toContainText("kaydedilemiyor");
-    await expect(page.getByText("Sepetiniz henüz boş.")).toBeVisible();
+    await expect(page.getByText("Sepetiniz boş")).toBeVisible();
   });
   test("keyboard and reduced motion: controls, labels, visible focus and safe removal", async ({ page, browserName }, testInfo) => {
     const nextKey = browserName === "webkit" && process.platform === "darwin" ? "Alt+Tab" : "Tab";
@@ -183,7 +183,7 @@ test.describe("cart page component", () => {
       const coupon = page.getByRole("textbox", { name: "Kupon kodu" });
       await coupon.focus();
       await expect(coupon).toHaveAccessibleDescription(/hazırlıkları sürüyor|Fiyat ve stoklar kesinleştiğinde/);
-      await expect(page.getByRole("button", { name: "Ödemeye geç" })).toHaveAccessibleDescription(/hazırlıkları sürüyor|Fiyat ve stoklar kesinleştiğinde/);
+      await expect(page.getByRole("button", { name: "Ödemeye geç" }).filter({ visible: true })).toHaveAccessibleDescription(/hazırlıkları sürüyor|Fiyat ve stoklar kesinleştiğinde/);
       if (reducedMotion === "reduce") expect(await continueLink.evaluate((element) => getComputedStyle(element).transitionDuration)).toBe("0s");
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       await page.screenshot({ path: testInfo.outputPath(`cart-keyboard-${reducedMotion}.png`), fullPage: true });
@@ -195,10 +195,10 @@ test.describe("cart page component", () => {
     await load(page, "normal", [...items, ...Array.from({ length: 4 }, (_, index) => ({ productId: `fixture-extra-${index}`, quantity: 1 }))]);
     await expect(page.getByRole("list", { name: "Sepetteki ürünler" }).getByRole("listitem")).toHaveCount(6);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-    const payment = page.getByRole("button", { name: "Ödemeye geç" });
+    const payment = page.getByRole("button", { name: "Ödemeye geç" }).filter({ visible: true });
     await payment.scrollIntoViewIfNeeded();
     await expect(payment).toBeInViewport();
-    for (const control of await page.locator('main button, main input, main a').all()) {
+    for (const control of await page.locator('main button:visible, main input:visible, main a:visible').all()) {
       const box = (await control.boundingBox())!;
       expect(Math.round(box.height * 100) / 100).toBeGreaterThanOrEqual(44);
       expect(Math.round(box.width * 100) / 100).toBeGreaterThanOrEqual(44);

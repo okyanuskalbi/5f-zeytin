@@ -58,7 +58,7 @@ async function loadCart(page: Page, mode = "normal", items: unknown = initialIte
   }, { key: CART_STORAGE_KEY, value: typeof items === "string" ? items : JSON.stringify(items) });
   await page.goto(`/__cart-drawer-fixture/?mode=${mode}`);
   await page.getByRole("button", { name: "Sepeti aç", exact: true }).click();
-  await expect(page.getByRole("dialog", { name: "Sepetim", exact: true })).toBeVisible();
+  await expect(page.getByRole("dialog", { name: /^Sepetim \(/ })).toBeVisible();
 }
 
 async function assertFits(dialog: Locator, page: Page): Promise<void> {
@@ -76,35 +76,35 @@ async function assertFits(dialog: Locator, page: Page): Promise<void> {
 
 test("cart drawer: approved upsell animates into a line with correct totals and safe focus", async ({ page }) => {
   await loadCart(page, "upsell", [{ productId: "fixture-olive", quantity: 1 }]);
-  const dialog = page.getByRole("dialog", { name: "Sepetim", exact: true });
+  const dialog = page.getByRole("dialog", { name: /^Sepetim \(/ });
   await dialog.getByRole("button", { name: "Zeytinyağı sepete ekle" }).click();
   await expect(dialog.getByRole("group", { name: "Zeytinyağı", exact: true })).toBeVisible();
-  await expect(dialog.getByText("425,50 ₺", { exact: true })).toBeVisible();
-  await expect(dialog.getByRole("region", { name: "Sofranızı tamamlayın" })).toHaveCount(0);
+  await expect(dialog.getByLabel("Ara toplam", { exact: true }).filter({ hasText: "425,50 ₺" })).toBeVisible();
+  await expect(dialog.getByRole("region", { name: "Sofranıza ekleyin" })).toHaveCount(0);
   await expect(dialog.getByRole("button", { name: "Sepeti kapat" })).toBeFocused();
   await dialog.getByRole("group", { name: "Sofralık Zeytin", exact: true }).getByRole("button", { name: "Sepetten sil" }).click();
   await expect(dialog.getByRole("listitem")).toHaveCount(1);
-  await expect(dialog.getByText("300,00 ₺", { exact: true })).toBeVisible();
+  await expect(dialog.getByLabel("Ara toplam", { exact: true }).filter({ hasText: "300,00 ₺" })).toBeVisible();
 });
 
 test("cart drawer: quantity, limits, persistence, removal, empty state and CTA destinations", async ({ page }, testInfo) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await loadCart(page);
-  const dialog = page.getByRole("dialog", { name: "Sepetim", exact: true });
+  const dialog = page.getByRole("dialog", { name: /^Sepetim \(/ });
   const olive = dialog.getByRole("group", { name: "Sofralık Zeytin", exact: true });
   const decrease = olive.getByRole("button", { name: "Adedi azalt" });
   const increase = olive.getByRole("button", { name: "Adedi artır" });
   await expect(decrease).toBeDisabled();
   await expect(olive.getByRole("status", { name: "Adet" })).toHaveText("1");
-  await expect(dialog.getByText("725,50 ₺", { exact: true })).toBeVisible();
+  await expect(dialog.getByLabel("Ara toplam", { exact: true }).filter({ hasText: "725,50 ₺" })).toBeVisible();
   await increase.click();
   await increase.click();
   await expect(increase).toBeDisabled();
   await expect(olive.getByRole("status", { name: "Adet" })).toHaveText("3");
-  await expect(dialog.getByText("976,50 ₺", { exact: true })).toBeVisible();
+  await expect(dialog.getByLabel("Ara toplam", { exact: true }).filter({ hasText: "976,50 ₺" })).toBeVisible();
   await decrease.click();
-  await expect(dialog.getByText("851,00 ₺", { exact: true })).toBeVisible();
+  await expect(dialog.getByLabel("Ara toplam", { exact: true }).filter({ hasText: "851,00 ₺" })).toBeVisible();
   expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), CART_STORAGE_KEY))
     .toEqual([{ productId: "fixture-olive", quantity: 2 }, initialItems[1]]);
   await assertFits(dialog, page);
@@ -127,12 +127,12 @@ test("cart drawer: quantity, limits, persistence, removal, empty state and CTA d
     await dialog.getByRole("group", { name, exact: true }).getByRole("button", { name: "Sepetten sil" }).click();
     await expect(dialog.getByRole("button", { name: "Sepeti kapat" })).toBeFocused();
   }
-  await expect(dialog.getByText("Sepetiniz henüz boş.")).toBeVisible();
+  await expect(dialog.getByText("Sepetiniz boş")).toBeVisible();
   await expect(dialog.getByRole("button", { name: "Ödemeye geç" })).toBeDisabled();
   await expect(dialog.getByRole("link", { name: "Ödemeye geç" })).toHaveCount(0);
   expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), CART_STORAGE_KEY)).toEqual([]);
   await page.screenshot({ path: testInfo.outputPath("cart-empty.png"), fullPage: true });
-  await dialog.getByRole("button", { name: "Alışverişe devam et" }).click();
+  await dialog.getByRole("button", { name: "Sepeti kapat" }).click();
   await expect(dialog).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Sepeti aç", exact: true })).toBeFocused();
   expect(errors).toEqual([]);
@@ -141,7 +141,7 @@ test("cart drawer: quantity, limits, persistence, removal, empty state and CTA d
 test("cart drawer: keyboard focus trap, all dismissal paths, external opener and reduced motion", async ({ page, browserName }, testInfo) => {
   await loadCart(page);
   const nextControl = browserName === "webkit" && process.platform === "darwin" ? "Alt+Tab" : "Tab";
-  const dialog = page.getByRole("dialog", { name: "Sepetim", exact: true });
+  const dialog = page.getByRole("dialog", { name: /^Sepetim \(/ });
   const trigger = page.getByRole("button", { name: "Sepeti aç", exact: true });
   await page.keyboard.press("Escape");
   for (const reducedMotion of ["no-preference", "reduce"] as const) {
@@ -149,10 +149,10 @@ test("cart drawer: keyboard focus trap, all dismissal paths, external opener and
     await trigger.focus();
     await page.keyboard.press("Enter");
     const first = dialog.getByRole("button", { name: "Sepeti kapat" });
-    const last = dialog.getByRole("button", { name: "Alışverişe devam et" });
+    const last = dialog.getByRole("link", { name: "Sepeti görüntüle" });
     await expect(first).toBeFocused();
     await expect(dialog).toHaveAttribute("aria-modal", "true");
-    await expect(dialog).toHaveAccessibleDescription(/Ürünlerinizi/);
+    await expect(dialog).toHaveAccessibleDescription(/Sofranız için/);
     await expect(page.getByRole("main")).toHaveCount(0);
     await page.keyboard.press("Shift+Tab");
     await expect(last).toBeFocused();
@@ -190,7 +190,8 @@ test("cart drawer: keyboard focus trap, all dismissal paths, external opener and
   await expect(trigger).toBeFocused();
   await trigger.click();
   const overlay = page.locator('[data-slot="dialog-overlay"]');
-  await overlay.click({ position: { x: 1, y: 1 } });
+  if (page.viewportSize()!.width > 440) await overlay.click({ position: { x: 1, y: 1 } });
+  else await dialog.getByRole("button", { name: "Sepeti kapat" }).click();
   await expect(dialog).toHaveCount(0);
   await expect(trigger).toBeFocused();
   const external = page.getByRole("button", { name: "Dışarıdan aç" });
@@ -203,7 +204,7 @@ test("cart drawer: keyboard focus trap, all dismissal paths, external opener and
 
 test("cart drawer: storage failures and stale stock report errors and allow recovery", async ({ page }, testInfo) => {
   await loadCart(page, "write-error");
-  const dialog = page.getByRole("dialog", { name: "Sepetim", exact: true });
+  const dialog = page.getByRole("dialog", { name: /^Sepetim \(/ });
   await expect(dialog.getByRole("alert")).toContainText("kaydedilemiyor");
   const olive = dialog.getByRole("group", { name: "Sofralık Zeytin", exact: true });
   await olive.getByRole("button", { name: "Adedi artır" }).click();
@@ -233,8 +234,8 @@ test("cart drawer: storage failures and stale stock report errors and allow reco
 
 test("cart drawer: corrupt/unreadable storage, unavailable catalog and six lines fit a short viewport", async ({ page }, testInfo) => {
   await loadCart(page, "normal", "{broken-json");
-  const dialog = page.getByRole("dialog", { name: "Sepetim", exact: true });
-  await expect(dialog.getByText("Sepetiniz henüz boş.")).toBeVisible();
+  const dialog = page.getByRole("dialog", { name: /^Sepetim \(/ });
+  await expect(dialog.getByText("Sepetiniz boş")).toBeVisible();
   await page.goto("/__cart-drawer-fixture/?mode=read-error");
   await page.getByRole("button", { name: "Sepeti aç", exact: true }).click();
   await expect(dialog.getByRole("alert")).toContainText("kaydedilemiyor");
@@ -247,7 +248,7 @@ test("cart drawer: corrupt/unreadable storage, unavailable catalog and six lines
   await expect(dialog.getByText("Bu ürün artık kullanılamıyor.")).toBeVisible();
   await expect(dialog.getByRole("button", { name: "Ödemeye geç" })).toBeDisabled();
   await dialog.getByRole("button", { name: "Sepetten sil" }).click();
-  await expect(dialog.getByText("Sepetiniz henüz boş.")).toBeVisible();
+  await expect(dialog.getByText("Sepetiniz boş")).toBeVisible();
 
   await page.evaluate((key) => localStorage.setItem(key, JSON.stringify([
     { productId: "fixture-olive", quantity: 1 }, { productId: "fixture-oil", quantity: 1 },

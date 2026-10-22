@@ -32,7 +32,7 @@ test("v4: cart drawer surfaces and copy retain AA contrast", async ({ page }) =>
   await page.goto("/");
   await page.locator("[data-hero-card]").getByRole("button", { name: "Sepete ekle", exact: true }).click();
   await page.getByRole("banner").getByRole("button", { name: "Sepetim, 1 adet" }).click();
-  const drawer = page.getByRole("dialog", { name: "Sepetim", exact: true });
+  const drawer = page.getByRole("dialog", { name: /^Sepetim \(/ });
   await expect(drawer).toBeVisible();
   for (const node of await drawer.locator(":is(h2,h3,p,a,button,dt,dd)").all()) {
     if (await node.isVisible() && (await node.innerText()).trim()) expect(await contrast(node)).toBeGreaterThanOrEqual(4.5);

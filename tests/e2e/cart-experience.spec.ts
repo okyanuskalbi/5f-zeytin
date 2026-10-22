@@ -2,7 +2,7 @@ import { expect, test, devices, type Page } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 import { CART_STORAGE_KEY } from "../../lib/cart/store";
 
-const drawer = (page: Page) => page.getByRole("dialog", { name: "Sepetim", exact: true });
+const drawer = (page: Page) => page.getByRole("dialog", { name: /^Sepetim \(/ });
 const mini = (page: Page) => page.getByRole("complementary", { name: "Mini sepet" });
 const headerCart = (page: Page) => page.getByRole("banner").getByRole("button", { name: /^Sepetim/ });
 const storage = [{ productId: "sample-green-olive-1kg", quantity: 1 }];
@@ -22,7 +22,7 @@ async function load(page: Page) {
   await expect(headerCart(page)).toContainText("1");
 }
 
-test("v3 drawer: totals after quantity/remove, modal focus, escape and scroll lock at every width", async ({ page }, info) => {
+test("v4 drawer: totals after quantity/remove, modal focus, escape and scroll lock at every width", async ({ page }, info) => {
   await load(page);
   await headerCart(page).click();
   const panel = drawer(page);
@@ -34,10 +34,10 @@ test("v3 drawer: totals after quantity/remove, modal focus, escape and scroll lo
   const line = panel.getByRole("group", { name: "Doğal Kırma Yeşil Zeytin", exact: true });
   await line.getByRole("button", { name: "Adedi artır" }).click();
   await expect(line.getByRole("status", { name: "Adet" })).toHaveText("2");
-  await expect(panel.getByText("440,00 ₺", { exact: true })).toBeVisible();
+  await expect(panel.getByLabel("Ara toplam", { exact: true }).filter({ hasText: "440,00 ₺" })).toBeVisible();
   await close.focus();
   await page.keyboard.press("Shift+Tab");
-  await expect(panel.getByRole("button", { name: "Alışverişe devam et" })).toBeFocused();
+  await expect(panel.getByRole("link", { name: "Sepeti görüntüle" })).toBeFocused();
   await page.keyboard.press("Tab");
   await expect(close).toBeFocused();
   await expect.poll(async () => Math.round((await panel.boundingBox())!.width)).toBe(page.viewportSize()!.width < 768 ? page.viewportSize()!.width : 440);
@@ -45,7 +45,7 @@ test("v3 drawer: totals after quantity/remove, modal focus, escape and scroll lo
   await page.screenshot({ path: `test-results/106/${info.project.name}-drawer.png` });
   await line.getByRole("button", { name: "Sepetten sil" }).click();
   await expect(panel.getByRole("listitem")).toHaveCount(0);
-  await expect(panel.getByText("0,00 ₺", { exact: true })).toBeVisible();
+  await expect(panel.getByLabel("Ara toplam", { exact: true }).filter({ hasText: "0,00 ₺" })).toBeVisible();
   await expect(close).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(panel).toHaveCount(0);
@@ -65,6 +65,7 @@ test("mini cart: first add, responsive/footer/route visibility and focus return;
   await expect(card.getByRole("status")).toContainText("sepete eklendi");
   await expect(drawer(page)).toHaveCount(0);
   if (page.viewportSize()!.width >= 768) { await expect(mini(page)).toHaveCount(0); return; }
+  await page.goto("/kvkk");
   await expect(mini(page)).toBeVisible();
   await expect(mini(page)).toContainText("1 adet");
   await expect(mini(page)).toContainText("220,00");
@@ -77,53 +78,41 @@ test("mini cart: first add, responsive/footer/route visibility and focus return;
   await page.getByRole("contentinfo").evaluate(node => node.scrollIntoView({ block: "start" }));
   await expect(mini(page)).toHaveCount(0);
   await page.screenshot({ path: `test-results/106/${info.project.name}-footer.png` });
-  await card.evaluate(node => node.scrollIntoView({ block: "start" }));
+  await page.evaluate(() => scrollTo(0, 0));
   await expect(mini(page)).toBeVisible();
   await page.goto("/sepet");
   await expect(mini(page)).toHaveCount(0);
   await page.screenshot({ path: `test-results/106/${info.project.name}-page.png`, fullPage: true });
 });
 
-test("mobile sheet: 85/95 percent snaps, button alternative and drag dismissal", async ({ page }) => {
+test("mobile drawer: full viewport and accessible close button", async ({ page }) => {
   test.skip(page.viewportSize()!.width >= 768);
   await load(page);
   await headerCart(page).click();
   const panel = drawer(page);
-  const viewport = page.viewportSize()!;
-  await expect(panel).toHaveAttribute("data-snap", "compact");
-  await expect.poll(async () => Math.round((await panel.boundingBox())!.height)).toBe(Math.max(Math.round(viewport.height * 0.85), Math.min(Math.round(viewport.height * 0.95), 560)));
-  await panel.getByRole("button", { name: "Sepeti genişlet" }).click();
-  await expect(panel).toHaveAttribute("data-snap", "expanded");
-  await expect.poll(async () => Math.round((await panel.boundingBox())!.height)).toBe(Math.round(viewport.height * 0.95));
-  await panel.getByRole("button", { name: "Sepeti daralt" }).click();
-  const handle = panel.getByRole("button", { name: "Sepeti genişlet" });
-  const box = (await handle.boundingBox())!;
-  await page.mouse.move(box.x + box.width / 2, box.y + 20);
-  await page.mouse.down();
-  await page.mouse.move(box.x + box.width / 2, box.y + 160, { steps: 12 });
-  await page.mouse.up();
+  await expect.poll(async () => Math.round((await panel.boundingBox())!.height)).toBe(page.viewportSize()!.height);
+  await expect(panel.getByRole("button", { name: "Sepeti genişlet" })).toHaveCount(0);
+  await panel.getByRole("button", { name: "Sepeti kapat" }).click();
   await expect(panel).toHaveCount(0);
   await expect(headerCart(page)).toBeFocused();
 });
 
-test("Pixel 7: touch sheet drag and mini cart safe area", async ({ browser, browserName, baseURL }, info) => {
+test("Pixel 7: full screen drawer, touch controls and mini cart safe area", async ({ browser, browserName, baseURL }, info) => {
   test.skip(info.project.name !== "chromium-1440" || browserName !== "chromium");
   const context = await browser.newContext({ ...devices["Pixel 7"], baseURL });
   try {
     const page = await context.newPage();
+    await page.emulateMedia({ reducedMotion: "reduce" });
     await load(page);
+    await page.goto("/kvkk");
+    await expect(mini(page)).toBeVisible();
     await mini(page).getByRole("button", { name: "Sepet", exact: true }).tap();
     await expect(drawer(page)).toHaveCSS("transform", "none");
-    const handle = drawer(page).getByRole("button", { name: "Sepeti genişlet" });
-    const box = (await handle.boundingBox())!;
-    const client = await context.newCDPSession(page);
-    const x = box.x + box.width / 2;
-    await client.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x, y: box.y + 20 }] });
-    for (let offset = 40; offset <= 160; offset += 20) {
-      await client.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x, y: box.y + offset }] });
-      await page.evaluate(() => new Promise(requestAnimationFrame));
-    }
-    await client.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    await expect(mini(page)).not.toBeVisible();
+    const line = drawer(page).getByRole("group", { name: "Doğal Kırma Yeşil Zeytin", exact: true });
+    await line.getByRole("button", { name: "Adedi artır" }).tap();
+    await expect(line.getByLabel("Adet", { exact: true })).toHaveText("2");
+    await drawer(page).getByRole("button", { name: "Sepeti kapat" }).tap();
     await expect(drawer(page)).toHaveCount(0);
     await expect(mini(page)).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

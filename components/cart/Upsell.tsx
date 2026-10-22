@@ -3,6 +3,7 @@
 import { useId, type JSX } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ProductThumbnail } from "./ProductThumbnail";
 import styles from "./CartExperience.module.css";
 import type { CartItem } from "@/lib/cart/types";
 import type { Product } from "@/types/catalog";
@@ -43,20 +44,20 @@ export function Upsell({ products, items, configuration, onAdd }: UpsellProps): 
     && !inCart.has(id) && Number.isSafeInteger(stock) && stock > 0);
   if (suggestions.length === 0) return null;
 
-  return <section aria-labelledby={`${id}-heading`} className="space-y-6">
+  return <section aria-labelledby={`${id}-heading`} className={styles.upsell}>
     <div className="space-y-2">
-      <h2 id={`${id}-heading`} className="text-2xl">Sofranızı tamamlayın</h2>
-      <p className="text-base text-muted-foreground">Sepetinizdeki ürünlere eşlik edebilecek seçenekler.</p>
+      <h2 id={`${id}-heading`}>Sofranıza ekleyin</h2>
     </div>
-    <ul className="space-y-3">
-      {suggestions.map((product) => <li key={product.id} className={`${styles.line} flex min-w-0 flex-col gap-4 sm:flex-row sm:items-center sm:justify-between`}>
-        <div className="min-w-0 space-y-1">
-          <h3 className="text-lg break-words">{product.name}</h3>
-          <p className="text-base text-foreground">{product.weight}</p>
-          <p className="text-base tabular-nums">{money.format(product.priceKurus / 100)} ₺ / adet (tahmini)</p>
+    <ul className={styles.suggestions}>
+      {suggestions.slice(0, 2).map((product) => <li key={product.id} className={styles.suggestion}>
+        <ProductThumbnail product={product} />
+        <div className={styles.suggestionDetails}>
+          <h3>{product.name}</h3>
+          <p>{product.weight}</p>
+          <p className={styles.amount}>{money.format(product.priceKurus / 100)} ₺ / adet (tahmini)</p>
         </div>
-        <Button variant="outline" className="w-full shrink-0 sm:w-auto" aria-label={`${product.name} sepete ekle`} onClick={() => onAdd(product.id)}>
-          <Plus aria-hidden="true" />Sepete ekle
+        <Button variant="outline" className={styles.suggestionAdd} aria-label={`${product.name} sepete ekle`} onClick={() => onAdd(product.id)}>
+          <Plus aria-hidden="true" />Ekle
         </Button>
       </li>)}
     </ul>
