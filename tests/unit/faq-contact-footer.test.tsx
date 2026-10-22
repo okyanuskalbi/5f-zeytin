@@ -85,7 +85,7 @@ it("names only the supported payment brands and serves safe local vector logos",
   doc.body.innerHTML = renderToStaticMarkup(<Footer />);
   const payment = doc.querySelector('[aria-label="Güvenli ödeme"]')!;
   expect(payment).not.toBeNull();
-  expect(payment.textContent).toContain("Güvenli ödeme");
+  expect(payment.textContent).toContain("Güvenli Ödeme");
   expect([...payment.querySelectorAll("img")].map(image => image.alt)).toEqual(["PayTR", "Visa", "Mastercard", "Troy"]);
   for (const image of payment.querySelectorAll("img")) {
     expect(image.getAttribute("src")).toBe(`/images/payment/${image.alt.toLowerCase()}.svg`);

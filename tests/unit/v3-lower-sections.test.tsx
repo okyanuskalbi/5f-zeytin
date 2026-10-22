@@ -18,7 +18,7 @@ it("shows the four trust facts without a draft delivery label", () => {
   render(<TrustStrip />);
   const strip = screen.getByRole("region", { name: "Alışveriş bilgileri" });
   expect(strip.textContent).toContain("Kargo 2–4 iş günü");
-  expect(strip.textContent).toContain("PayTR ile güvenli ödeme");
+  expect(strip.textContent).toContain("Güvenli Ödeme");
   expect(strip.textContent).toContain("Kendi tesisimizde dolum");
   expect(strip.textContent).not.toMatch(/Örnek süre/);
   expect(strip.textContent).toContain("Toptan alım için teklif");

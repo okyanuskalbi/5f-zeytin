@@ -33,7 +33,7 @@ it("renders four trust facts with a wholesale destination and decorative gold do
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(<TrustStrip />);
   expect([...doc.querySelectorAll("li")].map(item => item.textContent)).toEqual([
-    "Kendi tesisimizde dolum", "Kargo 2–4 iş günü", "PayTR ile güvenli ödeme", "Toptan alım için teklif",
+    "Kendi tesisimizde dolum", "Kargo 2–4 iş günü", "Güvenli Ödeme", "Toptan alım için teklif",
   ]);
   expect(doc.querySelector('a[href="/#toptan-iletisim"]')).not.toBeNull();
   expect(doc.querySelectorAll('[data-trust-dot][aria-hidden="true"]')).toHaveLength(4);

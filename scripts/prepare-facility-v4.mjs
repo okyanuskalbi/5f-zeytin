@@ -1,4 +1,4 @@
-// Task 120: local colour derivative of the pinned, already-redacted photo only.
+// Tasks 120/123: local colour derivative of the pinned, already-redacted photo only.
 import assert from "node:assert/strict";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
@@ -10,9 +10,9 @@ import { repoRoot, sha256 } from "./prepare-v3-assets.mjs";
 export const facilityV4 = {
   source: "docs/referans/tesis/tesis-osmaniye-plaka-bulanik.jpg",
   sourceSha256: approvals.facility.hashes["tesis-osmaniye-plaka-bulanik.jpg"],
-  approval: "docs/tasks/120-v4-sticky-oyku-kahraman.md",
+  approval: "docs/tasks/123-footer-yeniden-odeme-guven.md",
   alt: "Afina Zeytin’in Ellek, Düziçi’ndeki üretim tesisi",
-  operation: { saturation: 0.7, linear: [1.025, 1, 0.97] },
+  operation: { saturation: 0.48, linear: [1.04, 1, 0.95], brightness: 0.96 },
 };
 const widths = [1200, 2400];
 export const facilityV4Manifest = "public/images/tesis-v4-manifest.json";
@@ -23,8 +23,9 @@ export async function prepareFacilityV4({ root = repoRoot } = {}) {
   const outputs = [];
   await mkdir(resolve(root, "public/images/tesis"), { recursive: true });
   for (const width of widths) {
-    const { data, info } = await sharp(source).modulate({ saturation: facilityV4.operation.saturation })
-      .linear(facilityV4.operation.linear, [0, 0, 0]).resize({ width }).webp({ quality: 82, effort: 6 }).toBuffer({ resolveWithObject: true });
+    const { saturation, brightness, linear } = facilityV4.operation;
+    const { data, info } = await sharp(source).modulate({ saturation, brightness })
+      .linear(linear, [0, 0, 0]).resize({ width }).webp({ quality: 82, effort: 6 }).toBuffer({ resolveWithObject: true });
     const file = `/images/tesis/tesis-osmaniye-v4-${width}.webp`;
     await writeFile(resolve(root, `public${file}`), data);
     outputs.push({ file, format: "webp", width: info.width, height: info.height, bytes: data.length, sha256: sha256(data) });
@@ -71,6 +72,6 @@ export async function verifyFacilityV4Derivatives(root) {
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
   try {
     await prepareFacilityV4();
-    process.stdout.write(`PASS: ${await checkFacilityV4()} v4 tesis türevi; kaynak SHA ve plaka bulanıklığı korunarak saturation=.7, hafif sıcak ton.\n`);
+    process.stdout.write(`PASS: ${await checkFacilityV4()} v4 tesis türevi; kaynak SHA korundu; ${JSON.stringify(facilityV4.operation)}.\n`);
   } catch (error) { process.stderr.write(`FAIL: ${error.message}\n`); process.exitCode = 1; }
 }

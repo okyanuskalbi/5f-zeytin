@@ -5,7 +5,8 @@ import { seller } from "@/lib/site/seller";
 import { siteContact } from "@/lib/site/contact";
 import styles from "./Footer.module.css";
 
-// Column grouping adapted from 21st.dev/shadcnspace/footer-01 (Task 117).
+// Agency Footer, 21st.dev/@shadcnspace/components/footer-01 (demo 21474).
+// Brand + navigation grid adapted to v4 tokens, native links and CSS Modules (Task 123).
 const shoppingLinks = [
   { label: "Ürünler", href: "/#kiler" },
   { label: "Kışlık kiler", href: "/#urunler" },
@@ -44,46 +45,46 @@ export function Footer(): JSX.Element {
             </Link>
             <p className={styles.signature}>Kökü toprakta.<br /> Yeri sofrada.</p>
             <p>Toprağın sunduğu lezzet, Afina’nın özeniyle.</p>
-            <div className={styles.groupBrand}>
-              <p>Bir AFİNA Şirketler Topluluğu markası</p>
-              <a href="https://afina.com.tr" target="_blank" rel="noopener" className={styles.community} aria-label="AFİNA Şirketler Topluluğu">
-                <img src="/brand/afina-topluluk-dark.svg" alt="AFİNA Şirketler Topluluğu" width={381} height={225} loading="lazy" decoding="async" />
-              </a>
-            </div>
+            <a href="https://afina.com.tr" target="_blank" rel="noopener" className={styles.community} aria-label="AFİNA Şirketler Topluluğu">
+              <img src="/brand/afina-topluluk-dark.svg" alt="AFİNA Şirketler Topluluğu" width={381} height={225} loading="lazy" decoding="async" />
+              <span>Bir AFİNA Şirketler Topluluğu markası</span>
+            </a>
           </div>
-          <nav aria-labelledby="footer-shopping-title">
-            <h2 id="footer-shopping-title" className={styles.heading}>Alışveriş</h2>
-            <ul>
-              {shoppingLinks.map(link => <li key={link.href}><Link className={styles.link} href={link.href}>{link.label}</Link></li>)}
-              <li><Link className={styles.link} href="/#toptan-iletisim">Toptan Satış İçin İletişime Geçin</Link></li>
-            </ul>
-          </nav>
-          <nav aria-labelledby="footer-help-title">
-            <h2 id="footer-help-title" className={styles.heading}>Yardım</h2>
-            <ul>{helpLinks.map(link => <li key={link.href}><Link className={styles.link} href={link.href}>{link.label}</Link></li>)}</ul>
-          </nav>
-          <div className={styles.destination} aria-labelledby="footer-contact-title">
-            <h2 id="footer-contact-title" className={styles.heading}>İletişim</h2>
-            <address><span>{street}, </span><span>{locality.join(", ")}</span></address>
-            <ul>
-              {phone && <li><a className={styles.link} href={`tel:${phone.replace(/\s/g, "")}`}>{phone}</a></li>}
-              {email && <li><a className={styles.link} href={`mailto:${email}`}>{email}</a></li>}
-              <li><Link className={styles.link} href="/#tesisimiz">Tesisimiz</Link></li>
-            </ul>
+          <div className={styles.navigation}>
+            <nav aria-labelledby="footer-shopping-title">
+              <h2 id="footer-shopping-title" className={styles.heading}>Alışveriş</h2>
+              <ul>
+                {shoppingLinks.map(link => <li key={link.href}><Link className={styles.link} href={link.href}>{link.label}</Link></li>)}
+                <li><Link className={styles.link} href="/#toptan-iletisim">Toptan Satış İçin İletişime Geçin</Link></li>
+              </ul>
+            </nav>
+            <nav aria-labelledby="footer-help-title">
+              <h2 id="footer-help-title" className={styles.heading}>Yardım</h2>
+              <ul>{helpLinks.map(link => <li key={link.href}><Link className={styles.link} href={link.href}>{link.label}</Link></li>)}</ul>
+            </nav>
+            <div className={styles.destination} aria-labelledby="footer-contact-title">
+              <h2 id="footer-contact-title" className={styles.heading}>İletişim</h2>
+              <address><span>{street}, </span><span>{locality.join(", ")}</span></address>
+              <ul>
+                {phone && <li><a className={styles.link} href={`tel:${phone.replace(/\s/g, "")}`}>{phone}</a></li>}
+                {email && <li><a className={styles.link} href={`mailto:${email}`}>{email}</a></li>}
+                <li><Link className={styles.link} href="/#tesisimiz">Tesisimiz</Link></li>
+              </ul>
+            </div>
           </div>
         </div>
         <div className={styles.payment} role="group" aria-label="Güvenli ödeme">
           <div className={styles.provider}>
-            <p>Güvenli ödeme</p>
-            <span className={styles.paymentPlate}><img src="/images/payment/paytr.svg" alt="PayTR" width={180} height={32} className={styles.paymentLogo} loading="lazy" decoding="async" /></span>
+            <p>Güvenli Ödeme</p>
+            <img src="/images/payment/paytr.svg" alt="PayTR" width={180} height={32} className={styles.paymentLogo} loading="lazy" decoding="async" />
           </div>
           <ul className={styles.cards} aria-label="Kabul edilen kartlar">
             {cardLogos.map(logo => <li key={logo.name}><img src={`/images/payment/${logo.name.toLowerCase()}.svg`} alt={logo.name} width={logo.width} height={logo.height} className={styles.paymentLogo} loading="lazy" decoding="async" /></li>)}
           </ul>
         </div>
         <div className={styles.imprint}>
-          <p>{seller.name} · {seller.taxOffice} VD · VKN {seller.taxId}</p>
           <div className={styles.bottom}>
+            <p>{seller.name} · {seller.taxOffice} VD · VKN {seller.taxId}</p>
             <nav aria-label="Yasal bilgiler"><ul>{legalLinks.map(link => <li key={link.href}><Link className={styles.link} href={link.href}>{link.label}</Link></li>)}</ul></nav>
           </div>
           <div className={styles.notice}>

@@ -2,15 +2,16 @@
   "version": 1,
   "source": "docs/referans/tesis/tesis-osmaniye-plaka-bulanik.jpg",
   "sourceSha256": "d35378a93dcbad69c0e62d09e2481af8a82bc6298c2526ab4ee55a594728b67d",
-  "approval": "docs/tasks/120-v4-sticky-oyku-kahraman.md",
+  "approval": "docs/tasks/123-footer-yeniden-odeme-guven.md",
   "alt": "Afina Zeytin’in Ellek, Düziçi’ndeki üretim tesisi",
   "operation": {
-    "saturation": 0.7,
+    "saturation": 0.48,
     "linear": [
-      1.025,
+      1.04,
       1,
-      0.97
-    ]
+      0.95
+    ],
+    "brightness": 0.96
   },
   "outputs": [
     {
@@ -18,16 +19,16 @@
       "format": "webp",
       "width": 1200,
       "height": 750,
-      "bytes": 90246,
-      "sha256": "678bcd5fd13767fb0bcf6f11abe03a12a7a9fe33ad82ce4c75fde8fb6e6125cb"
+      "bytes": 85940,
+      "sha256": "9d5277938f184426c6ccd4bdded334e95af076c0acef4d6e06ba5c3fb7a62ff3"
     },
     {
       "file": "/images/tesis/tesis-osmaniye-v4-2400.webp",
       "format": "webp",
       "width": 2400,
       "height": 1500,
-      "bytes": 204650,
-      "sha256": "0145815ffcedb1353cd9e55b5cbc4695ad4fc9416ba12df50189f88877395d3e"
+      "bytes": 194940,
+      "sha256": "7f1d0ba5a8646f91a4364214e36b9b77e6b1846be3a40768bcc2ac9fe17d492e"
     }
   ]
 }

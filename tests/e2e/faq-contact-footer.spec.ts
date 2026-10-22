@@ -101,11 +101,11 @@ test("footer controls retain hover, press and focus when brand images fail", asy
   expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
 });
 
-// Task 117: written for Claude's browser acceptance; Coder does not run this suite.
+// Tasks 117/123: written for Claude's browser acceptance; Coder does not run this suite.
 test("footer columns, payment brands and community attribution adapt without overflow", async ({ page }) => {
   await page.goto("/");
   const footer = page.getByRole("contentinfo");
-  for (const width of [320, 375, 390, 430, 768, 1024, 1440]) {
+  for (const width of [320, 375, 390, 393, 430, 640, 768, 1024, 1440, 1920]) {
     await page.setViewportSize({ width, height: 900 });
     await footer.scrollIntoViewIfNeeded();
     const headings = footer.getByRole("heading", { level: 2 });
@@ -114,24 +114,50 @@ test("footer columns, payment brands and community attribution adapt without ove
       const { x, y } = node.getBoundingClientRect();
       return { x, y };
     }));
-    if (width >= 1024) {
+    if (width >= 640) {
       expect(Math.max(...positions.map(item => item.y)) - Math.min(...positions.map(item => item.y))).toBeLessThan(1);
     } else if (width < 640) {
-      expect(positions[0].y).toBeLessThan(positions[1].y);
+      expect(Math.abs(positions[0].y - positions[1].y)).toBeLessThan(1);
       expect(positions[1].y).toBeLessThan(positions[2].y);
     }
+    const brand = footer.locator('[aria-labelledby="footer-brand-title"]');
+    const brandBox = (await brand.boundingBox())!;
+    if (width >= 1024) expect(brandBox.x + brandBox.width).toBeLessThanOrEqual(positions[0].x);
+    else expect(brandBox.y + brandBox.height).toBeLessThanOrEqual(positions[0].y);
     const payment = footer.getByRole("group", { name: "Güvenli ödeme", exact: true });
+    await expect(payment.getByText("Güvenli Ödeme", { exact: true })).toBeVisible();
     for (const name of ["PayTR", "Visa", "Mastercard", "Troy"]) {
       const logo = payment.getByRole("img", { name, exact: true });
       await expect(logo).toBeVisible();
       await expect.poll(() => logo.evaluate(image => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
-      expect((await logo.boundingBox())!.height).toBeGreaterThanOrEqual(32);
-      expect((await logo.boundingBox())!.height).toBeLessThanOrEqual(40);
+      expect((await logo.boundingBox())!.height).toBeGreaterThanOrEqual(24);
+      expect((await logo.boundingBox())!.height).toBeLessThanOrEqual(28);
+      const backgrounds = await logo.evaluate(image => {
+        const values = [];
+        for (let node: Element | null = image; node && node.tagName !== "FOOTER"; node = node.parentElement) values.push(getComputedStyle(node).backgroundColor);
+        return values;
+      });
+      expect(backgrounds.every(color => color === "rgba(0, 0, 0, 0)")).toBe(true);
+    }
+    const provider = (await payment.getByRole("img", { name: "PayTR", exact: true }).boundingBox())!;
+    const cards = (await payment.getByRole("list", { name: "Kabul edilen kartlar" }).boundingBox())!;
+    if (width < 640) {
+      expect(provider.y + provider.height).toBeLessThan(cards.y);
+      expect(Math.abs(cards.x - (await payment.boundingBox())!.x)).toBeLessThan(1);
     }
     const community = footer.getByRole("link", { name: "AFİNA Şirketler Topluluğu", exact: true });
     await expect(community).toHaveAttribute("href", "https://afina.com.tr");
     await expect(community).toHaveAttribute("target", "_blank");
     await expect(community).toHaveAttribute("rel", "noopener");
+    await expect(community).toContainText("Bir AFİNA Şirketler Topluluğu markası");
+    const communityLogo = (await community.getByRole("img").boundingBox())!;
+    expect(communityLogo.height).toBeGreaterThanOrEqual(24);
+    expect(communityLogo.height).toBeLessThanOrEqual(28);
+    for (const link of await footer.getByRole("link").all()) {
+      const box = (await link.boundingBox())!;
+      expect(box.width).toBeGreaterThanOrEqual(44);
+      expect(box.height).toBeGreaterThanOrEqual(44);
+    }
     await expect(page.getByText("Önizleme: fiyatlar ve görseller temsilidir.", { exact: true })).toHaveCount(1);
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
   }

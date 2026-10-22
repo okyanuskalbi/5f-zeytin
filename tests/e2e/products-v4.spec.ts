@@ -38,7 +38,7 @@ test("six individual variants preserve prices and update the counter without ope
 test("the trust strip has four readable facts and a wholesale link", async ({ page }) => {
   const strip = page.getByRole("region", { name: "Alışveriş bilgileri" });
   await expect(strip.getByRole("listitem")).toHaveText([
-    "Kendi tesisimizde dolum", "Kargo 2–4 iş günü", "PayTR ile güvenli ödeme", "Toptan alım için teklif",
+    "Kendi tesisimizde dolum", "Kargo 2–4 iş günü", "Güvenli Ödeme", "Toptan alım için teklif",
   ]);
   await expect(strip.getByRole("link", { name: "Toptan alım için teklif" })).toHaveAttribute("href", "/#toptan-iletisim");
   const styles = await strip.locator("li").first().evaluate(node => {
