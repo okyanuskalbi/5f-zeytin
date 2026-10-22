@@ -1,16 +1,16 @@
 import "server-only";
 import { getProducts } from "@/lib/catalog/static-products";
 import { catalogProductLimit, parseCatalogProducts, type CatalogResponse } from "@/lib/contracts/catalog";
-import { createSupabaseServiceClient } from "@/lib/supabase/server";
+import { createSupabasePublicClient } from "@/lib/supabase/public";
 
 const catalogReadTimeoutMs = 5000;
 const catalogColumns = "id,name,category,weight,price_kurus,currency,stock,is_active";
 
 async function readPublishedProducts() {
-  const { data, error } = await createSupabaseServiceClient()
+  const { data, error } = await createSupabasePublicClient()
     .from("products")
     .select(catalogColumns)
-    // The service role bypasses RLS: publication filtering is mandatory here.
+    // RLS enforces publication; keep the explicit filter as defense in depth.
     .eq("is_active", true)
     .order("active_slot", { ascending: true })
     .limit(catalogProductLimit)

@@ -17,7 +17,9 @@ beforeEach(() => {
   vi.mocked(requireAdmin).mockResolvedValue({ id: "fixture-admin", email: "admin@example.test" });
   vi.mocked(requireAdminMutation).mockResolvedValue({ id: "fixture-admin", email: "admin@example.test" });
   vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "http://127.0.0.1:54321");
+  vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", "sb_publishable_task135_test_only");
   vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "task064-test-only-key");
+  vi.stubEnv("SITE_ORIGIN", origin);
   vi.stubGlobal("fetch", fetchMock);
   fetchMock.mockReset().mockImplementation(async (_url, init) => init?.method === "HEAD"
     ? new Response(null, { headers: { "content-range": "*/0" } })

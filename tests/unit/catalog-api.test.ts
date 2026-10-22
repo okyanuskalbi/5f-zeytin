@@ -9,7 +9,7 @@ import { parseCatalogProducts } from "@/lib/contracts/catalog";
 vi.mock("server-only", () => ({}));
 
 const fetchMock = vi.fn<typeof fetch>();
-const fixtureKey = "task-029-test-only-service-key";
+const fixtureKey = "sb_publishable_task135_test_only";
 const product = {
   id: "fixture-green-1kg", name: "Test zeytin", category: "sofralik-zeytin",
   weight: "1 kg", priceKurus: 12500, stock: 3,
@@ -21,7 +21,8 @@ const row = {
 
 beforeEach(() => {
   vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "http://127.0.0.1:54321");
-  vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", fixtureKey);
+  vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", fixtureKey);
+  vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "task135-service-must-never-be-used");
   vi.stubGlobal("fetch", fetchMock);
   fetchMock.mockReset().mockImplementation(async () => Response.json([row]));
 });
@@ -82,6 +83,15 @@ describe("server-only catalog read and products GET", () => {
     expect(dynamic).toBe("force-dynamic");
   });
 
+  it("reads published products without a service key or server auth origin", async () => {
+    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", undefined);
+    vi.stubEnv("SITE_ORIGIN", undefined);
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "https://fixture.supabase.co");
+    expect(await readCatalog()).toEqual({ data: [product], source: "database" });
+    expect(new Headers(fetchMock.mock.calls[0][1]?.headers).get("apikey")).toBe(fixtureKey);
+  });
+
   it("never exposes internal columns or a service credential returned by an upstream", async () => {
     fetchMock.mockResolvedValueOnce(Response.json([{ ...row, active_slot: 1,
       created_at: "2026-10-22", secret: fixtureKey }]));
@@ -106,7 +116,7 @@ describe("server-only catalog read and products GET", () => {
     expect(result.data[0]).toEqual({ ...product, id: "fixture-0", priceKurus: 0, stock: 0 });
   });
 
-  it.each(["NEXT_PUBLIC_SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"])("uses the existing static catalog when %s is missing", async variable => {
+  it.each(["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_ANON_KEY"])("uses the existing static catalog when %s is missing", async variable => {
     vi.stubEnv(variable, undefined);
     const response = await GET();
     expect(await response.json()).toEqual({ data: parseCatalogProducts(await getProducts()), source: "static" });
@@ -179,7 +189,7 @@ describe("server-only catalog read and products GET", () => {
   });
 
   it("does not let caller mutations alter the static fallback", async () => {
-    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", undefined);
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", undefined);
     const result = await readCatalog();
     const originalPrice = result.data[0].priceKurus;
     Object.assign(result.data[0], { priceKurus: 1 });
@@ -187,7 +197,7 @@ describe("server-only catalog read and products GET", () => {
   });
 
   it("returns a sanitized uncached 503 if the fallback also fails", async () => {
-    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", undefined);
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", undefined);
     vi.spyOn(staticCatalog, "getProducts").mockRejectedValueOnce(new Error(fixtureKey));
     const response = await GET();
     expect(response.status).toBe(503);
@@ -199,7 +209,7 @@ describe("server-only catalog read and products GET", () => {
   });
 
   it("rejects an invalid static fallback instead of returning invalid prices", async () => {
-    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", undefined);
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", undefined);
     const products = await getProducts();
     vi.spyOn(staticCatalog, "getProducts").mockResolvedValueOnce(products.map(item => ({ ...item, priceKurus: -1 })));
     expect((await GET()).status).toBe(503);

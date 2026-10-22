@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import type { CookieOptions } from "@supabase/ssr";
 import { loginInvalidCredentials, magicLinkConfirmation, validateLoginRequest, type LoginResponse } from "@/lib/contracts/login";
-import { assertAuthMutation, AuthCoreError, authErrorResponse, authResponseHeaders, createAuthServerClient } from "@/lib/auth/server";
+import { assertAuthMutation, AuthCoreError, authErrorResponse, authResponseHeaders, createAuthServerClient, getAuthSiteOrigin } from "@/lib/auth/server";
 
 export const dynamic = "force-dynamic";
 const maxBodyBytes = 8192;
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
         !data.session?.access_token || !data.session.refresh_token) throw new AuthCoreError(503, "auth_unavailable", 5);
       response = NextResponse.json<LoginResponse>({ data: { status: "signed_in", redirectTo: input.next } }, { headers: authResponseHeaders });
     } else {
-      const callback = new URL("/auth/callback", request.url);
+      const callback = new URL("/auth/callback", getAuthSiteOrigin(request));
       callback.searchParams.set("next", input.next);
       const { error } = await client.auth.signInWithOtp({ email: input.email, options: { shouldCreateUser: false, emailRedirectTo: callback.href } });
       if (error?.status === 429) throw new AuthCoreError(429, "auth_rate_limited", 60);

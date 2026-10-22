@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { safeAuthRedirect } from "@/lib/auth/config";
-import { AuthCoreError, authErrorResponse, authFailure, authResponseHeaders, createAuthServerClient } from "@/lib/auth/server";
+import { AuthCoreError, authErrorResponse, authFailure, authResponseHeaders, createAuthServerClient, getAuthSiteOrigin } from "@/lib/auth/server";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +21,7 @@ export async function GET(request: Request) {
     if (!data.session || !data.user) throw new AuthCoreError(400, "invalid_callback");
     return new NextResponse(null, {
       status: 303,
-      headers: { ...authResponseHeaders, Location: new URL(safeAuthRedirect(url.searchParams.get("next")), url.origin).href },
+      headers: { ...authResponseHeaders, Location: new URL(safeAuthRedirect(url.searchParams.get("next")), getAuthSiteOrigin(request)).href },
     });
   } catch (error) {
     return authErrorResponse(error);

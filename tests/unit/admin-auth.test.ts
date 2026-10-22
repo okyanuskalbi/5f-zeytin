@@ -46,6 +46,7 @@ beforeEach(() => {
   vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", supabaseUrl);
   vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", publicKey);
   vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", serviceKey);
+  vi.stubEnv("SITE_ORIGIN", origin);
   vi.stubGlobal("fetch", fetchMock);
   fetchMock.mockImplementation(async input => {
     const url = new URL(String(input));
@@ -68,11 +69,10 @@ describe("server-verified admin authorization", () => {
     await expect(requireAdmin()).rejects.toMatchObject({ status: 401 });
     expect(roleRequests()).toHaveLength(0);
   });
-  it.each(["admin@afina.com.tr", "ADMIN@AFINA.COM.TR"])("recognizes the approved confirmed bootstrap email (%#) without creating an account or row", async email => {
+  it.each(["admin@afina.com.tr", "ADMIN@AFINA.COM.TR"])("denies a confirmed owner email without an explicit assignment (%#)", async email => {
     putSession(); providerUser.email = email;
-    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", undefined);
-    expect(await requireAdmin()).toEqual({ id: memberId, email });
-    expect(fetchMock).toHaveBeenCalledTimes(1);
+    await expect(requireAdmin()).rejects.toMatchObject({ status: 403, code: "forbidden" });
+    expect(roleRequests()).toHaveLength(1);
     const [url, options] = fetchMock.mock.calls[0];
     expect(String(url)).toBe(`${supabaseUrl}/auth/v1/user`);
     expect(new Headers(options?.headers).get("apikey")).toBe(publicKey);
@@ -193,7 +193,7 @@ describe("admin server layout gate", () => {
     await expect(AdminLayout({ children: "protected-content" })).rejects.toThrow("NEXT_HTTP_ERROR_FALLBACK;403");
   });
   it("renders children only for an authorized admin", async () => {
-    putSession(); providerUser.email = "admin@afina.com.tr";
+    putSession(); adminRows = [{ user_id: memberId }];
     expect(await AdminLayout({ children: "protected-content" })).toBe("protected-content");
   });
   it("propagates sanitized service failure without rendering children", async () => {

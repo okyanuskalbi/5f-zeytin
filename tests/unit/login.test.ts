@@ -27,6 +27,7 @@ beforeEach(() => {
   vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "https://fixture.supabase.co");
   vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", publicKey);
   vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "task042-service-must-never-be-used");
+  vi.stubEnv("SITE_ORIGIN", origin);
   vi.stubGlobal("fetch", fetchMock);
   fetchMock.mockReset().mockImplementation(async url => String(url).includes("/otp") ? Response.json({}) : Response.json(session()));
 });
@@ -91,6 +92,15 @@ describe("password login with real SDK and mocked transport", () => {
 });
 
 describe("magic link", () => {
+  it("builds emailRedirectTo from SITE_ORIGIN behind an internal request host", async () => {
+    const response = await POST(new NextRequest("http://internal-proxy:3000/api/auth/login", {
+      method: "POST", headers: { origin, "content-type": "application/json" }, body: JSON.stringify(magic),
+    }));
+    expect(response.status).toBe(202);
+    const redirect = new URL(new URL(String(fetchMock.mock.calls[0][0])).searchParams.get("redirect_to")!);
+    expect(redirect.origin + redirect.pathname).toBe(`${origin}/auth/callback`);
+    expect(redirect.searchParams.get("next")).toBe("/odeme");
+  });
   it("starts browser-bound PKCE without creating a user and keeps the return URL on this origin", async () => {
     const response = await POST(request(magic, { "x-forwarded-host": "evil.example" }));
     expect(response.status).toBe(202);

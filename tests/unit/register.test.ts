@@ -25,6 +25,7 @@ beforeEach(() => {
   vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", provider);
   vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", publicKey);
   vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "task041-service-must-never-be-used");
+  vi.stubEnv("SITE_ORIGIN", origin);
   vi.stubGlobal("fetch", fetchMock);
   fetchMock.mockReset().mockImplementation(async () => Response.json({ user, session: null }));
 });
@@ -49,6 +50,25 @@ describe("registration validation", () => {
 });
 
 describe("registration API with real Supabase SDK and mocked transport", () => {
+  it("builds the confirmation callback from SITE_ORIGIN behind an internal request host", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    const response = await POST(new NextRequest("http://internal-proxy:3000/api/auth/register", {
+      method: "POST", headers: { origin, "content-type": "application/json", "sec-fetch-site": "same-origin",
+        "x-forwarded-host": "evil.example", "x-forwarded-proto": "http" }, body: JSON.stringify(input),
+    }));
+    expect(response.status).toBe(202);
+    const redirect = new URL(new URL(String(fetchMock.mock.calls[0][0])).searchParams.get("redirect_to")!);
+    expect(redirect.origin + redirect.pathname).toBe(`${origin}/auth/callback`);
+    expect(redirect.searchParams.get("next")).toBe("/hesabim");
+  });
+  it("rejects production signup without SITE_ORIGIN before any provider access", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("SITE_ORIGIN", undefined);
+    const response = await POST(request());
+    expect(response.status).toBe(503);
+    expect(response.cookies.getAll()).toHaveLength(0);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
   it("starts PKCE with the public key, fixed same-origin callback and allowlisted consent metadata", async () => {
     vi.stubEnv("NODE_ENV", "production");
     const response = await POST(request(input, { "x-forwarded-host": "evil.example", "x-forwarded-proto": "http" }));

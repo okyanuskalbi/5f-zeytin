@@ -19,4 +19,11 @@ enabled = true
 enabled = false
 
 [auth]
-site_url = "http://localhost:3004"
+site_url = "https://afinazeytin.com"
+additional_redirect_urls = ["https://afinazeytin.com/**", "http://localhost:3004/**"]
+minimum_password_length = 10
+
+[auth.email]
+enable_confirmations = true
+double_confirm_changes = true
+secure_password_change = true

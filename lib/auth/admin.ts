@@ -1,9 +1,8 @@
 import "server-only";
 import { createSupabaseServiceClient } from "@/lib/supabase/server";
-import { AuthCoreError, authFailure, createAuthServerClient } from "./server";
+import { AuthCoreError, assertRequestOrigin, authFailure, createAuthServerClient } from "./server";
 
 type AdminUser = { id: string; email: string };
-const bootstrapEmail = "admin@afina.com.tr";
 const unavailable = () => new AuthCoreError(503, "admin_unavailable", 5);
 
 /** Call at every protected read/mutation, including each Server Action.
@@ -38,9 +37,6 @@ export async function requireAdmin(options: { readOnly?: boolean } = {}): Promis
     !Number.isFinite(Date.parse(user.email_confirmed_at))) throw new AuthCoreError(403, "forbidden");
 
   const admin = { id: user.id, email: user.email };
-  // Recognition only: never create an Auth account or seed an assignment.
-  if (user.email.toLowerCase() === bootstrapEmail) return admin;
-
   let rows: { user_id: string }[];
   try {
     const client = createSupabaseServiceClient({ noStore: true });
@@ -67,9 +63,6 @@ export async function requireAdminMutation(request: Request): Promise<AdminUser>
   if (!["POST", "PUT", "PATCH", "DELETE"].includes(request.method)) {
     throw new AuthCoreError(405, "method_not_allowed");
   }
-  const site = request.headers.get("sec-fetch-site");
-  if (request.headers.get("origin") !== new URL(request.url).origin || (site !== null && site !== "same-origin")) {
-    throw new AuthCoreError(403, "csrf_rejected");
-  }
+  assertRequestOrigin(request);
   return requireAdmin({ readOnly: false });
 }

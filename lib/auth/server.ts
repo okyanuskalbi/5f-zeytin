@@ -103,14 +103,28 @@ export async function getVerifiedUser(client?: SupabaseClient): Promise<{ id: st
   }
 }
 
-/** Reject login/logout CSRF before any Auth call. Do not trust forwarded headers. */
-export function assertAuthMutation(request: Request) {
-  if (request.method !== "POST") throw new AuthCoreError(405, "method_not_allowed");
-  const origin = new URL(request.url).origin;
+/** Production never derives security decisions or email URLs from request hosts. */
+export function getAuthSiteOrigin(request: Request): string {
+  try {
+    return getAuthConfig().siteOrigin ?? new URL(request.url).origin;
+  } catch {
+    throw new AuthCoreError(503, "auth_unavailable", 5);
+  }
+}
+
+/** Shared by Auth and admin writes; never trust forwarded headers. */
+export function assertRequestOrigin(request: Request) {
+  const origin = getAuthSiteOrigin(request);
   const site = request.headers.get("sec-fetch-site");
   if (request.headers.get("origin") !== origin || (site !== null && site !== "same-origin")) {
     throw new AuthCoreError(403, "csrf_rejected");
   }
+}
+
+/** Reject login/logout CSRF before any Auth call. */
+export function assertAuthMutation(request: Request) {
+  if (request.method !== "POST") throw new AuthCoreError(405, "method_not_allowed");
+  assertRequestOrigin(request);
 }
 
 export async function logout(request: Request) {

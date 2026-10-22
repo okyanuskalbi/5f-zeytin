@@ -45,6 +45,7 @@ beforeEach(() => {
   vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", supabaseUrl);
   vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", publicKey);
   vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "task040-service-must-never-be-used");
+  vi.stubEnv("SITE_ORIGIN", origin);
   vi.stubGlobal("fetch", fetchMock);
   fetchMock.mockImplementation(async input => String(input).includes("/token")
     ? Response.json(tokenResponse()) : Response.json(user));
@@ -53,7 +54,24 @@ afterEach(() => { vi.restoreAllMocks(); vi.unstubAllEnvs(); vi.unstubAllGlobals(
 
 describe("public auth configuration and browser boundary", () => {
   it("uses only the public key and normalizes the URL", () => {
-    expect(getAuthConfig()).toEqual({ url: supabaseUrl, key: publicKey });
+    expect(getAuthConfig()).toEqual({ url: supabaseUrl, key: publicKey, siteOrigin: origin });
+  });
+  it.each([undefined, "", "   "])("requires SITE_ORIGIN on the server in production (%#)", value => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("SITE_ORIGIN", value);
+    expect(() => getAuthConfig()).toThrow("Auth configuration unavailable");
+  });
+  it.each(["https://user:private@example.test", "https://example.test/path", "https://example.test?private=value",
+    "https://example.test/#hash", "http://example.test", "null", "//example.test"])("rejects unsafe SITE_ORIGIN (%#)", value => {
+    vi.stubEnv("SITE_ORIGIN", value);
+    expect(() => getAuthConfig()).toThrow("Auth configuration unavailable");
+  });
+  it("allows local development origins and normalizes a trailing slash", () => {
+    vi.stubEnv("NODE_ENV", "development");
+    vi.stubEnv("SITE_ORIGIN", " http://localhost:3004/ ");
+    expect(getAuthConfig()).toMatchObject({ siteOrigin: "http://localhost:3004" });
+    vi.stubEnv("NODE_ENV", "production");
+    expect(() => getAuthConfig()).toThrow("Auth configuration unavailable");
   });
   it.each(["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_ANON_KEY"])("rejects missing %s without exposing values", variable => {
     vi.stubEnv(variable, undefined);
@@ -91,6 +109,8 @@ describe("public auth configuration and browser boundary", () => {
   });
   it("creates a PKCE cookie client with only public config and no implicit URL session", () => {
     vi.stubGlobal("window", {});
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("SITE_ORIGIN", undefined);
     const client = {} as ReturnType<typeof ssr.createBrowserClient>;
     const create = vi.mocked(ssr.createBrowserClient).mockReturnValue(client);
     expect(createAuthBrowserClient()).toBe(client);
@@ -174,6 +194,12 @@ describe("SSR identity verification and cookie refresh", () => {
 });
 
 describe("callback allowlist and PKCE login CSRF protection", () => {
+  it("redirects to SITE_ORIGIN after PKCE even when the request URL uses an internal host", async () => {
+    putCookie(`${cookieName}-code-verifier`, verifier);
+    const response = await GET(new Request("http://internal-proxy:3000/auth/callback?code=test-code&next=/sepet"));
+    expect(response.status).toBe(303);
+    expect(response.headers.get("location")).toBe(`${origin}/sepet`);
+  });
   it.each(["/hesabim", "/sepet", "/odeme"])("allows exact local return path %s", path => {
     expect(safeAuthRedirect(path)).toBe(path);
   });

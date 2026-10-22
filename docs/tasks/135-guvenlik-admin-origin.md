@@ -40,4 +40,33 @@ Claude'un bağımsız güvenlik incelemesi (027–064, `b0f80a5^..914e544`) canl
 - Canlı Supabase'e bağlanma.
 - `docs/` dışında belge; `docs/tasks` içinde yalnız Coder Notu/Durum (docs/yayin ve snippets bu görevin çıktısıdır, yazılabilir).
 
-## Durum: BEKLİYOR
+## Coder Notu
+
+- `security-review`, `tdd-workflow`, `backend-patterns` kullanıldı; ek skill kurulmadı. ECC kuralları gereği bağımsız, salt okunur güvenlik/kod incelemesi de yapıldı; somut bulgu yok.
+- Yönetici e-posta kısayolu kaldırıldı. Her korumalı çağrı `getUser()` sonucunu, e-posta onayını ve güncel `admin_users` satırını kontrol eder. Mevcut şemada etkinlik kolonu yoktur; satırın varlığı etkin atamadır, silinmesi sonraki çağrıda yetkiyi kaldırır. Yeni migration gerekmedi.
+- `getAuthConfig` sunucuda `SITE_ORIGIN` doğrular; production'da eksik/geçersiz değer 503, uyuşmayan Origin veya uygun olmayan Sec-Fetch-Site 403 döner. Auth/admin ortak kontrol kullanır. Kayıt ve magic-link `emailRedirectTo` ile PKCE sonrası yönlendirme sabit origin'den üretilir. Tarayıcı auth ve anonim katalog istemcisi public yapılandırma kullanır, sunucu env'ine bağımlı değildir.
+- Katalog stateless publishable/anon istemciye geçirildi; no-store, süre sınırı, altı ürün limiti ve mevcut fallback korundu. PGlite'da `anon` rolüyle WHERE filtresi olmadan yalnız yayınlanmış ürünlerin okunabildiği doğrulandı.
+- `docs/yayin/admin-bootstrap.md`, `docs/yayin/supabase-auth-ayarlari.md` ve migration olmayan `supabase/snippets/admin-bootstrap.sql` eklendi. SQL yalnız onaylı mevcut hesabı atar, tekrar çalıştırmada çoğaltmaz. Ön-kayıt prosedürü şifre sıfırlama, global çıkış ve eski access-token sürelerinin dolmasını kapsar. Yerel Auth TOML ayarları güncellendi.
+
+### TDD ve kabul kanıtı
+
+| Kabul / davranış | Gerçekten çalıştırılan komut / sonuç |
+| --- | --- |
+| RED — admin bypass, origin ve anon okuma | `npm test -- tests/unit/admin-auth.test.ts tests/unit/auth-core.test.ts tests/unit/register.test.ts tests/unit/catalog-api.test.ts tests/unit/security-admin-origin.test.ts --maxWorkers=2`: düzeltme öncesi **37 FAIL / 245 PASS**. İlk atama snippet'i de henüz yoktu. |
+| RED — magic-link ve callback proxy yönlendirmesi | `npm test -- tests/unit/auth-core.test.ts tests/unit/login.test.ts --maxWorkers=2`: düzeltme öncesi **2 FAIL / 150 PASS**; internal host'a yönlendirme yakalandı. |
+| GREEN — ilgili testler ve kapsam | `npm test -- tests/unit/admin-auth.test.ts tests/unit/auth-core.test.ts tests/unit/register.test.ts tests/unit/catalog-api.test.ts tests/unit/security-admin-origin.test.ts tests/unit/login.test.ts --maxWorkers=2 --coverage --coverage.include=lib/auth/admin.ts --coverage.include=lib/auth/server.ts --coverage.include=lib/auth/config.ts --coverage.include=lib/auth/client.ts --coverage.include=lib/catalog/read.ts --coverage.include=lib/supabase/public.ts --coverage.include=app/api/auth/login/route.ts --coverage.include=app/api/auth/register/route.ts --coverage.include=app/auth/callback/route.ts`: **339 PASS**; statements **%98,43**, branches **%96,97**, functions **%98,07**, lines **%100**. |
+| Tüm unit/PGlite testleri | `npm test -- --maxWorkers=2`: **59 dosya / 956 test PASS**. İlk genel koşuda mevcut admin ürün CSRF testinin yeni public config fixture'ı eksikti; fixture güncellendikten sonra tamamı geçti. |
+| Lint | `npm run lint`: **PASS**, uyarı yok. |
+| Typecheck | `npm run typecheck`: **PASS**. |
+| Build | `npm run build`: **PASS**; prebuild varlık kontrolleri de PASS (18 görsel / 112 v3 çıktı). |
+| Sabit yönetici e-postası yok | `rg 'admin@afina.com.tr' lib app`: eşleşme yok, exit **1** (beklenen). |
+| Katalogda service role yok | `rg -e createSupabaseServiceClient -e SUPABASE_SERVICE_ROLE_KEY -e supabase/server lib/catalog/read.ts`: eşleşme yok, exit **1** (beklenen); public istemci kullanılıyor. |
+| Yerel Auth ayarları | Python `tomllib` ile config parse ve assert: site URL, iki redirect allowlist girdisi, minimum şifre ≥10 ve üç email güvenlik bayrağı **PASS**. |
+| Migration sınırı ve diff | `git diff --exit-code -- supabase/migrations`, `git diff --check`: **PASS**. |
+
+- İlk kapsam koşusundaki geniş `lib/auth/**` seçimi bu task'ta değişmeyen demo/adapter dosyalarını da içerdi ve functions eşiğini geçemedi. Yukarıdaki kapsam komutu yalnız değişen dosyaları ölçer; global coverage kabulü iddia edilmez.
+- `.env*` dosyaları doğrudan okunmadı/yazılmadı. Canlı Supabase bağlantısı, migration, bootstrap SQL veya uzak Auth ayarı uygulanmadı; bu işletim adımları 077'de Claude'a aittir. Vercel'e `SITE_ORIGIN` ekleme de Claude'un 077 adımıdır.
+- Playwright/e2e, Lighthouse, inspect, ekran görüntüsü ve tarayıcı çalıştırılmadı. Tarayıcı ve canlı kabulü **Claude doğrulayacak**.
+- RED/ara commit uzak dala gönderilmedi; TDD kanıtı bu notta korundu. Görev sonunda yalnız yeşil sonuçla son commit push edilir.
+
+## Durum: TAMAMLANDI

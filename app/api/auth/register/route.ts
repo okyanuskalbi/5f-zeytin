@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import type { CookieOptions } from "@supabase/ssr";
 import { registrationConfirmation, registrationPasswordError, validateRegisterRequest, type RegisterErrors, type RegisterResponse } from "@/lib/contracts/register";
-import { assertAuthMutation, AuthCoreError, authErrorResponse, authResponseHeaders, createAuthServerClient } from "@/lib/auth/server";
+import { assertAuthMutation, AuthCoreError, authErrorResponse, authResponseHeaders, createAuthServerClient, getAuthSiteOrigin } from "@/lib/auth/server";
 
 export const dynamic = "force-dynamic";
 const maxBodyBytes = 8192;
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     } });
     const { name, email, password, marketing } = parsed.data;
     const { data, error } = await client.auth.signUp({ email, password, options: {
-      emailRedirectTo: new URL("/auth/callback?next=/hesabim", request.url).href,
+      emailRedirectTo: new URL("/auth/callback?next=/hesabim", getAuthSiteOrigin(request)).href,
       // Preferences only, never an authorization or authoritative consent ledger.
       data: { name, privacy_acknowledged: true, membership_consent: true, marketing_consent: marketing, consent_recorded_at: new Date().toISOString() },
     } });
