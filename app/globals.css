@@ -3,6 +3,17 @@
 @source "../app";
 @source "../components";
 
+/* Next capsize metrics: calculateSizeAdjustValues("Figtree"), Arial fallback. */
+@font-face {
+  font-family: "Afina Figtree Fallback";
+  src: local("Arial");
+  font-display: swap;
+  ascent-override: 94.32%;
+  descent-override: 24.82%;
+  line-gap-override: 0%;
+  size-adjust: 100.72%;
+}
+
 :root {
   color-scheme: dark;
   --ink: #0E1510;
@@ -157,7 +168,7 @@
   a:active { text-decoration: underline; }
 
   :focus-visible {
-    outline: 2px solid currentColor;
+    outline: 2px solid var(--altin);
     outline-offset: 4px;
   }
 

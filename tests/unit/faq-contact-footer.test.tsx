@@ -126,7 +126,7 @@ it("opens the existing wholesale form in a labelled dialog and restores its trig
   render(<WholesaleFaq />);
   const trigger = screen.getByRole("button", { name: "Toptan teklif isteyin" });
   fireEvent.click(trigger);
-  const dialog = screen.getByRole("dialog", { name: "Toptan teklif isteyin" });
+  const dialog = await screen.findByRole("dialog", { name: "Toptan teklif isteyin" });
   expect(dialog.querySelector("form")).not.toBeNull();
   expect(screen.getByRole("button", { name: "Talebi gönder" }).hasAttribute("disabled")).toBe(true);
   expect(dialog.textContent).toContain("Bilgileriniz gönderilmez.");

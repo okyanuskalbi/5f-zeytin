@@ -1,6 +1,6 @@
+/* eslint-disable @next/next/no-img-element -- Approved local SVGs need no image optimizer or client image runtime. */
 import type { JSX } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { seller } from "@/lib/site/seller";
 import { siteContact } from "@/lib/site/contact";
 import styles from "./Footer.module.css";
@@ -40,14 +40,14 @@ export function Footer(): JSX.Element {
           <div className={styles.message} aria-labelledby="footer-brand-title">
             <h2 id="footer-brand-title" className="sr-only">AFİNA ZEYTİN</h2>
             <Link href="/" aria-label="Afina Zeytin ana sayfa" className={styles.home}>
-              <Image src="/brand/afina-zeytin-dark.svg" alt="Afina Zeytin" width={104} height={80} sizes="104px" className={styles.logo} />
+              <img src="/brand/afina-zeytin-dark.svg" alt="Afina Zeytin" width={104} height={80} loading="lazy" decoding="async" className={styles.logo} />
             </Link>
             <p className={styles.signature}>Kökü toprakta.<br /> Yeri sofrada.</p>
             <p>Toprağın sunduğu lezzet, Afina’nın özeniyle.</p>
             <div className={styles.groupBrand}>
               <p>Bir AFİNA Şirketler Topluluğu markası</p>
               <a href="https://afina.com.tr" target="_blank" rel="noopener" className={styles.community} aria-label="AFİNA Şirketler Topluluğu">
-                <Image src="/brand/afina-topluluk-dark.svg" alt="AFİNA Şirketler Topluluğu" width={381} height={225} sizes="88px" loading="lazy" unoptimized />
+                <img src="/brand/afina-topluluk-dark.svg" alt="AFİNA Şirketler Topluluğu" width={381} height={225} loading="lazy" decoding="async" />
               </a>
             </div>
           </div>
@@ -75,10 +75,10 @@ export function Footer(): JSX.Element {
         <div className={styles.payment} role="group" aria-label="Güvenli ödeme">
           <div className={styles.provider}>
             <p>Güvenli ödeme</p>
-            <span className={styles.paymentPlate}><Image src="/images/payment/paytr.svg" alt="PayTR" width={180} height={32} className={styles.paymentLogo} loading="lazy" unoptimized /></span>
+            <span className={styles.paymentPlate}><img src="/images/payment/paytr.svg" alt="PayTR" width={180} height={32} className={styles.paymentLogo} loading="lazy" decoding="async" /></span>
           </div>
           <ul className={styles.cards} aria-label="Kabul edilen kartlar">
-            {cardLogos.map(logo => <li key={logo.name}><Image src={`/images/payment/${logo.name.toLowerCase()}.svg`} alt={logo.name} width={logo.width} height={logo.height} className={styles.paymentLogo} loading="lazy" unoptimized /></li>)}
+            {cardLogos.map(logo => <li key={logo.name}><img src={`/images/payment/${logo.name.toLowerCase()}.svg`} alt={logo.name} width={logo.width} height={logo.height} className={styles.paymentLogo} loading="lazy" decoding="async" /></li>)}
           </ul>
         </div>
         <div className={styles.imprint}>

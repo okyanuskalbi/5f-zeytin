@@ -2,7 +2,8 @@
 
 import { useEffect, useState, type JSX } from "react";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import * as motion from "motion/react-m";
+import { AnimatePresence, useReducedMotion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/cart/CartProvider";
 import { useCartViewport } from "@/components/cart/useCartViewport";

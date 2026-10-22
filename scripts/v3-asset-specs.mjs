@@ -5,7 +5,7 @@ import approvals from "./v3-asset-approvals.json" with { type: "json" };
 export { approvals };
 export const formats = ["avif", "webp"];
 const background = (id, alt, widths, budget) => ({ id, group: "v3", source: `${id}.webp`, alt, widths, budget });
-const cutout = (id, alt, threshold = 40) => ({ id, group: "v3", source: `${id}.png`, alt, heights: [300, 600], threshold, budget: 90_000 });
+const cutout = (id, alt, threshold = 40) => ({ id, group: "v3", source: `${id}.png`, alt, heights: [300, 600], threshold, budget: id.startsWith("urun-") ? 60_000 : 90_000 });
 export const specs = [
   background("hero-masaustu", "Düziçi’nde kahvaltı sofrasında Afina yeşil zeytin tenekesi", [1920, 2880], 180_000),
   background("hero-mobil", "Sabah ışığında Afina zeytiniyle hazırlanan kahvaltı sofrası", [750, 1150], 120_000),

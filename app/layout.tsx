@@ -5,6 +5,7 @@ import type { JSX, ReactNode } from "react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { CartProvider } from "@/components/cart/CartProvider";
+import { MotionProvider } from "@/components/site/MotionProvider";
 import { getProducts } from "@/lib/catalog/static-products";
 import { isCheckoutDemoEnabled } from "@/lib/checkout/adapter";
 import type { Product } from "@/types/catalog";
@@ -29,7 +30,10 @@ const bodyFont = Figtree({
   preload: false,
   weight: ["400", "500", "600", "700", "800"],
   variable: "--font-body",
-  fallback: ["Helvetica Neue", "Arial", "sans-serif"],
+  // Explicit Arial metrics in globals.css also cover builds where Google's
+  // loader emits no adjusted fallback. Values come from Next's Figtree metrics.
+  fallback: ["Afina Figtree Fallback", "Arial", "Helvetica Neue", "sans-serif"],
+  adjustFontFallback: false,
 });
 
 export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover" };
@@ -60,13 +64,13 @@ export default async function RootLayout({
         >
           Ana içeriğe geç
         </a>
-        <CartProvider products={products} checkoutHref={isCheckoutDemoEnabled() ? "/odeme" : null}>
+        <MotionProvider><CartProvider products={products} checkoutHref={isCheckoutDemoEnabled() ? "/odeme" : null}>
           <Navbar />
           <div id="ana-icerik" tabIndex={-1} className="scroll-mt-28 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring">
             {children}
           </div>
           <Footer />
-        </CartProvider>
+        </CartProvider></MotionProvider>
       </body>
     </html>
   );

@@ -98,7 +98,8 @@ it("publishes one preview note and business schema without address, tax IDs or s
   expect(doc.body.textContent?.match(/Önizleme: fiyatlar ve görseller temsilidir\./g)).toHaveLength(1);
   expect(doc.body.textContent).not.toMatch(/henüz kullanıma açık değil|Gerçek satış kataloğu/);
   const scripts = [...doc.querySelectorAll('script[type="application/ld+json"]')];
-  expect(scripts).toHaveLength(1);
+  expect(scripts).toHaveLength(2);
+  expect(JSON.parse(scripts[1].textContent!)["@type"]).toBe("FAQPage");
   const schema = JSON.parse(scripts[0].textContent!);
   expect(schema["@context"]).toBe("https://schema.org");
   expect(schema["@graph"].map((item: Record<string, unknown>) => item["@type"])).toEqual(["Organization", "LocalBusiness"]);

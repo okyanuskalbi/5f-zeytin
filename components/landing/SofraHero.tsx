@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState, type JSX, type MouseEvent, type ReactNode } from "react";
-import { RadioGroup } from "radix-ui";
-import { motion, useAnimate } from "motion/react";
+import { useEffect, useId, useRef, useState, type JSX, type MouseEvent, type ReactNode } from "react";
+import * as motion from "motion/react-m";
+import { useAnimate } from "motion/react-mini";
 import { useCart } from "@/components/cart/CartProvider";
 import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
 import { motionTokens } from "@/lib/ui-motion";
@@ -21,6 +21,7 @@ export function SofraHero({ products = [], productImage, children }: {
   products?: readonly Product[]; productImage: ReactNode; children: ReactNode;
 }): JSX.Element {
   const [scope, animate] = useAnimate<HTMLElement>();
+  const sizeGroup = useId();
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const reduced = usePrefersReducedMotion();
   const cart = useCart();
@@ -106,10 +107,13 @@ export function SofraHero({ products = [], productImage, children }: {
       <div data-hero-card="" className={styles.card}>
         <div className={styles.productImage}>{productImage}</div>
         <div className={styles.details}>
-          <h3>Doğal Kırma Yeşil Zeytin</h3>
-          <RadioGroup.Root aria-label="Boy" orientation="horizontal" className={styles.sizes} value={selected} onValueChange={select}>
-            {sizes.map(size => <RadioGroup.Item key={size.id} value={size.id} className={styles.size}>{size.label}</RadioGroup.Item>)}
-          </RadioGroup.Root>
+          <h2>Doğal Kırma Yeşil Zeytin</h2>
+          <div role="radiogroup" aria-label="Boy" className={styles.sizes}>
+            {sizes.map(size => <label key={size.id} className={styles.size} data-state={selected === size.id ? "checked" : "unchecked"}>
+              <input className="sr-only" type="radio" name={sizeGroup} value={size.id} checked={selected === size.id}
+                onChange={() => select(size.id)} />{size.label}
+            </label>)}
+          </div>
           <div className={styles.buyRow}>
             <span aria-label="Seçili boyun fiyatı" className={styles.price}>{product ? money.format(product.priceKurus / 100) : "—"}</span>
             <motion.button type="button" className={styles.purchase} onClick={add}

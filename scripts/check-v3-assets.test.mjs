@@ -12,6 +12,8 @@ const manifestFile = resolve(root, "public/images/v3/manifest.json");
 let original;
 before(async () => {
   await mkdir(resolve(root, "public/images"), { recursive: true });
+  await mkdir(resolve(root, "lib/media"), { recursive: true });
+  await cp(resolve(repoRoot, "lib/media/v4-assets.json"), resolve(root, "lib/media/v4-assets.json"));
   await cp(resolve(repoRoot, "public/images/v3"), resolve(root, "public/images/v3"), { recursive: true });
   await cp(resolve(repoRoot, "public/images/tesis"), resolve(root, "public/images/tesis"), { recursive: true });
   await cp(resolve(repoRoot, "public/images/tesis-v4-manifest.json"), resolve(root, "public/images/tesis-v4-manifest.json"));
@@ -50,6 +52,35 @@ test("rejects over-budget bytes even when the output hash and size are updated",
   await assert.rejects(checkV3Assets({ root }), /180001 > 180000 bayt/);
   await writeFile(file, bytes);
   await writeFile(manifestFile, original);
+});
+
+test("enforces the tighter 60000-byte v4 product budget with a matching manifest hash", async () => {
+  const manifest = JSON.parse(original);
+  const output = manifest.assets["urun-01-kirma-10kg"].outputs[0];
+  const file = resolve(root, `public${output.file}`);
+  const bytes = await readFile(file);
+  const padded = Buffer.concat([bytes, Buffer.alloc(60001 - bytes.length)]);
+  output.bytes = padded.length;
+  output.sha256 = sha256(padded);
+  try {
+    await writeFile(file, padded);
+    await writeFile(manifestFile, JSON.stringify(manifest));
+    await assert.rejects(checkV3Assets({ root }), /60001 > 60000 bayt/);
+  } finally {
+    await writeFile(file, bytes);
+    await writeFile(manifestFile, original);
+  }
+});
+
+test("rejects retired pantry data added back to the runtime projection", async () => {
+  const path = resolve(root, "lib/media/v4-assets.json");
+  const original = await readFile(path, "utf8");
+  const runtime = JSON.parse(original);
+  runtime.assets["kiler-duvar"] = {};
+  try {
+    await writeFile(path, JSON.stringify(runtime));
+    await assert.rejects(checkV3Assets({ root }), /v4 runtime manifest/);
+  } finally { await writeFile(path, original); }
 });
 
 test("accepts pinned v4 facility derivatives and rejects a forged source or colour operation", async () => {

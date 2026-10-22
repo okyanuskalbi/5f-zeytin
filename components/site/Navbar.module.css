@@ -1,4 +1,4 @@
-.bar { position: fixed; inset: 0 0 auto; z-index: 30; background: transparent; color: var(--sut); padding-block: 18px; padding-top: calc(18px + env(safe-area-inset-top, 0px)); border-bottom: 1px solid transparent; transition: background .4s, backdrop-filter .4s; }
+.bar { position: fixed; inset: 0 0 auto; z-index: 30; background: transparent; color: var(--sut); padding-block: 18px; padding-top: calc(18px + env(safe-area-inset-top, 0px)); border-bottom: 1px solid transparent; transition: backdrop-filter .4s; }
 .bar[data-tone="solid"] { background: rgba(14,21,16,.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom-color: rgba(255,255,255,.08); }
 .row { display: flex; min-height: 44px; align-items: center; justify-content: space-between; gap: 24px; }
 .home { display: inline-flex; align-items: center; min-height: 44px; }
@@ -10,7 +10,7 @@
 .link:hover { text-decoration: underline; text-underline-offset: 6px; }
 .link:active { text-decoration: underline; text-decoration-thickness: 2px; }
 .actions { display: flex; align-items: center; gap: 8px; }
-.control { position: relative; background: transparent; color: inherit; outline-color: currentColor; transition: none; padding: 8px; font-size: 14px; }
+.control { position: relative; background: transparent; color: inherit; outline-color: var(--altin); transition: none; padding: 8px; font-size: 14px; }
 .control:hover { background: transparent; color: inherit; text-decoration: underline; }
 .control:active { background: transparent; color: inherit; }
 .control:disabled { background: transparent; color: inherit; opacity: 1; }

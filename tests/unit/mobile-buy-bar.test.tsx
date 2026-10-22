@@ -12,6 +12,12 @@ vi.mock("@/components/cart/useCartViewport", () => ({ useCartViewport: () => tru
 vi.mock("@/components/cart/CartDrawer", () => ({ CartDrawer: ({ open }: { open: boolean }) => open ? <div role="dialog" aria-modal="true">Sepet</div> : null }));
 vi.mock("@/lib/media/use-deferred-enhancement", () => ({ usePrefersReducedMotion: () => state.reduced }));
 const product: Product = { id: "sample-green-olive-10kg", name: "Doğal Kırma Yeşil Zeytin", category: "sofralik-zeytin", weight: "10 kg", priceKurus: 198765, stock: 2 };
+const frames = new Map<number, FrameRequestCallback>();
+let frameId = 0;
+function flushFrames() {
+  const pending = [...frames.values()]; frames.clear();
+  act(() => pending.forEach(callback => callback(16)));
+}
 let heroBottom = 800;
 let footerBottom = 5000;
 
@@ -26,8 +32,12 @@ function scroll(y: number, hero = 0) {
   heroBottom = hero;
   window.scrollY = y;
   fireEvent.scroll(window);
+  flushFrames();
 }
 beforeEach(() => {
+  frames.clear();
+  vi.stubGlobal("requestAnimationFrame", (callback: FrameRequestCallback) => { frames.set(++frameId, callback); return frameId; });
+  vi.stubGlobal("cancelAnimationFrame", (id: number) => frames.delete(id));
   state.pathname = "/";
   state.reduced = false;
   heroBottom = 800;
@@ -46,6 +56,7 @@ afterEach(() => {
   document.querySelector("footer")?.remove();
   localStorage.clear();
   vi.restoreAllMocks();
+  vi.unstubAllGlobals();
 });
 
 it("starts inaccessible in SSR and waits for both the strict 80% threshold and the hero exit", () => {
@@ -82,12 +93,15 @@ it("hides at the final 120px of the footer and reappears when scrolling back", (
   scroll(1000);
   footerBottom = 921;
   fireEvent.scroll(window);
+  flushFrames();
   expect(screen.getByRole("region", { name: "Hızlı satın alma" })).toBeDefined();
   footerBottom = 920;
   fireEvent.scroll(window);
+  flushFrames();
   expect(screen.queryByRole("region", { name: "Hızlı satın alma" })).toBeNull();
   footerBottom = 1000;
   fireEvent.scroll(window);
+  flushFrames();
   expect(screen.getByRole("region", { name: "Hızlı satın alma" })).toBeDefined();
 });
 

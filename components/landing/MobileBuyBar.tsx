@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type JSX } from "react";
-import { motion } from "motion/react";
+import * as motion from "motion/react-m";
 import { useCart } from "@/components/cart/CartProvider";
 import { AddToCart } from "@/components/catalog/AddToCart";
 import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
@@ -19,6 +19,7 @@ export function MobileBuyBar({ product }: { product?: Product }): JSX.Element | 
 
   useEffect(() => {
     if (!product) return;
+    let frame: number | null = null;
     function sync(): void {
       const hero = document.querySelector("[data-hero-intro]");
       const footer = document.querySelector("footer");
@@ -27,18 +28,23 @@ export function MobileBuyBar({ product }: { product?: Product }): JSX.Element | 
       const dialogOpen = !!document.querySelector('dialog[open], [role="dialog"][aria-modal="true"]:not([data-state="closed"]), [role="alertdialog"][aria-modal="true"]:not([data-state="closed"])');
       setEligible(window.innerWidth <= 900 && window.scrollY > window.innerHeight * .8 && !heroVisible && !footerEnd && !dialogOpen);
     }
+    function schedule(): void {
+      if (frame !== null) return;
+      frame = requestAnimationFrame(() => { frame = null; sync(); });
+    }
     sync();
-    window.addEventListener("scroll", sync, { passive: true });
+    window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", sync);
     window.addEventListener("pageshow", sync);
     // Radix portals (menu, quick view, form) can open without any scroll event.
     const dialogs = new MutationObserver(sync);
     dialogs.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["open", "data-state", "aria-modal"] });
     return () => {
-      window.removeEventListener("scroll", sync);
+      window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", sync);
       window.removeEventListener("pageshow", sync);
       dialogs.disconnect();
+      if (frame !== null) cancelAnimationFrame(frame);
     };
   }, [product]);
 

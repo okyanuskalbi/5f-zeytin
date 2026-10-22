@@ -1,6 +1,6 @@
 // Representative prices/stock only; approved packaging sizes are fixed.
 // Families are display groups. Cart/checkout continue to use variant IDs.
-import manifest from "@/public/images/v3/manifest.json";
+import manifest from "@/lib/media/v4-assets.json";
 import type { ProductFamily, ProductVariant } from "@/types/catalog";
 
 function variant(familyId: string, name: string, category: ProductVariant["category"], id: string, weight: string, priceKurus: number, stock: number, imageKey: keyof typeof manifest.assets): ProductVariant {

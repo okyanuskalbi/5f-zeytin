@@ -2,17 +2,17 @@
 
 import { useEffect, useRef, useState, type JSX } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
+import * as motion from "motion/react-m";
+import { AnimatePresence, useMotionValueEvent, useScroll } from "motion/react";
 import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
 import { springs, motionTokens } from "@/lib/ui-motion";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/cart/CartProvider";
-import {
-  Dialog, DialogClose, DialogContent, DialogDescription,
-  DialogHeader, DialogTitle, DialogTrigger,
-} from "@/components/ui/dialog";
 import styles from "./Navbar.module.css";
+
+const NavbarMenu = dynamic(() => import("./NavbarMenu").then(module => module.NavbarMenu));
 
 const links = [
   { label: "Ürünler", href: "/#urunler" },
@@ -27,7 +27,7 @@ export function Navbar(): JSX.Element {
   const itemCount = cart?.state.items.reduce((count, item) => count + item.quantity, 0) ?? 0;
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const firstLinkRef = useRef<HTMLAnchorElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const homeRef = useRef<HTMLAnchorElement>(null);
   const reduced = usePrefersReducedMotion();
   const { scrollY } = useScroll();
@@ -91,29 +91,11 @@ export function Navbar(): JSX.Element {
           <Button asChild variant="ghost" className={`${styles.control} ${styles.account}`}>
             <Link href="/hesabim">Hesabım</Link>
           </Button>
-          <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger asChild>
-              <Button variant="ghost" className={`${styles.control} ${styles.trigger}`} aria-label="Menüyü aç">Menü</Button>
-            </DialogTrigger>
-            <DialogContent placement="fullscreen" className={styles.menu}
-              onOpenAutoFocus={event => { event.preventDefault(); firstLinkRef.current?.focus(); }}
-              onCloseAutoFocus={event => {
-                if (window.matchMedia("(min-width: 901px)").matches) { event.preventDefault(); homeRef.current?.focus(); }
-              }}>
-              <DialogHeader className="sr-only">
-                <DialogTitle>Site menüsü</DialogTitle>
-                <DialogDescription>Ürünler, tesisimiz, toptan satış ve sık sorulan sorular.</DialogDescription>
-              </DialogHeader>
-              <nav aria-label="Site navigasyonu" className={styles.menuLinks}>
-                {links.map((link, index) => <DialogClose key={link.href} asChild>
-                  <Link ref={index === 0 ? firstLinkRef : undefined} href={link.href} className={styles.link}>{link.label}</Link>
-                </DialogClose>)}
-                <DialogClose asChild><Link href="/hesabim" className={styles.link}>Hesabım</Link></DialogClose>
-                <DialogClose asChild><Link href="/sepet" className={styles.link}>Sepetim</Link></DialogClose>
-              </nav>
-              <p>Kökü toprakta. Yeri sofrada.</p>
-            </DialogContent>
-          </Dialog>
+          <Button ref={triggerRef} variant="ghost" className={`${styles.control} ${styles.trigger}`} aria-label="Menüyü aç"
+            aria-haspopup="dialog" aria-expanded={isOpen} onClick={() => setIsOpen(true)}>Menü</Button>
+          {isOpen && <NavbarMenu links={links} onClose={() => setIsOpen(false)}
+            onRestoreFocus={() => (window.matchMedia("(min-width: 901px)").matches ? homeRef : triggerRef).current?.focus()} />}
+
         </div>
       </div>
     </header>

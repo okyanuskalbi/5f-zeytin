@@ -6,6 +6,7 @@ import sharp from "sharp";
 import { approvals, formats, specs } from "./v3-asset-specs.mjs";
 import { alphaBounds, approvedSource, repoRoot, sha256, sourceRoot } from "./prepare-v3-assets.mjs";
 import { checkFacilityV4 } from "./prepare-facility-v4.mjs";
+import { runtimeAssets } from "./prepare-v4-assets.mjs";
 
 /** Offline CI uses pinned approval rows; local acceptance also verifies originals. */
 export async function checkV3Assets({ root = repoRoot, requireSources = false } = {}) {
@@ -13,6 +14,8 @@ export async function checkV3Assets({ root = repoRoot, requireSources = false } 
   try { await access(sourceRoot); sourcesAvailable = true; } catch { /* Independent CI checkout. */ }
   assert(!requireSources || sourcesAvailable, "Onaylı kaynak dizini gerekli.");
   const manifest = JSON.parse(await readFile(resolve(root, "public/images/v3/manifest.json"), "utf8"));
+  const runtime = JSON.parse(await readFile(resolve(root, "lib/media/v4-assets.json"), "utf8"));
+  assert.deepEqual(runtime, runtimeAssets(manifest), "v4 runtime manifest must match approved derivatives without retired pantry assets");
   assert.equal(manifest.version, 1);
   assert.deepEqual(Object.keys(manifest.assets).sort(), specs.map(spec => spec.id).sort());
   const registered = ["manifest.json"];

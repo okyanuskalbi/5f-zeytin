@@ -10,8 +10,12 @@ export const verifiedFaqs = [
 ] as const;
 
 export function Faq(): JSX.Element {
+  const schema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: verifiedFaqs.map(faq => ({
+    "@type": "Question", name: faq.question, acceptedAnswer: { "@type": "Answer", text: faq.answer },
+  })) };
   return (
     <section id="sik-sorulanlar" data-reading-safe="" aria-labelledby="sss-title" className={styles.section}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
       <h2 id="sss-title">Sık sorulanlar</h2>
       <div className={styles.answers}>
         {verifiedFaqs.map(item => (

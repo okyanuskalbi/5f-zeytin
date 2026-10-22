@@ -1,6 +1,7 @@
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import { CartProvider } from "@/components/cart/CartProvider";
+import { LazyMotion, domAnimation } from "motion/react";
 import { HeroBand } from "@/components/landing/HeroBand";
 import { getProducts } from "@/lib/catalog/static-products";
 import { CART_STORAGE_KEY } from "@/lib/cart/store";
@@ -9,8 +10,9 @@ import { motionTokens } from "@/lib/ui-motion";
 const scroll = vi.hoisted(() => ({ set: (value: number): void => { void value; } }));
 vi.mock("motion/react", async importOriginal => {
   const actual = await importOriginal<typeof import("motion/react")>();
+  const { useState } = await import("react");
   return { ...actual, useScroll: vi.fn(() => {
-    const progress = actual.motionValue(0.5);
+    const [progress] = useState(() => actual.motionValue(0.5));
     scroll.set = value => progress.set(value);
     return { scrollYProgress: progress };
   }) };
@@ -72,7 +74,7 @@ it("keeps both missing-size actions disabled without inventing a price", () => {
 it("clamps the animated photo to 60px even outside the normal scroll range", async () => {
   vi.stubGlobal("matchMedia", () => ({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() }));
   vi.stubGlobal("IntersectionObserver", class { observe() {} unobserve() {} disconnect() {} });
-  const view = render(<HeroBand products={[]} />);
+  const view = render(<LazyMotion features={domAnimation}><HeroBand products={[]} /></LazyMotion>);
   const photo = view.container.querySelector<HTMLElement>("[data-band-photo]")!;
   act(() => scroll.set(-1));
   await vi.waitFor(() => expect(photo.style.transform).toBe("translateY(-60px)"));

@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef, type JSX } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import * as motion from "motion/react-m";
+import { useScroll, useTransform } from "motion/react";
 import { AddToCart } from "@/components/catalog/AddToCart";
 import { V3Picture } from "@/components/media/V3Picture";
 import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";

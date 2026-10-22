@@ -23,13 +23,13 @@ function Consumer() {
 afterEach(() => { cleanup(); vi.restoreAllMocks(); localStorage.clear(); });
 
 describe("global cart owner", () => {
-  it("hydrates once, shares edits between consumers and survives layout rerender", () => {
+  it("hydrates once, shares edits between consumers and survives layout rerender", async () => {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify([{ productId: "olive", quantity: 1 }]));
     const view = render(<CartProvider products={products}><Consumer /><Consumer /></CartProvider>);
     expect(screen.getAllByRole("status", { name: "Adet" }).map((node) => node.textContent)).toEqual(["1", "1"]);
     fireEvent.click(screen.getAllByRole("button", { name: "Ekle" })[0]);
     expect(screen.getAllByRole("status", { name: "Adet" }).map((node) => node.textContent)).toEqual(["2", "2"]);
-    expect(screen.getAllByRole("dialog")).toHaveLength(1);
+    expect(await screen.findAllByRole("dialog")).toHaveLength(1);
     view.rerender(<CartProvider products={[...products]}><Consumer /><Consumer /></CartProvider>);
     expect(screen.getAllByRole("status", { name: "Adet" }).map((node) => node.textContent)).toEqual(["2", "2"]);
     fireEvent.click(screen.getAllByRole("button", { name: "Sil" })[1]);
@@ -64,10 +64,10 @@ describe("global cart owner", () => {
     expect(screen.getByRole("status", { name: "Adet" }).textContent).toBe("3");
   });
 
-  it("opens the empty drawer and renders an empty SSR snapshot without browser reads", () => {
+  it("opens the empty drawer and renders an empty SSR snapshot without browser reads", async () => {
     render(<CartProvider products={products}><Consumer /></CartProvider>);
     fireEvent.click(screen.getByRole("button", { name: "Aç" }));
-    expect(screen.getByRole("dialog")).toBeDefined();
+    expect(await screen.findByRole("dialog")).toBeDefined();
     const read = vi.spyOn(Storage.prototype, "getItem");
     expect(renderToString(<CartProvider products={products}><Consumer /></CartProvider>)).toContain(">0</output>");
     expect(read).not.toHaveBeenCalled();

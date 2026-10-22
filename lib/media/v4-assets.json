@@ -1,0 +1,584 @@
+{
+  "assets": {
+    "hero-masaustu": {
+      "alt": "Düziçi’nde kahvaltı sofrasında Afina yeşil zeytin tenekesi",
+      "outputs": [
+        {
+          "file": "/images/v3/hero-masaustu-w1920.avif",
+          "format": "avif",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "file": "/images/v3/hero-masaustu-w1920.webp",
+          "format": "webp",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "file": "/images/v3/hero-masaustu-w2880.avif",
+          "format": "avif",
+          "width": 2880,
+          "height": 1620
+        },
+        {
+          "file": "/images/v3/hero-masaustu-w2880.webp",
+          "format": "webp",
+          "width": 2880,
+          "height": 1620
+        }
+      ]
+    },
+    "hero-mobil": {
+      "alt": "Sabah ışığında Afina zeytiniyle hazırlanan kahvaltı sofrası",
+      "outputs": [
+        {
+          "file": "/images/v3/hero-mobil-w750.avif",
+          "format": "avif",
+          "width": 750,
+          "height": 1333
+        },
+        {
+          "file": "/images/v3/hero-mobil-w750.webp",
+          "format": "webp",
+          "width": 750,
+          "height": 1333
+        },
+        {
+          "file": "/images/v3/hero-mobil-w1150.avif",
+          "format": "avif",
+          "width": 1150,
+          "height": 2044
+        },
+        {
+          "file": "/images/v3/hero-mobil-w1150.webp",
+          "format": "webp",
+          "width": 1150,
+          "height": 2044
+        }
+      ]
+    },
+    "urun-01-kirma-10kg": {
+      "alt": "Doğal Kırma Yeşil Zeytin, 10 kg teneke",
+      "outputs": [
+        {
+          "file": "/images/v3/urun-01-kirma-10kg-h300.avif",
+          "format": "avif",
+          "width": 226,
+          "height": 300
+        },
+        {
+          "file": "/images/v3/urun-01-kirma-10kg-h300.webp",
+          "format": "webp",
+          "width": 226,
+          "height": 300
+        },
+        {
+          "file": "/images/v3/urun-01-kirma-10kg-h600.avif",
+          "format": "avif",
+          "width": 451,
+          "height": 600
+        },
+        {
+          "file": "/images/v3/urun-01-kirma-10kg-h600.webp",
+          "format": "webp",
+          "width": 451,
+          "height": 600
+        }
+      ]
+    },
+    "urun-02-kirma-1kg": {
+      "alt": "Doğal Kırma Yeşil Zeytin, 1 kg kavanoz",
+      "outputs": [
+        {
+          "file": "/images/v3/urun-02-kirma-1kg-h300.avif",
+          "format": "avif",
+          "width": 149,
+          "height": 300
+        },
+        {
+          "file": "/images/v3/urun-02-kirma-1kg-h300.webp",
+          "format": "webp",
+          "width": 149,
+          "height": 300
+        },
+        {
+          "file": "/images/v3/urun-02-kirma-1kg-h600.avif",
+          "format": "avif",
+          "width": 298,
+          "height": 600
+        },
+        {
+          "file": "/images/v3/urun-02-kirma-1kg-h600.webp",
+          "format": "webp",
+          "width": 298,
+          "height": 600
+        }
+      ]
+    },
+    "urun-03-siyah-1kg": {
+      "alt": "Salamura Siyah Zeytin, 1 kg kavanoz",
+      "outputs": [
+        {
+          "file": "/images/v3/urun-03-siyah-1kg-h300.avif",
+          "format": "avif",
+          "width": 153,
+          "height": 300
+        },
+        {
+          "file": "/images/v3/urun-03-siyah-1kg-h300.webp",
+          "format": "webp",
+          "width": 153,
+          "height": 300
+        },
+        {
+          "file": "/images/v3/urun-03-siyah-1kg-h600.avif",
+          "format": "avif",
+          "width": 306,
+          "height": 600
+        },
+        {
+          "file": "/images/v3/urun-03-siyah-1kg-h600.webp",
+          "format": "webp",
+          "width": 306,
+          "height": 600
+        }
+      ]
+    },
+    "urun-04-yag-1l": {
+      "alt": "Natürel Sızma Zeytinyağı, 1 L cam şişe",
+      "outputs": [
+        {
+          "file": "/images/v3/urun-04-yag-1l-h300.avif",
+          "format": "avif",
+          "width": 89,
+          "height": 300
+        },
+        {
+          "file": "/images/v3/urun-04-yag-1l-h300.webp",
+          "format": "webp",
+          "width": 89,
+          "height": 300
+        },
+        {
+          "file": "/images/v3/urun-04-yag-1l-h600.avif",
+          "format": "avif",
+          "width": 177,
+          "height": 600
+        },
+        {
+          "file": "/images/v3/urun-04-yag-1l-h600.webp",
+          "format": "webp",
+          "width": 177,
+          "height": 600
+        }
+      ]
+    },
+    "urun-05-yag-5l": {
+      "alt": "Natürel Sızma Zeytinyağı, 5 L teneke",
+      "outputs": [
+        {
+          "file": "/images/v3/urun-05-yag-5l-h300.avif",
+          "format": "avif",
+          "width": 201,
+          "height": 300
+        },
+        {
+          "file": "/images/v3/urun-05-yag-5l-h300.webp",
+          "format": "webp",
+          "width": 201,
+          "height": 300
+        },
+        {
+          "file": "/images/v3/urun-05-yag-5l-h600.avif",
+          "format": "avif",
+          "width": 403,
+          "height": 600
+        },
+        {
+          "file": "/images/v3/urun-05-yag-5l-h600.webp",
+          "format": "webp",
+          "width": 403,
+          "height": 600
+        }
+      ]
+    },
+    "urun-06-salamura-yesil-5kg": {
+      "alt": "Salamura Yeşil Zeytin, 5 kg teneke",
+      "outputs": [
+        {
+          "file": "/images/v3/urun-06-salamura-yesil-5kg-h300.avif",
+          "format": "avif",
+          "width": 216,
+          "height": 300
+        },
+        {
+          "file": "/images/v3/urun-06-salamura-yesil-5kg-h300.webp",
+          "format": "webp",
+          "width": 216,
+          "height": 300
+        },
+        {
+          "file": "/images/v3/urun-06-salamura-yesil-5kg-h600.avif",
+          "format": "avif",
+          "width": 433,
+          "height": 600
+        },
+        {
+          "file": "/images/v3/urun-06-salamura-yesil-5kg-h600.webp",
+          "format": "webp",
+          "width": 433,
+          "height": 600
+        }
+      ]
+    },
+    "01-dogal-kirma-yesil-zeytin-10kg-sahne": {
+      "alt": "Doğal Kırma Yeşil Zeytin, 10 kg teneke, sofra sunumu",
+      "outputs": [
+        {
+          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-sahne-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 450
+        },
+        {
+          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-sahne-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 450
+        },
+        {
+          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-sahne-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 900
+        },
+        {
+          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-sahne-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    "01-dogal-kirma-yesil-zeytin-10kg-studyo": {
+      "alt": "Doğal Kırma Yeşil Zeytin, 10 kg teneke, stüdyo çekimi",
+      "outputs": [
+        {
+          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-studyo-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 1000
+        },
+        {
+          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-studyo-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 1000
+        },
+        {
+          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-studyo-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 2000
+        },
+        {
+          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-studyo-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 2000
+        }
+      ]
+    },
+    "02-dogal-kirma-yesil-zeytin-1kg-sahne": {
+      "alt": "Doğal Kırma Yeşil Zeytin, 1 kg kavanoz, sofra sunumu",
+      "outputs": [
+        {
+          "file": "/images/v3/02-dogal-kirma-yesil-zeytin-1kg-sahne-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 450
+        },
+        {
+          "file": "/images/v3/02-dogal-kirma-yesil-zeytin-1kg-sahne-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 450
+        },
+        {
+          "file": "/images/v3/02-dogal-kirma-yesil-zeytin-1kg-sahne-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 900
+        },
+        {
+          "file": "/images/v3/02-dogal-kirma-yesil-zeytin-1kg-sahne-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    "02-dogal-kirma-yesil-zeytin-1kg-studyo": {
+      "alt": "Doğal Kırma Yeşil Zeytin, 1 kg kavanoz, stüdyo çekimi",
+      "outputs": [
+        {
+          "file": "/images/v3/02-dogal-kirma-yesil-zeytin-1kg-studyo-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 1000
+        },
+        {
+          "file": "/images/v3/02-dogal-kirma-yesil-zeytin-1kg-studyo-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 1000
+        },
+        {
+          "file": "/images/v3/02-dogal-kirma-yesil-zeytin-1kg-studyo-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 2000
+        },
+        {
+          "file": "/images/v3/02-dogal-kirma-yesil-zeytin-1kg-studyo-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 2000
+        }
+      ]
+    },
+    "03-salamura-siyah-zeytin-1kg-sahne": {
+      "alt": "Salamura Siyah Zeytin, 1 kg kavanoz, sofra sunumu",
+      "outputs": [
+        {
+          "file": "/images/v3/03-salamura-siyah-zeytin-1kg-sahne-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 450
+        },
+        {
+          "file": "/images/v3/03-salamura-siyah-zeytin-1kg-sahne-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 450
+        },
+        {
+          "file": "/images/v3/03-salamura-siyah-zeytin-1kg-sahne-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 900
+        },
+        {
+          "file": "/images/v3/03-salamura-siyah-zeytin-1kg-sahne-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    "03-salamura-siyah-zeytin-1kg-studyo": {
+      "alt": "Salamura Siyah Zeytin, 1 kg kavanoz, stüdyo çekimi",
+      "outputs": [
+        {
+          "file": "/images/v3/03-salamura-siyah-zeytin-1kg-studyo-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 1000
+        },
+        {
+          "file": "/images/v3/03-salamura-siyah-zeytin-1kg-studyo-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 1000
+        },
+        {
+          "file": "/images/v3/03-salamura-siyah-zeytin-1kg-studyo-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 2000
+        },
+        {
+          "file": "/images/v3/03-salamura-siyah-zeytin-1kg-studyo-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 2000
+        }
+      ]
+    },
+    "04-naturel-sizma-zeytinyagi-1l-sahne": {
+      "alt": "Natürel Sızma Zeytinyağı, 1 L cam şişe, sofra sunumu",
+      "outputs": [
+        {
+          "file": "/images/v3/04-naturel-sizma-zeytinyagi-1l-sahne-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 450
+        },
+        {
+          "file": "/images/v3/04-naturel-sizma-zeytinyagi-1l-sahne-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 450
+        },
+        {
+          "file": "/images/v3/04-naturel-sizma-zeytinyagi-1l-sahne-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 900
+        },
+        {
+          "file": "/images/v3/04-naturel-sizma-zeytinyagi-1l-sahne-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    "04-naturel-sizma-zeytinyagi-1l-studyo": {
+      "alt": "Natürel Sızma Zeytinyağı, 1 L cam şişe, stüdyo çekimi",
+      "outputs": [
+        {
+          "file": "/images/v3/04-naturel-sizma-zeytinyagi-1l-studyo-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 1000
+        },
+        {
+          "file": "/images/v3/04-naturel-sizma-zeytinyagi-1l-studyo-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 1000
+        },
+        {
+          "file": "/images/v3/04-naturel-sizma-zeytinyagi-1l-studyo-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 2000
+        },
+        {
+          "file": "/images/v3/04-naturel-sizma-zeytinyagi-1l-studyo-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 2000
+        }
+      ]
+    },
+    "05-naturel-sizma-zeytinyagi-5l-sahne": {
+      "alt": "Natürel Sızma Zeytinyağı, 5 L teneke, sofra sunumu",
+      "outputs": [
+        {
+          "file": "/images/v3/05-naturel-sizma-zeytinyagi-5l-sahne-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 450
+        },
+        {
+          "file": "/images/v3/05-naturel-sizma-zeytinyagi-5l-sahne-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 450
+        },
+        {
+          "file": "/images/v3/05-naturel-sizma-zeytinyagi-5l-sahne-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 900
+        },
+        {
+          "file": "/images/v3/05-naturel-sizma-zeytinyagi-5l-sahne-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    "05-naturel-sizma-zeytinyagi-5l-studyo": {
+      "alt": "Natürel Sızma Zeytinyağı, 5 L teneke, stüdyo çekimi",
+      "outputs": [
+        {
+          "file": "/images/v3/05-naturel-sizma-zeytinyagi-5l-studyo-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 1000
+        },
+        {
+          "file": "/images/v3/05-naturel-sizma-zeytinyagi-5l-studyo-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 1000
+        },
+        {
+          "file": "/images/v3/05-naturel-sizma-zeytinyagi-5l-studyo-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 2000
+        },
+        {
+          "file": "/images/v3/05-naturel-sizma-zeytinyagi-5l-studyo-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 2000
+        }
+      ]
+    },
+    "06-salamura-yesil-zeytin-5kg-sahne": {
+      "alt": "Salamura Yeşil Zeytin, 5 kg teneke, sofra sunumu",
+      "outputs": [
+        {
+          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-sahne-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 450
+        },
+        {
+          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-sahne-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 450
+        },
+        {
+          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-sahne-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 900
+        },
+        {
+          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-sahne-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    "06-salamura-yesil-zeytin-5kg-studyo": {
+      "alt": "Salamura Yeşil Zeytin, 5 kg teneke, stüdyo çekimi",
+      "outputs": [
+        {
+          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-studyo-w800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 1000
+        },
+        {
+          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-studyo-w800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 1000
+        },
+        {
+          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-studyo-w1600.avif",
+          "format": "avif",
+          "width": 1600,
+          "height": 2000
+        },
+        {
+          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-studyo-w1600.webp",
+          "format": "webp",
+          "width": 1600,
+          "height": 2000
+        }
+      ]
+    }
+  }
+}

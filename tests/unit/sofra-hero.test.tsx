@@ -9,8 +9,8 @@ const animation = vi.hoisted(() => {
   const controls = { play: vi.fn(), pause: vi.fn(), stop: vi.fn() };
   return { controls, animate: vi.fn(() => controls) };
 });
-vi.mock("motion/react", async importOriginal => {
-  const original = await importOriginal<typeof import("motion/react")>();
+vi.mock("motion/react-mini", async importOriginal => {
+  const original = await importOriginal<typeof import("motion/react-mini")>();
   const { useRef } = await import("react");
   return { ...original, useAnimate: () => [useRef(null), animation.animate] };
 });
@@ -22,7 +22,7 @@ it("switches between real sizes and adds each selected SKU without opening the d
   const products = await getProducts();
   render(<CartProvider products={products}><Hero products={products} /></CartProvider>);
   const sizes = screen.getByRole("radiogroup", { name: "Boy" });
-  expect(within(sizes).getByRole("radio", { name: "10 kg teneke" }).getAttribute("aria-checked")).toBe("true");
+  expect((within(sizes).getByRole("radio", { name: "10 kg teneke" }) as HTMLInputElement).checked).toBe(true);
   expect(screen.getByLabelText("Seçili boyun fiyatı").textContent).toBe("₺2.200");
   fireEvent.click(screen.getByRole("button", { name: "Sepete ekle" }));
   expect(screen.getByRole("status").textContent).toContain("10 kg sepete eklendi");

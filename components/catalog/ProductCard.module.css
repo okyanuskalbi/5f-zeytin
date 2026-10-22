@@ -1,6 +1,6 @@
 .reveal { min-width: 0; display: flex; }
 .reveal:focus-within { opacity: 1 !important; transform: none !important; }
-.card { --product-height: 114px; --product-height-large: 200px; --glow: 107 139 81; position: relative; isolation: isolate; display: flex; flex-direction: column; min-width: 0; width: 100%; padding: 16px 12px 14px; border: 1px solid rgba(255,255,255,.06); border-radius: 22px; background: linear-gradient(180deg,#17231A,#101810); color: var(--sut); overflow: hidden; transition: transform .35s cubic-bezier(.2,.8,.2,1), border-color .35s; }
+.card { --product-height: 114px; --product-height-large: 200px; --glow: 107 139 81; position: relative; isolation: isolate; display: flex; flex-direction: column; min-width: 0; width: 100%; padding: 16px 12px 14px; border: 1px solid rgba(255,255,255,.06); border-radius: 22px; background: linear-gradient(180deg,#17231A,#101810); color: var(--sut); overflow: hidden; transition: transform .35s cubic-bezier(.2,.8,.2,1); }
 .card[data-category="salamura-zeytin"] { --glow: 212 180 131; }
 .card[data-category="zeytinyagi"] { --glow: 230 203 151; }
 .card[data-size="10 kg"] { --product-height: 160px; --product-height-large: 280px; }

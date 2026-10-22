@@ -10,7 +10,7 @@
 .story[data-story-enhanced="true"] figure[data-active="true"] { z-index: 1; }
 .steps { min-width: 0; padding-block: 24px 48px; }
 .step { min-height: 52svh; display: flex; flex-direction: column; justify-content: center; padding-block: 24px; opacity: 1; transition: opacity .5s; }
-.story[data-story-enhanced="true"] .step:not([data-active="true"]) { opacity: .28; }
+.story[data-story-enhanced="true"] .step:not([data-active="true"]) { opacity: .75; }
 .number { color: var(--altin); font-family: var(--font-display, var(--font-display-fallback)); font-size: 14px; letter-spacing: .2em; }
 .step h2 { margin-block: 12px 18px; font-size: clamp(38px, 4.6vw, 64px); line-height: 1.02; }
 .step p { max-width: 46ch; color: #DCE1D7; font-size: 18px; line-height: 1.6; }
