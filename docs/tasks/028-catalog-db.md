@@ -1,4 +1,4 @@
-> ONAY GEREKLİ (DB/ödeme/auth)
+> ONAY VERİLDİ (kullanıcı, 22 Eki 2026) (DB/ödeme/auth)
 
 # Task 028: Ürün şeması ve RLS
 

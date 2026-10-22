@@ -1,4 +1,4 @@
-> ONAY GEREKLİ (DB/ödeme/auth)
+> ONAY VERİLDİ (kullanıcı, 22 Eki 2026) (DB/ödeme/auth)
 
 # Task 062: Admin yetki kapısı
 
