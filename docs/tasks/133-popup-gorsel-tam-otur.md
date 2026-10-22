@@ -33,4 +33,33 @@ Kullanıcı (22 Eki), iki ekran görüntüsüyle:
 - Görselleri yeniden üretme ya da kırpma; açıklama/bilgi metinlerine dokunma.
 - `docs/` değiştirme (yalnız Coder Notu/Durum).
 
-## Durum: BEKLİYOR
+## Coder Notu
+
+| Skill | Nerede kullanıldı |
+|---|---|
+| `ui-ux-pro-max` | Yüklü skill okundu; `content jumping --domain ux` aramasındaki sabit alan önerisiyle görsel yükleme/değişiminde kolon ölçüsü korundu. |
+| `frontend-design` | Mevcut AFİNA tokenları ve bilgi metinleri korunarak kenardan kenara ürün sunumu uygulandı. |
+| `better-layout` | Masaüstünde eşit yüksekliğe sahip kolonlar ve yalnız sağ kolonda kaydırma; telefonda sabit görsel alanı ve 16px içerik aralığı. |
+| `tdd-workflow` | Önce 13 başarısız unit/CSS testi (RED), ardından aynı testlerde GREEN; ara commit'ler yalnız yerel `codex/task-133-tdd` dalında tutuldu. |
+| `motion-foundations`, `motion-patterns`, `motion-advanced` | Mevcut Motion mini API ve ortak 200ms tokenıyla yalnız opacity geçişi; kesilen animasyonda cleanup ve reduced-motion'da anında gösterim. |
+
+- Büyük görsel `absolute` + `inset: 0` + `cover` ile padding olmadan kolonu doldurur. 64px küçük resimler alttan 16px içeride, yerel degrade üzerinde durur; seçili görsel altın çerçevelidir.
+- Altı ürünün mevcut sahne dosyaları incelendi; 12 stüdyo/sahne anahtarının odak noktası `lib/catalog/product-image-focus.ts` haritasında tutuldu. Görsel dosyaları ve ürün bilgi metinleri değiştirilmedi.
+- Masaüstü pencere yüksekliği viewport sınırı içinde sabittir; telefon görseli `min(62svh, 125vw)` yüksekliğindedir. Pencere `max-height: calc(100dvh - 48px)` sınırını korur; görsel değiştirmek kabı yeniden oluşturmaz.
+- 21st MCP aramasından kullanılabilir referans alınamadı; görev 130'daki mevcut Dialog/Sheet ve galeri uyarlandı.
+
+| Doğrulama | Sonuç |
+|---|---|
+| `npm test -- tests/unit/product-image-133.test.tsx` — uygulama öncesi | RED: beklenen odak haritası, cover/overlay yerleşimi ve opacity geçişi eksik olduğu için 13 test başarısız. |
+| `npm test` | PASS: 41 dosyada 463 test; görev 133'ün 13 ve görev 130'un 27 unit testi dahil. |
+| `npm run lint` | PASS; uyarı yok. |
+| `npm run typecheck` | PASS; yeni E2E dosyası da TypeScript kontrolüne dahil. |
+| `npm run build` | PASS; ön adımda 18 görsel ve 112 v3 çıktı için asset kontrolleri de geçti. |
+| `npm test -- tests/unit/product-image-133.test.tsx tests/unit/product-detail-130.test.tsx --coverage --coverage.include=components/catalog/ProductDetail.tsx --coverage.include=lib/catalog/product-image-focus.ts` | PASS: 40 test; satır %98,38, branch %87,69, fonksiyon %96,15, statement %97,56. |
+| `git diff --check` | PASS. |
+| `tests/e2e/product-image-133.spec.ts` | Yazıldı, çalıştırılmadı: altı ürün × 1440×900 / 390×844 × normal / reduced-motion; stüdyo/sahne sınır eşitliği, kolon yüksekliği, içerideki şerit ve değişmeyen kap ölçüsü. Claude doğrulayacak. |
+| Görev 130 tarayıcı senaryoları | Korundu; büyüyen mobil görsel nedeniyle başlığın kaydırılarak erişildiği adım eklendi. Çalıştırılmadı; Claude doğrulayacak. |
+
+Tarayıcı doğrulaması, `responsiveness-check`, gerçek piksel ölçümleri, kadraj/köşeler ve CLS 0 kabulü **Claude doğrulayacak**. AGENTS.md gereği Playwright, Lighthouse, inspect veya ekran görüntüsü çalıştırılmadı. Bu ayrılmış tarayıcı kabulü TAMAMLANDI durumunu engellemez.
+
+## Durum: TAMAMLANDI

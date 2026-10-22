@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useId, useRef, useState, type JSX } from "react";
+import { useCallback, useEffect, useId, useRef, useState, type CSSProperties, type JSX } from "react";
 import { useAnimate } from "motion/react-mini";
 import { XIcon } from "lucide-react";
 import { useCart } from "@/components/cart/CartProvider";
@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { getProductDetails } from "@/lib/catalog/product-details";
+import { productImageFocus } from "@/lib/catalog/product-image-focus";
 import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
 import { v3Image } from "@/lib/media/v3-assets";
 import { motionTokens } from "@/lib/ui-motion";
@@ -79,6 +80,8 @@ function DetailBody({ product, products, mobile, onSelect }: {
   product: ProductVariant; products: readonly ProductVariant[]; mobile: boolean; onSelect: (id: string) => void;
 }): JSX.Element {
   const cart = useCart();
+  const reduced = usePrefersReducedMotion();
+  const [mainImage, animateImage] = useAnimate<HTMLDivElement>();
   const sizeGroup = useId();
   const [selection, setSelection] = useState({ id: product.id, quantity: 1, scene: false });
   // Reset variant-local choices without remounting the focused size radio.
@@ -92,7 +95,18 @@ function DetailBody({ product, products, mobile, onSelect }: {
   const quantity = Math.min(requested, Math.max(1, remaining));
   const studioKey = product.galleryKeys.find(key => key.endsWith("-studyo")) ?? product.imageKey;
   const sceneKey = product.galleryKeys.find(key => key.endsWith("-sahne"));
+  const activeImageKey = scene && sceneKey ? sceneKey : studioKey;
+  const previousImageKey = useRef(activeImageKey);
   const gallery = [{ key: studioKey, label: "Stüdyo görseli" }, ...(sceneKey ? [{ key: sceneKey, label: "Sofra görseli" }] : [])];
+
+  useEffect(() => {
+    const changed = previousImageKey.current !== activeImageKey;
+    previousImageKey.current = activeImageKey;
+    if (!changed || reduced || !mainImage.current) return;
+    const node = mainImage.current;
+    const controls = animateImage(node, { opacity: [0, 1] }, { duration: motionTokens.duration.crossfade });
+    return () => { controls.stop(); node.style.opacity = "1"; };
+  }, [activeImageKey, animateImage, mainImage, reduced]);
 
   const purchase = <div data-product-detail-purchase="" className={styles.purchase}>
     {product.stock > 0 && <div className={styles.quantityRow}>
@@ -111,9 +125,10 @@ function DetailBody({ product, products, mobile, onSelect }: {
 
   return <>
     <div className={styles.scroller} data-product-detail-scroll="">
-      <div className={styles.gallery}>
-        <div data-product-detail-image="" className={styles.image}>
-          <V3Picture image={v3Image(scene && sceneKey ? sceneKey : studioKey)} sizes="(max-width: 767px) 100vw, 480px" />
+      <div className={styles.gallery} data-product-detail-gallery="">
+        <div ref={mainImage} data-product-detail-image="" className={styles.image}
+          style={{ "--product-image-position": productImageFocus[activeImageKey] ?? "center" } as CSSProperties}>
+          <V3Picture image={v3Image(activeImageKey)} sizes="(max-width: 767px) 100vw, (max-width: 1088px) calc((100vw - 48px) / 2), 520px" />
         </div>
         <div role="group" aria-label="Ürün görselleri" className={styles.thumbnails}>
           {gallery.map((image, index) => <button key={image.key} type="button" aria-label={image.label}
@@ -122,7 +137,7 @@ function DetailBody({ product, products, mobile, onSelect }: {
           </button>)}
         </div>
       </div>
-      <div className={styles.info}>
+      <div className={styles.info} data-product-detail-info="">
         <span className={styles.category}>{details?.information.find(row => row.label === "Kategori")?.value}</span>
         <DialogTitle tabIndex={-1} className={styles.title}>{product.name}</DialogTitle>
         {variants.length > 1 ? <div role="radiogroup" aria-label="Boy" className={styles.sizes}>

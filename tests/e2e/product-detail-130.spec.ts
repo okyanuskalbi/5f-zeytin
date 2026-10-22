@@ -17,6 +17,8 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       await expect(dialog).toHaveAttribute("data-slot", viewport.width < 768 ? "sheet-content" : "dialog-content");
       await expect(title).toBeFocused();
       await expect.poll(() => dialog.evaluate(node => node.getAnimations({ subtree: true }).filter(animation => animation.playState === "running").length)).toBe(0);
+      // Task 133 enlarges the mobile gallery; content remains reachable by scrolling.
+      await title.scrollIntoViewIfNeeded();
       await expect(title).toBeInViewport({ ratio: 1 });
       await expect(add).toBeInViewport({ ratio: 1 });
       await expect(add).toBeEnabled();

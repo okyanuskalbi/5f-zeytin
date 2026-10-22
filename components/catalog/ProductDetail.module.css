@@ -1,20 +1,21 @@
 .dialog, .sheet { display: flex; gap: 0; padding: 0; overflow: hidden; background: var(--ink); color: var(--sut); }
-.dialog { width: calc(100% - 48px); max-width: 1040px; max-height: calc(100dvh - 48px); }
-.sheet { height: 100dvh; max-height: 100dvh; padding-top: env(safe-area-inset-top); }
-.panel { position: relative; display: flex; flex-direction: column; width: 100%; min-height: 0; max-height: inherit; }
-.sheet .panel { height: 100%; }
+.dialog { width: calc(100% - 48px); max-width: 1040px; height: min(840px, calc(100dvh - 48px)); max-height: calc(100dvh - 48px); }
+.sheet { inset-block: 24px; height: calc(100dvh - 48px); max-height: calc(100dvh - 48px); }
+.panel { position: relative; display: flex; flex-direction: column; width: 100%; height: 100%; min-height: 0; max-height: inherit; border-radius: inherit; }
 .sheet .scroller { flex: 1 1 auto; }
 .sheet .purchase { position: sticky; bottom: 0; }
-.scroller { display: grid; gap: 24px; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 48px 16px 24px; scroll-padding-block: 16px; }
+.scroller { display: grid; flex: 1 1 auto; align-content: start; gap: 16px; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 0; scroll-padding-block: 16px; border-radius: inherit; }
 .scroller > *, .info { min-width: 0; }
-.gallery { display: grid; gap: 12px; align-content: start; }
-.image { height: clamp(180px, 30dvh, 300px); background: var(--zeytin); }
-.image picture, .image img { display: block; width: 100%; height: 100%; }
-.image img { object-fit: contain; }
-.thumbnails { display: flex; justify-content: center; gap: 12px; }
+.gallery { position: relative; height: min(62svh, 125vw); padding: 0; overflow: hidden; border-radius: inherit; border-end-start-radius: 0; border-end-end-radius: 0; background: var(--zeytin); }
+.gallery::after { content: ""; position: absolute; z-index: 1; inset-inline: 0; bottom: 0; height: 112px; background: linear-gradient(transparent, color-mix(in srgb, var(--ink) 75%, transparent)); pointer-events: none; }
+.image { position: absolute; inset: 0; padding: 0; }
+.image picture, .image img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.image img { object-fit: cover; object-position: var(--product-image-position, center); }
+.thumbnails { position: absolute; z-index: 2; inset-inline: 16px; bottom: 16px; display: flex; justify-content: center; gap: 12px; }
 .thumbnails button { width: 64px; height: 64px; padding: 3px; border: 1px solid var(--border); background: var(--zeytin); cursor: pointer; }
 .thumbnails button[aria-pressed="true"] { border: 2px solid var(--altin); }
 .thumbnails picture, .thumbnails img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.info { padding: 0 16px 24px; }
 .category { display: inline-block; max-width: 100%; padding: 5px 10px; border: 1px solid var(--border); border-radius: 999px; color: var(--gri); font-size: 12px; line-height: 1.4; overflow-wrap: anywhere; }
 .title { margin-block: 12px 16px; font-size: 28px; line-height: 1.1; font-weight: 600; overflow-wrap: anywhere; }
 .sizes { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -38,20 +39,17 @@
 .facts th { width: 40%; padding-inline-end: 16px; font-weight: 500; color: var(--gri); }
 .payment { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 24px; color: var(--gri); font-size: 12px; }
 .payment img { width: auto; height: 18px; }
-.close { position: absolute; z-index: 1; inset-block-start: 4px; inset-inline-end: 4px; min-width: 44px; min-height: 44px; background: var(--ink); color: var(--sut); }
+.close { position: absolute; z-index: 3; inset-block-start: max(4px, env(safe-area-inset-top)); inset-inline-end: 4px; min-width: 44px; min-height: 44px; background: var(--ink); color: var(--sut); }
 .thumbnails button:focus-visible, .size:has(:focus-visible), .purchase button:focus-visible, .title:focus-visible { outline: 2px solid var(--altin); outline-offset: 3px; }
-@media (max-height: 700px) and (max-width: 767px) {
-  .image { height: 160px; }
-  .thumbnails button { width: 48px; height: 48px; }
-  .scroller { gap: 16px; }
-}
 @media (min-width: 768px) {
-  .scroller { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; gap: 32px; padding: 40px 32px 32px; }
-  .image { height: 440px; }
+  .scroller { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); align-items: stretch; align-content: stretch; gap: 0; overflow: hidden; }
+  .gallery { height: 100%; border-start-end-radius: 0; border-end-start-radius: inherit; }
+  .info { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 40px 32px 32px; scroll-padding-block: 16px; }
   .title { font-size: 32px; }
   .purchase { padding: 0; border: 0; }
   .close { inset-block-start: 8px; inset-inline-end: 8px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .panel { transform: none !important; opacity: 1 !important; }
+  .image { opacity: 1 !important; }
 }
