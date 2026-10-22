@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import type { JSX } from "react";
 import { Hero } from "@/components/landing/Hero";
 import { Products } from "@/components/landing/Products";
@@ -9,6 +10,10 @@ import { MobileBuyBar } from "@/components/landing/MobileBuyBar";
 import { BusinessJsonLd } from "@/components/site/BusinessJsonLd";
 import { ProductDetailProvider } from "@/components/catalog/ProductDetailProvider";
 import { getProductFamilies } from "@/lib/catalog/static-products";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default async function Home(): Promise<JSX.Element> {
   const families = await getProductFamilies();
