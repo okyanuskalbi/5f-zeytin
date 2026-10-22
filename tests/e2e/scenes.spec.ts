@@ -3,15 +3,17 @@ import { CART_STORAGE_KEY } from "../../lib/cart/store";
 
 const familyNames = ["Doğal Kırma Yeşil Zeytin", "Salamura Siyah Zeytin", "Natürel Sızma Zeytinyağı", "Salamura Yeşil Zeytin"];
 
-test("v3 sections keep their order, real images and a single preview note", async ({ page }) => {
+test("v4 sections keep their order, real images and a single preview note", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
   await page.goto("/");
   const sections = page.locator("main > section, main > div > section");
   expect(await sections.evaluateAll(nodes => nodes.map(node => node.getAttribute("aria-labelledby") ?? node.getAttribute("aria-label")))).toEqual([
-    "hero-title", "kiler-title", "Alışveriş bilgileri", "tesisimiz-title", "sss-title",
+    "hero-title", "Alışveriş bilgileri", "urunler-title", "tesisimiz-title", "sss-title",
   ]);
-  expect(await page.getByRole("article").locator("h3").allTextContents()).toEqual(familyNames);
+  expect(await page.getByRole("article").locator("h3").allTextContents()).toEqual([
+    familyNames[0], familyNames[0], familyNames[1], familyNames[2], familyNames[2], familyNames[3],
+  ]);
   await expect(page.getByText("Önizleme: fiyatlar ve görseller temsilidir.", { exact: true })).toHaveCount(1);
   await expect(page.locator("#toptan-iletisim form")).toHaveCount(0);
   await expect(page.locator("canvas, [data-hero-light], [data-product-card-motion]")).toHaveCount(0);
@@ -25,16 +27,16 @@ test("v3 sections keep their order, real images and a single preview note", asyn
   expect(errors).toEqual([]);
 });
 
-test("one family adds two different sizes as separate persisted cart lines", async ({ page }) => {
+test("two cards add different sizes as separate persisted cart lines", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
-  const family = page.getByRole("article", { name: familyNames[0], exact: true });
-  await family.getByRole("button", { name: "Ekle", exact: true }).click();
-  await expect(family.getByRole("status")).toContainText("1 kg sepete eklendi");
-  await family.getByRole("radio", { name: "10 kg", exact: true }).click();
-  await expect(family.getByRole("img")).toHaveAttribute("alt", /10 kg teneke/);
-  await family.getByRole("button", { name: "Ekle", exact: true }).click();
-  await expect(family.getByRole("status")).toContainText("10 kg sepete eklendi");
+  const small = page.locator('[data-product-id="sample-green-olive-1kg"]');
+  const large = page.locator('[data-product-id="sample-green-olive-10kg"]');
+  await small.getByRole("button", { name: "Sepete ekle", exact: true }).click();
+  await expect(small.getByRole("status")).toContainText("1 kg sepete eklendi");
+  await expect(large.getByRole("img")).toHaveAttribute("alt", /10 kg teneke/);
+  await large.getByRole("button", { name: "Sepete ekle", exact: true }).click();
+  await expect(large.getByRole("status")).toContainText("10 kg sepete eklendi");
   const expected = [{ productId: "sample-green-olive-1kg", quantity: 1 }, { productId: "sample-green-olive-10kg", quantity: 1 }];
   expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key)!), CART_STORAGE_KEY)).toEqual(expected);
   const drawer = page.getByRole("dialog", { name: "Sepetim", exact: true });
@@ -47,15 +49,15 @@ test("one family adds two different sizes as separate persisted cart lines", asy
   expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key)!), CART_STORAGE_KEY)).toEqual(expected);
 });
 
-test("JavaScript-disabled SSR retains every section and the pantry destination", async ({ browser, baseURL }, info) => {
+test("JavaScript-disabled SSR retains every section and the product destination", async ({ browser, baseURL }, info) => {
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: info.project.use.viewport });
   try {
     const page = await context.newPage();
     await page.goto(new URL("/", baseURL!).href);
-    await expect(page.getByRole("heading", { name: "Düziçi’nden sofranıza.", exact: true })).toBeVisible();
-    await expect(page.getByRole("article")).toHaveCount(4);
-    await page.getByRole("link", { name: "Ürünleri gör", exact: true }).click();
-    await expect(page.getByRole("heading", { name: "Kışlık kiler", exact: true })).toBeInViewport();
+    await expect(page.getByRole("heading", { name: "Düziçi'nden sofranıza.", exact: true })).toBeVisible();
+    await expect(page.getByRole("article")).toHaveCount(6);
+    await page.goto(new URL("/#urunler", baseURL!).href);
+    await expect(page.getByRole("heading", { name: "Sofranız için altı ürün.", exact: true })).toBeInViewport();
     await page.getByRole("contentinfo").scrollIntoViewIfNeeded();
     await expect(page.getByText("Önizleme: fiyatlar ve görseller temsilidir.", { exact: true })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);

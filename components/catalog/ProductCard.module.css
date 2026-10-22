@@ -1,0 +1,43 @@
+.reveal { min-width: 0; display: flex; }
+.reveal:focus-within { opacity: 1 !important; transform: none !important; }
+.card { --product-height: 114px; --product-height-large: 200px; --glow: 107 139 81; position: relative; isolation: isolate; display: flex; flex-direction: column; min-width: 0; width: 100%; padding: 16px 12px 14px; border: 1px solid rgba(255,255,255,.06); border-radius: 22px; background: linear-gradient(180deg,#17231A,#101810); color: var(--sut); overflow: hidden; transition: transform .35s cubic-bezier(.2,.8,.2,1), border-color .35s; }
+.card[data-category="salamura-zeytin"] { --glow: 212 180 131; }
+.card[data-category="zeytinyagi"] { --glow: 230 203 151; }
+.card[data-size="10 kg"] { --product-height: 160px; --product-height-large: 280px; }
+.card[data-size="5 L"] { --product-height: 137px; --product-height-large: 240px; }
+.card[data-size="5 kg"] { --product-height: 131px; --product-height-large: 230px; }
+.card::before { content: ""; position: absolute; z-index: -1; inset: auto -20% -40%; height: 70%; background: radial-gradient(closest-side, rgb(var(--glow) / .18), transparent 70%); opacity: .6; pointer-events: none; transition: opacity .35s; }
+.scene { position: absolute; z-index: -2; inset: 0; opacity: 0; pointer-events: none; transition: opacity .35s; }
+.scene picture, .scene img { display: block; width: 100%; height: 100%; }
+.scene img { object-fit: cover; }
+.image { height: 170px; display: grid; place-items: end center; padding-bottom: 5px; }
+.image picture { display: block; width: 100%; height: var(--product-height); }
+.image img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: center bottom; filter: drop-shadow(0 30px 30px rgba(0,0,0,.5)); transition: transform .5s cubic-bezier(.2,.8,.2,1); }
+.card h3 { position: relative; font-size: 17px; line-height: 1.15; font-weight: 600; margin-top: 10px; overflow-wrap: anywhere; }
+.meta { position: relative; display: flex; flex-wrap: wrap; gap: 6px; margin-block: 12px 16px; }
+.size, .category { max-width: 100%; padding: 5px 9px; border: 1px solid rgba(255,255,255,.18); border-radius: 999px; color: #D9DED3; font-size: 12px; font-weight: 600; line-height: 1.4; overflow-wrap: anywhere; }
+.size { background: var(--sut); color: var(--ink); border-color: var(--sut); }
+.buyRow { position: relative; display: flex; flex-direction: column; align-items: stretch; gap: 8px; margin-top: auto; min-width: 0; }
+.price { color: var(--altin-2); font-size: 26px; font-weight: 800; line-height: 1.2; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.badge { position: absolute; z-index: 1; inset-block-start: 10px; inset-inline-start: 8px; max-width: calc(100% - 16px); padding: 5px 8px; border: 1px solid rgba(212,180,131,.4); border-radius: 999px; color: var(--altin); background: var(--ink); font-size: 11px; font-weight: 700; letter-spacing: .16em; line-height: 1.4; text-wrap: balance; }
+@media (hover: hover) and (pointer: fine) {
+  .card:hover { transform: translateY(-8px); border-color: rgba(212,180,131,.35); }
+  .card:hover::before { opacity: 1; }
+  .card:hover .image img { transform: translateY(-6px) scale(1.04); }
+  .card:hover .scene { opacity: .18; }
+}
+@media (min-width: 768px) {
+  .card { padding: 28px 24px 22px; }
+  .image { height: 300px; padding-bottom: 10px; }
+  .image picture { height: var(--product-height-large); }
+  .card h3 { font-size: 24px; line-height: 1.08; }
+  .badge { inset-block-start: 18px; inset-inline-start: 18px; padding-inline: 10px; }
+}
+@media (min-width: 1200px) {
+  .buyRow { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .card, .image img { transform: none !important; }
+  .reveal { opacity: 1 !important; }
+  .card, .card::before, .image img, .scene { transition: none; }
+}

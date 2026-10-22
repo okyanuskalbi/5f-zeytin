@@ -14,14 +14,16 @@ import manifest from "@/public/images/v3/manifest.json";
 
 afterEach(cleanup);
 
-it("shows the three trust facts without a draft delivery label", () => {
+it("shows the four trust facts without a draft delivery label", () => {
   render(<TrustStrip />);
   const strip = screen.getByRole("region", { name: "Alışveriş bilgileri" });
   expect(strip.textContent).toContain("Kargo 2–4 iş günü");
   expect(strip.textContent).toContain("PayTR ile güvenli ödeme");
   expect(strip.textContent).toContain("Kendi tesisimizde dolum");
   expect(strip.textContent).not.toMatch(/Örnek süre/);
-  expect(strip.querySelectorAll("svg[aria-hidden=true]")).toHaveLength(3);
+  expect(strip.textContent).toContain("Toptan alım için teklif");
+  expect(strip.querySelectorAll("li")).toHaveLength(4);
+  expect(strip.querySelectorAll("svg")).toHaveLength(0);
 });
 
 it("omits the whole wholesale row and footer destination when contact details are empty", () => {

@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 import { Hero } from "@/components/landing/Hero";
-import { Pantry } from "@/components/landing/Pantry";
+import { Products } from "@/components/landing/Products";
 import { TrustStrip } from "@/components/landing/TrustStrip";
 import { Facility } from "@/components/landing/Facility";
 import { Faq } from "@/components/landing/Faq";
@@ -13,7 +13,7 @@ export default async function Home(): Promise<JSX.Element> {
     <BusinessJsonLd />
     <Hero products={families.find(family => family.id === "dogal-kirma")?.variants} />
     <TrustStrip />
-    <Pantry families={families} />
+    <Products products={families.flatMap(family => family.variants)} />
     <Facility />
     <div className="page-wrap"><Faq /></div>
   </main>;

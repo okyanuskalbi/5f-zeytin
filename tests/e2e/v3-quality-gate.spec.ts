@@ -33,7 +33,7 @@ async function viewportImages(page: Page): Promise<void> {
 }
 
 async function reviewScreens(page: Page, name: string): Promise<void> {
-  for (const [index, selector] of ["[data-hero-intro]", "#kiler", "#tesisimiz"].entries()) {
+  for (const [index, selector] of ["[data-hero-intro]", "#urunler", "#tesisimiz"].entries()) {
     const section = page.locator(selector);
     await section.evaluate(node => node.scrollIntoView({ block: "start", behavior: "instant" }));
     await paint(page);
@@ -145,15 +145,14 @@ test("115: v4 hero CTA stays solid olive before hydration, after hydration and a
   }
 });
 
-test("115: hero → pantry → drawer → cart preserves both variants and checkout gate", async ({ page }, info) => {
+test("hero → products → drawer → cart preserves both variants and checkout gate", async ({ page }, info) => {
   test.skip(!["chromium-1440", "webkit-iphone14"].includes(info.project.name), "Use desktop Chromium and iPhone WebKit.");
   await page.goto("/");
   await page.locator("[data-hero-intro]").getByRole("button", { name: /Sepete ekle/ }).click();
   if (page.viewportSize()!.width > 900) await page.locator("[data-hero-intro]").getByRole("link", { name: "Ürünleri gör", exact: true }).click();
-  else await page.locator("#kiler").scrollIntoViewIfNeeded();
-  const family = page.locator('[data-pantry-family="dogal-kirma"]');
-  await family.getByRole("radio", { name: "1 kg", exact: true }).click();
-  await family.getByRole("button", { name: "Ekle", exact: true }).click();
+  else await page.locator("#urunler").scrollIntoViewIfNeeded();
+  const family = page.locator('[data-product-id="sample-green-olive-1kg"]');
+  await family.getByRole("button", { name: "Sepete ekle", exact: true }).click();
   await expect(family.getByRole("status")).toContainText("sepete eklendi");
   const expected = [{ productId: "sample-green-olive-10kg", quantity: 1 }, { productId: "sample-green-olive-1kg", quantity: 1 }];
   expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key)!), CART_STORAGE_KEY)).toEqual(expected);

@@ -2,19 +2,16 @@ import { expect, test, type Page } from "@playwright/test";
 import { CART_STORAGE_KEY } from "../../lib/cart/store";
 
 let errors: string[] = [];
-const card = (page: Page) => page.getByRole("article", { name: "Doğal Kırma Yeşil Zeytin", exact: true });
+const card = (page: Page) => page.locator('[data-product-id="sample-green-olive-1kg"]');
 const cartButton = (page: Page) => page.getByRole("banner").getByRole("button", { name: /^Sepetim/ });
 const drawer = (page: Page) => page.getByRole("dialog", { name: "Sepetim", exact: true });
 const line = (page: Page) => page.getByRole("group", { name: "Doğal Kırma Yeşil Zeytin", exact: true });
 
 async function addQuantity(page: Page, quantity: number): Promise<void> {
-  await card(page).getByRole("button", { name: "Doğal Kırma Yeşil Zeytin hızlı görünüm", exact: true }).click();
-  const view = page.getByRole("dialog", { name: "Doğal Kırma Yeşil Zeytin", exact: true });
-  await view.getByRole("spinbutton", { name: "Adet", exact: true }).fill(String(quantity));
-  await view.getByRole("button", { name: "Sepete ekle", exact: true }).click();
-  await expect(view.getByRole("status")).toContainText("sepete eklendi");
-  await view.getByRole("button", { name: "Hızlı görünümü kapat", exact: true }).click();
-  await expect(view).toHaveCount(0);
+  for (let count = 0; count < quantity; count++) {
+    await card(page).getByRole("button", { name: /^(Sepete ekle|Eklendi ✓)$/ }).click();
+  }
+  await expect(card(page).getByRole("status")).toContainText("sepete eklendi");
   await expect(drawer(page)).toHaveCount(0);
 }
 
@@ -69,15 +66,15 @@ test("cumulative stock failure keeps the cart and quantity, then permits retry",
   await expect(drawer(page).getByRole("status", { name: "Adet" })).toHaveText("12");
   await page.keyboard.press("Escape");
   await expect(cartButton(page)).toBeFocused();
-  await card(page).getByRole("button", { name: "Ekle", exact: true }).click();
+  await card(page).getByRole("button", { name: /^(Sepete ekle|Eklendi ✓)$/ }).click();
   await expect(card(page).getByRole("alert")).toContainText("Stok sınırını veya adedi kontrol edip tekrar deneyin");
   await expect(drawer(page)).toHaveCount(0);
   await expect(cartButton(page)).toHaveAccessibleName("Sepetim, 12 adet");
-  await expect(page.getByRole("article", { name: "Salamura Siyah Zeytin", exact: true }).getByRole("button", { name: "Tükendi", exact: true })).toBeDisabled();
+  await expect(page.locator('[data-product-id="sample-black-olive-1kg"]').getByRole("button", { name: "Mevcut değil", exact: true })).toBeDisabled();
   await cartButton(page).click();
   await drawer(page).getByRole("button", { name: "Adedi azalt" }).click();
   await page.keyboard.press("Escape");
-  await card(page).getByRole("button", { name: "Ekle", exact: true }).click();
+  await card(page).getByRole("button", { name: "Sepete ekle", exact: true }).click();
   await expect(card(page).getByRole("status")).toContainText("sepete eklendi");
   await cartButton(page).click();
   await expect(drawer(page).getByRole("status", { name: "Adet" })).toHaveText("12");
@@ -121,7 +118,7 @@ test("storage write failure keeps a single in-memory cart through client navigat
     };
   });
   await page.goto("/");
-  await card(page).getByRole("button", { name: "Ekle", exact: true }).click();
+  await card(page).getByRole("button", { name: "Sepete ekle", exact: true }).click();
   await expect(card(page).getByRole("status")).toContainText("sepete eklendi");
   await cartButton(page).click();
   await expect(drawer(page).getByRole("alert")).toContainText("kaydedilemiyor");

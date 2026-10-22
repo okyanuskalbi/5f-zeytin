@@ -1,9 +1,10 @@
-.trust { padding: 32px var(--page-margin); background: var(--zeytin); color: var(--sut); }
-.trust ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.trust li { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 8px 24px; }
-.trust li + li { border-inline-start: 1px solid var(--border); }
-.trust svg { width: 40px; height: 40px; flex-shrink: 0; stroke-width: 1.5; }
-.trust p { text-wrap: pretty; }
+.trust { padding-block: 20px; background: var(--zeytin); color: #D9DED3; border-block: 1px solid rgba(255,255,255,.06); }
+.trust ul { width: min(1280px, calc(100% - 36px)); margin-inline: auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.trust li { display: flex; align-items: center; gap: 10px; min-width: 0; font-size: 15px; font-weight: 500; line-height: 1.4; text-wrap: pretty; }
+.trust li > span { width: 6px; height: 6px; flex-shrink: 0; border-radius: 50%; background: var(--altin); }
+.trust a { display: inline-flex; align-items: center; min-height: 44px; text-underline-offset: 4px; }
+.trust a:hover { text-decoration: underline; }
+.trust a:focus-visible { outline: 2px solid var(--altin); outline-offset: 4px; }
 .facility { background: var(--ink); color: var(--sut); scroll-margin-top: calc(var(--header-height) + 24px); }
 /* Adapted from 21st Split Feature Section (29418) to the approved photo/copy split. */
 .facilityLayout { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; }
@@ -22,15 +23,14 @@
 .contactLink:hover { background: var(--altin); color: var(--ink); }
 .contactLink:focus-visible { outline: 2px solid var(--altin); outline-offset: 4px; }
 .contactLink:active { background: var(--brand-ink); color: var(--brand-ivory); }
-@media (max-width: 1023px) {
-  .trust li { flex-direction: column; text-align: center; padding-inline: 16px; gap: 12px; }
+@media (min-width: 768px) {
+  .trust ul { width: min(1280px, calc(100% - 64px)); gap: 16px 24px; }
+  .trust li { font-size: 16px; }
+}
+@media (min-width: 1024px) {
+  .trust ul { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 @media (max-width: 767px) {
-  .trust { padding-block: 24px; }
-  .trust ul { grid-template-columns: minmax(0, 1fr); }
-  .trust li { flex-direction: row; justify-content: start; text-align: start; padding: 24px 0; gap: 16px; }
-  .trust li + li { border-inline-start: 0; border-block-start: 1px solid var(--border); }
-  .trust svg { width: 32px; height: 32px; }
   .facilityLayout { grid-template-columns: minmax(0, 1fr); }
   .facilityPhoto { aspect-ratio: 16 / 10; }
   .wholesale { padding-block: 32px; }

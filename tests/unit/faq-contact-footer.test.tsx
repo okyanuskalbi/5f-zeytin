@@ -43,7 +43,7 @@ it.each([
   doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}<Footer /></>);
   expect(doc.querySelector("#toptan-iletisim h3")?.textContent).toBe("Toptan alım için bize yazın");
   expect(doc.querySelectorAll("#toptan a")).toHaveLength(1);
-  expect(doc.querySelector('a[href="/#toptan-iletisim"]')?.textContent).toBe("Toptan Satış İçin İletişime Geçin");
+  expect(doc.querySelector('footer a[href="/#toptan-iletisim"]')?.textContent).toBe("Toptan Satış İçin İletişime Geçin");
 });
 it("retains seller identity, community and legal destinations", () => {
   const doc = document.implementation.createHTMLDocument();
