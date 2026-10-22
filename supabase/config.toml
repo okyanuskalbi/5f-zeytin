@@ -1,0 +1,22 @@
+# Local CLI settings only. Automated DB tests use memory-only PGlite instead of Docker.
+project_id = "afina-zeytin-local"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public"]
+extra_search_path = ["public", "extensions"]
+
+[db]
+port = 54322
+shadow_port = 54320
+# Confirm the remote Postgres major version in Task 077 before using the CLI stack.
+
+[db.migrations]
+enabled = true
+
+[db.seed]
+enabled = false
+
+[auth]
+site_url = "http://localhost:3004"

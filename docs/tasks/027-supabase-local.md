@@ -46,4 +46,22 @@ Onaylanan yerel DB test ortamı ve sunucu istemcisi sınırını hazırla.
 - Mevcut v4 arayüzü (118–133) bozulmaz; ürünler DB'den okununca görünüm aynı kalır, DB yoksa/erişilemezse mevcut statik katalog yedek olarak çalışır.
 
 
-## Durum: BEKLİYOR
+## Coder Notu
+
+- 22 Ekim 2026 kullanıcı onayı uygulandı. `command -v docker` / `command -v supabase` ile iki CLI'nin de bulunmadığı doğrulandı. Yukarıdaki açık onay uyarınca `supabase init/start/db reset` yerine bellek içi **PGlite** ile yerel migration uygulama ve sıfırlama doğrulandı; bu onaylı değişiklik engel değildir. Docker ortamı veya uzak Supabase bağlantısı kurulmadı; canlı migration uygulanmadı.
+- `supabase/config.toml` yalnız yerel proje ve 3004 uygulama adresini tanımlar; seed kapalıdır. Gerçek uzak PostgreSQL major sürümü Task 077'de doğrulanacaktır. PGlite bu koşumda **PostgreSQL 18.6** kullanır; Supabase Auth/PostgREST servislerini çalıştırmaz. Yerel TOML sözdizimi `python3` / `tomllib` ile doğrulandı.
+- `tests/helpers/supabase-local.ts`: her çağrıda yeni `memory://` PostgreSQL, `anon` / `authenticated` / `service_role` rolleri, `auth.uid()` taklidi ve `supabase/migrations/` altındaki `YYYYMMDDHHMMSS_name.sql` dosyalarını sıralı ve transaction içinde uygulayan yardımcı eklendi. `supabase/migrations/.gitkeep` hazırdır; gerçek ürün tablosu/migration'ı bu görevde oluşturulmadı (028 kapsamı). Test tabloları yalnız geçici fixture dosyalarında oluşturulur ve koşum sonunda temizlenir.
+- `lib/supabase/server.ts`: yalnız ayrıcalıklı sunucu işlemleri için `createSupabaseServiceClient()` eklendi. `server-only` sınırı, çağrı anında URL/servis anahtarı doğrulaması, HTTPS (loopback'te HTTP), ham değer içermeyen hata mesajları ve kapalı session persistence/refresh/URL detection kullanır. Üyelik oturumu istemcisi değildir; publishable env adı üyelik görevlerine bırakıldı. Mevcut frontend/statik katalog bağlantıları değiştirilmedi.
+- Zorunlu destek bağımlılıkları resmi npm kayıtlarından sürüm/Node uyumu doğrulanarak sabitlendi: `@supabase/supabase-js@2.118.0`, devDependency `@electric-sql/pglite@0.5.11`; package/lockfile güncellendi. Ek skill kurulmadı; 21st/UI veya tarayıcı aracı kullanılmadı. Sunucu ayarları [resmi Supabase belgesine](https://supabase.com/kb/troubleshooting/performing-administration-tasks-on-the-server-side-with-the-servicerole-secret-BYM4Fa), bellek DB yaşam döngüsü [PGlite API'sine](https://pglite.dev/docs/api) göre uygulandı.
+
+### Komutla doğrulama — 22 Ekim 2026
+
+- RED: `npm run test -- tests/unit/supabase-local.test.ts` → **exit 1**, henüz bulunmayan `tests/helpers/supabase-local` import'u. RED/ara commit oluşturulmadı veya push edilmedi.
+- İlk unit koşumlarında Vite'ın otomatik dotenv yükleme davranışını kullandığı saptandı; içerik elle incelenmedi veya çıktılanmadı. Son GREEN koşumlarında yerel env dosyalarını yüklememek için git dışı `.cache/task-027/no-dotenv.cjs` preload'u `NODE_OPTIONS="--require=$PWD/.cache/task-027/no-dotenv.cjs"` ile kullanıldı: Next env yüklemesi kapatıldı, Vite'ın dotenv okumaları dosyayı açmadan boş içerik aldı. Env dosyaları düzenlenmedi. Build'de yalnız sahte yerel URL ve test anahtarı işaretleri kullanıldı.
+- `npm run test -- tests/unit/supabase-local.test.ts && npm run typecheck` → **exit 0, 24 test başarılı**. Migration sırası/sıfırlama, gerçek PostgreSQL üzerinde GRANT/REVOKE, anonim ve kimliksiz erişim, iki kullanıcı izolasyonu, kendi satırında CRUD, sahiplik değişikliğinin reddi ve service_role RLS bypass doğrulandı. Gerçek ağ çağrısı olmadan env hataları, sunucu isteğinin anahtar başlıkları ve ayrı Node sürecinde gerçek `server-only` import engeli doğrulandı.
+- `npm test -- --maxWorkers=2` → son koşum **exit 0, 44 dosyada 490 test başarılı**. İlk tam koşumda mevcut bootstrap testinin Playwright yapılandırmasını import etmesi 5 saniyelik zaman aşımına uğradı; kod/test eşiği değiştirilmeden tekrar koşum tamamen geçti. Tarayıcı başlatılmadı.
+- `npm run lint`, `npm run typecheck`, `npm run build` → **exit 0**. Build öncesi varlık kontrolleri de geçti: **18 kayıt + 112 v3 çıktı**.
+- Build'de sahte servis anahtarı işareti kullanıldı; Node assertion'larıyla **220** `.next/static` ve statik HTML/RSC/payload dosyası tarandı: **0 servis anahtarı işareti, 0 `SUPABASE_SERVICE_ROLE_KEY` referansı**. Build gerçek kimlik bilgilerini yüklemedi; gerçek değerler log/commit'e yazılmadı. `npm audit --omit=dev --json` → **0 güvenlik açığı**. `git diff --check` başarılı.
+- Onaylı PGlite karşılığıyla her iki kabul kriteri tamamlandı; kalan engel yok. Playwright e2e, Lighthouse ve inspect çalıştırılmadı; tarayıcı kabulü gerekirse **Claude doğrulayacak**. Bu sonuç canlı Supabase veya yayın kabulü değildir.
+
+## Durum: TAMAMLANDI
