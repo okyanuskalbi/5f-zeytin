@@ -15,3 +15,4 @@ coverage/
 # tasarım taslakları (yerel, repoya girmez)
 .impeccable/
 .taste-skill/inspect/
+.vercel
