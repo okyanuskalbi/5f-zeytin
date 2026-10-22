@@ -64,7 +64,16 @@ export async function createAuthServerClient(options: { readOnly?: boolean; cook
           });
           // The SDK can log refresh failures internally. Keep upstream details
           // out of those logs as well as our HTTP responses, preserving status.
-          return response.ok ? response : Response.json({ msg: "Auth request failed" }, { status: response.status });
+          if (response.ok) return response;
+          // Signup needs these safe codes for neutral duplicate responses and
+          // password guidance. Preserve no provider messages or other payloads.
+          let code: string | undefined;
+          if ([400, 422].includes(response.status)) {
+            const body: unknown = await response.json().catch(() => null);
+            if (body && typeof body === "object" && "code" in body &&
+              typeof body.code === "string" && ["user_already_exists", "email_exists", "weak_password"].includes(body.code)) code = body.code;
+          }
+          return Response.json({ msg: "Auth request failed", ...(code ? { code, error_code: code } : {}) }, { status: response.status });
         } catch {
           throw new Error("Auth request unavailable");
         }
