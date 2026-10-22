@@ -4,6 +4,7 @@ import Link from "next/link";
 import { seller } from "@/lib/site/seller";
 import { siteContact } from "@/lib/site/contact";
 import { BrandLogo } from "./BrandLogo";
+import { PaymentLogos } from "./PaymentLogos";
 import styles from "./Footer.module.css";
 
 // Agency Footer, 21st.dev/@shadcnspace/components/footer-01 (demo 21474).
@@ -24,12 +25,6 @@ const legalLinks = [
   { label: "Mesafeli Satış Sözleşmesi", href: "/mesafeli-satis" },
   { label: "İade ve İptal", href: "/iade" },
 ];
-const cardLogos = [
-  { name: "Visa", width: 82, height: 26 },
-  { name: "Mastercard", width: 78, height: 48 },
-  { name: "Troy", width: 109, height: 50 },
-];
-
 export function Footer(): JSX.Element {
   const [street, ...locality] = seller.address.split(", ");
   const phone = siteContact.phone.trim();
@@ -75,10 +70,10 @@ export function Footer(): JSX.Element {
         <div className={styles.payment} role="group" aria-label="Güvenli ödeme">
           <div className={styles.provider}>
             <p>Güvenli Ödeme</p>
-            <img src="/images/payment/paytr.svg" alt="PayTR" width={180} height={32} className={styles.paymentLogo} loading="lazy" decoding="async" />
+            <PaymentLogos tone="light" brands={["paytr"]} className={styles.paymentLogo} />
           </div>
           <ul className={styles.cards} aria-label="Kabul edilen kartlar">
-            {cardLogos.map(logo => <li key={logo.name}><img src={`/images/payment/${logo.name.toLowerCase()}.svg`} alt={logo.name} width={logo.width} height={logo.height} className={styles.paymentLogo} loading="lazy" decoding="async" /></li>)}
+            <PaymentLogos tone="light" brands={["visa", "mastercard", "troy"]} asListItems className={styles.paymentLogo} />
           </ul>
         </div>
         <div className={styles.imprint}>

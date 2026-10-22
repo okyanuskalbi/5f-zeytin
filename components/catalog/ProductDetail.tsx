@@ -2,11 +2,11 @@
 
 import { useCallback, useEffect, useId, useRef, useState, type JSX } from "react";
 import { useAnimate } from "motion/react-mini";
-import Image from "next/image";
 import { XIcon } from "lucide-react";
 import { useCart } from "@/components/cart/CartProvider";
 import { useCartViewport } from "@/components/cart/useCartViewport";
 import { V3Picture } from "@/components/media/V3Picture";
+import { PaymentLogos } from "@/components/site/PaymentLogos";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
@@ -139,9 +139,7 @@ function DetailBody({ product, products, mobile, onSelect }: {
         </tbody></table>}
         <div className={styles.payment}>
           <span>Güvenli Ödeme</span>
-          <Image src="/images/payment/visa.svg" alt="Visa" width={82} height={26} loading="lazy" />
-          <Image src="/images/payment/mastercard.svg" alt="Mastercard" width={42} height={26} loading="lazy" />
-          <Image src="/images/payment/troy.svg" alt="Troy" width={58} height={26} loading="lazy" />
+          <PaymentLogos tone="light" brands={["visa", "mastercard", "troy"]} />
         </div>
       </div>
     </div>

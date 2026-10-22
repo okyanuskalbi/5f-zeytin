@@ -6,6 +6,7 @@ import Image from "next/image";
 import { LockKeyhole, Minus, Plus, Trash2, Truck } from "lucide-react";
 import { motion, useIsPresent, useReducedMotion } from "motion/react";
 import { Button } from "@/components/ui/button";
+import { PaymentLogos } from "@/components/site/PaymentLogos";
 import { ProductThumbnail } from "./ProductThumbnail";
 import { motionTokens, springs } from "@/lib/ui-motion";
 import type { Product } from "@/types/catalog";
@@ -82,10 +83,7 @@ export function CartTrust(): JSX.Element {
     <div role="group" aria-label="Güvenli ödeme" className={styles.payment}>
       <p><LockKeyhole aria-hidden="true" />Güvenli Ödeme</p>
       <div className={styles.paymentLogos}>
-        <Image src="/images/payment/paytr.svg" alt="PayTR" width={72} height={20} />
-        <Image src="/images/payment/visa.svg" alt="Visa" width={44} height={20} />
-        <Image src="/images/payment/mastercard.svg" alt="Mastercard" width={36} height={22} />
-        <Image src="/images/payment/troy.svg" alt="Troy" width={44} height={22} />
+        <PaymentLogos tone="dark" />
       </div>
     </div>
     <p className={styles.delivery}><Truck aria-hidden="true" />Kargo 2–4 iş günü</p>

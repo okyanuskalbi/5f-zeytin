@@ -186,6 +186,9 @@ it("loads only studio and scene gallery images lazily and switches the large ima
   expect(within(dialog).getByText("Güvenli Ödeme")).toBeDefined();
   expect(within(dialog).getByRole("img", { name: "Visa" })).toBeDefined();
   expect(within(dialog).getByRole("img", { name: "Mastercard" })).toBeDefined();
+  for (const brand of ["Visa", "Mastercard", "Troy"]) {
+    expect(within(dialog).getByRole("img", { name: brand }).getAttribute("src")).toBe(`/images/payment/${brand.toLowerCase()}.svg`);
+  }
 });
 
 it("opens from the URL and removes only urun on close, retaining the history state and other parameters", async () => {
