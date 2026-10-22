@@ -1,0 +1,13 @@
+.sections { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 40px; padding: 64px var(--page-margin); background: var(--ink); }
+.offer { min-width: 0; scroll-margin-top: calc(var(--header-height) + 24px); }
+.offer h2 { margin-bottom: 14px; font-size: clamp(34px, 4vw, 54px); line-height: 1.04; }
+.offer > p { max-width: 44ch; font-size: 17px; line-height: 1.6; color: var(--gri); }
+.trigger { min-height: 44px; max-width: 100%; margin-top: 22px; padding: 14px 22px; border-radius: 999px; font-size: 15px; white-space: normal; }
+.dialog { width: calc(100% - 32px); max-width: 640px; background: var(--ink); color: var(--sut); }
+.channels { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 16px; }
+.channels a { display: inline-flex; align-items: center; min-height: 44px; color: var(--altin); text-decoration: underline; }
+.channels a:hover { color: var(--altin-2); }
+.channels a:focus-visible { outline: 2px solid var(--altin); outline-offset: 4px; }
+@media (min-width: 901px) {
+  .sections { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 64px; padding-block: 96px; }
+}

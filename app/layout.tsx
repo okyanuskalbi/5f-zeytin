@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Figtree } from "next/font/google";
 import localFont from "next/font/local";
 import type { JSX, ReactNode } from "react";
@@ -31,6 +31,8 @@ const bodyFont = Figtree({
   variable: "--font-body",
   fallback: ["Helvetica Neue", "Arial", "sans-serif"],
 });
+
+export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover" };
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://afinazeytin.com"),

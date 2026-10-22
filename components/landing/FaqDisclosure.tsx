@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useRef, useSyncExternalStore, type JSX } from "react";
-import { ChevronDown } from "lucide-react";
 import styles from "./Faq.module.css";
 
 const serverExpanded = () => undefined;
@@ -20,7 +19,7 @@ export function FaqDisclosure({ id, question, answer }: { id: string; question: 
   return (
     <details ref={ref} data-faq={id} className={styles.answer}>
       <summary id={`faq-${id}`} aria-expanded={expanded} aria-controls={`faq-${id}-answer`} className={styles.question}>
-        {question}<ChevronDown aria-hidden="true" className={styles.indicator} />
+        {question}<span aria-hidden="true" className={styles.indicator} />
       </summary>
       <p id={`faq-${id}-answer`} data-faq-answer="">{answer}</p>
     </details>

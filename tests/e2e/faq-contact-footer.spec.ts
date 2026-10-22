@@ -35,16 +35,17 @@ test("verified native disclosures support pointer and keyboard with expanded sta
   }
 });
 
-test("one preview note, public seller identity and no unavailable form or fabricated channels", async ({ page }) => {
+test("one preview note, public seller identity and the wholesale form destination", async ({ page }) => {
   await page.goto("/");
-  await expect(page.locator("#toptan, #toptan-iletisim, #toptan-title")).toHaveCount(0);
+  await expect(page.locator("#toptan-iletisim h2")).toHaveText("Market, restoran, otel, bayi.");
+  await expect(page.locator('#toptan-iletisim a[href^="tel:"], #toptan-iletisim a[href*="wa.me"]')).toHaveCount(0);
   await expect(page.getByText("Önizleme: fiyatlar ve görseller temsilidir.", { exact: true })).toHaveCount(1);
   await expect(page.locator("body")).not.toContainText(/henüz kullanıma açık değil|Gerçek satış kataloğu|Örnek süre|İletişim bilgileri yakında/);
   const footer = page.getByRole("contentinfo");
   await expect(footer.locator("address")).toHaveText(address);
   await expect(footer).toContainText("AFİNA ZEYTİNCİLİK TARIM ÜRÜNLERİ SANAYİ VE TİCARET LİMİTED ŞİRKETİ · Düziçi VD · VKN 0091520061");
   await expect(footer.getByRole("link", { name: "AFİNA Şirketler Topluluğu", exact: true })).toHaveAttribute("href", "https://afina.com.tr");
-  await expect(footer.getByRole("link", { name: "Toptan Satış İçin İletişime Geçin", exact: true })).toHaveCount(0);
+  await expect(footer.getByRole("link", { name: "Toptan Satış İçin İletişime Geçin", exact: true })).toHaveAttribute("href", "/#toptan-iletisim");
 });
 
 test("footer legal destinations and focus remain usable", async ({ page }) => {
@@ -73,8 +74,8 @@ test("FAQ disclosure and footer destinations work without JavaScript", async ({ 
       await details.locator("summary").click();
       await expect(details.locator("[data-faq-answer]")).toBeVisible();
     }
-    await expect(staticPage.locator("#toptan, #toptan-iletisim")).toHaveCount(0);
-    await expect(staticPage.getByRole("contentinfo").getByRole("link", { name: "Toptan Satış İçin İletişime Geçin", exact: true })).toHaveCount(0);
+    await expect(staticPage.locator("#toptan-iletisim h2")).toHaveText("Market, restoran, otel, bayi.");
+    await expect(staticPage.getByRole("contentinfo").getByRole("link", { name: "Toptan Satış İçin İletişime Geçin", exact: true })).toHaveAttribute("href", "/#toptan-iletisim");
     await staticPage.getByRole("contentinfo").getByRole("link", { name: "KVKK", exact: true }).click();
     await expect(staticPage.getByRole("heading", { level: 1, name: "KVKK", exact: true })).toBeVisible();
   } finally { await context.close(); }
@@ -104,7 +105,7 @@ test("footer controls retain hover, press and focus when brand images fail", asy
 test("footer columns, payment brands and community attribution adapt without overflow", async ({ page }) => {
   await page.goto("/");
   const footer = page.getByRole("contentinfo");
-  for (const width of [320, 768, 1280]) {
+  for (const width of [320, 375, 390, 430, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await footer.scrollIntoViewIfNeeded();
     const headings = footer.getByRole("heading", { level: 2 });
@@ -138,3 +139,51 @@ test("footer columns, payment brands and community attribution adapt without ove
   await expect(page).toHaveURL(/#sik-sorulanlar$/);
   await expect(page.getByRole("heading", { name: "Sık sorulanlar", exact: true })).toBeInViewport();
 });
+
+
+// Task 121: Claude runs these browser checks, including the device scroll strips.
+test("wholesale CTA opens the labelled existing form and restores keyboard focus", async ({ page }) => {
+  await page.goto("/#toptan-iletisim");
+  const trigger = page.getByRole("button", { name: "Toptan teklif isteyin", exact: true });
+  await trigger.focus();
+  await page.keyboard.press("Enter");
+  const dialog = page.getByRole("dialog", { name: "Toptan teklif isteyin", exact: true });
+  await expect(dialog.getByRole("heading", { name: "Toptan talep formu" })).toBeVisible();
+  await expect(dialog.getByRole("button", { name: "Talebi gönder" })).toBeDisabled();
+  await expect(dialog).toContainText("Bilgileriniz gönderilmez.");
+  await page.keyboard.press("Escape");
+  await expect(dialog).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+});
+
+for (const viewport of [{ width: 390, height: 844 }, { width: 375, height: 667 }, { width: 393, height: 851 }]) {
+  test(`mobile buy bar respects hero, overlays and seller information at ${viewport.width}×${viewport.height}`, async ({ page }) => {
+    await page.setViewportSize(viewport);
+    await page.goto("/");
+    const bar = page.locator("[data-mobile-buy-bar]");
+    await expect(bar).toHaveAttribute("aria-hidden", "true");
+    await page.evaluate(() => window.scrollTo(0, document.querySelector("[data-hero-intro]")!.getBoundingClientRect().height + 20));
+    await expect(bar).toHaveAttribute("data-visible", "true");
+    await expect(bar).toHaveAttribute("role", "region");
+    const add = bar.getByRole("button", { name: "Sepete ekle", exact: true });
+    expect((await add.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    await add.click();
+    await expect(bar.getByRole("button", { name: "Eklendi ✓", exact: true })).toBeVisible();
+    await expect(page.locator("[data-mini-cart]")).toHaveCount(0);
+    await page.getByRole("button", { name: /^Sepetim,/ }).click();
+    await expect(page.getByRole("dialog")).toBeVisible();
+    await expect(bar).toHaveAttribute("aria-hidden", "true");
+    await page.keyboard.press("Escape");
+    await expect(bar).toHaveAttribute("data-visible", "true");
+    await page.getByRole("button", { name: "Toptan teklif isteyin", exact: true }).click();
+    await expect(page.getByRole("dialog", { name: "Toptan teklif isteyin", exact: true })).toBeVisible();
+    await expect(bar).toHaveAttribute("aria-hidden", "true");
+    await page.keyboard.press("Escape");
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+    await expect(bar).toHaveAttribute("aria-hidden", "true");
+    await expect(page.getByRole("contentinfo").getByText(/VKN 0091520061/)).toBeInViewport();
+    const reserved = await page.evaluate(() => ({ padding: parseFloat(getComputedStyle(document.body).paddingBottom), height: document.querySelector("[data-mobile-buy-bar]")!.getBoundingClientRect().height }));
+    expect(reserved.padding).toBeGreaterThanOrEqual(reserved.height - 1);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  });
+}

@@ -1,12 +1,14 @@
 import { readFileSync } from "node:fs";
 import { renderToStaticMarkup } from "react-dom/server";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, expect, it } from "vitest";
+import { WholesaleFaq } from "@/components/landing/WholesaleFaq";
 import Home from "@/app/page";
 import { Footer } from "@/components/site/Footer";
 import { verifiedFaqs } from "@/components/landing/Faq";
 import { siteContact } from "@/lib/site/contact";
 
-afterEach(() => { Object.assign(siteContact, { phone: "", whatsapp: "", email: "" }); });
+afterEach(() => { cleanup(); Object.assign(siteContact, { phone: "", whatsapp: "", email: "" }); });
 
 it("uses full factual sentences and removes unanswered wholesale questions", async () => {
   const doc = document.implementation.createHTMLDocument();
@@ -15,7 +17,11 @@ it("uses full factual sentences and removes unanswered wholesale questions", asy
   for (const faq of verifiedFaqs) expect(faq.answer).toMatch(/\.$/);
   expect(doc.querySelector('[data-faq="Z05"]')).toBeNull();
   expect(doc.querySelector("#toptan")).toBeNull();
-  expect(doc.querySelector("#toptan-iletisim")?.textContent).toBe("");
+  expect(doc.querySelector("#toptan-iletisim h2")?.textContent).toBe("Market, restoran, otel, bayi.");
+  expect(doc.querySelector("#sik-sorulanlar h2")?.textContent).toBe("Sık sorulanlar");
+  expect(doc.querySelectorAll("#sik-sorulanlar details > summary")).toHaveLength(3);
+  expect(doc.querySelector("#toptan-iletisim button")?.textContent).toBe("Toptan teklif isteyin");
+  expect(doc.querySelector('a[href^="tel:"], a[href*="wa.me"], a[href^="mailto:"]')).toBeNull();
   expect(doc.body.textContent).not.toMatch(/Toptan alım için bize yazın|İletişim bilgileri yakında/);
 });
 
@@ -23,12 +29,12 @@ it.each([
   { phone: "", whatsapp: "", email: "" },
   { phone: " \t ", whatsapp: " \n ", email: " " },
   { phone: "", whatsapp: " + ( ) - ", email: "" },
-])("omits the footer wholesale link for unavailable contact channels: %j", contact => {
+])("keeps the footer form destination without contact channels: %j", contact => {
   Object.assign(siteContact, contact);
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(<Footer />);
-  expect(doc.querySelector('a[href="/#toptan-iletisim"]')).toBeNull();
-  expect(doc.body.textContent).not.toContain("Toptan Satış İçin İletişime Geçin");
+  expect(doc.querySelector('a[href="/#toptan-iletisim"]')).not.toBeNull();
+  expect(doc.body.textContent).toContain("Toptan Satış İçin İletişime Geçin");
   expect(doc.querySelector('a[href="/#urunler"]')).not.toBeNull();
   expect(doc.querySelector('a[href="/#tesisimiz"]')).not.toBeNull();
 });
@@ -41,8 +47,8 @@ it.each([
   Object.assign(siteContact, contact);
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}<Footer /></>);
-  expect(doc.querySelector("#toptan-iletisim h3")?.textContent).toBe("Toptan alım için bize yazın");
-  expect(doc.querySelectorAll("#toptan a")).toHaveLength(1);
+  expect(doc.querySelector("#toptan-iletisim h2")?.textContent).toBe("Market, restoran, otel, bayi.");
+  expect(doc.querySelectorAll("#toptan-iletisim a")).toHaveLength(1);
   expect(doc.querySelector('footer a[href="/#toptan-iletisim"]')?.textContent).toBe("Toptan Satış İçin İletişime Geçin");
 });
 it("retains seller identity, community and legal destinations", () => {
@@ -113,4 +119,25 @@ it("shows only approved phone and email channels when configured", () => {
   const contact = doc.querySelector('[aria-labelledby="footer-contact-title"]')!;
   expect(contact.querySelector('a[href="tel:+905550100000"]')?.textContent).toBe("+90 555 010 00 00");
   expect(contact.querySelector('a[href="mailto:contact@example.com"]')?.textContent).toBe("contact@example.com");
+});
+
+
+it("opens the existing wholesale form in a labelled dialog and restores its trigger", async () => {
+  render(<WholesaleFaq />);
+  const trigger = screen.getByRole("button", { name: "Toptan teklif isteyin" });
+  fireEvent.click(trigger);
+  const dialog = screen.getByRole("dialog", { name: "Toptan teklif isteyin" });
+  expect(dialog.querySelector("form")).not.toBeNull();
+  expect(screen.getByRole("button", { name: "Talebi gönder" }).hasAttribute("disabled")).toBe(true);
+  expect(dialog.textContent).toContain("Bilgileriniz gönderilmez.");
+  fireEvent.click(screen.getByRole("button", { name: "Kapat" }));
+  expect(screen.queryByRole("dialog")).toBeNull();
+  await waitFor(() => expect(document.activeElement).toBe(trigger));
+});
+
+it("keeps exactly one preview note across the full page and footer", async () => {
+  const doc = document.implementation.createHTMLDocument();
+  doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}<Footer /></>);
+  expect(doc.body.textContent?.match(/temsili/gi)).toHaveLength(1);
+  expect(doc.querySelectorAll("#toptan-iletisim, #sik-sorulanlar")).toHaveLength(2);
 });

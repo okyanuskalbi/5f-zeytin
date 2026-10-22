@@ -33,7 +33,7 @@ it("omits the whole wholesale row and footer destination when contact details ar
   expect(document.querySelector("#toptan-iletisim")?.textContent).toBe("");
   expect(screen.queryByText("Toptan alım için bize yazın")).toBeNull();
   expect(screen.queryByText("İletişim bilgileri yakında")).toBeNull();
-  expect(screen.queryByRole("link", { name: "Toptan Satış İçin İletişime Geçin" })).toBeNull();
+  expect(screen.getByRole("link", { name: "Toptan Satış İçin İletişime Geçin" }).getAttribute("href")).toBe("/#toptan-iletisim");
 });
 
 it("omits wholesale markup when all contact values contain only whitespace", () => {

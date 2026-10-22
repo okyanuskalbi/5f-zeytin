@@ -35,7 +35,7 @@ it("renders six separate variants with catalog prices, three categories and just
   }
 });
 
-it("adds every available variant to the real store and updates the existing MiniCart without opening the drawer", async () => {
+it("adds every available variant to the real store and keeps the landing free of the replaced MiniCart without opening the drawer", async () => {
   const products = await getProducts();
   render(<CartProvider products={products}><Products products={products} /></CartProvider>);
   const expected: { productId: string; quantity: number }[] = [];
@@ -45,7 +45,7 @@ it("adds every available variant to the real store and updates the existing Mini
     expect(within(card as HTMLElement).getByRole("button", { name: "Eklendi ✓" })).toBeDefined();
     expected.push({ productId: product.id, quantity: 1 });
     expect(JSON.parse(localStorage.getItem(CART_STORAGE_KEY)!)).toEqual(expected);
-    expect(screen.getByRole("complementary", { name: "Mini sepet" }).textContent).toContain(`${expected.length} adet`);
+    expect(screen.queryByRole("complementary", { name: "Mini sepet" })).toBeNull();
     expect(screen.queryByRole("dialog")).toBeNull();
   }
 });
