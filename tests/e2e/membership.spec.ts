@@ -1,13 +1,20 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 import { CART_STORAGE_KEY } from "../../lib/cart/store";
 
 const demo = process.env.NEXT_PUBLIC_DEMO === "1";
 
+// Preserve account demo acceptance without depending on removed Google mock UI.
+async function seedDemoSession(page: Page) {
+  // Seed once on this page, so logout and reload cannot silently sign in again.
+  await page.goto("/hesabim");
+  await page.evaluate(() => sessionStorage.setItem("afina:membership:demo-session:v1", JSON.stringify({ id: "demo-google", name: "Demo Misafir", email: "demo@example.test", phone: "" })));
+}
+
 test("production without demo exposes honest upcoming states", async ({ page }, testInfo) => {
   test.skip(demo, "Production gate is checked on the build without the demo opt-in.");
   await mkdir("test-results/108", { recursive: true });
-  for (const route of ["/giris", "/hesabim"]) {
+  for (const route of ["/hesabim"]) {
     await page.goto(route);
     await expect(page.getByRole("main")).toContainText("yakında.");
     await expect(page.getByRole("main").locator("form, input")).toHaveCount(0);
@@ -19,12 +26,10 @@ test("production without demo exposes honest upcoming states", async ({ page }, 
 test.describe("membership mock journeys", () => {
   test.skip(!demo, "Mock journeys require NEXT_PUBLIC_DEMO=1 at build time.");
 
-  test("Google adapter, profile, tabs, order link and sign out preserve guest cart", async ({ page }) => {
+  test("demo profile, tabs, order link and sign out preserve guest cart", async ({ page }) => {
     await page.addInitScript(key => { if (!localStorage.getItem(key)) localStorage.setItem(key, JSON.stringify([{ productId: "sample-green-olive-1kg", quantity: 2 }])); }, CART_STORAGE_KEY);
-    await page.goto("/giris");
-    await expect(page.getByRole("main")).toContainText("Demo");
-    await page.getByRole("button", { name: "Google ile devam et", exact: true }).click();
-    await expect(page).toHaveURL(/\/hesabim$/);
+    await seedDemoSession(page);
+    await page.goto("/hesabim");
     await expect(page.getByLabel("E-posta", { exact: true })).toHaveValue("demo@example.test");
     await page.getByLabel("Ad soyad", { exact: true }).fill("Deniz Sofra");
     await page.getByLabel("Telefon", { exact: true }).fill("05321234567");
@@ -46,50 +51,11 @@ test.describe("membership mock journeys", () => {
     await expect(page.getByRole("main").getByRole("status", { name: "Adet" })).toHaveText("2");
   });
 
-  test("email registration, required separate consent, errors, login and reset", async ({ page }) => {
-    await page.goto("/giris");
-    await page.getByRole("tab", { name: "Üye ol" }).click();
-    await page.getByRole("button", { name: "Üyelik oluştur" }).click();
-    await expect(page.getByRole("main").getByRole("alert")).toContainText("Geçerli bir e-posta");
-    await expect(page.getByRole("main").getByRole("alert")).toHaveAttribute("aria-live", "assertive");
-    await expect(page.getByLabel("E-posta", { exact: true })).toHaveAttribute("aria-invalid", "true");
-    await expect(page.getByLabel("E-posta", { exact: true })).toHaveAttribute("aria-describedby", "auth-email-error");
-    await page.getByLabel("Ad soyad", { exact: true }).fill("Deniz Test");
-    await page.getByLabel("E-posta", { exact: true }).fill("deniz@example.test");
-    await page.getByLabel("Şifre", { exact: true }).fill("Sofrada123!");
-    await expect(page.getByLabel("Şifre", { exact: true })).toHaveAttribute("autocomplete", "new-password");
-    await page.getByRole("button", { name: "Şifreyi göster" }).click();
-    await expect(page.getByLabel("Şifre", { exact: true })).toHaveAttribute("type", "text");
-    await page.getByRole("button", { name: "Üyelik oluştur" }).click();
-    await expect(page.getByRole("main").getByRole("alert")).toContainText("KVKK");
-    await page.getByRole("checkbox", { name: /KVKK/ }).check();
-    await page.getByRole("button", { name: "Üyelik oluştur" }).click();
-    await expect(page.getByRole("main").getByRole("alert")).toContainText("Açık rıza");
-    await page.getByRole("checkbox", { name: /Açık rıza/ }).check();
-    await expect(page.getByRole("checkbox", { name: /Ticari/ })).not.toBeChecked();
-    await page.getByRole("button", { name: "Üyelik oluştur" }).click();
-    await expect(page).toHaveURL(/\/hesabim$/);
-    await page.getByRole("tab", { name: "Siparişlerim" }).click();
-    await expect(page.getByRole("tabpanel")).toContainText("Henüz siparişiniz yok");
-    await page.getByRole("button", { name: "Çıkış yap" }).click();
-    await expect(page.getByLabel("Şifre", { exact: true })).toHaveAttribute("autocomplete", "current-password");
-    await page.getByLabel("E-posta", { exact: true }).fill("deniz@example.test");
-    await page.getByLabel("Şifre", { exact: true }).fill("Wrong123!");
-    await page.getByRole("button", { name: "E-posta ile giriş yap" }).click();
-    await expect(page.getByRole("main").getByRole("alert")).toContainText("E-posta veya şifre");
-    await page.getByLabel("Şifre", { exact: true }).fill("Sofrada123!");
-    await page.getByRole("button", { name: "E-posta ile giriş yap" }).click();
-    await expect(page).toHaveURL(/\/hesabim$/);
-    await page.getByRole("button", { name: "Çıkış yap" }).click();
-    await page.getByRole("button", { name: "Şifremi unuttum" }).click();
-    await page.getByLabel("E-posta", { exact: true }).fill("deniz@example.test");
-    await page.getByRole("button", { name: "Sıfırlama bağlantısı iste" }).click();
-    await expect(page.getByRole("status")).toContainText("e-posta gönderilmedi");
-  });
+  // Real registration/login acceptance now lives in register.spec.ts and login.spec.ts.
 
   test("addresses create edit default delete, persistence and validation", async ({ page }) => {
-    await page.goto("/giris");
-    await page.getByRole("button", { name: "Google ile devam et", exact: true }).click();
+    await seedDemoSession(page);
+    await page.goto("/hesabim");
     await page.getByRole("tab", { name: "Adreslerim" }).click();
     await page.getByRole("button", { name: "Adres ekle" }).click();
     await page.getByRole("button", { name: "Adresi kaydet" }).click();
@@ -136,13 +102,14 @@ test.describe("membership mock journeys", () => {
     await mkdir("test-results/108", { recursive: true });
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/giris");
-    await expect(page.getByRole("button", { name: "Google ile devam et", exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: "E-posta ile giriş yap", exact: true })).toBeVisible();
     await page.evaluate(() => document.fonts.ready);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.screenshot({ path: `test-results/108/giris-${testInfo.project.name}.png`, fullPage: true });
-    await page.getByRole("tab", { name: "Üye ol" }).click();
+    await page.goto("/kayit");
     await page.screenshot({ path: `test-results/108/kayit-${testInfo.project.name}.png`, fullPage: true });
-    await page.getByRole("button", { name: "Google ile devam et", exact: true }).click();
+    await seedDemoSession(page);
+    await page.goto("/hesabim");
     await expect(page.getByLabel("Ad soyad", { exact: true })).toBeVisible();
     await page.screenshot({ path: `test-results/108/profil-${testInfo.project.name}.png`, fullPage: true });
     await page.getByRole("tab", { name: "Adreslerim" }).click();
