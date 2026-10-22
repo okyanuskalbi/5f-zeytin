@@ -17,6 +17,8 @@ export async function createLocalSupabase(migrationsDirectory = repositoryMigrat
       revoke all on schema public from public;
       grant usage on schema public to anon, authenticated, service_role;
       create schema auth;
+      -- Minimal Auth identity relation for application migration foreign keys.
+      create table auth.users (id uuid primary key);
       revoke all on schema auth from public;
       grant usage on schema auth to anon, authenticated, service_role;
 
