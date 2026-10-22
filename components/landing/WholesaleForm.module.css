@@ -28,9 +28,17 @@
 @media (hover: hover) and (pointer: fine) {
   .consent:hover input:not(:disabled) { border-color: var(--ring); }
 }
-@media (max-width: 767px) and (max-height: 700px) {
-  /* Keep inputs and touch targets intact on SE; only the message gets shorter. */
-  .field > textarea { min-height: 66px; }
+@media (max-height: 700px) and (max-width: 767px) {
+  /* Leave room for the full consent group above the sticky action on SE. */
+  .fields { gap: 12px; }
+  .channels { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .field { gap: 4px; }
+  .field > label { line-height: 18px; }
+  .field > input { height: 44px; min-height: 44px; }
+  /* 2–4 lines at 24px, plus 16px padding and 2px border. */
+  .field > textarea { min-height: 66px; max-height: 114px; }
+  .actions { gap: 4px; padding-top: 4px; padding-bottom: max(8px, env(safe-area-inset-bottom)); }
+  .actions > button { min-height: 44px; padding-block: 8px; }
 }
 @media (min-width: 768px) {
   .fields { gap: 12px; padding-inline: 24px; padding-bottom: 8px; }

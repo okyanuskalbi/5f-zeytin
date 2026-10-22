@@ -36,7 +36,8 @@ for (const size of sizes) {
       await expect(dialog.getByRole("heading")).toHaveCount(1);
       await expect(dialog.getByText("Toptan talep formu", { exact: true })).toHaveCount(0);
       await fullyInside(first, size.width, size.height);
-      expect((await first.boundingBox())!.height).toBeGreaterThanOrEqual(48);
+      const compactPhone = size.width < 768 && size.height <= 700;
+      expect((await first.boundingBox())!.height).toBeGreaterThanOrEqual(compactPhone ? 44 : 48);
       await fullyInside(submit, size.width, size.height);
       await fullyInside(dialog.getByRole("heading"), size.width, size.height);
       await expect(submit).toBeDisabled();

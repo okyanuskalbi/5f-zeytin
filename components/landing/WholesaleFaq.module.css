@@ -12,6 +12,11 @@
 .formHeader > h2 { padding-inline-end: 44px; font-size: 24px; line-height: 30px; }
 .formHeader > p { font-size: 13px; line-height: 18px; color: var(--gri); }
 .close { position: absolute; inset-block-start: 5px; inset-inline-end: 8px; min-width: 44px; min-height: 44px; background: transparent; color: var(--sut); }
+@media (max-height: 700px) and (max-width: 767px) {
+  .sheet .formHeader { min-height: 44px; padding-block: 6px; }
+  .sheet .formHeader > p { display: none; }
+  .sheet .close { inset-block-start: 0; }
+}
 @media (min-width: 768px) {
   .formHeader { gap: 8px; padding: 20px 24px 16px; }
   .close { inset-block-start: 10px; inset-inline-end: 12px; }
