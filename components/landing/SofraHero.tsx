@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState, type JSX, type MouseEvent, type Rea
 import * as motion from "motion/react-m";
 import { useAnimate } from "motion/react-mini";
 import { useCart } from "@/components/cart/CartProvider";
+import { useProductDetail } from "@/components/catalog/ProductDetailProvider";
 import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
 import { motionTokens } from "@/lib/ui-motion";
 import type { Product } from "@/types/catalog";
@@ -25,6 +26,7 @@ export function SofraHero({ products = [], productImage, children }: {
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const reduced = usePrefersReducedMotion();
   const cart = useCart();
+  const openDetail = useProductDetail();
   const [selected, setSelected] = useState<string>(sizes[1].id);
   const [feedback, setFeedback] = useState<"idle" | "added" | "error">("idle");
   const product = products.find(item => item.id === selected);
@@ -107,7 +109,8 @@ export function SofraHero({ products = [], productImage, children }: {
       <div data-hero-card="" className={styles.card}>
         <div className={styles.productImage}>{productImage}</div>
         <div className={styles.details}>
-          <h2>Doğal Kırma Yeşil Zeytin</h2>
+          <h2><button type="button" className={styles.detailTrigger} aria-haspopup="dialog"
+            onClick={event => openDetail?.(selected, event.currentTarget)}>Doğal Kırma Yeşil Zeytin</button></h2>
           <div role="radiogroup" aria-label="Boy" className={styles.sizes}>
             {sizes.map(size => <label key={size.id} className={styles.size} data-state={selected === size.id ? "checked" : "unchecked"}>
               <input className="sr-only" type="radio" name={sizeGroup} value={size.id} checked={selected === size.id}

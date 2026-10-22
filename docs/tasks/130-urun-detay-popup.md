@@ -45,4 +45,52 @@ Kullanıcı (22 Eki): "Ürün iç sayfasını açalım. En azından açıklama f
 - Yeni görsel üretme; fiyat/stok uydurma.
 - `docs/` değiştirme (yalnız Coder Notu/Durum).
 
-## Durum: BEKLİYOR
+## Coder Notu
+
+22 Ekim 2026 — uygulama ve tarayıcı dışı kabul kontrolleri tamamlandı.
+
+- Altı varyantın açıklamaları birebir `lib/catalog/product-details.ts` dosyasında; dosyanın başında "Müşteri onayı bekler" yorumu var. Net miktar/kategori katalog varyantından, ambalaj varyant kimliğinden geliyor; istenen altı bilgi satırı gösteriliyor. Katalog fiyatları, stoklar ve görseller değiştirilmedi.
+- Kartın görseli ve adı, hero satın alma kartının seçili ürün adı detay açıyor. Kartın mevcut Sepete ekle düğmesi ayrı; detay ya da sepet drawer'ını açmıyor.
+- 768px altında tam yükseklik Sheet ve kayan iç alanın dışında safe-area içeren yapışık satın alma alanı; 768px ve üzerinde iki kolonlu, ortalanmış Dialog kullanılıyor. Büyük stüdyo görseli ve iki küçük stüdyo/sahne görseli mevcut onaylı manifestten `V3Picture` ile lazy yükleniyor. Fraunces başlık, altın fiyat/CTA, bilgi tablosu ve mevcut kart logoları kullanıldı.
+- Boy anahtarı yalnız ürün ailesindeki varyantları gösteriyor; fiyat, açıklama, bilgiler ve görseller seçilen varyanta geçiyor. Boy değişince adet/görsel sıfırlanırken klavye odağı boy kontrolünde kalıyor. Adet, sepette bulunan miktar da düşülerek stokla sınırlandırılıyor. Stok sıfırsa adet gizli ve Mevcut değil düğmesi disabled; projenin mevcut opacity: 1 kuralı korunuyor.
+- Ekleme `cart.store.addItem(id, quantity)` ile mevcut sepete bağlandı; Eklendi ✓ geri bildirimi ve sayaç güncelleniyor, detay açık kalıyor. `?urun=<variantId>` ilk girişte ve popstate'te okunuyor; açma/boy değiştirme/kapatma `history.replaceState` kullanıyor. Diğer parametreler ve history state korunuyor, hash eklenmiyor.
+- Radix odak kapanı/scroll lock, başlığa ilk odak, Esc/arka plan/kapat düğmesi ve tetikleyiciye odak dönüşü korunuyor. Çıkış animasyonu bitene kadar modal açık tutuluyor. Reduced-motion'da animasyon çalışmıyor; mevcut mobil satın alma çubuğu detay açıkken gizleniyor.
+
+### Skill / nerede kullanıldı
+
+| Skill / araç | Nerede kullanıldı |
+| --- | --- |
+| `ui-ux-pro-max` | Yüklü yerel skill ve §5 Layout & Responsive okundu; `mobile modal responsive overflow --domain ux` araması mobil önce düzen, iki kolonlu tablonun sığması ve viewport kurallarına uygulandı. |
+| `frontend-design` | Mevcut Fraunces/Figtree ve ink/zeytin/süt/altın tokenları; ürün görseli, ad, fiyat ve tek satın alma eylemi hiyerarşisi. |
+| `better-layout` | Mobil iç kaydırma, 100dvh, safe-area, minmax(0, 1fr), uzun bilgi satırlarının kırılması ve SE için kompakt görsel alanı. |
+| `motion-framer` | Panelin açılış/kapanış hareketi ve kullanıcının reduced-motion tercihi. |
+| `motion-foundations`, `motion-patterns`, `motion-advanced` | Mevcut motionTokens ve motion/react-mini useAnimate; transform/opacity, temizlenen kontroller ve çıkış boyunca korunan modal kapanı. |
+| `shadcn-ui` | Yerel skill yüklendi; resmi CLI `npx shadcn@latest view dialog sheet` ile güncel kaynaklar incelendi. Projedeki token uygulanmış Dialog/Sheet temeli yeniden kullanıldı; varsayılan stil eklenmedi. |
+| 21st MCP / `21st-cli-use` | Global 21st MCP yapılandırmasıyla `product quick view modal` ve `product detail drawer` aramaları çalıştırıldı. `shadcn` yazar kataloğundan **Calendar picker in a drawer**, demo ID **2808**, component ID **2679**, `get_component` ile alındı. Kontrollü drawer, erişilebilir başlık/açıklama ve seçim kalıbı mevcut ortak Dialog/Sheet'e uyarlandı; tarih seçici bağımlılıkları eklenmedi. |
+| `frontend-patterns` | Küçük URL/context sahibi, koşullu next/dynamic yükleme ve mevcut cart store aboneliği. |
+| `tdd-workflow` | Önce test, RED, uygulama, GREEN; ek boy değişimi odak regresyonu önce başarısız testle doğrulandı. |
+| `responsiveness-check` | Tarayıcı kabulü kapsamında Claude doğrulayacak. |
+
+### Komut kanıtı ve TDD
+
+- İlk RED: `npm test -- tests/unit/product-detail-130.test.tsx` — henüz bulunmayan detay bileşeni/veri modülü nedeniyle başarısız. Uygulamadan sonra GREEN.
+- Ek RED: boy değişiminde odak kontrolü — yeniden mount edilen radio odağı kaybediyordu. Detay gövdesi korunup yalnız varyanta bağlı seçimler/ekleme geri bildirimi sıfırlanarak düzeltildi.
+- Task 130 için 27 unit test: altı birebir açıklama ve bilgi satırları, kart/hero açılışı, ayrı kart satın alması, aile/boy/fiyat/adet, stok, lazy galeri, URL, breakpoint, odak dönüşü, arka plan, çıkış animasyonu, reduced-motion ve mobil çubuk.
+
+| Komut | Sonuç |
+| --- | --- |
+| `npm test -- --maxWorkers=2` | PASS — 38 dosya, 434 test; atlanan test yok. |
+| `npm run lint` | PASS — sıfır uyarı. |
+| `npm run typecheck` | PASS — E2E dosyası dahil. |
+| `npm run build` | PASS — production build, 16 sayfa; prebuild varlık kontrolleri PASS. |
+| `node scripts/report-bundle.mjs --verify` | PASS — ilk yük JavaScript 190237 bayt gzip (sınır 200000); ilk aktarım + inline script 261414 bayt (sınır 450000). |
+| Node ile build HTML/ilk script kontrolü | PASS — detay içeriği/galeri kontrolleri ilk HTML ve ilk JavaScript paketlerinde yok; detay koşullu dinamik import ile yükleniyor. |
+| `git diff --check` | PASS. |
+
+### Claude doğrulayacak
+
+`tests/e2e/product-detail-130.spec.ts` yazıldı, çalıştırılmadı. 1440×900, 390×844 ve 375×667 için normal/reduced-motion altı senaryo ile ek paylaşım adresi senaryosu var: içerik/CTA görünürlüğü, yatay taşma, galeri/boy/fiyat/adet/sepet, Sheet/Dialog, mobil çubuk, odak dönüşü, URL ve arka planla kapatma.
+
+AGENTS.md gereği Playwright, Lighthouse, inspect ve ekran görüntüsü çalıştırılmadı. Gerçek responsive/görsel kabulü, cihazlarda sabit CTA ve Task 125 LCP ölçümünü **Claude doğrulayacak**. Dinamik yükleme ve mevcut ilk yük bütçeleri komutla doğrulandı. Tarayıcı kriterleri dışında açık uygulama veya komut engeli yok. Yeni skill kurulmadı; istenen skill'ler mevcut yerel kurulumlardan okundu.
+
+## Durum: TAMAMLANDI

@@ -7,11 +7,12 @@ import { HeroBand } from "@/components/landing/HeroBand";
 import { WholesaleFaq } from "@/components/landing/WholesaleFaq";
 import { MobileBuyBar } from "@/components/landing/MobileBuyBar";
 import { BusinessJsonLd } from "@/components/site/BusinessJsonLd";
+import { ProductDetailProvider } from "@/components/catalog/ProductDetailProvider";
 import { getProductFamilies } from "@/lib/catalog/static-products";
 
 export default async function Home(): Promise<JSX.Element> {
   const families = await getProductFamilies();
-  return <main>
+  return <ProductDetailProvider products={families.flatMap(family => family.variants)}><main>
     <BusinessJsonLd />
     <Hero products={families.find(family => family.id === "dogal-kirma")?.variants} />
     <TrustStrip />
@@ -20,5 +21,5 @@ export default async function Home(): Promise<JSX.Element> {
     <HeroBand products={families.find(family => family.id === "dogal-kirma")?.variants ?? []} />
     <WholesaleFaq />
     <MobileBuyBar product={families.find(family => family.id === "dogal-kirma")?.variants.find(product => product.id === "sample-green-olive-10kg")} />
-  </main>;
+  </main></ProductDetailProvider>;
 }

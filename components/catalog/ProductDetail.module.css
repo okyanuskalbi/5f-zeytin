@@ -1,0 +1,57 @@
+.dialog, .sheet { display: flex; gap: 0; padding: 0; overflow: hidden; background: var(--ink); color: var(--sut); }
+.dialog { width: calc(100% - 48px); max-width: 1040px; max-height: calc(100dvh - 48px); }
+.sheet { height: 100dvh; max-height: 100dvh; padding-top: env(safe-area-inset-top); }
+.panel { position: relative; display: flex; flex-direction: column; width: 100%; min-height: 0; max-height: inherit; }
+.sheet .panel { height: 100%; }
+.sheet .scroller { flex: 1 1 auto; }
+.sheet .purchase { position: sticky; bottom: 0; }
+.scroller { display: grid; gap: 24px; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 48px 16px 24px; scroll-padding-block: 16px; }
+.scroller > *, .info { min-width: 0; }
+.gallery { display: grid; gap: 12px; align-content: start; }
+.image { height: clamp(180px, 30dvh, 300px); background: var(--zeytin); }
+.image picture, .image img { display: block; width: 100%; height: 100%; }
+.image img { object-fit: contain; }
+.thumbnails { display: flex; justify-content: center; gap: 12px; }
+.thumbnails button { width: 64px; height: 64px; padding: 3px; border: 1px solid var(--border); background: var(--zeytin); cursor: pointer; }
+.thumbnails button[aria-pressed="true"] { border: 2px solid var(--altin); }
+.thumbnails picture, .thumbnails img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.category { display: inline-block; max-width: 100%; padding: 5px 10px; border: 1px solid var(--border); border-radius: 999px; color: var(--gri); font-size: 12px; line-height: 1.4; overflow-wrap: anywhere; }
+.title { margin-block: 12px 16px; font-size: 28px; line-height: 1.1; font-weight: 600; overflow-wrap: anywhere; }
+.sizes { display: flex; flex-wrap: wrap; gap: 8px; }
+.size { position: relative; display: inline-flex; align-items: center; justify-content: center; min-width: 64px; min-height: 44px; padding: 8px 16px; border: 1px solid var(--border); border-radius: 999px; font-size: 14px; cursor: pointer; }
+.size[data-state="checked"] { background: var(--sut); border-color: var(--sut); color: var(--ink); }
+.weight { color: var(--gri); }
+.price { margin-block: 16px; color: var(--altin-2); font-size: 32px; font-weight: 800; line-height: 1.2; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.purchase { flex: 0 0 auto; display: grid; gap: 8px; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border); background: var(--ink); }
+.purchase > div { position: relative; }
+.purchase button { min-height: 44px; }
+.quantityRow { display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 14px; }
+.quantity { display: grid; grid-template-columns: 44px minmax(32px, auto) 44px; align-items: center; border: 1px solid var(--border); border-radius: 999px; }
+.quantity button { width: 44px; border-radius: 999px; background: transparent; color: var(--sut); font-size: 22px; cursor: pointer; }
+.quantity button:disabled { opacity: 1; color: var(--gri); cursor: not-allowed; }
+.quantity output { text-align: center; font-variant-numeric: tabular-nums; }
+.stock { font-size: 13px; line-height: 1.4; color: var(--gri); }
+.description { margin-block: 24px; color: var(--gri); font-size: 16px; line-height: 1.6; }
+.facts { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 14px; line-height: 1.5; }
+.facts tr { border-bottom: 1px solid var(--border); }
+.facts th, .facts td { padding-block: 12px; text-align: start; vertical-align: top; overflow-wrap: anywhere; }
+.facts th { width: 40%; padding-inline-end: 16px; font-weight: 500; color: var(--gri); }
+.payment { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 24px; color: var(--gri); font-size: 12px; }
+.payment img { width: auto; height: 18px; }
+.close { position: absolute; z-index: 1; inset-block-start: 4px; inset-inline-end: 4px; min-width: 44px; min-height: 44px; background: var(--ink); color: var(--sut); }
+.thumbnails button:focus-visible, .size:has(:focus-visible), .purchase button:focus-visible, .title:focus-visible { outline: 2px solid var(--altin); outline-offset: 3px; }
+@media (max-height: 700px) and (max-width: 767px) {
+  .image { height: 160px; }
+  .thumbnails button { width: 48px; height: 48px; }
+  .scroller { gap: 16px; }
+}
+@media (min-width: 768px) {
+  .scroller { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; gap: 32px; padding: 40px 32px 32px; }
+  .image { height: 440px; }
+  .title { font-size: 32px; }
+  .purchase { padding: 0; border: 0; }
+  .close { inset-block-start: 8px; inset-inline-end: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .panel { transform: none !important; opacity: 1 !important; }
+}
