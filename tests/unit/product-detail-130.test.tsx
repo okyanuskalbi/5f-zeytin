@@ -86,6 +86,27 @@ async function openCard(kind: "name" | "image" = "name") {
   return { ...view, trigger, dialog: await screen.findByRole("dialog") };
 }
 
+it.each([
+  [undefined, undefined, "Sofralık", "Sofralık zeytin"],
+  [null, true, "Sofralık", "Sofralık zeytin"],
+  ["Kahvaltılık", true, "Kahvaltılık", "Kahvaltılık"],
+  ["Kahvaltılık", false, null, null],
+] as const)("renders the category consistently in card and detail (%s, %s)", async (categoryLabel, showCategoryLabel, cardLabel, detailLabel) => {
+  const catalog = (await getProducts()).map(product => ({ ...product, categoryLabel, showCategoryLabel }));
+  const { card, product } = await mount(catalog);
+  // Only the size span remains when the label is hidden, with no empty badge.
+  const meta = card.querySelector('[aria-label="Boy"]')!.parentElement!;
+  expect([...meta.querySelectorAll("span")].map(node => node.textContent))
+    .toEqual(cardLabel ? [product.weight, cardLabel] : [product.weight]);
+  fireEvent.click(within(card).getByRole("heading").querySelector("button")!);
+  const dialog = await screen.findByRole("dialog");
+  const table = within(dialog).getByRole("table", { name: "Ürün bilgileri" });
+  const category = within(table).queryByRole("rowheader", { name: "Kategori" });
+  if (detailLabel) expect(category?.closest("tr")?.textContent).toBe(`Kategori${detailLabel}`);
+  else expect(category).toBeNull();
+  expect(table.querySelectorAll("tr")).toHaveLength(detailLabel ? 6 : 5);
+});
+
 it.each(["name", "image"] as const)("opens from the card %s and focuses the title", async kind => {
   const { dialog, trigger } = await openCard(kind);
   expect(dialog.getAttribute("aria-modal")).toBe("true");

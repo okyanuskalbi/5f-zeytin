@@ -5,7 +5,7 @@ import { createSupabaseServiceClient } from "@/lib/supabase/server";
 import { adminProductPageSize, parseAdminProduct, parseProductInput, validProductId, type ProductSort } from "@/lib/contracts/admin-products";
 
 export const dynamic = "force-dynamic";
-const columns = "id,name,category,weight,price_kurus,currency,stock,is_active,product_upsells!product_upsells_product_id_fkey(upsell_id)";
+const columns = "id,name,category,category_label,show_category_label,weight,price_kurus,currency,stock,is_active,product_upsells!product_upsells_product_id_fkey(upsell_id)";
 const sorts: Record<ProductSort, string> = { name: "name", priceKurus: "price_kurus", stock: "stock", isActive: "is_active" };
 const failure = (status: number, code: string, message: string) => Response.json({ error: { code, message } }, {
   status, headers: { ...authResponseHeaders, ...(status === 503 ? { "Retry-After": "5" } : {}) },

@@ -1,4 +1,5 @@
 import type { Product } from "@/types/catalog";
+import { isCategoryLabel } from "@/lib/catalog/category-label";
 
 export const catalogProductLimit = 6;
 
@@ -28,12 +29,13 @@ export function parseCatalogProducts(input: unknown): readonly Product[] | null 
   const ids = new Set<string>();
   for (const item of input) {
     if (!item || typeof item !== "object") return null;
-    const { id, name, category, weight, priceKurus, stock } = item;
+    const { id, name, category, weight, priceKurus, stock, categoryLabel = null, showCategoryLabel = true } = item;
     if (!nonblank(id) || !nonblank(name) || !nonblank(weight) ||
       !["sofralik-zeytin", "salamura-zeytin", "zeytinyagi"].includes(category) ||
+      !isCategoryLabel(categoryLabel) || typeof showCategoryLabel !== "boolean" ||
       !nonnegativeInteger(priceKurus) || !nonnegativeInteger(stock) || ids.has(id)) return null;
     ids.add(id);
-    products.push({ id, name, category, weight, priceKurus, stock });
+    products.push({ id, name, category, categoryLabel: categoryLabel?.trim() || null, showCategoryLabel, weight, priceKurus, stock });
   }
   return products;
 }

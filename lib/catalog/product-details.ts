@@ -1,5 +1,6 @@
 // Müşteri onayı bekler.
 import type { Product } from "@/types/catalog";
+import { getCategoryLabel } from "@/lib/catalog/category-label";
 
 const drafts: Readonly<Record<string, { description: string; packaging: string }>> = {
   "sample-green-olive-10kg": {
@@ -28,19 +29,16 @@ const drafts: Readonly<Record<string, { description: string; packaging: string }
   },
 };
 
-const categories: Record<Product["category"], string> = {
-  "sofralik-zeytin": "Sofralık zeytin", "salamura-zeytin": "Salamura zeytin", zeytinyagi: "Zeytinyağı",
-};
-
 export function getProductDetails(product: Product): {
   description: string; information: readonly { label: string; value: string }[];
 } | undefined {
   const draft = Object.hasOwn(drafts, product.id) ? drafts[product.id] : undefined;
   if (!draft) return undefined;
+  const categoryLabel = getCategoryLabel(product);
   return { description: draft.description, information: [
     { label: "Net miktar", value: product.weight },
     { label: "Ambalaj", value: draft.packaging },
-    { label: "Kategori", value: categories[product.category] },
+    ...(categoryLabel ? [{ label: "Kategori", value: categoryLabel }] : []),
     { label: "Üretim yeri", value: "Ellek, Düziçi / Osmaniye" },
     { label: "Dolum", value: "Afina Zeytin tesisi" },
     { label: "Kargo", value: "2–4 iş günü" },

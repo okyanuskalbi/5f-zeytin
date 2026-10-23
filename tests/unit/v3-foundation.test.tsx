@@ -1,10 +1,12 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { readFileSync, statSync } from "node:fs";
-import { expect, it } from "vitest";
+import { expect, it, vi } from "vitest";
 import Home from "@/app/page";
 import { Footer } from "@/components/site/Footer";
 import { Products } from "@/components/landing/Products";
 import { TrustStrip } from "@/components/landing/TrustStrip";
+
+vi.mock("server-only", () => ({}));
 
 it("renders the new contentful sections in order with one footer preview note", async () => {
   const doc = document.implementation.createHTMLDocument();

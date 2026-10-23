@@ -1,12 +1,14 @@
 import { readFileSync } from "node:fs";
 import { renderToStaticMarkup } from "react-dom/server";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { afterEach, expect, it } from "vitest";
+import { afterEach, expect, it, vi } from "vitest";
 import { WholesaleFaq } from "@/components/landing/WholesaleFaq";
 import Home from "@/app/page";
 import { Footer } from "@/components/site/Footer";
 import { verifiedFaqs } from "@/components/landing/Faq";
 import { siteContact } from "@/lib/site/contact";
+
+vi.mock("server-only", () => ({}));
 
 afterEach(() => { cleanup(); Object.assign(siteContact, { phone: "", whatsapp: "", email: "" }); });
 

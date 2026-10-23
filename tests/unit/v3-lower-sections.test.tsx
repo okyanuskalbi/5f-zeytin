@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { afterEach, expect, it } from "vitest";
+import { afterEach, expect, it, vi } from "vitest";
 import Home from "@/app/page";
 import { Faq, verifiedFaqs } from "@/components/landing/Faq";
 import { Story } from "@/components/landing/Story";
@@ -11,6 +11,8 @@ import { WholesaleContact } from "@/components/landing/WholesaleContact";
 import { Footer } from "@/components/site/Footer";
 import { siteContact } from "@/lib/site/contact";
 import manifest from "@/public/images/v3/manifest.json";
+
+vi.mock("server-only", () => ({}));
 
 afterEach(cleanup);
 

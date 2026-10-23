@@ -3,6 +3,8 @@ export type Product = Readonly<{
   id: string;
   name: string;
   category: "sofralik-zeytin" | "salamura-zeytin" | "zeytinyagi";
+  categoryLabel?: string | null;
+  showCategoryLabel?: boolean;
   weight: string;
   priceKurus: number;
   stock: number;

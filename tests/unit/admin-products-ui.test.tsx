@@ -1,9 +1,10 @@
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { ProductManager } from "@/components/admin/ProductManager";
+import { ProductForm } from "@/components/admin/ProductForm";
 import ProductsPage from "@/app/admin/urunler/page";
 import { requireAdmin } from "@/lib/auth/admin";
-import { adminProduct } from "../fixtures/admin-products";
+import { adminProduct, productInput } from "../fixtures/admin-products";
 
 vi.mock("server-only", () => ({}));
 vi.mock("@/lib/auth/admin", () => ({ requireAdmin: vi.fn() }));
@@ -16,6 +17,50 @@ beforeEach(() => {
   vi.stubGlobal("fetch", fetchMock);
 });
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.clearAllMocks(); });
+
+it("edits a category label and keeps exactly one visibility choice selected", async () => {
+  const onSave = vi.fn().mockResolvedValue(undefined);
+  render(<ProductForm product={{ ...adminProduct, categoryLabel: "Kahvaltılık", showCategoryLabel: false }}
+    options={[]} activeCount={0} busy={false} onSave={onSave} onCancel={vi.fn()} />);
+  const label = screen.getByLabelText("Kategori etiketi");
+  expect((label as HTMLInputElement).value).toBe("Kahvaltılık");
+  expect(label.getAttribute("maxlength")).toBe("40");
+  const visibility = within(screen.getByRole("radiogroup", { name: "Etiketi göster" }));
+  expect(visibility.getByRole("radio", { name: "Gizle" }).getAttribute("aria-checked")).toBe("true");
+  fireEvent.click(visibility.getByRole("radio", { name: "Göster" }));
+  fireEvent.click(visibility.getByRole("radio", { name: "Göster" }));
+  expect(visibility.getByRole("radio", { name: "Göster" }).getAttribute("aria-checked")).toBe("true");
+  fireEvent.change(label, { target: { value: "  Yeni etiket  " } });
+  fireEvent.click(screen.getByRole("button", { name: "Kaydet" }));
+  await waitFor(() => expect(onSave).toHaveBeenCalledWith({ ...productInput,
+    categoryLabel: "Yeni etiket", showCategoryLabel: true }));
+});
+
+it("submits a blank label as the visible category default for a new product", async () => {
+  render(<ProductManager />); await screen.findByText("Yayında değil");
+  fireEvent.click(screen.getByRole("button", { name: "Test zeytin düzenle" }));
+  expect((screen.getByLabelText("Kategori etiketi") as HTMLInputElement).value).toBe("");
+  expect(screen.getByRole("radio", { name: "Göster" }).getAttribute("aria-checked")).toBe("true");
+  fireEvent.click(screen.getByRole("button", { name: "Kaydet" }));
+  await waitFor(() => expect(fetchMock.mock.calls.some(([, init]) => init?.method === "PATCH")).toBe(true));
+  const call = fetchMock.mock.calls.find(([, init]) => init?.method === "PATCH")!;
+  expect(JSON.parse(String(call[1]?.body))).toMatchObject({ categoryLabel: null, showCategoryLabel: true });
+});
+
+it.each(["a".repeat(41), "<b>Zeytin</b>"])("does not save an invalid category label (%s)", async categoryLabel => {
+  const onSave = vi.fn();
+  render(<ProductForm product={adminProduct} options={[]} activeCount={0} busy={false} onSave={onSave} onCancel={vi.fn()} />);
+  fireEvent.change(screen.getByLabelText("Kategori etiketi"), { target: { value: categoryLabel } });
+  fireEvent.submit(screen.getByRole("button", { name: "Kaydet" }).closest("form")!);
+  expect(screen.getByRole("alert")).toBeTruthy();
+  expect(onSave).not.toHaveBeenCalled();
+});
+
+it("disables category controls while saving", () => {
+  render(<ProductForm product={adminProduct} options={[]} activeCount={0} busy onSave={vi.fn()} onCancel={vi.fn()} />);
+  expect(screen.getAllByRole("radio").every(item => item.hasAttribute("disabled"))).toBe(true);
+  expect(screen.getByLabelText("Kategori etiketi").matches(":disabled")).toBe(true);
+});
 
 it("reauthorizes the server page before rendering any product UI", async () => {
   await ProductsPage(); expect(requireAdmin).toHaveBeenCalledOnce();

@@ -138,6 +138,7 @@ describe("admin assignments and anonymous catalog with memory-only PostgreSQL", 
     vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", undefined);
     expect(await readCatalog()).toEqual({ source: "database", data: [{
       id: "published", name: "Test zeytin", category: "sofralik-zeytin", weight: "1 kg", priceKurus: 12500, stock: 0,
+      categoryLabel: null, showCategoryLabel: true,
     }] });
     expect((await db.query("select count(*)::int as count from public.products")).rows).toEqual([{ count: 2 }]);
   });

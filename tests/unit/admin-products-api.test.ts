@@ -28,6 +28,21 @@ beforeEach(() => {
 afterEach(() => { vi.clearAllMocks(); vi.unstubAllEnvs(); vi.unstubAllGlobals(); });
 
 describe("strict admin product input", () => {
+  it("normalizes category text and accepts a 40 character plain label or a blank default", () => {
+    expect(parseProductInput({ ...productInput, categoryLabel: "  Kahvaltılık  ", showCategoryLabel: false }))
+      .toEqual({ ...productInput, categoryLabel: "Kahvaltılık", showCategoryLabel: false });
+    for (const categoryLabel of ["", "   ", null]) {
+      expect(parseProductInput({ ...productInput, categoryLabel, showCategoryLabel: true }))
+        .toEqual({ ...productInput, categoryLabel: null, showCategoryLabel: true });
+    }
+    expect(parseProductInput({ ...productInput, categoryLabel: "a".repeat(40), showCategoryLabel: true })).not.toBeNull();
+  });
+  it.each(["a".repeat(41), "<b>Zeytin</b>", "<script>alert(1)</script>", 1, [], {}])("rejects invalid category text (%s)", categoryLabel => {
+    expect(parseProductInput({ ...productInput, categoryLabel, showCategoryLabel: true })).toBeNull();
+  });
+  it.each([null, "false", 0])("rejects non-boolean category visibility (%s)", showCategoryLabel => {
+    expect(parseProductInput({ ...productInput, categoryLabel: null, showCategoryLabel })).toBeNull();
+  });
   it("accepts only explicit catalog values, including zero and max integer", () => {
     expect(parseProductInput(productInput)).toEqual(productInput);
     expect(parseProductInput({ ...productInput, stock: 0, priceKurus: 2147483647 })).not.toBeNull();
@@ -41,6 +56,17 @@ describe("strict admin product input", () => {
 });
 
 describe("admin products endpoint", () => {
+  it("reads and writes category settings through the authorized endpoint", async () => {
+    fetchMock.mockImplementation(async (_url, init) => init?.method === "HEAD"
+      ? new Response(null, { headers: { "content-range": "*/0" } })
+      : Response.json([{ ...productRow, category_label: "Kahvaltılık", show_category_label: false }], { headers: { "content-range": "0-0/1" } }));
+    expect((await (await GET(request("GET"))).json()).data[0]).toMatchObject({ categoryLabel: "Kahvaltılık", showCategoryLabel: false });
+    expect(new URL(String(fetchMock.mock.calls[0][0])).searchParams.get("select")).toContain("category_label,show_category_label");
+    fetchMock.mockResolvedValue(Response.json("created-id"));
+    expect((await POST(request("POST", { ...productInput, categoryLabel: "Kahvaltılık", showCategoryLabel: false }))).status).toBe(201);
+    expect(JSON.parse(String(fetchMock.mock.calls.at(-1)?.[1]?.body)).p_product)
+      .toMatchObject({ categoryLabel: "Kahvaltılık", showCategoryLabel: false });
+  });
   it.each([401, 403, 503])("never reads or writes without authorization (%i)", async status => {
     vi.mocked(requireAdmin).mockRejectedValue(new AuthCoreError(status, "forbidden"));
     vi.mocked(requireAdminMutation).mockRejectedValue(new AuthCoreError(status, "forbidden"));

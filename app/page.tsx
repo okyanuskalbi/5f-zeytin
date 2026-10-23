@@ -9,14 +9,16 @@ import { WholesaleFaq } from "@/components/landing/WholesaleFaq";
 import { MobileBuyBar } from "@/components/landing/MobileBuyBar";
 import { BusinessJsonLd } from "@/components/site/BusinessJsonLd";
 import { ProductDetailProvider } from "@/components/catalog/ProductDetailProvider";
-import { getProductFamilies } from "@/lib/catalog/static-products";
+import { readProductFamilies } from "@/lib/catalog/read";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
 export default async function Home(): Promise<JSX.Element> {
-  const families = await getProductFamilies();
+  const families = await readProductFamilies();
   return <ProductDetailProvider products={families.flatMap(family => family.variants)}><main>
     <BusinessJsonLd />
     <Hero products={families.find(family => family.id === "dogal-kirma")?.variants} />

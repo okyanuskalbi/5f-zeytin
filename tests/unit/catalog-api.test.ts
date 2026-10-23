@@ -5,6 +5,8 @@ import { readCatalog } from "@/lib/catalog/read";
 import { getProducts } from "@/lib/catalog/static-products";
 import * as staticCatalog from "@/lib/catalog/static-products";
 import { parseCatalogProducts } from "@/lib/contracts/catalog";
+import Home from "@/app/page";
+import { getProductFamilies } from "@/lib/catalog/static-products";
 
 vi.mock("server-only", () => ({}));
 
@@ -13,10 +15,12 @@ const fixtureKey = "sb_publishable_task135_test_only";
 const product = {
   id: "fixture-green-1kg", name: "Test zeytin", category: "sofralik-zeytin",
   weight: "1 kg", priceKurus: 12500, stock: 3,
+  categoryLabel: null, showCategoryLabel: true,
 };
 const row = {
   id: product.id, name: product.name, category: product.category, weight: product.weight,
   price_kurus: product.priceKurus, stock: product.stock, currency: "TRY", is_active: true,
+  category_label: null, show_category_label: true,
 };
 
 beforeEach(() => {
@@ -34,6 +38,18 @@ afterEach(() => {
 });
 
 describe("public catalog contract", () => {
+  it("preserves category settings in its public projection", () => {
+    expect(parseCatalogProducts([{ ...product, categoryLabel: "Kahvaltılık", showCategoryLabel: false }]))
+      .toEqual([{ ...product, categoryLabel: "Kahvaltılık", showCategoryLabel: false }]);
+  });
+  it("keeps old static records visible by default and rejects malformed category settings", () => {
+    const legacy = { id: "static", name: "Test", category: "zeytinyagi", weight: "1 L", priceKurus: 1, stock: 0 };
+    expect(parseCatalogProducts([legacy])).toEqual([{ ...legacy, categoryLabel: null, showCategoryLabel: true }]);
+    for (const categoryLabel of ["a".repeat(41), "<b>Zeytin</b>", 1, [], {}]) {
+      expect(parseCatalogProducts([{ ...product, categoryLabel }])).toBeNull();
+    }
+    expect(parseCatalogProducts([{ ...product, showCategoryLabel: "false" }])).toBeNull();
+  });
   it("projects only public product fields without changing integer kuruş", () => {
     expect(parseCatalogProducts([{ ...product, service_key: fixtureKey, active_slot: 1 }]))
       .toEqual([product]);
@@ -64,6 +80,21 @@ describe("public catalog contract", () => {
 });
 
 describe("server-only catalog read and products GET", () => {
+  it("reads both category columns and carries them into the public API", async () => {
+    fetchMock.mockResolvedValue(Response.json([{ ...row, category_label: "Kahvaltılık", show_category_label: false }]));
+    expect((await (await GET()).json()).data[0]).toMatchObject({ categoryLabel: "Kahvaltılık", showCategoryLabel: false });
+    expect(new URL(String(fetchMock.mock.calls[0][0])).searchParams.get("select")).toContain("category_label,show_category_label");
+  });
+  it("applies only matching database category settings to the landing's approved static products", async () => {
+    const families = await getProductFamilies();
+    const original = families.flatMap(family => family.variants);
+    fetchMock.mockResolvedValue(Response.json([{ ...row, id: original[0].id, category_label: "Kahvaltılık", show_category_label: false }]));
+    const home = await Home();
+    expect(home.props.products).toEqual(original.map((item, index) => index === 0
+      ? { ...item, categoryLabel: "Kahvaltılık", showCategoryLabel: false } : item));
+    fetchMock.mockResolvedValue(Response.json([]));
+    expect((await Home()).props.products).toEqual(original);
+  });
   it("reads published products in slot order with a server-enforced six-product limit", async () => {
     const response = await GET();
     expect(response.status).toBe(200);
@@ -72,7 +103,7 @@ describe("server-only catalog read and products GET", () => {
     const query = new URL(String(url));
     expect(query.origin).toBe("http://127.0.0.1:54321");
     expect(query.pathname).toBe("/rest/v1/products");
-    expect(query.searchParams.get("select")).toBe("id,name,category,weight,price_kurus,currency,stock,is_active");
+    expect(query.searchParams.get("select")).toBe("id,name,category,category_label,show_category_label,weight,price_kurus,currency,stock,is_active");
     expect(query.searchParams.get("is_active")).toBe("eq.true");
     expect(query.searchParams.get("order")).toBe("active_slot.asc");
     expect(query.searchParams.get("limit")).toBe("6");

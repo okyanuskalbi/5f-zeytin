@@ -1,6 +1,7 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import { beforeAll, describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 import Home from "@/app/page";
+vi.mock("server-only", () => ({}));
 import { Footer } from "@/components/site/Footer";
 import { verifiedFaqs } from "@/components/landing/Faq";
 // @ts-expect-error The gate is a standalone Node ESM script.

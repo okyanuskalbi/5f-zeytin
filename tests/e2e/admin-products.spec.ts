@@ -54,6 +54,19 @@ for (const reducedMotion of ["no-preference", "reduce"] as const) {
       await expect(page.getByLabel("Ürün adı", { exact: true })).toHaveValue("");
       await page.getByLabel("Ürün adı", { exact: true }).fill("Yeni test ürün");
       await page.getByLabel("Kategori", { exact: true }).selectOption("sofralik-zeytin");
+      const categoryLabel = page.getByLabel("Kategori etiketi", { exact: true });
+      await expect(categoryLabel).toHaveValue("");
+      const visibility = page.getByRole("radiogroup", { name: "Etiketi göster" });
+      await expect(visibility.getByRole("radio", { name: "Göster" })).toBeChecked();
+      await categoryLabel.fill("Kahvaltılık zeytin");
+      await visibility.getByRole("radio", { name: "Gizle" }).click();
+      await expect(visibility.getByRole("radio", { name: "Gizle" })).toBeChecked();
+      for (const choice of await visibility.getByRole("radio").all()) {
+        const bounds = await choice.boundingBox();
+        expect(bounds?.width).toBeGreaterThanOrEqual(44);
+        expect(bounds?.height).toBeGreaterThanOrEqual(44);
+      }
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       await page.getByLabel("Ambalaj / ağırlık").fill("1 kg");
       await page.getByLabel("Fiyat (TL)").fill("12,34");
       await page.getByLabel("Test yağ", { exact: true }).check();
@@ -64,6 +77,17 @@ for (const reducedMotion of ["no-preference", "reduce"] as const) {
       await page.getByRole("button", { name: "Kaydet", exact: true }).click();
       await expect(page.getByRole("status")).toContainText("Ürün kaydedildi");
       expect(records.at(-1)?.priceKurus).toBe(1234); expect(records.at(-1)?.upsellIds).toEqual(["fixture-oil"]);
+      expect(records.at(-1)).toMatchObject({ categoryLabel: "Kahvaltılık zeytin", showCategoryLabel: false });
+      await page.getByRole("button", { name: "Yeni test ürün düzenle", exact: true }).click();
+      await expect(categoryLabel).toHaveValue("Kahvaltılık zeytin");
+      await expect(visibility.getByRole("radio", { name: "Gizle" })).toBeChecked();
+      await categoryLabel.fill("");
+      await visibility.getByRole("radio", { name: "Göster" }).focus();
+      await page.keyboard.press("Space");
+      await expect(visibility.getByRole("radio", { name: "Göster" })).toBeChecked();
+      await page.getByRole("button", { name: "Kaydet", exact: true }).click();
+      await expect(page.getByRole("button", { name: "Yeni test ürün düzenle", exact: true })).toBeEnabled();
+      expect(records.at(-1)).toMatchObject({ categoryLabel: null, showCategoryLabel: true });
       await page.getByRole("button", { name: "Test zeytin düzenle", exact: true }).click();
       await page.getByLabel("Stok", { exact: true }).fill("0");
       await page.getByRole("button", { name: "Kaydet", exact: true }).click();
