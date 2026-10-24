@@ -1,41 +1,37 @@
-> ONAY VERİLDİ (kullanıcı, 22 Eki 2026) — 1. aşama auth düzeltmesi
+> ONAY VERİLDİ (kullanıcı, 24 Eki 2026): "eksikleri düzenle". Cihaz testinde bulunan eksikler.
+> Not: Bu dosyanın önceki hâlindeki "yeni anahtar biçimi" teşhisi yanlıştı. Asıl neden Vercel'de NEXT_PUBLIC_* değişkenlerinin "sensitive" tipte olmasıydı (CI'da boş çekiliyordu). Claude bunu 22 Eki'de düzeltti. Görev aşağıdaki gerçek eksiklerle yeniden yazıldı.
 
-# Task 136: Yeni Supabase anahtar biçimini (sb_publishable_ / sb_secret_) kabul et; admin sayfası 500 vermesin
+# Task 136: Şifre kuralı 10, admin yapılandırma 503, güvenlik başlıkları, kararsız test
 
 ## Tür
-backend
-
-## Amaç
-Claude canlıda (`191e14b` sonrası) test etti:
-- `/admin` ve `/admin/urunler` → **500**.
-- `POST /api/auth/register` (Origin'siz) → **503**.
-- `/`, `/giris`, `/kayit`, `/hesabim`, `/sepet` → 200, katalog statik yedekten geliyor.
-
-**Kök neden:** `lib/auth/config.ts` (≈ satır 16) publishable anahtarı yalnız **eski JWT biçiminde** kabul ediyor (3 parça, payload `role: "anon"`). Vercel'deki `NEXT_PUBLIC_SUPABASE_ANON_KEY` Supabase'in **yeni biçimi** (`sb_publishable_…`, JWT değil). `getAuthConfig` "Auth configuration unavailable" fırlatıyor; admin layout (`app/admin/layout.tsx:12-16`) bunu yeniden fırlatıp 500 veriyor; auth route'ları 503 dönüyor.
+fullstack (yerel)
 
 ## Kullanılacak araçlar
-- `tdd-workflow`, `security-review`, `backend-patterns`.
+`tdd-workflow`, `security-review`, `backend-patterns`; UI kısmı için `ui-ux-pro-max`, `better-layout`. Coder Notu'na skill tablosu ekle.
 
 ## İstenen
-1. **Publishable anahtar doğrulaması** (`lib/auth/config.ts` ve aynı mantığı kullanan her yer):
-   - Kabul: `sb_publishable_` önekli anahtar (yeni biçim) **veya** eski JWT ve payload `role === "anon"`.
-   - Red: `sb_secret_` önekli anahtar ve payload `role === "service_role"` JWT (gizli anahtarın yanlışlıkla public değişkene konmasını engelleme kuralı korunur).
-   - Boş/kısa/boşluk içeren değer reddedilir.
-2. **Service role / secret anahtar** (sunucu, `lib/supabase/server.ts`): `sb_secret_` önekli anahtar **veya** eski `service_role` JWT kabul edilir. `sb_publishable_` reddedilir (sunucuda yanlış anahtar kullanımını yakala).
-3. **Admin sayfası hata vermesin:** `app/admin/layout.tsx` yapılandırma ya da Supabase erişim hatasında 500 yerine kontrollü sonuç verir: oturum yoksa `/giris?next=/admin` yönlendirmesi; yapılandırma/DB hatasında 503 durumlu sade bir "Yönetim paneli şu an kullanılamıyor" sayfası (hata ayrıntısı/anahtar sızdırmadan). Yetkisiz oturum → 404 ya da `/` (mevcut kararı koru).
-4. Auth API route'ları: Origin'siz/uyuşmayan istek **403** (`csrf_rejected`); yapılandırma eksikse 503. (Sıra: önce origin kontrolü, sonra yapılandırma.)
+1. **Kayıt şifre kuralı = canlı Supabase ayarı.** Canlıda: en az 10 karakter, en az bir **ASCII** küçük harf (a-z), bir ASCII büyük harf (A-Z) ve bir rakam (Supabase `password_required_characters` yalnız ASCII sınıflarını sayar; "Ş", "Ç" büyük harf sayılmaz).
+   - `lib/auth/adapter.ts:28,35-36` ve kayıt formundaki ipucu/güç göstergesi bu kurala geçer. Mesaj: "Şifre en az 10 karakter olmalı; en az bir büyük harf (A-Z), bir küçük harf (a-z) ve bir rakam içermeli." Üst sınır 128 kalır.
+   - `supabase/config.toml` `minimum_password_length = 10`, `password_requirements = "lower_upper_letters_digits"`.
+   - Supabase'in kendi şifre hatası (weak_password vb.) gelirse kullanıcıya aynı Türkçe mesaj gösterilir, ham İngilizce hata gösterilmez.
+2. **Admin yapılandırma hatası 503.** Supabase/env yapılandırması eksik veya geçersizse `/admin` ve `/api/admin/*` 500 yerine 503 ve sade bir Türkçe sayfa/JSON döner ("Yönetim paneli şu an yapılandırılıyor."). Gizli değer veya ham hata sızmaz.
+3. **Güvenlik başlıkları** (`next.config.ts` `headers()`), tüm yollar:
+   - `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `X-Frame-Options: DENY`, `Permissions-Policy: camera=(), microphone=(), geolocation=()`.
+   - `Content-Security-Policy`: önce **Report-Only** olarak ekle (`default-src 'self'`; Supabase URL'si connect-src'ye; PayTR iframe/form alanları için ileride gereken kaynakları yorumla not et; Next inline script/style ihtiyacını nonce ya da gerekli en dar izinle karşıla). Site hiçbir sayfada kırılmamalı.
+4. **Yapışkan sepet çubuğu** (telefonda alttaki "Ara toplam / Sepet" çubuğu) `/giris`, `/kayit`, `/hesabim`, `/odeme`, `/kvkk`, `/iade`, `/mesafeli-satis` sayfalarında gösterilmez; ana sayfa ve `/sepet` davranışı aynı kalır.
+5. **Kararsız test:** `tests/unit/account-ui.test.tsx:86` (çıkış 429 sonrası odak) ara sıra düşüyor. Zamanlamaya bağlılığı gider (fake timers/`findBy`/`waitFor`), 20 ardışık koşuda yeşil kalmalı.
+6. **Belge:** `docs/yayin/vercel-env.md`: production'da `NEXT_PUBLIC_*` değişkenleri "sensitive" değil "encrypted" tipte olmalı; sensitive olursa `vercel pull` boş getirir ve istemciye boş gömülür. Sunucu-yalnız sırlar sensitive kalabilir.
 
 ## Kabul kriterleri
-- [ ] Unit: `sb_publishable_…` kabul, eski anon JWT kabul, `sb_secret_…` ve service_role JWT public tarafta red.
-- [ ] Unit: sunucu tarafında `sb_secret_…` kabul, `sb_publishable_…` red.
-- [ ] Unit: admin layout, config hatasında 503 sayfası; oturumsuz istekte `/giris?next=/admin` yönlendirmesi; 500 yok.
-- [ ] Unit: register/login route'u Origin'siz istekte 403.
-- [ ] `npm test`, lint, typecheck, build yeşil; 135 testleri korunur.
-- [ ] Canlı doğrulama Claude'da (`/admin` → yönlendirme, register Origin'siz → 403).
+- [ ] 9 karakterlik ya da yalnız "Ş" büyük harfli şifre istemcide ve sunucuda reddedilir; 10 karakter + A-Z + a-z + rakam kabul edilir.
+- [ ] Yapılandırma eksikken `/admin` 503 (test).
+- [ ] `curl -I` ile 5 başlık görünür; CSP Report-Only; ana sayfa, sepet, kayıt, admin konsolda CSP kaynaklı kırılma yok (headless WebKit + Chromium).
+- [ ] Yapışkan çubuk listelenen sayfalarda yok, ana sayfada var (390 px).
+- [ ] `account-ui` testi 20 koşu yeşil; `npm test`, lint, typecheck, build yeşil.
 
 ## Yapılmaması gerekenler
-- `.env*` okuma/yazma; anahtar değerlerini loglama.
-- Canlı Supabase'e bağlanma/migration.
-- `docs/` değiştirme (yalnız Coder Notu/Durum).
+- Canlı Supabase/Vercel ayarına dokunma; `.env*` okuma/yazma.
+- Ürün metinleri, fiyatlar, tasarım değişikliği (madde 4 hariç).
+- `docs/tasks` içinde yalnız Coder Notu/Durum (`docs/yayin/vercel-env.md` bu görevin çıktısıdır).
 
-## Durum: BEKLİYOR
+## Coder Notu
