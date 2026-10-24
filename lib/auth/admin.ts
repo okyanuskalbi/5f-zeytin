@@ -1,6 +1,7 @@
 import "server-only";
 import { createSupabaseServiceClient } from "@/lib/supabase/server";
 import { AuthCoreError, assertRequestOrigin, authFailure, createAuthServerClient } from "./server";
+import { assertAdminConfiguration } from "./admin-config";
 
 type AdminUser = { id: string; email: string };
 const unavailable = () => new AuthCoreError(503, "admin_unavailable", 5);
@@ -11,6 +12,7 @@ const unavailable = () => new AuthCoreError(503, "admin_unavailable", 5);
  * Actions use readOnly:false so refreshed cookies can be persisted.
  */
 export async function requireAdmin(options: { readOnly?: boolean } = {}): Promise<AdminUser> {
+  assertAdminConfiguration();
   const user = await (async () => {
     try {
       const client = await createAuthServerClient({ readOnly: options.readOnly ?? true });
@@ -63,6 +65,7 @@ export async function requireAdminMutation(request: Request): Promise<AdminUser>
   if (!["POST", "PUT", "PATCH", "DELETE"].includes(request.method)) {
     throw new AuthCoreError(405, "method_not_allowed");
   }
+  assertAdminConfiguration();
   assertRequestOrigin(request);
   return requireAdmin({ readOnly: false });
 }

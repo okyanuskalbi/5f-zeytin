@@ -6,7 +6,7 @@ export type RegisterResponse = { data: { status: "confirmation_required"; messag
   | { error: { code: string; message: string; fields?: RegisterErrors } };
 
 export const registrationConfirmation = "İsteğiniz alındı. Kayıt uygunsa e-posta adresinize bir doğrulama bağlantısı gönderilir. Bağlantıyı kaydı başlattığınız tarayıcıda açın. Zaten hesabınız varsa giriş yapabilirsiniz.";
-export const registrationPasswordError = "Şifre güvenlik koşullarını karşılamıyor. Farklı bir şifre deneyin.";
+export { registrationPasswordError } from "@/lib/auth/adapter";
 const fieldNames = ["name", "email", "password", "privacy", "consent", "marketing"] as const;
 
 /** Shared validation; the server always parses unknown input independently. */

@@ -82,8 +82,13 @@ it.each([401, 429, 503, 200, "network"] as const)("keeps the profile visible aft
   else fetchMock.mockResolvedValueOnce(Response.json({ error: { message: "private-provider-secret" } }, { status }));
   render(<AccountSummary profile={profile} />);
   fireEvent.click(screen.getByRole("button", { name: "Çıkış yap" }));
-  await waitFor(() => expect(screen.getByRole("alert").textContent).not.toBe(""));
-  expect(document.activeElement).toBe(screen.getByRole("alert"));
+  const alert = await screen.findByRole("alert");
+  // Feedback render and its focus effect can complete in separate turns.
+  await waitFor(() => {
+    expect(alert.textContent).not.toBe("");
+    expect(document.activeElement).toBe(alert);
+    expect((screen.getByRole("button", { name: "Çıkış yap" }) as HTMLButtonElement).disabled).toBe(false);
+  });
   expect(screen.getByRole("main").textContent).toContain(profile.email);
   expect(document.body.textContent).not.toContain("private-provider-secret");
   expect(mocks.replace).not.toHaveBeenCalled();

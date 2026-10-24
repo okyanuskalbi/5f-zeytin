@@ -25,15 +25,19 @@ export function emailError(email: string): string | undefined {
 }
 
 export function passwordStrength(password: string): number {
-  return Number(password.length >= 8) + Number(/[a-zçğıöşü]/.test(password) && /[A-ZÇĞİÖŞÜ]/.test(password)) + Number(/\d/.test(password)) + Number(/[^\p{L}\p{N}]/u.test(password));
+  const required = Number(password.length >= 10 && password.length <= 128) + Number(/[a-z]/.test(password) && /[A-Z]/.test(password)) + Number(/[0-9]/.test(password));
+  // A symbol is optional; it cannot make a non-compliant password look valid.
+  return required + Number(required === 3 && /[^\p{L}\p{N}]/u.test(password));
 }
+
+export const registrationPasswordError = "Şifre en az 10 karakter olmalı; en az bir büyük harf (A-Z), bir küçük harf (a-z) ve bir rakam içermeli.";
 
 export function validateCredentials(input: EmailCredentials, registration = false): Record<string, string> {
   const fields: Record<string, string> = {};
   const email = emailError(input.email);
   if (email) fields.email = email;
-  if (!input.password || input.password.length > 128 || (registration && (input.password.length < 8 || !/[a-zçğıöşü]/.test(input.password) || !/[A-ZÇĞİÖŞÜ]/.test(input.password) || !/\d/.test(input.password)))) {
-    fields.password = registration ? "Şifre 8–128 karakter, büyük/küçük harf ve rakam içermeli." : "Şifrenizi girin (en fazla 128 karakter).";
+  if (!input.password || input.password.length > 128 || (registration && (input.password.length < 10 || !/[a-z]/.test(input.password) || !/[A-Z]/.test(input.password) || !/[0-9]/.test(input.password)))) {
+    fields.password = registration ? registrationPasswordError : "Şifrenizi girin (en fazla 128 karakter).";
   }
   return fields;
 }

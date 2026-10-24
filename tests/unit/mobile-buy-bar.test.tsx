@@ -173,9 +173,9 @@ it("omits the reserve and bar when the product is missing", () => {
   expect(document.querySelector("[data-mobile-buy-bar]")).toBeNull();
 });
 
-it("retains the mini cart on inner pages", () => {
-  state.pathname = "/hesabim";
+it("retains the mini cart on eligible inner pages", () => {
+  state.pathname = "/siparis-takip";
   localStorage.setItem(CART_STORAGE_KEY, JSON.stringify([{ productId: product.id, quantity: 1 }]));
-  render(<CartProvider products={[product]}><span>Hesabım</span></CartProvider>);
+  render(<CartProvider products={[product]}><span>Sipariş takibi</span></CartProvider>);
   expect(screen.getByRole("complementary", { name: "Mini sepet" })).toBeDefined();
 });

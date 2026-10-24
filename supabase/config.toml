@@ -22,6 +22,7 @@ enabled = false
 site_url = "https://afinazeytin.com"
 additional_redirect_urls = ["https://afinazeytin.com/**", "http://localhost:3004/**"]
 minimum_password_length = 10
+password_requirements = "lower_upper_letters_digits"
 
 [auth.email]
 enable_confirmations = true

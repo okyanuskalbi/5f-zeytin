@@ -17,6 +17,7 @@ const publicKey = "sb_publishable_task041_test_only";
 const input = { name: "  Deniz Test  ", email: "  Deniz@example.test  ", password: "Sofrada123!", privacy: true, consent: true, marketing: false };
 const user = { id: "fixture-member", email: "deniz@example.test", identities: [], app_metadata: {}, user_metadata: {}, aud: "authenticated", created_at: "2026-10-22T00:00:00Z" };
 const fetchMock = vi.fn<typeof fetch>();
+const passwordRule = "Şifre en az 10 karakter olmalı; en az bir büyük harf (A-Z), bir küçük harf (a-z) ve bir rakam içermeli.";
 function request(body: unknown = input, headers: HeadersInit = {}, raw = false) {
   return new NextRequest(`${origin}/api/auth/register`, { method: "POST", headers: { origin, "content-type": "application/json", ...headers }, body: raw ? String(body) : JSON.stringify(body) });
 }
@@ -50,6 +51,18 @@ describe("registration validation", () => {
 });
 
 describe("registration API with real Supabase SDK and mocked transport", () => {
+  it.each(["Abcdefg12", "Şabcdefg12", "Çabcdefg12", "Şçğıöşü123", "ABCDEF1234", "abcdef1234", "Abcdefghij", "Aa1" + "x".repeat(126)])("rejects passwords outside the ASCII 10–128 rule before provider access (%#)", async password => {
+    expect(validateRegisterRequest({ ...input, password })).toMatchObject({ ok: false, fields: { password: passwordRule } });
+    const response = await POST(request({ ...input, password }));
+    expect(response.status).toBe(400);
+    expect(await response.json()).toMatchObject({ error: { fields: { password: passwordRule } } });
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+  it.each(["Abcdefgh12", "Aa1" + "x".repeat(125)])("accepts the 10 and 128 character boundaries (%#)", async password => {
+    expect(validateRegisterRequest({ ...input, password }).ok).toBe(true);
+    expect((await POST(request({ ...input, password }))).status).toBe(202);
+    expect(fetchMock).toHaveBeenCalledOnce();
+  });
   it("builds the confirmation callback from SITE_ORIGIN behind an internal request host", async () => {
     vi.stubEnv("NODE_ENV", "production");
     const response = await POST(new NextRequest("http://internal-proxy:3000/api/auth/register", {
@@ -171,7 +184,7 @@ describe("registration API with real Supabase SDK and mocked transport", () => {
     fetchMock.mockImplementationOnce(async () => Response.json({ code: "weak_password", msg: "private password detail", weak_password: { reasons: ["pwned"] } }, { status: 422 }));
     const response = await POST(request());
     expect(response.status).toBe(422);
-    expect(await response.json()).toMatchObject({ error: { code: "validation_error", fields: { password: expect.any(String) } } });
+    expect(await response.json()).toMatchObject({ error: { code: "validation_error", fields: { password: passwordRule } } });
   });
   it.each([429, 500, 503, 401, 422])("handles upstream %s without leaking payloads or cookies", async status => {
     fetchMock.mockImplementationOnce(async () => Response.json({ msg: "private-secret", code: "private-code" }, { status }));

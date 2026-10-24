@@ -342,7 +342,7 @@ describe("mutation CSRF and logout", () => {
 
 describe("SSR proxy refresh transport", () => {
   it("is scoped to membership/auth consumers and never changes the landing", async () => {
-    expect(config.matcher).toEqual(["/hesabim/:path*", "/admin/:path*", "/sepet", "/odeme", "/giris"]);
+    expect(config.matcher).toEqual(["/hesabim/:path*", "/admin/:path*", "/api/admin/:path*", "/sepet", "/odeme", "/giris"]);
     const response = await proxy(new NextRequest(`${origin}/hesabim`));
     expect(response.status).toBe(200);
     expect(fetchMock).not.toHaveBeenCalled();

@@ -15,7 +15,7 @@ vi.mock("next/headers", () => ({ cookies: async () => ({
 
 const origin = "https://shop.example.test";
 const publicKey = "sb_publishable_task135_test_only";
-const serviceKey = "task135-test-only-service-key";
+const serviceKey = "sb_secret_task135_test_only_service_key";
 const ownerId = "00000000-0000-4000-8000-000000000135";
 const ownerEmail = "admin@afina.com.tr";
 const fetchMock = vi.fn<typeof fetch>();

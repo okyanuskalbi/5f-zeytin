@@ -65,7 +65,7 @@ test("mini cart: first add, responsive/footer/route visibility and focus return;
   await expect(card.getByRole("status")).toContainText("sepete eklendi");
   await expect(drawer(page)).toHaveCount(0);
   if (page.viewportSize()!.width >= 768) { await expect(mini(page)).toHaveCount(0); return; }
-  await page.goto("/kvkk");
+  await page.goto("/siparis-takip");
   await expect(mini(page)).toBeVisible();
   await expect(mini(page)).toContainText("1 adet");
   await expect(mini(page)).toContainText("220,00");
@@ -104,7 +104,7 @@ test("Pixel 7: full screen drawer, touch controls and mini cart safe area", asyn
     const page = await context.newPage();
     await page.emulateMedia({ reducedMotion: "reduce" });
     await load(page);
-    await page.goto("/kvkk");
+    await page.goto("/siparis-takip");
     await expect(mini(page)).toBeVisible();
     await mini(page).getByRole("button", { name: "Sepet", exact: true }).tap();
     await expect(drawer(page)).toHaveCSS("transform", "none");

@@ -4,6 +4,7 @@ import Page, { metadata } from "@/app/kayit/page";
 import { registrationConfirmation } from "@/lib/contracts/register";
 
 const fetchMock = vi.fn<typeof fetch>();
+const passwordRule = "Şifre en az 10 karakter olmalı; en az bir büyük harf (A-Z), bir küçük harf (a-z) ve bir rakam içermeli.";
 const form = () => screen.getByRole("form", { name: "E-posta ile üyelik" });
 const field = (label: string) => screen.getByLabelText(label, { exact: true }) as HTMLInputElement;
 function fill(marketing = false) {
@@ -32,6 +33,28 @@ it("renders a production registration form with separate unchecked consents, rec
   expect(screen.getByRole("link", { name: "Giriş yap" }).getAttribute("href")).toBe("/giris");
   expect(screen.getByRole("link", { name: "Üye olmadan alışverişe devam et" }).getAttribute("href")).toBe("/sepet");
   expect(field("Şifre").autocomplete).toBe("new-password");
+  expect(field("Şifre").minLength).toBe(10);
+  expect(field("Şifre").maxLength).toBe(128);
+  expect(document.getElementById("register-password-hint")?.textContent).toBe(passwordRule);
+});
+it.each(["Abcdefg12", "Şabcdefg12", "Çabcdefg12", "Şçğıöşü123"])("rejects invalid registration passwords locally (%#)", async password => {
+  render(<Page />);
+  fill();
+  fireEvent.change(field("Şifre"), { target: { value: password } });
+  expect(Number(screen.getByRole("meter", { name: "Şifre gücü" }).getAttribute("value"))).toBeLessThan(3);
+  fireEvent.submit(form());
+  await waitFor(() => expect(document.activeElement).toBe(field("Şifre")));
+  expect(document.getElementById("register-password-error")?.textContent).toBe(passwordRule);
+  expect(fetchMock).not.toHaveBeenCalled();
+});
+it("accepts a ten-character ASCII password without demanding a symbol", async () => {
+  render(<Page />);
+  fill();
+  fireEvent.change(field("Şifre"), { target: { value: "Abcdefgh12" } });
+  expect(screen.getByRole("meter", { name: "Şifre gücü" }).getAttribute("value")).toBe("3");
+  fireEvent.submit(form());
+  await waitFor(() => expect(screen.getByRole("status").textContent).toBe(registrationConfirmation));
+  expect(JSON.parse(String(fetchMock.mock.calls[0][1]?.body)).password).toBe("Abcdefgh12");
 });
 it("validates locally, focuses the invalid field and associates errors without sending", async () => {
   render(<Page />);
@@ -84,7 +107,10 @@ it.each(["network", "malformed", "rate", "password"])("handles %s errors and kee
   await waitFor(() => expect(screen.getByRole("alert").textContent).not.toBe(""));
   expect(document.body.textContent).not.toContain("private-secret");
   expect((screen.getByRole("button", { name: "Üyelik oluştur" }) as HTMLButtonElement).disabled).toBe(false);
-  if (mode === "password") await waitFor(() => expect(document.activeElement).toBe(field("Şifre")));
+  if (mode === "password") {
+    await waitFor(() => expect(document.activeElement).toBe(field("Şifre")));
+    expect(document.getElementById("register-password-error")?.textContent).toBe(passwordRule);
+  }
 });
 it("supports the keyboard-operable password visibility control", () => {
   render(<Page />);

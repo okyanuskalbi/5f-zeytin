@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { registrationConfirmation } from "../../lib/contracts/register";
+import { registrationConfirmation, registrationPasswordError } from "../../lib/contracts/register";
 
 // Every POST is intercepted before navigation: no real account/email is created.
 async function mockRegistration(page: Page, status = 202, body: unknown = { data: { status: "confirmation_required" } }) {
@@ -98,4 +98,23 @@ test("provider rate limit is announced accessibly", async ({ page }) => {
   await page.getByRole("button", { name: "Üyelik oluştur" }).click();
   await expect(page.getByRole("main").getByRole("alert")).toContainText("Çok fazla deneme");
   await expect(page.getByRole("main").getByRole("alert")).toBeFocused();
+});
+
+test("ASCII password policy rejects nine characters and Turkish-only uppercase locally", async ({ page }) => {
+  const requests = await mockRegistration(page);
+  await page.goto("/kayit");
+  await fill(page);
+  const password = page.getByLabel("Şifre", { exact: true });
+  await expect(password).toHaveAttribute("minlength", "10");
+  for (const value of ["Abcdefg12", "Şabcdefg12", "Çabcdefg12"]) {
+    await password.fill(value);
+    await page.getByRole("button", { name: "Üyelik oluştur" }).click();
+    await expect(page.locator("#register-password-error")).toHaveText(registrationPasswordError);
+    await expect(password).toBeFocused();
+    expect(requests).toHaveLength(0);
+  }
+  await password.fill("Abcdefgh12");
+  await page.getByRole("button", { name: "Üyelik oluştur" }).click();
+  await expect(page.getByRole("main").getByRole("status")).toHaveText(registrationConfirmation);
+  expect(requests[0].password).toBe("Abcdefgh12");
 });

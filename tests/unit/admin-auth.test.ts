@@ -22,7 +22,7 @@ const origin = "https://shop.example.test";
 const supabaseUrl = "https://fixture.supabase.co";
 const memberId = "00000000-0000-4000-8000-000000000062";
 const otherId = "00000000-0000-4000-8000-000000000063";
-const serviceKey = "task062-test-only-service-key";
+const serviceKey = "sb_secret_task062_test_only_service_key";
 const publicKey = "sb_publishable_task062_test_only";
 const member = { id: memberId, email: "member@example.test", aud: "authenticated", role: "authenticated",
   email_confirmed_at: "2026-10-22T00:00:00Z", is_anonymous: false,
@@ -59,7 +59,6 @@ afterEach(() => { vi.restoreAllMocks(); vi.unstubAllEnvs(); vi.unstubAllGlobals(
 
 describe("server-verified admin authorization", () => {
   it("rejects a missing session with 401 without accessing the privileged client", async () => {
-    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", undefined);
     await expect(requireAdmin()).rejects.toMatchObject({ status: 401, code: "unauthenticated" });
     expect(fetchMock).not.toHaveBeenCalled();
   });

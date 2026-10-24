@@ -31,7 +31,8 @@ export function authFailure(error: unknown, invalidStatus = 401): AuthCoreError 
 
 export function authErrorResponse(error: unknown) {
   const failure = authFailure(error);
-  const message = failure.status === 429 ? "Çok fazla deneme. Daha sonra yeniden deneyin."
+  const message = failure.code === "admin_configuration_unavailable" ? "Yönetim paneli şu an yapılandırılıyor."
+    : failure.status === 429 ? "Çok fazla deneme. Daha sonra yeniden deneyin."
     : failure.status === 503 ? "Üyelik hizmeti şu anda kullanılamıyor."
       : "İşlem doğrulanamadı. Yeniden deneyin.";
   return NextResponse.json({ error: { code: failure.code, message } }, {

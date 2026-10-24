@@ -25,7 +25,8 @@ export function MiniCart(): JSX.Element | null {
     observer.observe(footer);
     return () => observer.disconnect();
   }, []);
-  if (!cart || !mobile || !cart.state.hydrated || cart.products === null || pathname === "/" || /^\/(sepet|odeme)(\/|-|$)/.test(pathname ?? "")) return null;
+  if (!cart || !mobile || !cart.state.hydrated || cart.products === null || pathname === "/" ||
+    /^\/(sepet|odeme)(\/|-|$)/.test(pathname ?? "") || /^\/(giris|kayit|hesabim|kvkk|iade|mesafeli-satis)(\/|$)/.test(pathname ?? "")) return null;
   const count = cart.state.items.reduce((sum, item) => sum + item.quantity, 0);
   if (!count) return null;
   const known = cart.state.items.every(item => cart.products!.some(product => product.id === item.productId && product.stock >= item.quantity));
