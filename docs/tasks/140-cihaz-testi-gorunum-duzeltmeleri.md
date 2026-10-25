@@ -40,3 +40,23 @@ frontend (yalnız CSS + iki küçük JSX düzenlemesi, yerel)
 - `docs/tasks` içinde yalnız Coder Notu/Durum.
 
 ## Coder Notu
+
+| Skill | Uygulama |
+| --- | --- |
+| `ui-ux-pro-max` | Yerel UX araması: etkileşimli kontrollerin odak görünürlüğü; shadcn düğme varyantları. |
+| `frontend-design` | Mevcut marka ve bileşen görünümü korunarak dört yerel düzeltme. |
+| `better-layout` | Tam genişlikte şifre alanı, içeride sağa hizalı göz düğmesi ve dar ekran Menü boşluğu. |
+| `shadcn-ui` | Resmi `npx shadcn@latest docs button` ve Button belgesi incelendi; mevcut özelleştirilmiş `ghost` varyantı kullanıldı. |
+| `ai-tool-prompts` | Son kontrolde kapsam, hizalama, erişilebilir adlar ve mevcut tasarım sistemi denetlendi. |
+| `tdd-workflow` | Kaynak kabul denetiminde RED → GREEN; mevcut davranış testleri değiştirilmeden çalıştırıldı. |
+
+- Uygulama değişiklikleri yalnız `app/globals.css`, `components/site/Navbar.module.css`, `components/account/Membership.module.css`, `components/account/SignIn.tsx` ve `components/account/Register.tsx` içindedir. Diğer tek değişiklik bu dosyanın Coder Notu/Durum bölümüdür.
+- `CheckoutSignIn.tsx` ve diğer bileşenler tarandı; aynı `.password` kalıbı yalnız giriş/kayıt formlarında bulunuyor. Ek JSX değişikliği gerekmedi.
+- `node --input-type=module` ile PostCSS üzerinden dört CSS/JSX kabul grubu denetlendi: değişiklik öncesi **4 FAIL (RED)**, sonrası **4 PASS (GREEN)**. Etkileşimli öğelerin global odak kuralı ve masaüstü `.72`/blur değeri korundu. Hero pill seçicileri `.control:hover/active` kurallarından daha özgüldür. Bu denetim kaynak değerlerini doğrular; tarayıcı görünümünü doğrulamaz.
+- `npm test -- tests/unit/login-ui.test.tsx tests/unit/register-ui.test.tsx tests/unit/navbar-scroll.test.tsx --maxWorkers=2`: başlangıçta **37/37 PASS**.
+- Düzeltmelerden sonra `npm test -- --maxWorkers=2`: **66 dosya, 1046/1046 PASS**. Şifre göster/gizle, `aria-pressed`, odak ve gönderim davranışı testleri zayıflatılmadı; test dosyaları değiştirilmedi.
+- `npm run lint`, `npm run typecheck`, `npm run build`, `npm run check:assets` ve `git diff --check`: **PASS**. Varlık kontrolü: 18 kayıt, 112 v3 çıktı ve 20 hero katmanı doğrulandı.
+- Tarayıcı ekran testi **Claude doğrulayacak**: iOS Safari programatik odak çerçevesi, hero üzerindeki Menü/Sepet pill okunurluğu (≤359 px dahil), giriş/kayıt şifre alanının gerçek yerleşimi ve kaydırma sonrası mobil başlığın örtücülüğü. AGENTS.md gereği Playwright, Lighthouse, inspect ve simülatör çalıştırılmadı.
+- Uygulanamayan kod adımı yok. Task 140 açıkça 21st MCP gerektirmediğinden kullanılmadı; yeni bileşen veya bağımlılık eklenmedi.
+
+## Durum: TAMAMLANDI

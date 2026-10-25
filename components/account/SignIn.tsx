@@ -78,7 +78,7 @@ export function SignIn({ next = "/hesabim", signedIn = false, unavailable = fals
               <label htmlFor="auth-password">Şifre</label>
               <div className={styles.password}>
                 <Input id="auth-password" name="password" type={showPassword ? "text" : "password"} autoComplete="current-password" value={password} onChange={event => setPassword(event.target.value)} maxLength={128} required aria-invalid={!!errors.password} aria-describedby={errors.password ? "auth-password-error" : undefined} />
-                <Button variant="outline" size="icon" aria-label={showPassword ? "Şifreyi gizle" : "Şifreyi göster"} aria-pressed={showPassword} onClick={() => setShowPassword(!showPassword)}>{showPassword ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}</Button>
+                <Button variant="ghost" size="icon" aria-label={showPassword ? "Şifreyi gizle" : "Şifreyi göster"} aria-pressed={showPassword} onClick={() => setShowPassword(!showPassword)}>{showPassword ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}</Button>
               </div>
               {errors.password && <small id="auth-password-error" className={styles.error}>{errors.password}</small>}
             </div> : <p className={styles.muted}>Şifrenizi kullanmadan, e-posta adresinize gönderilecek bağlantıyla giriş yapabilirsiniz.</p>}

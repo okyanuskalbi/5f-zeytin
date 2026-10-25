@@ -172,6 +172,11 @@
     outline-offset: 4px;
   }
 
+  [tabindex="-1"]:focus,
+  [tabindex="-1"]:focus-visible {
+    outline: none;
+  }
+
   ::selection {
     background: var(--altin);
     color: var(--ink);

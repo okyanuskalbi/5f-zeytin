@@ -16,14 +16,16 @@
 .cart { display: inline-flex; gap: 0; min-height: 44px; border: 1px solid rgba(255,255,255,.25); border-radius: 999px; padding: 8px 14px; font-weight: 600; }
 .badge { display: inline-flex; align-items: center; justify-content: center; min-width: 22px; padding-inline: 4px; margin-inline: 3px; border-radius: 999px; background: var(--altin); color: var(--ink); font-size: 12px; font-weight: 800; line-height: 1.4; font-variant-numeric: tabular-nums; }
 .trigger { display: none; }
+.bar[data-tone="hero"] .cart, .bar[data-tone="hero"] .trigger { background: rgba(14,21,16,.42); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
 .menu { inset: 0; width: 100%; max-width: none; height: 100dvh; max-height: none; display: flex; flex-direction: column; justify-content: space-between; gap: 32px; padding: max(64px, env(safe-area-inset-top, 0px)) max(24px, env(safe-area-inset-right, 0px)) max(32px, env(safe-area-inset-bottom, 0px)) max(24px, env(safe-area-inset-left, 0px)); background: var(--ink); color: var(--sut); }
 .menuLinks { display: grid; align-content: center; gap: 8px; flex: 1; }
 .menuLinks .link { font-family: var(--font-display, var(--font-display-fallback)); font-size: var(--step-head); font-weight: 500; line-height: 1.2; }
 @media (max-width: 900px) {
   .bar { padding-block: 14px; padding-top: calc(14px + env(safe-area-inset-top, 0px)); padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
+  .bar[data-tone="solid"] { background: rgba(14,21,16,.94); }
   .desktop, .account { display: none; }
   .logo { width: 120px; height: 32px; }
-  .trigger { display: inline-flex; }
+  .trigger { display: inline-flex; min-height: 44px; border: 1px solid rgba(255,255,255,.25); border-radius: 999px; padding: 8px 14px; font-weight: 600; }
 }
-@media (max-width: 359px) { .row { gap: 8px; } .actions { gap: 0; } .cart { padding-inline: 8px; } }
+@media (max-width: 359px) { .row { gap: 8px; } .actions { gap: 0; } .cart, .trigger { padding-inline: 8px; } }
 @media (prefers-reduced-motion: reduce) { .bar { transition: none; } .badge { transform: none !important; } }
