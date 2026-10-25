@@ -59,4 +59,16 @@ frontend (yalnız CSS + iki küçük JSX düzenlemesi, yerel)
 - Tarayıcı ekran testi **Claude doğrulayacak**: iOS Safari programatik odak çerçevesi, hero üzerindeki Menü/Sepet pill okunurluğu (≤359 px dahil), giriş/kayıt şifre alanının gerçek yerleşimi ve kaydırma sonrası mobil başlığın örtücülüğü. AGENTS.md gereği Playwright, Lighthouse, inspect ve simülatör çalıştırılmadı.
 - Uygulanamayan kod adımı yok. Task 140 açıkça 21st MCP gerektirmediğinden kullanılmadı; yeni bileşen veya bağımlılık eklenmedi.
 
-## Durum: TAMAMLANDI
+## Düzeltme 140-1
+
+Canlı ekran testi (WebKit iPhone 15 Pro + SE, 26 Eki): madde 1, 2, 4 tamam; Menü/Sepet pill'leri okunuyor, mobil başlık örtücü, toptan odak çerçevesi yok (`outline: none` ölçüldü).
+
+**Madde 3 eksik:** göz düğmesi input'un içinde ama `ghost` varyantı `bg-background` (rgb(14,21,16)) ve `size-11`/`min-h-11` (44×44) getiriyor. Input da 44 px yüksek; düğme input'un sağ ~50 px'lik kısmının dolgusunu ve üst/alt kenarlığını tamamen örtüyor. Görünüm: kutu yine "kısa", sağda kopuk bir kenarlık parçası.
+
+İstenen (yalnız `components/account/Membership.module.css` `.password button`):
+- `background: transparent;` ve hover/active/focus'ta da şeffaf kalsın (Tailwind `hover:bg-accent`'i ezecek özgüllükle, ör. `.password button, .password button:hover, .password button:active { background: transparent; }`).
+- `min-height: 0; min-width: 0; width: 36px; height: 36px; right: 4px;` (input kenarlığının içinde kalsın; 44 px input'ta üst/alt 4 px boşluk).
+- Simge rengi `var(--sut)` / mevcut foreground; focus-visible çerçevesi korunur.
+- JSX'e dokunma. Testler yeşil kalsın.
+
+## Durum: BEKLİYOR (Düzeltme 140-1)
