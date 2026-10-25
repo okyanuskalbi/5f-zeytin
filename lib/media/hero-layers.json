@@ -1,0 +1,254 @@
+{
+  "version": 1,
+  "encoder": {
+    "sharp": "0.35.5",
+    "vips": "8.18.7"
+  },
+  "assets": {
+    "arka-masaustu": {
+      "source": "zeytin-hero-katman/taslak/arka-masaustu.png",
+      "sourceSha256": "ed3ab4113dd1f9adb2c0f37efd849ed9ebc9b2cfe38f0ba81c67bb1c4bcac98a",
+      "approval": "AFINA-KAYNAK/zeytin-hero-katman/ONAY.md",
+      "alt": "",
+      "sourceWidth": 2048,
+      "sourceHeight": 1152,
+      "crop": null,
+      "outputs": [
+        {
+          "file": "/images/hero-katman/arka-masaustu-w1200.avif",
+          "format": "avif",
+          "width": 1200,
+          "height": 675,
+          "bytes": 87621,
+          "sha256": "7946e260f229e3e3b3849dde9df22bbd095fb33142dac51b9184e572fe7e4931",
+          "quality": 52
+        },
+        {
+          "file": "/images/hero-katman/arka-masaustu-w1200.webp",
+          "format": "webp",
+          "width": 1200,
+          "height": 675,
+          "bytes": 169242,
+          "sha256": "012d5432b940a49a88da654d516472b081343e71c45ef295eba209176f7a6397",
+          "quality": 78
+        },
+        {
+          "file": "/images/hero-katman/arka-masaustu-w2048.avif",
+          "format": "avif",
+          "width": 2048,
+          "height": 1152,
+          "bytes": 115287,
+          "sha256": "232f2eb09d4f72ec79edfae798a43c012bf7aa324db34758b2ea47764046be6c",
+          "quality": 40
+        },
+        {
+          "file": "/images/hero-katman/arka-masaustu-w2048.webp",
+          "format": "webp",
+          "width": 2048,
+          "height": 1152,
+          "bytes": 331454,
+          "sha256": "65aec8fd2707287e72933bc020ff039d0ee0ef6cdb40588455dbcc97a3823745",
+          "quality": 78
+        }
+      ]
+    },
+    "arka-mobil": {
+      "source": "zeytin-hero-katman/taslak/arka-mobil.png",
+      "sourceSha256": "42b070930ccbd126fda6979deb77f11857ed69f3bdc1dcbe59b2b69dc8950d57",
+      "approval": "AFINA-KAYNAK/zeytin-hero-katman/ONAY.md",
+      "alt": "",
+      "sourceWidth": 1152,
+      "sourceHeight": 2048,
+      "crop": null,
+      "outputs": [
+        {
+          "file": "/images/hero-katman/arka-mobil-w640.avif",
+          "format": "avif",
+          "width": 640,
+          "height": 1138,
+          "bytes": 57251,
+          "sha256": "b1cc7b491c501265e3a2b4b403f9404cea8e24d1b9461fec1c20458f44076ac6",
+          "quality": 52
+        },
+        {
+          "file": "/images/hero-katman/arka-mobil-w640.webp",
+          "format": "webp",
+          "width": 640,
+          "height": 1138,
+          "bytes": 110000,
+          "sha256": "f2f0b8dadc4047bf0f70507f0e0ad5aa189524f82a401c22e9bb822dc87611ba",
+          "quality": 78
+        },
+        {
+          "file": "/images/hero-katman/arka-mobil-w1152.avif",
+          "format": "avif",
+          "width": 1152,
+          "height": 2048,
+          "bytes": 79520,
+          "sha256": "edee432a6ca6b50afaa77cef05f3c6fdec2262785b4895ed13766803cc77ecae",
+          "quality": 40
+        },
+        {
+          "file": "/images/hero-katman/arka-mobil-w1152.webp",
+          "format": "webp",
+          "width": 1152,
+          "height": 2048,
+          "bytes": 217924,
+          "sha256": "3c71391d32bb1281a1583987a9064d86a95ac67c01247ec56d3449101a4ad109",
+          "quality": 78
+        }
+      ]
+    },
+    "on-dal": {
+      "source": "zeytin-hero-katman/taslak/on-dal-temiz.png",
+      "sourceSha256": "a6776396753f9287bf1e78b76c79a17e5fc7b89e4a33673c8208a381ef3b0c45",
+      "approval": "AFINA-KAYNAK/zeytin-hero-katman/ONAY.md",
+      "alt": "",
+      "sourceWidth": 2048,
+      "sourceHeight": 1152,
+      "crop": null,
+      "outputs": [
+        {
+          "file": "/images/hero-katman/on-dal-w1200.avif",
+          "format": "avif",
+          "width": 1200,
+          "height": 675,
+          "bytes": 25891,
+          "sha256": "a4f79b7168cab7f75eb3229e13c306b1cd51fd752b437034b5ee5cd2d965ad54",
+          "quality": 52
+        },
+        {
+          "file": "/images/hero-katman/on-dal-w1200.webp",
+          "format": "webp",
+          "width": 1200,
+          "height": 675,
+          "bytes": 56648,
+          "sha256": "4f4c5c819743b4ae32d5b4e81525d6b47af983ecc23e34821134bcbbb27a380a",
+          "quality": 78
+        },
+        {
+          "file": "/images/hero-katman/on-dal-w2048.avif",
+          "format": "avif",
+          "width": 2048,
+          "height": 1152,
+          "bytes": 32040,
+          "sha256": "00688c215efe7556d8d6f1ec92683768c38463de89c6bb5f07d58131b7a625a1",
+          "quality": 40
+        },
+        {
+          "file": "/images/hero-katman/on-dal-w2048.webp",
+          "format": "webp",
+          "width": 2048,
+          "height": 1152,
+          "bytes": 104664,
+          "sha256": "649e43c462db96846cde1e72f985b5764f509220113f728b205062c81871c25e",
+          "quality": 74
+        }
+      ]
+    },
+    "teneke": {
+      "source": "zeytin-v3-gorseller/urun-01-kirma-10kg.png",
+      "sourceSha256": "1c6b812821fc55c0c9e89c83bbb3268ce4904da62d85d0bb3b6febf2acf594b9",
+      "approval": "AFINA-KAYNAK/zeytin-v3-gorseller/ONAY.md",
+      "alt": "",
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "crop": {
+        "left": 42,
+        "top": 142,
+        "width": 946,
+        "height": 1258
+      },
+      "outputs": [
+        {
+          "file": "/images/hero-katman/teneke-w360.avif",
+          "format": "avif",
+          "width": 360,
+          "height": 479,
+          "bytes": 20966,
+          "sha256": "8dc8665783baef137731a10c8cce5e70cbc6f259d098cf89119372ea57c3e326",
+          "quality": 52
+        },
+        {
+          "file": "/images/hero-katman/teneke-w360.webp",
+          "format": "webp",
+          "width": 360,
+          "height": 479,
+          "bytes": 42992,
+          "sha256": "399197103b3528af7bc94106b76c5e41dd747a4264cbde6794e66e9d8a7e2fb0",
+          "quality": 78
+        },
+        {
+          "file": "/images/hero-katman/teneke-w720.avif",
+          "format": "avif",
+          "width": 720,
+          "height": 957,
+          "bytes": 41935,
+          "sha256": "1101ff6a985faf418267c3a4800fa1ccf95d2a2bbe216fb3a10ddb88e8a7a54a",
+          "quality": 44
+        },
+        {
+          "file": "/images/hero-katman/teneke-w720.webp",
+          "format": "webp",
+          "width": 720,
+          "height": 957,
+          "bytes": 113620,
+          "sha256": "0fe765f122197d3596952f8f682a6aa12440810e04163e41303413234c9fa0c5",
+          "quality": 78
+        }
+      ]
+    },
+    "kavanoz": {
+      "source": "zeytin-v3-gorseller/urun-02-kirma-1kg.png",
+      "sourceSha256": "e8902cdfd272a961bb66149e265557e6d997732130315255838d3b6c4b2d3400",
+      "approval": "AFINA-KAYNAK/zeytin-v3-gorseller/ONAY.md",
+      "alt": "",
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "crop": {
+        "left": 167,
+        "top": 82,
+        "width": 691,
+        "height": 1393
+      },
+      "outputs": [
+        {
+          "file": "/images/hero-katman/kavanoz-w360.avif",
+          "format": "avif",
+          "width": 360,
+          "height": 726,
+          "bytes": 31588,
+          "sha256": "453e7d7276eae014fbd2c51b70adf3c602c1019f896ae37ac04872c1566e56f6",
+          "quality": 52
+        },
+        {
+          "file": "/images/hero-katman/kavanoz-w360.webp",
+          "format": "webp",
+          "width": 360,
+          "height": 726,
+          "bytes": 61230,
+          "sha256": "e6b763fdd4e37469416c61d3ab034ee93bbca18ed1fb6ce2d23370e908da02c4",
+          "quality": 78
+        },
+        {
+          "file": "/images/hero-katman/kavanoz-w720.avif",
+          "format": "avif",
+          "width": 720,
+          "height": 1451,
+          "bytes": 44608,
+          "sha256": "ed0cb26653608ea3b14c7e5cdcac441fc441cf36d6c12b66280440918e35ea40",
+          "quality": 36
+        },
+        {
+          "file": "/images/hero-katman/kavanoz-w720.webp",
+          "format": "webp",
+          "width": 720,
+          "height": 1451,
+          "bytes": 133136,
+          "sha256": "d57b6963c49fc1774382dab7fa91fb24c8b1a17c945fedb65155ffd3fffb6c38",
+          "quality": 66
+        }
+      ]
+    }
+  }
+}

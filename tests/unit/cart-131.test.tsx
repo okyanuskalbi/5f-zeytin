@@ -98,7 +98,7 @@ describe("Task 131 cart presentation", () => {
     const store = createCartStore({ products });
     render(<CartSummary store={store} products={null} onRefresh={() => {}} checkoutHref="/odeme" />);
     expect(localStorage.getItem(CART_STORAGE_KEY)).toBe(saved);
-    expect(screen.getByLabelText("Toplam (tahmini)").textContent).toBe("—");
+    expect(screen.getByLabelText("Toplam (tahmini)").textContent).toBe("Fiyat yakında");
     expect(screen.queryByRole("region", { name: "Mobil ödeme" })).toBeNull();
   });
 

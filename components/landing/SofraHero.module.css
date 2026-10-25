@@ -1,10 +1,25 @@
-.hero { position: relative; isolation: isolate; display: flex; align-items: flex-end; height: 100svh; min-height: 640px; overflow: hidden; background: var(--ink); color: var(--sut); }
-.photo { position: absolute; z-index: -2; inset: 0; transform-origin: center; transform: scale(1.02); }
+.hero { --hero-motion-factor: 1; --table-contact: 76%; position: relative; isolation: isolate; display: flex; align-items: flex-end; height: 100svh; min-height: 640px; overflow: hidden; background: var(--ink); color: var(--sut); }
+.photo { position: absolute; z-index: 0; inset: 0; transform-origin: 76% var(--table-contact); pointer-events: none; }
 .photo picture, .photo img { display: block; width: 100%; height: 100%; }
 .photo img { object-fit: cover; object-position: center; }
-.curtain { position: absolute; z-index: -1; inset: 0; background: linear-gradient(180deg, rgba(10,16,11,.55) 0%, rgba(10,16,11,.05) 35%, rgba(10,16,11,.15) 60%, rgba(10,16,11,.85) 100%); }
-.layout { position: relative; width: min(1280px, calc(100% - 64px)); margin: 0 auto 56px; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 40px; align-items: end; }
+.curtain { position: absolute; z-index: 1; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(10,16,11,.55) 0%, rgba(10,16,11,.05) 35%, rgba(10,16,11,.15) 60%, rgba(10,16,11,.85) 100%); }
+/* Static layout lets the decorative planes use the hero as their containing block. */
+.layout { width: min(1280px, calc(100% - 64px)); margin: 0 auto 56px; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 40px; align-items: end; }
 .copy, .details { min-width: 0; }
+.copy { position: relative; z-index: 2; }
+.products, .branch { position: absolute; pointer-events: none; opacity: 0; }
+.products[data-ready="true"], .branch[data-ready="true"] { opacity: 1; transition: opacity var(--hero-reveal-duration) ease-out; }
+/* The 44svh group travels 14% of its own height, close to the plate's 6%.
+   A shared contact pivot keeps the table and both shadows together through scale. */
+.products { z-index: 3; right: max(7%, calc((100% - 1280px) / 2)); bottom: calc(100% - var(--table-contact)); height: 44svh; width: 40svh; }
+.tin, .jar { position: absolute; bottom: 0; filter: saturate(.94) brightness(.96) sepia(.06); }
+.tin { right: 0; height: 42svh; aspect-ratio: 946 / 1258; }
+.jar { z-index: 1; left: 0; height: 28svh; aspect-ratio: 691 / 1393; }
+.products picture, .products img, .branch picture, .branch img { display: block; width: 100%; height: 100%; }
+.products img { position: relative; object-fit: contain; }
+.contactShadow { position: absolute; left: -10%; right: -10%; bottom: -2%; height: 8%; background: radial-gradient(ellipse, rgba(43,24,9,.48) 0%, rgba(43,24,9,.18) 38%, transparent 72%); }
+.branch { z-index: 4; right: 0; top: 0; width: 72%; aspect-ratio: 16 / 9; transform-origin: right top; }
+.branch img { object-fit: contain; }
 .kicker { font-size: 13px; letter-spacing: .22em; text-transform: uppercase; color: var(--altin); font-weight: 600; }
 .copy h1 { font-size: var(--step-display); max-width: 9ch; line-height: .96; margin: 16px 0 18px; letter-spacing: -.01em; text-wrap: initial; }
 .copy h1 span, .copy h1 em { display: block; white-space: nowrap; }
@@ -13,7 +28,7 @@
 .actions { display: flex; gap: 12px; margin-top: 26px; }
 .browse, .purchase { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 14px 22px; border-radius: 999px; font-size: 15px; font-weight: 700; line-height: 1.2; cursor: pointer; }
 .browse { border: 1.5px solid rgba(255,255,255,.5); color: #fff; background: transparent; }
-.card { background: rgba(247,243,234,.96); color: var(--ink); border-radius: 20px; padding: 22px 22px 20px; display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 18px; align-items: center; box-shadow: 0 30px 60px rgba(0,0,0,.45); }
+.card { position: relative; z-index: 5; background: rgba(247,243,234,.96); color: var(--ink); border-radius: 20px; padding: 22px 22px 20px; display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 18px; align-items: center; box-shadow: 0 30px 60px rgba(0,0,0,.45); }
 .productImage, .productImage picture { display: block; width: 96px; height: 118px; }
 .productImage img { display: block; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 12px 18px rgba(0,0,0,.25)); }
 .card h2 { font-size: 24px; line-height: 1.05; font-weight: 600; letter-spacing: -.01em; text-wrap: initial; }
@@ -26,29 +41,32 @@
 .size:has(:focus-visible) { outline: 2px solid var(--altin); outline-offset: 4px; }
 .buyRow { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
 .price { font-size: 30px; font-weight: 800; letter-spacing: -.02em; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.price[data-pending="true"] { font-size: 16px; white-space: nowrap; }
 /* Retain solid SSR/disabled painting on iOS; never fade the purchase control. */
 .purchase { appearance: none; opacity: 1; background: var(--zeytin); color: #fff; border: 0; }
 .purchase:disabled { opacity: 1; -webkit-text-fill-color: #fff; cursor: not-allowed; }
 .feedback { font-size: var(--step-small); line-height: 1.4; margin-top: 8px; }
 .feedback:empty { display: none; }
-.scrollHint { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); font-size: 11px; letter-spacing: .2em; color: rgba(255,255,255,.6); display: flex; flex-direction: column; align-items: center; gap: 8px; }
-.scrollHint i { display: block; width: 1px; height: 38px; transform-origin: top; background: linear-gradient(180deg, rgba(255,255,255,.6), transparent); }
 @media (hover: hover) and (pointer: fine) {
   .purchase:not(:disabled):hover { background: var(--zeytin-2); }
   .browse:hover { background: var(--sut); color: var(--ink); }
   .size:hover { border-color: var(--zeytin); }
 }
 @media (max-width: 900px) {
-  .hero { align-items: flex-start; min-height: max(640px, 100svh); }
+  .hero { --hero-motion-factor: var(--hero-mobile-factor); --table-contact: 72%; align-items: flex-start; min-height: max(640px, 100svh); }
   .layout { display: block; position: static; width: calc(100% - 36px); padding-top: 100px; margin-bottom: 0; }
   .curtain { background: linear-gradient(180deg, rgba(10,16,11,.78) 0%, rgba(10,16,11,.35) 38%, rgba(10,16,11,.1) 55%, rgba(10,16,11,.85) 100%); }
   .copy h1 { font-size: clamp(44px, 13vw, 64px); }
+  .photo { transform-origin: 50% var(--table-contact); }
+  .products { right: calc(50% - 10svh); bottom: max(28%, 238px); height: 24svh; width: 22svh; }
+  .tin { height: 24svh; }
+  .jar { height: 16svh; }
+  .branch { width: 80%; right: -12%; }
   .description, .actions { display: none; }
   .card { position: absolute; left: 18px; right: 18px; bottom: 22px; grid-template-columns: 72px minmax(0, 1fr); padding: 16px; border-radius: 16px; }
   .productImage, .productImage picture { width: 72px; height: 92px; }
   .card h2 { font-size: 19px; }
   .price { font-size: 24px; }
-  .scrollHint { display: none; }
 }
 @media (max-width: 390px) {
   .buyRow { gap: 8px; }
@@ -56,8 +74,12 @@
   .size { padding-inline: 8px; font-size: 12px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .photo, .purchase, .scrollHint i { transform: none !important; animation: none !important; }
+  .photo, .products, .branch, .copy, .purchase { transform: none !important; animation: none !important; }
+  .copy { opacity: 1 !important; }
+  .products, .branch { transition: none; }
 }
-.hero[data-reduced-motion="true"] .photo, .hero[data-reduced-motion="true"] .scrollHint i { transform: none !important; }
+.hero[data-reduced-motion="true"] :is(.photo, .products, .branch, .copy) { transform: none !important; }
+.hero[data-reduced-motion="true"] .copy { opacity: 1 !important; }
+.hero[data-reduced-motion="true"] :is(.products, .branch) { transition: none; }
 /* The later mobile bar task can reuse this visibility signal. */
 :global(html:has([data-hero-visible]) [data-mini-cart]) { visibility: hidden; pointer-events: none; }

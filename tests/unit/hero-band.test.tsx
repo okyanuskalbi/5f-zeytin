@@ -67,7 +67,7 @@ it("keeps reduced-motion imagery fixed and content visible", async () => {
 
 it("keeps both missing-size actions disabled without inventing a price", () => {
   render(<CartProvider products={[]}><HeroBand products={[]} /></CartProvider>);
-  expect(screen.getByLabelText("10 kg teneke fiyatı").textContent).toBe("—");
+  expect(screen.getByLabelText("10 kg teneke fiyatı").textContent).toBe("Fiyat yakında");
   expect(screen.getAllByRole("button").every(button => button.hasAttribute("disabled"))).toBe(true);
 });
 

@@ -53,5 +53,14 @@
     "hashes": {
       "tesis-osmaniye-plaka-bulanik.jpg": "d35378a93dcbad69c0e62d09e2481af8a82bc6298c2526ab4ee55a594728b67d"
     }
+  },
+  "heroLayers": {
+    "file": "AFINA-KAYNAK/zeytin-hero-katman/ONAY.md",
+    "date": "2026-10-25",
+    "hashes": {
+      "taslak/arka-masaustu.png": "ed3ab4113dd1f9adb2c0f37efd849ed9ebc9b2cfe38f0ba81c67bb1c4bcac98a",
+      "taslak/arka-mobil.png": "42b070930ccbd126fda6979deb77f11857ed69f3bdc1dcbe59b2b69dc8950d57",
+      "taslak/on-dal-temiz.png": "a6776396753f9287bf1e78b76c79a17e5fc7b89e4a33673c8208a381ef3b0c45"
+    }
   }
 }

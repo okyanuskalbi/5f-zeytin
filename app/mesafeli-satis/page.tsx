@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { LegalDocument } from "@/components/site/LegalDocument";
 
 export const metadata: Metadata = {
-  title: "Mesafeli Satış Sözleşmesi — Taslak | Afina Zeytin",
+  title: "Mesafeli Satış Sözleşmesi (Taslak) | Afina Zeytin",
   description: "Mesafeli Satış Sözleşmesi: onaylı metin bekleniyor.",
   robots: { index: false, follow: false },
 };

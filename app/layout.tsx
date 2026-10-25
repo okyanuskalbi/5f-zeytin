@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   other: { app: "zeytin" },
   icons: { icon: { url: "/brand/favicon.svg", type: "image/svg+xml" } },
   openGraph: {
-    images: [{ url: "/brand/og.png", width: 1200, height: 630, alt: "Afina Zeytin — Kökü toprakta. Yeri sofrada." }],
+    images: [{ url: "/brand/og.png", width: 1200, height: 630, alt: "Afina Zeytin. Kökü toprakta, yeri sofrada." }],
   },
 };
 

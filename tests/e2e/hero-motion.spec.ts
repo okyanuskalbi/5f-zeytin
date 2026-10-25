@@ -1,18 +1,72 @@
 import { expect, test } from "@playwright/test";
 
-test("v4: 18 second alternating Ken Burns switches off with reduced motion", async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: "no-preference" });
+for (const [width, height] of [[1440, 900], [390, 844]]) {
+  test(`layered hero: opening, scroll depth and reduced motion at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height });
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await page.goto("/");
+    const hero = page.locator("[data-hero-intro]");
+    const products = hero.locator('[data-layer="products"]');
+    const branch = hero.locator('[data-layer="branch"]');
+    await expect(products).toHaveAttribute("data-ready", "true");
+    await expect(branch).toHaveAttribute("data-ready", "true");
+    await expect(hero.locator("[data-scroll-hint], [data-scroll-line]")).toHaveCount(0);
+    await expect(hero).not.toContainText("KAYDIR");
+    const opening = await hero.evaluate(node => {
+      const rect = (selector: string) => node.querySelector(selector)!.getBoundingClientRect();
+      const heading = rect("h1"), tin = rect('[data-product="tin"]'), jar = rect('[data-product="jar"]');
+      const card = rect("[data-hero-card]");
+      return { heading: { top: heading.top, bottom: heading.bottom, right: heading.right },
+        tin: { top: tin.top, bottom: tin.bottom, left: tin.left }, jar: { bottom: jar.bottom }, cardTop: card.top,
+        overflow: document.documentElement.scrollWidth > innerWidth };
+    });
+    expect(opening.overflow).toBe(false);
+    expect(opening.tin.bottom).toBeCloseTo(opening.jar.bottom, 0);
+    if (width > 900) expect(opening.tin.left).toBeGreaterThan(opening.heading.right);
+    else {
+      expect(opening.tin.top).toBeGreaterThan(opening.heading.bottom);
+      expect(opening.tin.bottom).toBeLessThanOrEqual(opening.cardTop);
+    }
+    await expect(hero.locator("[data-contact-shadow]")).toHaveCount(2);
+    const initialCardTop = opening.cardTop;
+    for (const progress of [0.35, 0.75]) {
+      const scroll = Math.round(height * progress);
+      await page.evaluate(y => scrollTo(0, y), scroll);
+      await expect.poll(() => hero.locator('[data-layer="plate"]').evaluate(node => new DOMMatrix(getComputedStyle(node).transform).m42)).toBeGreaterThan(0);
+      const pose = await hero.evaluate(node => {
+        const matrix = (selector: string) => new DOMMatrix(getComputedStyle(node.querySelector(selector)!).transform);
+        return { plateY: matrix('[data-layer="plate"]').m42, productY: matrix('[data-layer="products"]').m42,
+          branchY: matrix('[data-layer="branch"]').m42, copyOpacity: Number(getComputedStyle(node.querySelector('[data-hero-copy]')!).opacity),
+          cardTop: node.querySelector('[data-hero-card]')!.getBoundingClientRect().top };
+      });
+      expect(pose.productY).toBeGreaterThan(0);
+      expect(pose.branchY).toBeLessThan(0);
+      // The common table pivot permits only a small contact drift.
+      expect(Math.abs(pose.productY - pose.plateY)).toBeLessThan(16);
+      expect(pose.cardTop + scroll).toBeCloseTo(initialCardTop, 0);
+      if (progress > 0.5) expect(pose.copyOpacity).toBeLessThan(1);
+    }
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    for (const layer of await hero.locator("[data-layer], [data-hero-copy]").all()) await expect(layer).toHaveCSS("transform", "none");
+    await expect(hero.locator("[data-hero-copy]")).toHaveCSS("opacity", "1");
+    await expect(products).toHaveCSS("opacity", "1");
+    await expect(branch).toHaveCSS("opacity", "1");
+    await page.evaluate(() => scrollTo(0, 0));
+    await expect(hero.getByRole("button", { name: "Sepete ekle", exact: true })).toBeEnabled();
+  });
+}
+
+test("layered hero: one failed cutout retains only the complete plate", async ({ page }) => {
+  await page.route("**/images/hero-katman/teneke-*", route => route.fulfill({ status: 404, body: "" }));
   await page.goto("/");
-  const photo = page.locator("[data-hero-photo]");
-  await expect.poll(() => photo.evaluate(node => node.getAnimations().some(animation => animation.playState === "running"))).toBe(true);
-  const timing = await photo.evaluate(node => node.getAnimations()[0].effect!.getTiming());
-  expect(timing.duration).toBe(18000);
-  expect(timing.direction).toBe("alternate");
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await expect(photo).toHaveCSS("transform", "none");
-  await expect(page.locator("[data-scroll-line]")).toHaveCSS("transform", "none");
-  await expect.poll(() => photo.evaluate(node => node.getAnimations().filter(animation => animation.playState === "running").length)).toBe(0);
-  await expect(page.locator("[data-hero-card]").getByRole("button", { name: "Sepete ekle", exact: true })).toBeEnabled();
+  const hero = page.locator("[data-hero-intro]");
+  await expect.poll(() => hero.locator('[data-layer="branch"] img').evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
+  for (const layer of await hero.locator('[data-layer="products"], [data-layer="branch"]').all()) {
+    await expect(layer).toHaveAttribute("data-ready", "false");
+    await expect(layer).toHaveCSS("opacity", "0");
+  }
+  await expect(hero.locator('[data-layer="plate"] img')).toBeVisible();
+  await expect(hero.getByRole("heading", { level: 1 })).toBeVisible();
 });
 
 test("v4: cart badge persists while navigation switches at 40px and reverses", async ({ page }) => {

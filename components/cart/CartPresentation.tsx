@@ -18,8 +18,8 @@ export function formatCartPrice(kurus: number): string { return `${money.format(
 /** A single current value keeps live regions and screen readers free of outgoing digits. */
 export function CartAmount({ amount, label }: { amount: number | null; label: string }): JSX.Element {
   const reduced = useReducedMotion();
-  const value = amount === null ? "—" : formatCartPrice(amount);
-  return <output aria-label={label} aria-live="off" className={styles.amount}>
+  const value = amount === null ? "Fiyat yakında" : formatCartPrice(amount);
+  return <output aria-label={label} aria-live="off" data-pending={amount === null} className={styles.amount}>
     <motion.span key={value} initial={reduced ? false : { opacity: 0.6 }} animate={{ opacity: 1 }}
       transition={{ duration: reduced ? 0 : motionTokens.duration.fast }}>{value}</motion.span>
   </output>;

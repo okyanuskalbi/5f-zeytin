@@ -1,14 +1,14 @@
 import type { JSX } from "react";
 import type { Product } from "@/types/catalog";
 import { V3Picture } from "@/components/media/V3Picture";
-import { v3Image } from "@/lib/media/v3-assets";
+import layers from "@/lib/media/hero-layers.json";
 import product from "@/lib/media/hero-card-asset.json";
 import { SofraHero } from "./SofraHero";
 
 /** Keep the art-directed LCP image and its media-matched preload in the SSR. */
 export function Hero({ products }: { products?: readonly Product[] }): JSX.Element {
-  const desktop = v3Image("hero-masaustu");
-  const mobile = v3Image("hero-mobil");
+  const desktop = layers.assets["arka-masaustu"];
+  const mobile = layers.assets["arka-mobil"];
   const cardMobile = { ...product, outputs: product.outputs.filter(output => [72, 144, 216].includes(output.width)) };
   const cardDesktop = { ...product, outputs: product.outputs.filter(output => [96, 192, 288].includes(output.width)) };
   const cardSizes = "(max-width: 900px) 72px, 96px";

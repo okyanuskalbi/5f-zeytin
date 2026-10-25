@@ -48,6 +48,7 @@
 .lineTotal > span { color: var(--gri); font-size: 12px; }
 .lineTotal .amount { color: var(--altin-2); font-weight: 600; }
 .amount { display: inline-block; font-variant-numeric: tabular-nums; }
+.amount[data-pending="true"] { font-size: 16px; white-space: nowrap; }
 .totals { display: grid; gap: 12px; min-width: 0; font-size: 14px; line-height: 1.5; }
 .totals > div { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; }
 .totals dd { margin-inline-start: auto; }

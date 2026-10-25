@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { LegalDocument } from "@/components/site/LegalDocument";
 
 export const metadata: Metadata = {
-  title: "İade ve İptal — Taslak | Afina Zeytin",
+  title: "İade ve İptal (Taslak) | Afina Zeytin",
   description: "İade ve İptal: onaylı metin bekleniyor.",
   robots: { index: false, follow: false },
 };

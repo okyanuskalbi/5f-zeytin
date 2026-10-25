@@ -38,7 +38,7 @@ export function HeroBand({ products }: { products: readonly Product[] }): JSX.El
         <motion.h2 {...reveal(1)} data-band-reveal="" id="kahraman-title">Kışlık kiler için<br />{" "}10 kg teneke.</motion.h2>
         <motion.p {...reveal(2)} data-band-reveal="" className={styles.description}>Aynı zeytin, aynı tesis. Günlük sofra için 1 kg kavanoz da var.</motion.p>
         <motion.div {...reveal(3)} data-band-reveal="" className={styles.buy}>
-          <div className={styles.price}><small>10 kg teneke</small><span aria-label="10 kg teneke fiyatı">{tin ? money.format(tin.priceKurus / 100) : "—"}</span></div>
+          <div className={styles.price}><small>10 kg teneke</small><span aria-label="10 kg teneke fiyatı">{tin ? money.format(tin.priceKurus / 100) : "Fiyat yakında"}</span></div>
           <div className={styles.actions}>
             {tin ? <AddToCart product={tin} /> : <button type="button" disabled>Ürün şu an mevcut değil</button>}
             {jar ? <AddToCart product={jar} label="1 kg kavanoz" variant="ghost" /> : <button type="button" disabled>1 kg kavanoz mevcut değil</button>}

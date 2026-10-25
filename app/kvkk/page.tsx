@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { LegalDocument } from "@/components/site/LegalDocument";
 
 export const metadata: Metadata = {
-  title: "KVKK — Taslak | Afina Zeytin",
+  title: "KVKK (Taslak) | Afina Zeytin",
   description: "KVKK: onaylı metin bekleniyor.",
   robots: { index: false, follow: false },
 };

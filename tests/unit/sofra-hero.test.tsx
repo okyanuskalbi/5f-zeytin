@@ -5,15 +5,6 @@ import { CartProvider } from "@/components/cart/CartProvider";
 import { CART_STORAGE_KEY } from "@/lib/cart/store";
 import { getProducts } from "@/lib/catalog/static-products";
 
-const animation = vi.hoisted(() => {
-  const controls = { play: vi.fn(), pause: vi.fn(), stop: vi.fn() };
-  return { controls, animate: vi.fn(() => controls) };
-});
-vi.mock("motion/react-mini", async importOriginal => {
-  const original = await importOriginal<typeof import("motion/react-mini")>();
-  const { useRef } = await import("react");
-  return { ...original, useAnimate: () => [useRef(null), animation.animate] };
-});
 vi.mock("@/components/cart/CartDrawer", () => ({ CartDrawer: ({ open }: { open: boolean }) => open ? <div role="dialog">Sepetim</div> : null }));
 vi.mock("@/components/cart/MiniCart", () => ({ MiniCart: () => null }));
 afterEach(() => { cleanup(); localStorage.clear(); vi.useRealTimers(); vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.clearAllMocks(); });
@@ -97,25 +88,10 @@ it("keeps reduced-motion content complete and scrolls without a URL fragment", (
   render(<Hero />);
   expect(screen.getByRole("heading", { level: 1 }).textContent).toBe("Düziçi'nden sofranıza.");
   expect(document.querySelector("[data-hero-intro]")?.getAttribute("data-reduced-motion")).toBe("true");
-  expect(animation.animate).not.toHaveBeenCalled();
   fireEvent.click(screen.getByRole("link", { name: "Ürünleri gör" }));
   expect(destination.scrollIntoView).toHaveBeenCalledWith({ behavior: "instant", block: "start" });
   expect(replace).toHaveBeenCalled();
   expect(window.location.hash).toBe("");
   expect(screen.getByRole("button", { name: "Ürün şu an mevcut değil" })).toBeDefined();
   destination.remove();
-});
-
-it("runs the 18-second Ken Burns loop and pauses both decorative animations in hidden tabs", () => {
-  vi.stubGlobal("matchMedia", () => ({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() }));
-  const view = render(<Hero />);
-  expect(animation.animate).toHaveBeenCalledWith("[data-hero-photo]", {
-    transform: ["scale(1.02) translateY(0%)", "scale(1.10) translateY(-2%)"],
-  }, { duration: 18, ease: "easeInOut", repeat: Infinity, repeatType: "reverse" });
-  expect(animation.animate).toHaveBeenCalledWith("[data-scroll-line]", expect.anything(), expect.objectContaining({ duration: 1.8 }));
-  vi.spyOn(document, "visibilityState", "get").mockReturnValue("hidden");
-  fireEvent(document, new Event("visibilitychange"));
-  expect(animation.controls.pause).toHaveBeenCalledTimes(2);
-  view.unmount();
-  expect(animation.controls.stop).toHaveBeenCalledTimes(2);
 });

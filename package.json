@@ -17,7 +17,7 @@
     "test:e2e": "playwright test",
     "predev": "npm run check:assets",
     "prebuild": "npm run check:assets",
-    "check:assets": "node scripts/check-assets.mjs && node scripts/check-v3-assets.mjs"
+    "check:assets": "node scripts/check-assets.mjs && node scripts/check-v3-assets.mjs && node scripts/check-hero-layers.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.7",

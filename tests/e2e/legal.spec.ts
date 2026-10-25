@@ -23,7 +23,7 @@ for (const document of documents) {
     await expect(main).toHaveCount(1);
     await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
     await expect(main.getByRole("heading", { level: 1, name: document.title, exact: true })).toBeVisible();
-    const draft = main.getByRole("region", { name: "Taslak — onay bekleniyor" });
+    const draft = main.getByRole("region", { name: "Taslak, onay bekleniyor" });
     await expect(draft).toBeVisible();
     await expect(draft).toContainText("Onaylı metin henüz eklenmedi.");
     await expect(draft).toContainText("İletişim bilgileri ve yasal metin onayı bekleniyor.");
@@ -92,7 +92,7 @@ test("missing legal document returns 404 and footer recovers to a readable draft
   const legal = page.getByRole("contentinfo").getByRole("navigation", { name: "Yasal bilgiler" });
   await legal.getByRole("link", { name: "KVKK", exact: true }).click();
   await expect(page).toHaveURL(/\/kvkk$/);
-  await expect(page.getByRole("main").getByRole("region", { name: "Taslak — onay bekleniyor" })).toBeVisible();
+  await expect(page.getByRole("main").getByRole("region", { name: "Taslak, onay bekleniyor" })).toBeVisible();
   await expectNoOverflow(page);
 });
 
@@ -107,7 +107,7 @@ test.describe("without JavaScript", () => {
       await expect(page).toHaveURL(new RegExp(`${document.path}$`));
       const main = page.getByRole("main");
       await expect(main.getByRole("heading", { level: 1, name: document.title, exact: true })).toBeVisible();
-      await expect(main.getByRole("region", { name: "Taslak — onay bekleniyor" })).toBeVisible();
+      await expect(main.getByRole("region", { name: "Taslak, onay bekleniyor" })).toBeVisible();
       await expectNoOverflow(page);
     }
     await page.getByRole("main").getByRole("link", { name: "Ana sayfaya dön" }).click();

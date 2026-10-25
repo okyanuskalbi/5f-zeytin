@@ -103,3 +103,39 @@ Yerleşim referansı (yalnız bakmak için, kullanılmaz): `zeytin-hero-katman/t
 - `docs/tasks` içinde yalnız Coder Notu/Durum.
 
 ## Coder Notu
+
+25 Ekim 2026:
+
+| Skill / araç | Uygulama |
+|---|---|
+| `scroll-craft` + `references/hero-depth.md` | Temiz plaka, gerçek alfa, ortak masa temas noktası ve ayrı mobil kompozisyon. |
+| `motion-framer` | Tek `useScroll` ilerlemesi + `useTransform`; kaydırmada React render'ı yok. |
+| `frontend-design` | Mevcut AFİNA tipografisi, içerik ve kart tasarımı korunarak fotoğraf katmanları uyarlandı. |
+| `ui-ux-pro-max` §5 | 900 px kompozisyon sınırı, taşma koruması ve katman hiyerarşisi. |
+| `better-layout` | Başlık ve kartın mevcut grid yerleşimi, ortak ürün tabanı, küçük fiyat yer tutucusu. |
+| `tdd-workflow` | Önce katman/yükleme/reduced-motion/SHA testlerinde RED, sonra GREEN. RED/ara commit oluşturulmadı. |
+| ECC `motion-foundations`, `motion-patterns`, `motion-advanced` | Hareket token'ları, transform/opacity sınırı, reduced motion ve görünürlük temizliği. |
+| 21st MCP | `Layer Parallax Hero`, demo **8477**, arandı ve kodu incelendi. Katman yapısı mevcut bileşene uyarlandı; hareket task'ın istediği scroll motion value'larıyla kuruldu. Yeni bağımlılık gerekmedi. |
+
+- `scripts/prepare-hero-layers.mjs` beş kaynağın sabit SHA kaydını ve özgün ONAY.md satırını, herhangi bir çıktı yazmadan doğrular. 20 AVIF/WebP çıktı ve `lib/media/hero-layers.json` üretildi. Ürünlerde mevcut v3 hazırlama düzenindeki alfa sınırı kırpması kullanıldı; kaynak PNG'lere yazılmadı, repoya kopyalanmadı.
+- `npm run check:assets` yeni katman denetimini de çalıştırır: onay, çıktı SHA, dosya listesi, gerçek genişlik/format/oran, alfa ve bayt bütçesi. CI özgün kaynaklar olmadan sabit onay kayıtlarını kullanabilir; bu makinede özgün ONAY.md ve PNG'ler de doğrulandı.
+- Plaka ve kartın media eşleşmeli SSR preload'ları korundu. Ürün ve dal görselleri düşük öncelikli; üçü de yüklenip decode edilince birlikte 300 ms opacity ile görünür. Yükleme/decode hatasında iki dekoratif katman da hemen gizlenir; plaka kalır. Hydration öncesi yüklenen cache görselleri de ele alındı.
+- Ken Burns ve KAYDIR kaldırıldı. Ürünlerle temas gölgeleri aynı ebeveynde hareket eder. Hero ekran dışındayken veya sekme gizliyken scroll bileşeni kaldırılır, abonelikleri temizlenir. Mobil hareket katsayısı 0.5; reduced motion CSS ve hook ile statik kalır.
+- İstenen vitrin uzun tireleri ve fiyat yer tutucuları temizlendi. Admin, ödeme önizlemesi ve kod yorumları değiştirilmedi.
+
+| Komut / kabul kanıtı | Sonuç |
+|---|---|
+| `npm test -- --maxWorkers=2` | **66 dosya, 1046/1046 test PASS.** Katman sırası/dekoratif erişim, yükleme/decode/cache/hata, SHA uyuşmazlığı, scroll sırasında render olmaması, görünürlük/reduced-motion abonelikleri, vitrin metni ve mevcut kart/sepet testleri dahil. |
+| `npm run lint` | PASS, sıfır uyarı. |
+| `npm run typecheck` | PASS. Yazılan/güncellenen e2e kaynakları da tip kontrolünden geçti. |
+| `npm run build` | PASS. `prebuild` asset kontrolleri de PASS. |
+| `npm run check:assets` | PASS. |
+| `node scripts/check-hero-layers.mjs --require-sources` | PASS, 20 çıktı; özgün onaylar ve alfa doğrulandı. |
+| AVIF toplamları | En büyük adaylar esas alınarak **plaka dahil masaüstü 233.870 bayt ≤ 350.000**, **mobil 198.103 bayt ≤ 220.000**; yalnız ek ürün+dal toplamı 118.583 bayt. |
+| `git diff --check` | PASS. |
+
+İlk tam paralel unit koşusunda yeni kontrol zincirini eski metinle karşılaştıran asset testi güncellendi. Aynı koşuda görev dışındaki mevcut `login-ui` odak beklentisi zamanlama nedeniyle bir kez başarısız oldu; auth koduna dokunulmadı. Son iki worker'lı tam koşuda tüm testler geçti.
+
+**Claude doğrulayacak:** açılış/ara/son kaydırmada üç katmanın görsel derinliği, gerçek masa temasının ve gölgelerin görünümü, ışık/renk uyumu, masaüstü ve 390 px'te başlıkla çakışmama, tarayıcıdaki LCP ve satın alma/anchor etkileşimleri, reduced-motion statik kompozisyon. `tests/e2e/hero-motion.spec.ts` bu yeni sahne için güncellendi; hukuk metni beklentileri de güncellendi. AGENTS.md gereği Playwright, Lighthouse, inspect, tarayıcı, ekran görüntüsü veya kare şeridi çalıştırılmadı; görsel ince ayar ve bu kabul kanıtları Claude'a bırakıldı. Bu tarayıcı kabulü beklemesi, AGENTS.md uyarınca tamamlanma durumunu engellemez.
+
+## Durum: TAMAMLANDI

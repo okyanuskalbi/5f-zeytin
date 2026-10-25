@@ -15,7 +15,7 @@ export function LegalDocument({ title, path, scope, children }: {
     <article className={`${styles.paper} ${styles.legal}`}>
       <h1>{title}</h1>
       <section aria-labelledby="taslak-basligi">
-        <h2 id="taslak-basligi">Taslak — onay bekleniyor</h2>
+        <h2 id="taslak-basligi">Taslak, onay bekleniyor</h2>
         <p>Onaylı metin henüz eklenmedi.</p>
         <p>Tam şirket unvanı, adresi ve vergi bilgileri aşağıda yer alır. İletişim bilgileri ve yasal metin onayı bekleniyor.</p>
       </section>
