@@ -56,10 +56,34 @@ Ayrıca ürün hareketindeki `%14` translateY kapsayıcı yüksekliğine bağlı
 
 **Claude doğrulayacak:** masaüstü/mobil renk ve etiket okunurluğu, beyaz alanların parlamaması, gölgenin masa teması ve kart boşluğunun görsel sonucu. AGENTS.md gereği Playwright, Lighthouse, inspect veya ekran görüntüsü çalıştırılmadı. BEKLİYOR nedeni tarayıcı kabulü değil, yukarıdaki koddan doğrulanan plan çelişkileridir.
 
-## Durum: BEKLİYOR
+### Düzeltme 139-1 uygulaması (25 Ekim 2026)
+
+Claude'un aşağıdaki düzeltmesi uygulandı; önceki Coder Notu'ndaki plan çelişkileri bu kararla giderildi. Masaüstü `.tin` yüksekliği `42svh → 36svh`, `.jar` yüksekliği `28svh → 24svh` oldu. Kapsayıcı `38svh × 35svh` ve hareket tokenları korundu; kapsayıcıya bağlı `5.32svh` hareket mesafesi düzeltmede kabul edildi.
+
+| Skill / araç | 139-1 uygulaması |
+|---|---|
+| `scroll-craft` + `references/hero-depth.md` | Ortak temas tabanı, ürün oranları ve ayrı mobil kompozisyon korundu. |
+| `frontend-design` | Onaylı sahnede yalnız iki masaüstü yüksekliği değiştirildi. |
+| 21st MCP | Erişilebilir araçlarda yok; yeni bileşen eklenmedi. |
+| ECC kod incelemesi | Bağımsız, salt okunur incelemede bulgu yok. |
+
+- Komutla PostCSS kaynak kontrolü önce eski masaüstü yükseklikleriyle RED, değişiklikten sonra GREEN verdi. Dosyanın tamamının başlangıç HEAD'i üzerine yalnız bu iki yükseklik değişikliği uygulanmış haliyle birebir eşleştiği doğrulandı. Mobil `24svh / 16svh` yükseklikleri, diğer tüm CSS kuralları ve `lib/ui-motion.ts` aynı; kalıcı test dosyası eklenmedi.
+
+| Komut / kabul kanıtı | 139-1 sonucu |
+|---|---|
+| `npm test -- --maxWorkers=2 --reporter=dot` | PASS: 66 dosya, 1046/1046 test. |
+| `npm run lint` | PASS, sıfır uyarı. |
+| `npm run typecheck` | PASS. |
+| `npm run build` | PASS; prebuild varlık kontrolleri de geçti. |
+| `npm run check:assets` | PASS: 18 kayıt, 112 v3 çıktı, 20 hero katmanı çıktısı. |
+| PostCSS kaynak kapsam kontrolü ve `git diff --check` | PASS. |
+
+**Claude doğrulayacak:** masaüstü/mobil ekran sonucu, etiket okunurluğu, beyaz alanlar, gölge teması ve kart boşluğu. Tarayıcı testleri çalıştırılmadı. 139-1 kapsamında karşılanamayan kod adımı kalmadı.
 
 ## Düzeltme 139-1 (Claude, 25 Eki)
 Haklısın, gerçek boyutlar `.tin`/`.jar` üzerinde. Plan güncellendi:
 - Masaüstü `.tin { height: 42svh }` → `36svh`, `.jar { height: 28svh }` → `24svh`. Kapsayıcı `38svh × 35svh` kalır (kavanoz solda, tenekenin önünde hafif örtüşerek durur). Mobil `.tin`/`.jar` değerleri değişmez.
 - Ürün hareketinin kapsayıcıya bağlı olarak 6.16svh → 5.32svh olması kabul; hareket tokenına dokunma.
 - Bitince Durum'u TAMAMLANDI yap.
+
+## Durum: TAMAMLANDI

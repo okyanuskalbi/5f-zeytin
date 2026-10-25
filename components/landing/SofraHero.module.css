@@ -13,8 +13,8 @@
    A shared contact pivot keeps the table and both shadows together through scale. */
 .products { z-index: 3; right: max(7%, calc((100% - 1280px) / 2)); bottom: calc(100% - var(--table-contact)); height: 38svh; width: 35svh; }
 .tin, .jar { position: absolute; bottom: 0; filter: saturate(.86) brightness(.9) contrast(.96) sepia(.14); }
-.tin { right: 0; height: 42svh; aspect-ratio: 946 / 1258; }
-.jar { z-index: 1; left: 0; height: 28svh; aspect-ratio: 691 / 1393; }
+.tin { right: 0; height: 36svh; aspect-ratio: 946 / 1258; }
+.jar { z-index: 1; left: 0; height: 24svh; aspect-ratio: 691 / 1393; }
 .products picture, .products img, .branch picture, .branch img { display: block; width: 100%; height: 100%; }
 .products img { position: relative; object-fit: contain; }
 .contactShadow { position: absolute; left: -10%; right: -10%; bottom: -2%; height: 10%; background: radial-gradient(ellipse, rgba(43,24,9,.58) 0%, rgba(43,24,9,.18) 38%, transparent 72%); }
