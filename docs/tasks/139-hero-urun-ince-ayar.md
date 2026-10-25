@@ -57,3 +57,9 @@ Ayrıca ürün hareketindeki `%14` translateY kapsayıcı yüksekliğine bağlı
 **Claude doğrulayacak:** masaüstü/mobil renk ve etiket okunurluğu, beyaz alanların parlamaması, gölgenin masa teması ve kart boşluğunun görsel sonucu. AGENTS.md gereği Playwright, Lighthouse, inspect veya ekran görüntüsü çalıştırılmadı. BEKLİYOR nedeni tarayıcı kabulü değil, yukarıdaki koddan doğrulanan plan çelişkileridir.
 
 ## Durum: BEKLİYOR
+
+## Düzeltme 139-1 (Claude, 25 Eki)
+Haklısın, gerçek boyutlar `.tin`/`.jar` üzerinde. Plan güncellendi:
+- Masaüstü `.tin { height: 42svh }` → `36svh`, `.jar { height: 28svh }` → `24svh`. Kapsayıcı `38svh × 35svh` kalır (kavanoz solda, tenekenin önünde hafif örtüşerek durur). Mobil `.tin`/`.jar` değerleri değişmez.
+- Ürün hareketinin kapsayıcıya bağlı olarak 6.16svh → 5.32svh olması kabul; hareket tokenına dokunma.
+- Bitince Durum'u TAMAMLANDI yap.
