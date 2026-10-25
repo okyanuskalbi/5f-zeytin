@@ -4,20 +4,20 @@
 .photo img { object-fit: cover; object-position: center; }
 .curtain { position: absolute; z-index: 1; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(10,16,11,.55) 0%, rgba(10,16,11,.05) 35%, rgba(10,16,11,.15) 60%, rgba(10,16,11,.85) 100%); }
 /* Static layout lets the decorative planes use the hero as their containing block. */
-.layout { width: min(1280px, calc(100% - 64px)); margin: 0 auto 56px; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 40px; align-items: end; }
+.layout { width: min(1280px, calc(100% - 64px)); margin: 0 auto 32px; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 40px; align-items: end; }
 .copy, .details { min-width: 0; }
 .copy { position: relative; z-index: 2; }
 .products, .branch { position: absolute; pointer-events: none; opacity: 0; }
 .products[data-ready="true"], .branch[data-ready="true"] { opacity: 1; transition: opacity var(--hero-reveal-duration) ease-out; }
 /* The 44svh group travels 14% of its own height, close to the plate's 6%.
    A shared contact pivot keeps the table and both shadows together through scale. */
-.products { z-index: 3; right: max(7%, calc((100% - 1280px) / 2)); bottom: calc(100% - var(--table-contact)); height: 44svh; width: 40svh; }
-.tin, .jar { position: absolute; bottom: 0; filter: saturate(.94) brightness(.96) sepia(.06); }
+.products { z-index: 3; right: max(7%, calc((100% - 1280px) / 2)); bottom: calc(100% - var(--table-contact)); height: 38svh; width: 35svh; }
+.tin, .jar { position: absolute; bottom: 0; filter: saturate(.86) brightness(.9) contrast(.96) sepia(.14); }
 .tin { right: 0; height: 42svh; aspect-ratio: 946 / 1258; }
 .jar { z-index: 1; left: 0; height: 28svh; aspect-ratio: 691 / 1393; }
 .products picture, .products img, .branch picture, .branch img { display: block; width: 100%; height: 100%; }
 .products img { position: relative; object-fit: contain; }
-.contactShadow { position: absolute; left: -10%; right: -10%; bottom: -2%; height: 8%; background: radial-gradient(ellipse, rgba(43,24,9,.48) 0%, rgba(43,24,9,.18) 38%, transparent 72%); }
+.contactShadow { position: absolute; left: -10%; right: -10%; bottom: -2%; height: 10%; background: radial-gradient(ellipse, rgba(43,24,9,.58) 0%, rgba(43,24,9,.18) 38%, transparent 72%); }
 .branch { z-index: 4; right: 0; top: 0; width: 72%; aspect-ratio: 16 / 9; transform-origin: right top; }
 .branch img { object-fit: contain; }
 .kicker { font-size: 13px; letter-spacing: .22em; text-transform: uppercase; color: var(--altin); font-weight: 600; }

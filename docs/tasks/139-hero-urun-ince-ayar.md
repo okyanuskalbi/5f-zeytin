@@ -28,3 +28,32 @@ Task 138 ekran testinde masaüstünde iki sorun görüldü: teneke ve kavanoz sa
 - `docs/tasks` içinde yalnız Coder Notu/Durum.
 
 ## Coder Notu
+
+25 Ekim 2026:
+
+| Skill / araç | Uygulama |
+|---|---|
+| `scroll-craft` + `references/hero-depth.md` | Mevcut katmanlar, ortak temas tabanı ve ayrı mobil kompozisyon korundu. |
+| `frontend-design` | Yalnız görevde belirtilen boyut, filtre, gölge ve alt boşluk değerleri uygulandı. |
+| 21st MCP | Bu oturumun erişilebilir araçlarında yok. Yeni bileşen eklenmedi; mevcut hero CSS'iyle sınırlı kalındı. |
+| ECC kod incelemesi | Bağımsız, salt okunur incelemede değişiklik kapsamı ve aşağıdaki plan çelişkisi doğrulandı. |
+
+- Runtime'da yalnız `components/landing/SofraHero.module.css` içindeki altı deklarasyon değişti. Mobil media kuralları, `--table-contact`, ürün oranları/ortak tabanı, yükleme kodu, reduced-motion kuralları ve hareket tokenları değiştirilmedi. Görsel dosyaları ve kart içeriği korundu.
+- Komutla kaynak kabul kontrolü değişiklikten önce altı eski değerle RED, sonrasında GREEN verdi. PostCSS ile HEAD sürümünden yalnız izinli altı deklarasyon değiştirilerek beklenen dosya oluşturuldu; çalışma dosyasının tamamıyla birebir eşleştiği ve `lib/ui-motion.ts` farkının boş olduğu doğrulandı. Kalıcı test dosyası eklenmedi.
+
+| Komut / kabul kanıtı | Sonuç |
+|---|---|
+| `npm test -- --maxWorkers=2 --reporter=dot` | PASS: 66 dosya, 1046/1046 test. |
+| `npm run lint` | PASS, sıfır uyarı. |
+| `npm run typecheck` | PASS. |
+| `npm run build` | PASS; prebuild varlık kontrolleri de geçti. |
+| `npm run check:assets` | PASS: 18 kayıt, 112 v3 çıktı, 20 hero katmanı çıktısı. |
+| Kaynak kapsam kontrolü ve `git diff --check` | PASS. |
+
+**Plan çelişkisi / karşılanamayan amaç:** `.products` kapsayıcısı `38svh × 35svh` yapıldı; ancak `.tin` yüksekliği bağımsız `42svh`, `.jar` yüksekliği bağımsız `28svh`. Bu nedenle istenen kapsayıcı değerleri gerçek teneke/kavanoz boyutlarını küçültmez; daralan kapsayıcı kavanozun konumunu ve ürünlerin örtüşmesini değiştirir. Gerçek küçültme için bu bağımsız yüksekliklerin veya ölçek ilişkisinin ayrıca planlanması gerekir. Görev “yalnız yukarıdaki değerler” dediğinden bunlara müdahale edilmedi.
+
+Ayrıca ürün hareketindeki `%14` translateY kapsayıcı yüksekliğine bağlıdır: hareket tokenı değişmese de masaüstü son konumdaki düşey mesafe `44svh × .14 = 6.16svh` yerine `38svh × .14 = 5.32svh` olur. Bu, istenen yükseklik değişikliği ile “hareket davranışı aynı” kabulünün çeliştiği ikinci noktadır. Mobil kapsayıcı ölçüleri ve hareketi değişmedi.
+
+**Claude doğrulayacak:** masaüstü/mobil renk ve etiket okunurluğu, beyaz alanların parlamaması, gölgenin masa teması ve kart boşluğunun görsel sonucu. AGENTS.md gereği Playwright, Lighthouse, inspect veya ekran görüntüsü çalıştırılmadı. BEKLİYOR nedeni tarayıcı kabulü değil, yukarıdaki koddan doğrulanan plan çelişkileridir.
+
+## Durum: BEKLİYOR
