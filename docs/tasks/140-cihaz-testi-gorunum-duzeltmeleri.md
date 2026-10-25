@@ -71,4 +71,22 @@ Canlı ekran testi (WebKit iPhone 15 Pro + SE, 26 Eki): madde 1, 2, 4 tamam; Men
 - Simge rengi `var(--sut)` / mevcut foreground; focus-visible çerçevesi korunur.
 - JSX'e dokunma. Testler yeşil kalsın.
 
-## Durum: BEKLİYOR (Düzeltme 140-1)
+## Coder Notu (Düzeltme 140-1)
+
+| Skill | Uygulama |
+| --- | --- |
+| `ui-ux-pro-max` | Yerel UX/stack aramasıyla görünür klavye odağı ve mevcut Button varyantı kontrol edildi. |
+| `frontend-design` | Yalnız göz düğmesinin zemin ve boyut düzeltmesi; mevcut tasarım korundu. |
+| `better-layout` | 36×36 px düğme, 44 px input içinde üst/alt 4 px boşlukla konumlandırıldı. |
+| `shadcn-ui` | Resmi `npx shadcn@latest docs button` ve Button belgesi incelendi; ortak bileşen değiştirilmedi. |
+| `ai-tool-prompts` | Son kontrolde kapsam, token kullanımı ve odak görünürlüğü denetlendi. |
+| `tdd-workflow` | Komutla kaynak kabul denetiminde RED → GREEN doğrulandı. |
+
+- Yalnız `components/account/Membership.module.css` içindeki `.password button` kuralları değişti: normal/hover/active/focus/focus-visible zeminleri şeffaf, minimum boyutlar sıfır, boyut 36×36 px, sağ boşluk 4 px ve simge rengi `var(--sut)`. Focus-visible çerçevesine müdahale edilmedi; JSX ve test dosyaları değiştirilmedi.
+- `node --input-type=module` + PostCSS kabul denetimi: başlangıçta zemin ve boyut için **2 FAIL**, odak/renk ve kapsam için **2 PASS (RED)**; düzeltme sonrası **4/4 PASS (GREEN)**. Göz düğmesi dışındaki CSS'nin önceki commit ile aynı olduğu doğrulandı. Derlenmiş üretim CSS'sinde de boyut ve şeffaflık kuralları kontrol edildi; bu kontroller gerçek tarayıcı görünümü kanıtı değildir.
+- `npm test -- --maxWorkers=2`: **66 dosya, 1046/1046 PASS**; giriş/kayıt şifre göster/gizle, `aria-pressed` ve odak davranışı testleri dahil.
+- `npm run lint`, `npm run typecheck`, `npm run build`, `npm run check:assets` ve `git diff --check`: **PASS**. Varlık kontrolü: 18 kayıt, 112 v3 çıktı, 20 hero katmanı.
+- Tarayıcı ekran testi **Claude doğrulayacak**: giriş/kayıt şifre alanında kesintisiz input kenarlığı, normal/hover/active/focus durumlarında şeffaf göz düğmesi ve görünür klavye odağı. AGENTS.md gereği tarayıcı testleri çalıştırılmadı.
+- Uygulanamayan kod adımı yok. Önceki maddeler yeniden uygulanmadı; 21st MCP bu görevde istenmedi, bağımlılık eklenmedi.
+
+## Durum: TAMAMLANDI
