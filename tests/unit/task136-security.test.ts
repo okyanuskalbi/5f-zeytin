@@ -18,7 +18,7 @@ beforeEach(() => {
   vi.stubEnv("SITE_ORIGIN", "https://shop.example.test");
   vi.stubGlobal("fetch", fetchMock.mockReset());
 });
-afterEach(() => { vi.unstubAllEnvs(); vi.unstubAllGlobals(); });
+afterEach(() => { vi.unstubAllEnvs(); vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 
 describe("admin configuration HTTP responses", () => {
   it.each([
@@ -83,8 +83,14 @@ describe("admin configuration HTTP responses", () => {
   });
 });
 
-describe("report-only security headers", () => {
+describe("enforced security headers", () => {
+  async function cspHeader(): Promise<string> {
+    const rules = await nextConfig.headers?.();
+    return rules?.flatMap(rule => rule.headers).find(header => header.key === "Content-Security-Policy")?.value ?? "";
+  }
+
   it("adds all five headers to every route with only public CSP sources", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     expect(nextConfig.headers).toBeTypeOf("function");
     const rules = await nextConfig.headers?.();
     const rule = rules?.find(item => item.source === "/:path*");
@@ -93,20 +99,53 @@ describe("report-only security headers", () => {
       "x-content-type-options": "nosniff", "referrer-policy": "strict-origin-when-cross-origin",
       "x-frame-options": "DENY", "permissions-policy": "camera=(), microphone=(), geolocation=()",
     });
-    expect(headers).not.toHaveProperty("content-security-policy");
-    const csp = headers["content-security-policy-report-only"];
-    expect(csp).toContain("default-src 'self'");
-    expect(csp).toContain("connect-src 'self' https://fixture.supabase.co");
-    expect(csp).toContain("script-src 'self' 'unsafe-inline'");
-    expect(csp).toContain("style-src 'self' 'unsafe-inline'");
+    expect(Object.keys(headers)).toHaveLength(5);
+    expect(headers).not.toHaveProperty("content-security-policy-report-only");
+    const csp = headers["content-security-policy"];
+    expect(csp?.split("; ")).toEqual([
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' https://www.paytr.com/js/iframeResizer.min.js",
+      "style-src 'self' 'unsafe-inline'",
+      "connect-src 'self' https://fixture.supabase.co wss://fixture.supabase.co",
+      "img-src 'self' data: blob:", "font-src 'self'", "media-src 'self' blob:",
+      "frame-src 'self' https://www.paytr.com", "form-action 'self' https://www.paytr.com",
+      "object-src 'none'", "base-uri 'self'", "frame-ancestors 'none'",
+      "upgrade-insecure-requests",
+    ]);
     expect(csp).not.toMatch(/sb_secret|sb_publishable|unsafe-eval|\*/);
+    expect(warn).not.toHaveBeenCalled();
   });
-  it("ignores invalid URL credentials, paths and injected policy directives", async () => {
-    vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "https://private@example.test/path; script-src *");
-    const rules = await nextConfig.headers?.();
-    const csp = rules?.flatMap(rule => rule.headers).find(header => header.key === "Content-Security-Policy-Report-Only")?.value;
+  it.each([
+    undefined, "", "invalid-url", "http://fixture.supabase.co", "http://localhost:54321",
+    "https://private@example.test", "https://user:private@example.test",
+    "https://example.test/path", "https://example.test?private=1", "https://example.test#private",
+    "https://private@example.test/path; script-src *",
+  ])("warns in production without exposing an absent or rejected Supabase URL (%#)", async url => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", url);
+    const csp = await cspHeader();
     expect(csp).toBeTruthy();
-    expect(csp).not.toMatch(/private|example\.test|script-src \*/);
+    expect(csp.split("; ")).toContain("connect-src 'self'");
+    expect(csp).not.toMatch(/private|example\.test|fixture\.supabase\.co|localhost|script-src \*/);
+    expect(warn).toHaveBeenCalledExactlyOnceWith(
+      "[CSP] NEXT_PUBLIC_SUPABASE_URL is missing or invalid; Supabase connections are excluded from the enforced Content-Security-Policy.",
+    );
+  });
+  it.each(["localhost", "127.0.0.1", "[::1]"])("retains local HTTP/WebSocket sources and eval only in development (%s)", async host => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    vi.stubEnv("NODE_ENV", "development");
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", `http://${host}:54321`);
+    const csp = await cspHeader();
+    expect(csp.split("; ")).toContain(`connect-src 'self' http://${host}:54321 ws://${host}:54321`);
+    expect(csp).toContain("'unsafe-eval'");
+    expect(warn).not.toHaveBeenCalled();
+  });
+  it("keeps a missing development Supabase URL silent", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    vi.stubEnv("NODE_ENV", "development");
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", undefined);
+    expect((await cspHeader()).split("; ")).toContain("connect-src 'self'");
+    expect(warn).not.toHaveBeenCalled();
   });
   it("keeps the local Supabase password policy aligned", async () => {
     const config = await readFile(new URL("../../supabase/config.toml", import.meta.url), "utf8");
