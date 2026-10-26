@@ -29,3 +29,6 @@
 }
 @media (max-width: 359px) { .row { gap: 8px; } .actions { gap: 0; } .cart, .trigger { padding-inline: 8px; } }
 @media (prefers-reduced-motion: reduce) { .bar { transition: none; } .badge { transform: none !important; } }
+@media (orientation: landscape) and (max-height: 500px) and (max-width: 900px) {
+  .bar { padding-block: 4px; padding-top: calc(4px + env(safe-area-inset-top, 0px)); }
+}
