@@ -142,16 +142,24 @@ describe("admin assignments and anonymous catalog with memory-only PostgreSQL", 
     }] });
     expect((await db.query("select count(*)::int as count from public.products")).rows).toEqual([{ count: 2 }]);
   });
-  it("bootstraps only a confirmed existing owner and does not duplicate the assignment", async () => {
-    const sql = await readFile(new URL("../../supabase/snippets/admin-bootstrap.sql", import.meta.url), "utf8");
+  it.each([ownerEmail, "owner@example.test", "o'connor@example.test", "owner@example.test' OR true --"])("bootstraps only the supplied confirmed existing owner without duplicating the assignment (%#)", async email => {
+    const snippet = await readFile(new URL("../../supabase/snippets/admin-bootstrap.sql", import.meta.url), "utf8");
+    expect(snippet).not.toContain("@afina");
+    expect(snippet).toContain("psql -v admin_email=");
+    expect(snippet).toContain("where email = :'admin_email'");
+    // PGlite has no psql preprocessor; bind its safely quoted literal as a parameter.
+    const sql = snippet.replace(":'admin_email'", "$1");
+    await db.query("update auth.users set email = $1 where id = $2", [email, ownerId]);
+    const otherId = "00000000-0000-4000-8000-000000000146";
+    await db.query("insert into auth.users (id, email, email_confirmed_at) values ($1, $2, now())", [otherId, "bystander@example.test"]);
     await db.query("update auth.users set email_confirmed_at = null where id = $1", [ownerId]);
-    await db.exec(sql);
+    await db.query(sql, [email]);
     expect((await db.query("select user_id from public.admin_users")).rows).toEqual([]);
     await db.query("update auth.users set email_confirmed_at = now() where id = $1", [ownerId]);
-    await db.exec(sql); await db.exec(sql);
+    await db.query(sql, [email]); await db.query(sql, [email]);
     expect((await db.query("select user_id from public.admin_users")).rows).toEqual([{ user_id: ownerId }]);
     await db.query("delete from auth.users where id = $1", [ownerId]);
-    await db.exec(sql);
+    await db.query(sql, [email]);
     expect((await db.query("select user_id from public.admin_users")).rows).toEqual([]);
   });
 });

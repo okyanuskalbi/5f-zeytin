@@ -1,6 +1,10 @@
 import { fileURLToPath } from "node:url";
 import type { NextConfig } from "next";
 
+if (process.env.VERCEL_ENV === "production" && process.env.NEXT_PUBLIC_DEMO === "1") {
+  throw new Error("Vercel production ortamında demo modu açılamaz. NEXT_PUBLIC_DEMO=1 ayarını kaldırın.");
+}
+
 function supabaseConnectSources(): string {
   try {
     const url = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL ?? "");

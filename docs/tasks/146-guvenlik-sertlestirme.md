@@ -38,4 +38,17 @@ Güvenlik denetiminde çıkan CI açığını kapatmak ve iki düşük riskli se
 - Task 145 (SEO) dosyalarına dokunma.
 - Yeni bağımlılık ekleme.
 
-## Durum: BEKLİYOR
+## Coder Notu
+
+- CI: doğrulamasız ffmpeg indirme dalı kaldırıldı; yalnız sistem paketi kuruluyor. `npm ci` kullanılıyor. `VERCEL_TOKEN` yalnız pull/build/deploy adımlarında tanımlı; pull adımının sır içermeyen `enabled` çıktısı sayesinde token olmadığında yayın atlama ve uyarı davranışı korunuyor. Push/manual tetikleyicileri, izinler, concurrency ve production yayın komutları korundu.
+- `gh api repos/actions/checkout/git/ref/tags/v4` ve `gh api repos/actions/setup-node/git/ref/tags/v4` ile tam commit SHA'ları doğrulandı; ayrıca commit endpoint'leri kontrol edildi. Checkout: `11d5960a326750d5838078e36cf38b85af677262`; setup-node: `49933ea5288caeca8642d1e84afbd3f7d6820020`.
+- TDD kanıtı: `npm test -- tests/unit/security-hardening-146.test.ts tests/unit/security-admin-origin.test.ts --maxWorkers=2` ilk koşuda **9 başarısız / 30 başarılı**, uygulama sonrası **39/39 başarılı**. Yeni testler production demo kilidini, diğer üç bayrak kombinasyonunu, yerel production NODE_ENV ile demo kullanımını ve token var/yok yayın davranışını doğruluyor. PGlite testlerinde psql değişkeni bağlı parametreye çevriliyor; onaysız/olmayan hesap, yalnız seçilen e-posta, özel karakterler, tekrar çalıştırma ve başka kullanıcıya yetki verilmemesi doğrulanıyor.
+- `VERCEL_ENV=production NEXT_PUBLIC_DEMO=1 node node_modules/next/dist/bin/next build`: beklenen şekilde exit 1 ve Türkçe demo kilidi hatası; normal derleme aşağıda başarılı. Auth/ödeme adapter'larına, RLS/migration dosyalarına ve Task 145 dosyalarına dokunulmadı.
+- `git grep -n "@afina" supabase/snippets`: boş çıktı, beklenen exit 1. Snippet artık `:'admin_email'` kullanıyor; psql kullanım satırı eklendi, güvenlik ön koşulları korundu.
+- Workflow ayrıca mevcut `js-yaml` ile ayrıştırıldı; token'ın yalnız üç adımda olduğu, tam SHA'lar ve başlangıç sürümüne göre aynı tetikleyici/izin/concurrency değerleri komutla doğrulandı. Tüm run blokları `bash -n` kontrolünden geçti.
+- `npm ci --dry-run --ignore-scripts --no-audit --no-fund --cache .task146-npm-cache`: başarılı; bağımlılık veya lockfile değişmedi.
+- `npm test -- --maxWorkers=2 --testTimeout=30000`: **71 dosya, 1102/1102 başarılı**. `npm run lint`, `npm run typecheck`, `npm run build`: **başarılı**. Build öncesi üç asset kontrolü de başarılı; mevcut yerel Supabase URL/CSP uyarısı derlemeyi engellemedi.
+- `npm test -- tests/unit/security-hardening-146.test.ts tests/unit/task136-security.test.ts --maxWorkers=2 --coverage --coverage.include=next.config.ts`: **45/45 başarılı**; değişen config için satır/ifade/fonksiyon/dal kapsamı **%100**.
+- Tarayıcı testleri AGENTS.md gereği çalıştırılmadı; **Claude doğrulayacak**. Bu görevde uygulanamayan madde yok. Yerel RED/GREEN checkpoint'leri, yukarıdaki kanıtlar korunarak tek görev commit'inde birleştirildi; ara commit'ler push edilmedi.
+
+## Durum: TAMAMLANDI
