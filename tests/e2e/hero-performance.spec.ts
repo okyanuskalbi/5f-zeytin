@@ -29,7 +29,7 @@ for (const width of [390, 768, 900, 901, 1440]) {
 // Claude executes these cases; Codex only writes/typechecks them.
 for (const viewport of [{ width: 390, height: 844 }, { width: 1440, height: 900 }]) {
   for (const reducedMotion of ["reduce", "no-preference"] as const) {
-    test(`SSR hero paints without JavaScript at ${viewport.width}px / ${reducedMotion}`, async ({ browser, baseURL }) => {
+    test(`SSR hero keeps decorative planes hidden without JavaScript at ${viewport.width}px / ${reducedMotion}`, async ({ browser, baseURL }) => {
       const context = await browser.newContext({ javaScriptEnabled: false, viewport, reducedMotion });
       try {
         const page = await context.newPage();
@@ -39,17 +39,19 @@ for (const viewport of [{ width: 390, height: 844 }, { width: 1440, height: 900 
         await expect(hero.locator("[data-hero-card] img")).toBeInViewport();
         for (const image of await hero.locator("img").all()) {
           await expect.poll(() => image.evaluate((node: HTMLImageElement) => node.complete && node.naturalWidth > 0)).toBe(true);
-          await expect(image).toBeVisible();
         }
-        for (const layer of await hero.locator("[data-layer], [data-hero-copy], [data-hero-card]").all()) {
+        for (const layer of await hero.locator('[data-layer="plate"], [data-hero-copy], [data-hero-card]').all()) {
+          await expect(layer).toBeVisible();
           await expect(layer).toHaveCSS("opacity", "1");
         }
         for (const layer of await hero.locator('[data-layer="products"], [data-layer="branch"]').all()) {
           await expect(layer).toHaveAttribute("data-ready", "false");
-          await expect(layer).toHaveAttribute("data-failed", "false");
+          await expect(layer).not.toHaveAttribute("data-failed");
+          await expect(layer).toHaveCSS("opacity", "0");
           if (reducedMotion === "reduce") {
-            await expect(layer).toHaveCSS("translate", "none");
+            await expect(layer).toHaveCSS("transform", "none");
             await expect(layer).toHaveCSS("animation-name", "none");
+            await expect(layer).toHaveCSS("transition-duration", "0s");
           }
         }
         // This scroll-only control has no image and must not cover the SSR card.

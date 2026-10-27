@@ -72,4 +72,6 @@ Mobil LCP'yi düşürmek: LCP görseli hızlı iniyor ama geç boyanıyor.
 - Mevcut hero/satın alma/sepet e2e assertion'ları zayıflatılmadı. `tests/e2e/hero-performance.spec.ts` içine 390/1440 px, reduced-motion açık/kapalı olmak üzere 4 JS'siz açılış senaryosu eklendi: görsellerin yüklenmesi/görünürlüğü, katmanların ready=false iken opacity=1 olması, reduced-motion ve mobil bar gizliliği. Mevcut hata/decode fallback testlerine kalıcı hata işareti assertion'ları eklendi.
 - **Claude doğrulayacak:** mevcut ve yeni e2e testleri, mobil/masaüstü görsel sonuç ve giriş hissi, gerçek LCP öğesi ve süreleri. Playwright, Lighthouse, DevTools trace, inspect, ekran görüntüsü veya tarayıcı çalıştırılmadı; Next sunucusu açılmadı. LCP hedefleri için PASS iddiası yok. Yalnız bu tarayıcı kabulleri kaldığından AGENTS.md uyarınca durum TAMAMLANDI.
 
+Geri alındı: 149. Üretim değişiklikleri 145 sonrası SSR `opacity:0` + tüm görseller hazır olunca fade davranışına döndürüldü; 147'nin yeni davranışı zorlayan testleri güncellendi. Canlı LCP ölçümünü Claude doğrulayacak.
+
 ## Durum: TAMAMLANDI
