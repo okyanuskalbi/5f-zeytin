@@ -1,12 +1,14 @@
 // @vitest-environment node
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { GET, POST, PATCH, DELETE } from "@/app/api/admin/products/route";
+import { revalidatePath } from "next/cache";
 import { requireAdmin, requireAdminMutation } from "@/lib/auth/admin";
 import { AuthCoreError } from "@/lib/auth/server";
 import { parseProductInput } from "@/lib/contracts/admin-products";
 import { adminProduct, productInput, productRow } from "../fixtures/admin-products";
 
 vi.mock("server-only", () => ({}));
+vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
 vi.mock("@/lib/auth/admin", () => ({ requireAdmin: vi.fn(), requireAdminMutation: vi.fn() }));
 const fetchMock = vi.fn<typeof fetch>();
 const origin = "https://shop.example.test";
@@ -56,6 +58,29 @@ describe("strict admin product input", () => {
 });
 
 describe("admin products endpoint", () => {
+  const mutations = [
+    ["POST", POST, productInput, 201],
+    ["PATCH", PATCH, { id: adminProduct.id, ...productInput }, 200],
+    ["DELETE", DELETE, { id: adminProduct.id }, 200],
+  ] as const;
+  it.each(mutations)("invalidates the landing only after a valid %s RPC result", async (method, handler, input, status) => {
+    fetchMock.mockResolvedValue(Response.json(adminProduct.id));
+    expect((await handler(request(method, input))).status).toBe(status);
+    expect(revalidatePath).toHaveBeenCalledExactlyOnceWith("/");
+    expect(vi.mocked(revalidatePath).mock.invocationCallOrder[0]).toBeGreaterThan(fetchMock.mock.invocationCallOrder[0]);
+  });
+  it.each(mutations)("does not invalidate the landing after failed %s mutations", async (method, handler, input) => {
+    for (const result of [
+      () => Response.json({ code: "23514" }, { status: 400 }),
+      () => Response.json({ code: "P0002" }, { status: 400 }),
+      () => Response.json(null),
+      () => { throw new Error("upstream failure"); },
+    ]) {
+      fetchMock.mockImplementation(async () => result());
+      expect((await handler(request(method, input))).status).toBeGreaterThanOrEqual(400);
+      expect(revalidatePath).not.toHaveBeenCalled();
+    }
+  });
   it("reads and writes category settings through the authorized endpoint", async () => {
     fetchMock.mockImplementation(async (_url, init) => init?.method === "HEAD"
       ? new Response(null, { headers: { "content-range": "*/0" } })
@@ -73,6 +98,7 @@ describe("admin products endpoint", () => {
     expect((await GET(request("GET"))).status).toBe(status);
     for (const handler of [POST, PATCH, DELETE]) expect((await handler(request("POST", productInput))).status).toBe(status);
     expect(fetchMock).not.toHaveBeenCalled();
+    expect(revalidatePath).not.toHaveBeenCalled();
   });
   it("returns only projected database rows, exact pagination and no sample fallback", async () => {
     const response = await GET(request("GET"));

@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { revalidatePath } from "next/cache";
 import { requireAdmin, requireAdminMutation } from "@/lib/auth/admin";
 import { AuthCoreError, authErrorResponse, authResponseHeaders } from "@/lib/auth/server";
 import { createSupabaseServiceClient } from "@/lib/supabase/server";
@@ -92,6 +93,7 @@ async function mutate(request: Request, operation: "create" | "update" | "unpubl
       throw new Error();
     }
     if (!validProductId(data)) throw new Error();
+    revalidatePath("/");
     return Response.json({ id: data }, { status: operation === "create" ? 201 : 200,
       headers: { ...authResponseHeaders, ...(operation === "create" ? { Location: `/api/admin/products?id=${encodeURIComponent(data)}` } : {}) } });
   } catch (error) { return handleError(error); }

@@ -23,12 +23,13 @@ it("orders decorative planes around semantic copy and keeps the purchase card ab
   expect(document.querySelector("[data-scroll-hint], [data-scroll-line]")).toBeNull();
 });
 
-it("reveals both planes only after both products and the branch are ready, at low priority", () => {
+it("loads above-fold products and their reveal-gating branch eagerly at high priority", () => {
   render(<Hero />);
   const images = scene().flatMap(layer => [...layer.querySelectorAll("img")]);
   expect(images).toHaveLength(3);
   for (const image of images) {
-    expect(image.getAttribute("fetchpriority")).toBe("low");
+    expect(image.getAttribute("loading")).toBe("eager");
+    expect(image.getAttribute("fetchpriority")).toBe("high");
     fireEvent.load(image);
     if (image !== images.at(-1)) expect(scene().every(layer => layer.dataset.ready === "false")).toBe(true);
   }

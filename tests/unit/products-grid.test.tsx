@@ -26,7 +26,10 @@ it("renders six separate variants with catalog prices, three categories and just
   expect(screen.getAllByText("Zeytinyağı")).toHaveLength(2);
   for (const product of products) {
     const card = cards.find(card => card.dataset.productId === product.id)!;
+    expect(screen.getByRole("article", { name: `${product.name}, ${product.weight}` })).toBe(card);
     expect(within(card).getByRole("heading", { level: 3 }).textContent).toBe(product.name);
+    expect(within(card).getByRole("heading", { level: 3, name: `${product.name}, ${product.weight}` })).toBeDefined();
+    expect(within(card).getByRole("button", { name: `${product.name}, ${product.weight}` })).toBeDefined();
     expect(within(card).getByLabelText("Fiyat").textContent).toBe(money.format(product.priceKurus / 100));
     expect(within(card).getByLabelText("Boy").textContent).toBe(product.weight);
     expect(within(card).getAllByRole("img")).toHaveLength(1);

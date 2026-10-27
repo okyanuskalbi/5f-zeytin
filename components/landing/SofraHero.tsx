@@ -25,10 +25,13 @@ function LayerPicture({ image, sizes, bit, loaded, failed }: {
 }): JSX.Element {
   const srcSet = (format: string): string => image.outputs.filter(output => output.format === format).map(output => `${output.file} ${output.width}w`).join(", ");
   const fallback = image.outputs.find(output => output.format === "webp")!;
+  // At 390px and 1440px these product planes sit inside the first-screen hero.
+  // The desktop tin can become LCP; its reveal also waits for the jar/branch.
+  // Keep all three eager/high; the mobile purchase-card LCP is eager in Hero.
   return <picture>
     <source type="image/avif" srcSet={srcSet("avif")} sizes={sizes} />
     <img data-scene-bit={bit} src={fallback.file} srcSet={srcSet("webp")} sizes={sizes} alt="" aria-hidden="true"
-      width={fallback.width} height={fallback.height} loading="lazy" fetchPriority="low" decoding="async"
+      width={fallback.width} height={fallback.height} loading="eager" fetchPriority="high" decoding="async"
       onLoad={event => {
         const image = event.currentTarget;
         if (typeof image.decode === "function") image.decode().then(() => loaded(bit), failed);

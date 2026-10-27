@@ -8,6 +8,7 @@ import { CartProvider } from "@/components/cart/CartProvider";
 import { MotionProvider } from "@/components/site/MotionProvider";
 import { getProducts } from "@/lib/catalog/static-products";
 import { isCheckoutDemoEnabled } from "@/lib/checkout/adapter";
+import { siteIdentity } from "@/lib/site/identity";
 import type { Product } from "@/types/catalog";
 import "./globals.css";
 
@@ -39,13 +40,19 @@ const bodyFont = Figtree({
 export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover" };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://afinazeytin.com"),
-  title: "Afina Zeytin | Zeytin ve Zeytinyağı",
-  description:
-    "Afina Zeytin, Osmaniye’deki fabrikasıyla zeytin, salamura zeytin ve zeytinyağını toptan ve perakende müşterileriyle buluşturuyor.",
+  metadataBase: new URL(siteIdentity.origin),
+  title: siteIdentity.title,
+  description: siteIdentity.description,
   other: { app: "zeytin" },
-  icons: { icon: { url: "/brand/favicon.svg", type: "image/svg+xml" } },
+  icons: {
+    icon: { url: "/brand/favicon.svg", type: "image/svg+xml" },
+    apple: { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+  },
   openGraph: {
+    url: "/",
+    type: "website",
+    locale: "tr_TR",
+    siteName: siteIdentity.name,
     images: [{ url: "/brand/og.png", width: 1200, height: 630, alt: "Afina Zeytin. Kökü toprakta, yeri sofrada." }],
   },
 };

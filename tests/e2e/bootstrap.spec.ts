@@ -8,7 +8,7 @@ test("home returns 200 and identifies the ZEYTİN application", async ({ page, b
   expect(new URL(page.url()).origin).toBe(new URL(baseURL!).origin);
   await expect(page.locator('meta[name="app"]')).toHaveAttribute("content", "zeytin");
   await expect(page.locator("html")).toHaveAttribute("lang", "tr");
-  await expect(page).toHaveTitle("Afina Zeytin | Zeytin ve Zeytinyağı");
+  await expect(page).toHaveTitle("Afina Zeytin | Düziçi'nden Zeytin ve Zeytinyağı");
   await expect(page.getByRole("main").getByRole("heading", { level: 1, name: "Kökü toprakta. Yeri sofrada." })).toBeVisible();
   await expect(page.locator("#hero-title")).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);

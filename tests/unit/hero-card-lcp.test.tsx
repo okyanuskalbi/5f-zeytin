@@ -56,7 +56,7 @@ describe("hero purchase card LCP", () => {
         expect(matches[0].getAttribute("type")).toBe("image/avif");
       }
     }
-    expect(doc.querySelectorAll('img[loading="eager"]')).toHaveLength(2);
+    expect(doc.querySelectorAll('img[loading="eager"]')).toHaveLength(5);
   });
 });
 

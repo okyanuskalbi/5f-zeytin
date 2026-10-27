@@ -17,7 +17,6 @@ export function verifyV4Html(html) {
     assert.equal(preloads.length, 4, "Only media-matched background and hero card preloads are allowed");
     const photo = doc.querySelector("[data-hero-photo]");
     assert.equal(photo?.querySelectorAll("img").length, 1, "Hero must have one img");
-    const hero = photo.querySelector("img");
     const card = doc.querySelector("[data-hero-card]");
     assert.equal(card?.querySelectorAll("img").length, 1, "Hero card must have one img");
     const cardImage = card.querySelector("img");
@@ -68,7 +67,10 @@ export function verifyV4Html(html) {
       assert(Number(image.getAttribute("width")) > 0 && Number(image.getAttribute("height")) > 0, "Every image needs width/height");
       assert(image.hasAttribute("alt"), "Every image needs alt");
       assert.equal(image.getAttribute("decoding"), "async");
-      if (image !== hero && image !== cardImage) {
+      if (image.closest("[data-hero-intro]")) {
+        assert.equal(image.getAttribute("loading"), "eager", "First-screen hero images must be eager");
+        assert.equal(image.getAttribute("fetchpriority"), "high", "First-screen hero images must have high priority");
+      } else {
         assert.equal(image.getAttribute("loading"), "lazy", "Non-hero image must be lazy");
         assert.notEqual(image.getAttribute("fetchpriority"), "high", "Non-hero image must not have high priority");
       }

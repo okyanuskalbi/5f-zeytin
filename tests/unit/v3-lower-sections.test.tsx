@@ -94,7 +94,7 @@ it("keeps FAQ answers in the server HTML for native JavaScript-free disclosure",
   expect(doc.querySelector("summary[aria-expanded]")).toBeNull();
 });
 
-it("publishes one preview note and business schema without address, tax IDs or sample Product data", async () => {
+it("publishes one preview note and a connected entity graph with only the public district address", async () => {
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}<Footer /></>);
   expect(doc.body.textContent?.match(/Önizleme: fiyatlar ve görseller temsilidir\./g)).toHaveLength(1);
@@ -104,9 +104,15 @@ it("publishes one preview note and business schema without address, tax IDs or s
   expect(JSON.parse(scripts[1].textContent!)["@type"]).toBe("FAQPage");
   const schema = JSON.parse(scripts[0].textContent!);
   expect(schema["@context"]).toBe("https://schema.org");
-  expect(schema["@graph"].map((item: Record<string, unknown>) => item["@type"])).toEqual(["Organization", "LocalBusiness"]);
-  expect(schema["@graph"][1].parentOrganization["@id"]).toBe(schema["@graph"][0]["@id"]);
-  expect(JSON.stringify(schema)).not.toMatch(/"(?:address|taxID|vatID|Product|Offer|price|telephone|email)"|0091520061|Şehit Ali/);
+  const [organization, place, website] = schema["@graph"];
+  expect(schema["@graph"].map((item: Record<string, unknown>) => item["@type"])).toEqual(["Organization", "Place", "WebSite"]);
+  expect(organization.sameAs).toEqual(["https://afina.com.tr"]);
+  expect(organization.location).toEqual({ "@id": "https://afinazeytin.com/#tesis" });
+  expect(place["@id"]).toBe(organization.location["@id"]);
+  expect(place.address).toEqual({ "@type": "PostalAddress", addressLocality: "Düziçi", addressRegion: "Osmaniye", addressCountry: "TR" });
+  expect(place).not.toHaveProperty("parentOrganization");
+  expect(website).toMatchObject({ "@id": "https://afinazeytin.com/#website", url: "https://afinazeytin.com", inLanguage: "tr-TR", publisher: { "@id": organization["@id"] } });
+  expect(JSON.stringify(schema)).not.toMatch(/"(?:LocalBusiness|streetAddress|postalCode|taxID|vatID|Product|Offer|price|telephone|email)"|0091520061|Şehit Ali/);
 });
 
 it("uses only the pinned blurred facility source and unmodified optimized derivatives", () => {

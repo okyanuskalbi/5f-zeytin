@@ -25,14 +25,14 @@ export function ProductCard({ product, image, scene, index = 0 }: {
     initial={false} whileInView={reduced ? undefined : { y: [motionTokens.products.distance, 0], opacity: [0, 1] }}
     viewport={{ once: true, amount: 0.15 }}
     transition={{ duration: reduced ? 0 : motionTokens.products.duration, delay: reduced ? 0 : index * motionTokens.products.stagger, ease: motionTokens.products.ease }}>
-    <article className={styles.card} aria-labelledby={`${id}-name ${id}-weight`} data-product-id={product.id} data-category={product.category} data-size={product.weight}>
+    <article className={styles.card} aria-labelledby={`${id}-name`} data-product-id={product.id} data-category={product.category} data-size={product.weight}>
       {scene && <div data-product-scene="" aria-hidden="true" className={styles.scene}><V3Picture image={scene} sizes="(max-width: 767px) 50vw, 33vw" decorative /></div>}
       {index === 0 && <span className={styles.badge}>EN ÇOK ALINAN</span>}
       <button type="button" className={`${styles.image} ${styles.detailTrigger}`} aria-haspopup="dialog"
         aria-label={`${product.name}, ${product.weight} detayını aç`} onClick={event => openDetail?.(product.id, event.currentTarget)}>
         <V3Picture image={image} sizes="(max-width: 767px) 40vw, (max-width: 1023px) 25vw, 320px" />
       </button>
-      <h3 id={`${id}-name`}><button type="button" className={styles.detailTrigger} aria-haspopup="dialog"
+      <h3 id={`${id}-name`} aria-label={`${product.name}, ${product.weight}`}><button type="button" className={styles.detailTrigger} aria-haspopup="dialog" aria-label={`${product.name}, ${product.weight}`}
         onClick={event => openDetail?.(product.id, event.currentTarget)}>{product.name}</button></h3>
       <div className={styles.meta}>
         <span id={`${id}-weight`} aria-label="Boy" className={styles.size}>{product.weight}</span>

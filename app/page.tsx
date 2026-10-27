@@ -11,7 +11,10 @@ import { BusinessJsonLd } from "@/components/site/BusinessJsonLd";
 import { ProductDetailProvider } from "@/components/catalog/ProductDetailProvider";
 import { readProductFamilies } from "@/lib/catalog/read";
 
-export const dynamic = "force-dynamic";
+// This landing reads only anonymous catalog data, never session cookies.
+// Cache its HTML for five minutes while keeping catalog/API reads uncached.
+export const dynamic = "force-static";
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },

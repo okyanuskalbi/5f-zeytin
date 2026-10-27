@@ -33,7 +33,11 @@ describe("ZEYTİN bootstrap", () => {
   it("identifies the application as ZEYTİN in page metadata", async () => {
     const { metadata } = await import("../../app/layout");
 
-    expect(metadata.title).toBe("Afina Zeytin | Zeytin ve Zeytinyağı");
+    expect(metadata.title).toBe("Afina Zeytin | Düziçi'nden Zeytin ve Zeytinyağı");
+    expect(String(metadata.title).length).toBeLessThanOrEqual(60);
+    expect(metadata.openGraph).toMatchObject({ url: "/", type: "website", locale: "tr_TR", siteName: "Afina Zeytin" });
+    expect(String(metadata.metadataBase)).toBe("https://afinazeytin.com/");
+    expect(metadata.icons).toMatchObject({ apple: { url: "/apple-icon.png", sizes: "180x180", type: "image/png" } });
     expect(metadata.other).toMatchObject({ app: "zeytin" });
   });
 

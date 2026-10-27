@@ -12,6 +12,7 @@ function supabaseConnectSources(): string {
 }
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   async headers() {
     // Static/RSC pages emit inline hydration scripts and JSON-LD; inlineCss and
     // Motion also need inline styles. Nonces would require dynamic rendering
