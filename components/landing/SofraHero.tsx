@@ -26,7 +26,7 @@ function LayerPicture({ image, sizes, bit, loaded, failed }: {
   const srcSet = (format: string): string => image.outputs.filter(output => output.format === format).map(output => `${output.file} ${output.width}w`).join(", ");
   const fallback = image.outputs.find(output => output.format === "webp")!;
   // At 390px and 1440px these product planes sit inside the first-screen hero.
-  // The desktop tin can become LCP; its reveal also waits for the jar/branch.
+  // The desktop tin can become LCP; paint each layer without waiting for JS.
   // Keep all three eager/high; the mobile purchase-card LCP is eager in Hero.
   return <picture>
     <source type="image/avif" srcSet={srcSet("avif")} sizes={sizes} />
@@ -123,7 +123,7 @@ export function SofraHero({ products = [], productImage, children }: {
   }
 
   return <section ref={scope} data-hero-intro="" data-hero-visible="" data-reduced-motion={reduced} aria-labelledby="hero-title" className={styles.hero}
-    style={{ "--hero-reveal-duration": `${motionTokens.hero.revealDuration}s`, "--hero-mobile-factor": motionTokens.hero.mobileFactor } as CSSProperties}>
+    style={{ "--hero-reveal-duration": `${motionTokens.hero.revealDuration}s`, "--hero-reveal-distance": `${motionTokens.distance.xs}px`, "--hero-mobile-factor": motionTokens.hero.mobileFactor } as CSSProperties}>
     {active && !reduced && <HeroDepthMotion target={scope} />}
     <div data-layer="plate" data-hero-photo="" aria-hidden="true" className={styles.photo}>{children}</div>
     <div aria-hidden="true" className={styles.curtain} />
@@ -137,7 +137,7 @@ export function SofraHero({ products = [], productImage, children }: {
           <a href="#tesisimiz" className={styles.browse} onClick={event => browse(event, "tesisimiz")}>Tesisimiz</a>
         </div>
       </div>
-      <div data-layer="products" aria-hidden="true" data-ready={layersReady} className={styles.products}>
+      <div data-layer="products" aria-hidden="true" data-ready={layersReady} data-failed={layerState < 0} className={styles.products}>
         <div data-product="tin" className={styles.tin}>
           <i data-contact-shadow="" className={styles.contactShadow} />
           <LayerPicture image={layers.assets.teneke} sizes="(max-width: 900px) 18svh, 32svh" bit={1} loaded={loaded} failed={failed} />
@@ -147,7 +147,7 @@ export function SofraHero({ products = [], productImage, children }: {
           <LayerPicture image={layers.assets.kavanoz} sizes="(max-width: 900px) 8svh, 14svh" bit={2} loaded={loaded} failed={failed} />
         </div>
       </div>
-      <div data-layer="branch" aria-hidden="true" data-ready={layersReady} className={styles.branch}>
+      <div data-layer="branch" aria-hidden="true" data-ready={layersReady} data-failed={layerState < 0} className={styles.branch}>
         <LayerPicture image={layers.assets["on-dal"]} sizes="(max-width: 900px) 80vw, 72vw" bit={4} loaded={loaded} failed={failed} />
       </div>
       <div data-hero-card="" className={styles.card}>

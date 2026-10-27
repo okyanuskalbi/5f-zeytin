@@ -28,6 +28,37 @@ for (const width of [390, 768, 900, 901, 1440]) {
 
 // Claude executes these cases; Codex only writes/typechecks them.
 for (const viewport of [{ width: 390, height: 844 }, { width: 1440, height: 900 }]) {
+  for (const reducedMotion of ["reduce", "no-preference"] as const) {
+    test(`SSR hero paints without JavaScript at ${viewport.width}px / ${reducedMotion}`, async ({ browser, baseURL }) => {
+      const context = await browser.newContext({ javaScriptEnabled: false, viewport, reducedMotion });
+      try {
+        const page = await context.newPage();
+        await page.goto(new URL("/", baseURL!).href);
+        const hero = page.locator("[data-hero-intro]");
+        await expect(hero.getByRole("heading", { level: 1 })).toBeVisible();
+        await expect(hero.locator("[data-hero-card] img")).toBeInViewport();
+        for (const image of await hero.locator("img").all()) {
+          await expect.poll(() => image.evaluate((node: HTMLImageElement) => node.complete && node.naturalWidth > 0)).toBe(true);
+          await expect(image).toBeVisible();
+        }
+        for (const layer of await hero.locator("[data-layer], [data-hero-copy], [data-hero-card]").all()) {
+          await expect(layer).toHaveCSS("opacity", "1");
+        }
+        for (const layer of await hero.locator('[data-layer="products"], [data-layer="branch"]').all()) {
+          await expect(layer).toHaveAttribute("data-ready", "false");
+          await expect(layer).toHaveAttribute("data-failed", "false");
+          if (reducedMotion === "reduce") {
+            await expect(layer).toHaveCSS("translate", "none");
+            await expect(layer).toHaveCSS("animation-name", "none");
+          }
+        }
+        // This scroll-only control has no image and must not cover the SSR card.
+        await expect(page.locator("[data-mobile-buy-bar]")).toHaveAttribute("aria-hidden", "true");
+        await expect(page.locator("[data-mobile-buy-bar]")).toHaveAttribute("inert", "");
+        await expect(page.locator("[data-mobile-buy-bar]")).toHaveCSS("opacity", "0");
+      } finally { await context.close(); }
+    });
+  }
   test.describe(`hero card at ${viewport.width}px / 3x`, () => {
     test.use({ viewport, deviceScaleFactor: 3, reducedMotion: "reduce" });
     test("uses one responsive preload per hero image and preserves the card dimensions", async ({ page, browserName }) => {

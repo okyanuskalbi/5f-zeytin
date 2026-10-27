@@ -7,8 +7,11 @@
 .layout { width: min(1280px, calc(100% - 64px)); margin: 0 auto 32px; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 40px; align-items: end; }
 .copy, .details { min-width: 0; }
 .copy { position: relative; z-index: 2; }
-.products, .branch { position: absolute; pointer-events: none; opacity: 0; }
-.products[data-ready="true"], .branch[data-ready="true"] { opacity: 1; transition: opacity var(--hero-reveal-duration) ease-out; }
+/* Above-fold images paint from SSR; decode readiness must never hide an LCP.
+   Individual translate keeps the entrance separate from scroll's transform. */
+.products, .branch { position: absolute; pointer-events: none; opacity: 1; animation: hero-enter var(--hero-reveal-duration) ease-out; }
+.products[data-failed="true"], .branch[data-failed="true"] { opacity: 0; animation: none; }
+@keyframes hero-enter { from { translate: 0 var(--hero-reveal-distance); } to { translate: 0 0; } }
 /* The 44svh group travels 14% of its own height, close to the plate's 6%.
    A shared contact pivot keeps the table and both shadows together through scale. */
 .products { z-index: 3; right: max(7%, calc((100% - 1280px) / 2)); bottom: calc(100% - var(--table-contact)); height: 38svh; width: 35svh; }
@@ -76,10 +79,10 @@
 @media (prefers-reduced-motion: reduce) {
   .photo, .products, .branch, .copy, .purchase { transform: none !important; animation: none !important; }
   .copy { opacity: 1 !important; }
-  .products, .branch { transition: none; }
+  .products, .branch { translate: none !important; transition: none; }
 }
 .hero[data-reduced-motion="true"] :is(.photo, .products, .branch, .copy) { transform: none !important; }
 .hero[data-reduced-motion="true"] .copy { opacity: 1 !important; }
-.hero[data-reduced-motion="true"] :is(.products, .branch) { transition: none; }
+.hero[data-reduced-motion="true"] :is(.products, .branch) { translate: none !important; animation: none !important; transition: none; }
 /* The later mobile bar task can reuse this visibility signal. */
 :global(html:has([data-hero-visible]) [data-mini-cart]) { visibility: hidden; pointer-events: none; }

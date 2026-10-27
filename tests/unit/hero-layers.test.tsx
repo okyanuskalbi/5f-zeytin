@@ -44,6 +44,7 @@ it.each([0, 1, 2])("keeps the complete plate if enhancement image %i fails, incl
   fireEvent.error(images[failing]);
   images.forEach(image => fireEvent.load(image));
   expect(scene().every(layer => layer.dataset.ready === "false")).toBe(true);
+  expect(scene().every(layer => layer.dataset.failed === "true")).toBe(true);
   expect(document.querySelector('[data-layer="plate"] img')).not.toBeNull();
 });
 
@@ -66,6 +67,7 @@ it("waits for image decoding and hides both planes on a decode failure", async (
   images[0].decode = () => Promise.reject(new Error("decode failed"));
   await act(async () => fireEvent.load(images[0]));
   expect(scene().every(layer => layer.dataset.ready === "false")).toBe(true);
+  expect(scene().every(layer => layer.dataset.failed === "true")).toBe(true);
 });
 
 it("retains a complete static composition without inline transforms in reduced motion", async () => {
