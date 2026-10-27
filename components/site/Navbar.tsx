@@ -13,7 +13,15 @@ import { useCart } from "@/components/cart/CartProvider";
 import { BrandLogo } from "./BrandLogo";
 import styles from "./Navbar.module.css";
 
-const NavbarMenu = dynamic(() => import("./NavbarMenu").then(module => module.NavbarMenu));
+let navbarMenuPromise: Promise<typeof import("./NavbarMenu")["NavbarMenu"]> | undefined;
+const NavbarMenu = dynamic(() => navbarMenuPromise ??= import("./NavbarMenu").then(module => module.NavbarMenu));
+
+function preloadNavbarMenu(): void {
+  if (navbarMenuPromise) return;
+  navbarMenuPromise = import("./NavbarMenu").then(module => module.NavbarMenu);
+  // An optional preload failure must still allow the normal menu load to retry.
+  void navbarMenuPromise.catch(() => { navbarMenuPromise = undefined; });
+}
 
 const links = [
   { label: "Ürünler", href: "/#urunler" },
@@ -36,6 +44,22 @@ export function Navbar(): JSX.Element {
   useMotionValueEvent(scrollY, "change", (value) => {
     setScrolled(value > 40);
   });
+
+  useEffect(() => {
+    let idle: number | undefined;
+    let fallback: ReturnType<typeof setTimeout> | undefined;
+    const schedule = (): void => {
+      if (typeof window.requestIdleCallback === "function") idle = window.requestIdleCallback(preloadNavbarMenu);
+      else fallback = setTimeout(preloadNavbarMenu, 2000);
+    };
+    if (document.readyState === "complete") schedule();
+    else window.addEventListener("load", schedule, { once: true });
+    return () => {
+      window.removeEventListener("load", schedule);
+      if (idle !== undefined) window.cancelIdleCallback(idle);
+      clearTimeout(fallback);
+    };
+  }, []);
 
   useEffect(() => {
     if (!landing) return;
@@ -93,6 +117,7 @@ export function Navbar(): JSX.Element {
             <Link href="/hesabim">Hesabım</Link>
           </Button>
           <Button ref={triggerRef} variant="ghost" className={`${styles.control} ${styles.trigger}`} aria-label="Menüyü aç"
+            onPointerEnter={preloadNavbarMenu} onFocus={preloadNavbarMenu} onTouchStart={preloadNavbarMenu}
             aria-haspopup="dialog" aria-expanded={isOpen} onClick={() => setIsOpen(true)}>Menü</Button>
           {isOpen && <NavbarMenu links={links} onClose={() => setIsOpen(false)}
             onRestoreFocus={() => (window.matchMedia("(min-width: 901px)").matches ? homeRef : triggerRef).current?.focus()} />}

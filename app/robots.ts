@@ -12,6 +12,8 @@ export default function robots(): MetadataRoute.Robots {
         "/odeme-onizleme",
         "/hesabim",
         "/giris",
+        "/kayit",
+        "/admin",
         "/siparis-takip",
         "/__demo",
         "/%5F%5Fdemo",

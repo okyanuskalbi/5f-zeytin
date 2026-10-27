@@ -10,6 +10,9 @@ test("anonymous or forged demo state cannot access the production shell", async 
   await page.addInitScript(() => sessionStorage.setItem("afina:membership:demo-session:v1", JSON.stringify({ id: "forged", email: "admin@afina.com.tr", role: "admin" })));
   const response = await page.goto("/admin?role=admin");
   expect(response?.status()).toBe(401);
+  await expect(page.getByRole("heading", { level: 1, name: "Giriş gerekli", exact: true })).toBeVisible();
+  await expect(page.getByText("Bu sayfayı görmek için yönetici hesabıyla giriş yapın.", { exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Giriş yap", exact: true })).toHaveAttribute("href", "/giris?next=%2Fadmin");
   await expect(page.locator("[data-admin-shell]")).toHaveCount(0);
 });
 

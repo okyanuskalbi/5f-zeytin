@@ -1,6 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import robots from "@/app/robots";
 import sitemap from "@/app/sitemap";
+import { metadata as kvkkMetadata } from "@/app/kvkk/page";
+import { metadata as refundMetadata } from "@/app/iade/page";
+import { metadata as salesMetadata } from "@/app/mesafeli-satis/page";
 
 afterEach(() => { vi.useRealTimers(); });
 
@@ -17,6 +20,8 @@ describe("SEO metadata routes", () => {
           "/odeme-onizleme",
           "/hesabim",
           "/giris",
+          "/kayit",
+          "/admin",
           "/siparis-takip",
           "/__demo",
           "/%5F%5Fdemo",
@@ -39,5 +44,14 @@ describe("SEO metadata routes", () => {
         lastModified: buildDate,
       },
     ]);
+  });
+
+  it.each([
+    ["/kvkk", kvkkMetadata],
+    ["/iade", refundMetadata],
+    ["/mesafeli-satis", salesMetadata],
+  ] as const)("keeps the noindex legal draft %s out of the sitemap", (path, metadata) => {
+    expect(metadata.robots).toEqual({ index: false, follow: false });
+    expect(sitemap().map(entry => new URL(entry.url).pathname)).not.toContain(path);
   });
 });
