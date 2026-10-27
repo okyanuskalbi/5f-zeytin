@@ -40,6 +40,7 @@ backend (CI)
 | Komut / kontrol | Sonuç |
 |---|---|
 | `npx -y npm@11.19.1 ci --dry-run --ignore-scripts --no-audit --no-fund` (düzeltme sonrası, aynı yerel önbellekle) | **GREEN**, exit 0. |
+| `npx -y npm@11.19.0 ci --dry-run --ignore-scripts --no-audit --no-fund` (başarılı yeni CI koşusunun npm sürümü, aynı yerel önbellekle) | **PASS**, exit 0. |
 | `npm test -- --maxWorkers=2 --testTimeout=30000 --reporter=dot` | **PASS:** 72 dosya, **1104/1104** test. |
 | `npm run lint` | **PASS**, sıfır uyarı. |
 | `npm run typecheck` | **PASS**. |
@@ -47,6 +48,9 @@ backend (CI)
 | `git diff --check` | **PASS**. |
 
 - Tarayıcı testleri AGENTS.md gereği çalıştırılmadı; **Claude doğrulayacak**. Tarayıcı veya Next sunucusu açılmadı.
-- Actions yayın kabulü ilk push sonrası doğrulanacak; run id ve sonuç bu nota eklenecek. Yerel kontroller yeşil; durum yalnız bu uzak kabul tamamlanana kadar BEKLİYOR. RED/ara commit push edilmedi.
+- Düzeltme commit'i `258b31a5b4675b7012954062531a819c9c5c05e1`, tüm yerel kontroller yeşilken `origin main`'e gönderildi. **RED/ara commit push edilmedi.**
+- **Uzak kabul PASS:** `gh run watch 40591666574 --exit-status --interval 10` exit 0. [Test ve Vercel yayın — run 40591666574](https://github.com/okyanuskalbi/5f-zeytin/actions/runs/40591666574), `conclusion=success`; toplam 2 dk 20 sn. Gerçek `npm ci`, lint, typecheck, **72 dosya / 1104 test**, Vercel ayarlarını çekme, **Vercel build ve Vercel production yayını** adımlarının tamamı başarılı. Token yok uyarısı atlandı; yayın atlanmadı. `gh run view --json ...` ile run SHA'sının düzeltme commit'i olduğu ve yayın adımlarının ayrı ayrı `success` sonucu doğrulandı.
+- Yeni Actions runner'ı Node `24.21.0` / npm `11.19.0` kullandı; başarısız eski koşudaki `11.19.1` yanında bu sürümle de yerel dry-run tekrar doğrulandı. Workflow veya sürüm seçimi değiştirilmedi. Run'daki mevcut Node 20 action deprecation / ubuntu-latest geçiş uyarıları görevin kapsamında değiştirilmedi.
+- Tüm kabul kriterleri karşılandı. Bu son kabul kaydı yalnız task dokümanını değiştirir; workflow'un mevcut `paths-ignore` kuralı gereği doküman push'u yeni yayın başlatmaz.
 
-## Durum: BEKLİYOR
+## Durum: TAMAMLANDI
