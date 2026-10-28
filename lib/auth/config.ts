@@ -41,9 +41,9 @@ export function getAuthConfig() {
 }
 
 export function getAuthCookieOptions(): CookieOptions {
-  // Supabase SSR's browser client needs the same cookies to refresh sessions.
+  // Auth, PKCE exchanges and session refresh run only on the server.
   // Lax allows email-link navigation; mutations additionally require exact Origin.
-  return { path: "/", sameSite: "lax", secure: process.env.NODE_ENV === "production", httpOnly: false };
+  return { path: "/", sameSite: "lax", secure: process.env.NODE_ENV === "production", httpOnly: true };
 }
 
 export function safeAuthRedirect(path: string | null): string {

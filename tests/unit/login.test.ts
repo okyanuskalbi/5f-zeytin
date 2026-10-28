@@ -5,6 +5,7 @@ import { POST } from "@/app/api/auth/login/route";
 import { POST as logout } from "@/app/auth/logout/route";
 import { GET as callback } from "@/app/auth/callback/route";
 import { loginInvalidCredentials, magicLinkConfirmation, validateLoginRequest } from "@/lib/contracts/login";
+import { expectHttpOnlyAuthCookies } from "../helpers/auth-cookies";
 
 vi.mock("server-only", () => ({}));
 const jar = vi.hoisted(() => new Map<string, string>());
@@ -63,6 +64,7 @@ describe("password login with real SDK and mocked transport", () => {
     expect(options?.cache).toBe("no-store");
     expect(options?.signal).toBeInstanceOf(AbortSignal);
     expect(response.cookies.getAll()).toEqual(expect.arrayContaining([expect.objectContaining({ name: "sb-fixture-auth-token", secure: true, path: "/", sameSite: "lax" })]));
+    expectHttpOnlyAuthCookies(response.headers);
     expect(response.headers.get("cache-control")).toBe("private, no-store");
     expect(response.headers.get("referrer-policy")).toBe("no-referrer");
   });
@@ -112,6 +114,7 @@ describe("magic link", () => {
     expect(JSON.parse(String(options?.body))).toMatchObject({ email: "deniz@example.test", create_user: false, code_challenge_method: "s256", code_challenge: expect.any(String), data: {} });
     expect(response.cookies.getAll().length).toBeGreaterThan(0);
     expect(response.cookies.getAll().every(cookie => /-code-verifier(?:\.\d+)?$/.test(cookie.name))).toBe(true);
+    expectHttpOnlyAuthCookies(response.headers);
     for (const cookie of response.cookies.getAll()) jar.set(cookie.name, cookie.value);
     fetchMock.mockResolvedValueOnce(Response.json(session()));
     redirect.searchParams.set("code", "fixture-email-code");
@@ -124,6 +127,8 @@ describe("magic link", () => {
     const success = await POST(request(magic));
     fetchMock.mockResolvedValueOnce(Response.json({ msg: "private-user-missing", code: "otp_disabled" }, { status }));
     const missing = await POST(request(magic));
+    expectHttpOnlyAuthCookies(success.headers);
+    expectHttpOnlyAuthCookies(missing.headers);
     expect(missing.status).toBe(202);
     expect(await missing.json()).toEqual(await success.json());
     const shape = (response: typeof missing) => response.cookies.getAll().map(cookie => ({ name: cookie.name.replace(/-flow-[a-z0-9]+-/, "-flow-"), deleted: cookie.maxAge === 0 }));

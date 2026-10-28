@@ -1,20 +1,17 @@
 // @vitest-environment node
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { NextRequest } from "next/server";
-import * as ssr from "@supabase/ssr";
+import { NextRequest, NextResponse } from "next/server";
+import type { CookieOptions } from "@supabase/ssr";
 import { GET, dynamic } from "@/app/auth/callback/route";
 import { POST } from "@/app/auth/logout/route";
 import { createAuthServerClient, getVerifiedUser, assertAuthMutation } from "@/lib/auth/server";
-import { createAuthBrowserClient } from "@/lib/auth/client";
 import { getAuthConfig, getAuthCookieOptions, safeAuthRedirect } from "@/lib/auth/config";
 import { proxy, config } from "@/proxy";
+import { expectHttpOnlyAuthCookies } from "../helpers/auth-cookies";
 
 vi.mock("server-only", () => ({}));
-vi.mock("@supabase/ssr", async importOriginal => ({
-  ...await importOriginal<typeof import("@supabase/ssr")>(), createBrowserClient: vi.fn(),
-}));
 const jar = vi.hoisted(() => new Map<string, string>());
-const setCookie = vi.hoisted(() => vi.fn((name: string, value: string) => { jar.set(name, value); }));
+const setCookie = vi.hoisted(() => vi.fn<(name: string, value: string, options?: CookieOptions) => void>());
 vi.mock("next/headers", () => ({ cookies: async () => ({
   getAll: () => [...jar].map(([name, value]) => ({ name, value })), set: setCookie,
 }) }));
@@ -39,9 +36,17 @@ function putSession(expired = false) {
 const callback = (query = "code=test-code", headers?: HeadersInit) => new Request(`${origin}/auth/callback?${query}`, { headers });
 const logout = (headers: HeadersInit = { origin }) => new Request(`${origin}/auth/logout`, { method: "POST", headers });
 const fetchMock = vi.fn<typeof fetch>();
+let cookieWrites: NextResponse;
 
 beforeEach(() => {
   jar.clear(); setCookie.mockClear(); fetchMock.mockReset();
+  // Next merges cookies() writes into Route Handler responses. Serialize those
+  // writes with its real response cookie implementation in this mocked context.
+  cookieWrites = new NextResponse(null);
+  setCookie.mockImplementation((name, value, options) => {
+    jar.set(name, value);
+    cookieWrites.cookies.set(name, value, options);
+  });
   vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", supabaseUrl);
   vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", publicKey);
   vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "task040-service-must-never-be-used");
@@ -52,7 +57,7 @@ beforeEach(() => {
 });
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllEnvs(); vi.unstubAllGlobals(); });
 
-describe("public auth configuration and browser boundary", () => {
+describe("public auth configuration and server cookie boundary", () => {
   it("uses only the public key and normalizes the URL", () => {
     expect(getAuthConfig()).toEqual({ url: supabaseUrl, key: publicKey, siteOrigin: origin });
   });
@@ -97,26 +102,11 @@ describe("public auth configuration and browser boundary", () => {
     vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", key);
     expect(getAuthConfig().key).toBe(key);
   });
-  it("uses host-only, HTTPS production cookies compatible with browser SSR refresh", () => {
+  it("uses host-only, HttpOnly cookies with HTTPS in production and server-side refresh", () => {
     vi.stubEnv("NODE_ENV", "production");
-    expect(getAuthCookieOptions()).toEqual({ path: "/", sameSite: "lax", secure: true, httpOnly: false });
+    expect(getAuthCookieOptions()).toEqual({ path: "/", sameSite: "lax", secure: true, httpOnly: true });
     vi.stubEnv("NODE_ENV", "development");
     expect(getAuthCookieOptions().secure).toBe(false);
-  });
-  it("does not instantiate a browser client on the server", () => {
-    expect(() => createAuthBrowserClient()).toThrow("Browser auth client requires a browser");
-    expect(fetchMock).not.toHaveBeenCalled();
-  });
-  it("creates a PKCE cookie client with only public config and no implicit URL session", () => {
-    vi.stubGlobal("window", {});
-    vi.stubEnv("NODE_ENV", "production");
-    vi.stubEnv("SITE_ORIGIN", undefined);
-    const client = {} as ReturnType<typeof ssr.createBrowserClient>;
-    const create = vi.mocked(ssr.createBrowserClient).mockReturnValue(client);
-    expect(createAuthBrowserClient()).toBe(client);
-    expect(create).toHaveBeenCalledWith(supabaseUrl, publicKey, expect.objectContaining({
-      cookieOptions: getAuthCookieOptions(), auth: { detectSessionInUrl: false },
-    }));
   });
 });
 
@@ -152,8 +142,9 @@ describe("SSR identity verification and cookie refresh", () => {
     expect(await getVerifiedUser(client)).toEqual({ id: user.id, email: user.email });
     expect(String(fetchMock.mock.calls[0][0])).toContain("grant_type=refresh_token");
     expect(setCookie).toHaveBeenCalledWith(cookieName, expect.any(String), expect.objectContaining({
-      secure: true, sameSite: "lax", path: "/", httpOnly: false,
+      secure: true, sameSite: "lax", path: "/", httpOnly: true,
     }));
+    expectHttpOnlyAuthCookies(cookieWrites.headers);
   });
   it("keeps Server Component cookie access read-only", async () => {
     putSession(true);
@@ -220,12 +211,18 @@ describe("callback allowlist and PKCE login CSRF protection", () => {
     expect(String(url)).toBe(`${supabaseUrl}/auth/v1/token?grant_type=pkce`);
     expect(JSON.parse(String(options?.body))).toEqual({ auth_code: "test-code", code_verifier: verifier });
     expect(setCookie).toHaveBeenCalledWith(cookieName, expect.any(String), expect.objectContaining({ sameSite: "lax" }));
+    expect(cookieWrites.cookies.get(cookieName)?.value).toBeTruthy();
+    expect(cookieWrites.cookies.get(`${cookieName}-code-verifier`)).toMatchObject({ value: "", maxAge: 0 });
+    expectHttpOnlyAuthCookies(cookieWrites.headers);
   });
   it("supports the SDK's per-flow PKCE verifier without borrowing another browser flow", async () => {
     putCookie(`${cookieName}-flow-testflow123-code-verifier`, verifier);
     const response = await GET(callback("code=test-code&sb_flow_id=testflow123"));
     expect(response.status).toBe(303);
     expect(JSON.parse(String(fetchMock.mock.calls[0][1]?.body)).code_verifier).toBe(verifier);
+    expect(cookieWrites.cookies.get(cookieName)?.value).toBeTruthy();
+    expect(cookieWrites.cookies.get(`${cookieName}-flow-testflow123-code-verifier`)).toMatchObject({ value: "", maxAge: 0 });
+    expectHttpOnlyAuthCookies(cookieWrites.headers);
   });
   it("cannot establish a login without a browser-bound verifier", async () => {
     const response = await GET(callback());
@@ -302,6 +299,7 @@ describe("mutation CSRF and logout", () => {
     expect(await response.text()).toBe("");
     expect(String(fetchMock.mock.calls.at(-1)?.[0])).toBe(`${supabaseUrl}/auth/v1/logout?scope=local`);
     expect(setCookie).toHaveBeenCalledWith(cookieName, "", expect.objectContaining({ maxAge: 0, path: "/" }));
+    expectHttpOnlyAuthCookies(cookieWrites.headers);
     expect(response.headers.get("cache-control")).toContain("no-store");
   });
   it("allows repeated logout without a session", async () => {
@@ -352,6 +350,7 @@ describe("SSR proxy refresh transport", () => {
     const request = new NextRequest(`${origin}/hesabim`, { headers: { cookie: `${cookieName}=${jar.get(cookieName)}` } });
     const response = await proxy(request);
     expect(response.cookies.get(cookieName)?.value).toBeTruthy();
+    expectHttpOnlyAuthCookies(response.headers);
     expect(response.headers.get("x-middleware-request-cookie")).toContain(response.cookies.get(cookieName)!.value);
     expect(response.headers.get("cache-control")).toContain("no-store");
     expect(response.headers.get("pragma")).toBe("no-cache");

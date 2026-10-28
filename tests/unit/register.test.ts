@@ -4,6 +4,7 @@ import { NextRequest } from "next/server";
 import { POST } from "@/app/api/auth/register/route";
 import { GET as confirmRegistration } from "@/app/auth/callback/route";
 import { registrationConfirmation, validateRegisterRequest } from "@/lib/contracts/register";
+import { expectHttpOnlyAuthCookies } from "../helpers/auth-cookies";
 
 vi.mock("server-only", () => ({}));
 const callbackCookies = vi.hoisted(() => new Map<string, string>());
@@ -100,6 +101,7 @@ describe("registration API with real Supabase SDK and mocked transport", () => {
     const cookies = response.cookies.getAll();
     expect(cookies.length).toBeGreaterThan(0);
     expect(cookies.every(cookie => /-code-verifier(?:\.\d+)?$/.test(cookie.name) && cookie.secure && cookie.sameSite === "lax")).toBe(true);
+    expectHttpOnlyAuthCookies(response.headers);
     expect(response.headers.get("cache-control")).toBe("private, no-store");
     expect(response.headers.get("referrer-policy")).toBe("no-referrer");
   });
@@ -133,6 +135,8 @@ describe("registration API with real Supabase SDK and mocked transport", () => {
     const success = await POST(request());
     fetchMock.mockImplementationOnce(async () => Response.json({ code, msg: "private member@example.test" }, { status: 422 }));
     const duplicate = await POST(request());
+    expectHttpOnlyAuthCookies(success.headers);
+    expectHttpOnlyAuthCookies(duplicate.headers);
     expect(duplicate.status).toBe(success.status);
     expect(await duplicate.json()).toEqual(await success.json());
     const cookieShape = (response: typeof duplicate) => response.cookies.getAll().map(cookie => cookie.name.replace(/-flow-[a-z0-9]+-/, "-flow-"));
