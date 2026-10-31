@@ -6,6 +6,7 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { MotionProvider } from "@/components/site/MotionProvider";
+import { MembershipDialogProvider } from "@/components/account/MembershipDialogProvider";
 import { getProducts } from "@/lib/catalog/static-products";
 import { isCheckoutDemoEnabled } from "@/lib/checkout/adapter";
 import { siteIdentity } from "@/lib/site/identity";
@@ -72,11 +73,11 @@ export default async function RootLayout({
           Ana içeriğe geç
         </a>
         <MotionProvider><CartProvider products={products} checkoutHref={isCheckoutDemoEnabled() ? "/odeme" : null}>
-          <Navbar />
+          <MembershipDialogProvider><Navbar />
           <div id="ana-icerik" tabIndex={-1} className="scroll-mt-28 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring">
             {children}
           </div>
-          <Footer />
+          <Footer /></MembershipDialogProvider>
         </CartProvider></MotionProvider>
       </body>
     </html>

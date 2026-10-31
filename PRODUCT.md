@@ -34,7 +34,8 @@ Dört gerçek birlikte; rakip aynı cümleyi doğrulukla kuramaz:
 - Alışveriş:
   - Sepet çekmecesi, upsell, kupon.
   - Terk edilen sepet indirim e-postası.
-  - Üyelik (Google ile giriş), sipariş takibi, kargo.
+  - Üyelik: e-posta/şifre, e-posta bağlantısı, Bazgold referanslı giriş/kayıt penceresi. Google OAuth yapılandırması bekler.
+  - Müşteri paneli: sipariş listesi/detayı, adresler, hesap bilgileri, mevcut şifreyle güvenlik ve çıkış. Yerel kod/migration hazır; gerçek sipariş yazıcısı ve uzak DB kabulü bekler.
   - Ödeme yalnız PayTR iFrame.
 
 ## Capabilities and Constraints

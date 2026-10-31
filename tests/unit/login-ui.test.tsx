@@ -31,7 +31,7 @@ it("renders the real form in production, keeps guest/register links and disables
   expect(screen.getByRole("heading", { level: 1 }).textContent).toBe("Soframıza hoş geldiniz.");
   expect(form()).toBeTruthy();
   expect(metadata.robots).toEqual({ index: false, follow: false });
-  expect(screen.queryByRole("button", { name: /Google/ })).toBeNull();
+  expect((screen.getByRole("button", { name: /Google/ }) as HTMLButtonElement).disabled).toBe(true);
   expect(document.body.textContent).not.toMatch(/Demo|yakında/);
   expect(screen.getByRole("link", { name: "Üye ol" }).getAttribute("href")).toBe("/kayit");
   expect(screen.getByRole("link", { name: "Üye olmadan alışverişe devam et" }).getAttribute("href")).toBe("/sepet");

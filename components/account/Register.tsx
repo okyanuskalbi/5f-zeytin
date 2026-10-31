@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
-import Image from "next/image";
+import { MembershipFrame, GoogleAvailability } from "./MembershipFrame";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,21 +12,16 @@ import { Field, useMembershipAction } from "./FormControls";
 import styles from "./Membership.module.css";
 
 // Reuses the existing 21st-derived split composition in SignIn and AFİNA tokens.
-export function Register() {
-  return <main className={styles.page}>
-    <div className={styles.split}>
-      <div className={styles.formSide}>
-        <header className={styles.intro}><h1>Soframıza katılın.</h1><p>E-posta adresinizle hesabınızı oluşturun. Üyeliğinizi e-posta bağlantısıyla doğrulayın.</p></header>
-        <RegisterForm />
-        <p>Zaten hesabınız var mı? <Link href="/giris" className={styles.textLink}>Giriş yap</Link></p>
-        <Link href="/sepet" className={styles.textLink}>Üye olmadan alışverişe devam et</Link>
-      </div>
-      <figure className={styles.story}>
-        <Image src="/images/hero/zeytinlik-2400.webp" alt="Zeytin ağaçları arasında gün ışığı" width={2400} height={1350} sizes="(min-width: 1024px) 48vw, 100vw" />
-        <figcaption><p>Kökü toprakta.<br />Yeri sofrada.</p></figcaption>
-      </figure>
-    </div>
-  </main>;
+export function Register({ embedded = false }: { embedded?: boolean } = {}) {
+  const Heading = embedded ? "h2" : "h1";
+  const content = <>
+    <header className={styles.intro}><Heading>Soframıza katılın.</Heading><p>E-posta adresinizle hesabınızı oluşturun. Üyeliğinizi e-posta bağlantısıyla doğrulayın.</p></header>
+    <GoogleAvailability />
+    <RegisterForm />
+    <p>Zaten hesabınız var mı? <Link href="/giris" className={styles.textLink}>Giriş yap</Link></p>
+    <Link href="/sepet" className={styles.textLink}>Üye olmadan alışverişe devam et</Link>
+  </>;
+  return embedded ? content : <MembershipFrame mode="register">{content}</MembershipFrame>;
 }
 
 function RegisterForm() {

@@ -21,7 +21,7 @@ beforeEach(() => {
 });
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.unstubAllEnvs(); });
 
-it("renders a production registration form with separate unchecked consents, recovery links and no Google", () => {
+it("renders a production registration form with separate unchecked consents, recovery links and an unavailable Google option", () => {
   vi.stubEnv("NODE_ENV", "production");
   render(<Page />);
   expect(screen.getByRole("heading", { level: 1 }).textContent).toBe("Soframıza katılın.");
@@ -29,8 +29,8 @@ it("renders a production registration form with separate unchecked consents, rec
   const marketing = screen.getByRole("checkbox", { name: /Ticari/ }) as HTMLInputElement;
   expect(marketing.checked).toBe(false);
   expect(marketing.required).toBe(false);
-  expect(screen.queryByRole("button", { name: /Google/ })).toBeNull();
-  expect(screen.getByRole("link", { name: "Giriş yap" }).getAttribute("href")).toBe("/giris");
+  expect((screen.getByRole("button", { name: /Google/ }) as HTMLButtonElement).disabled).toBe(true);
+  expect(screen.getAllByRole("link", { name: "Giriş yap" }).every(link => link.getAttribute("href") === "/giris")).toBe(true);
   expect(screen.getByRole("link", { name: "Üye olmadan alışverişe devam et" }).getAttribute("href")).toBe("/sepet");
   expect(field("Şifre").autocomplete).toBe("new-password");
   expect(field("Şifre").minLength).toBe(10);

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
+import { MembershipFrame, GoogleAvailability } from "./MembershipFrame";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,7 +15,7 @@ import styles from "./Membership.module.css";
 
 // 21st diarmuradi/sign-in-3 (39096): preserve the split/password composition.
 // Use the approved orchard and AFİNA tokens; Google awaits OAuth approval.
-export function SignIn({ next = "/hesabim", signedIn = false, unavailable = false }: { next?: string; signedIn?: boolean; unavailable?: boolean }) {
+export function SignIn({ next = "/hesabim", signedIn = false, unavailable = false, embedded = false, onAuthenticated }: { next?: string; signedIn?: boolean; unavailable?: boolean; embedded?: boolean; onAuthenticated?: () => void }) {
   const router = useRouter();
   const [signedOut, setSignedOut] = useState(false);
   const sessionOpen = signedIn && !signedOut;
@@ -44,6 +44,7 @@ export function SignIn({ next = "/hesabim", signedIn = false, unavailable = fals
       if (method === "magic_link" && response.status === 202 && result && "data" in result && result.data?.status === "link_requested") return magicLinkConfirmation;
       if (method !== "password" || response.status !== 200 || !result || !("data" in result) || result.data?.status !== "signed_in") throw new MembershipError("Üyelik hizmeti şu anda kullanılamıyor. Lütfen yeniden deneyin.");
       setPassword("");
+      onAuthenticated?.();
       router.replace(safeAuthRedirect(result.data.redirectTo));
       router.refresh();
     });
@@ -56,6 +57,7 @@ export function SignIn({ next = "/hesabim", signedIn = false, unavailable = fals
       if (response.status === 429) throw new MembershipError("Çok fazla deneme. Daha sonra yeniden deneyin.");
       if (response.status !== 204) throw new MembershipError("Çıkış yapılamadı. Lütfen yeniden deneyin.");
       setSignedOut(true); setPassword("");
+      onAuthenticated?.();
       router.replace("/giris"); router.refresh();
       return "Oturumunuz kapatıldı.";
     });
@@ -63,10 +65,10 @@ export function SignIn({ next = "/hesabim", signedIn = false, unavailable = fals
 
   const message = feedback.message || (initialFailure ? "Üyelik hizmeti şu anda kullanılamıyor. Lütfen yeniden deneyin." : "");
   const failed = feedback.error || initialFailure;
-  return <main className={styles.page}>
-    <div className={styles.split}>
-      <div className={styles.formSide}>
-        <header className={styles.intro}><h1>Soframıza hoş geldiniz.</h1><p>Hesabınıza giriş yapın, sofranız için seçtiklerinizi takip edin.</p></header>
+  const Heading = embedded ? "h2" : "h1";
+  const content = <>
+        <header className={styles.intro}><Heading>Soframıza hoş geldiniz.</Heading><p>Hesabınıza giriş yapın, sofranız için seçtiklerinizi takip edin.</p></header>
+        {!sessionOpen && <GoogleAvailability />}
         {sessionOpen ? <div className={styles.form}>
           <p>Oturumunuz açık.</p>
           <Button asChild><Link href={destination}>Alışverişe devam et</Link></Button>
@@ -87,13 +89,9 @@ export function SignIn({ next = "/hesabim", signedIn = false, unavailable = fals
           </fieldset>
         </form>}
         <p ref={feedbackRef} tabIndex={-1} role={failed ? "alert" : "status"} aria-live={failed ? "assertive" : "polite"} aria-atomic="true" className={`${styles.feedback} ${failed ? styles.error : ""}`}>{busy ? "İsteğiniz işleniyor…" : message}</p>
+        {!sessionOpen && <Button variant="link" onClick={() => { setMethod("magic_link"); setPassword(""); setShowPassword(false); }}>Şifremi unuttum</Button>}
         <p>Hesabınız yok mu? <Link href="/kayit" className={styles.textLink}>Üye ol</Link></p>
         <Link href="/sepet" className={styles.textLink}>Üye olmadan alışverişe devam et</Link>
-      </div>
-      <figure className={styles.story}>
-        <Image src="/images/hero/zeytinlik-2400.webp" alt="Zeytin ağaçları arasında gün ışığı" width={2400} height={1350} sizes="(min-width: 1024px) 48vw, 100vw" />
-        <figcaption><p>Kökü toprakta.<br />Yeri sofrada.</p></figcaption>
-      </figure>
-    </div>
-  </main>;
+  </>;
+  return embedded ? content : <MembershipFrame mode="login">{content}</MembershipFrame>;
 }

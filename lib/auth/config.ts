@@ -47,5 +47,5 @@ export function getAuthCookieOptions(): CookieOptions {
 }
 
 export function safeAuthRedirect(path: string | null): string {
-  return path && ["/hesabim", "/sepet", "/odeme"].includes(path) ? path : "/hesabim";
+  return path && ["/hesabim", "/hesabim/siparisler", "/hesabim/adresler", "/hesabim/bilgilerim", "/hesabim/guvenlik", "/sepet", "/odeme"].includes(path) ? path : "/hesabim";
 }

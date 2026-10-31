@@ -236,3 +236,7 @@ Tarihsel görev tablosu eski plan durumunu gösterir; tek tek task dosyaları ge
 Müşteri PDF’si ilk sayfasındaki araçsız tesis görseli optimize edildi; kaynak PDF/görsel ve çıktı SHA’ları `lib/media/renewal-assets.json` içinde. Yeni iç tesis/paketleme/sevkiyat fotoğrafları bulunmadı; temsili sahneler gerçek hat fotoğrafı gibi sunulmadı. 400 ton veya sertifika iddiası eklenmedi.
 
 Yeni kurumsal form mevcut `WholesaleRequest` sözleşmesini kullanır; Zoho hesabı/ağ isteği oluşturulmadı. Onaylı gönderim servisi ve gerçek iletişim kanalları henüz yok; gönderim kapalı ve açıkça belirtilir. Statik katalogdaki fiyat/stoklar temsili kalır; gerçek ticaret kabulü sayılmaz.
+
+## 1 Kasım 2026: müşteri üyeliği ve panel
+
+[Task 154](tasks/154-bazgold-uyelik-paneli.md), kullanıcının Bazgold ekran görüntüsüyle verdiği fullstack geliştirme yetkisiyle tamamlandı: çift sütunlu AFİNA üyelik penceresi, sipariş listesi/detayı, adres defteri, profil ve güvenlik. Mevcut doğrulanmış Supabase Auth sınırı ve PayTR mimarisi korunur. Yeni müşteri tabloları/RPC yerel migration ve bellek içi PostgreSQL testleriyle hazır; uzak hedefte uygulanmadı. Sipariş oluşturma/ödeme callback entegrasyonu ve canlı Google OAuth ayrı açık işlerdir.

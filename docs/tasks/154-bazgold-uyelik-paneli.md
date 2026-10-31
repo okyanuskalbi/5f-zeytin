@@ -23,4 +23,13 @@ fullstack, yerel uygulama ve migration hazırlığı
 - npm test (en fazla 2 worker), lint, typecheck, build.
 - Mevcut ayrı yetki kuralı nedeniyle tarayıcı/e2e/Lighthouse çalıştırılmaz. Live auth/Google/DB/push/deploy kabulü ayrı kanıttır.
 
-## Durum: UYGULANIYOR
+## Coder Notu
+- RED checkpoint: `672a939`; görsel üyelik kabuğu ve beş müşteri bölümü önce eksik olarak doğrulandı. Gerçek 21st 20038/39096 kaynakları mevcut Radix/shadcn ve AFİNA paletine uyarlandı. Yeni bağımlılık eklenmedi.
+- Giriş/kayıt penceresi Navbar'dan tembel yüklenir; doğrudan /giris ve /kayit yolları korunur. Gerçek giriş başarılı olunca pencere kapanır; Escape ve tetikleyiciye odak dönüşü unit testinde doğrulandı. Google OAuth yapılandırılmadığı için seçenek kapalı ve açıklamalıdır.
+- Yeni sunucu API'leri doğrulanmış oturumun kimliğini kullanır; adres işlemleri atomik RPC, sipariş listesi/detayı sahip filtresi ve sınırlı sayfalama kullanır. Profil rol/e-posta yazamaz; şifre değişimi önce mevcut şifreyi doğrular. CSRF, 8 KiB gerçek gövde sınırı, no-store ve güvenli hata mesajları test edildi.
+- `20261101000005_customer_panel.sql` yalnız yerel PGlite üzerinde uygulandı. Üç server-only tabloda RLS + anon/authenticated REVOKE + service_role dört DML yetkisi; RPC EXECUTE yalnız service_role. Başkasının adresini değiştirme/silme, tek varsayılan ve 20 adres sınırı test edildi.
+- Sipariş okuma sözleşmesi hazırdır; gerçek sipariş oluşturma/PayTR callback yazıcısı bu görev değildir. Task 044–050 ve canlı ticaret kabulü açık kalır. Hedef migration eksikliğini boş sipariş geçmişi gibi göstermez.
+- Son tam kontrol: 82 dosya / 1143 test PASS; lint PASS; typecheck PASS; production build PASS. Yerel migration testleri ayrıca PASS. 21st kaynak incelemesi: 0 error, 0 warning, 39 info (belgelenmiş panel renk token'ları).
+- Tarayıcı doğrulaması yapılmadı; e2e/Lighthouse/yerel site ekran görüntüsü çalıştırılmadı. Canlı migration, Google OAuth, gerçek ödeme/cihaz kabulü ve yayın yapılmadı. Üyelik yerel kod teslimi tamamlandı.
+
+## Durum: TAMAMLANDI

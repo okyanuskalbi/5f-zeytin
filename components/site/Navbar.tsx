@@ -10,6 +10,7 @@ import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
 import { springs, motionTokens } from "@/lib/ui-motion";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/cart/CartProvider";
+import { useMembershipDialog } from "@/components/account/MembershipDialogProvider";
 import { BrandLogo } from "./BrandLogo";
 import styles from "./Navbar.module.css";
 
@@ -33,8 +34,10 @@ const links = [
 ];
 
 export function Navbar(): JSX.Element {
-  const landing = usePathname() === "/";
+  const pathname = usePathname();
+  const landing = pathname === "/";
   const cart = useCart();
+  const openMembership = useMembershipDialog();
   const itemCount = cart?.state.items.reduce((count, item) => count + item.quantity, 0) ?? 0;
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -117,7 +120,7 @@ export function Navbar(): JSX.Element {
             </AnimatePresence>)
           </Button>
           <Button asChild variant="ghost" className={`${styles.control} ${styles.account}`}>
-            <Link href="/hesabim">Hesabım</Link>
+            <Link href="/hesabim" onClick={event => { if(openMembership && pathname !== "/giris" && pathname !== "/kayit" && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey){event.preventDefault();openMembership(event.currentTarget);} }}>Hesabım</Link>
           </Button>
           <Button ref={triggerRef} variant="ghost" className={`${styles.control} ${styles.trigger}`} aria-label="Menüyü aç"
             onPointerEnter={preloadNavbarMenu} onFocus={preloadNavbarMenu} onTouchStart={preloadNavbarMenu}
