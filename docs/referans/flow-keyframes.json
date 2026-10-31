@@ -3,8 +3,8 @@
   "provider": "Google Flow",
   "imageModel": "Nano Banana 2.1",
   "imageCreditsDisplayed": 0,
-  "videoCount": 0,
-  "videoCreditsSpent": 0,
+  "videoCount": 1,
+  "videoCreditsSpent": 20,
   "newFrameApproval": "pending",
   "frames": [
     {
@@ -58,6 +58,51 @@
   ],
   "proposedFirstVideoCreditCap": 20,
   "proposedTotalVideoCreditCap": 80,
-  "videoBudgetApproved": false,
-  "exactPrompts": "Flow project image version history"
+  "videoBudgetApproved": true,
+  "exactPrompts": "Flow project image version history",
+  "approvedVideoCreditCap": 20,
+  "approvedScope": "A→B only; explicit user approval 2026-11-01",
+  "balanceAfterVideoGeneration": 230,
+  "remainingApprovedCredits": 0,
+  "publicationApproval": "pending",
+  "allFramesUploadedToFlow": true,
+  "video": {
+    "transition": "A→B",
+    "provider": "Google Flow",
+    "model": "Veo 3.1 Fast",
+    "file": "A-B-ilk-deneme.mp4",
+    "sha256": "be77f66a14e418791093fe53937598204313a99f6368204f1fbf6ebaacf14171",
+    "bytes": 7390220,
+    "width": 1280,
+    "height": 720,
+    "durationSeconds": 7.93,
+    "fps": 24,
+    "codec": "h264",
+    "runtime": false,
+    "flowUrl": "https://flow.google.com/project/62040049-3473-446b-9d93-8e6cbc45f8bc/edit/973f2107-b057-425e-87a9-20ac869c40aa",
+    "preview": "output/flow-keyframes/A-B-onizleme.mp4",
+    "reviewStrip": "output/flow-keyframes/A-B-kare-seridi.jpg"
+  },
+  "transitions": [
+    {
+      "first": "A",
+      "last": "B",
+      "status": "generated-20-credits"
+    },
+    {
+      "first": "B",
+      "last": "C",
+      "status": "references-ready-budget-not-authorized"
+    },
+    {
+      "first": "C",
+      "last": "D",
+      "status": "references-ready-budget-not-authorized"
+    },
+    {
+      "first": "D",
+      "last": "F",
+      "status": "references-ready-background-continuity-pending"
+    }
+  ]
 }

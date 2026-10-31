@@ -75,6 +75,6 @@ Yeniden kurgu sırasında (KURUMSAL 050–063, ZEYTİN 090–096 ve 100–106) b
 
 ## Güncel medya ve müşteri yönü (1 Kasım 2026)
 - Müşteri PDF’si: üretim/kurumsal güven yaklaşık %65, ürün/alışveriş %35; yeni açılış ve kurumsal/toptan akış Task 151. Resmî slogan “Kökü toprakta. Yeri sofrada.” korunur; PDF’deki alternatif yalnız öneridir.
-- Yeni video üretimi yalnız Google Flow. AtlasCloud çağrısı/fallback/kredi kullanma. Ücretli kapsam ve kredi sınırı kullanıcıdan alınır; mevcut 250 kredi bakiyesi harcama yetkisi değildir. Kullanıcı son yönü: önce before/after, yani başlangıç/bitiş referanslarını görmek; video üretimi başlatılmadı.
+- Yeni video üretimi yalnız Google Flow. AtlasCloud çağrısı/fallback/kredi kullanma. Ücretli kapsam ve kredi sınırı kullanıcıdan alınır; mevcut 250 kredi bakiyesi harcama yetkisi değildir. Kullanıcı son yönü: her sahne için ilk/son kare. Beş referans Flow’a yüklendi; açık onayla yalnız A→B ilk klip 20 krediye üretildi, bakiye 230. Onaylı 20 kredi sınırı tüketildi; yeni bütçe verilmeden diğer klip veya tekrar üretme. Yeni klip public/runtime kabulü almadı.
 - Onaysız medya public/runtime’a bağlanmaz. Hazır SDR’ye ikinci ACES/tone mapping uygulanmaz. Özel canvas Task 083 yeniden kullanılır; body/wheel/touch scroll kilidi veya autoplay loop eklenmez.
 - Test tarayıcısı yalnız paketli headless Chromium, worker ≤2. /Applications/Google Chrome.app test/Lighthouse için açılmaz; düzgün kapanış zorunlu. Google Flow üretim oturumu bu test kısıtından ayrıdır.

@@ -10,7 +10,7 @@ Kullanıcı: yalnız Google Flow; ağaç → dal/zeytin → hasat → yağ akı�
 - Kullanıcının paylaştığı Chrome oturumunda Flow PLUS ve 250 kredi görüldü.
 - Ayrı AFİNA çalışma projesi: https://flow.google.com/project/62040049-3473-446b-9d93-8e6cbc45f8bc
 - Google Veo 3.1 Fast seçildi; 16:9, 720p, 8 saniye, tek çıktı. Ekran bu ayarda 20 kredi gösterdi.
-- Video için ilk sahne istemi hazırlanmıştı; ücretli video Oluşturmaya başla düğmesine basılmadı. 5 klip/100 kredi önerisi kullanıcı tarafından onaylanmadı; önce referans önizlemesi istendi. Son plan beş anahtar kare/dört geçiş, en çok 80 kredi; önce tek A→B denemesi 20 kredi önerilir.
+- İlk hazırlıkta ücretli üretim başlatılmadı; 5 klip/100 kredi önerisi yerine referans önizlemesi istendi. Son plan beş anahtar kare/dört geçiştir. Sonradan yalnız A→B tek denemesi için açık 20 kredi onayı verildi ve tamamlandı; dört geçiş için 80 kredi önerisi yetki sayılmaz.
 - In-app browser farklı Google hesabındaydı; harcama yapılmadı. Üretim için kullanıcının belirttiği Chrome hesabı esas alınır.
 
 ## İş akışı
@@ -28,6 +28,12 @@ Kullanıcı: yalnız Google Flow; ağaç → dal/zeytin → hasat → yağ akı�
 - Önizleme: `output/flow-keyframes/ilk-son-kareler.html`. Adaylar bu ignore edilen yerel dizindedir; public/runtime/commit içine alınmadı. Hash/provenans özeti `docs/referans/flow-keyframes.json`. Tam üretim istemleri Flow proje öğesinin sürüm geçmişindedir.
 
 ## Mevcut durum
-Kredi kullanımı: **0**. Yeni Flow video çıktısı: **0**. Onaylı yeni ilk/son kare seti: **0**. Başlangıç/bitiş referansları ve kredi onayı bekleniyor. Açılışta yalnız önceden onaylı zeytinlik kare dizisi kullanılır; bu dizi yeni Flow filmi diye sunulmaz.
+Kullanıcı “Flow’a her sahnenin ilk ve son görselini verelim” diyerek yöntemi netleştirdi. Beş referansın tamamı Flow proje kitaplığına yüklendi. A ve B, Başlat/Bitir alanlarında ayrı ayrı seçilip görüntüde doğrulandı.
 
-## Durum: İLK/SON KARE ÖNİZLEMESİ HAZIR; VİDEO ONAYI BEKLİYOR
+Ardından kullanıcı açıkça “Evet, yalnız ilk klip için 20 kredi” onayı verdi. Yalnız **A→B** tek çıktı üretildi: Veo 3.1 Fast, 16:9, 1280×720, 24 fps, H.264, gerçek dosya süresi 7,93 sn (UI 8 sn). Bakiye **250→230** olarak hesap panelinde doğrulandı. Kullanım **20/20 kredi**, kalan onaylı bütçe **0**; başka klip/yeniden üretim yapılmadı.
+
+Klip Flow'da “01 · Ağaç → Dal · İlk deneme” adıyla hazır. Özgün dosya `output/flow-keyframes/A-B-ilk-deneme.mp4` (7.390.220 bayt; SHA kayıtlı), ses eklenmeden/renk dönüşümü olmadan video akışı kopyalanan inceleme sürümü `A-B-onizleme.mp4`. Sekiz örnek karede kademeli dolly-in incelendi; bu kontrol kullanıcı medya onayı değildir. Yeni klip public/runtime'a bağlanmadı. Açılış hâlâ önceki onaylı zeytinlik dizisini kullanır.
+
+Diğer üç geçişin aynı dosyaları paylaşan ilk/son referansları hazır; ücretli üretimleri yetkili değildir. Kullanıcı away iken soru sorulmaması isteği doğrultusunda yeni harcama yapılmadan bağımsız site/panel/AEO işleri tamamlandı.
+
+## Durum: İLK KLİP HAZIR (20/20 KREDİ); DİĞER KLİPLER VE SİTE MEDYA KABULÜ AÇIK
