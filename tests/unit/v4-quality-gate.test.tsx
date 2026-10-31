@@ -27,7 +27,7 @@ describe("v4 offline quality gate", () => {
   let awaitableHtml: string;
   beforeAll(async () => { awaitableHtml = await pageHtml(); });
   it("preserves legacy v4 SSR, approved media budgets and the runtime source tree", async () => {
-    expect(verifyV4Html(await pageHtml())).toMatchObject({ cards: 6, steps: 3, faqs: 3, previewNotes: 1 });
+    expect(verifyV4Html(await pageHtml())).toMatchObject({ cards: 6, steps: 3, faqs: 5, previewNotes: 1 });
     expect(await verifyV4Assets()).toMatchObject({ products: 6, heroDesktopBudget: 180000, heroMobileBudget: 120000, productBudget: 60000 });
     await expect(verifyV4Runtime()).resolves.toBeUndefined();
   });
@@ -83,7 +83,7 @@ describe("v4 offline quality gate", () => {
     }
   });
 
-  it("publishes only the three visible questions as FAQPage and no sample offers", async () => {
+  it("publishes only the five visible questions as FAQPage and no sample offers", async () => {
     const doc = new DOMParser().parseFromString(await pageHtml(), "text/html");
     const schemas = [...doc.querySelectorAll('script[type="application/ld+json"]')].map(node => JSON.parse(node.textContent!));
     expect(schemas.find(schema => schema["@type"] === "FAQPage")?.mainEntity).toEqual(verifiedFaqs.map(faq => ({

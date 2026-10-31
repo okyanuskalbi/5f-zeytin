@@ -12,3 +12,5 @@
 .indicator::after { content: "+"; }
 .answer[open] .indicator::after { content: "–"; }
 .answer p { max-width: 65ch; margin-top: 10px; font-size: 16px; line-height: 1.6; text-wrap: pretty; }
+
+.updated { margin-top: 16px; max-width: 30ch; font-size: 12px; line-height: 1.6; color: var(--gri); }

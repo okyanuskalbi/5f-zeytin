@@ -15,13 +15,13 @@ afterEach(() => { cleanup(); Object.assign(siteContact, { phone: "", whatsapp: "
 it("uses full factual sentences and removes unanswered wholesale questions", async () => {
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(await Home());
-  expect(doc.querySelectorAll("[data-faq]")).toHaveLength(3);
+  expect(doc.querySelectorAll("[data-faq]")).toHaveLength(5);
   for (const faq of verifiedFaqs) expect(faq.answer).toMatch(/\.$/);
   expect(doc.querySelector('[data-faq="Z05"]')).toBeNull();
   expect(doc.querySelector("#toptan")).toBeNull();
   expect(doc.querySelector("#toptan-iletisim h2")?.textContent).toContain("tedarikçisi.");
   expect(doc.querySelector("#sik-sorulanlar h2")?.textContent).toBe("Sık sorulanlar");
-  expect(doc.querySelectorAll("#sik-sorulanlar details > summary")).toHaveLength(3);
+  expect(doc.querySelectorAll("#sik-sorulanlar details > summary")).toHaveLength(5);
   expect(doc.querySelector('#toptan-iletisim button[type="submit"]')?.textContent).toBe("Teklif talebini gönder");
   expect(doc.querySelector('a[href^="tel:"], a[href*="wa.me"], a[href^="mailto:"]')).toBeNull();
   expect(doc.body.textContent).not.toMatch(/Toptan alım için bize yazın|İletişim bilgileri yakında/);

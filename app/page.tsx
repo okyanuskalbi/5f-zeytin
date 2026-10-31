@@ -14,6 +14,9 @@ export const revalidate = 300;
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
+  robots: process.env.VERCEL_ENV === "preview"
+    ? { index: false, follow: false }
+    : { "max-image-preview": "large", "max-snippet": -1 },
 };
 
 export default async function Home(): Promise<JSX.Element> {

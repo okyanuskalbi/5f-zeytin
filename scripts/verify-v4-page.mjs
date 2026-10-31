@@ -54,7 +54,7 @@ export function verifyV4Html(html) {
     const faqs = doc.querySelectorAll("[data-faq]").length;
     assert.equal(cards, 6, "Six product cards required");
     assert.equal(steps, 3, "Three story steps required");
-    assert.equal(faqs, 3, "Three visible FAQs required");
+    assert.equal(faqs, 5, "Five current shared visible FAQs required");
     for (const id of ["ana-icerik", "urunler", "kiler", "tesisimiz", "toptan-iletisim", "sik-sorulanlar"]) {
       if (id === "ana-icerik" && !doc.querySelector("html[lang]")) continue; // Home-only unit SSR omits the layout.
       assert.equal(doc.querySelectorAll(`[id="${id}"]`).length, 1, `Missing/duplicate anchor: ${id}`);

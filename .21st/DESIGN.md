@@ -122,13 +122,13 @@ Generated from project sources at 2026-10-31T21:45:58.617Z.
 
 ### Must
 
-- None recorded
+- AFİNA palette, Fraunces/Figtree and source-backed content
 
 ### Avoid
 
-- None recorded
+- Autoplay/scroll interception, fake claims/reviews and generic blur cards
 
 ## Decisions
 
-- None recorded
+- Bazgold reference adapted with 21st 20038/39096; five shared source-backed FAQs; only the first Flow clip authorized for 20 credits.
 

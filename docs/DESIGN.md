@@ -61,3 +61,7 @@ Lighthouse mobil ≥ 85, LCP < 2,5 s (hero AVIF/WebP srcset, masaüstü ≤ 180 
 
 ## Uygulama
 Codex görevleri: (1) hero + satın alma kartı, (2) ürün ızgarası + sepet bağlantısı, (3) sticky öykü + kahraman band, (4) toptan/SSS/footer + mobil çubuk, (5) performans/kaydırma kapısı. Prova HTML'i referanstır; birebir ölçülür.
+
+## 1 Kasım ek kit uyarlamaları (güncel v5)
+
+Müşterinin dört ek PDF'si `docs/referans/kit-uyarlamalari-20261101.md` karar tablosuyla uyarlandı. Fraunces/Figtree ve #172B21/#F4F0E7/#B6A078 korunur; ana bölüm boşlukları 16/24/32/48/64/80 ölçeğindedir. Eski v4 tarifleri tarihsel kalır. Native-scroll canvas ve reduced-motion posteri geçerlidir; yeni Flow klibi 20 kredilik inceleme adayıdır. Paylaşılan SSS beş kaynaklı cevaptır.

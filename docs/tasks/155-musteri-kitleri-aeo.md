@@ -20,4 +20,13 @@ frontend-patterns, tdd-workflow, accessibility, motion-foundations/patterns (151
 ## Kabul
 RED/GREEN: görünür SSS ile JSON-LD/llms eşitliği, mevcut section bağlantıları, tek entity, özel/draft ve sahte Offer/Review yok, gerçek içerik tarihi. Unit ≤2 worker, lint/typecheck/build. Browser/e2e/Lighthouse ve canlı yayın yok.
 
-## Durum: UYGULANIYOR
+## Coder Notu
+- Dört PDF okunup hash'leri kaydedildi; uygulanan kararlar ve kaynak eşlemesi `docs/referans/kit-uyarlamalari-20261101.md` içinde. Özgün PDF/prompt dosyaları public'e veya global skill ayarlarına taşınmadı.
+- RED checkpoint `2fca191`: beş ortak cevap, doğru marka/topluluk bağlantısı, gerçek tesis görseli/WebPage ve sabit içerik tarihi eksikliği doğrulandı.
+- GREEN: `lib/site/faqs.ts` beş görünür cevabı, FAQPage JSON-LD'yi ve llms.txt'yi besler. Teknik metin içinde sahte fiyat, kargo, politika, yorum veya sertifika yok. Organization.memberOf toplulukla bağı anlatır; ayrı marka aynı varlık diye sameAs ile birleştirilmez.
+- Ana sayfa metadata'sı büyük görsel önizlemeye izin verir; Vercel preview için noindex kalır. Twitter büyük kartı açık. Sitemap lastmod gerçek anlamlı içerik tarihi 2026-11-01'dir. WebPage/Place görseli yeni gerçek müşteri tesis fotoğrafıdır.
+- Paylaşılan SSS beşe çıktığı için eski v3/v4 layout testleri ve offline HTML kapısının ortak SSS beklentisi beş olarak güncellendi; görsel bütçe ve negatif kontroller korundu.
+- Son kontrol: **83 dosya / 1146 test PASS; lint PASS; typecheck PASS; production build PASS**. Derlenmiş HTML'de beş cevap, canonical, robots ve Twitter doğrulandı; aday Flow klibi HTML'de yok. İlk JS gzip 194.186 bayt; CSS gzip 21.188 bayt; inline RSC/bootstrap gzip 47.532 bayt. Bunlar build hesaplarıdır, Lighthouse/gerçek ağ ölçümü değildir.
+- Tarayıcı/cihaz doğrulaması, canlı indekslenme/referral ölçümü ve yayın yapılmadı. Kitteki analytics uygulaması için gerçek hedef/ölçüm kabulü açık; canlı izleme başlatılmadı.
+
+## Durum: TAMAMLANDI

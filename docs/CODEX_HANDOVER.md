@@ -10,7 +10,7 @@ Yerel Claude JSONL kaydı bulundu: `862bcbce-6e8d-4a73-a71a-971f141b67f4`. Yakı
 - Başlangıç HEAD ve uzak main `e58567be0df7e1d7d63ae4ffb6e032e838dacf2f`; çalışma ağacı temiz.
 - Bu chat'in başlangıç dizini `/Users/emre/Documents/ChatGPT/5F-ZEYTİN` boş; mevcut uygulama beklenen PROJELER dizinindedir. Kod orada güncellendi.
 - Node 24.11.1, npm 11.6.2. Next 16.4.2 App Router, TS, Tailwind 4, motion, shadcn primitive'leri, Supabase ve PayTR korunur.
-- Yeni görevler 151/152/153/154; mevcut görev numaraları/kararlar silinmedi.
+- Yeni görevler 151/152/153/154/155; mevcut görev numaraları/kararlar silinmedi.
 
 ## Skill ve araçlar
 - frontend-design ve yerel frontend-patterns, tdd-workflow, motion-foundations, motion-patterns, accessibility okundu. .agents/.claude skill kopyaları yerinde korundu; mevcut dosyaların üzerine başka sürüm kopyalanmadı. Eksik Codex kopyaları için mevcut .claude rehberleri okunabilir.
@@ -36,3 +36,8 @@ Kod commit’i `ef32ee3`, RED kanıtı `e12e995`. Son tam test 76 dosya / 1114 t
 
 ## Müşteri paneli teslimi (Task 154)
 Kullanıcının Bazgold ekran görüntüsü, AFİNA'nın kendi markası ve mevcut gerçek e-posta Auth akışıyla uygulandı. 21st 20038/39096 kaynakları kullanıldı. Navbar üyelik penceresi ve /hesabim altındaki sipariş/adres/profil/güvenlik yolları hazır. Server-only müşteri tabloları ve atomik adres RPC'leri yalnız yerel PostgreSQL ortamında doğrulandı; canlı migration/ödeme/OAuth yapılmadı. Son kontrol 82 dosya/1143 test, lint, typecheck ve build PASS; tarayıcı kabulü yapılmadı. Ayrıntı [154](tasks/154-bazgold-uyelik-paneli.md).
+
+## Ek kitler ve Flow (Task 155/152)
+Dört ek PDF kaynakları uygulandı; tam uyarlama tablosu `docs/referans/kit-uyarlamalari-20261101.md`. SSR/FAQ/schema/llms beş ortak doğrulanmış cevap, gerçek tesis görseli ve içerik tarihiyle eşleşir. Son toplam 83 dosya/1146 test, lint/typecheck/build PASS; derlenmiş HTML kontrolü PASS.
+
+Flow'da kullanıcı onayıyla yalnız ilk A→B klip (20 kredi) üretildi; hesap 250→230. Özgün 720p H.264 dosya ve sessiz inceleme kopyası `output/flow-keyframes/` içindedir; hash/teknik kayıt `docs/referans/flow-keyframes.json`. Diğer üç geçiş için bütçe yok; yeni medya runtime onayı almadı. Push/deploy/uzak migration yapılmadı.

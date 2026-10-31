@@ -240,3 +240,9 @@ Yeni kurumsal form mevcut `WholesaleRequest` sözleşmesini kullanır; Zoho hesa
 ## 1 Kasım 2026: müşteri üyeliği ve panel
 
 [Task 154](tasks/154-bazgold-uyelik-paneli.md), kullanıcının Bazgold ekran görüntüsüyle verdiği fullstack geliştirme yetkisiyle tamamlandı: çift sütunlu AFİNA üyelik penceresi, sipariş listesi/detayı, adres defteri, profil ve güvenlik. Mevcut doğrulanmış Supabase Auth sınırı ve PayTR mimarisi korunur. Yeni müşteri tabloları/RPC yerel migration ve bellek içi PostgreSQL testleriyle hazır; uzak hedefte uygulanmadı. Sipariş oluşturma/ödeme callback entegrasyonu ve canlı Google OAuth ayrı açık işlerdir.
+
+## 1 Kasım 2026: ek kitler ve ilk Flow klibi
+
+[Task 155](tasks/155-musteri-kitleri-aeo.md) tamamlandı. Sakin hareket/scroll, AFİNA paleti ve font hiyerarşisi, beş kaynaklı cevap, ortak SSR/schema/llms, WebPage/gerçek tesis fotoğrafı, marka-topluluk ayrımı ve doğru içerik tarihi uygulandı. Son yerel kapı 83 dosya/1146 test + lint/typecheck/build PASS. Tarayıcı, canlı SEO ölçümü ve yayın kabulü ayrı kalır.
+
+[Task 152](tasks/152-google-flow.md): beş referans Flow’da; açık kullanıcı onayıyla yalnız A→B ilk klip üretildi. 20/20 kredi kullanıldı, bakiye 230. Diğer üç geçiş veya tekrar için ek bütçe verilmedi. Yeni klip inceleme adayıdır, runtime’a alınmadı. Kullanıcı away olduğundan yeni soru veya yetkisiz ek harcama yapılmadı.

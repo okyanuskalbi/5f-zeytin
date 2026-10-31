@@ -104,9 +104,11 @@ it("publishes one preview note and a connected entity graph with only the public
   expect(JSON.parse(scripts[1].textContent!)["@type"]).toBe("FAQPage");
   const schema = JSON.parse(scripts[0].textContent!);
   expect(schema["@context"]).toBe("https://schema.org");
-  const [organization, place, website] = schema["@graph"];
-  expect(schema["@graph"].map((item: Record<string, unknown>) => item["@type"])).toEqual(["Organization", "Place", "WebSite"]);
-  expect(organization.sameAs).toEqual(["https://afina.com.tr"]);
+  const [organization, place, webpage, website] = schema["@graph"];
+  expect(schema["@graph"].map((item: Record<string, unknown>) => item["@type"])).toEqual(["Organization", "Place", "WebPage", "WebSite"]);
+  expect(organization.sameAs).toBeUndefined();
+  expect(organization.memberOf.url).toBe("https://afina.com.tr");
+  expect(webpage.isPartOf).toEqual({ "@id": "https://afinazeytin.com/#website" });
   expect(organization.location).toEqual({ "@id": "https://afinazeytin.com/#tesis" });
   expect(place["@id"]).toBe(organization.location["@id"]);
   expect(place.address).toEqual({ "@type": "PostalAddress", addressLocality: "Düziçi", addressRegion: "Osmaniye", addressCountry: "TR" });

@@ -31,7 +31,7 @@ describe("SEO metadata routes", () => {
     });
   });
 
-  it("lists only the homepage, excluding noindex and product query URLs, with the build date", () => {
+  it("lists only the homepage, excluding noindex and product query URLs, with the actual content update date", () => {
     const buildDate = new Date("2026-10-22T12:00:00.000Z");
     vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(buildDate);
@@ -41,7 +41,7 @@ describe("SEO metadata routes", () => {
         url: "https://afinazeytin.com/",
         changeFrequency: "weekly",
         priority: 1,
-        lastModified: buildDate,
+        lastModified: "2026-11-01",
       },
     ]);
   });

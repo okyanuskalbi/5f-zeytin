@@ -14,7 +14,8 @@
   "sources": {
     "tokens": [
       "app/globals.css",
-      "components/landing/RenewalLanding.module.css"
+      "components/landing/RenewalLanding.module.css",
+      "components/account/CustomerPanel.module.css"
     ],
     "components": [
       "components/ui"
@@ -344,8 +345,17 @@
     "patterns": []
   },
   "constraints": {
-    "must": [],
-    "avoid": []
+    "must": [
+      "AFİNA olive/paper/champagne palette and Fraunces/Figtree",
+      "Official slogan, real factual content and source-aligned schema",
+      "Native scroll with reduced-motion poster and real DOM CTAs",
+      "Only approved media in runtime; Flow credit cap is explicit"
+    ],
+    "avoid": [
+      "Autoplay loop or scroll interception",
+      "Invented statistics/reviews/Offer or private entity data",
+      "Generic blur cards, purple gradients or emoji UI"
+    ]
   },
   "decisions": [
     {
@@ -357,6 +367,11 @@
       "date": "2026-11-01",
       "source": "User explicitly requested 21st and Google Flow",
       "decision": "Adapt retrieved 21st 9701,25310,35258. Use existing canvas engine. Google Flow generation requires approved first/last frames and capped credits."
+    },
+    {
+      "date": "2026-11-01",
+      "source": "User Bazgold screenshot + supplied PDF kits",
+      "decision": "Adapt 21st 20038/39096 to AFİNA customer membership; source-aligned five-answer FAQ and machine discovery. First Flow A→B trial spent exactly 20 approved credits, remaining authority zero."
     }
   ],
   "evidence": [
