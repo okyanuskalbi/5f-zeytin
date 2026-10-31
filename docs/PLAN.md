@@ -246,3 +246,6 @@ Yeni kurumsal form mevcut `WholesaleRequest` sözleşmesini kullanır; Zoho hesa
 [Task 155](tasks/155-musteri-kitleri-aeo.md) tamamlandı. Sakin hareket/scroll, AFİNA paleti ve font hiyerarşisi, beş kaynaklı cevap, ortak SSR/schema/llms, WebPage/gerçek tesis fotoğrafı, marka-topluluk ayrımı ve doğru içerik tarihi uygulandı. Son yerel kapı 83 dosya/1146 test + lint/typecheck/build PASS. Tarayıcı, canlı SEO ölçümü ve yayın kabulü ayrı kalır.
 
 [Task 152](tasks/152-google-flow.md): beş referans Flow’da; açık kullanıcı onayıyla yalnız A→B ilk klip üretildi. 20/20 kredi kullanıldı, bakiye 230. Diğer üç geçiş veya tekrar için ek bütçe verilmedi. Yeni klip inceleme adayıdır, runtime’a alınmadı. Kullanıcı away olduğundan yeni soru veya yetkisiz ek harcama yapılmadı.
+
+## Flow devam yetkisi
+Kullanıcı ilk klibi kabul edip kalan üç geçişi istedi. Doğrulanan 20 kredi/çıktıyla ek sınır 60 kredi, toplam kapsam 80 kredi. Google reCAPTCHA/olağan dışı etkinlik engeli üç normal denemeden sonra sürüyor; bakiye 230 ve ek harcama 0. İlk/son kareler ve istemler Task 152 kaydında hazır; henüz yeni çıktı üretilmedi.

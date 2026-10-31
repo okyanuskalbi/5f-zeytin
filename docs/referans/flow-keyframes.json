@@ -5,7 +5,7 @@
   "imageCreditsDisplayed": 0,
   "videoCount": 1,
   "videoCreditsSpent": 20,
-  "newFrameApproval": "pending",
+  "newFrameApproval": "approved-for-requested-generation",
   "frames": [
     {
       "id": "A",
@@ -60,10 +60,10 @@
   "proposedTotalVideoCreditCap": 80,
   "videoBudgetApproved": true,
   "exactPrompts": "Flow project image version history",
-  "approvedVideoCreditCap": 20,
-  "approvedScope": "A→B only; explicit user approval 2026-11-01",
+  "approvedVideoCreditCap": 80,
+  "approvedScope": "A→B accepted; user explicitly requested the remaining three same-method transitions on 2026-11-01 (3 × verified 20 credits = 60 additional)",
   "balanceAfterVideoGeneration": 230,
-  "remainingApprovedCredits": 0,
+  "remainingApprovedCredits": 60,
   "publicationApproval": "pending",
   "allFramesUploadedToFlow": true,
   "video": {
@@ -81,7 +81,8 @@
     "runtime": false,
     "flowUrl": "https://flow.google.com/project/62040049-3473-446b-9d93-8e6cbc45f8bc/edit/973f2107-b057-425e-87a9-20ac869c40aa",
     "preview": "output/flow-keyframes/A-B-onizleme.mp4",
-    "reviewStrip": "output/flow-keyframes/A-B-kare-seridi.jpg"
+    "reviewStrip": "output/flow-keyframes/A-B-kare-seridi.jpg",
+    "userAccepted": true
   },
   "transitions": [
     {
@@ -92,17 +93,42 @@
     {
       "first": "B",
       "last": "C",
-      "status": "references-ready-budget-not-authorized"
+      "status": "authorized-google-verification-blocked"
     },
     {
       "first": "C",
       "last": "D",
-      "status": "references-ready-budget-not-authorized"
+      "status": "authorized-google-verification-blocked"
     },
     {
       "first": "D",
       "last": "F",
-      "status": "references-ready-background-continuity-pending"
+      "status": "authorized-google-verification-blocked"
     }
-  ]
+  ],
+  "balanceAfterRemainingAttempts": 230,
+  "remainingGeneration": {
+    "authorizedTransitions": [
+      "B→C",
+      "C→D",
+      "D→F"
+    ],
+    "creditCap": 60,
+    "actualCreditsSpent": 0,
+    "newVideos": 0,
+    "status": "google-verification-blocked",
+    "failedAttempts": 3,
+    "observedMessage": "Flow detected unusual activity; reCAPTCHA service could not connect",
+    "recoveryAttempted": [
+      "normal page reload",
+      "fresh reference selection and resubmission",
+      "built-in Retry"
+    ],
+    "balanceVerified": 230
+  },
+  "remainingTransitionPrompts": {
+    "B→C": "B → C · 8-second continuous photorealistic olive harvest shot. Start exactly on the supplied first frame: the close-up green olive branch beside this ancient olive tree. Keep the same branch, leaf pattern, olives, tree, Mediterranean grove and warm natural afternoon lighting. The camera stays almost still with a very gentle push-in. A worker's two anatomically correct hands, wearing the exact cream sleeves seen in the last frame, slowly enter from the right, gently holding the branch and carefully picking an olive toward a wicker basket below. End exactly in the supplied last-frame composition, with the same two hands and basket. Natural restrained motion, five fingers per hand, coherent hand-to-olive contact, premium cinematic realism. No extra hands, duplicated fingers, shaking, abrupt cuts, dissolve, new labels or text. Preserve the reference geometry and finish steady. 16:9.",
+    "C→D": "C → D · 8-second continuous photorealistic cinematic shot. Begin exactly with the supplied harvest frame: the same two cream-sleeved hands, green olive branch and wicker basket at this ancient olive tree. The worker gently lowers the basket and moves the hands naturally out of view. A slow lateral camera slide and slight downward pan reveals a nearby stone tasting table with an ivory ceramic bowl. A plain stainless-steel spout is already pouring a thin, physically coherent stream of golden-green olive oil into the bowl. Use natural foreground leaves and the tree trunk to motivate the camera transition. Preserve the same Mediterranean grove, warm afternoon sun, realistic scale and calm movement. Finish exactly on the supplied final oil-pouring composition, steady for the final moment. The harvest and tasting are distinct actions; no transformation of olives into oil in the hands. No hand deformation, hard cuts, dissolve, object morphing, splashes, new packaging, labels or text. 16:9.",
+    "D→F": "D → F · 8-second photorealistic premium olive oil brand reveal. Begin exactly with the supplied first frame: golden-green oil pouring from the stainless spout into the ivory bowl on a stone surface in the olive grove. Slowly slide and arc the camera to the right, passing naturally behind a foreground olive branch to reveal the exact AFİNA bottle already standing on the stone surface shown in the supplied final reference. Match the final reference's hillside backdrop and warm light through the motivated camera angle. Preserve the approved bottle silhouette, green glass, cap, label geometry, white logo panel, AFİNA lettering, gold product ribbon and all label artwork exactly. The bottle is stationary and solid; no rotation, floating, morphing, invented text or new packaging. Let the pour end naturally as it leaves the frame. End on the exact supplied product composition and hold it steady for the final second. Gentle cinematic movement, realistic reflections, no abrupt cut or dissolve. 16:9."
+  }
 }

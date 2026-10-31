@@ -36,4 +36,11 @@ Klip Flow'da “01 · Ağaç → Dal · İlk deneme” adıyla hazır. Özgün d
 
 Diğer üç geçişin aynı dosyaları paylaşan ilk/son referansları hazır; ücretli üretimleri yetkili değildir. Kullanıcı away iken soru sorulmaması isteği doğrultusunda yeni harcama yapılmadan bağımsız site/panel/AEO işleri tamamlandı.
 
-## Durum: İLK KLİP HAZIR (20/20 KREDİ); DİĞER KLİPLER VE SİTE MEDYA KABULÜ AÇIK
+## Kullanıcı devam isteği ve üretim engeli
+Kullanıcı ilk klibi kabul edip kalan üç geçişi aynı ilk/son kare yöntemiyle istedi. Ekrandaki ücret yeniden 20 kredi/klip, Veo 3.1 Fast / 8 sn / 720p / 16:9 / x1 olarak doğrulandı; bu üç çıktı için ek sınır 60 kredi, toplam kapsam 80 kredidir. Bu yetki önceden ayrı kalan üç geçişi açar; sınırsız tekrar yetkisi değildir.
+
+B→C kareleri kitaplıktan seçildi ve gerçek görsel içeriği/hash ile doğrulandı. Üç normal üretim denemesi (yenileme, yeni kare seçimi, Flow'un Yeniden dene işlemi) Google'ın olağan dışı etkinlik/reCAPTCHA bağlantı engeliyle başarısız oldu. CAPTCHA çözülmedi veya atlanmadı; tarayıcı güvenlik/uzantı ayarları değiştirilmedi. Son bakiye **230**, bu aşamadaki ek kredi kullanımı **0**, yeni çıktı **0**. C→D ve D→F istemleri/kare eşleşmeleri kaydedildi, engel sürerken ücretli istek gönderilmedi.
+
+Tam üç istem `docs/referans/flow-keyframes.json` içinde; adaylar ve Flow hazırlık ekranı yerelde korunur. Çalışma Google doğrulaması düzeldikten sonra aynı projeden sürdürülür. Diğer site/üyelik kodu değiştirilmedi.
+
+## Durum: KALAN ÜÇ GEÇİŞ YETKİLİ (60 KREDİ); GOOGLE DOĞRULAMA ENGELİ
