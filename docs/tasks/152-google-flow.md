@@ -10,18 +10,24 @@ Kullanıcı: yalnız Google Flow; ağaç → dal/zeytin → hasat → yağ akı�
 - Kullanıcının paylaştığı Chrome oturumunda Flow PLUS ve 250 kredi görüldü.
 - Ayrı AFİNA çalışma projesi: https://flow.google.com/project/62040049-3473-446b-9d93-8e6cbc45f8bc
 - Google Veo 3.1 Fast seçildi; 16:9, 720p, 8 saniye, tek çıktı. Ekran bu ayarda 20 kredi gösterdi.
-- İlk sahne istemi yazıldı; Oluşturmaya başla düğmesine BASILMADI. 5 klip/100 kredi önerisi kullanıcı tarafından onaylanmadı; önce referans önizlemesi istendi.
+- Video için ilk sahne istemi hazırlanmıştı; ücretli video Oluşturmaya başla düğmesine basılmadı. 5 klip/100 kredi önerisi kullanıcı tarafından onaylanmadı; önce referans önizlemesi istendi. Son plan beş anahtar kare/dört geçiş, en çok 80 kredi; önce tek A→B denemesi 20 kredi önerilir.
 - In-app browser farklı Google hesabındaydı; harcama yapılmadı. Üretim için kullanıcının belirttiği Chrome hesabı esas alınır.
 
 ## İş akışı
-1. Altı anahtar kadraj belirle: A ağaç, B dal, C hasat, D yağ akışı, E ambalajla buluşma, F son AFİNA ürün kadrajı. Beş klipte A→B, B→C, C→D, D→E, E→F; bir klibin bitişi sonraki başlangıç karesiyle aynı dosya olmalı.
+1. Beş anahtar kadraj: A ağaç, B dal, C hasat, D yağ akışı, F onaylı AFİNA ürün kadrajı. Dört klip: A→B, B→C, C→D, D→F; bir klibin bitişi sonraki başlangıç karesiyle aynı dosya olmalı. F harfi önceden hazırlanan son ürün dosyasıyla eşleşmeyi korur; E için ek üretim gerekmedi.
 2. Mevcut onaylı ürün fotoğrafı/etiketini aynen koru. Temsili sahneler gerçek tesis/hasat belgesi değildir. Yeni fotoğraf/anahtar kare de ücretli ise önce kapsam+kredi sınırı al.
 3. Her klip Flow'un Başlat/Bitir kare girişleriyle hazırlanır. Her ikisi görüntüde doğrulanmadan üretme. Tek çıktı; deneme/tekrar da kredi sınırına dahil.
 4. Ortak ışık: açık orta ton, detaylı gölge, doğal yeşil/şampanya, okunur etiket, SDR. Mevcut SDR'ye ikinci ACES uygulanmaz. Statik ürün karesinde logo/etiket/gövde uydurma ve değiştirme yok.
 5. Kullanıcı kareleri ve ardından üretilen videoyu onaylar. Yeni adaylar public dışında kalır. SHA/onay/sağlayıcı/istem/harcanan kredi kaydedilir.
 6. Onaylı video → mevcut extract-frames.mjs → 1920/960 WebP + mevcut manifest şeması → ScrollFrameSequence. Scroll ileri/geri; autoplay veya body kilidi yok. Ürün/sepete ekle gerçek DOM kontrolleri.
 
+## Ücretsiz referans üretimi ve before/after
+- Flow resim modunda Nano Banana 2.1, 16:9, x1 için **0 kredi** ekranda doğrulandı. Aynı ücretsiz modelle A üretildi; B, C ve D önceki kareyi referans alan düzenlemelerle oluşturuldu. İşlem sonrasında hesap panelinde **250 kredi** bakiyesi tekrar görüldü.
+- Dört yeni görsel aday: A ağaç, B dal/zeytin, C hasat, D yağ akışı. Görseller görüntülenip indirildi, SHA kayıtları alındı. Hasat elleri ve devamlılık görsel olarak incelendi; kullanıcı kabulü değildir.
+- F, daha önce onaylı `04-naturel-sizma-zeytinyagi-1l-sahne.webp` dosyasının birebir kopyasıdır. Ürün/etiket yeniden üretilmedi. F arka planı/ışığı önceki karelerden farklı olduğundan D→F son geçişi için görsel karar beklenir.
+- Önizleme: `output/flow-keyframes/ilk-son-kareler.html`. Adaylar bu ignore edilen yerel dizindedir; public/runtime/commit içine alınmadı. Hash/provenans özeti `docs/referans/flow-keyframes.json`. Tam üretim istemleri Flow proje öğesinin sürüm geçmişindedir.
+
 ## Mevcut durum
 Kredi kullanımı: **0**. Yeni Flow video çıktısı: **0**. Onaylı yeni ilk/son kare seti: **0**. Başlangıç/bitiş referansları ve kredi onayı bekleniyor. Açılışta yalnız önceden onaylı zeytinlik kare dizisi kullanılır; bu dizi yeni Flow filmi diye sunulmaz.
 
-## Durum: REFERANS ÖNİZLEMESİ HAZIRLANIYOR
+## Durum: İLK/SON KARE ÖNİZLEMESİ HAZIR; VİDEO ONAYI BEKLİYOR

@@ -18,7 +18,7 @@ Yerel Claude JSONL kaydı bulundu: `862bcbce-6e8d-4a73-a71a-971f141b67f4`. Yakı
 - 21st MCP gerçek `search`, `get_usage`, `get_component` çağrılarıyla doğrulandı. Component erişimi paid/unlimited, hosted AI kapalı; hosted generation çağrısı yapılmadı. 9701/25310/35258 kaynakları alındı ve yerel yapıya uyarlandı.
 - 21st CLI ile `.21st/design.json` ve `.21st/DESIGN.md` oluşturuldu. Global MCP yapılandırmasına veya `.mcp.json`a yazılmadı.
 - PDF metni/görseli poppler ile okundu/çıkarıldı. Müşteri görseline yalnız oranı koruyan AVIF/WebP dönüşümü uygulandı; tasarım veya etiket değiştirilmedi. SHA/ölçü/boyut kontrolü check:assets zincirine eklendi.
-- Google Flow kullanıcı Chrome oturumunda doğrulandı. Yeni üretim yapılmadı; başlangıç/bitiş kareleri ve kredi sınırı bekleniyor. Ayrıntı [152](tasks/152-google-flow.md).
+- Google Flow kullanıcı Chrome oturumunda doğrulandı. Ücretsiz resim modunda dört referans aday üretildi, son ürün karesi onaylı kaynaktan korundu; 250 kredi bakiyesi değişmedi. İlk/son kare önizlemesi hazır, ücretli video ve kredi sınırı kullanıcı onayı bekliyor. Ayrıntı [152](tasks/152-google-flow.md).
 - Vercel API kimliği ZEYTİN ekibine erişemiyor. Actions production yayını hâlâ aktif; push yapılmadı. Ayrıntı [153](tasks/153-vercel-api.md).
 
 ## Uygulama
@@ -30,3 +30,6 @@ Statik fiyat/stoklar hâlâ temsili; gerçek satış ve ödeme kabulü yok. Topt
 
 ## Doğrulama
 Güncel komut ve sonuçlar [151 Coder Notu](tasks/151-codex-musteri-yenileme.md) içinde. Başlangıç RED: eski ana sayfa/yeni kurumsal navigasyon eksikliği; checkpoint `e12e995`. Tarayıcı/e2e/Lighthouse kabulü ayrıca yetki gerektirir; otomatik olarak Claude'a devredildi sayılmaz.
+
+## Yerel teslim
+Kod commit’i `ef32ee3`, RED kanıtı `e12e995`. Son tam test 76 dosya / 1114 test PASS. Uzak main başlangıç commit’inde kaldı; push ve deploy yapılmadı. Yeni Flow adayları kullanıcı onayı bekler, ana sayfaya bağlanmadı.

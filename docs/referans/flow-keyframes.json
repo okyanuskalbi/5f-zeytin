@@ -1,0 +1,63 @@
+{
+  "projectUrl": "https://flow.google.com/project/62040049-3473-446b-9d93-8e6cbc45f8bc",
+  "provider": "Google Flow",
+  "imageModel": "Nano Banana 2.1",
+  "imageCreditsDisplayed": 0,
+  "videoCount": 0,
+  "videoCreditsSpent": 0,
+  "newFrameApproval": "pending",
+  "frames": [
+    {
+      "id": "A",
+      "label": "Zeytin ağacı",
+      "file": "A-agac.jpg",
+      "sha256": "d3d57d90dfe83c12bd16345fd338bd8548e4128af6b25e1972a8fc508c90d282",
+      "source": "google-flow-generated-candidate",
+      "runtime": false
+    },
+    {
+      "id": "B",
+      "label": "Dal ve zeytin",
+      "file": "B-dal.jpg",
+      "sha256": "7370b166c35c58ae7e326a2b317518cfb34150735d2db43028d60585f1827c67",
+      "source": "google-flow-generated-candidate",
+      "runtime": false
+    },
+    {
+      "id": "C",
+      "label": "Hasat",
+      "file": "C-hasat.jpg",
+      "sha256": "c4e0ccff462cbebca3bd7dcff52195535ac9c320f1de7e33d4b75f6c659bdb14",
+      "source": "google-flow-generated-candidate",
+      "runtime": false
+    },
+    {
+      "id": "D",
+      "label": "Yağ akışı",
+      "file": "D-yag-akisi.jpg",
+      "sha256": "9f1babc9a64601ebc18e07a2f69734b5c10ca9a0b2fbd188880a1b39a516bbe4",
+      "source": "google-flow-generated-candidate",
+      "runtime": false
+    },
+    {
+      "id": "F",
+      "label": "Onaylı AFİNA ambalajı",
+      "file": "F-onayli-urun.webp",
+      "sha256": "443a25a4e94dab740fecff0d5605f8e5c925c421720f4cc8c1160cc3394c20f4",
+      "source": "existing-user-approved-product",
+      "runtime": false
+    }
+  ],
+  "preview": "output/flow-keyframes/ilk-son-kareler.html",
+  "balanceAfterReferenceGeneration": 250,
+  "plannedTransitions": [
+    "A→B",
+    "B→C",
+    "C→D",
+    "D→F"
+  ],
+  "proposedFirstVideoCreditCap": 20,
+  "proposedTotalVideoCreditCap": 80,
+  "videoBudgetApproved": false,
+  "exactPrompts": "Flow project image version history"
+}
