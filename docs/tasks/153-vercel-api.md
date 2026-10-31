@@ -17,4 +17,11 @@ Doğrulanan commit normal main push; dağıtım doğrudan Vercel API ile. Test k
 4. Görev dosyaları açıkça stage/commit, normal main push; uzak SHA kontrolü. Branch protection değişirse PR kullanılır.
 5. API deployment aynı commit'i kullanır; deployment ID/state/URL kaydedilir, READY ve domain aynı dağıtımı gösterir. Çağrı yapmadan deploy edildi denmez.
 
-## Durum: DOĞRU VERCEL PROJE ERİŞİMİ BEKLİYOR
+## Doğrulanan devam (1 Kasım)
+- Kullanıcının Firefox'ta tamamladığı cihaz girişinden sonra API kimliği `afina-4104`, ekip `afina1` / AFINA olarak doğrulandı. Oturum yalnız bu proje için ignore edilen yerel cache dizinindedir; OYA hesabının global oturumu korunur. Token/redeem kodu repoya alınmaz.
+- Proje, alan adları ve son production dağıtımı API'den okundu: proje/ekip doğru; Node 24.x ve nextjs. `link: null`, `gitRepository: null`, `gitProviderOptions.createDeployments: disabled`. Git auto-deploy kapalıdır.
+- Önceki READY production: `dpl_FzdZWe3fDUuY24anD4KTS9eayi9q`; `afinazeytin.com`, `www.afinazeytin.com` ve `afina-zeytin.vercel.app` bu hedefe bağlıdır.
+- GitHub Actions içindeki Vercel pull/build/deploy adımları kaldırılır; lint/typecheck/unit (≤2 worker)/normal production build korunur. Hiçbir test/koruma atlanmaz. Bu geçişte branch protection false olarak tekrar okundu; normal fast-forward push kullanılacak.
+- Mevcut production environment anahtarları adlarıyla doğrulandı (değerler okunup raporlanmadı/değiştirilmedi). Uzak Supabase migration veya ödeme sağlayıcı ayarı bu yayın görevinde uygulanmaz.
+
+## Durum: ERİŞİM DOĞRULANDI; API YAYINI UYGULANIYOR

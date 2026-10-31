@@ -1,6 +1,6 @@
-name: Test ve Vercel yayın
+name: Test ve build (API yayını ayrı)
 
-# main'e her push'ta: lint + typecheck + unit test + build, geçerse Vercel'e production yayını.
+# main push: lint + typecheck + unit + build. Production yayını yalnız doğrulanmış Vercel REST API ile.
 # Tarayıcı (Playwright/Lighthouse) testleri burada koşmaz; Claude yerelde yapar.
 on:
   push:
@@ -11,19 +11,17 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: vercel-production
+  group: afina-verification
   cancel-in-progress: true
 
 permissions:
   contents: read
 
 env:
-  VERCEL_ORG_ID: team_IWBdFFE1yrN06w4L0BQxK1Cz
-  VERCEL_PROJECT_ID: prj_4nr3Qeu05CcoMgDXt7MeAfnflyPp
   NEXT_TELEMETRY_DISABLED: "1"
 
 jobs:
-  test-ve-yayin:
+  dogrulama:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -39,33 +37,8 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - run: npm run lint
       - run: npm run typecheck
-      - run: npm test -- --testTimeout=30000
-      - name: Vercel ayarlarını çek
-        id: vercel
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: |
-          if [ -z "$VERCEL_TOKEN" ]; then
-            echo "enabled=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          npx --yes vercel@65.0.0 pull --yes --environment=production --token="$VERCEL_TOKEN"
-          echo "enabled=true" >> "$GITHUB_OUTPUT"
-      - name: Vercel build
-        if: steps.vercel.outputs.enabled == 'true'
+      - run: npm test -- --maxWorkers=2 --testTimeout=30000
+      - name: Production build
         env:
           ASSET_SKIP_REENCODE: "1"
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: npx --yes vercel@65.0.0 build --prod --token="$VERCEL_TOKEN" || (echo "::warning::Derleme yeniden deneniyor (geçici ağ/font hatası)"; sleep 20; npx --yes vercel@65.0.0 build --prod --token="$VERCEL_TOKEN")
-      - name: Vercel production yayını
-        if: steps.vercel.outputs.enabled == 'true'
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        # Hobby ekibinde commit yazarı üye değilse yayın TEAM_ACCESS_REQUIRED ile bloklanır;
-        # git meta verisini göndermeden token sahibi adına yayınla (yalnız CI makinesindeki kopya).
-        run: |
-          rm -rf .git
-          npx --yes vercel@65.0.0 deploy --prebuilt --prod --token="$VERCEL_TOKEN"
-      - name: Token yok uyarısı
-        if: steps.vercel.outputs.enabled == 'false'
-        run: echo "::warning::VERCEL_TOKEN secret tanımlı değil; testler geçti ama yayın atlandı."
+        run: npm run build
