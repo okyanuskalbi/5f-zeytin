@@ -1,7 +1,6 @@
 // @vitest-environment node
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
-import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 afterEach(() => { vi.unstubAllEnvs(); vi.resetModules(); });
@@ -27,19 +26,13 @@ describe("Vercel production demo build guard", () => {
   });
 });
 
-describe("production deployment workflow", () => {
-  it("restricts the token to the three Vercel steps", async () => {
+describe("API production deployment boundary", () => {
+  it("keeps Vercel credentials and publication out of GitHub verification", async () => {
     const workflow = await readFile(new URL("../../.github/workflows/vercel-yayin.yml", import.meta.url), "utf8");
-    const [configuration, stepSource] = workflow.split("    steps:\n");
-    const steps = stepSource.split(/(?=^      - )/m);
-    expect(configuration).not.toMatch(/VERCEL_TOKEN/);
-    const tokenSteps = steps.filter(step => /^\s+VERCEL_TOKEN:/m.test(step));
-    expect(tokenSteps).toHaveLength(3);
-    for (const command of ["pull", "build", "deploy"]) {
-      const step = tokenSteps.find(step => step.includes(`vercel@65.0.0 ${command}`));
-      expect(step).toBeDefined();
-      expect(step).toMatch(/^        env:\n(?:          .+\n)*          VERCEL_TOKEN: \$\{\{ secrets\.VERCEL_TOKEN \}\}/m);
-    }
+    expect(workflow).not.toMatch(/VERCEL_TOKEN|secrets\.|npx\s+.*vercel|deploy --|rm -rf \.git/);
+    expect(workflow).toContain("permissions:\n  contents: read");
+    for (const command of ["lint", "typecheck", "build"]) expect(workflow).toContain(`npm run ${command}`);
+    expect(workflow).toContain("npm test -- --maxWorkers=2 --testTimeout=30000");
   });
 
   it("uses the package manager for ffmpeg, the lockfile and pinned actions", async () => {
@@ -51,32 +44,23 @@ describe("production deployment workflow", () => {
     expect(workflow).toMatch(/uses: actions\/setup-node@[a-f0-9]{40} # v4/);
     expect(workflow).toContain("branches: [main]");
     expect(workflow).toContain("workflow_dispatch:");
-    expect(workflow).toContain("deploy --prebuilt --prod");
-    expect(workflow).toContain("--environment=production");
+    expect(workflow).toContain('ASSET_SKIP_REENCODE: "1"');
   });
 
-  it.each(["", "task146-test-only"])("preserves optional deployment with token presence (%#)", async token => {
+  it.each(["", "task146-test-only"])("always runs verification without publishing, regardless of an ambient token (%#)", async token => {
     const workflow = await readFile(new URL("../../.github/workflows/vercel-yayin.yml", import.meta.url), "utf8");
-    const steps = workflow.split("    steps:\n")[1].split(/(?=^      - )/m);
-    const pull = steps.find(step => step.includes("vercel@65.0.0 pull"));
-    const script = pull?.match(/^        run: \|\n((?:^          .*\n)+)/m)?.[1].replace(/^          /gm, "");
-    expect(script).toBeDefined();
-    // Stub the CLI: this checks the actual workflow shell without network or credentials.
-    const directory = await mkdtemp(join(process.cwd(), ".task146-"));
-    try {
-      const outputPath = join(directory, "github-output");
-      const output = execFileSync("bash", ["-e", "-o", "pipefail", "-c", `npx() { echo vercel-called; }\n${script}`], {
-        env: { ...process.env, VERCEL_TOKEN: token, GITHUB_OUTPUT: outputPath }, encoding: "utf8",
-      });
-      expect(await readFile(outputPath, "utf8")).toBe(`enabled=${Boolean(token)}\n`);
-      expect(output.includes("vercel-called")).toBe(Boolean(token));
-    } finally { await rm(directory, { recursive: true, force: true }); }
-    expect(pull).toContain("id: vercel");
-    for (const command of ["build", "deploy"]) {
-      expect(steps.find(step => step.includes(`vercel@65.0.0 ${command}`)))
-        .toContain("if: steps.vercel.outputs.enabled == 'true'");
-    }
-    expect(steps.find(step => step.includes("name: Token yok uyarısı")))
-      .toContain("if: steps.vercel.outputs.enabled == 'false'");
+    const commands = [...workflow.matchAll(/^\s+(?:- )?run: (npm .+)$/gm)].map(match => match[1]);
+    expect(commands).toEqual([
+      "npm ci --no-audit --no-fund", "npm run lint", "npm run typecheck",
+      "npm test -- --maxWorkers=2 --testTimeout=30000", "npm run build",
+    ]);
+    // Execute the actual verification shell with network-free command stubs.
+    // An ambient legacy secret must neither skip validation nor invoke a publisher.
+    const script = 'npm() { printf "%s\\n" "$*"; }\nnpx() { echo unexpected-publisher; exit 99; }\n' + commands.join("\n");
+    const output = execFileSync("bash", ["-e", "-o", "pipefail", "-c", script], {
+      env: { ...process.env, VERCEL_TOKEN: token }, encoding: "utf8",
+    });
+    expect(output.trim().split("\n")).toEqual(commands.map(command => command.slice(4)));
+    expect(output).not.toContain("unexpected-publisher");
   });
 });
