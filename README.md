@@ -25,7 +25,7 @@ npm run build && npm run test:e2e -- tests/e2e/bootstrap.spec.ts
 
 Playwright Chromium, Firefox ve WebKit'te 320/390/768/1440 genişliklerini test eder. Yerel production sunucusunu kendisi başlatıp kapatır; 3004 portunda mevcut sunucu varsa durur. `PLAYWRIGHT_BASE_URL=https://<hedef-host> npm run test:e2e -- tests/e2e/bootstrap.spec.ts` ile açık hedef verildiğinde yerel sunucu başlatılmaz; hedef host rapora yazılır ve sayfada ZEYTİN uygulama işareti doğrulanır.
 
-Mimari/açık kararlar: [docs/PLAN.md](docs/PLAN.md). Sıralı görevler: [docs/tasks](docs/tasks). Özgün [görsel promptları](docs/visual-prompts.md) korunur. Claude planlar ve denetler; Codex görevleri AGENTS.md kurallarına göre uygular. Görsel, DB, ödeme ve yayın onayları ilgili görevlerde ayrıca alınır.
+Mimari/açık kararlar: [docs/PLAN.md](docs/PLAN.md). Sıralı görevler: [docs/tasks](docs/tasks). Özgün [görsel promptları](docs/visual-prompts.md) korunur. 1 Kasım 2026 devriyle Codex planlama, uygulama ve denetimi yürütür; güncel durum [docs/CODEX_HANDOVER.md](docs/CODEX_HANDOVER.md) içinde. Görsel, DB, ödeme ve yayın onayları ilgili görevlerde ayrıca alınır.
 
 ## Yerel PayTR ödeme önizlemesi (001b)
 

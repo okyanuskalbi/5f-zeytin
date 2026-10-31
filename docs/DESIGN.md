@@ -1,3 +1,17 @@
+# ZEYTİN v5: Toprağın özeni, üretimin güvencesi
+
+1 Kasım 2026 müşteri PDF’si ve kullanıcı yeniden tasarım isteği güncel sözleşmedir. Eski v4 aşağıda tarihçe olarak korunur.
+
+- Renkler: koyu zeytin `#172B21`, şampanya `#B6A078`, kırık beyaz `#F4F0E7`, antrasit `#252725`. V5 değişkenleri `RenewalLanding.module.css` kökünde; alışveriş/auth alt sayfalarının mevcut tokenları korunur.
+- Font: yerel Fraunces başlıklar ve Figtree arayüz.
+- Açılış: onaylı zeytinlik + mevcut canvas scrub, gerçek HTML slogan ve ürün/kurumsal CTA. Doğal sayfa kaydırması; reduced motion/veri tasarrufunda poster. Yeni Flow filmi onaylanınca aynı hat kullanılır.
+- Akış: zeytinlik → marka → müşteri tesis fotoğrafı → koleksiyon → üretim yolculuğu → kurumsal teklif → SSS/iletişim.
+- İmza: açık zeminli kurumsal anlatımın koyu yeşil ürün ve işletme bölümleriyle ritmi. Tesis görseli olduğu oranda ve gerçek tabelasıyla kullanılır.
+- 21st kaynakları: Scroll-Triggered Video Hero 9701, About Bento 25310, Contact Form 35258. Yerel Next.js/motion/primitive yapısına uyarlandı; kaynakların demo verileri, döngü videoları ve sahte istatistikleri alınmadı.
+- Afina Select/Professional sunum grupları SKU veya yeni ambalaj üretmez. Altı mevcut SKU üst sınırı, gerçek sepete ekleme, ürün detayı, stok kontrolleri korunur.
+
+---
+
 # ZEYTİN — Tasarım v4: "Sinematik sofra" (DESIGN.md)
 
 ## Karar geçmişi (21 Eki 2026)

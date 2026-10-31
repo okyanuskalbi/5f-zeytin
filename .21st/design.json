@@ -1,0 +1,409 @@
+{
+  "version": 1,
+  "project": {
+    "name": "afina-zeytin",
+    "productType": "Olive producer: corporate trust, retail commerce, B2B enquiries",
+    "stack": [
+      "nextjs",
+      "react",
+      "shadcn",
+      "tailwind-v4",
+      "motion"
+    ]
+  },
+  "sources": {
+    "tokens": [
+      "app/globals.css",
+      "components/landing/RenewalLanding.module.css"
+    ],
+    "components": [
+      "components/ui"
+    ],
+    "assets": [
+      "public/brand",
+      "public/images",
+      "assets"
+    ],
+    "instructions": [
+      "PRODUCT.md",
+      "AGENTS.md",
+      "CLAUDE.md"
+    ]
+  },
+  "design": {
+    "colorMode": "mixed",
+    "colors": {
+      "--background": {
+        "value": "var(--ink)",
+        "source": "app/globals.css"
+      },
+      "--foreground": {
+        "value": "var(--sut)",
+        "source": "app/globals.css"
+      },
+      "--card-foreground": {
+        "value": "var(--foreground)",
+        "source": "app/globals.css"
+      },
+      "--popover-foreground": {
+        "value": "var(--foreground)",
+        "source": "app/globals.css"
+      },
+      "--primary": {
+        "value": "var(--altin)",
+        "source": "app/globals.css"
+      },
+      "--primary-foreground": {
+        "value": "var(--ink)",
+        "source": "app/globals.css"
+      },
+      "--primary-hover": {
+        "value": "var(--altin-2)",
+        "source": "app/globals.css"
+      },
+      "--secondary": {
+        "value": "var(--zeytin)",
+        "source": "app/globals.css"
+      },
+      "--secondary-foreground": {
+        "value": "var(--sut)",
+        "source": "app/globals.css"
+      },
+      "--secondary-hover": {
+        "value": "var(--zeytin-2)",
+        "source": "app/globals.css"
+      },
+      "--muted": {
+        "value": "var(--zeytin-2)",
+        "source": "app/globals.css"
+      },
+      "--muted-foreground": {
+        "value": "var(--gri)",
+        "source": "app/globals.css"
+      },
+      "--accent": {
+        "value": "var(--zeytin-2)",
+        "source": "app/globals.css"
+      },
+      "--accent-foreground": {
+        "value": "var(--sut)",
+        "source": "app/globals.css"
+      },
+      "--destructive": {
+        "value": "#F5B4A8",
+        "source": "app/globals.css"
+      },
+      "--destructive-foreground": {
+        "value": "var(--ink)",
+        "source": "app/globals.css"
+      },
+      "--destructive-hover": {
+        "value": "#F9CCBF",
+        "source": "app/globals.css"
+      },
+      "--border": {
+        "value": "#536451",
+        "source": "app/globals.css"
+      },
+      "--ring": {
+        "value": "var(--altin)",
+        "source": "app/globals.css"
+      },
+      "--color-background": {
+        "value": "var(--background)",
+        "source": "app/globals.css"
+      },
+      "--color-foreground": {
+        "value": "var(--foreground)",
+        "source": "app/globals.css"
+      },
+      "--color-card": {
+        "value": "var(--card)",
+        "source": "app/globals.css"
+      },
+      "--color-card-foreground": {
+        "value": "var(--card-foreground)",
+        "source": "app/globals.css"
+      },
+      "--color-popover": {
+        "value": "var(--popover)",
+        "source": "app/globals.css"
+      },
+      "--color-popover-foreground": {
+        "value": "var(--popover-foreground)",
+        "source": "app/globals.css"
+      },
+      "--color-primary": {
+        "value": "var(--primary)",
+        "source": "app/globals.css"
+      },
+      "--color-primary-foreground": {
+        "value": "var(--primary-foreground)",
+        "source": "app/globals.css"
+      },
+      "--color-primary-hover": {
+        "value": "var(--primary-hover)",
+        "source": "app/globals.css"
+      },
+      "--color-secondary": {
+        "value": "var(--secondary)",
+        "source": "app/globals.css"
+      },
+      "--color-secondary-foreground": {
+        "value": "var(--secondary-foreground)",
+        "source": "app/globals.css"
+      },
+      "--color-secondary-hover": {
+        "value": "var(--secondary-hover)",
+        "source": "app/globals.css"
+      },
+      "--color-muted": {
+        "value": "var(--muted)",
+        "source": "app/globals.css"
+      },
+      "--color-muted-foreground": {
+        "value": "var(--muted-foreground)",
+        "source": "app/globals.css"
+      },
+      "--color-accent": {
+        "value": "var(--accent)",
+        "source": "app/globals.css"
+      },
+      "--color-accent-foreground": {
+        "value": "var(--accent-foreground)",
+        "source": "app/globals.css"
+      },
+      "--color-brand-gold": {
+        "value": "var(--brand-gold)",
+        "source": "app/globals.css"
+      },
+      "--color-brand-ink": {
+        "value": "var(--brand-ink)",
+        "source": "app/globals.css"
+      },
+      "--color-brand-kraft": {
+        "value": "var(--brand-kraft)",
+        "source": "app/globals.css"
+      },
+      "--color-brand-walnut": {
+        "value": "var(--brand-walnut)",
+        "source": "app/globals.css"
+      },
+      "--color-body-ink": {
+        "value": "var(--body-ink)",
+        "source": "app/globals.css"
+      },
+      "--color-destructive": {
+        "value": "var(--destructive)",
+        "source": "app/globals.css"
+      },
+      "--color-destructive-foreground": {
+        "value": "var(--destructive-foreground)",
+        "source": "app/globals.css"
+      },
+      "--color-destructive-hover": {
+        "value": "var(--destructive-hover)",
+        "source": "app/globals.css"
+      },
+      "--color-border": {
+        "value": "var(--border)",
+        "source": "app/globals.css"
+      },
+      "--color-input": {
+        "value": "var(--input)",
+        "source": "app/globals.css"
+      },
+      "--color-ring": {
+        "value": "var(--ring)",
+        "source": "app/globals.css"
+      },
+      "--color-overlay": {
+        "value": "var(--overlay)",
+        "source": "app/globals.css"
+      }
+    },
+    "typography": {
+      "--font-body-fallback": {
+        "value": "\"Helvetica Neue\", Arial, sans-serif",
+        "source": "app/globals.css"
+      },
+      "--font-display-fallback": {
+        "value": "Georgia, \"Times New Roman\", serif",
+        "source": "app/globals.css"
+      },
+      "--font-sans": {
+        "value": "var(--font-body, var(--font-body-fallback))",
+        "source": "app/globals.css"
+      },
+      "--font-serif": {
+        "value": "var(--font-display, var(--font-display-fallback))",
+        "source": "app/globals.css"
+      },
+      "--font-weight-medium": {
+        "value": "600",
+        "source": "app/globals.css"
+      },
+      "--text-xs": {
+        "value": "var(--step-small)",
+        "source": "app/globals.css"
+      },
+      "--text-sm": {
+        "value": "var(--step-small)",
+        "source": "app/globals.css"
+      },
+      "--text-base": {
+        "value": "var(--step-body)",
+        "source": "app/globals.css"
+      },
+      "--text-lg": {
+        "value": "var(--step-body)",
+        "source": "app/globals.css"
+      },
+      "--text-xl": {
+        "value": "var(--step-lead)",
+        "source": "app/globals.css"
+      },
+      "--text-2xl": {
+        "value": "var(--step-lead)",
+        "source": "app/globals.css"
+      },
+      "--text-3xl": {
+        "value": "var(--step-head)",
+        "source": "app/globals.css"
+      },
+      "--text-4xl": {
+        "value": "var(--step-head)",
+        "source": "app/globals.css"
+      },
+      "--text-5xl": {
+        "value": "var(--step-display)",
+        "source": "app/globals.css"
+      },
+      "--text-6xl": {
+        "value": "var(--step-display)",
+        "source": "app/globals.css"
+      }
+    },
+    "spacing": {
+      "--page-gutter": {
+        "value": "1.5rem",
+        "source": "app/globals.css"
+      },
+      "--space-unit": {
+        "value": "8px",
+        "source": "app/globals.css"
+      }
+    },
+    "radius": {
+      "--radius": {
+        "value": "0px",
+        "source": "app/globals.css"
+      },
+      "--radius-sm": {
+        "value": "var(--radius)",
+        "source": "app/globals.css"
+      },
+      "--radius-md": {
+        "value": "var(--radius)",
+        "source": "app/globals.css"
+      },
+      "--radius-lg": {
+        "value": "var(--radius)",
+        "source": "app/globals.css"
+      },
+      "--radius-xl": {
+        "value": "var(--radius)",
+        "source": "app/globals.css"
+      }
+    },
+    "shadows": {},
+    "motion": {
+      "--duration-fast": {
+        "value": "0ms",
+        "source": "app/globals.css"
+      }
+    },
+    "density": "unknown"
+  },
+  "components": {
+    "installed": [
+      "badge",
+      "button",
+      "card",
+      "dialog",
+      "input",
+      "sheet",
+      "sidebar",
+      "table",
+      "tabs",
+      "textarea",
+      "toggle",
+      "toggle-group"
+    ],
+    "preferredPrimitives": [],
+    "patterns": []
+  },
+  "constraints": {
+    "must": [],
+    "avoid": []
+  },
+  "decisions": [
+    {
+      "date": "2026-11-01",
+      "source": "Customer renewal PDF + user request",
+      "decision": "Production-first landing (~65% corporate, 35% products), olive #172B21, paper #F4F0E7, champagne #B6A078; Fraunces/Figtree; preserve official slogan and existing checkout architecture."
+    },
+    {
+      "date": "2026-11-01",
+      "source": "User explicitly requested 21st and Google Flow",
+      "decision": "Adapt retrieved 21st 9701,25310,35258. Use existing canvas engine. Google Flow generation requires approved first/last frames and capped credits."
+    }
+  ],
+  "evidence": [
+    {
+      "fact": "components.installed",
+      "source": "components/ui"
+    },
+    {
+      "fact": "design.colorMode:light",
+      "source": "app/globals.css"
+    },
+    {
+      "fact": "design.tokens",
+      "source": "app/globals.css"
+    },
+    {
+      "fact": "project.instructions",
+      "source": "AGENTS.md"
+    },
+    {
+      "fact": "project.instructions",
+      "source": "CLAUDE.md"
+    },
+    {
+      "fact": "project.instructions",
+      "source": "PRODUCT.md"
+    },
+    {
+      "fact": "project.stack:nextjs",
+      "source": "package.json"
+    },
+    {
+      "fact": "project.stack:react",
+      "source": "package.json"
+    },
+    {
+      "fact": "project.stack:shadcn",
+      "source": "components.json"
+    },
+    {
+      "fact": "project.stack:tailwind-v4",
+      "source": "package.json"
+    },
+    {
+      "fact": "project.stack:vite",
+      "source": "package.json"
+    }
+  ],
+  "generatedAt": "2026-10-31T21:45:58.617Z"
+}

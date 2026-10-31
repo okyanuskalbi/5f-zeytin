@@ -12,15 +12,16 @@ it("renders the new contentful sections in order with one footer preview note", 
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}<Footer /></>);
   expect([...doc.querySelectorAll("main > section, main > div > section")].map(section => section.getAttribute("aria-labelledby") ?? section.getAttribute("aria-label"))).toEqual([
-    "hero-title", "trust-title", "urunler-title", "tesisimiz-title", "kahraman-title", "toptan-title", "sss-title",
+    "renewal-hero-title", "kurumsal-title", "tesisimiz-title", "urunler-title", "yolculuk-title", "toptan-title", "sss-title", "iletisim-title",
   ]);
   expect(doc.querySelectorAll("article[data-product-id]")).toHaveLength(6);
-  expect(doc.querySelectorAll("#tesisimiz article")).toHaveLength(3);
+  expect(doc.querySelectorAll("#uretim-yolculugu li")).toHaveLength(3);
   expect(doc.querySelectorAll("picture source").length).toBeGreaterThan(5);
-  expect(doc.querySelector("#hero-title")?.textContent).toBe("Düziçi'nden sofranıza.");
+  expect(doc.querySelector("#renewal-hero-title")?.textContent).toBe("Kökü toprakta. Yeri sofrada.");
   expect(doc.body.textContent?.match(/Önizleme: fiyatlar ve görseller temsilidir\./g)).toHaveLength(1);
   expect(doc.body.textContent).not.toMatch(/Örnek ürünler|Gerçek satış kataloğu|kullanıma açık değil|Temsili görsel/);
-  expect(doc.querySelector("#toptan-iletisim form")).toBeNull();
+  expect(doc.querySelector('#toptan-iletisim form[aria-label="Kurumsal teklif talebi"]')).not.toBeNull();
+  expect(doc.querySelector('#toptan-iletisim button[type="submit"]')?.hasAttribute("disabled")).toBe(true);
   for (const href of ["/kvkk", "/mesafeli-satis", "/iade", "https://afina.com.tr"]) expect(doc.querySelector(`a[href="${href}"]`)).not.toBeNull();
 });
 
@@ -74,14 +75,12 @@ it("keeps matching SSR preloads and all hero sources within byte budgets", async
   doc.body.innerHTML = renderToStaticMarkup(await Home());
   const preloads = [...doc.querySelectorAll<HTMLLinkElement>('link[rel="preload"][as="image"]')];
   expect(preloads.map(link => link.media)).toEqual([
-    "(max-width: 900px)", "(min-width: 901px)", "(max-width: 900px)", "(min-width: 901px)",
+    "(max-width: 767px) and (orientation: portrait)", "(min-width: 768px), (orientation: landscape)",
   ]);
   expect(preloads.every(link => link.getAttribute("fetchpriority") === "high")).toBe(true);
-  const photo = doc.querySelector("[data-hero-photo]")!;
+  const photo = doc.querySelector("[data-frame-sequence]")!;
   expect(photo.querySelector("img")?.getAttribute("fetchPriority")).toBe("high");
-  expect(photo.querySelector("source")?.getAttribute("media")).toBe("(max-width: 900px)");
-  const manifest = JSON.parse(readFileSync("public/images/v3/manifest.json", "utf8"));
-  for (const [key, budget] of [["hero-masaustu", 180000], ["hero-mobil", 120000]] as const) {
-    for (const output of manifest.assets[key].outputs) expect(statSync(`public${output.file}`).size).toBeLessThanOrEqual(budget);
-  }
+  expect(photo.querySelector("source")?.getAttribute("media")).toBe("(max-width: 767px) and (orientation: portrait)");
+  expect(statSync("public/images/hero/optimized/desktop.avif").size).toBeLessThanOrEqual(180000);
+  expect(statSync("public/images/hero/optimized/mobile.avif").size).toBeLessThanOrEqual(120000);
 });

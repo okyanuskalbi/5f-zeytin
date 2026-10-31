@@ -36,9 +36,9 @@ it("places all four columns and three imprint groups in source order without los
   expect(doc.querySelector('a[href^="tel:"], a[href^="mailto:"]')).toBeNull();
 });
 
-it("preserves all Task 123 text, link destinations and images except the Task 129 brand replacement", () => {
+it("preserves footer destinations/images with Task 129 artwork and Task 151 shop wording", () => {
   const parse = (html: string): Document => new DOMParser().parseFromString(html, "text/html");
-  const before = parse(readFileSync("tests/e2e/fixtures/footer-123.html", "utf8"));
+  const before = parse(readFileSync("tests/e2e/fixtures/footer-123.html", "utf8").replace("Kışlık kiler", "Online Mağaza"));
   const after = parse(renderToStaticMarkup(<Footer />));
   expect(after.querySelector("footer")!.textContent).toBe(before.querySelector("footer")!.textContent);
   const links = (doc: Document) => [...doc.querySelectorAll("a")].map(link => ({

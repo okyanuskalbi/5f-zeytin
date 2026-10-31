@@ -24,4 +24,34 @@ frontend-design, yerel frontend-patterns/tdd-workflow/motion-foundations/motion-
 - [ ] npm test (≤2 worker), lint, typecheck, build, check:assets.
 - Tarayıcı testleri mevcut kullanıcı kuralı nedeniyle çalıştırılmaz; kabul eksikliği açık kaydedilir.
 
-## Durum: UYGULANIYOR
+## Coder Notu
+
+### Uygulama
+- Ana sayfa `OliveScrollHero` + `RenewalLanding` bölümleriyle yeniden kuruldu. Altı kurumsal navigasyon hedefi, Online Mağaza, mevcut sepet/ürün detayları korundu. Eski v4 bileşenleri ve tarihsel kabul testleri saklandı; v4 kalite gate'i artık açıkça bu eski bileşen fixture'ını doğrular.
+- 21st 9701 sticky-media/ilerleme yapısı, 25310 editoryal panel hiyerarşisi ve 35258 form kaynakları gerçek `get_component` çağrısıyla alındı. Demo videoları/istatistikleri/iletişim bilgileri taşınmadı. Özel canvas motoru Task 083 istisnasıyla yeniden kullanıldı.
+- Müşteri PDF görseli yalnız oranı koruyan AVIF/WebP çıktılara dönüştürüldü. Dört türev 43.115–184.430 bayt; SHA/ölçü/format/200KB kapısı check:assets'e eklendi. Yeni gerçek tesis iç fotoğrafı uydurulmadı.
+- Firma/yetkili/telefon/şehir/ürün/ambalaj/tüketim/teslimat/işletme türü alanlarıyla B2B formu. Eski WholesaleRequest sözleşmesine doğrulanmış dönüşüm ve KVKK/pending/success/error durumları; onaylı servis yokken gönderim kapalı.
+- Belgesiz EN ÇOK ALINAN ifadesi koleksiyon etiketiyle değiştirildi. 400 ton, 25 kg SKU, sertifika, aynı gün dönüş ve Zoho entegrasyonu iddiası eklenmedi.
+- AGENTS/PLAN/DESIGN/PRODUCT/README/CODEX_HANDOVER ve repo skill yönlendirmesi güncellendi. 20 ortak .agents/.claude rehberi hash olarak aynı; overwrite/silme yok. CLAUDE.md, _legacy, eski onaylar ve kaynak görseller korunur.
+
+### TDD ve doğrulama
+| Kanıt | Sonuç |
+|---|---|
+| RED: renewal-151 | 2 test, eski sayfada resmî slogan ve kurumsal navigasyon eksikliği nedeniyle başarısız; yerel checkpoint `e12e995` |
+| GREEN: renewal/business/navbar/products | 4 dosya, 18 test geçti |
+| Tam küme `npm test -- --maxWorkers=2` | **76 dosya, 1114/1114 geçti** |
+| Hedefli coverage | **77/77 geçti**; yeni dört dosyada statement %89,21, branch %82,71, function %96,77, line %93,42 |
+| Bundle raporu RED/GREEN | Yeni canvas hero posterinin yanlışlıkla hero dışı transfere sayılmasını yeniden üreten test RED; reporter güncellemesi sonrası 19/19 GREEN |
+| `npm run lint` | PASS, sıfır uyarı |
+| `npm run typecheck` | PASS |
+| `npm run build` + prebuild `check:assets` | PASS; müşteri türevlerinin hash/ölçü/boyut kontrolü dahil |
+| Gerçek `.next/server/app/index.html` Node assertion | PASS: bölüm sırası/kimliği, altı ürün, disabled form, iki poster preload, araçsız tesis, eager/high poster, autoplay ve belgesiz iddia yok |
+| `reportBundle` + `verifyBundleBudget` | PASS: ilk JS gzip **193.868 B ≤200.000 B**; CSS gzip 19.379 B; inline RSC/bootstrap gzip 43.503 B; hero hariç ilk transfer+inline 268.016 B ≤450.000 B. Tarayıcı ölçümü değildir. |
+| `21st review` beş değişen UI dosyası | PASS: hata/uyarı yok; token tanımları ve renk değerleri için 29 bilgi bulgusu, otomatik değişiklik yok |
+| `git diff --check` | PASS |
+
+Tarayıcı/e2e/Lighthouse/cihaz doğrulaması **yapılmadı**; mevcut kullanıcı yetki sınırı korundu. Kullanıcının Google Chrome'u test için açılmadı; mevcut Chrome Flow üretim oturumu yalnız medya hazırlığıdır.
+
+Kod yerel uygulanmıştır. Yeni Flow filmi, gerçek fiyat/stok/CRM gönderimi, production push/deploy ve görsel/cihaz kabulü bu sonuçlardan çıkarılmaz. Yayın erişim engeli Task 153, ilk/son kare ve kredi kararı Task 152'de ayrı izlenir.
+
+## Durum: KOD TAMAMLANDI; TARAYICI VE YAYIN KABULÜ BEKLİYOR

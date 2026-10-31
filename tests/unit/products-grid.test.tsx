@@ -13,14 +13,14 @@ afterEach(() => { cleanup(); localStorage.clear(); vi.useRealTimers(); vi.unstub
 
 const money = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", minimumFractionDigits: 0, maximumFractionDigits: 2 });
 
-it("renders six separate variants with catalog prices, three categories and just one first-card badge", async () => {
+it("renders six variants with catalog prices, categories and a factual collection badge", async () => {
   const products = await getProducts();
   render(<CartProvider products={products}><Products products={products} /></CartProvider>);
   const cards = screen.getAllByRole("article");
   expect(cards).toHaveLength(6);
   expect(cards.map(card => card.getAttribute("data-product-id"))).toEqual([...products].sort((a, b) => a.imageKey.localeCompare(b.imageKey)).map(product => product.id));
-  expect(screen.getAllByText("EN ÇOK ALINAN")).toHaveLength(1);
-  expect(within(cards[0]).getByText("EN ÇOK ALINAN")).toBeDefined();
+  expect(screen.getAllByText("KOLEKSİYONDAN")).toHaveLength(1);
+  expect(within(cards[0]).getByText("KOLEKSİYONDAN")).toBeDefined();
   expect(screen.getAllByText("Sofralık")).toHaveLength(2);
   expect(screen.getAllByText("Salamura")).toHaveLength(2);
   expect(screen.getAllByText("Zeytinyağı")).toHaveLength(2);

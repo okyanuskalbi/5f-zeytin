@@ -14,8 +14,8 @@ import styles from "./ProductCard.module.css";
 
 const money = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", minimumFractionDigits: 0, maximumFractionDigits: 2 });
 
-export function ProductCard({ product, image, scene, index = 0 }: {
-  product: ProductVariant; image: V3Image; scene?: V3Image; index?: number;
+export function ProductCard({ product, image, scene, index = 0, featured = true }: {
+  product: ProductVariant; image: V3Image; scene?: V3Image; index?: number; featured?: boolean;
 }): JSX.Element {
   const id = useId();
   const reduced = usePrefersReducedMotion();
@@ -27,7 +27,7 @@ export function ProductCard({ product, image, scene, index = 0 }: {
     transition={{ duration: reduced ? 0 : motionTokens.products.duration, delay: reduced ? 0 : index * motionTokens.products.stagger, ease: motionTokens.products.ease }}>
     <article className={styles.card} aria-labelledby={`${id}-name`} data-product-id={product.id} data-category={product.category} data-size={product.weight}>
       {scene && <div data-product-scene="" aria-hidden="true" className={styles.scene}><V3Picture image={scene} sizes="(max-width: 767px) 50vw, 33vw" decorative /></div>}
-      {index === 0 && <span className={styles.badge}>EN ÇOK ALINAN</span>}
+      {featured && index === 0 && <span className={styles.badge}>KOLEKSİYONDAN</span>}
       <button type="button" className={`${styles.image} ${styles.detailTrigger}`} aria-haspopup="dialog"
         aria-label={`${product.name}, ${product.weight} detayını aç`} onClick={event => openDetail?.(product.id, event.currentTarget)}>
         <V3Picture image={image} sizes="(max-width: 767px) 40vw, (max-width: 1023px) 25vw, 320px" />

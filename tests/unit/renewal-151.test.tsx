@@ -13,7 +13,7 @@ afterEach(cleanup);
 it("puts the official brand story and real production facility before the shop", async () => {
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(await Home());
-  expect(doc.querySelector("h1")?.textContent).toBe("Kökü toprakta.Yeri sofrada.");
+  expect(doc.querySelector("h1")?.textContent).toBe("Kökü toprakta. Yeri sofrada.");
   const sections = [...doc.querySelectorAll("main > section")].map(section => section.id);
   expect(sections.indexOf("kurumsal")).toBeGreaterThan(-1);
   expect(sections.indexOf("tesisimiz")).toBeLessThan(sections.indexOf("urunler"));

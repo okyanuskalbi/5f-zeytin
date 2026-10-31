@@ -1,0 +1,41 @@
+{
+  "source": "Afina_Zeytin_Web_Sitesi_Yenileme_Plani.pdf, page 1, embedded image 0",
+  "sourcePdfSha256": "9f901ad02779327dad67aa4cda05f7fd0fdb7358a5cfb07332a57270c1d84334",
+  "sourceImageSha256": "4ff3a00d9bffb745c52c9ad01500a1d8fd2c0da3d51153ab044ca9fe102c311a",
+  "authorization": "user-2026-11-01-customer-renewal-request",
+  "alt": "Afina Zeytin üretim tesisi, Ellek, Düziçi, Osmaniye",
+  "outputs": [
+    {
+      "file": "/images/renewal/tesis-musteri-800.avif",
+      "format": "avif",
+      "width": 800,
+      "height": 450,
+      "sha256": "1f03e76107cdb424d2326eb70369f9200ab834686cfc007c24ffda49c736d9e1",
+      "bytes": 43115
+    },
+    {
+      "file": "/images/renewal/tesis-musteri-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "sha256": "750c3b0843f39382d8828e2c9ab31c1d8be509dbd12f8a381cb392c6121d2d3b",
+      "bytes": 60576
+    },
+    {
+      "file": "/images/renewal/tesis-musteri-1672.avif",
+      "format": "avif",
+      "width": 1672,
+      "height": 941,
+      "sha256": "9418b08526a2a8baf5a5a07652e53d9cbfeb679fd2b98e411e5fffabdafe3e61",
+      "bytes": 128959
+    },
+    {
+      "file": "/images/renewal/tesis-musteri-1672.webp",
+      "format": "webp",
+      "width": 1672,
+      "height": 941,
+      "sha256": "d790e73cd669166302e03af35600a371dbb438ec09c69d2775657469cdd4bf2f",
+      "bytes": 184430
+    }
+  ]
+}

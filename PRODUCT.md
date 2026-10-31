@@ -7,12 +7,12 @@
 web
 
 ## Users
-- **Birincil:** Türkiye'de evine zeytin ve zeytinyağı alan perakende müşteri. Çoğu telefondan, Instagram/Google'dan gelir. Ailesinin sofrası için tanıdık, güvenilir, köy usulü zeytin arar; çoğu kez teneke ya da kavanozla stok yapar.
-- **İkincil:** Toptan alıcı: market, restoran, otel, bayi. Teklif ister. Toptan sitede ikinci planda.
+- **Perakende:** Türkiye'de evine zeytin ve zeytinyağı alan perakende müşteri. Çoğu telefondan, Instagram/Google'dan gelir. Ailesinin sofrası için tanıdık, güvenilir, köy usulü zeytin arar; çoğu kez teneke ya da kavanozla stok yapar.
+- **Kurumsal:** Market, restoran, otel, yurt ve bayi. 1 Kasım 2026 müşteri planıyla ana sayfanın üretim/kurumsal anlatımı öne çıktı (yaklaşık %65); perakende alışveriş korunur.
 
 ## Product Purpose
 afinazeytin.com, AFİNA ZEYTİN'in kendi ürettiği sofralık zeytin, salamura zeytin ve zeytinyağını doğrudan tüketiciye satar. Başarı ölçütleri:
-- Ziyaretçi ilk ekranda ne satıldığını ve fiyatı görür.
+- Ziyaretçi ilk ekranda markayı, üretim yöresini, ürün ve kurumsal teklif yollarını görür.
 - Doğal Kırma Yeşil Zeytin'i birkaç dokunuşla sepete ekleyip PayTR ile öder.
 - Sonra siparişini takip eder ve tekrar gelir.
 
@@ -50,7 +50,7 @@ Dört gerçek birlikte; rakip aynı cümleyi doğrulukla kuramaz:
 
 ## Brand Commitments
 - Ad: AFİNA ZEYTİN. Logo: altın zeytin dalı + el, ambalajda stilize "i".
-- Slogan: "Köklerinden aldığı güçle büyüyor". v2 sayfa cümlesi "Kökü toprakta. Yeri sofrada." isteğe bağlı.
+- Ana slogan: "Kökü toprakta. Yeri sofrada." PDF'deki "Toprağın Bereketi. Üretimin Gücü." öneridir; resmî sloganı değiştirmez.
 - Ambalaj dili:
   - zümrüt yeşili-beyaz gövde, ince beyaz botanik desen;
   - beyaz oval logo paneli;

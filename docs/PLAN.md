@@ -219,3 +219,20 @@ Numaralar mevcut task bağlantılarını korur; aşağıdaki satır sırası ve 
 
 ## Yeniden kurgu (20 Eki 2026)
 `docs/DESIGN.md` (The page is the object — teneke etiketi). Sıra: 090 → 091 → 092 → 093 → 094 → 095 → 096 → 097. Kapı: tasteskill lint/inspect. 004/005 (premium tesis üretimi) plaka/yükleme kararı bekliyor; 093 yerel bulanık gerçek fotoğrafla ilerler.
+
+
+## 1 Kasım 2026: Codex devri ve müşteri yenilemesi
+
+Tarihsel görev tablosu eski plan durumunu gösterir; tek tek task dosyaları geçmiş uygulama kanıtıdır. Yeni çalışma [151](tasks/151-codex-musteri-yenileme.md), Flow hazırlığı [152](tasks/152-google-flow.md), API yayın geçişi [153](tasks/153-vercel-api.md). Yeni görev veritabanı açılmadı.
+
+| # | Yeni karar | Gerekçe | Tarih |
+|---|---|---|---|
+| 10 | Codex plan/uygulama/denetimi birlikte yürütür | Kullanıcının Claude’dan devir isteği; eski madde 4’ün rol sınırını günceller | 2026-11-01 |
+| 11 | Müşteri PDF’sine göre üretim/kurumsal güven öncelikli tek landing | Yaklaşık %65 kurumsal, %35 ürün; mağaza/sepet korunur | 2026-11-01 |
+| 12 | Koyu yeşil/kırık beyaz v5; Fraunces/Figtree ve resmî slogan korunur | PDF renkleri tasarım girdisi; slogan/SKU/CRM önerileri bağımsız onay değildir | 2026-11-01 |
+| 13 | Yeni medya yalnız Google Flow; önce ilk/son kare referansı | Kullanıcının Flow/21st ve kredi israfını önleme yönü | 2026-11-01 |
+| 14 | Vercel API hedefi, mevcut Actions yayını kontrollü geçişe kadar korunur | Yerel Vercel hesabı ZEYTİN projesini okuyamıyor; push canlıyı tetiklediğinden tutulur | 2026-11-01 |
+
+Müşteri PDF’si ilk sayfasındaki araçsız tesis görseli optimize edildi; kaynak PDF/görsel ve çıktı SHA’ları `lib/media/renewal-assets.json` içinde. Yeni iç tesis/paketleme/sevkiyat fotoğrafları bulunmadı; temsili sahneler gerçek hat fotoğrafı gibi sunulmadı. 400 ton veya sertifika iddiası eklenmedi.
+
+Yeni kurumsal form mevcut `WholesaleRequest` sözleşmesini kullanır; Zoho hesabı/ağ isteği oluşturulmadı. Onaylı gönderim servisi ve gerçek iletişim kanalları henüz yok; gönderim kapalı ve açıkça belirtilir. Statik katalogdaki fiyat/stoklar temsili kalır; gerçek ticaret kabulü sayılmaz.

@@ -24,10 +24,12 @@ function preloadNavbarMenu(): void {
 }
 
 const links = [
-  { label: "Ürünler", href: "/#urunler" },
-  { label: "Tesisimiz", href: "/#tesisimiz" },
-  { label: "Toptan", href: "/#toptan-iletisim" },
-  { label: "SSS", href: "/#sik-sorulanlar" },
+  { label: "Ana Sayfa", href: "/" },
+  { label: "Kurumsal", href: "/#kurumsal" },
+  { label: "Üretim Tesisimiz", href: "/#tesisimiz" },
+  { label: "Ürünlerimiz", href: "/#urunler" },
+  { label: "Toptan Satış", href: "/#toptan-iletisim" },
+  { label: "İletişim", href: "/#iletisim" },
 ];
 
 export function Navbar(): JSX.Element {
@@ -72,7 +74,7 @@ export function Navbar(): JSX.Element {
 
   useEffect(() => {
     if (!isOpen) return;
-    const desktop = window.matchMedia("(min-width: 901px)");
+    const desktop = window.matchMedia("(min-width: 1281px)");
     const closeOnDesktop = (): void => { if (desktop.matches) setIsOpen(false); };
     desktop.addEventListener("change", closeOnDesktop);
     // Preserve Radix focus management while also hiding background live regions.
@@ -100,6 +102,7 @@ export function Navbar(): JSX.Element {
           {links.map(link => <Link key={link.href} href={link.href} className={styles.link}>{link.label}</Link>)}
         </nav>
         <div className={styles.actions}>
+          <Link href="/#urunler" className={styles.shop}>Online Mağaza</Link>
           <Button variant="ghost" className={`${styles.control} ${styles.cart}`}
             aria-label={`Sepetim, ${itemCount} adet`} aria-haspopup="dialog" aria-expanded={cart?.open ?? false}
             disabled={!cart?.state.hydrated || cart.products === null}
@@ -120,7 +123,7 @@ export function Navbar(): JSX.Element {
             onPointerEnter={preloadNavbarMenu} onFocus={preloadNavbarMenu} onTouchStart={preloadNavbarMenu}
             aria-haspopup="dialog" aria-expanded={isOpen} onClick={() => setIsOpen(true)}>Menü</Button>
           {isOpen && <NavbarMenu links={links} onClose={() => setIsOpen(false)}
-            onRestoreFocus={() => (window.matchMedia("(min-width: 901px)").matches ? homeRef : triggerRef).current?.focus()} />}
+            onRestoreFocus={() => (window.matchMedia("(min-width: 1281px)").matches ? homeRef : triggerRef).current?.focus()} />}
 
         </div>
       </div>

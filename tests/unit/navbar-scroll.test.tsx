@@ -30,9 +30,9 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-it("keeps all four v4 section destinations and the cart control", () => {
+it("keeps corporate section destinations and the cart control", () => {
   render(<Navbar />);
-  for (const [name, href] of [["Ürünler", "/#urunler"], ["Tesisimiz", "/#tesisimiz"], ["Toptan", "/#toptan-iletisim"], ["SSS", "/#sik-sorulanlar"]]) {
+  for (const [name, href] of [["Kurumsal", "/#kurumsal"], ["Ürünlerimiz", "/#urunler"], ["Üretim Tesisimiz", "/#tesisimiz"], ["Toptan Satış", "/#toptan-iletisim"], ["İletişim", "/#iletisim"]]) {
     expect(screen.getByRole("link", { name }).getAttribute("href")).toBe(href);
   }
   expect(screen.getByRole("button", { name: "Sepetim, 0 adet" }).textContent).toBe("Sepet (0)");

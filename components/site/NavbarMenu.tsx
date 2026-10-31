@@ -15,7 +15,7 @@ export function NavbarMenu({ links, onClose, onRestoreFocus }: {
       onCloseAutoFocus={event => { event.preventDefault(); onRestoreFocus(); }}>
       <DialogHeader className="sr-only">
         <DialogTitle>Site menüsü</DialogTitle>
-        <DialogDescription>Ürünler, tesisimiz, toptan satış ve sık sorulan sorular.</DialogDescription>
+        <DialogDescription>Kurumsal, üretim tesisimiz, ürünlerimiz, toptan satış ve iletişim.</DialogDescription>
       </DialogHeader>
       <nav aria-label="Site navigasyonu" className={styles.menuLinks}>
         {links.map((link, index) => <DialogClose key={link.href} asChild>

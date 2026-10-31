@@ -21,7 +21,7 @@ export async function summarizeBundle(html, readAsset) {
     const inlineCss = [...doc.querySelectorAll("style")].map(node => Buffer.from(node.textContent));
     const inlineJs = Buffer.from([...doc.querySelectorAll('script:not([src]):not([type="application/ld+json"])')].map(node => node.textContent).join("\n"));
     const initialImages = await Promise.all([...new Set([...doc.querySelectorAll('img:not([loading="lazy"])')]
-      .filter(node => !node.closest("[data-hero-photo]"))
+      .filter(node => !node.closest("[data-hero-photo], [data-hero-intro] [data-frame-sequence]"))
       .map(node => node.getAttribute("src")))].map(async src => ({ src, bytes: (await readAsset(src)).length })));
     const total = { count: initialScripts.length, bytes: initialScripts.reduce((sum, entry) => sum + entry.bytes, 0), gzipBytes: initialScripts.reduce((sum, entry) => sum + entry.gzipBytes, 0) };
     const css = {

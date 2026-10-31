@@ -11,7 +11,7 @@ import styles from "./Footer.module.css";
 // Compact four-column grid adapted to v4 tokens, native links and CSS Modules (Tasks 123/127).
 const shoppingLinks = [
   { label: "Ürünler", href: "/#kiler" },
-  { label: "Kışlık kiler", href: "/#urunler" },
+  { label: "Online Mağaza", href: "/#urunler" },
   { label: "Sepetim", href: "/sepet" },
 ];
 const helpLinks = [

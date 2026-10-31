@@ -120,7 +120,7 @@ export function ScrollFrameSequence({
             {poster?.desktopWebpSrcSet && <source type="image/webp" srcSet={poster.desktopWebpSrcSet} sizes="100vw" />}
             <img ref={observePoster} key={`poster:${posterKey}`} src={posterURL} srcSet={poster?.srcSet} sizes={poster?.srcSet ? "100vw" : undefined} alt="" aria-hidden="true"
               width={poster?.width ?? manifest!.widths[0]} height={poster?.height ?? Math.round(manifest!.widths[0] / manifest!.aspect)}
-              fetchPriority={poster ? "high" : undefined}
+              fetchPriority={poster ? "high" : undefined} loading={poster ? "eager" : "lazy"} decoding="async"
               style={{ objectPosition: `${focusX * 100}% center` }}
               onLoad={() => setPosterLoaded(posterKey)} onError={() => setPosterFailed(posterKey)}
               className={`absolute inset-0 h-full w-full ${fit === "cover" ? "object-cover" : "object-contain"}`} />

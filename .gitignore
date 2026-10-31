@@ -16,3 +16,6 @@ coverage/
 .impeccable/
 .taste-skill/inspect/
 .vercel
+
+# Local Google Flow reference candidates; approval is separate from runtime.
+output/flow-keyframes/

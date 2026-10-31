@@ -1,6 +1,13 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeAll, describe, expect, it, vi } from "vitest";
-import Home from "@/app/page";
+import { Hero } from "@/components/landing/Hero";
+import { Products } from "@/components/landing/Products";
+import { TrustStrip } from "@/components/landing/TrustStrip";
+import { Story } from "@/components/landing/Story";
+import { HeroBand } from "@/components/landing/HeroBand";
+import { WholesaleFaq } from "@/components/landing/WholesaleFaq";
+import { getProducts } from "@/lib/catalog/static-products";
+import { BusinessJsonLd } from "@/components/site/BusinessJsonLd";
 vi.mock("server-only", () => ({}));
 import { Footer } from "@/components/site/Footer";
 import { verifiedFaqs } from "@/components/landing/Faq";
@@ -10,13 +17,16 @@ import { verifyV4Html, verifyV4Assets, verifyV4Runtime } from "../../scripts/ver
 import { summarizeBundle } from "../../scripts/report-bundle.mjs";
 
 async function pageHtml(): Promise<string> {
-  return renderToStaticMarkup(<>{await Home()}<Footer /></>);
+  // Keep the historical v4 gate against the retained v4 components. Task 151
+  // has its own current-page contracts; it intentionally replaces this layout.
+  const products = await getProducts();
+  return renderToStaticMarkup(<><main><BusinessJsonLd /><Hero products={products} /><TrustStrip /><Products products={products} /><Story /><HeroBand products={products} /><WholesaleFaq /></main><Footer /></>);
 }
 
 describe("v4 offline quality gate", () => {
   let awaitableHtml: string;
   beforeAll(async () => { awaitableHtml = await pageHtml(); });
-  it("accepts the real SSR, all approved media budgets and the runtime source tree", async () => {
+  it("preserves legacy v4 SSR, approved media budgets and the runtime source tree", async () => {
     expect(verifyV4Html(await pageHtml())).toMatchObject({ cards: 6, steps: 3, faqs: 3, previewNotes: 1 });
     expect(await verifyV4Assets()).toMatchObject({ products: 6, heroDesktopBudget: 180000, heroMobileBudget: 120000, productBudget: 60000 });
     await expect(verifyV4Runtime()).resolves.toBeUndefined();
@@ -87,8 +97,9 @@ describe("v4 offline quality gate", () => {
       "/_next/static/a.js": Buffer.from("a".repeat(1000)),
       "/_next/static/a.css": Buffer.from("body{color:green}"),
       "/logo.svg": Buffer.from("<svg/>"),
+      "/grove.webp": Buffer.from("approved-hero-poster"),
     };
-    const report = await summarizeBundle('<script src="/_next/static/a.js"></script><script src="/_next/static/a.js"></script><script noModule src="legacy.js"></script><link rel="stylesheet" href="/_next/static/a.css"><img src="/logo.svg"><img loading="lazy" src="/lazy.webp"><div data-hero-photo><img src="/hero.webp"></div>', async (path: string) => files[path]);
+    const report = await summarizeBundle('<script src="/_next/static/a.js"></script><script src="/_next/static/a.js"></script><script noModule src="legacy.js"></script><link rel="stylesheet" href="/_next/static/a.css"><img src="/logo.svg"><img loading="lazy" src="/lazy.webp"><div data-hero-photo><img src="/hero.webp"></div><section data-hero-intro><div data-frame-sequence><img src="/grove.webp"></div></section>', async (path: string) => files[path]);
     expect(report.initialScripts).toHaveLength(1);
     expect(report.total.bytes).toBe(1000);
     expect(report.initialImages).toEqual([{ src: "/logo.svg", bytes: 6 }]);

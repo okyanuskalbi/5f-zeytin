@@ -19,10 +19,10 @@ it("uses full factual sentences and removes unanswered wholesale questions", asy
   for (const faq of verifiedFaqs) expect(faq.answer).toMatch(/\.$/);
   expect(doc.querySelector('[data-faq="Z05"]')).toBeNull();
   expect(doc.querySelector("#toptan")).toBeNull();
-  expect(doc.querySelector("#toptan-iletisim h2")?.textContent).toBe("Market, restoran, otel, bayi.");
+  expect(doc.querySelector("#toptan-iletisim h2")?.textContent).toContain("tedarikçisi.");
   expect(doc.querySelector("#sik-sorulanlar h2")?.textContent).toBe("Sık sorulanlar");
   expect(doc.querySelectorAll("#sik-sorulanlar details > summary")).toHaveLength(3);
-  expect(doc.querySelector("#toptan-iletisim button")?.textContent).toBe("Toptan teklif isteyin");
+  expect(doc.querySelector('#toptan-iletisim button[type="submit"]')?.textContent).toBe("Teklif talebini gönder");
   expect(doc.querySelector('a[href^="tel:"], a[href*="wa.me"], a[href^="mailto:"]')).toBeNull();
   expect(doc.body.textContent).not.toMatch(/Toptan alım için bize yazın|İletişim bilgileri yakında/);
 });
@@ -49,8 +49,10 @@ it.each([
   Object.assign(siteContact, contact);
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}<Footer /></>);
-  expect(doc.querySelector("#toptan-iletisim h2")?.textContent).toBe("Market, restoran, otel, bayi.");
-  expect(doc.querySelectorAll("#toptan-iletisim a")).toHaveLength(1);
+  expect(doc.querySelector("#toptan-iletisim h2")?.textContent).toContain("tedarikçisi.");
+  if (contact.phone) expect(doc.querySelector('#iletisim a[href^="tel:"]')).not.toBeNull();
+  if (contact.email) expect(doc.querySelector('#iletisim a[href^="mailto:"]')).not.toBeNull();
+  expect(doc.querySelector('#toptan-iletisim a[href="/kvkk"]')).not.toBeNull();
   expect(doc.querySelector('footer a[href="/#toptan-iletisim"]')?.textContent).toBe("Toptan Satış İçin İletişime Geçin");
 });
 it("retains seller identity, community and legal destinations", () => {
@@ -69,7 +71,7 @@ it("groups brand, shopping, help and contact before the payment and legal rows",
     "AFİNA ZEYTİN", "Alışveriş", "Yardım", "İletişim",
   ]);
   for (const [label, href] of [
-    ["Ürünler", "/#kiler"], ["Kışlık kiler", "/#urunler"], ["Sepetim", "/sepet"],
+    ["Ürünler", "/#kiler"], ["Online Mağaza", "/#urunler"], ["Sepetim", "/sepet"],
     ["Sipariş takibi", "/siparis-takip"], ["Hesabım", "/hesabim"],
     ["Sık sorulan sorular", "/#sik-sorulanlar"], ["Tesisimiz", "/#tesisimiz"],
   ]) {
