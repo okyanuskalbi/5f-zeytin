@@ -19,7 +19,7 @@ Yerel Claude JSONL kaydı bulundu: `862bcbce-6e8d-4a73-a71a-971f141b67f4`. Yakı
 - 21st CLI ile `.21st/design.json` ve `.21st/DESIGN.md` oluşturuldu. Global MCP yapılandırmasına veya `.mcp.json`a yazılmadı.
 - PDF metni/görseli poppler ile okundu/çıkarıldı. Müşteri görseline yalnız oranı koruyan AVIF/WebP dönüşümü uygulandı; tasarım veya etiket değiştirilmedi. SHA/ölçü/boyut kontrolü check:assets zincirine eklendi.
 - Google Flow kullanıcı Chrome oturumunda doğrulandı. Ücretsiz resim modunda dört referans aday üretildi, son ürün karesi onaylı kaynaktan korundu; 250 kredi bakiyesi değişmedi. İlk/son kare önizlemesi hazır, ücretli video ve kredi sınırı kullanıcı onayı bekliyor. Ayrıntı [152](tasks/152-google-flow.md).
-- Vercel API kimliği ZEYTİN ekibine erişemiyor. Actions production yayını hâlâ aktif; push yapılmadı. Ayrıntı [153](tasks/153-vercel-api.md).
+- Başlangıç Vercel kimliği erişemiyordu. Kullanıcının Firefox cihaz girişiyle AFINA erişimi doğrulandı; Task 153 API yayını tamamlandı. Actions yalnız doğrulama yapar; aşağıdaki güncel yayın kaydı esas alınır.
 
 ## Uygulama
 [151](tasks/151-codex-musteri-yenileme.md): üretim ve kurumsal güven odaklı yeni ana sayfa; resmî slogan, gerçek müşteri tesis görseli, altı mevcut ürün, native scroll canvas açılışı, B2B alanları, SSS/iletişim. Mevcut sepet ve ürün detay modalları korunur.
@@ -41,3 +41,8 @@ Kullanıcının Bazgold ekran görüntüsü, AFİNA'nın kendi markası ve mevcu
 Dört ek PDF kaynakları uygulandı; tam uyarlama tablosu `docs/referans/kit-uyarlamalari-20261101.md`. SSR/FAQ/schema/llms beş ortak doğrulanmış cevap, gerçek tesis görseli ve içerik tarihiyle eşleşir. Son toplam 83 dosya/1146 test, lint/typecheck/build PASS; derlenmiş HTML kontrolü PASS.
 
 Flow'da kullanıcı onayıyla yalnız ilk A→B klip (20 kredi) üretildi; hesap 250→230. Özgün 720p H.264 dosya ve sessiz inceleme kopyası `output/flow-keyframes/` içindedir; hash/teknik kayıt `docs/referans/flow-keyframes.json`. Diğer üç geçiş için bütçe yok; yeni medya runtime onayı almadı. Push/deploy/uzak migration yapılmadı.
+
+## Güncel production yayını (Task 153 TAMAMLANDI)
+Yayınlanan kaynak commit `112f55ffbc78ae93807fcd1b4e4b9d9d811f5185`; GitHub CI 83 dosya/1146 test + lint/typecheck/build SUCCESS. Vercel REST API production dağıtımı `dpl_EmnZx1KUcZ5R5WkYnX9kCMkLXSkB` READY ve afinazeytin.com/www/project alias'ları bağlı. Canlı HTTP/HTML'de resmî slogan, altı bölüm, beş SSS, gerçek tesis görseli ve giriş formu doğrulandı; katalog veritabanından altı ürün döndürüyor. Oturumsuz hesap API'leri 401/private-no-store, özel sayfalar 307/giriş. Makbuz `docs/referans/yayin-20261101.json`. Uzak müşteri migration/gerçek üyelik işlemi/ödeme veya tarayıcı testi yapılmadı.
+
+İlk Flow klibi kullanıcı tarafından kabul edildi; kalan üç geçişe ek 60 kredi yetkisi var. Üç normal deneme Google reCAPTCHA/olağan dışı etkinlik engelinde kaldı; bakiye 230, ek harcama 0. İstem/kareler Task 152'de hazır; media runtime'a alınmadı. Bu açık iş için yeniden bütçe sorulmaz; kalan sınır 60 kredidir.

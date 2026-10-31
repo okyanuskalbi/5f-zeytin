@@ -249,3 +249,6 @@ Yeni kurumsal form mevcut `WholesaleRequest` sözleşmesini kullanır; Zoho hesa
 
 ## Flow devam yetkisi
 Kullanıcı ilk klibi kabul edip kalan üç geçişi istedi. Doğrulanan 20 kredi/çıktıyla ek sınır 60 kredi, toplam kapsam 80 kredi. Google reCAPTCHA/olağan dışı etkinlik engeli üç normal denemeden sonra sürüyor; bakiye 230 ve ek harcama 0. İlk/son kareler ve istemler Task 152 kaydında hazır; henüz yeni çıktı üretilmedi.
+
+## API yayını tamamlandı
+[Task 153](tasks/153-vercel-api.md) tamamlandı. Kullanıcının Firefox cihaz girişi AFINA/afina-zeytin erişimini açtı. Git auto-deploy kapalı; Actions artık yalnız doğrulama. `112f55f` normal push ve CI SUCCESS sonrası doğrudan REST API ile production'a dağıtıldı. Yeni READY `dpl_EmnZx1KUcZ5R5WkYnX9kCMkLXSkB`, afinazeytin.com bu dağıtıma bağlı; canlı HTTP/HTML kontrolleri PASS. Makbuz `docs/referans/yayin-20261101.json`. Tarayıcı, gerçek üyelik/ödeme/migration kabulü ve kalan üç Flow videosu ayrı açık işlerdir.

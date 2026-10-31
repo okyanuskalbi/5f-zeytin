@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "verifiedAt": "2026-11-01T02:09:00.653946+03:00",
+  "project": {
+    "id": "prj_4nr3Qeu05CcoMgDXt7MeAfnflyPp",
+    "name": "afina-zeytin",
+    "teamId": "team_IWBdFFE1yrN06w4L0BQxK1Cz"
+  },
+  "commit": "112f55ffbc78ae93807fcd1b4e4b9d9d811f5185",
+  "ci": {
+    "url": "https://github.com/okyanuskalbi/5f-zeytin/actions/runs/41250576271",
+    "conclusion": "success",
+    "testFiles": 83,
+    "testsPassed": 1146,
+    "checks": [
+      "lint",
+      "typecheck",
+      "unit",
+      "production build"
+    ]
+  },
+  "deployment": {
+    "id": "dpl_EmnZx1KUcZ5R5WkYnX9kCMkLXSkB",
+    "url": "afina-zeytin-8vf2mytye-afina1.vercel.app",
+    "readyState": "READY",
+    "target": "production",
+    "alias": [
+      "afinazeytin.com",
+      "afina-zeytin.vercel.app",
+      "www.afinazeytin.com",
+      "afina-zeytin-afina1.vercel.app"
+    ],
+    "aliasAssigned": true
+  },
+  "previousProductionId": "dpl_FzdZWe3fDUuY24anD4KTS9eayi9q",
+  "source": {
+    "fileCount": 1338,
+    "bytes": 57660413,
+    "manifestSha256": "b1cf066eb7b19cd027ba3d08650c85f533bc568a87f611e6f201b025d4a96bd8",
+    "transport": "Vercel REST API v2 files + v13 deployments; mixed SHA refs and inline small files"
+  },
+  "verification": {
+    "h1": "Kökü toprakta. Yeri sofrada.",
+    "faqCount": 5,
+    "canonical": "https://afinazeytin.com/",
+    "sections": 6,
+    "loginForm": true,
+    "anonymousCustomerAPIs": "401 private no-store",
+    "privatePages": "redirect to login",
+    "browserTesting": false
+  },
+  "http": [
+    {
+      "path": "/",
+      "status": 200,
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "location": null,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "path": "/giris",
+      "status": 200,
+      "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "location": null,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "path": "/hesabim",
+      "status": 307,
+      "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "location": "/giris?next=/hesabim",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "path": "/hesabim/siparisler",
+      "status": 307,
+      "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "location": "/giris?next=%2Fhesabim%2Fsiparisler",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "path": "/api/account",
+      "status": 401,
+      "cacheControl": "private, no-store",
+      "location": null,
+      "contentType": "application/json"
+    },
+    {
+      "path": "/api/account/addresses",
+      "status": 401,
+      "cacheControl": "private, no-store",
+      "location": null,
+      "contentType": "application/json"
+    },
+    {
+      "path": "/api/account/orders",
+      "status": 401,
+      "cacheControl": "private, no-store",
+      "location": null,
+      "contentType": "application/json"
+    },
+    {
+      "path": "/api/products",
+      "status": 200,
+      "cacheControl": "no-store",
+      "location": null,
+      "contentType": "application/json",
+      "source": "database",
+      "products": 6
+    },
+    {
+      "path": "/sitemap.xml",
+      "status": 200,
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "location": null,
+      "contentType": "application/xml"
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200,
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "location": null,
+      "contentType": "text/plain; charset=utf-8"
+    }
+  ],
+  "browserAcceptance": false,
+  "remoteMigrationsApplied": false,
+  "newFlowMediaPublished": false
+}

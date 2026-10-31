@@ -11,5 +11,5 @@ description: AFİNA ZEYTİN için güncel Codex devir, mevcut mimari, medya onay
 - 21st: arama + gerçek kaynak alma; sınırsız component erişimi AI üretim yetkisi değildir. 1 Kasım kontrolünde hosted AI kapalıdır. shadcn yalnız resmi CLI, mevcut primitive'leri kullan.
 - Medya: yeni üretim yalnız Google Flow; önce başlangıç/bitiş referansları, kullanıcı onayı, sınırlı kredi. AtlasCloud fallback yok. Onaysız aday public/runtime'a girmez.
 - Oynatma: Task 083 ScrollFrameSequence/FramePlayback/extract-frames; native scroll, DOM CTA, poster/reduced motion/veri tasarrufu sınırları.
-- Yayın: Task 153 kontrol listesini oku. Actions üretim yayını açıkken ve doğru Vercel proje API erişimi yokken main push yapma. Yerel doğrulama, commit, push ve deploy ayrı kanıttır.
+- Yayın: Task 153 tamamlandı; Actions yalnız lint/typecheck/unit/build yapar, Vercel Git auto-deploy kapalıdır. Yeni dağıtım doğrudan REST API, doğrulanan AFINA ekip/afina-zeytin projesi ve CI SUCCESS commit snapshot ile yapılır. Hedef ve tek yayın sorumlusu her seferinde kontrol edilir. Kanıt: docs/referans/yayin-20261101.json. Yerel doğrulama, commit, push, READY ve alan adı ayrı kanıttır.
 - .env, CLAUDE.md, _legacy, onay belgeleri ve eski test kanıtları korunur. Auth/DB/ödeme kapıları kullanıcı onayı gerektirir.

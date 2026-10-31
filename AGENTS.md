@@ -48,7 +48,7 @@ Kullanıcının 1 Kasım 2026 devriyle planlama, görev dokümanları, uygulama 
 
 ## Projeye özel ek kurallar
 
-- **Yayın tercihi (1 Kasım):** test/lint/typecheck/build yeşil değişiklikler normal main push; dağıtım doğrudan Vercel API ile hedeflenir. Mevcut GitHub Actions production yayını hâlâ etkindir. Doğru ZEYTİN Vercel proje erişimi, Git auto-deploy ve çift yayın riski doğrulanmadan push etme; geçiş tamamlandı varsayma. Branch protection bypass/force push/reset yok.
+- **Yayın tercihi (1 Kasım, Task 153 tamam):** test/lint/typecheck/build yeşil değişiklikler normal main push; dağıtım doğrudan Vercel REST API ile. GitHub Actions yalnız lint/typecheck/unit/build yapar; Vercel Git auto-deploy kapalıdır. Doğru AFINA ekip/proje erişimi doğrulandı; kanıt `docs/referans/yayin-20261101.json`. Gelecek yayında hedef kimliklerini ve Git/Actions durumunu tekrar doğrula; tokenları gösterme. Branch protection bypass/force push/reset yok.
 
 - **Tarayıcı testleri Claude'da (kullanıcı kuralı, 21 Eki):** Playwright e2e, Lighthouse, inspect.mjs, ekran görüntüsü/kare şeridi ÇALIŞTIRMA. Yalnız kodu yaz, e2e testlerini yaz/güncelle (çalıştırmadan) ve `npm test` (unit), lint, typecheck, build çalıştır. Tarayıcı kabulünü "tarayıcı doğrulaması yapılmadı" olarak kaydet; Claude’un otomatik doğrulayacağını varsayma. Kod kapıları ile görsel/cihaz kabulünü ayrı bildir.
 
