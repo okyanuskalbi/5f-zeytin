@@ -27,4 +27,14 @@ v12 kaynak782af321, CI41346485610 SUCCESS, REST dağıtımıdpl_J9muAjiHNwqwSJau
 - Paketli headless Chromium üç denemede başlatılamadı; etkileşimli/görsel
   tarayıcı kabulü yapılmadı. Kullanıcının Chrome uygulaması test için açılmadı.
 
-## Durum: KOD DOĞRULANDI; YAYIN VE GÖRSEL KABUL BEKLİYOR
+## Canlı doğrulama
+Kullanıcının çalıştırdığı REST yayını f4be7eb kaynağını
+dpl_5WuqjSSTMZo1SrAt1MekJPjdZUfT ile READY durumuna getirdi; ana domain bağlı.
+Taze uzak tarayıcıda hem /giris hem ana sayfadaki Hesabım modalinde yeni
+metin/toolbar, Google seçeneğinin yokluğu ve KVKK'nın formdan sonra geldiği
+doğrulandı. Modal kaydırma gövdesi auto, Kapat bu gövdenin dışında.
+Kanıt: docs/referans/yayin-uyelik-168-20261101.json.
+Kullanıcının eski açık sekmesi incelenmedi; tam responsive/klavye ve fiziksel
+cihaz kabulü bu dar canlı DOM kontrolüyle eşitlenmez.
+
+## Durum: YAYINLANDI; CANLI FORM/MODAL DOĞRULANDI, TAM RESPONSIVE KABUL BEKLİYOR

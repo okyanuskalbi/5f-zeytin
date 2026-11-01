@@ -1,4 +1,14 @@
-# Aktif iş: Task168 / üyelik penceresi düzenlemesi
+# Aktif iş: Task169 / ürün galerisi scroll düzeltmesi
+
+[Task169](tasks/169-urun-galerisi-scroll.md) yatay ürün akışını normal dizüstü
+ekranlarında geri getirir. Eski 860px şartı ve sabit görsel yüksekliği birlikte
+düzeltilir; katalog/işlemler ve küçük ekranın doğal kaydırması korunur.
+
+Task168 kaynak f4be7eb artık yayında: REST dpl_5WuqjSSTMZo1SrAt1MekJPjdZUfT
+READY ve ana domain bağlı. Taze /giris ve Hesabım modal DOM kontrolü yeni düzeni
+doğruladı; [kanıt](referans/yayin-uyelik-168-20261101.json).
+
+# Önceki iş: Task168 / üyelik penceresi düzenlemesi
 
 [Task168](tasks/168-uyelik-penceresi-duzenleme.md) giriş/kayıt arayüzünü
 kompakt, küçük ekranda kaydırılabilir ve kapatma kontrolü görünür biçimde düzenler.

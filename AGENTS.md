@@ -1,4 +1,16 @@
-## Aktif kullanıcı işi: Task168 / üyelik penceresi (1 Kasım 2026)
+## Aktif kullanıcı işi: Task169 / ürün galerisi scroll (1 Kasım 2026)
+
+Kullanıcı ürünlerin dikey scroll ile yatay ilerlemesini yeniden istedi.
+Kapsam docs/tasks/169-urun-galerisi-scroll.md: 860px eski yükseklik eşiğini
+masaüstü 680px'e indirmek ve sabit görsel yüksekliği yerine kalan alanı
+kullanmak. Telefon/kısa pencere/reduced native ray, altı SKU ve eylemler korunur.
+
+Task168 artık canlı: f4be7eb, REST dpl_5WuqjSSTMZo1SrAt1MekJPjdZUfT READY.
+Taze /giris ve ana sayfa modal kontrolü yeni düzeni doğruladı; Google yok,
+KVKK form sonunda ve Kapat kaydırma gövdesi dışında. Kanıt
+docs/referans/yayin-uyelik-168-20261101.json; tam responsive kabulü değildir.
+
+## Önceki iş: Task168 / üyelik penceresi (1 Kasım 2026)
 
 Kullanıcı canlı giriş penceresi ekran görüntüsünün düzenlenmesini istedi.
 Aktif kapsam docs/tasks/168-uyelik-penceresi-duzenleme.md: kompakt giriş/kayıt,

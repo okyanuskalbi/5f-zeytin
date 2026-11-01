@@ -119,7 +119,7 @@ test("seven sourced sections retain real destinations and scroll-reachable compa
 });
 
 test("desktop gallery follows linear scroll immediately, exposes the last focused SKU and releases the page", async ({ page }) => {
-  test.skip(!await page.evaluate(() => matchMedia("(min-width: 1024px) and (min-height: 860px) and (hover: hover) and (pointer: fine)").matches), "Linear held gallery requires a tall fine-pointer desktop.");
+  test.skip(!await page.evaluate(() => matchMedia("(min-width: 1024px) and (min-height: 680px) and (hover: hover) and (pointer: fine)").matches), "Linear held gallery requires a fine-pointer desktop with room for its controls.");
   await page.goto("/", { waitUntil: "networkidle" });
   await expect(gallery(page)).toHaveAttribute("data-gallery-mode", "scrub");
   await expect(gallery(page)).toHaveAttribute("data-sc-device", "pan");
@@ -157,7 +157,7 @@ test("phone and tablet retain a native gallery without a desktop scroll-height t
 });
 
 test("a motion preference change releases the gallery and resizing remeasures its real travel", async ({ page }) => {
-  test.skip(!await page.evaluate(() => matchMedia("(min-width: 1024px) and (min-height: 860px) and (hover: hover) and (pointer: fine)").matches), "Desktop enhancement transition.");
+  test.skip(!await page.evaluate(() => matchMedia("(min-width: 1024px) and (min-height: 680px) and (hover: hover) and (pointer: fine)").matches), "Desktop enhancement transition.");
   await page.goto("/", { waitUntil: "networkidle" });
   const before = await galleryState(page);
   await page.evaluate(y => scrollTo({ top: y, behavior: "instant" }), before.top + before.range / 2);
