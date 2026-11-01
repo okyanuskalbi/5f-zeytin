@@ -1,0 +1,357 @@
+{
+  "date": "2026-11-01",
+  "task": 157,
+  "design": "v6 Üretici Atlası",
+  "sourceCommit": "9b7b505c2623833ceb97013ffda5c389e26fb4f7",
+  "ci": {
+    "conclusion": "success",
+    "databaseId": 41280711961,
+    "headSha": "9b7b505c2623833ceb97013ffda5c389e26fb4f7",
+    "status": "completed",
+    "url": "https://github.com/okyanuskalbi/5f-zeytin/actions/runs/41280711961"
+  },
+  "project": {
+    "name": "afina-zeytin",
+    "id": "prj_4nr3Qeu05CcoMgDXt7MeAfnflyPp",
+    "teamId": "team_IWBdFFE1yrN06w4L0BQxK1Cz"
+  },
+  "deployment": {
+    "id": "dpl_DRCshLDGWbDcVPPZvmTerhyU7aR5",
+    "url": "afina-zeytin-rtc0wqe06-afina1.vercel.app",
+    "readyState": "READY",
+    "target": "production",
+    "alias": [
+      "afinazeytin.com",
+      "afina-zeytin.vercel.app",
+      "www.afinazeytin.com",
+      "afina-zeytin-afina1.vercel.app"
+    ],
+    "aliasAssigned": true,
+    "errorCode": null,
+    "errorMessage": null,
+    "meta": {
+      "sourceCommit": "9b7b505c2623833ceb97013ffda5c389e26fb4f7",
+      "sourceRepo": "okyanuskalbi/5f-zeytin",
+      "pipeline": "verified-rest-api",
+      "verificationRun": "41280711961",
+      "lambdaRuntimeStats": "{\"nodejs\":3}"
+    }
+  },
+  "previousProduction": {
+    "id": "dpl_J2H5vNo7EFfvukU7ionhgRRVd2Wa",
+    "sourceCommit": "104b15f1662f172f7738750c0aa5a9b1571c1045"
+  },
+  "sourceSnapshot": {
+    "files": 1547,
+    "bytes": 73397594,
+    "manifestSha256": "ecc79a5efb4d83da5769b8fb735193604feb23e6dc90cd581e5a026f8e795ed0"
+  },
+  "checks": {
+    "unitTests": 1171,
+    "unitFiles": 85,
+    "liveInteractionTests": 28,
+    "localInteractionTests": 28,
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "productionBuild": "PASS",
+    "axeViolationsPerViewport": 0
+  },
+  "browserAcceptance": true,
+  "browser": "bundled Playwright Chromium headless",
+  "testWorkers": 2,
+  "physicalDeviceAcceptance": false,
+  "liveBrowser": {
+    "base": "https://afinazeytin.com",
+    "results": [
+      {
+        "width": 1440,
+        "scroll": [
+          {
+            "section": "#kurumsal",
+            "clientWidth": 1440,
+            "scrollWidth": 1440
+          },
+          {
+            "section": "#tesisimiz",
+            "clientWidth": 1440,
+            "scrollWidth": 1440
+          },
+          {
+            "section": "#urunler",
+            "clientWidth": 1440,
+            "scrollWidth": 1440
+          },
+          {
+            "section": "#uretim-yolculugu",
+            "clientWidth": 1440,
+            "scrollWidth": 1440
+          },
+          {
+            "section": "#toptan-iletisim",
+            "clientWidth": 1440,
+            "scrollWidth": 1440
+          },
+          {
+            "section": "#iletisim",
+            "clientWidth": 1440,
+            "scrollWidth": 1440
+          },
+          {
+            "section": "footer",
+            "clientWidth": 1440,
+            "scrollWidth": 1440
+          }
+        ],
+        "errors": [],
+        "bad": [],
+        "frame0": "0",
+        "frame1": "42",
+        "axe": []
+      },
+      {
+        "width": 768,
+        "scroll": [
+          {
+            "section": "#kurumsal",
+            "clientWidth": 768,
+            "scrollWidth": 768
+          },
+          {
+            "section": "#tesisimiz",
+            "clientWidth": 768,
+            "scrollWidth": 768
+          },
+          {
+            "section": "#urunler",
+            "clientWidth": 768,
+            "scrollWidth": 768
+          },
+          {
+            "section": "#uretim-yolculugu",
+            "clientWidth": 768,
+            "scrollWidth": 768
+          },
+          {
+            "section": "#toptan-iletisim",
+            "clientWidth": 768,
+            "scrollWidth": 768
+          },
+          {
+            "section": "#iletisim",
+            "clientWidth": 768,
+            "scrollWidth": 768
+          },
+          {
+            "section": "footer",
+            "clientWidth": 768,
+            "scrollWidth": 768
+          }
+        ],
+        "errors": [],
+        "bad": [],
+        "frame0": "0",
+        "frame1": "30",
+        "axe": []
+      },
+      {
+        "width": 390,
+        "scroll": [
+          {
+            "section": "#kurumsal",
+            "clientWidth": 390,
+            "scrollWidth": 390
+          },
+          {
+            "section": "#tesisimiz",
+            "clientWidth": 390,
+            "scrollWidth": 390
+          },
+          {
+            "section": "#urunler",
+            "clientWidth": 390,
+            "scrollWidth": 390
+          },
+          {
+            "section": "#uretim-yolculugu",
+            "clientWidth": 390,
+            "scrollWidth": 390
+          },
+          {
+            "section": "#toptan-iletisim",
+            "clientWidth": 390,
+            "scrollWidth": 390
+          },
+          {
+            "section": "#iletisim",
+            "clientWidth": 390,
+            "scrollWidth": 390
+          },
+          {
+            "section": "footer",
+            "clientWidth": 390,
+            "scrollWidth": 390
+          }
+        ],
+        "errors": [],
+        "bad": [],
+        "frame0": null,
+        "frame1": null,
+        "axe": []
+      },
+      {
+        "width": 320,
+        "scroll": [
+          {
+            "section": "#kurumsal",
+            "clientWidth": 320,
+            "scrollWidth": 320
+          },
+          {
+            "section": "#tesisimiz",
+            "clientWidth": 320,
+            "scrollWidth": 320
+          },
+          {
+            "section": "#urunler",
+            "clientWidth": 320,
+            "scrollWidth": 320
+          },
+          {
+            "section": "#uretim-yolculugu",
+            "clientWidth": 320,
+            "scrollWidth": 320
+          },
+          {
+            "section": "#toptan-iletisim",
+            "clientWidth": 320,
+            "scrollWidth": 320
+          },
+          {
+            "section": "#iletisim",
+            "clientWidth": 320,
+            "scrollWidth": 320
+          },
+          {
+            "section": "footer",
+            "clientWidth": 320,
+            "scrollWidth": 320
+          }
+        ],
+        "errors": [],
+        "bad": [],
+        "frame0": null,
+        "frame1": null,
+        "axe": []
+      }
+    ],
+    "reduced": {
+      "canvas": 0,
+      "frameRequests": 0,
+      "h1Visible": true
+    }
+  },
+  "httpVerification": {
+    "home": {
+      "status": 200,
+      "sha256": "0d87b126748c2b8e9d58fb70fc662fc2acd670847a60a080294032904b8b5a22"
+    },
+    "officialSlogan": true,
+    "newResponsivePoster": true,
+    "oldHeroRemoved": true,
+    "realCtaLinks": true,
+    "assets": [
+      {
+        "path": "/frames/afina-agac-dal/manifest.json",
+        "status": 200,
+        "bytes": 127,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "907d5d72efd70a5370025cad22dfb24aeaea8bba60c39ad314027233ed5b58e0"
+      },
+      {
+        "path": "/frames/afina-agac-dal/poster-desktop.avif",
+        "status": 200,
+        "bytes": 71632,
+        "contentType": "image/avif",
+        "sha256": "61549ffb525579ab3df3e1a899f1f543312eb6d08093f6074ca33382d4bbdcc4"
+      },
+      {
+        "path": "/frames/afina-agac-dal/poster-desktop.webp",
+        "status": 200,
+        "bytes": 162326,
+        "contentType": "image/webp",
+        "sha256": "dc6dcc04c373c693c110d3e5d7cbf74de0d8b057b3385346e066b6b39a6d9bde"
+      },
+      {
+        "path": "/frames/afina-agac-dal/poster-mobile.avif",
+        "status": 200,
+        "bytes": 30613,
+        "contentType": "image/avif",
+        "sha256": "da231273b9ac2e361515a406cb28575e6bb0ea5d23e6ad0aca91b84d3843ba9d"
+      },
+      {
+        "path": "/frames/afina-agac-dal/poster-mobile.webp",
+        "status": 200,
+        "bytes": 68808,
+        "contentType": "image/webp",
+        "sha256": "499a96b4d6f7e297eec710758584afb9f039406dd61376fe5481c1e59cf7d958"
+      },
+      {
+        "path": "/frames/afina-agac-dal/1280/frame-0001.webp",
+        "status": 200,
+        "bytes": 174760,
+        "contentType": "image/webp",
+        "sha256": "b949f7b019a62f9a1487f0f19f2a7bce099b4e0e7c5585e11e6db2a24195b086"
+      },
+      {
+        "path": "/frames/afina-agac-dal/1280/frame-0095.webp",
+        "status": 200,
+        "bytes": 56876,
+        "contentType": "image/webp",
+        "sha256": "d7d600b01a227b65cf2d76223cc561843fe1076b6b839d3af4bc62e83890e22f"
+      },
+      {
+        "path": "/frames/afina-agac-dal/960/frame-0001.webp",
+        "status": 200,
+        "bytes": 111330,
+        "contentType": "image/webp",
+        "sha256": "355cec0dc398b9bbc8e1de4377d310afafa9e1239c905a6b76d8de8ef75cd566"
+      },
+      {
+        "path": "/frames/afina-agac-dal/960/frame-0095.webp",
+        "status": 200,
+        "bytes": 40418,
+        "contentType": "image/webp",
+        "sha256": "004cc7d3117d57c2a48a9fd132b361c8dc9212d43b68d5f4234efb9257c08a09"
+      }
+    ],
+    "kind": "HTTP-and-hash-verification"
+  },
+  "screenshots": [
+    {
+      "viewportWidth": 1440,
+      "file": ".cache/task-157/live/1440-hero.png",
+      "sha256": "f4b0300478f1c8ab4211093f2ce3a4277a2fa9c43b421129ea0e3980808b6701"
+    },
+    {
+      "viewportWidth": 768,
+      "file": ".cache/task-157/live/768-hero.png",
+      "sha256": "6405172bb3d7fc7374a644fcd7adf4cd50ecb1f813fb5fea5ea8f0f29cfdcd62"
+    },
+    {
+      "viewportWidth": 390,
+      "file": ".cache/task-157/live/390-hero.png",
+      "sha256": "5c07920b9744edcd29bd4bca53d6a06eff08c82a3e5d42eabbd527d9d9bd2c75"
+    },
+    {
+      "viewportWidth": 320,
+      "file": ".cache/task-157/live/320-hero.png",
+      "sha256": "c85fff408aed79d061161c98281cf2278b4c93068bb8976c901abb75f4b12b22"
+    }
+  ],
+  "remoteMigrationsApplied": false,
+  "realAuthMutationTested": false,
+  "realPaymentTested": false,
+  "realLeadDeliveryTested": false,
+  "extraFlowCreditsSpent": 0,
+  "remainingMediaGate": "Google reCAPTCHA connection error; Omni B→C first-last draft prepared; no generation submitted"
+}

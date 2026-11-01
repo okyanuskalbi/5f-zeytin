@@ -260,3 +260,5 @@ Task 156 tamamlandı ve yayınlandı: `104b15f`, 85 dosya/1164 test + lint/typec
 
 ## Güncel yön: v6 Üretici Atlası ve tarayıcı kabulü
 Kullanıcı mevcut hero'yu reddedip tasarım sözleşmelerini değiştirmemi, canlı siteyi masaüstü/mobil tarayıcıda kontrol edip eksikleri düzeltmemi istedi. [Task 157](tasks/157-tam-tasarim-ve-canli-kabul.md) önceki görsel yönün yerini alır. `docs/DESIGN.md` ve 21st bağlamı tek güncel v6'ya çevrildi; eski tasarım arşivde korunur. Web Site Yeteneği Kiti, Google Flow/Omni araç yönüyle mevcut native-scroll motora uyarlanır. Gerçek kullanıcı/ödeme/teklif yazımı ve servis etkinleştirmesi bu görsel kabul değildir.
+
+Task 157 tasarım ve yayın kabulü tamamlandı: `9b7b505`, 1171 unit test, 28 yerel + 28 canlı headless Chromium etkileşim kontrolü; 1440/768/390/320 px'te taşma/pageerror/HTTP kaynak hatası/axe ihlali 0. API READY `dpl_DRCshLDGWbDcVPPZvmTerhyU7aR5`; canlı alan adı ve yeni ekranlar doğrulandı. Son makbuz `docs/referans/yayin-v6-20261101.json`. Google doğrulaması sürdüğü için yeni Omni üretimi gönderilmedi; B→C ilk/son kareleri hazır, 12 kredi/çıktı ekranda doğrulandı, mevcut 60 sınırını değiştirmez.
