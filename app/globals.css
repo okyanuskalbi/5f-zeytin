@@ -3,6 +3,15 @@
 @source "../app";
 @source "../components";
 
+/* Document selectors belong in the global stylesheet. Keep the same guards
+   for both Next bundlers; CSS Modules require a locally scoped selector. */
+body:has([data-admin-shell]) [data-site-navbar],
+body:has([data-admin-shell]) footer { display:none; }
+@media(max-width:767px) {
+  html:has([data-mini-cart-reserve]) { scroll-padding-bottom:calc(104px + env(safe-area-inset-bottom)); }
+  html:has([aria-label="Mobil ödeme"]) { scroll-padding-bottom:calc(128px + env(safe-area-inset-bottom)); }
+}
+
 /* Next capsize metrics: calculateSizeAdjustValues("Figtree"), Arial fallback. */
 @font-face {
   font-family: "Afina Figtree Fallback";

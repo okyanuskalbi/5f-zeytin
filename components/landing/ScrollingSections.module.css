@@ -1,0 +1,82 @@
+.root { --afina-olive:var(--brand-olive); --afina-paper:var(--pro-paper); --afina-champagne:var(--pro-gold); --afina-body:var(--pro-ink); --afina-muted:var(--pro-muted); --afina-field:var(--pro-paper); --afina-input:var(--pro-line); --afina-error:var(--pro-error); color:var(--pro-ink); background:var(--pro-stone); color-scheme:light; }
+.container { width:min(1440px,calc(100% - 2 * var(--pro-gutter))); margin-inline:auto; }
+.container > *, .facilityGrid > *, .segmentGrid > *, .quoteHeading > *, .contactGrid > * { min-width:0; }
+.facility,.business,.quote,.support,.introduction { scroll-margin-top:calc(var(--header-height) + 24px); }
+.facility h2,.sectionHeading h2,.quote h2,.contactGrid h2,.introGrid h2 { font-family:var(--font-display); font-size:clamp(44px,6vw,88px); font-weight:400; letter-spacing:-.05em; line-height:1.04; text-wrap:balance; }
+.textLink { display:inline-flex; align-items:center; gap:16px; min-height:48px; max-width:100%; width:fit-content; padding-block:8px; color:var(--pro-gold-ink); font-size:15px; font-weight:600; line-height:1.5; text-decoration:underline; text-underline-offset:6px; }
+.textLink:hover { color:var(--brand-olive); }
+.textLink:focus-visible,.segmentAction:focus-visible { outline:2px solid currentColor; outline-offset:5px; }
+.introduction { padding-block:64px; }
+.introGrid { display:grid; grid-template-columns:1fr 1fr; gap:64px; }
+.introText p { max-width:55ch; font-size:18px; line-height:1.7; }
+.facility { position:relative; padding-block:112px; background:var(--pro-paper); }
+.facilityGrid { display:grid; grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr); gap:80px; align-items:center; }
+.facilityCopy { scroll-margin-top:calc(var(--header-height) + 32px); }
+.facilityCopy h2 { font-size:clamp(44px,5.5vw,80px); }
+.location { margin-top:24px; font-size:13px; font-weight:600; letter-spacing:.06em; }
+.facilityCopy > p:not(.location) { max-width:42ch; margin-top:24px; font-size:17px; line-height:1.75; }
+.facilityCopy address { max-width:42ch; margin-top:24px; font-size:15px; line-height:1.7; font-style:normal; }
+.facilityCopy .textLink { margin-top:16px; }
+.facilityFigure { margin:0; }
+.facilityFrame { --facility-travel:120px; height:clamp(420px,43vw,640px); overflow:clip; background:var(--brand-olive); }
+.facilityImage { position:relative; top:calc(-1 * var(--facility-travel)); height:calc(100% + var(--facility-travel)); }
+.facilityImage picture,.facilityImage img { display:block; width:100%; height:100%; }
+.facilityImage img { object-fit:cover; object-position:54% center; }
+.facilityFigure figcaption { padding-top:16px; font-size:12px; line-height:1.5; }
+.business { padding-block:112px; background:var(--brand-olive); color:var(--pro-paper); }
+.sectionHeading { display:grid; grid-template-columns:1.1fr .9fr; align-items:end; gap:64px; margin-bottom:64px; }
+.sectionHeading h2 { max-width:12ch; }
+.sectionHeading > p { max-width:43ch; font-size:18px; line-height:1.75; }
+.segmentGrid { border-top:1px solid var(--pro-line); }
+.segmentCard { display:grid; grid-template-columns:1fr 1fr auto; align-items:center; gap:32px; padding-block:32px; border-bottom:1px solid var(--pro-line); }
+.segmentCard h3 { font-family:var(--font-display); font-size:clamp(28px,3vw,44px); font-weight:400; line-height:1.2; letter-spacing:-.025em; }
+.segmentCard > p { max-width:28ch; font-size:16px; line-height:1.65; }
+.segmentAction { display:inline-flex; align-items:center; justify-content:space-between; gap:24px; min-height:48px; border:0; padding:12px 0 12px 16px; color:var(--pro-paper); font-size:14px; font-weight:600; text-align:left; cursor:pointer; }
+.segmentAction:hover,.segmentAction[data-selected="true"] { color:var(--pro-brand-hover); }
+.segmentAction:disabled { opacity:1; cursor:default; }
+.businessNote { margin-top:24px; max-width:78ch; font-size:13px; line-height:1.7; }
+.quote { padding-block:112px; background:var(--pro-stone); }
+.quote > .container { display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:80px; align-items:start; }
+.quoteHeading { position:sticky; top:calc(var(--header-height) + 40px); }
+.quote h2 { font-size:clamp(44px,5vw,72px); }
+.quoteHeading > p { max-width:34ch; margin-top:32px; font-size:16px; line-height:1.75; }
+.support { padding-block:96px; background:var(--pro-paper); }
+.contactGrid { display:grid; grid-template-columns:1fr 1fr; gap:80px; margin-top:112px; padding-top:64px; border-top:1px solid var(--pro-line); }
+.contactGrid h2 { color:var(--brand-olive); font-size:clamp(56px,7.5vw,112px); line-height:.98; }
+.closingCopy { margin-block:24px 16px; font-size:16px; line-height:1.6; }
+.contactGrid h3 { font-family:var(--font-body); font-size:16px; font-weight:600; }
+.contactGrid address { max-width:42ch; margin-top:24px; font-size:17px; line-height:1.75; font-style:normal; }
+.contactGrid > div > a { display:flex; align-items:center; min-height:44px; max-width:100%; width:fit-content; }
+.supportLinks { display:flex; flex-wrap:wrap; gap:8px 24px; margin-top:24px; font-size:14px; }
+.supportLinks a { display:inline-flex; align-items:center; min-height:44px; text-decoration:underline; text-underline-offset:5px; }
+@media(max-width:1100px) { .facilityGrid,.sectionHeading,.quote > .container,.contactGrid { gap:40px; } .segmentCard { gap:24px; } }
+@media(max-width:900px) {
+ .facility,.business,.quote,.support { padding-block:64px; }
+ .facilityGrid { grid-template-columns:1fr; }
+ .facilityCopy { max-width:640px; }
+ .facilityFrame { height:480px; }
+ .facilityImage { top:0; height:100%; }
+ .sectionHeading { grid-template-columns:1fr; gap:24px; margin-bottom:40px; }
+ .sectionHeading h2 { max-width:16ch; }
+ .sectionHeading > p { max-width:55ch; }
+ .segmentCard { grid-template-columns:1fr auto; gap:8px 24px; }
+ .segmentCard h3 { grid-column:1; }
+ .segmentCard > p { grid-column:1; max-width:45ch; }
+ .segmentAction { grid-column:2; grid-row:1/3; }
+ .quote > .container { grid-template-columns:1fr; gap:40px; }
+ .quoteHeading { position:static; }
+ .quoteHeading > p { max-width:50ch; margin-top:24px; }
+ .contactGrid { margin-top:64px; grid-template-columns:1fr; gap:48px; padding-top:48px; }
+}
+@media(max-width:767px) {
+ .facility h2,.sectionHeading h2,.quote h2,.introGrid h2 { font-size:clamp(40px,10vw,56px); }
+ .facilityFrame { height:320px; }
+ .facilityCopy > p:not(.location),.sectionHeading > p,.contactGrid address { font-size:16px; }
+ .segmentCard { display:block; padding-block:28px; }
+ .segmentCard h3 { font-size:32px; }
+ .segmentCard > p { margin-top:12px; }
+ .segmentAction { padding:12px 0; margin-top:12px; width:100%; }
+ .contactGrid h2 { font-size:clamp(52px,14vw,72px); }
+ .contactGrid address { margin-top:16px; }
+ .introGrid { grid-template-columns:1fr; gap:24px; }
+}

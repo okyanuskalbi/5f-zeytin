@@ -12,11 +12,11 @@ it("renders seven semantic pro sections and three story articles with one footer
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}<Footer /></>);
   expect([...doc.querySelectorAll("main > section, main > div > section")].map(section => section.getAttribute("aria-labelledby") ?? section.getAttribute("aria-label"))).toEqual([
-    "renewal-hero-title", "urunler-title", "tesisimiz-title", "yolculuk-title", "toptan-title", "teklif-title", "sss-title",
+    "renewal-hero-title", "yolculuk-title", "tesisimiz-title", "urunler-title", "toptan-title", "teklif-title", "sss-title",
   ]);
   expect(doc.querySelectorAll("article[data-product-id]")).toHaveLength(6);
   expect([...doc.querySelectorAll("#uretim-yolculugu article h3")].map(node => node.textContent))
-    .toEqual(["Toprağımız", "Tesisimiz", "Sunumumuz"]);
+    .toEqual(["Her şey toprakta başlar.", "Özen, üretimin her yerinde.", "Yeri, sizin sofranız."]);
   expect(doc.querySelectorAll("picture source").length).toBeGreaterThan(5);
   expect(doc.querySelector("#renewal-hero-title")?.textContent).toBe("Kökü toprakta. Yeri sofrada.");
   expect(doc.body.textContent?.match(/Önizleme: fiyatlar ve görseller temsilidir\./g)).toHaveLength(1);

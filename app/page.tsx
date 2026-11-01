@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { JSX } from "react";
-import styles from "@/components/landing/RenewalLanding.module.css";
+import styles from "@/components/landing/ScrollingSections.module.css";
 import { OliveScrollHero } from "@/components/landing/OliveScrollHero";
 import { ProductionFacility, RenewalProducts, ProductionJourney, BusinessSection, QuoteSection, TrustAndContact } from "@/components/landing/RenewalLanding";
 import { QuoteJourneyProvider } from "@/components/landing/QuoteJourneyProvider";
@@ -26,9 +26,9 @@ export default async function Home(): Promise<JSX.Element> {
   return <ProductDetailProvider products={products}><QuoteJourneyProvider><main className={styles.root}>
     <BusinessJsonLd />
     <OliveScrollHero />
-    <RenewalProducts products={products} />
-    <ProductionFacility />
     <ProductionJourney />
+    <ProductionFacility />
+    <RenewalProducts products={products} />
     <BusinessSection />
     <QuoteSection products={products} />
     <TrustAndContact />

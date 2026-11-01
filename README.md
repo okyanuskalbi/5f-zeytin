@@ -1,5 +1,10 @@
 # AFİNA ZEYTİN
 
+Güncel yerel tasarım: **v10 Dalından sofraya**, [Task162](docs/tasks/162-scrolling-sections.md).
+Framer Motion, proje yerel UIPro ve React Bits ile scrolling sections uygulandı.
+1216 unit/lint/typecheck/webpack build geçti; görsel tarayıcı kabulü ve yayın bekliyor.
+[Doğrulama kaydı](docs/scrollcraft/builds/afina-v10/VERIFICATION.md).
+
 [afinazeytin.com](https://afinazeytin.com) için premium vitrin ve satın alma projesi.
 
 Next.js App Router + TypeScript + Tailwind 4 uygulaması ve Vitest/Playwright test temeli kuruldu. AI Studio React/Vite kaynakları [_legacy/](_legacy/) içinde korunur.
@@ -18,12 +23,12 @@ Kabul komutları ve repo içinde tarayıcı kurulumu:
 
 ```sh
 export PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright"
-npm exec -- playwright install chromium firefox webkit
+npm exec -- playwright install chromium
 npm run lint && npm run typecheck && npm run test -- tests/unit/bootstrap.test.ts
-npm run build && npm run test:e2e -- tests/e2e/bootstrap.spec.ts
+npm run build && npm run test:e2e -- tests/e2e/bootstrap.spec.ts --project=chromium-390 --project=chromium-1440 --workers=2
 ```
 
-Playwright Chromium, Firefox ve WebKit'te 320/390/768/1440 genişliklerini test eder. Yerel production sunucusunu kendisi başlatıp kapatır; 3004 portunda mevcut sunucu varsa durur. `PLAYWRIGHT_BASE_URL=https://<hedef-host> npm run test:e2e -- tests/e2e/bootstrap.spec.ts` ile açık hedef verildiğinde yerel sunucu başlatılmaz; hedef host rapora yazılır ve sayfada ZEYTİN uygulama işareti doğrulanır.
+Güncel test politikası yalnız paketli headless Chromium ve en fazla iki worker'dır. Yerel production sunucusunu kendisi başlatıp kapatır; 3004 portunda mevcut sunucu varsa durur. `PLAYWRIGHT_BASE_URL=https://<hedef-host> npm run test:e2e -- tests/e2e/bootstrap.spec.ts` ile açık hedef verildiğinde yerel sunucu başlatılmaz; hedef host rapora yazılır ve sayfada ZEYTİN uygulama işareti doğrulanır.
 
 Mimari/açık kararlar: [docs/PLAN.md](docs/PLAN.md). Sıralı görevler: [docs/tasks](docs/tasks). Özgün [görsel promptları](docs/visual-prompts.md) korunur. 1 Kasım 2026 devriyle Codex planlama, uygulama ve denetimi yürütür; güncel durum [docs/CODEX_HANDOVER.md](docs/CODEX_HANDOVER.md) içinde. Görsel, DB, ödeme ve yayın onayları ilgili görevlerde ayrıca alınır.
 

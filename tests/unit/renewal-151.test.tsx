@@ -10,13 +10,14 @@ vi.mock("@/lib/catalog/read", () => ({ readProductFamilies: () => getProductFami
 vi.mock("@/components/cart/CartDrawer", () => ({ CartDrawer: () => null }));
 afterEach(cleanup);
 
-it("puts the actual catalogue before the real production proof while retaining the corporate destination", async () => {
+it("puts the producer story and real production proof before the catalogue while retaining the corporate destination", async () => {
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(await Home());
   expect(doc.querySelector("h1")?.textContent).toBe("Kökü toprakta. Yeri sofrada.");
   const sections = [...doc.querySelectorAll("main > section")].map(section => section.id);
   expect(sections.indexOf("urunler")).toBeGreaterThan(-1);
-  expect(sections.indexOf("tesisimiz")).toBeGreaterThan(sections.indexOf("urunler"));
+  expect(sections.indexOf("tesisimiz")).toBeGreaterThan(sections.indexOf("uretim-yolculugu"));
+  expect(sections.indexOf("urunler")).toBeGreaterThan(sections.indexOf("tesisimiz"));
   expect(doc.querySelector("#kurumsal")?.closest("section")?.id).toBe("tesisimiz");
   expect(doc.querySelector("#tesisimiz img")?.getAttribute("src")).toMatch(/tesis-musteri/);
   expect(doc.querySelectorAll("[data-product-id]")).toHaveLength(6);

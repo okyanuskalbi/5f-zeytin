@@ -2,7 +2,7 @@
   "version": 1,
   "project": {
     "name": "afina-zeytin",
-    "productType": "Olive producer v9 Hasat Rotası: seven source-backed scenes, real six-SKU discovery→business email-draft journey; production trust 65%, retail/B2B commerce 35%",
+    "productType": "Olive producer v10: native scroll sections, three-chapter held media, real facility, six-SKU rail and manual quote",
     "stack": [
       "nextjs",
       "react",
@@ -20,10 +20,14 @@
       "components/landing/CinematicHero.module.css",
       "components/landing/HorizontalProductGallery.module.css",
       "components/landing/QuoteComposer.module.css",
-      "components/site/Navbar.module.css"
+      "components/site/Navbar.module.css",
+      "components/landing/ScrollingHero.module.css",
+      "components/landing/ScrollingSections.module.css",
+      "components/landing/ProductionStory.module.css"
     ],
     "components": [
-      "components/ui"
+      "components/ui",
+      "components/animation/react-bits"
     ],
     "assets": [
       "public/brand",
@@ -53,7 +57,11 @@
       "docs/scrollcraft/builds/afina-v9/BRIEF.md",
       "docs/scrollcraft/builds/afina-v9/PLAN.md",
       "docs/scrollcraft/builds/afina-v9/COPY.md",
-      "docs/scrollcraft/builds/afina-v9/21ST-SOURCES.json"
+      "docs/scrollcraft/builds/afina-v9/21ST-SOURCES.json",
+      "docs/tasks/162-scrolling-sections.md",
+      "docs/scrollcraft/builds/afina-v10/BRIEF.md",
+      "docs/scrollcraft/builds/afina-v10/SOURCES.json",
+      ".codex/skills/ui-ux-pro-max/SKILL.md"
     ]
   },
   "design": {
@@ -323,6 +331,12 @@
       "decision": "v9 Hasat Rotası adopts bright brand/stone/ink/oil-gold and Fraunces/Inter; natural approved-Flow loop hero/near branch/glass nav, one eligible direct-linear gallery pin, real facility parallax, factual three-stage bento, shared B2B/SKU choices into a validated manual corporate mailto draft, native FAQ/contact/footer. Seven scenes/nine selected primary21st sources;1635 reference only. AcceptedA→B loop is a free local edit, no paid new media; real data/server authority and contact-source boundaries remain.",
       "status": "complete-ci41317227401-api-ready-live-ui-accepted",
       "scope": "active-task161"
+    },
+    {
+      "date": "2026-11-01",
+      "source": "User scrolling sections + npm i framer-motion + uipro init --ai codex + React Bits",
+      "decision": "Rebuild hero/title-film layout, three producer chapters before catalog, broad B2B rows and warm closing. Shared framer-motion14.4.0, project-local UIPro, pinned React Bits BlurText; preserve approved brand/media and commerce.",
+      "status": "implemented-local-visual-acceptance-pending"
     }
   ],
   "evidence": [
@@ -448,20 +462,13 @@
   ],
   "generatedAt": "2026-11-01T13:36:35.959251+00:00",
   "release": {
-    "task": 161,
-    "design": "v9 Hasat Rotası",
-    "status": "COMPLETE",
-    "runtimeCommit": "31f251cee2e8b83601fbc2cb3a376c979011f39f",
-    "ciStatus": "SUCCESS",
-    "deploymentStatus": "READY",
-    "production": "https://afinazeytin.com",
-    "localAcceptance": "1208unit/91files; lint/typecheck/build PASS;87e2e PASS+8responsive skips;6width clean;ScrollCraft40/41/40",
-    "liveAcceptance": "COMPLETE:87e2e PASS+8responsive skips;6width clean;ScrollCraft40/41/40;2natural loops/245decodedframes;Lighthouse mobile100 desktop99 A100;physical device/real transaction not tested",
-    "sourceProvenance": "docs/scrollcraft/builds/afina-v9/21ST-SOURCES.json",
-    "ciRunId": 41317227401,
-    "deploymentId": "dpl_46Scpv4MqVnjKxb1pYt1bjwSD4Hq",
-    "qa": "docs/referans/qa-161-20261101.json",
-    "receipt": "docs/referans/yayin-pro-v9-20261101.json"
+    "task": 162,
+    "design": "v10 Dalından sofraya",
+    "status": "LOCAL_IMPLEMENTATION_VISUAL_ACCEPTANCE_PENDING",
+    "localAcceptance": "1216unit/93files; lint/typecheck; webpack build PASS",
+    "browserAcceptance": "not run: environment restrictions",
+    "deploymentStatus": "NOT_DEPLOYED",
+    "verification": "docs/scrollcraft/builds/afina-v10/VERIFICATION.md"
   },
   "mediaContinuation": {
     "projectUrl": "https://flow.google.com/project/62040049-3473-446b-9d93-8e6cbc45f8bc",
@@ -493,6 +500,25 @@
         "localAcceptance": "1200unit/89files; lint,typecheck,build;74e2e+6responsive skips;6visual widths clean; motion/noJS/reduced PASS;native inspector1FAIL5WARN and scenes0 preserved",
         "liveAcceptance": "COMPLETE:74e2e PASS+6responsive skips;6visual widths zero axe/overflow/errors/bad;motion/noJS/reduced PASS;native190decoded frames,7.916667s ended/muted;12.04s UI recording",
         "receipts": "forthcoming: docs/referans/yayin-object-v8-20261101.json and qa-160-20261101.json"
+      }
+    },
+    {
+      "scope": "historical-task161-before-task162",
+      "record": {
+        "task": 161,
+        "design": "v9 Hasat Rotası",
+        "status": "COMPLETE",
+        "runtimeCommit": "31f251cee2e8b83601fbc2cb3a376c979011f39f",
+        "ciStatus": "SUCCESS",
+        "deploymentStatus": "READY",
+        "production": "https://afinazeytin.com",
+        "localAcceptance": "1208unit/91files; lint/typecheck/build PASS;87e2e PASS+8responsive skips;6width clean;ScrollCraft40/41/40",
+        "liveAcceptance": "COMPLETE:87e2e PASS+8responsive skips;6width clean;ScrollCraft40/41/40;2natural loops/245decodedframes;Lighthouse mobile100 desktop99 A100;physical device/real transaction not tested",
+        "sourceProvenance": "docs/scrollcraft/builds/afina-v9/21ST-SOURCES.json",
+        "ciRunId": 41317227401,
+        "deploymentId": "dpl_46Scpv4MqVnjKxb1pYt1bjwSD4Hq",
+        "qa": "docs/referans/qa-161-20261101.json",
+        "receipt": "docs/referans/yayin-pro-v9-20261101.json"
       }
     }
   ]

@@ -1,3 +1,13 @@
+# Aktif devir: Task162 / v10 yerel kod hazır
+
+Kanonik repo ve ticari mimari korunur. Yeni kullanıcı isteği scrolling sections;
+Framer Motion14.4.0, proje yerel UIPro ve React Bits BlurText kullanıldı.
+[Task162](tasks/162-scrolling-sections.md), [DESIGN](DESIGN.md) ve
+[VERIFICATION](scrollcraft/builds/afina-v10/VERIFICATION.md) günceldir.
+1216 unit/lint/typecheck/webpack build PASS. Gerçek render/e2e/piksel kabulü
+ortam izinleri nedeniyle tamamlanmadı; yayın/push yok. Alttaki v9 READY/canlı
+ölçümleri yalnız v9 tarihçesidir. Yeni görsel kabulü onlardan çıkarma.
+
 # AFİNA ZEYTİN: Codex devir kaydı
 
 ## Aktif devir: v9 Hasat Rotası — Task 161 TAMAMLANDI

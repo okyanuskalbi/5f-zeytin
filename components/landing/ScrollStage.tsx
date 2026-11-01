@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useRef, useSyncExternalStore, type ReactNode } from "react";
-import { m as motion, useMotionValueEvent, useScroll, useTransform } from "motion/react";
+import { m as motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
 import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
 import { springs } from "@/lib/ui-motion";
 

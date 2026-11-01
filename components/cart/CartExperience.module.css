@@ -157,8 +157,6 @@
   .mini button { background: var(--altin); color: var(--ink); min-width: 88px; border-radius: 999px; }
   .mini button:hover { background: var(--altin-2); }
   .mini[data-cart-open="true"] { visibility: hidden; pointer-events: none; }
-  :global(html:has([data-mini-cart-reserve])) { scroll-padding-bottom: calc(104px + env(safe-area-inset-bottom)); }
-  :global(html:has([aria-label="Mobil ödeme"])) { scroll-padding-bottom: calc(128px + env(safe-area-inset-bottom)); }
   :global(body:has([data-cart-drawer][data-state="open"])) .mobileCheckout { visibility: hidden; pointer-events: none; }
 }
 @media (prefers-reduced-motion: reduce) {

@@ -1,0 +1,53 @@
+{
+  "userRequest": {
+    "date": "2026-11-01",
+    "tools": [
+      "framer-motion",
+      "uipro init --ai codex",
+      "https://github.com/DavidHDev/react-bits"
+    ]
+  },
+  "uiPro": {
+    "cliVersion": "2.2.3",
+    "installation": ".codex/skills/ui-ux-pro-max",
+    "used": [
+      "--design-system: olive producer food ecommerce cinematic scroll storytelling forest green accessible",
+      "--stack nextjs: animation reduced motion sticky scroll hydration performance"
+    ],
+    "decisions": "Use scroll-triggered storytelling and reduced-motion/responsive checks. Preserve verified AFİNA green/stone and Fraunces/Inter instead of generic red/restaurant font suggestions. No invented conversion claims."
+  },
+  "reactBits": {
+    "repo": "https://github.com/DavidHDev/react-bits",
+    "commit": "4dc7b5b7772e1217c8fb8d2a7aa074302180e5b4",
+    "path": "src/ts-default/TextAnimations/BlurText/BlurText.tsx",
+    "blobSha": "2099b10bcfe5f64f61b62a73d8474acaf7a6f362",
+    "sourceSha256": "c29d20954d99a56a21494c1072bf4616311b35f7bfdd7e6aca64b49e3433e4bd",
+    "adaptation": "components/animation/react-bits/BlurText.tsx",
+    "usage": [
+      "BusinessSection heading",
+      "TrustAndContact closing heading"
+    ],
+    "changes": [
+      "Word-only core, shared framer-motion m",
+      "Visible SSR, no filters or loop",
+      "Native whitespace and complete accessible text",
+      "Reduced-motion and missing-IntersectionObserver static fallback",
+      "Once-in-view observer cleanup"
+    ],
+    "license": "components/animation/react-bits/LICENSE.md",
+    "notSelected": [
+      "FadeContent/AnimatedContent: GSAP engine and invisible initial wrapper conflict with existing runtime/SSR constraints"
+    ]
+  },
+  "twentyFirst": {
+    "id": 18041,
+    "name": "Scroll 01",
+    "author": "felipemenezes098",
+    "url": "https://21st.dev/@felipemenezes098/components/scroll-01",
+    "sourceSha256": "998ca0e46691a31f729c8e4e1af7620374996c4f71f4d8e2830eefdaa5c194d3",
+    "adaptation": "components/landing/ProductionStory.tsx",
+    "changes": "Actual supplied assets; native SSR/mobile/reduced; three accessible chapter anchors and synchronized held media; no example data."
+  },
+  "reusedSources": "Other active seven-scene/catalog/form components retain Task161 provenance; they are restyled, not retrieved anew.",
+  "newPaidMedia": 0
+}

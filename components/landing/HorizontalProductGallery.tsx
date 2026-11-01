@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore, type CSSProperties, type FocusEvent } from "react";
-import { m as motion, useMotionValue, useMotionValueEvent, useScroll, useTransform } from "motion/react";
+import { m as motion, useMotionValue, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
 import { ArrowDownRightIcon, ArrowUpRightIcon, CheckIcon } from "lucide-react";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { v3Image } from "@/lib/media/v3-assets";

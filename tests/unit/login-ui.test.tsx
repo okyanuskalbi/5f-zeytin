@@ -155,10 +155,10 @@ it("returns from magic link to password login with the password cleared", async 
 it("treats a forged/expired session as anonymous and handles service failures safely", async () => {
   mocks.cookies.mockResolvedValue({ getAll: () => [{ name: "sb-fixture-auth-token", value: "forged" }] });
   mocks.getUser.mockResolvedValueOnce(null);
-  const rendered = render(await Page());
+  const rendered = render(await Page({}));
   expect(form()).toBeTruthy(); rendered.unmount();
   mocks.getUser.mockRejectedValueOnce(new Error("private-secret"));
-  render(await Page());
+  render(await Page({}));
   expect(form()).toBeTruthy();
   expect(screen.getByRole("alert").textContent).toContain("Üyelik hizmeti");
   expect(document.body.textContent).not.toContain("private-secret");

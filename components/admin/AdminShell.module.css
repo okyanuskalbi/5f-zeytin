@@ -31,9 +31,7 @@
 .theme :is(h1, h2)[id] { scroll-margin-top: 24px; }
 .theme :is(a, button, input, [tabindex]):focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; }
 .theme :is(a, button, input) { touch-action: manipulation; }
-/* Only a rendered, authorized shell suppresses the surrounding shop chrome. */
-:global(body:has([data-admin-shell]) [data-site-navbar]),
-:global(body:has([data-admin-shell]) footer) { display: none; }
+/* The document-level shell visibility rule lives in app/globals.css. */
 .shell { display: flex; min-height: 100svh; background: #f3f5f4; }
 .desktopSidebar { display: none; }
 .brand { padding: 32px 24px; font-weight: 600; font-size: 1rem; }

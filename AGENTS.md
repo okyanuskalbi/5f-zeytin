@@ -1,3 +1,16 @@
+## Aktif kullanıcı işi: Task162 / v10 (1 Kasım 2026)
+
+“Zeytin sitesini baştan scrolling sectionla yapalım”; kullanıcının açık
+Framer Motion, `uipro init --ai codex` ve React Bits tercihi uygulanır.
+Aktif sözleşme docs/DESIGN.md ve docs/tasks/162-scrolling-sections.md.
+Aşağıdaki v9 görsel talimatları bu iş için tarihçedir; marka, onaylı medya,
+ticari veri/sunucu sınırları ve headless güvenlik kuralları sürer. Kullanıcının
+framer-motion isteği eski import yasağının önündedir; aynı14.4.0 çalışma zamanı
+motion ile dedupe edilir. UIPro .codex/skills altında; mevcut .agents özel
+uyarlaması korunur. React Bits lisanslı kaynak/pin dosyası SOURCES.json.
+1216 unit/lint/typecheck/webpack build PASS; yeni tarayıcı kabulü/yayın YOK.
+Önceki v9 ölçümlerini v10 sonucu olarak sunma. Task162 henüz TAMAMLANDI değil.
+
 ## Proje bağlamı
 
 - **ZEYTİN** = AFİNA ZEYTİN, afinazeytin.com, `okyanuskalbi/5f-zeytin`, `~/PROJELER/5F-ZEYTIN`.

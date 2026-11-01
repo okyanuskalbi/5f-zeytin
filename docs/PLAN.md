@@ -1,3 +1,12 @@
+# Aktif iş: Task162 / v10 Dalından sofraya
+
+Kullanıcının baştan scrolling sections isteği ve Framer Motion/UIPro/React Bits
+tercihi [Task162](tasks/162-scrolling-sections.md) ile uygulanıyor. Güncel görsel
+sözleşme [DESIGN](DESIGN.md), [brief](scrollcraft/builds/afina-v10/BRIEF.md) ve
+[doğrulama](scrollcraft/builds/afina-v10/VERIFICATION.md). 1216 unit, lint,
+typecheck ve webpack production build PASS. Görsel headless kabulü/yayın henüz
+yapılmadı; task TAMAMLANDI değildir. Aşağıdaki v9 ve önceki tablolar tarihçedir.
+
 # Proje Planı
 
 ## Aktif çalışma: v9 Hasat Rotası — Task 161

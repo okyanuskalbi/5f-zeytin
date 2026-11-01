@@ -35,8 +35,8 @@ async function serverDocument(): Promise<Document> {
 it("serves seven ordered, named sections with their actual 21st sources before JavaScript", async () => {
   const doc = await serverDocument();
   const contract = [
-    ["baslangic", "32829"], ["urunler", "24623"], ["tesisimiz", "20023"],
-    ["uretim-yolculugu", "1197"], ["toptan-iletisim", "7262"], ["teklif", "35258"], ["iletisim", "31986"],
+    ["baslangic", "32829"], ["uretim-yolculugu", "18041"], ["tesisimiz", "20023"],
+    ["urunler", "24623"], ["toptan-iletisim", "7262"], ["teklif", "35258"], ["iletisim", "31986"],
   ];
   const sections = [...doc.querySelectorAll("main section[data-sc-scene]")];
   expect(sections.map(section => section.id)).toEqual(contract.map(([id]) => id));

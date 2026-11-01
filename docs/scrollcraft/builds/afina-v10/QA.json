@@ -1,0 +1,59 @@
+{
+  "task": 162,
+  "status": "LOCAL_CODE_VERIFIED_VISUAL_ACCEPTANCE_PENDING",
+  "checks": {
+    "unit": {
+      "files": 93,
+      "passed": 1216,
+      "failed": 0
+    },
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "build": {
+      "bundler": "webpack",
+      "result": "PASS",
+      "command": "ASSET_SKIP_REENCODE=1 npm run build -- --webpack"
+    },
+    "staticDocument": {
+      "sections": [
+        "baslangic",
+        "uretim-yolculugu",
+        "tesisimiz",
+        "urunler",
+        "toptan-iletisim",
+        "teklif",
+        "iletisim"
+      ],
+      "images": 22,
+      "missing": [],
+      "brokenSectionAnchors": [],
+      "h1": "Kökü toprakta. Yeri sofrada.",
+      "productCards": 6,
+      "reactBits": 2
+    },
+    "sourceReview": {
+      "errors": 0,
+      "warnings": 0,
+      "info": 1
+    },
+    "motion": {
+      "direct": "framer-motion@14.4.0",
+      "adapter": "motion@14.4.0",
+      "deduped": true
+    }
+  },
+  "browser": {
+    "executed": false,
+    "reason": "Environment cannot launch headless Chromium, alternative execution requires unavailable approval, localhost listen denied (EPERM).",
+    "e2ePrepared": [
+      "tests/e2e/scrolling-sections-162.spec.ts",
+      "tests/e2e/pro-plan-161.spec.ts"
+    ]
+  },
+  "preview": ".cache/task-162/tasarim-onizleme.html",
+  "deployment": {
+    "pushed": false,
+    "deployed": false
+  },
+  "paidMediaCredits": 0
+}

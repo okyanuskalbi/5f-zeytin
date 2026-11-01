@@ -1,6 +1,6 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
-const sections = ["baslangic", "urunler", "tesisimiz", "uretim-yolculugu", "toptan-iletisim", "teklif", "iletisim"];
+const sections = ["baslangic", "uretim-yolculugu", "tesisimiz", "urunler", "toptan-iletisim", "teklif", "iletisim"];
 const gallery = (page: Page) => page.locator("#urunler");
 const lastProduct = (page: Page) => gallery(page).locator("[data-product-id]").last();
 const isMovie = (url: string) => /\/videos\/[^?#]+\.mp4(?:\?|$)/.test(url);
@@ -10,7 +10,7 @@ async function painted(page: Page): Promise<void> {
 }
 
 async function expectFullPoster(page: Page): Promise<void> {
-  const hero = await page.locator("#baslangic").boundingBox();
+  const hero = await page.locator("#baslangic [data-hero-visual]").boundingBox();
   const poster = await page.locator("#baslangic [data-film-plane] picture img").boundingBox();
   expect(hero).not.toBeNull(); expect(poster).not.toBeNull();
   for (const axis of ["x", "y", "width", "height"] as const) expect(Math.abs(hero![axis] - poster![axis])).toBeLessThanOrEqual(1);
@@ -110,8 +110,8 @@ test("desktop gallery follows linear scroll immediately, exposes the last focuse
   await expect.poll(async () => (await galleryState(page)).progress).toBeGreaterThan(.5);
   await expectHorizontallyVisible(gallery(page).locator("[data-gallery-viewport]"), lastProduct(page));
   await expect(target).toBeInViewport();
-  await page.locator("#tesisimiz").scrollIntoViewIfNeeded();
-  await expect(page.locator("#tesisimiz").getByRole("heading").first()).toBeInViewport();
+  await page.locator("#toptan-iletisim").scrollIntoViewIfNeeded();
+  await expect(page.locator("#toptan-iletisim").getByRole("heading").first()).toBeInViewport();
   await page.getByRole("contentinfo").scrollIntoViewIfNeeded();
   await expect(page.getByRole("contentinfo")).toBeInViewport();
 });

@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: "Giriş ve üyelik | Afina Zeytin", r
 
 export const dynamic = "force-dynamic";
 
-export default async function Page({ searchParams }: { searchParams?: Promise<Record<string, string | string[] | undefined>> } = {}) {
+export default async function Page({ searchParams }: { searchParams?: Promise<Record<string, string | string[] | undefined>> }) {
   const query = await searchParams;
   const next = safeAuthRedirect(typeof query?.next === "string" ? query.next : null);
   let signedIn = false;

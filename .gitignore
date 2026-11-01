@@ -11,6 +11,8 @@ test-results/
 coverage/
 .cache/
 *.tsbuildinfo
+__pycache__/
+*.pyc
 
 # tasarım taslakları (yerel, repoya girmez)
 .impeccable/
