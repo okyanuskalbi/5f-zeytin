@@ -1,0 +1,145 @@
+{
+  "date": "2026-11-01",
+  "task": 156,
+  "selectedKit": "sinematik-siteler.pdf",
+  "sourceCommit": "104b15f1662f172f7738750c0aa5a9b1571c1045",
+  "ci": {
+    "conclusion": "success",
+    "databaseId": 41265132601,
+    "headSha": "104b15f1662f172f7738750c0aa5a9b1571c1045",
+    "status": "completed",
+    "url": "https://github.com/okyanuskalbi/5f-zeytin/actions/runs/41265132601"
+  },
+  "project": {
+    "name": "afina-zeytin",
+    "id": "prj_4nr3Qeu05CcoMgDXt7MeAfnflyPp",
+    "teamId": "team_IWBdFFE1yrN06w4L0BQxK1Cz"
+  },
+  "deployment": {
+    "id": "dpl_J2H5vNo7EFfvukU7ionhgRRVd2Wa",
+    "url": "afina-zeytin-m99geho4q-afina1.vercel.app",
+    "readyState": "READY",
+    "target": "production",
+    "alias": [
+      "afinazeytin.com",
+      "afina-zeytin.vercel.app",
+      "www.afinazeytin.com",
+      "afina-zeytin-afina1.vercel.app"
+    ],
+    "aliasAssigned": true,
+    "errorCode": null,
+    "errorMessage": null,
+    "meta": {
+      "sourceCommit": "104b15f1662f172f7738750c0aa5a9b1571c1045",
+      "sourceRepo": "okyanuskalbi/5f-zeytin",
+      "pipeline": "verified-rest-api",
+      "verificationRun": "41265132601",
+      "lambdaRuntimeStats": "{\"nodejs\":3}",
+      "bundler": "turbopack"
+    }
+  },
+  "previousProduction": {
+    "id": "dpl_EmnZx1KUcZ5R5WkYnX9kCMkLXSkB",
+    "sourceCommit": "112f55ffbc78ae93807fcd1b4e4b9d9d811f5185"
+  },
+  "sourceSnapshot": {
+    "files": 1542,
+    "bytes": 73359497,
+    "manifestSha256": "cd8e6b2f9ccb1741fb02640903d86ecab13c6a566d4450e386d8aa7c3d2e24a4",
+    "transport": "Vercel REST API v2 files + v13 deployments"
+  },
+  "checks": {
+    "testFiles": 85,
+    "unitTests": 1164,
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "productionBuild": "PASS",
+    "newMediaFiles": 195,
+    "newMediaBytes": 15615135,
+    "sequenceFramesPerWidth": 95,
+    "sequenceWidths": [
+      1280,
+      960
+    ]
+  },
+  "httpVerification": {
+    "home": {
+      "status": 200,
+      "sha256": "eb1a6a6e6f7fa7d141e69775fb28b6f6078ceab8b261f7a60e3f2f0b6b25faac"
+    },
+    "officialSlogan": true,
+    "newResponsivePoster": true,
+    "oldHeroRemoved": true,
+    "realCtaLinks": true,
+    "assets": [
+      {
+        "path": "/frames/afina-agac-dal/manifest.json",
+        "status": 200,
+        "bytes": 127,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "907d5d72efd70a5370025cad22dfb24aeaea8bba60c39ad314027233ed5b58e0"
+      },
+      {
+        "path": "/frames/afina-agac-dal/poster-desktop.avif",
+        "status": 200,
+        "bytes": 71632,
+        "contentType": "image/avif",
+        "sha256": "61549ffb525579ab3df3e1a899f1f543312eb6d08093f6074ca33382d4bbdcc4"
+      },
+      {
+        "path": "/frames/afina-agac-dal/poster-desktop.webp",
+        "status": 200,
+        "bytes": 162326,
+        "contentType": "image/webp",
+        "sha256": "dc6dcc04c373c693c110d3e5d7cbf74de0d8b057b3385346e066b6b39a6d9bde"
+      },
+      {
+        "path": "/frames/afina-agac-dal/poster-mobile.avif",
+        "status": 200,
+        "bytes": 30613,
+        "contentType": "image/avif",
+        "sha256": "da231273b9ac2e361515a406cb28575e6bb0ea5d23e6ad0aca91b84d3843ba9d"
+      },
+      {
+        "path": "/frames/afina-agac-dal/poster-mobile.webp",
+        "status": 200,
+        "bytes": 68808,
+        "contentType": "image/webp",
+        "sha256": "499a96b4d6f7e297eec710758584afb9f039406dd61376fe5481c1e59cf7d958"
+      },
+      {
+        "path": "/frames/afina-agac-dal/1280/frame-0001.webp",
+        "status": 200,
+        "bytes": 174760,
+        "contentType": "image/webp",
+        "sha256": "b949f7b019a62f9a1487f0f19f2a7bce099b4e0e7c5585e11e6db2a24195b086"
+      },
+      {
+        "path": "/frames/afina-agac-dal/1280/frame-0095.webp",
+        "status": 200,
+        "bytes": 56876,
+        "contentType": "image/webp",
+        "sha256": "d7d600b01a227b65cf2d76223cc561843fe1076b6b839d3af4bc62e83890e22f"
+      },
+      {
+        "path": "/frames/afina-agac-dal/960/frame-0001.webp",
+        "status": 200,
+        "bytes": 111330,
+        "contentType": "image/webp",
+        "sha256": "355cec0dc398b9bbc8e1de4377d310afafa9e1239c905a6b76d8de8ef75cd566"
+      },
+      {
+        "path": "/frames/afina-agac-dal/960/frame-0095.webp",
+        "status": 200,
+        "bytes": 40418,
+        "contentType": "image/webp",
+        "sha256": "004cc7d3117d57c2a48a9fd132b361c8dc9212d43b68d5f4234efb9257c08a09"
+      }
+    ],
+    "browserAcceptance": false
+  },
+  "browserAcceptance": false,
+  "remoteMigrationsApplied": false,
+  "newFlowGeneration": false,
+  "extraFlowCreditsSpent": 0
+}

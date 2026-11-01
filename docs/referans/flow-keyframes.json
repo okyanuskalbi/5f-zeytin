@@ -84,7 +84,9 @@
     "reviewStrip": "output/flow-keyframes/A-B-kare-seridi.jpg",
     "userAccepted": true,
     "runtimeDerivatives": "/frames/afina-agac-dal/manifest.json",
-    "originalMp4Published": false
+    "originalMp4Published": false,
+    "runtimeDerivativePublished": true,
+    "derivativeReleaseReceipt": "docs/referans/yayin-sinematik-20261101.json"
   },
   "transitions": [
     {

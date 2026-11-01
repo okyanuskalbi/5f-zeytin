@@ -7,7 +7,7 @@
 - Ana slogan “Kökü toprakta. Yeri sofrada.”; v5 kurumsal paleti/tasarımı `docs/DESIGN.md` içinde. Altın zeytin dalı + el logosu ve `docs/visual-prompts.md` korunur.
 - Yeni üretim yalnız Google Flow; eski P01–P12/Atlas görevleri tarihsel kayıttır. Görseller temsili ve adaydır; kullanıcı onayı olmadan sitede kullanılmaz, ücretli videoya geçilmez.
 - Supabase proje/org, ödeme, e-posta, kargo, indirim/süreler, gerçek ürün/fiyat/logo ve Vercel/domain kararları açıktır; kendin seçme. Ayrıntı ve bağımlılıklar `docs/PLAN.md` içinde.
-- 1 Kasım 2026 kullanıcı devri: Codex planlama, görev oluşturma, uygulama ve denetimi birlikte yürütür. Claude dosyaları ve eski kabul kanıtları tarihsel kaynak olarak korunur. Güncel iş: docs/tasks/151-codex-musteri-yenileme.md.
+- 1 Kasım 2026 kullanıcı devri: Codex planlama, görev oluşturma, uygulama ve denetimi birlikte yürütür. Claude dosyaları ve eski kabul kanıtları tarihsel kaynak olarak korunur. Müşteri yenilemesi Task 151, son yayınlanan sinematik açılış Task 156; güncel kanıt docs/referans/yayin-sinematik-20261101.json.
 
 # Rol: Codex / proje yürütücüsü
 
@@ -77,4 +77,5 @@ Yeniden kurgu sırasında (KURUMSAL 050–063, ZEYTİN 090–096 ve 100–106) b
 - Müşteri PDF’si: üretim/kurumsal güven yaklaşık %65, ürün/alışveriş %35; yeni açılış ve kurumsal/toptan akış Task 151. Resmî slogan “Kökü toprakta. Yeri sofrada.” korunur; PDF’deki alternatif yalnız öneridir.
 - Yeni video üretimi yalnız Google Flow. AtlasCloud çağrısı/fallback/kredi kullanma. Ücretli kapsam ve kredi sınırı kullanıcıdan alınır; mevcut 250 kredi bakiyesi harcama yetkisi değildir. Kullanıcı son yönü: her sahne için ilk/son kare. Beş referans Flow’a yüklendi; açık onayla yalnız A→B ilk klip 20 krediye üretildi, bakiye 230. İlk klip kullanıcı tarafından kabul edildi. Kullanıcı kalan üç aynı yöntemli geçişi istedi; doğrulanan 20 kredi/kliple ek sınır 60 (toplam 80) kredidir. Üç normal deneme Google doğrulamasında reddedildi; bakiye 230, ek harcama 0. Engel çözülmeden yeni ücretli deneme yapma; CAPTCHA atlama veya güvenlik ayarı değiştirme.
 - Onaysız medya public/runtime’a bağlanmaz. Hazır SDR’ye ikinci ACES/tone mapping uygulanmaz. Özel canvas Task 083 yeniden kullanılır; body/wheel/touch scroll kilidi veya autoplay loop eklenmez.
+- Kullanıcının seçilen PDF'yi uygulama isteğiyle Task 156'da kabul edilen ilk A→B klibinin türevleri açılışa bağlandı ve API ile yayınlandı. 1280/960, 12 fps, 95'er kare; aynı başlangıçtan AVIF/WebP poster. Kaynak/çıktı kapısı scripts/check-cinematic-hero.mjs ve lib/media/cinematic-hero.json. Diğer üç klip bu yayında yok, ek kredi harcaması 0; son makbuz docs/referans/yayin-sinematik-20261101.json.
 - Test tarayıcısı yalnız paketli headless Chromium, worker ≤2. /Applications/Google Chrome.app test/Lighthouse için açılmaz; düzgün kapanış zorunlu. Google Flow üretim oturumu bu test kısıtından ayrıdır.

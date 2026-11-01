@@ -255,3 +255,5 @@ Kullanıcı ilk klibi kabul edip kalan üç geçişi istedi. Doğrulanan 20 kred
 
 ## Seçilen kit: sinematik açılış
 [Task 156](tasks/156-sinematik-acilis.md): Kullanıcının dört PDF'den birini seçip uygulama isteği için Sinematik Siteler seçildi. Kabul edilen A→B Flow klibi açılışın yeni native-scroll dizisine dönüştürülür; büyük merkezlenmiş serif başlık, tek cam navigasyon ve üst/alt okunurluk katmanı uygulanır. 21st 12005 kaynak incelemesi yapıldı. Yeni video üretilmez/kredi harcanmaz; bekleyen diğer üç sahne yayına alınmaz. Üyelik/ödeme/DB kapsamı değişmez. Güncel doğrulama ve yayın durumu Task 156'da.
+
+Task 156 tamamlandı ve yayınlandı: `104b15f`, 85 dosya/1164 test + lint/typecheck/build ve CI SUCCESS; Vercel REST API `dpl_J2H5vNo7EFfvukU7ionhgRRVd2Wa` READY. afinazeytin.com üzerinde yeni poster/başlık/CTA ve 9 medya isteği/hash doğrulandı. Kanıt `docs/referans/yayin-sinematik-20261101.json`. Tarayıcı/cihaz kabulü yapılmadı; ek Flow harcaması 0.

@@ -19,6 +19,6 @@ Kullanıcı 1 Kasım 2026'da dört PDF'den birini seçip uygulamamı istedi. Se�
 - Mobil logo/menü genişlikleri 320 px için kod/ölçü hesabıyla düzenlendi; çok kısa portre ve yatay ekranlarda intrinsic yükseklik metin/CTA'nın kaybolmasını önler. Native-scroll oynatıcı ve azaltılmış hareket/veri tasarrufu davranışı değiştirilmedi.
 - Tam kontrol: 85 dosya / 1164 test PASS; lint PASS; typecheck PASS; production build PASS, bütün medya kapıları PASS. Mevcut navigasyon, üyelik ve frame-sequence davranış testleri de geçti. 21st hedefli kaynak denetimi: 0 error, 0 warning; 38 bilgi (mevcut renk tokenları/katman renkleri).
 - Tarayıcı/e2e/Lighthouse ve gerçek cihaz görsel kabulü çalıştırılmadı. Uzak DB/auth/ödeme ayarı değiştirilmedi. Yeni Flow üretimi yapılmadı; bakiye/ek harcama bu görevde değişmedi.
-- CI ve API yayını sonraki adım; henüz bu görev için canlı kabulü yazılmadı.
+- Yayınlanan kaynak `104b15f1662f172f7738750c0aa5a9b1571c1045`; [CI 41265132601](https://github.com/okyanuskalbi/5f-zeytin/actions/runs/41265132601) SUCCESS. Vercel REST API production `dpl_J2H5vNo7EFfvukU7ionhgRRVd2Wa` READY, afinazeytin.com ve www alias'ları bağlı. Canlı ana sayfa HTTP 200 ve yeni responsive poster; manifest + her iki genişliğin ilk/son kareleri ve dört responsive poster (9 HTTP varlık kontrolü) yerel SHA'larla eşleşti. Resmî slogan ve iki CTA doğrulandı; eski hero posteri yeni HTML'de yok. Kanıt: `docs/referans/yayin-sinematik-20261101.json`.
 
-## Durum: KOD TAMAMLANDI; CI VE YAYIN DOĞRULAMASI SÜRÜYOR
+## Durum: TAMAMLANDI
