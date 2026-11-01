@@ -28,6 +28,10 @@ Anlamlı giriş yaşam döngüsü RED/GREEN, mevcut ürün/sepet/üyelik davran�
 
 ## Yayın kabulü
 
-Yerel kabul tamam. Normal main push, CI ve API dağıtımı sonrası canlı sonuç buraya eklenecek; şu aşamada yeni runtime'ın canlıya çıktığı iddia edilmez.
+Normal main push sonrası **CI 41295337111 SUCCESS**; yayın snapshot kaynağı `862c1be8c8803e1dc3dbb34f19e98a6988531d62`. AFINA ekip/afina-zeytin hedefi ve kapalı Git auto-deploy yeniden doğrulandı. REST API production dağıtımı **`dpl_8eMNwwHWCr2dod8aLYnzSw9DV9dQ` READY**, afinazeytin.com/www alias'ları bağlı.
 
-## Durum: UYGULANIYOR
+Canlı alan adında **28 etkileşim kontrolü PASS**. Dört genişlikte görsel/axe/taşma/pageerror/kaynak kontrolü PASS; reduced-motion canvas/kare isteği 0. Hover/basılı durumda tercih değişimi transformu sıfırladı; JavaScript kapalı H1/ürün anchor'ı çalıştı. Ana sayfa HTTP 200, dokuz medya/manifest/hash eşliği geçti. Fiziksel telefon veya gerçek hesap/sipariş/ödeme/talep mutasyonu değildir. Browser ve yerel sunucular düzgün kapatıldı; 3018/3019 listener'ı yok.
+
+[Yayın makbuzu](../referans/yayin-kitler-20261101.json), [yerel ve canlı QA](../referans/qa-158-20261101.json), canlı ekranlar `.cache/task-158/live/`. Tarihsel rollback: Task 157 `dpl_DRCshLDGWbDcVPPZvmTerhyU7aR5`. Son belge/kanıt commit'i yalnız dokümantasyondur; runtime'ı yeniden dağıtmaz.
+
+## Durum: TAMAMLANDI

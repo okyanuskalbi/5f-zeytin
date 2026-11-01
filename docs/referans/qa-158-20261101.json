@@ -1,0 +1,484 @@
+{
+  "date": "2026-11-01",
+  "task": 158,
+  "sourceCommit": "862c1be8c8803e1dc3dbb34f19e98a6988531d62",
+  "scope": "Four supplied Markdown guides applied as project-local skills and accessible runtime Motion/spacing refinements",
+  "unitFiles": 86,
+  "unitTests": 1176,
+  "lint": "PASS",
+  "typecheck": "PASS",
+  "productionBuild": "PASS",
+  "testBrowser": "bundled headless Playwright Chromium",
+  "testWorkers": 2,
+  "checks": {
+    "local": {
+      "interactionTests": 28,
+      "visualBrowser": {
+        "base": "http://localhost:3019",
+        "results": [
+          {
+            "width": 1440,
+            "scroll": [
+              {
+                "section": "#kurumsal",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "#tesisimiz",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "#urunler",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "#uretim-yolculugu",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "#toptan-iletisim",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "#iletisim",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "footer",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              }
+            ],
+            "errors": [],
+            "bad": [],
+            "frame0": "0",
+            "frame1": "42",
+            "axe": []
+          },
+          {
+            "width": 768,
+            "scroll": [
+              {
+                "section": "#kurumsal",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "#tesisimiz",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "#urunler",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "#uretim-yolculugu",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "#toptan-iletisim",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "#iletisim",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "footer",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              }
+            ],
+            "errors": [],
+            "bad": [],
+            "frame0": "0",
+            "frame1": "30",
+            "axe": []
+          },
+          {
+            "width": 390,
+            "scroll": [
+              {
+                "section": "#kurumsal",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "#tesisimiz",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "#urunler",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "#uretim-yolculugu",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "#toptan-iletisim",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "#iletisim",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "footer",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              }
+            ],
+            "errors": [],
+            "bad": [],
+            "frame0": null,
+            "frame1": null,
+            "axe": []
+          },
+          {
+            "width": 320,
+            "scroll": [
+              {
+                "section": "#kurumsal",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "#tesisimiz",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "#urunler",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "#uretim-yolculugu",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "#toptan-iletisim",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "#iletisim",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "footer",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              }
+            ],
+            "errors": [],
+            "bad": [],
+            "frame0": null,
+            "frame1": null,
+            "axe": []
+          }
+        ],
+        "reduced": {
+          "canvas": 0,
+          "frameRequests": 0,
+          "h1Visible": true
+        }
+      },
+      "motionAndNoJS": {
+        "base": "http://localhost:3019",
+        "hover": {
+          "y": -1.32408,
+          "scale": 1,
+          "opacity": 1
+        },
+        "reducedHover": {
+          "y": 0,
+          "scale": 1,
+          "opacity": 1
+        },
+        "press": {
+          "y": -1.95989,
+          "scale": 0.988645,
+          "opacity": 1
+        },
+        "reducedPress": {
+          "y": 0,
+          "scale": 1,
+          "opacity": 1
+        },
+        "reducedPreferenceChange": "PASS",
+        "realAnchorNavigation": "PASS",
+        "withoutJavaScript": "visible H1 and working product anchor",
+        "extraMediaCredits": 0
+      }
+    },
+    "live": {
+      "interactionTests": 28,
+      "visualBrowser": {
+        "base": "https://afinazeytin.com",
+        "results": [
+          {
+            "width": 1440,
+            "scroll": [
+              {
+                "section": "#kurumsal",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "#tesisimiz",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "#urunler",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "#uretim-yolculugu",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "#toptan-iletisim",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "#iletisim",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "footer",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              }
+            ],
+            "errors": [],
+            "bad": [],
+            "frame0": "0",
+            "frame1": "42",
+            "axe": []
+          },
+          {
+            "width": 768,
+            "scroll": [
+              {
+                "section": "#kurumsal",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "#tesisimiz",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "#urunler",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "#uretim-yolculugu",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "#toptan-iletisim",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "#iletisim",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "footer",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              }
+            ],
+            "errors": [],
+            "bad": [],
+            "frame0": "0",
+            "frame1": "7",
+            "axe": []
+          },
+          {
+            "width": 390,
+            "scroll": [
+              {
+                "section": "#kurumsal",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "#tesisimiz",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "#urunler",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "#uretim-yolculugu",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "#toptan-iletisim",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "#iletisim",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "footer",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              }
+            ],
+            "errors": [],
+            "bad": [],
+            "frame0": null,
+            "frame1": null,
+            "axe": []
+          },
+          {
+            "width": 320,
+            "scroll": [
+              {
+                "section": "#kurumsal",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "#tesisimiz",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "#urunler",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "#uretim-yolculugu",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "#toptan-iletisim",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "#iletisim",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "footer",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              }
+            ],
+            "errors": [],
+            "bad": [],
+            "frame0": null,
+            "frame1": null,
+            "axe": []
+          }
+        ],
+        "reduced": {
+          "canvas": 0,
+          "frameRequests": 0,
+          "h1Visible": true
+        }
+      },
+      "motionAndNoJS": {
+        "base": "https://afinazeytin.com",
+        "hover": {
+          "y": -1.33192,
+          "scale": 1,
+          "opacity": 1
+        },
+        "reducedHover": {
+          "y": 0,
+          "scale": 1,
+          "opacity": 1
+        },
+        "press": {
+          "y": -1.89912,
+          "scale": 0.989873,
+          "opacity": 1
+        },
+        "reducedPress": {
+          "y": 0,
+          "scale": 1,
+          "opacity": 1
+        },
+        "reducedPreferenceChange": "PASS",
+        "realAnchorNavigation": "PASS",
+        "withoutJavaScript": "visible H1 and working product anchor",
+        "extraMediaCredits": 0
+      }
+    }
+  },
+  "screenshots": [
+    {
+      "viewportWidth": 1440,
+      "file": ".cache/task-158/live/1440-hero.png",
+      "sha256": "f4b0300478f1c8ab4211093f2ce3a4277a2fa9c43b421129ea0e3980808b6701"
+    },
+    {
+      "viewportWidth": 768,
+      "file": ".cache/task-158/live/768-hero.png",
+      "sha256": "6405172bb3d7fc7374a644fcd7adf4cd50ecb1f813fb5fea5ea8f0f29cfdcd62"
+    },
+    {
+      "viewportWidth": 390,
+      "file": ".cache/task-158/live/390-hero.png",
+      "sha256": "d130b93224f27dd0168a50a6e55a75c568066fe44f6e0bbdf2a65e123e545075"
+    },
+    {
+      "viewportWidth": 320,
+      "file": ".cache/task-158/live/320-hero.png",
+      "sha256": "b074f44c5fd66942e7111671d263ef3e64025bc82ac98b712988459c60a40497"
+    }
+  ],
+  "browserAcceptance": true,
+  "physicalDeviceAcceptance": false,
+  "newMediaGenerated": false,
+  "extraFlowCreditsSpent": 0,
+  "realAccountOrderPaymentLeadMutationsTested": false,
+  "remoteMigrationsApplied": false,
+  "browserAndLocalServerCleanup": "graceful close/SIGTERM; listener cleanup checked"
+}

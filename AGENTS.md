@@ -7,7 +7,7 @@
 - Ana slogan “Kökü toprakta. Yeri sofrada.”; güncel v6 Üretici Atlası sözleşmesi `docs/DESIGN.md` içinde. Kullanıcı koyu ortalanmış hero/cam menüyü reddetti; açık, asimetrik metin/görsel kompozisyonu esas alınır. Altın zeytin dalı + el logosu ve `docs/visual-prompts.md` korunur.
 - Yeni üretim yalnız Google Flow; eski P01–P12/Atlas görevleri tarihsel kayıttır. Görseller temsili ve adaydır; kullanıcı onayı olmadan sitede kullanılmaz, ücretli videoya geçilmez.
 - Supabase proje/org, ödeme, e-posta, kargo, indirim/süreler, gerçek ürün/fiyat/logo ve Vercel/domain kararları açıktır; kendin seçme. Ayrıntı ve bağımlılıklar `docs/PLAN.md` içinde.
-- 1 Kasım 2026 kullanıcı devri: Codex planlama, görev oluşturma, uygulama ve denetimi birlikte yürütür. Claude dosyaları ve eski kabul kanıtları tarihsel kaynak olarak korunur. Güncel MD/hareket uyarlaması Task 158; kabul/yayın sürüyor. Task 157 v6 tasarım/tarayıcı kanıtı, Task 151/156 önceki uygulama ve yayın tarihçesidir.
+- 1 Kasım 2026 kullanıcı devri: Codex planlama, görev oluşturma, uygulama ve denetimi birlikte yürütür. Claude dosyaları ve eski kabul kanıtları tarihsel kaynak olarak korunur. Güncel MD/hareket uyarlaması ve yayın kabulü Task 158 tamamlandı. Task 157 v6 tasarım/tarayıcı kanıtı, Task 151/156 önceki uygulama ve yayın tarihçesidir.
 
 # Rol: Codex / proje yürütücüsü
 
@@ -85,6 +85,6 @@ Yeniden kurgu sırasında (KURUMSAL 050–063, ZEYTİN 090–096 ve 100–106) b
 
 Bu projede [Profesyonel web](.agents/skills/profesyonel-web-sitesi-yeni-nesil/SKILL.md), [Scroll hero](.agents/skills/scroll-hero-video-yeni-nesil/SKILL.md), [Sinematik siteler](.agents/skills/sinematik-siteler-yeni-nesil/SKILL.md) ve [UI/UX Pro Max](.agents/skills/ui-ux-pro-max/SKILL.md) birlikte kullanılır. Kaynak SHA'ları ve v6 istisnaları [uyarlama kaydındadır](docs/referans/yeni-nesil-md-uyarlamalari-20261101.md); global skill/MCP/anahtar kurulumu yapılmaz.
 
-Task 158 ortak `lib/ui-motion.ts` action/editorial spring'leriyle kısa, bir kez açılış ve küçük hover/tap tepkilerini; ana bölüm aralıklarında 8 px tabanlı 32/48/64/96 tokenlarını uygular. SSR içerik/CTA görünür, reduced-motion posteri ve lineer scrub korunur. Bu task'ın test/yayın kabulü [görev kaydında](docs/tasks/158-yeni-nesil-md-kitleri.md) bekliyor; Task 157 kanıtı yeni kabul yerine geçmez.
+Task 158 ortak `lib/ui-motion.ts` action/editorial spring'leriyle kısa, bir kez açılış ve küçük hover/tap tepkilerini; ana bölüm aralıklarında 8 px tabanlı 32/48/64/96 tokenlarını uygular. SSR içerik/CTA görünür, reduced-motion posteri ve lineer scrub korunur. [Görev kaydı](docs/tasks/158-yeni-nesil-md-kitleri.md) tamamlandı: kaynak `862c1be`, 1176 unit, 28 yerel + 28 canlı etkileşim kontrolü, dört genişlikte görsel/axe kabulü ve API READY. Son makbuz [yayin-kitler-20261101.json](docs/referans/yayin-kitler-20261101.json); yeni medya/kredi 0.
 
 MD'lerdeki **Omni Chrome Use**, mevcut CUA/browser araçlarıyla oturumlu arayüz otomasyonu yaklaşımıdır; ayrı eklenti kurulu varsayılmaz ve **Omni 1.1 Flash** model adıyla karıştırılmaz. Örnek komutlar yeni model, sağlayıcı, hesap veya kredi yetkisi vermez; her üretim öncesi güncel provenans/kalan sınır okunur.
