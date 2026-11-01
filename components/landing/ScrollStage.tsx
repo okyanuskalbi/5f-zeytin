@@ -3,7 +3,6 @@
 import { useCallback, useRef, useSyncExternalStore, type ReactNode } from "react";
 import { m as motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
 import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
-import { springs } from "@/lib/ui-motion";
 
 export function useDesktopMotion(query = "(min-width: 901px) and (min-height: 681px)") {
   const reduced = usePrefersReducedMotion();
@@ -16,24 +15,41 @@ export function useDesktopMotion(query = "(min-width: 901px) and (min-height: 68
   return desktop && !reduced;
 }
 
-/** Scroll Craft's scene score, driven by the existing Motion runtime. Content
- * is present in SSR; an entrance never gates the document or owns input. */
+/** Continuous light movement joins the lower scenes. The section and its
+ * interactive content never transform, so typing, focus and anchor geometry
+ * stay still while the atmosphere follows the visitor in either direction. */
 export function ScrollStage({ id, device, sourceId, className, labelledBy, children }: {
   id: string; device: "parallax" | "reveal" | "flow" | "kinetic";
   sourceId: number; className?: string; labelledBy?: string; children: ReactNode;
 }) {
   const target = useRef<HTMLElement>(null);
   const reduced = usePrefersReducedMotion();
+  const desktop = useDesktopMotion();
   const { scrollYProgress } = useScroll({ target, offset: ["start end", "end start"] });
   useMotionValueEvent(scrollYProgress, "change", progress => target.current?.style.setProperty("--sc-p", String(progress)));
-  const enters = device === "reveal" || device === "flow";
-  return <motion.section ref={target} id={id} className={className} aria-labelledby={labelledBy}
+  const lightY = useTransform(scrollYProgress, [0, 1], desktop ? [80, -80] : [12, -12]);
+  const lightScale = useTransform(scrollYProgress, [0, 1], [1.05, 1.2]);
+  return <section ref={target} id={id} className={className} aria-labelledby={labelledBy}
     data-sc-scene={id} data-sc-device={device} data-sc-engine="motion" data-21st-source={sourceId}
-    initial={false} whileInView={!reduced && enters && typeof IntersectionObserver === "function" ? { y: [32, 0], opacity: [.9, 1] } : undefined}
-    viewport={{ once: true, amount: .12 }} transition={springs.editorial}
-    style={reduced ? { transform: "none", opacity: 1 } : undefined}>
+    data-sc-continuity="light">
+    <motion.div aria-hidden="true" data-sc-backdrop="" style={{ pointerEvents: "none", ...(reduced ? { transform: "none" } : { y: lightY, scale: lightScale }) }} />
     {children}
-  </motion.section>;
+  </section>;
+}
+
+/** Only imagery moves. It is safe to place this inside a stable link or beside
+ * a form; every textual/control hit area keeps its natural document position. */
+export function ScrollArtwork({ children, className, distance = 48, grow = .08 }: {
+  children: ReactNode; className?: string; distance?: number; grow?: number;
+}) {
+  const target = useRef<HTMLDivElement>(null);
+  const reduced = usePrefersReducedMotion();
+  const desktop = useDesktopMotion();
+  const { scrollYProgress } = useScroll({ target, offset: ["start end", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], desktop ? [distance, -distance] : [8, -8]);
+  const scale = useTransform(scrollYProgress, [0, .6, 1], [1 - grow, 1, 1 + grow / 2]);
+  return <motion.div ref={target} className={className} data-scroll-artwork="" initial={false}
+    style={reduced ? { transform: "none" } : { y, scale }}>{children}</motion.div>;
 }
 
 /** Adapted from 21st 20023. The caller supplies a clipped overscan photograph;

@@ -36,4 +36,20 @@ Framer Motion tek hareket motoru; React Bits ve UIPro mevcut uyarlamaları süre
 - Çalışan hareketli önizleme; eski statik HTML bu deneyimin kabulü değildir.
 - Görsel ve fiziksel cihaz doğrulaması yalnız gerçekten yapılırsa raporlanır.
 
-## Durum: UYGULANIYOR
+## Kullanıcı kabulü ve devir — 1 Kasım 2026
+Gerçek React bileşenlerinden üretilen hareketli yerel önizleme kullanıcı
+tarafından “güzel beyendim” ile kabul edildi. `main` ve Vercel API yayını,
+aynı yaklaşımın Codex/Claude için Emre Web Skill olarak kaydı istendi.
+Sonraki bileşen ve Bazgold iletişim alanı talepleri Task165'te uygulanır.
+
+Task164+165 birleşik yerel son kontrol: 108 dosya / 1284 unit PASS,
+tam lint/typecheck ve varlık kapılarıyla webpack üretim build PASS.
+Yerel önizleme statik kontrolünde 104 varlık, eksik dosya 0. Bu kayıt yeni
+headless E2E, fiziksel telefon veya canlı dağıtım kabulü değildir.
+
+Global skill doğrulanmış paket olarak hazır; global yazma reddedildi.
+GitHub yazma erişimi engelli olduğu için main push/Vercel API yayını yapılmadı.
+Güncel kanıt ve kalan kapılar: `docs/tasks/165-etkilesimli-bilesenler.md` ve
+`docs/referans/qa-165-20261101.json`.
+
+## Durum: TASARIM KABUL EDİLDİ — YAYIN BEKLİYOR

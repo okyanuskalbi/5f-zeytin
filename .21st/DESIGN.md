@@ -1,15 +1,10 @@
-# AFİNA ZEYTİN v11 — Kökten sofraya
+# AFİNA ZEYTİN v12 — Hasadın içinden
 
-Aktif [DESIGN](../docs/DESIGN.md) ve [Task163](../docs/tasks/163-10k-sinema-ve-aeo.md).
-Dört MD/dört PDF/10k ZIP [şart eşlemesi](../docs/scrollcraft/builds/afina-v11/REQUIREMENTS.md).
-Kabul edilmiş A→B filmi scroll ile ileri/geri; sonra gerçek AFİNA ambalajı.
-Telefon/touch/kısa/reduced/saveData/JS yokluğu poster/native. Sahne hata halinde
-boş kalmaz, eylemler fading caption dışında. Fraunces/Inter, zeytin#243A29,
-taş#F0EBDD/kâğıt#F7F4ED/mürekkep#172B21/yaprak#B4C58F/koyu altın#735519.
-
-Üç producer adımı → gerçek tesis → altıSKU rafı/detail/sepet → işletme satırları
-→ gerçek mailto taslağı → aynı5SSS/iletişim. 21st/UIPro/pinned React Bits sürer;
-[provenans](../docs/scrollcraft/builds/afina-v10/SOURCES.json). Tek Motion runtime.
-
-Unit/lint/type/build sonuçları [VERIFICATION](../docs/scrollcraft/builds/afina-v11/VERIFICATION.md).
-Gerçek tarayıcı ve telefon/yayın kabulü bekliyor. V9 canlı kanıtları tarihçedir.
+Aktif [DESIGN](../docs/DESIGN.md), [Task164](../docs/tasks/164-kesintisiz-sinematik-akis.md).
+HTCOM WindowJourney, Villa Lara landing-v7 ve MLNEW HeroScrub salt okunur
+incelendi. Aydınlık görüntü, lokal karartma, ferah Fraunces/italic ve ince koyu
+cam menü. Aynı onaylı film/tesis/ambalaj, aynı6SKU ve manuel talep sözleşmesi.
+İlk3sahne ortak scroll timeline; ürün spotlight, B2B görsel, sabit formun
+arkasında hareket, sofra ve logo kapanışı. Yalnız Framer Motion runtime.
+Mobil/reduced doğal düzen, bütün içerik/aksiyonlar erişilir. Yeni medya yok.
+Teknik testler görsel kabul değildir. V11 kullanıcı tarafından beğenilmedi.

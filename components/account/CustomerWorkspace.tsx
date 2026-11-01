@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { PackageIcon, ArrowLeftIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { TrackingTimeline } from "@/components/ui/order-history";
+import { customerOrderTimeline } from "@/lib/orders/timeline";
 import type { AccountProfile } from "@/lib/contracts/account";
 import {
   customerOrderStatuses,
@@ -298,6 +300,10 @@ function CustomerOrderDetail({ no }: { no: string }) {
         <p>
           Genel toplam <strong>{money(order.totalKurus)}</strong>
         </p>
+      </section>
+      <section className={styles.card} aria-labelledby="customer-order-journey">
+        <h2 id="customer-order-journey">Sipariş yolculuğu</h2>
+        <TrackingTimeline items={customerOrderTimeline(order)} />
       </section>
       <section className={styles.card}>
         <h2>Teslimat ve kargo</h2>

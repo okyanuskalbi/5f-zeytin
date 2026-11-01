@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "@/components/site/InnerPage.module.css";
 import { Button } from "@/components/ui/button";
 import { CheckoutSignIn } from "@/components/account/CheckoutSignIn";
+import { CreditCardForm } from "@/components/ui/credit-card-form";
 
 type Summary = Readonly<{ productName: string; amountKurus: number; quantity: number }>;
 type Session = { iframeUrl: string; token: string };
@@ -115,11 +116,7 @@ export function PaymentPreview({ keysAvailable, summary }: { keysAvailable: bool
     </header>
     <div className={`${styles.layout} ${styles.paymentLayout}`}>
       <aside aria-label="Örnek sipariş özeti" className={styles.previewAside}>
-        <div aria-hidden="true" className={styles.previewCard}>
-          <span>Temsili kart · Test</span>
-          <p>Afina Zeytin</p>
-          <span>Ödeme önizlemesi</span>
-        </div>
+        <CreditCardForm previewOnly />
         {/* Adapted from 21st.dev astralyxdev/checkout-summary (demo 36084):
             integer minor units, semantic dl rows and a separated total. */}
         <section className={styles.paper} aria-labelledby="preview-summary-title">

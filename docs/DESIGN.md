@@ -1,74 +1,65 @@
-# AFİNA ZEYTİN v11 — Kökten sofraya
+# AFİNA ZEYTİN v12 — Hasadın içinden
 
-Kullanıcının $10K kalite hedefi ve tüm senaryoyu yeniden düşünme yetkisiyle
-[Task163](tasks/163-10k-sinema-ve-aeo.md) aktiftir. Dört MD, dört PDF ve ZIP
-[şart eşlemesinde](scrollcraft/builds/afina-v11/REQUIREMENTS.md) incelenir.
-Önceki v10 [byte-identical arşivdedir](referans/DESIGN-v10-history-20261101.md).
+**Aktif ek çalışma: [Task165](tasks/165-etkilesimli-bilesenler.md).** Kullanıcı
+V12 hareketli önizlemesini “güzel beyendim” ile kabul etti; aşağıdaki sahne
+kurgusu ve gerçek varlıklar korunur. Seçilen Footer, LiquidNavbar, glass logo
+reveal, PendantLampRail, üyelik kartı, InteractiveCheckout ve TrackingTimeline
+AFİNA tokenlarıyla eklendi. Bazgold kaynaklı telefon/ülke araması ile aranabilir
+il/ilçe teklif formuna bağlıdır; il değişince ilçe temizlenir.
 
-## Tasarım fikri
+Footer teması yalnız kendi yüzeyini değiştirir; e-posta eylemi kullanıcıya
+manuel taslak açar. Sepet ve sipariş yüzeyleri mevcut ticari veriyi kullanır;
+örnek fiyat, sahte durum/tarih, sosyal bağlantı veya gönderim başarısı yok.
+PayTR iFrame sınırı ve özgün altı SKU korunur. Son yerel unit/lint/typecheck/
+webpack build kontrolleri PASS; önizlemenin statik kaynak taraması da yapıldı.
+Tarayıcı çalıştırılmadı; önizleme onayı Task165'in son görsel kabulü veya
+yayın kanıtı değildir. Yetkili main/API yayını henüz yapılmadı.
 
-“Kökü toprakta. Yeri sofrada.” kaydırılan bir yolculuğa dönüşür. Kabul edilmiş
-A→B filmi ileri/geri hareket eder; özgün ön dal kendi düzleminde uzaklaşır,
-son bölümde gerçek AFİNA tenekesi yerleşir. Kalite bütçesi tek imza sahnesinde;
-alt bölüm düzenleri fotoğraf, metin, ürün rafı, işletme satırları ve form olarak
-değişir. Fake sayaç/yorum/sertifika yok. Üç konsept ve seçimin gerekçesi
-[DESIGN-PACKAGE](scrollcraft/builds/afina-v11/DESIGN-PACKAGE.md) içindedir.
+Task164: Kullanıcı V11'i beğenmedi. HTCOM, Villa Lara ve MLNEW referansları
+incelendi. Bütün bölümler Framer Motion ile birbirine bağlı bir akış kurar.
+[İnceleme](referans/sinematik-proje-incelemesi-164.md) ve
+[görev/kabul](tasks/164-kesintisiz-sinematik-akis.md) aktif kayıttır.
+V11 kaynak/medya/AEO rehberleri sürer; görsel yönü tarihçedir.
 
-Derin zeytin #243A29, taş #F0EBDD, kâğıt #F7F4ED, mürekkep #172B21,
-yaprak #B4C58F, koyu altın #735519. Fraunces ve Inter; iki yerel font.
-Mevcut logo, ambalaj, ürün adları/fiyatları/stoku/sırası ve ticari otorite korunur.
-Ürün örnekleri gerçek satış onayı sayılmaz. Yeni üretim veya kredi harcaması0.
+## Sanat yönetimi
 
-## Açılış sözleşmesi
+Görüntü başroldedir. Aydınlık zeytinlik, yalnız başlığın arkasında lokal koyuluk,
+ferah Fraunces ve gerçek italic, ince koyu cam menü. Yeşil #243A29, taş #F0EBDD,
+kâğıt #F7F4ED, mürekkep #172B21 ve yaprak #B4C58F devam eder. Yeni ücretli
+medya yok; kabul edilmiş A→B, gerçek tesis ve özgün ambalajlar kullanılır.
 
-İlk SSR ekranı tam slogan, kısa coğrafi açıklama, responsive poster ve gerçek
-#urunler / #teklif bağlantılarıdır. Gövde/wheel/touch kontrolü ele geçirilmez.
-Yalnız uygun masaüstü, fine-pointer/hover, ≥1024×760, normal hareket,
-veri tasarrufu kapalı, yeterli donanım/görünür sekme: düşük öncelikli Blob
-indirilir. İlk çözülmüş kare ve görünür sahne sonrası400svh pin etkinleşir.
+## Sahne kurgusu
 
-Üç metnin tam okunur plateau'su84svh; geçişler12svh. Aralıklar0–.28,
-.36–.64, .72–1. Metinler aynı anda üst üste gelmez; eylemler bunlardan
-bağımsız ve odaklanabilir kalır. Son metin ve ambalaj yerinde kalır. Bunlar
-hesaplanmış başlangıç değerleridir; gerçek flick/ara kare kabulü bekliyor.
+1. Zeytinlik: tam fotoğraf/film, slogan; scroll ile görüntü yakınlaşır, başlık
+   yükselip dalın kısa cümlesine yer verir. Video zamanı da scroll'a bağlıdır.
+2. Üretim: gerçek tesis aynı viewport içine yükselir; bağımsız fotoğraf ve
+   tipografi yerleşir. Adres ve kurumsal bilgi görünür.
+3. Sofra: sıcak taş zeminde gerçek şişe ve kavanoz farklı hızlarda yerleşir;
+   iki yandan gelen slogan ürün kompozisyonunu çerçeveler.
+4. Ürünler: yatay scroll ile merkezdeki ambalaj aydınlanır ve büyür; altı SKU,
+   detay, sepet ve teklife ekleme aynı ticari kaynakları kullanır.
+5. İşletme: büyük ambalaj sabit kalırken otel/restoran, market/bayi ve toplu
+   tüketim senaryoları yanından geçer. Her senaryo formu seçili segmentle açar.
+6. Teklif: hareketli arka plan, sabit okunur form. Kullanıcı gerçek mailto
+   taslağını kendi e-posta uygulamasından gönderir; otomatik teslim iddiası yok.
+7. SSS/iletişim: aynı kaynaklı beş cevap; sofra görüntüsü ve gerçek logo ile
+   kapanış. Footer bağlantıları ve yasal/ticari sınırlar korunur.
 
-Film4.042.962bayt,190kare/24fps/7,916667sn; H264/yuv420p/fast-start/GOP8,
-sessiz. Hedef lineer; dt-normalize, overshoot yapmayan sonlu yaklaşım ve tek
-native seek; yalnız en son bekleyen hedef, hata/zaman aşımı reset ve cleanup.
-Film preload SSR'da none; izinli Blob sonrasıauto. Görünüm/sekme dışında RAF
-durur. Geç yükleme sahneyi ziyaretçinin üstünde uzatmaz. Native moda geçiş
-blob/decoder/RAF/seek/pending state'i temizler; geri dönüş yeniden ölçülür.
+## Hareket ve erişim
 
-Telefon/touch/kısa/reduced/saveData/JS yokluğu/medya hatası: kısa doğal hero,
-portrait poster, tam H1 ve aynı eylemler. Hiç MP4 talebi yok. Hareket tercihi
-iki yönde canlı izlenir; uzun boş pin bırakılmaz.
+İlk üç sahne tek 600svh sticky alanı paylaşır. Yalnız ≥1024×760, fine pointer,
+hover, normal hareket, saveData kapalı ve yeterli donanımda. Pin videonun geç
+hazır olmasına bağlı değildir; medya hatasında aynı sahne posterle devam eder.
+Film 4 MB/GOP8; mevcut sonlu seek/cleanup sürücüsü değişmez.
 
-## Tam sayfa ve müşteri kararı
+Derin bağlantılar ve klavye odağı ilgili sahne konumuna eşlenir. Mobil/kısa
+ve reduced-motion: aynı içerikler doğal sırada; film talebi/uzun boş pin yok.
+Alt bölüm metinleri/form kontrol geometrisi sabit, görsel katmanlar hareketli.
+Wheel/touch/body kilidi veya ikinci GSAP/Lenis motoru yok.
 
-1. #baslangic: üç bantlı zeytinlik→ambalaj sahnesi; tek ana ürün eylemi.
-2. #uretim-yolculugu: üç kısa okuma adımı, fotoğraf/bölüm işareti senkronu;
-   uygun masaüstünde64svh adımlar, diğerlerinde bütün fotoğraflar doğal akış.
-3. #tesisimiz / #kurumsal: gerçek Ellek tesisi ve kaynaklı adres.
-4. #urunler: altı SKU, gerçek detay/sepet; uzun masaüstünde lineer yatay raf,
-   kısa/mobil/reduced/JS kapalı doğal yatay kaydırma ve klavye erişimi.
-5. #toptan-iletisim: üç işletme segmenti, seçilen ambalajla ortak talep bağlamı.
-6. #teklif: doğrulama/KVKK sonrası gerçek e-posta taslağı. Otomatik teslim yok.
-7. #iletisim: aynı5SSS, adres/kurumsal kanal, “Sofrada görüşürüz.” ve ürüne dönüş.
+## Sınırlar ve kabul
 
-21st gerçek kaynakları, proje yerel UIPro ve pinned React Bits BlurText devam
-eder. Lisans/pin [v10 SOURCES](scrollcraft/builds/afina-v10/SOURCES.json) içinde.
-framer-motion14.4.0 ve motion14.4.0 aynı runtime; ikinci GSAP/Lenis motoru yok.
-Ticari provider, ödeme, hesap ve DB kapıları değişmez.
-
-## AEO ve doğrulama
-
-Görünür5FAQ ve FAQPage aynı modülden, kurum/yer/ana sayfa bilgisi ortak entity
-verisinden gelir. llms.txt + llms-full.txt + tek gerçek ana sayfa güncellemesi
-olan Atom feed aynı kamuya açık bilgiyi kullanır. Robots özel yolları kapalı
-tutar; sitemap yalnız indekslenebilir ana sayfa, canonical/OG gerçek domaine
-açılır. İndeks/AI görünürlük veya FAQ rich result garantisi verilmez.
-
-Yerel unit/lint/typecheck/webpack build kanıtları ve açık kapılar
-[VERIFICATION](scrollcraft/builds/afina-v11/VERIFICATION.md) içindedir.
-Gerçek tarayıcı render/scroll/axe/Lighthouse, fiziksel cihaz ve canlı yayın
-kabulü tamamlanmadan bu tasarım TAMAMLANDI sayılmaz. Önceki v9 canlı kalır.
+Framer Motion14.4.0, proje yerel UIPro, lisanslı React Bits ve mevcut 21st
+uyarlamaları korunur. AEO/FAQ/schema/llms/feed ortak kaynakları değişmedi.
+Test ve build sonucu görsel beğeni veya tarayıcı kabulü olarak sunulmaz.
+Hareketli yerel önizleme, üretim dağıtımı ve fiziksel cihaz kabulü ayrıdır.

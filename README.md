@@ -1,8 +1,25 @@
+# Güncel çalışma: Task165 / kabul edilen v12
+
+Kullanıcı v12 hareketli önizlemesini “güzel beyendim” ile kabul etti. Bu
+sinematik kurguya seçilen footer, menü/logo efekti, ürün rayı, üyelik kartı,
+sepet ve sipariş çizelgesi eklendi. Teklif formunda Bazgold kaynaklı telefon
+ülke seçimi ve aranabilir il/ilçe alanları var; il değişince ilçe temizlenir.
+[Tasarım](docs/DESIGN.md) · [Task165/kabul](docs/tasks/165-etkilesimli-bilesenler.md).
+
+Yerel kabul: **108 dosyada 1284 test, lint, TypeScript ve webpack build PASS**.
+Statik önizleme taramasında 104 yerel varlık/0 eksik/0 dış ağ kaynağı bulundu;
+tarayıcı çalıştırılmadı. Son tarayıcı kabulü ve yayın bekliyor.
+`main`/Vercel API yayını yetkili fakat yapılmadı: Git DNS ve GitHub
+yazımının oturumda karşılanamayan onay gereksinimi uzak işlemi engelliyor.
+Uzak ref/deploy değişmedi. Doğrulanmış Emre Web Skill arşivi
+`.cache/task-164/emre-web-skill.zip` hazır; global yazım otomatik onay
+incelemesinde reddedildiğinden global kurulum tamamlanmadı.
+
 # AFİNA ZEYTİN
 
-Güncel yerel tasarım: **v11 Kökten sofraya**, [Task163](docs/tasks/163-10k-sinema-ve-aeo.md).
+Tarihsel v11 kaydı: **Kökten sofraya**, [Task163](docs/tasks/163-10k-sinema-ve-aeo.md).
 Gerçek scroll film, Framer Motion, UIPro, React Bits ve kaynaklı AEO içeriği.
-Yerel kod kontrolleri geçti; görsel tarayıcı/gerçek cihaz/yayın kabulü bekliyor.
+O görevdeki yerel kod kontrolleri geçti; bu kayıt Task165 kabulü değildir.
 [Doğrulama](docs/scrollcraft/builds/afina-v11/VERIFICATION.md).
 
 [afinazeytin.com](https://afinazeytin.com) için premium vitrin ve satın alma projesi.

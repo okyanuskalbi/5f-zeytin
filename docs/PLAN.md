@@ -1,4 +1,32 @@
-# Aktif iş: Task163 / v11 Kökten sofraya
+# Aktif iş: Task165 / kabul edilen v12 bileşen entegrasyonları
+
+Task164 hareketli önizlemesi kullanıcı tarafından “güzel beyendim” ile kabul
+edildi. V12 korunarak seçilen footer/menü/logo/ürün rayı/üyelik, sepet ve
+sipariş çizelgesi yerelde entegre edildi. Son Bazgold telefon ülke seçimi ve
+aranabilir il/ilçe alanları teklif formunda; il değişince ilçe temizlenir.
+[Görev ve kabul kapıları](tasks/165-etkilesimli-bilesenler.md),
+[tasarım](DESIGN.md) ve [devir](CODEX_HANDOVER.md) güncel kayıttır.
+
+Yerel kabul: 108 dosyada 1284 unit, tam lint/typecheck ve webpack build PASS.
+Yenilenen önizlemenin statik taraması 104 yerel varlık/0 eksik/0 dış ağ
+kaynağı; tarayıcı çalıştırılmadı. Son tarayıcı/görsel kabulü bekliyor. Kullanıcı main push
+ve Vercel API yayınını yetkilendirdi; Git DNS sorunu ve `create_blob` işleminin
+`approval_policy=never` ortamında karşılanamayan onayı nedeniyle uzak ref
+mutasyonu/deploy yapılmadı. Onay sınırı dolanılmaz.
+
+Doğrulanmış `.cache/task-164/emre-web-skill.zip` hazır; global yazım otomatik
+onay incelemesinde proje dışı yazım nedeniyle reddedildi. Global kurulum,
+yerel paket ve site yayını ayrı kapılardır. Görev henüz TAMAMLANDI değildir.
+
+# Kabul edilen tasarım temeli: Task164 / v12 Hasadın içinden
+
+Kullanıcının HTCOM/Villadent/MLNEW referansları ve tüm sectionlarda Framer
+Motion scroll isteği uygulanıyor. [Tasarım](DESIGN.md),
+[görev](tasks/164-kesintisiz-sinematik-akis.md) ve
+[referans incelemesi](referans/sinematik-proje-incelemesi-164.md) aktif.
+V11 kullanıcı tarafından beğenilmedi; önceki teknik başarılar görsel kabul değil.
+
+# Tarihçe: Task163 / v11 Kökten sofraya
 
 Kullanıcının bütün site senaryosu ve $10K kalite hedefi uygulanıyor.
 [Task163](tasks/163-10k-sinema-ve-aeo.md), [DESIGN](DESIGN.md),

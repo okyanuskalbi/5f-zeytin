@@ -2,7 +2,7 @@
   "version": 1,
   "project": {
     "name": "afina-zeytin",
-    "productType": "Olive producer v11: true scroll journey from grove to genuine packaging, real facility, six-SKU commerce and manual corporate enquiry",
+    "productType": "Olive producer v12: continuous harvest scene, real facility and packaging, scroll spotlight catalogue, business and table ending",
     "stack": [
       "nextjs",
       "react",
@@ -21,10 +21,9 @@
       "components/landing/HorizontalProductGallery.module.css",
       "components/landing/QuoteComposer.module.css",
       "components/site/Navbar.module.css",
-      "components/landing/ScrollingHero.module.css",
       "components/landing/ScrollingSections.module.css",
-      "components/landing/ProductionStory.module.css",
-      "components/media/CinematicScrub.module.css"
+      "components/media/CinematicScrub.module.css",
+      "components/landing/HarvestJourney.module.css"
     ],
     "components": [
       "components/ui",

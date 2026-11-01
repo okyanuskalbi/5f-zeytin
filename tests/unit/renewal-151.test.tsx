@@ -14,9 +14,10 @@ it("puts the producer story and real production proof before the catalogue while
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(await Home());
   expect(doc.querySelector("h1")?.textContent).toBe("Kökü toprakta. Yeri sofrada.");
-  const sections = [...doc.querySelectorAll("main > section")].map(section => section.id);
+  const sections = [...doc.querySelectorAll("main section[data-sc-scene]")].map(section => section.id);
   expect(sections.indexOf("urunler")).toBeGreaterThan(-1);
-  expect(sections.indexOf("tesisimiz")).toBeGreaterThan(sections.indexOf("uretim-yolculugu"));
+  expect(sections.indexOf("tesisimiz")).toBeGreaterThan(sections.indexOf("baslangic"));
+  expect(sections.indexOf("uretim-yolculugu")).toBeGreaterThan(sections.indexOf("tesisimiz"));
   expect(sections.indexOf("urunler")).toBeGreaterThan(sections.indexOf("tesisimiz"));
   expect(doc.querySelector("#kurumsal")?.closest("section")?.id).toBe("tesisimiz");
   expect(doc.querySelector("#tesisimiz img")?.getAttribute("src")).toMatch(/tesis-musteri/);

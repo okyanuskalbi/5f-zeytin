@@ -1,4 +1,55 @@
-# Aktif devir: Task163 / v11 kod hazır; görsel kabul bekliyor
+# Aktif devir: Task165 / kabul edilen v12 üzerine entegrasyonlar
+
+Kullanıcı Task164 hareketli önizlemesini “güzel beyendim” ile kabul etti ve
+main push + Vercel API yayınına açık yetki verdi. V12 sahne kurgusu korunur.
+[Aktif Task165](tasks/165-etkilesimli-bilesenler.md) ve [DESIGN](DESIGN.md)
+esastır; önceki v9/v11 test ve yayın kayıtları bu sürümün sonucu değildir.
+
+Yerelde Footer/dört kolon/yerel tema/manuel e-posta taslağı, LiquidNavbar,
+gerçek AFİNA logo reveal, altı SKU ürün rayı, üyelik kartı, InteractiveCheckout
+sepet sayfası+drawer ve hesap detayı/takip zaman çizelgesi entegre edildi.
+Sepet mevcut CartProvider, stok ve sunucu fiyat sınırlarını korur. Timeline
+yalnız kayıtlı tarihleri kullanır; teslim/iptal/iade devam ediyor görünmez.
+Gerçek hesap detayının mevcut yetkili client-fetch mimarisi değişmedi.
+Mevcut PayTR iFrame mimarisi korunur; ayrı kart formu yalnız yerel demodur,
+checkout'a yeni gerçek kart alanı eklenmedi.
+
+Son kullanıcı Bazgold örneğini istedi: telefon ülke kodu araması, ulusal
+numara biçimleme/doğrulama ve aranabilir il/ilçe teklif formuna bağlıdır.
+İl değişince ilçe sıfırlanır; il olmadan ilçe kapalıdır. Yerel Türkiye verisi,
+salt okunur seçenek API'leri, klavye/hata/yeniden deneme korunur. Bazgold'a
+yazılmadı; kaynak SHA'ları `referans/bazgold-contact-165.json` içindedir.
+
+Son birleşik yerel kabul: **108 dosya / 1284 unit PASS**, tam lint/typecheck
+ve `ASSET_SKIP_REENCODE=1 npm run build -- --webpack` exit 0. Kanıtlar
+`.cache/task-165/{unit-final2,lint-final2,typecheck-final,build-final2}.log`.
+Önizleme yeniden derlendi; statik tarama 104 yerel varlık, 0 eksik ve 0 dış
+ağ kaynağı buldu. Tarayıcı çalıştırılmadı; bu statik tarama render/etkileşim
+veya erişilebilirlik kabulü değildir. Son tarayıcı/görsel ve uzak yayın
+kabulü açık; Task165 TAMAMLANDI değildir. Yalnız paketli headless
+Chromium≤2, başlatılan browser/sunucular düzgün kapanır. Fiziksel cihaz veya
+gerçek müşteri/ödeme/e-posta işlemi yapılmış gibi bildirilmez.
+
+Yayın yapılmadı: Git DNS çözümlemesi başarısız; GitHub API `create_blob` onay
+gerektiriyor, oturum `approval_policy=never`. Uzak ref mutasyonu ve Vercel
+dağıtımı yok. Kullanıcı yetkisi sürer; engeli aşmak için onay sınırı dolanılmaz.
+
+Emre Web Skill arşivi `.cache/task-164/emre-web-skill.zip` validator PASS;
+manifest `emre-web-skill-package.json` içinde. Global kurulum tamamlanmadı:
+otomatik onay incelemesi global yazımı “writing outside of the project;
+rejected by user approval settings” gerekçesiyle reddetti. Global hedeflerde
+başlatıcı iskeletleri var; bunlar içerik kuruldu kanıtı değildir.
+
+# Önceki tasarım uygulaması: Task164 / v12 sinematik bütün sayfa
+
+V11 görsel reddedildi; kullanıcı üç kendi projesini referans verdi. Salt
+okunur inceleme tamamlandı. [DESIGN](DESIGN.md) ve [Task164](tasks/164-kesintisiz-sinematik-akis.md)
+aktif. HarvestJourney tek600svh içinde zeytinlik→tesis→ambalaj; galeri merkez
+spotlight, B2B packshot, quote/SSS/kapanış ve footer sürekli scroll bağlı.
+Yeni medya/kredi/provider/DB yok. Push/deploy yapılmadı. V9 canlı tarihçesi
+V12 sonucu olarak sunulmaz. Yeni hareketli önizleme .cache/task-164 altında.
+
+# Önceki devir: Task163 / v11 kod hazır; görsel kabul bekliyor
 
 Kanonik repo /Users/emre/PROJELER/5F-ZEYTIN. Kullanıcı tüm senaryoyu devretti,
 $10K kalite ve dörtMD/dörtPDF/10kZIP istedi. Aktif [DESIGN](DESIGN.md),

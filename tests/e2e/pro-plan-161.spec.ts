@@ -1,6 +1,8 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
-const sections = ["baslangic", "uretim-yolculugu", "tesisimiz", "urunler", "toptan-iletisim", "teklif", "iletisim"];
+const sections = ["baslangic", "tesisimiz", "uretim-yolculugu", "urunler", "toptan-iletisim", "teklif", "iletisim"];
+const scene = (page: Page, id: string) => page.locator(`section[data-sc-scene="${id}"]`);
+const openingScene = (page: Page) => scene(page, "baslangic");
 const gallery = (page: Page) => page.locator("#urunler");
 const lastProduct = (page: Page) => gallery(page).locator("[data-product-id]").last();
 const isMovie = (url: string) => /\/videos\/[^?#]+\.mp4(?:\?|$)/.test(url);
@@ -10,11 +12,11 @@ async function painted(page: Page): Promise<void> {
 }
 
 async function expectFullPoster(page: Page): Promise<void> {
-  const hero = await page.locator("#baslangic [data-hero-visual]").boundingBox();
-  const poster = await page.locator("#baslangic [data-cinematic-scrub] picture img").boundingBox();
+  const hero = await openingScene(page).locator("[data-cinematic-scrub]").boundingBox();
+  const poster = await openingScene(page).locator("[data-cinematic-scrub] picture img").boundingBox();
   expect(hero).not.toBeNull(); expect(poster).not.toBeNull();
   for (const axis of ["x", "y", "width", "height"] as const) expect(Math.abs(hero![axis] - poster![axis])).toBeLessThanOrEqual(1);
-  await expect(page.locator("#baslangic [data-cinematic-controls]")).toHaveCount(0);
+  await expect(openingScene(page).locator("[data-cinematic-controls]")).toHaveCount(0);
 }
 
 async function galleryState(page: Page) {
@@ -44,10 +46,20 @@ async function expectNaturalGallery(page: Page): Promise<void> {
   await expect(root).toHaveAttribute("data-gallery-mode", "native");
   await expect(root.locator("[data-product-id]")).toHaveCount(6);
   const geometry = await root.evaluate(element => {
-    const track = element.querySelector<HTMLElement>("[data-gallery-track]")!;
-    return { section: element.getBoundingClientRect().height, content: track.getBoundingClientRect().height, viewport: innerHeight };
+    const viewport = element.querySelector<HTMLElement>("[data-gallery-viewport]")!;
+    const stage = viewport.parentElement!;
+    const style = getComputedStyle(element);
+    return {
+      section: element.getBoundingClientRect().height,
+      content: stage.getBoundingClientRect().height,
+      padding: parseFloat(style.paddingTop) + parseFloat(style.paddingBottom),
+      stagePosition: getComputedStyle(stage).position,
+    };
   });
-  expect(geometry.section).toBeLessThan(Math.max(geometry.content + 400, geometry.viewport * 1.5));
+  // A native section should contain its real heading, rail and foot exactly,
+  // without inheriting the desktop distance added for horizontal scrubbing.
+  expect(geometry.stagePosition).not.toBe("sticky");
+  expect(Math.abs(geometry.section - geometry.content - geometry.padding)).toBeLessThanOrEqual(2);
   const target = lastProduct(page).getByRole("button", { name: /detayını aç$/ });
   await target.focus();
   await expect(target).toBeFocused();
@@ -55,25 +67,46 @@ async function expectNaturalGallery(page: Page): Promise<void> {
   await expectHorizontallyVisible(root.locator("[data-gallery-viewport]"), lastProduct(page));
 }
 
-test("seven sourced sections retain real destinations and a complete compact-phone opening", async ({ page }) => {
+test("seven sourced sections retain real destinations and scroll-reachable compact-phone actions", async ({ page }) => {
   if (page.viewportSize()!.width < 768) await page.setViewportSize({ width: 360, height: 640 });
   await page.goto("/", { waitUntil: "networkidle" });
   await expect(page.locator("h1")).toHaveCount(1);
   await expect(page.locator("main section[data-sc-scene]")).toHaveCount(7);
-  expect(await page.locator("main section[data-sc-scene]").evaluateAll(nodes => nodes.map(node => node.id))).toEqual(sections);
+  expect(await page.locator("main section[data-sc-scene]").evaluateAll(nodes => nodes.map(node => node.getAttribute("data-sc-scene")))).toEqual(sections);
   for (const id of sections) {
-    const section = page.locator(`#${id}`);
+    const section = scene(page, id);
+    await expect(page.locator(`[id="${id}"]`)).toHaveCount(1);
     await expect(section).toHaveAttribute("data-21st-source", /^\d+$/);
     await expect(section).toHaveAttribute("data-sc-device", /\S/);
     await expect(section.getByRole("heading").first()).toBeAttached();
   }
-  const opening = page.locator("#baslangic");
+  const opening = openingScene(page);
   const shop = opening.getByRole("link", { name: "Ürünleri Keşfet", exact: true });
   await expect(shop).toHaveAttribute("href", "#urunler");
   await expect(opening.getByRole("link", { name: "Kurumsal Teklif Al", exact: true })).toHaveAttribute("href", "#teklif");
   if (page.viewportSize()!.width < 768) {
-    await expect(opening.getByRole("heading", { level: 1 })).toBeInViewport({ ratio: 1 });
-    await expect(shop).toBeInViewport({ ratio: 1 });
+    await expect(page.locator("[data-harvest-journey]")).toHaveAttribute("data-mode", "native");
+    await expect(opening).toHaveCSS("position", "relative");
+    const heading = opening.getByRole("heading", { level: 1 });
+    // The phone composition is intentionally taller than a 640px viewport.
+    // Verify reading and both actions through ordinary scroll, not a false
+    // promise that the complete 820px composition fits into the first screen.
+    await heading.scrollIntoViewIfNeeded();
+    await expect(heading).toBeInViewport({ ratio: 1 });
+    const quote = opening.getByRole("link", { name: "Kurumsal Teklif Al", exact: true });
+    for (const action of [shop, quote]) {
+      await action.scrollIntoViewIfNeeded();
+      await expect(action).toBeInViewport({ ratio: 1 });
+      const target = await action.boundingBox();
+      const hero = await opening.boundingBox();
+      expect(target).not.toBeNull(); expect(hero).not.toBeNull();
+      expect(target!.height).toBeGreaterThanOrEqual(44);
+      expect(target!.y).toBeGreaterThanOrEqual(hero!.y);
+      expect(target!.y + target!.height).toBeLessThanOrEqual(hero!.y + hero!.height);
+    }
+    await shop.click();
+    await expect(page).toHaveURL(/#urunler$/);
+    await expect(gallery(page).getByRole("heading", { level: 2 })).toBeInViewport();
   }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   const first = gallery(page).locator("[data-product-id]").first();
@@ -86,7 +119,7 @@ test("seven sourced sections retain real destinations and a complete compact-pho
 });
 
 test("desktop gallery follows linear scroll immediately, exposes the last focused SKU and releases the page", async ({ page }) => {
-  test.skip(page.viewportSize()!.width < 1024, "Linear held gallery is a desktop enhancement.");
+  test.skip(!await page.evaluate(() => matchMedia("(min-width: 1024px) and (min-height: 860px) and (hover: hover) and (pointer: fine)").matches), "Linear held gallery requires a tall fine-pointer desktop.");
   await page.goto("/", { waitUntil: "networkidle" });
   await expect(gallery(page)).toHaveAttribute("data-gallery-mode", "scrub");
   await expect(gallery(page)).toHaveAttribute("data-sc-device", "pan");
@@ -124,15 +157,14 @@ test("phone and tablet retain a native gallery without a desktop scroll-height t
 });
 
 test("a motion preference change releases the gallery and resizing remeasures its real travel", async ({ page }) => {
-  const width = page.viewportSize()!.width;
-  test.skip(width < 1024, "Desktop enhancement transition.");
+  test.skip(!await page.evaluate(() => matchMedia("(min-width: 1024px) and (min-height: 860px) and (hover: hover) and (pointer: fine)").matches), "Desktop enhancement transition.");
   await page.goto("/", { waitUntil: "networkidle" });
   const before = await galleryState(page);
   await page.evaluate(y => scrollTo({ top: y, behavior: "instant" }), before.top + before.range / 2);
   await painted(page);
   await page.emulateMedia({ reducedMotion: "reduce" });
   await expectNaturalGallery(page);
-  await expect(page.locator("#baslangic video")).not.toHaveAttribute("src");
+  await expect(openingScene(page).locator("video")).not.toHaveAttribute("src");
   await page.setViewportSize({ width: 1200, height: 900 });
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await expect(gallery(page)).toHaveAttribute("data-gallery-mode", "scrub");
@@ -171,7 +203,8 @@ test("gallery SKU and business segment reach an actual, unsent email enquiry sum
   await expect(form.getByRole("combobox", { name: "İşletme türü", exact: true })).toHaveValue("retail");
   await form.getByRole("textbox", { name: "Adınız veya firma adı", exact: true }).fill("Yerel QA İşletmesi");
   await form.getByRole("textbox", { name: "Miktar", exact: true }).fill("24 kavanoz");
-  await form.getByRole("textbox", { name: "Şehir", exact: true }).fill("Osmaniye");
+  await form.getByRole("combobox", { name: "Şehir", exact: true }).fill("Osmaniye");
+  await form.getByRole("combobox", { name: "İlçe", exact: true }).fill("Düziçi");
   await form.getByRole("textbox", { name: "Telefon", exact: true }).fill("05320000000");
   await form.getByRole("checkbox", { name: /KVKK aydınlatma metnini/ }).check();
   await form.getByRole("button", { name: "Talep özetini hazırla", exact: true }).click();
@@ -197,9 +230,9 @@ test("reduced motion keeps six products reachable and never fetches a film", asy
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/", { waitUntil: "networkidle" });
   await expectNaturalGallery(page);
-  await expect(page.locator("#baslangic video")).not.toHaveAttribute("src");
+  await expect(openingScene(page).locator("video")).not.toHaveAttribute("src");
   await expectFullPoster(page);
-  await expect(page.locator("#baslangic h1")).toHaveText("Kökü toprakta. Yeri sofrada.");
+  await expect(openingScene(page).locator("h1")).toHaveText("Kökü toprakta. Yeri sofrada.");
   await page.locator("#iletisim").scrollIntoViewIfNeeded();
   await expect(page.locator("#iletisim")).toBeInViewport();
   expect(movies).toEqual([]);
@@ -211,9 +244,9 @@ test("data saver preserves the film poster without requesting a video", async ({
   await page.addInitScript(() => Object.defineProperty(navigator, "connection", { configurable: true,
     value: { saveData: true, addEventListener() {}, removeEventListener() {} } }));
   await page.goto("/", { waitUntil: "networkidle" });
-  await expect(page.locator("#baslangic video")).not.toHaveAttribute("src");
+  await expect(openingScene(page).locator("video")).not.toHaveAttribute("src");
   await expectFullPoster(page);
-  await expect(page.locator("#baslangic picture img").first()).toBeVisible();
+  await expect(openingScene(page).locator("picture img").first()).toBeVisible();
   expect(movies).toEqual([]);
 });
 
@@ -223,12 +256,12 @@ test("JavaScript-off keeps the native catalogue, anchors and safe form available
   try {
     const page = await context.newPage();
     await page.goto("/", { waitUntil: "networkidle" });
-    await expect(page.locator("#baslangic h1")).toBeVisible();
+    await expect(openingScene(page).locator("h1")).toBeVisible();
     await expectFullPoster(page);
     await expect(page.locator("main section[data-sc-scene]")).toHaveCount(7);
     await expect(gallery(page)).toHaveAttribute("data-gallery-mode", "native");
     await expect(gallery(page).locator("[data-product-id]")).toHaveCount(6);
-    const shop = page.locator("#baslangic").getByRole("link", { name: "Ürünleri Keşfet", exact: true });
+    const shop = openingScene(page).getByRole("link", { name: "Ürünleri Keşfet", exact: true });
     await shop.click();
     await expect(page).toHaveURL(/#urunler$/);
     const viewport = gallery(page).locator("[data-gallery-viewport]");

@@ -48,19 +48,16 @@ it.each(["phone", "reduced", "observer-unavailable"])("retains all three readabl
   expect(screen.getAllByRole("heading", { level: 3 })).toHaveLength(3);
 });
 
-it("provides a complete producer story and actual chapter destinations before JavaScript", async () => {
+it("provides the origin, real producer and table story before the catalog without JavaScript", async () => {
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(await Home());
-  const ids = [...doc.querySelectorAll("main > section")].map(section => section.id);
+  const ids = [...doc.querySelectorAll("main section[data-sc-scene]")].map(section => section.id);
   expect(ids.indexOf("uretim-yolculugu")).toBeLessThan(ids.indexOf("urunler"));
   const story = doc.getElementById("uretim-yolculugu")!;
-  const links = [...story.querySelectorAll('nav[aria-label="Üretim hikâyesi"] a')];
-  expect(links).toHaveLength(3);
-  for (const link of links) {
-    const target = doc.querySelector(link.getAttribute("href")!);
-    expect(target?.querySelector("h3")?.textContent).toBeTruthy();
-    expect(target?.querySelector("img")?.getAttribute("alt")).toBeTruthy();
-  }
+  expect(doc.getElementById("tesisimiz")?.querySelector("address")?.textContent).toContain("Osmaniye");
+  expect(story.querySelector("h2")?.textContent).toBe("Yeri sofrada.");
+  expect(story.querySelector("img")?.getAttribute("alt")).toBeTruthy();
+  expect(story.querySelector('a[href="#urunler"]')).not.toBeNull();
   expect(doc.querySelectorAll("[data-product-id]")).toHaveLength(6);
   expect(doc.querySelector("#iletisim h2")?.textContent).toBeTruthy();
   expect(doc.getElementById("iletisim")?.textContent).toContain("Sofrada görüşürüz.");

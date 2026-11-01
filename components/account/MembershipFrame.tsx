@@ -1,11 +1,11 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { BrandLogo } from "@/components/site/BrandLogo";
 import { V3Picture } from "@/components/media/V3Picture";
 import { v3Image } from "@/lib/media/v3-assets";
+import { MembershipCard } from "@/components/ui/membership-card";
 import styles from "./CustomerPanel.module.css";
 
 // 21st Split Sign In Form (39096), composed with the user's Bazgold reference:
@@ -21,8 +21,14 @@ export function MembershipFrame({
   embedded?: boolean;
   onModeChange?: (mode: "login" | "register") => void;
 }) {
+  const [secureFocus, setSecureFocus] = useState(false);
   const content = (
-    <div className={styles.authFrame}>
+    <div className={styles.authFrame}
+      onFocusCapture={(event) => setSecureFocus(event.target instanceof HTMLInputElement && event.target.name === "password")}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setSecureFocus(false);
+      }}
+    >
       <aside className={styles.brandPanel} aria-label="AFİNA ZEYTİN">
         <div className={styles.brandArt} aria-hidden="true">
           <V3Picture
@@ -31,7 +37,7 @@ export function MembershipFrame({
             decorative
           />
         </div>
-        <BrandLogo className={styles.brandLogo} />
+        <MembershipCard secure={secureFocus} />
         <h2>{mode === "login" ? "Hoş geldiniz." : "Soframıza katılın."}</h2>
         <p>
           Siparişlerinizi takip edin,

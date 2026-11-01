@@ -14,6 +14,7 @@ export type QuoteEmailDraft = Readonly<{
   product: string;
   quantity: string;
   city: string;
+  district?: string;
   phone: string;
 }>;
 
@@ -33,6 +34,7 @@ export function buildQuoteMailto(draft: QuoteEmailDraft): string {
     `Ürün: ${cleanQuoteLine(draft.product)}`,
     `Miktar: ${cleanQuoteLine(draft.quantity)}`,
     `Şehir: ${cleanQuoteLine(draft.city)}`,
+    ...(draft.district ? [`İlçe: ${cleanQuoteLine(draft.district)}`] : []),
     `Telefon: ${cleanQuoteLine(draft.phone)}`,
     "",
     "Fiyat, stok ve teslimat koşulları teklif aşamasında teyit edilir.",

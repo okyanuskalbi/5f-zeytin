@@ -1,4 +1,36 @@
-## Aktif kullanıcı işi: Task163 / v11 (1 Kasım 2026)
+## Aktif kullanıcı işi: Task165 / kabul edilen v12 üzerine bileşenler (1 Kasım 2026)
+
+Kullanıcı Task164 hareketli önizlemesini “güzel beyendim” ile kabul etti.
+Bu kurgu korunur. Aktif görev `docs/tasks/165-etkilesimli-bilesenler.md`:
+Footer, LiquidNavbar, gerçek logo reveal, ürün rayı, üyelik kartı, sepet ve
+sipariş zaman çizelgesi yerel entegrasyonları; Bazgold kaynaklı telefon/ülke
+ve aranabilir il/ilçe alanları (il değişince ilçe sıfırlanır). Gerçek altı SKU,
+auth, fiyat/stok otoritesi ve PayTR iFrame sınırı değişmez. Yeni kart formu
+yerel demo bileşenidir; gerçek kart alanı checkout'a açılmaz.
+
+Yerel birleşik kabul: 108 dosya/1284 unit, lint, typecheck ve webpack build
+PASS. Önizleme statik taraması 104 yerel varlık/0 eksik/0 dış ağ kaynağı;
+tarayıcı çalıştırılmadı. Son tarayıcı/görsel ve yayın kabulü bekliyor.
+Önizleme onayı yeni Task165 veya canlı kabulü değildir.
+Main push ve Vercel API yayını açıkça yetkili fakat yapılmadı: Git DNS
+çözümlemesi başarısız; GitHub `create_blob` onay istiyor, `approval_policy=never`
+bu onayı sağlamıyor. Uzak ref mutasyonu/deploy yok; onay sınırını dolanma.
+
+Doğrulanmış global skill paketi `.cache/task-164/emre-web-skill.zip` hazırdır.
+Global yazım otomatik onay incelemesinde “writing outside of the project;
+rejected by user approval settings” gerekçesiyle reddedildi; global kurulum
+tamamlanmış değildir. Ayrıntı/son kanıt aktif Task165 ve devir belgesindedir.
+
+## Kabul edilen tasarım temeli: Task164 / v12 (1 Kasım 2026)
+
+V11 kullanıcı tarafından görsel olarak reddedildi. HTCOM, Villa Lara ve MLNEW
+salt okunur referans alındı. Aktif docs/DESIGN.md ve
+docs/tasks/164-kesintisiz-sinematik-akis.md. İlk üç sahne ortak HarvestJourney,
+sonrasında ürün spotlight, B2B, teklif, SSS/iletişim ve footer scroll akışı.
+Framer Motion, UIPro, React Bits sürer; ticari/medya yetki sınırları korunur.
+V11 test başarısı tasarım kabulü değildir.
+
+## Tarihçe: Task163 / v11 (1 Kasım 2026)
 
 $10K kalite hedefi ve tüm senaryoyu yeniden düşünme yetkisi: docs/DESIGN.md,
 docs/tasks/163-10k-sinema-ve-aeo.md ve docs/scrollcraft/builds/afina-v11 aktif.

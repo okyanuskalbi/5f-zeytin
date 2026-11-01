@@ -8,15 +8,15 @@ import { TrustStrip } from "@/components/landing/TrustStrip";
 
 vi.mock("server-only", () => ({}));
 
-it("renders seven semantic pro sections and three story articles with one footer preview note", async () => {
+it("renders seven semantic scenes and three business chapters with one footer preview note", async () => {
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}<Footer /></>);
-  expect([...doc.querySelectorAll("main > section, main > div > section")].map(section => section.getAttribute("aria-labelledby") ?? section.getAttribute("aria-label"))).toEqual([
-    "renewal-hero-title", "yolculuk-title", "tesisimiz-title", "urunler-title", "toptan-title", "teklif-title", "sss-title",
+  expect([...doc.querySelectorAll("main section[data-sc-scene]")].map(section => section.getAttribute("aria-labelledby") ?? section.getAttribute("aria-label"))).toEqual([
+    "renewal-hero-title", "tesisimiz-title", "yolculuk-title", "urunler-title", "toptan-title", "teklif-title", "sss-title",
   ]);
   expect(doc.querySelectorAll("article[data-product-id]")).toHaveLength(6);
-  expect([...doc.querySelectorAll("#uretim-yolculugu article h3")].map(node => node.textContent))
-    .toEqual(["Her şey toprakta başlar.", "Özen, üretimin her yerinde.", "Yeri, sizin sofranız."]);
+  expect([...doc.querySelectorAll("#toptan-iletisim article h3")].map(node => node.textContent))
+    .toEqual(["Her servis, aynı özen.", "Rafınızda bir yer açın.", "İhtiyacınız kadar planlayın."]);
   expect(doc.querySelectorAll("picture source").length).toBeGreaterThan(5);
   expect(doc.querySelector("#renewal-hero-title")?.textContent).toBe("Kökü toprakta. Yeri sofrada.");
   expect(doc.body.textContent?.match(/Önizleme: fiyatlar ve görseller temsilidir\./g)).toHaveLength(1);

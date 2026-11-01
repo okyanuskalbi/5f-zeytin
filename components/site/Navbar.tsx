@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/cart/CartProvider";
 import { useMembershipDialog } from "@/components/account/MembershipDialogProvider";
 import { BrandLogo } from "./BrandLogo";
+import { LiquidNavbar, NimbusIcons } from "@/components/ui/liquid-glass-navbar";
 import styles from "./Navbar.module.css";
 
 let navbarMenuPromise: Promise<typeof import("./NavbarMenu")["NavbarMenu"]> | undefined;
@@ -43,6 +44,17 @@ export function Navbar(): JSX.Element {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const homeRef = useRef<HTMLAnchorElement>(null);
   const reduced = usePrefersReducedMotion();
+  const [activeSection, setActiveSection] = useState(0);
+
+  useEffect(() => {
+    const update = () => {
+      const href = window.location.hash ? `/${window.location.hash}` : "/";
+      const index = links.findIndex(link => link.href === href);
+      setActiveSection(index >= 0 ? index : 0);
+    };
+    update(); window.addEventListener("hashchange", update); window.addEventListener("popstate", update);
+    return () => { window.removeEventListener("hashchange", update); window.removeEventListener("popstate", update); };
+  }, [pathname]);
 
   useEffect(() => {
     let idle: number | undefined;
@@ -80,15 +92,17 @@ export function Navbar(): JSX.Element {
   }, [isOpen]);
 
   return (
-    <header data-site-navbar="" data-21st-source="26786" data-tone={landing ? "paper" : "solid"}
+    <header data-site-navbar="" data-21st-source="26786" data-tone={landing ? "glass" : "solid"}
       data-over-hero={landing} className={`site-bar ${styles.bar}`}>
       <div className={styles.row}>
-        <Link ref={homeRef} href="/" onClick={() => { if (landing) window.scrollTo({ top: 0, behavior: "instant" }); }} aria-label="Afina Zeytin ana sayfa" className={styles.home}>
-          <BrandLogo tone={landing ? "light" : "dark"} className={styles.logo} />
+        <Link ref={homeRef} href="/" onClick={event => { if (landing && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && event.button === 0) window.scrollTo({ top: 0, behavior: "instant" }); }} aria-label="Afina Zeytin ana sayfa" className={styles.home}>
+          <BrandLogo tone="dark" className={styles.logo} />
         </Link>
-        <nav aria-label="Ana navigasyon" className={styles.desktop}>
-          {links.map(link => <Link key={link.href} href={link.href} className={styles.link}>{link.label}</Link>)}
-        </nav>
+        <LiquidNavbar ariaLabel="Ana navigasyon" className={styles.desktop} tone="dark" sound={false}
+          active={landing ? activeSection : -1} onChange={index => setActiveSection(index)} items={links.map((link, index) => ({
+            ...link, icon: index === 0 ? NimbusIcons.home : index === 2 ? NimbusIcons.globe : index === 3 ? NimbusIcons.drop : undefined,
+            fx: index === 3 ? "drop" : index === 0 ? "glow" : "pop",
+          }))} />
         <div className={styles.actions}>
           <Link href="/#urunler" className={styles.shop}>Online Mağaza</Link>
           <Button variant="ghost" className={`${styles.control} ${styles.cart}`}

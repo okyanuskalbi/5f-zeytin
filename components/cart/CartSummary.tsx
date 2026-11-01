@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, RefreshCw } from "lucide-react";
 import { AnimatePresence } from "motion/react";
 import { Button } from "@/components/ui/button";
+import { InteractiveCheckout } from "@/components/ui/interactive-checkout";
 import { CartAmount, CartEmpty, CartLineItem, CartTotals, CartTrust } from "./CartPresentation";
 import { useCart } from "@/components/cart/CartProvider";
 import { Upsell, QuantityDiscount, type UpsellConfiguration, type QuantityDiscountConfiguration } from "@/components/cart/Upsell";
@@ -106,7 +107,7 @@ export function CartSummary({ store, products, onRefresh, refreshing = false, up
         <Button asChild variant="link" className="px-0"><Link href="/#urunler" prefetch={false}><ArrowLeft aria-hidden="true" />Alışverişe devam et</Link></Button>
       </header>
 
-      <div className={styles.layout}>
+      <InteractiveCheckout className={styles.layout}>
         <section aria-label="Sepet içeriği" className={styles.contents}>
           {products === null ? <p role="alert" className="rounded-none p-5 text-destructive">Katalog yüklenemedi. Sepetiniz korunuyor. Fiyat ve stokları yenileyip tekrar deneyin.</p>
             : !state.hydrated ? <p role="status">Sepet yükleniyor…</p>
@@ -154,7 +155,7 @@ export function CartSummary({ store, products, onRefresh, refreshing = false, up
           </div>
           <CartTrust />
         </aside>
-      </div>
+      </InteractiveCheckout>
       {products !== null && state.hydrated && lines.length > 0 && <section aria-label="Mobil ödeme" className={styles.mobileCheckout}>
         <p>Toplam (tahmini)<strong><CartAmount amount={knownSubtotal ? subtotal : null} label="Mobil toplam (tahmini)" /></strong></p>
         {checkout()}

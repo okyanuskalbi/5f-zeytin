@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import type { JSX } from "react";
 import styles from "@/components/landing/ScrollingSections.module.css";
-import { OliveScrollHero } from "@/components/landing/OliveScrollHero";
-import { ProductionFacility, RenewalProducts, ProductionJourney, BusinessSection, QuoteSection, TrustAndContact } from "@/components/landing/RenewalLanding";
+import { HarvestJourney } from "@/components/landing/HarvestJourney";
+import { RenewalProducts, BusinessSection, QuoteSection, TrustAndContact } from "@/components/landing/RenewalLanding";
 import { QuoteJourneyProvider } from "@/components/landing/QuoteJourneyProvider";
 import { BusinessJsonLd } from "@/components/site/BusinessJsonLd";
 import { ProductDetailProvider } from "@/components/catalog/ProductDetailProvider";
@@ -28,9 +28,7 @@ export default async function Home(): Promise<JSX.Element> {
   const products = families.flatMap(family => family.variants);
   return <ProductDetailProvider products={products}><QuoteJourneyProvider><main className={styles.root}>
     <BusinessJsonLd />
-    <OliveScrollHero />
-    <ProductionJourney />
-    <ProductionFacility />
+    <HarvestJourney />
     <RenewalProducts products={products} />
     <BusinessSection />
     <QuoteSection products={products} />

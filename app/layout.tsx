@@ -15,9 +15,10 @@ import "./globals.css";
 const Fraunces = localFont({
   src: [
     { path: "./fonts/Fraunces-tr.woff2", weight: "500 700", style: "normal" },
+    { path: "./fonts/Fraunces-italic.woff2", weight: "100 900", style: "italic" },
   ],
   display: "swap",
-  // The current design uses upright headings; do not preload the retired italic.
+  // The harvest journey uses the original italic for its editorial emphasis.
   preload: true,
   adjustFontFallback: "Times New Roman",
   variable: "--font-display",

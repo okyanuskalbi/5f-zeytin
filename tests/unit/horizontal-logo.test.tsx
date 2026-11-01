@@ -15,14 +15,14 @@ vi.mock("motion/react", async importOriginal => ({
 
 afterEach(cleanup);
 
-it("identifies the paper landing header with the original horizontal logo and an accessible home link", () => {
+it("identifies the dark glass landing header with the original light-lettered logo and an accessible home link", () => {
   render(<Navbar />);
   const header = screen.getByRole("banner");
   const home = within(header).getByRole("link", { name: "Afina Zeytin ana sayfa" });
   const logo = within(home).getByRole("img", { name: "AFİNA ZEYTİN" });
   expect(home.getAttribute("href")).toBe("/");
   expect(home.textContent).toBe("");
-  expect(logo.getAttribute("src")).toBe("/brand/afina-zeytin-yatay@2x.webp");
+  expect(logo.getAttribute("src")).toBe("/brand/afina-zeytin-yatay-dark@2x.webp");
   expect(logo.getAttribute("width")).toBe("180");
   expect(logo.getAttribute("height")).toBe("48");
   expect(logo.hasAttribute("fetchpriority")).toBe(false);
@@ -46,15 +46,15 @@ it("uses the original horizontal footer artwork and retains the light-surface co
   expect(community.querySelector("img")?.getAttribute("src")).toBe("/brand/afina-topluluk.svg");
 });
 
-it("offers original 2x/3x WebP candidates through picture in both light-surface brand placements", () => {
+it("offers original 2x/3x WebP candidates matched to the dark header and light footer", () => {
   render(<Navbar />);
   const footer = new DOMParser().parseFromString(renderToStaticMarkup(<Footer />), "text/html");
-  for (const root of [screen.getByRole("banner"), footer.querySelector("footer")!]) {
+  for (const [root, tone] of [[screen.getByRole("banner"), "-dark"], [footer.querySelector("footer")!, ""]] as const) {
     const picture = root.querySelector("picture")!;
     expect(picture).not.toBeNull();
     expect(picture.querySelector("source")?.getAttribute("type")).toBe("image/webp");
     expect(picture.querySelector("source")?.getAttribute("srcset")).toBe(
-      "/brand/afina-zeytin-yatay@2x.webp 2x, /brand/afina-zeytin-yatay@3x.webp 3x",
+      `/brand/afina-zeytin-yatay${tone}@2x.webp 2x, /brand/afina-zeytin-yatay${tone}@3x.webp 3x`,
     );
   }
 });

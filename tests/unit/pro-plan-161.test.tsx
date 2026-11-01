@@ -35,7 +35,7 @@ async function serverDocument(): Promise<Document> {
 it("serves seven ordered, named sections with their actual 21st sources before JavaScript", async () => {
   const doc = await serverDocument();
   const contract = [
-    ["baslangic", "32829"], ["uretim-yolculugu", "18041"], ["tesisimiz", "20023"],
+    ["baslangic", "32829"], ["tesisimiz", "20023"], ["uretim-yolculugu", "18041"],
     ["urunler", "24623"], ["toptan-iletisim", "7262"], ["teklif", "35258"], ["iletisim", "31986"],
   ];
   const sections = [...doc.querySelectorAll("main section[data-sc-scene]")];

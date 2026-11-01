@@ -12,5 +12,6 @@ it.each(["cancelled", "refunded"] as const)("stops shipment progress for %s and 
   expect(doc.querySelectorAll("ol > li")).toHaveLength(7);
   expect(doc.querySelector('[aria-current="step"]')?.textContent).toContain(status === "cancelled" ? "İptal edildi" : "İade edildi");
   expect(doc.querySelector('[aria-current="step"] time')?.getAttribute("datetime")).toBe("2026-10-21T10:00:00+03:00");
-  expect(doc.body.textContent).toContain("Gerçekleşmedi");
+  expect(doc.body.textContent).toContain("Kayıt bulunmuyor.");
+  expect(doc.querySelector('[data-status="in-progress"]')).toBeNull();
 });

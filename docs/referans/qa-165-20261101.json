@@ -1,0 +1,16 @@
+{
+  "date": "2026-11-01",
+  "tasks": [164, 165],
+  "accepted_design": "V12 hareketli yerel önizleme kullanıcı tarafından kabul edildi; Task165 eklerinin yeni görsel kabulü ayrı",
+  "unit": { "status": "PASS", "files": 108, "tests": 1284, "workers": 2, "evidence": ".cache/task-165/unit-final2.log" },
+  "lint": { "status": "PASS", "evidence": ".cache/task-165/lint-final2.log" },
+  "typecheck": { "status": "PASS", "evidence": ".cache/task-165/typecheck-final.log" },
+  "build": { "status": "PASS", "command": "ASSET_SKIP_REENCODE=1 npm run build -- --webpack", "asset_gate": "PASS", "evidence": ".cache/task-165/build-final2.log" },
+  "preview": { "file": ".cache/task-164/AFINA-v12-hareketli-onizleme.html", "actual_react_components": true, "local_assets": 104, "missing_assets": 0, "syntax_check": "PASS", "network_enabled": false, "public_contact_lookups": "Bundled read-only preview adapter", "checkout_and_sending_enabled": false },
+  "browser_e2e": { "status": "NOT_RUN", "physical_device": false, "live_acceptance": false },
+  "payment": { "live_flow": "Existing PayTR iframe unchanged", "custom_card_form": "Reusable UI and local demo; live custom card collection not enabled", "direct_api_permission_verified": false },
+  "global_skill": { "package_valid": true, "archive": ".cache/task-164/emre-web-skill.zip", "archive_sha256": "4deef2f55de5338a7b20bf7f6257f7c53bc669055241cd310e290dc50710f46c", "installed": false, "reason": "Automatic approval rejected global file write outside project" },
+  "publication": { "authorized": true, "main_pushed": false, "api_deployment_started": false, "reason": "Terminal DNS unavailable; GitHub API write requires approval while policy is never", "remote_ref_changed": false },
+  "new_paid_media": 0,
+  "new_database_migrations": 0
+}

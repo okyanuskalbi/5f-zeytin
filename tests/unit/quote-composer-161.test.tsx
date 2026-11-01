@@ -25,7 +25,7 @@ function Page({ products }: { products: readonly ProductVariant[] }) {
 function fillDetails() {
   for (const [label, value] of [
     ["Adınız veya firma adı", "Ellek & Ortakları"], ["Miktar", "100 kg / ay"],
-    ["Şehir", "Düziçi / Osmaniye"], ["Telefon", "+90 555 123 45 67"],
+    ["Şehir", "Osmaniye"], ["İlçe", "Düziçi"], ["Telefon", "+90 555 123 45 67"],
   ]) fireEvent.change(screen.getByLabelText(label), { target: { value } });
 }
 
@@ -70,12 +70,25 @@ it("carries the actual gallery SKU and segment into a truthful encoded corporate
   expect(uri.searchParams.get("body")).toContain("Doğal Kırma Yeşil Zeytin · 1 kg");
   expect(uri.searchParams.get("body")).toContain("Otel & restoran");
   expect(uri.searchParams.get("body")).toContain("Ellek & Ortakları");
-  expect(uri.searchParams.get("body")).toContain("Düziçi / Osmaniye");
+  expect(uri.searchParams.get("body")).toContain("Şehir: Osmaniye");
+  expect(uri.searchParams.get("body")).toContain("İlçe: Düziçi");
   expect(screen.getByRole("region", { name: "Talep özeti" }).textContent).toContain("e-posta uygulamanızda");
   expect(screen.getByRole("link", { name: /Şirketler Topluluğu.*arayın/ }).getAttribute("href")).toBe("tel:+903288827708");
   expect(screen.queryByRole("link", { name: /WhatsApp/i })).toBeNull();
   expect(screen.queryByText("Talebiniz gönderildi.")).toBeNull();
   expect(fetch).not.toHaveBeenCalled();
+});
+
+it("uses the Bazgold country control and clears the district after a city edit", async () => {
+  render(<Page products={await getProducts()} />);
+  expect((screen.getByRole("combobox", { name: "İlçe" }) as HTMLInputElement).disabled).toBe(true);
+  expect(screen.getByRole("button", { name: "Telefon ülke kodu: +90 · Türkiye" })).toBeTruthy();
+  fireEvent.change(screen.getByRole("combobox", { name: "Şehir" }), { target: { value: "Osmaniye" } });
+  fireEvent.change(screen.getByRole("combobox", { name: "İlçe" }), { target: { value: "Düziçi" } });
+  fireEvent.change(screen.getByRole("combobox", { name: "Şehir" }), { target: { value: "İstanbul" } });
+  expect((screen.getByRole("combobox", { name: "İlçe" }) as HTMLInputElement).value).toBe("");
+  fireEvent.change(screen.getByLabelText("Telefon"), { target: { value: "+44 7400 123456" } });
+  expect(screen.getByRole("button", { name: /Telefon ülke kodu: \+44/ })).toBeTruthy();
 });
 
 it("keeps header metadata fixed and encodes raw delimiters/control characters inside the email body", () => {

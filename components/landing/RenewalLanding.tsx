@@ -8,9 +8,10 @@ import { quoteDeliveryExplanation } from "@/lib/site/public-content";
 import type { ProductVariant } from "@/types/catalog";
 import { Faq } from "./Faq";
 import { SectionReveal } from "./SectionReveal";
-import { ScrollStage, ParallaxPhoto } from "./ScrollStage";
+import { ScrollStage, ParallaxPhoto, ScrollArtwork } from "./ScrollStage";
 import { HorizontalProductGallery } from "./HorizontalProductGallery";
-import { BusinessSegmentChoice } from "./QuoteJourneyProvider";
+import { BusinessJourney } from "./BusinessJourney";
+import { v3Image } from "@/lib/media/v3-assets";
 import { QuoteComposer } from "./QuoteComposer";
 import { ProductionStory } from "./ProductionStory";
 import { BlurText } from "@/components/animation/react-bits/BlurText";
@@ -62,32 +63,10 @@ export function ProductionJourney(): JSX.Element {
   return <ProductionStory />;
 }
 
-/** 21st 7262 three peer cards. These are real customer segments, not pricing
- * tiers; the existing quote journey carries a chosen segment to the form. */
+/** The real customer segments retain their quote handoff inside a held product
+ * composition, instead of three unrelated cards. */
 export function BusinessSection(): JSX.Element {
-  return <ScrollStage id="toptan-iletisim" device="flow" sourceId={7262} labelledBy="toptan-title" className={styles.business}>
-    <div className={styles.container}>
-      <div className={styles.sectionHeading}>
-        <h2 id="toptan-title"><BlurText text="İşletmeniz için AFİNA." /></h2>
-        <p>Menünüz, rafınız ve müşterileriniz için ürün, ambalaj ve tüketim ihtiyacınızı paylaşın.</p>
-      </div>
-      <div className={styles.segmentGrid}>
-        <article className={styles.segmentCard}>
-          <h3>Otel &amp; restoran</h3><p>Kahvaltıdan profesyonel mutfağa.</p>
-          <BusinessSegmentChoice segment="hospitality" className={styles.segmentAction}>Teklif hazırlayın<span className="sr-only">: Otel ve restoran</span><ArrowUpRightIcon aria-hidden="true" size={24} /></BusinessSegmentChoice>
-        </article>
-        <article className={styles.segmentCard}>
-          <h3>Market &amp; bayi</h3><p>Rafınıza ve bölgenize uygun ürün talebi.</p>
-          <BusinessSegmentChoice segment="retail" className={styles.segmentAction}>Teklif hazırlayın<span className="sr-only">: Market ve bayi</span><ArrowUpRightIcon aria-hidden="true" size={24} /></BusinessSegmentChoice>
-        </article>
-        <article className={styles.segmentCard}>
-          <h3>Toplu tüketim</h3><p>İşletmenize uygun miktar planlaması.</p>
-          <BusinessSegmentChoice segment="bulk" className={styles.segmentAction}>Teklif hazırlayın<span className="sr-only">: Toplu tüketim</span><ArrowUpRightIcon aria-hidden="true" size={24} /></BusinessSegmentChoice>
-        </article>
-      </div>
-      <p className={styles.businessNote}>Ambalaj, minimum sipariş ve teslimat koşulları teklif aşamasında netleştirilir.</p>
-    </div>
-  </ScrollStage>;
+  return <BusinessJourney />;
 }
 
 /** 21st 35258: the actual form/validation and email-draft response are owned by
@@ -96,8 +75,12 @@ export function QuoteSection({ products }: { products: readonly ProductVariant[]
   return <ScrollStage id="teklif" device="flow" sourceId={35258} labelledBy="teklif-title" className={styles.quote}>
     <div className={styles.container}>
       <div className={styles.quoteHeading}>
-        <h2 id="teklif-title">İhtiyacınızı<br />birlikte planlayalım.</h2>
+        <p className={styles.sceneLabel}>Bir sonraki adım</p>
+        <h2 id="teklif-title">İhtiyacınızı<br /><em>birlikte</em><br />planlayalım.</h2>
         <p>{quoteDeliveryExplanation}</p>
+        <ScrollArtwork className={styles.quoteStillLife} distance={24} grow={.04}>
+          <V3Picture image={v3Image("urun-06-salamura-yesil-5kg")} sizes="(max-width: 900px) 160px, 260px" decorative />
+        </ScrollArtwork>
       </div>
       <QuoteComposer products={products} />
     </div>
@@ -111,7 +94,10 @@ export function TrustAndContact(): JSX.Element {
   const email = siteContact.email.trim();
   return <ScrollStage id="iletisim" device="reveal" sourceId={31986} labelledBy="sss-title" className={styles.support}>
     <div className={styles.container}>
-      <Faq embedded />
+      <div className={styles.faqStage}>
+        <div className={styles.faqIntroduction}><p className={styles.sceneLabel}>Aklınızdakiler</p><p>İyi bir seçim,<br /><em>açık bilgiyle</em><br />başlar.</p></div>
+        <Faq embedded />
+      </div>
       <div role="region" aria-labelledby="iletisim-title" className={styles.contactGrid}>
         <div><h2 id="iletisim-title"><BlurText text="Sofrada görüşürüz." /></h2><p className={styles.closingCopy}>Kökü toprakta. Yeri sofrada.</p><a href="#urunler" className={styles.textLink}>Ürünlere dön <ArrowUpRightIcon size={20} aria-hidden="true" /></a></div>
         <div><h3>AFİNA ZEYTİN</h3><address>{seller.address}</address>
@@ -121,6 +107,12 @@ export function TrustAndContact(): JSX.Element {
           <a href="https://afina.com.tr/#iletisim" target="_blank" rel="noopener noreferrer" className={styles.textLink}>AFİNA Şirketler Topluluğu iletişim bilgileri</a>
           <nav aria-label="Alışveriş ve destek bilgileri" className={styles.supportLinks}><a href="/siparis-takip">Sipariş takibi</a><a href="/iade">Teslimat ve iade bilgileri</a><a href="/mesafeli-satis">Satış koşulları</a></nav>
         </div>
+      </div>
+      <div className={styles.closingLandscape}>
+        <ScrollArtwork className={styles.closingImage} distance={56} grow={.03}>
+          <V3Picture image={v3Image("hero-masaustu")} mobile={v3Image("hero-mobil")} sizes="100vw" />
+        </ScrollArtwork>
+        <span className={styles.closingLocation}>AFİNA ZEYTİN · Ellek / Osmaniye</span>
       </div>
     </div>
   </ScrollStage>;

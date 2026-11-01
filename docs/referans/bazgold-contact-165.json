@@ -1,0 +1,51 @@
+{
+  "reference": "/Users/emre/Documents/PROJELER/Bazgold-Proje/yenileme-2026-10-24/next-store",
+  "scope": "Read-only source reference; no Bazgold mutations",
+  "files": [
+    {
+      "source": "lib/customer-phone.ts",
+      "target": "lib/contact/customer-phone.ts",
+      "sourceSHA256": "e6e01d9aca7315ea44a2b08162b2293c3f0e33cef646f5808a7a52ae551f8311"
+    },
+    {
+      "source": "components/customer-phone-field.tsx",
+      "target": "components/ui/customer-phone-field.tsx",
+      "sourceSHA256": "dbdc064fd334ea2e85d8cea4aa8404feb4fff641eb03bcae7c3f579e3a1714e2"
+    },
+    {
+      "source": "components/phone-country-search.tsx",
+      "target": "components/ui/phone-country-search.tsx",
+      "sourceSHA256": "71f8d243eae9fbb19b4ca214ab6f00ea089ec8676b810c72703c4dd3361bf3eb"
+    },
+    {
+      "source": "components/address-search-field.tsx",
+      "target": "components/ui/address-search-field.tsx",
+      "sourceSHA256": "5b6d794deafc39c537c22d8d68d88367dc335362b6bf29c5b68c3ef17fe801d5"
+    },
+    {
+      "source": "components/phone-country-search.css",
+      "target": "components/ui/phone-country-search.css",
+      "sourceSHA256": "f6e7e881565b9a4a427ff4db9398f4993e24abf80512321b7d660d0fc2eaf3ab"
+    },
+    {
+      "source": "lib/address-locations.ts",
+      "target": "lib/contact/address-locations.ts",
+      "sourceSHA256": "3860f5ec9409e61cacbaca0a0e6da967e6b52c518dbef321d9198eebf61e6bea"
+    },
+    {
+      "source": "data/turkey-address-locations.json",
+      "target": "lib/contact/turkey-address-locations.json",
+      "sourceSHA256": "37b3e261b26f1b0a721374dbc8b2e77658a9ff7543aaf5beec14dd5b262a9197"
+    },
+    {
+      "source": "app/api/address-options/route.ts",
+      "target": "app/api/address-options/route.ts",
+      "sourceSHA256": "119c4cb4bab365a2122dc743062dd70d64dd792f9665a53b496f7f74ee3617bf"
+    },
+    {
+      "source": "app/api/phone-countries/route.ts",
+      "target": "app/api/phone-countries/route.ts",
+      "sourceSHA256": "84f879f8ec86cc2550d0d5dacd3361211d12eb6d999a26b174784f1ec9ddf3fe"
+    }
+  ]
+}

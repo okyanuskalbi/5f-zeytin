@@ -33,25 +33,25 @@ it("keeps corporate section destinations and the cart control", () => {
   expect(screen.getByRole("button", { name: "Sepetim, 0 adet" }).textContent).toBe("Sepet (0)");
 });
 
-it("keeps the landing navigation opaque paper before and after every scroll threshold", () => {
+it("keeps the landing navigation on dark glass before and after every scroll threshold", () => {
   render(<Navbar />);
   const header = screen.getByRole("banner");
-  expect(header.getAttribute("data-tone")).toBe("paper");
+  expect(header.getAttribute("data-tone")).toBe("glass");
   for (const scrollY of [40, 41, 450, 0]) {
     window.scrollY = scrollY;
     fireEvent.scroll(window);
-    expect(header.getAttribute("data-tone")).toBe("paper");
+    expect(header.getAttribute("data-tone")).toBe("glass");
   }
 });
 
-it("retains the paper surface on a restored landing load and pageshow", () => {
+it("retains the dark glass surface on a restored landing load and pageshow", () => {
   window.scrollY = 240;
   render(<Navbar />);
   const header = screen.getByRole("banner");
-  expect(header.getAttribute("data-tone")).toBe("paper");
+  expect(header.getAttribute("data-tone")).toBe("glass");
   window.scrollY = 0;
   fireEvent(window, new Event("pageshow"));
-  expect(header.getAttribute("data-tone")).toBe("paper");
+  expect(header.getAttribute("data-tone")).toBe("glass");
 });
 
 it("keeps interior routes on the solid dark surface while scrolling", () => {

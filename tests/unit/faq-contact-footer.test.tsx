@@ -129,10 +129,10 @@ it("names only the supported payment brands and serves safe local vector logos",
   expect(doc.querySelector('img[alt*="American Express"], img[alt*="Apple Pay"]')).toBeNull();
 });
 
-it("keeps the community identity with the brand and opens its destination safely", () => {
+it("keeps the community identity in the contact column and opens its destination safely", () => {
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(<Footer />);
-  const brand = doc.querySelector('[aria-labelledby="footer-brand-title"]')!;
+  const brand = doc.querySelector('[aria-labelledby="footer-contact-title"]')!;
   expect(brand).not.toBeNull();
   expect(brand.textContent).toContain("Bir AFİNA Şirketler Topluluğu markası");
   const community = brand.querySelector('a[href="https://afina.com.tr"]')!;

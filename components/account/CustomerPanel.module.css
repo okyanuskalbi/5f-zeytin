@@ -27,30 +27,30 @@
 }
 .authFrame {
   display: grid;
-  grid-template-columns: 0.82fr 1.18fr;
-  max-width: 940px;
+  grid-template-columns: 1fr 1.1fr;
+  max-width: 1080px;
   margin-inline: auto;
   overflow: hidden;
   border: 1px solid var(--customer-rule);
-  border-radius: 8px;
+  border-radius: 24px;
   background: var(--customer-paper);
   color: var(--customer-olive);
 }
 .brandPanel {
+  position: relative;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
-  padding: 40px 32px;
+  padding: 48px 32px;
   background: var(--customer-olive);
   color: var(--customer-paper);
 }
 .brandArt {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  max-height: 270px;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   overflow: hidden;
-  margin-bottom: 36px;
-  border-radius: 50%;
-  border: 1px solid rgb(182 160 120 / 0.45);
+  opacity: .14;
 }
 .brandArt picture,
 .brandArt img {
@@ -89,7 +89,7 @@
 }
 .authFormPanel {
   min-width: 0;
-  padding: 32px;
+  padding: 40px;
 }
 .authTabs {
   display: grid;
@@ -97,7 +97,7 @@
   padding: 3px;
   margin-bottom: 18px;
   border: 1px solid var(--customer-rule);
-  border-radius: 5px;
+  border-radius: 999px;
   background: #f7f8f4;
 }
 .authTabs > * {
@@ -106,7 +106,7 @@
   justify-content: center;
   min-height: 44px;
   padding: 10px;
-  border-radius: 3px;
+  border-radius: 999px;
   background: transparent;
   color: var(--customer-copy);
   font-size: 13px;
@@ -178,9 +178,9 @@
   font-weight: 500;
 }
 .authFormPanel input:not([type="checkbox"]) {
-  min-height: 46px;
+  min-height: 50px;
   border: 1px solid var(--customer-rule);
-  border-radius: 4px;
+  border-radius: 12px;
   background: #fff;
   color: var(--customer-olive);
   font-size: 15px;
@@ -189,7 +189,7 @@
   min-height: 50px;
   background: var(--customer-olive);
   color: #fff;
-  border-radius: 4px;
+  border-radius: 999px;
   font-size: 13px;
 }
 .authFormPanel button[type="submit"]:hover {
@@ -219,8 +219,8 @@
   --primary: var(--customer-olive);
   --primary-foreground: #fff;
   padding: 0;
-  max-width: 940px;
-  border-radius: 8px;
+  max-width: 1080px;
+  border-radius: 24px;
   color-scheme: light;
 }
 .dialog .authFrame {

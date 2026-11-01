@@ -6,6 +6,7 @@ import Image from "next/image";
 import { LockKeyhole, Minus, Plus, Trash2, Truck } from "lucide-react";
 import { motion, useIsPresent, useReducedMotion } from "motion/react";
 import { Button } from "@/components/ui/button";
+import { CheckoutValue } from "@/components/ui/interactive-checkout";
 import { PaymentLogos } from "@/components/site/PaymentLogos";
 import { ProductThumbnail } from "./ProductThumbnail";
 import { motionTokens, springs } from "@/lib/ui-motion";
@@ -17,11 +18,9 @@ export function formatCartPrice(kurus: number): string { return `${money.format(
 
 /** A single current value keeps live regions and screen readers free of outgoing digits. */
 export function CartAmount({ amount, label }: { amount: number | null; label: string }): JSX.Element {
-  const reduced = useReducedMotion();
   const value = amount === null ? "Fiyat yakında" : formatCartPrice(amount);
   return <output aria-label={label} aria-live="off" data-pending={amount === null} className={styles.amount}>
-    <motion.span key={value} initial={reduced ? false : { opacity: 0.6 }} animate={{ opacity: 1 }}
-      transition={{ duration: reduced ? 0 : motionTokens.duration.fast }}>{value}</motion.span>
+    <CheckoutValue value={value} />
   </output>;
 }
 
@@ -58,7 +57,7 @@ export const CartLineItem = forwardRef<HTMLLIElement, CartLineItemProps>(functio
         <div className={styles.lineActions}>
           <div className={styles.quantity}>
             <Button variant="ghost" size="icon" aria-label="Adedi azalt" disabled={disabled || quantity <= 1} onClick={() => onQuantity(quantity - 1)}><Minus aria-hidden="true" /></Button>
-            <output aria-label="Adet">{quantity}</output>
+            <output aria-label="Adet"><CheckoutValue value={quantity} /></output>
             <Button variant="ghost" size="icon" aria-label="Adedi artır" disabled={disabled || quantity >= (product?.stock ?? 0)} onClick={() => onQuantity(quantity + 1)}><Plus aria-hidden="true" /></Button>
           </div>
           <Button variant="ghost" size="icon" className={styles.remove} aria-label="Sepetten sil" title="Kaldır" onClick={onRemove}><Trash2 aria-hidden="true" /></Button>

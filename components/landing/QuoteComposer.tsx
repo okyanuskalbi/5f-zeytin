@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, useSyncExternalStore, type JSX, type SubmitEvent } from "react";
+import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore, type JSX, type SubmitEvent } from "react";
 import { AnimatePresence, m as motion, useIsPresent } from "motion/react";
 import { buildQuoteMailto, cleanQuoteLine, corporateContact, type QuoteEmailDraft } from "@/lib/site/corporate-contact";
 import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
@@ -8,14 +8,17 @@ import { motionTokens, springs } from "@/lib/ui-motion";
 import type { ProductVariant } from "@/types/catalog";
 import { useQuoteJourney, type BusinessSegment } from "./QuoteJourneyProvider";
 import styles from "./QuoteComposer.module.css";
+import { AddressSearchField } from "@/components/ui/address-search-field";
+import { CustomerPhoneField } from "@/components/ui/customer-phone-field";
+import { phoneForm } from "@/lib/contact/customer-phone";
 
 const businessLabels: Record<Exclude<BusinessSegment, "">, string> = {
   hospitality: "Otel & restoran", retail: "Market & bayi", bulk: "Toplu tüketim",
 };
-type Field = "name" | "quantity" | "city" | "phone";
+type Field = "name" | "quantity" | "city" | "district" | "phone";
 type Errors = Partial<Record<Field | "segment" | "productId" | "consent", string>>;
 type PreparedQuote = { fingerprint: string; draft: QuoteEmailDraft; stock: number };
-const limits: Record<Field, number> = { name: 120, quantity: 100, city: 80, phone: 30 };
+const limits: Record<Field, number> = { name: 120, quantity: 100, city: 80, district: 80, phone: 30 };
 const subscribe = () => () => {};
 const clientSnapshot = () => true;
 const serverSnapshot = () => false;
@@ -30,7 +33,7 @@ function QuoteSummary({ quote, reduced }: { quote: PreparedQuote; reduced: boole
     <h3 ref={heading} tabIndex={-1}>Talep özeti</h3>
     <dl>
       {[["Ad / firma", quote.draft.name], ["İşletme türü", quote.draft.business], ["Ürün", quote.draft.product],
-        ["Miktar", quote.draft.quantity], ["Şehir", quote.draft.city], ["Telefon", quote.draft.phone],
+        ["Miktar", quote.draft.quantity], ["Şehir", quote.draft.city], ["İlçe", quote.draft.district], ["Telefon", quote.draft.phone],
         ["Katalog stok durumu", quote.stock > 0 ? "Mevcut" : "Mevcut değil"]].map(([name, value]) => <div key={name}><dt>{name}</dt><dd>{value}</dd></div>)}
     </dl>
     <p>Bu sayfa e-posta göndermedi. Gönderimi e-posta uygulamanızda tamamlayın. Alıcı {corporateContact.name}: {corporateContact.email}.</p>
@@ -46,10 +49,14 @@ export function QuoteComposer({ products }: { products: readonly ProductVariant[
   const journey = useQuoteJourney();
   const reduced = usePrefersReducedMotion();
   const hydrated = useSyncExternalStore(subscribe, clientSnapshot, serverSnapshot);
-  const [values, setValues] = useState<Record<Field, string>>({ name: "", quantity: "", city: "", phone: "" });
+  const [values, setValues] = useState<Record<Field, string>>({ name: "", quantity: "", city: "", district: "", phone: "" });
   const [consent, setConsent] = useState(false);
   const [errors, setErrors] = useState<Errors>({});
   const [prepared, setPrepared] = useState<PreparedQuote | null>(null);
+  const updatePhone = useCallback((phone: string) => {
+    setValues(previous => previous.phone === phone ? previous : { ...previous, phone });
+    setErrors(previous => previous.phone ? { ...previous, phone: undefined } : previous);
+  }, []);
   const product = products.find(item => item.id === journey.productId);
   const productId = product?.id ?? "";
   const fingerprint = JSON.stringify({ values, consent, segment: journey.segment,
@@ -74,8 +81,11 @@ export function QuoteComposer({ products }: { products: readonly ProductVariant[
     for (const name of Object.keys(limits) as Field[]) {
       if (clean[name].length < (name === "quantity" ? 1 : 2) || clean[name].length > limits[name]) next[name] = "Bu alanı uygun uzunlukta doldurun.";
     }
-    const phoneDigits = clean.phone.replace(/\D/g, "");
-    if (!/^\+?[\d\s().-]+$/.test(clean.phone) || phoneDigits.length < 7 || phoneDigits.length > 15) next.phone = "Geçerli bir telefon numarası girin.";
+    try {
+      const contact = phoneForm(new FormData(event.currentTarget), "phone");
+      if (!contact.phone) next.phone = "Geçerli bir telefon numarası girin.";
+      else clean.phone = contact.phone;
+    } catch { next.phone = "Seçili ülkeye uygun geçerli bir telefon numarası girin."; }
     if (!Object.hasOwn(businessLabels, journey.segment)) next.segment = "İşletme türünü seçin.";
     if (!product) next.productId = "Mevcut ürünlerden birini seçin.";
     if (!consent) next.consent = "KVKK aydınlatma metnini okuduğunuzu belirtin.";
@@ -108,8 +118,11 @@ export function QuoteComposer({ products }: { products: readonly ProductVariant[
             {products.map(item => <option key={item.id} value={item.id}>{item.name} · {item.weight}</option>)}
           </select>{error("productId")}</div>
         <div className={styles.field}><label htmlFor={`${id}-quantity`}>Miktar</label><input {...field("quantity")} placeholder="Örn. aylık 100 kg" />{error("quantity")}</div>
-        <div className={styles.field}><label htmlFor={`${id}-city`}>Şehir</label><input {...field("city")} autoComplete="address-level1" />{error("city")}</div>
-        <div className={`${styles.field} ${styles.full}`}><label htmlFor={`${id}-phone`}>Telefon</label><input {...field("phone")} type="tel" autoComplete="tel" />{error("phone")}</div>
+        <div className={styles.field}><AddressSearchField name="city" label="Şehir" value={values.city} kind="city" lang="tr" placeholder="Şehir seçin" autoComplete="address-level1" invalid={!!errors.city} errorId={errors.city ? `${id}-city-error` : undefined}
+          onChange={city => { setValues(previous => previous.city === city ? previous : { ...previous, city, district: "" }); clearError("city"); clearError("district"); }} />{error("city")}</div>
+        <div className={styles.field}><AddressSearchField key={values.city} name="district" label="İlçe" value={values.district} kind="district" city={values.city} lang="tr" placeholder="İlçe seçin" autoComplete="address-level2" invalid={!!errors.district} errorId={errors.district ? `${id}-district-error` : undefined}
+          onChange={district => { setValues(previous => ({ ...previous, district })); clearError("district"); }} />{error("district")}</div>
+        <div className={`${styles.phone} ${styles.full}`}><CustomerPhoneField name="phone" lang="tr" autoComplete="section-quote" onValueChange={updatePhone} invalid={!!errors.phone} errorId={errors.phone ? `${id}-phone-error` : undefined} />{error("phone")}</div>
         <div className={`${styles.consent} ${styles.full}`}>
           <label><input type="checkbox" name="kvkk" checked={consent} required aria-invalid={!!errors.consent || undefined} aria-describedby={errors.consent ? `${id}-consent-error` : undefined}
             onChange={event => { setConsent(event.target.checked); clearError("consent"); }} /><span><a href="/kvkk" target="_blank" rel="noopener noreferrer">KVKK aydınlatma metnini</a> okudum.</span></label>

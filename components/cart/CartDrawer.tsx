@@ -6,6 +6,7 @@ import { ArrowRight, X } from "lucide-react";
 import { Dialog as DialogPrimitive } from "radix-ui";
 import { AnimatePresence, motion, useIsPresent, useReducedMotion, type HTMLMotionProps } from "motion/react";
 import { Button } from "@/components/ui/button";
+import { InteractiveCheckout } from "@/components/ui/interactive-checkout";
 import { CartEmpty, CartLineItem, CartTotals, CartTrust } from "./CartPresentation";
 import {
   Dialog, DialogClose, DialogDescription, DialogOverlay, DialogPortal, DialogTitle, DialogTrigger,
@@ -120,6 +121,7 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
         </div>
 
         {/* Firefox otherwise inserts an implicit tab stop on this scroll container. */}
+        <InteractiveCheckout variant="drawer">
         <motion.div layoutScroll tabIndex={-1} className={styles.drawerBody}>
           {!state.hydrated ? <p role="status">Sepet yükleniyor…</p> : lines.length === 0 ? (
             <CartEmpty onBrowse={() => onOpenChange(false)} />
@@ -153,6 +155,7 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
           <CartTrust />
           <DialogClose asChild><Button asChild variant="link" className={styles.secondaryLink}><Link href="/sepet" prefetch={false}>Sepeti görüntüle</Link></Button></DialogClose>
         </div>
+        </InteractiveCheckout>
       </CartPanel>
       </DialogPrimitive.Content>
       </DialogPortal>}

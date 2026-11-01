@@ -59,30 +59,31 @@ it("shows only the four supported payment logos directly on the light pro footer
   expect(payment.querySelector('[style*="background"]')).toBeNull();
 });
 
-it("keeps footer copy, legal metadata and focus above AA contrast on the pro stone surface", () => {
-  const tokens = new Map<string, string>();
-  for (const file of ["app/globals.css", "components/site/Footer.module.css"]) {
-    postcss.parse(readFileSync(file, "utf8")).walkDecls(/^--/, declaration => { tokens.set(declaration.prop, declaration.value); });
-  }
-  function luminance(value: string): number {
+it("keeps both scoped footer themes readable without rewriting global site tokens", () => {
+  const globals = new Map<string, string>();
+  postcss.parse(readFileSync("app/globals.css", "utf8")).walkDecls(/^--/, declaration => { globals.set(declaration.prop, declaration.value); });
+  const sheet = postcss.parse(readFileSync("components/site/Footer.module.css", "utf8"));
+  const light = new Map(globals);
+  sheet.walkRules(".footer", rule => rule.walkDecls(/^--/, declaration => { light.set(declaration.prop, declaration.value); }));
+  const dark = new Map(light);
+  sheet.walkRules('.footer[data-surface="dark"]', rule => rule.walkDecls(/^--/, declaration => { dark.set(declaration.prop, declaration.value); }));
+  function luminance(value: string, tokens: Map<string, string>): number {
     const token = value.match(/^var\((--[\w-]+)\)$/);
-    if (token) return luminance(tokens.get(token[1])!);
+    if (token) return luminance(tokens.get(token[1])!, tokens);
     const channels = value.slice(1).match(/../g)!.map(channel => parseInt(channel, 16) / 255)
       .map(channel => channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4);
     return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
   }
-  expect(tokens.get("--footer-ink")).toBe("var(--pro-stone)");
-  for (const [token, value] of Object.entries({
-    "--footer-copy": "var(--pro-ink)", "--footer-muted": "var(--pro-muted)",
-    "--sut": "var(--pro-ink)", "--brand-gold": "var(--pro-gold-ink)",
-    "--pro-stone": "#F0EBDD", "--pro-ink": "#172B21", "--pro-muted": "#4F594B", "--pro-gold-ink": "#735519",
-  })) expect(tokens.get(token), token).toBe(value);
-  const background = luminance("var(--footer-ink)");
-  expect(background).toBeGreaterThan(0.7);
-  for (const foreground of ["--footer-copy", "--footer-muted", "--sut", "--brand-gold"]) {
-    const text = luminance(`var(${foreground})`);
-    const contrast = (Math.max(text, background) + 0.05) / (Math.min(text, background) + 0.05);
-    expect(contrast, foreground).toBeGreaterThanOrEqual(4.5);
+  expect(light.get("--footer-ink")).toBe("var(--pro-stone)");
+  for (const tokens of [light, dark]) {
+    for (const backgroundToken of ["--footer-ink", "--footer-field"]) {
+      const background = luminance(`var(${backgroundToken})`, tokens);
+      for (const foreground of ["--footer-copy", "--footer-muted", "--footer-accent"]) {
+        const text = luminance(`var(${foreground})`, tokens);
+        const contrast = (Math.max(text, background) + 0.05) / (Math.min(text, background) + 0.05);
+        expect(contrast, `${backgroundToken}/${foreground}`).toBeGreaterThanOrEqual(4.5);
+      }
+    }
   }
 });
 

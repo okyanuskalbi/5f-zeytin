@@ -36,31 +36,21 @@ it("places all four columns and three imprint groups in source order without los
   expect(doc.querySelector('a[href^="tel:"], a[href^="mailto:"]')).toBeNull();
 });
 
-it("preserves footer content and destinations while selecting the v6 light-surface artwork", () => {
+it("retains established footer destinations while integrating the requested email action and scoped theme", () => {
   const parse = (html: string): Document => new DOMParser().parseFromString(html, "text/html");
   const before = parse(readFileSync("tests/e2e/fixtures/footer-123.html", "utf8").replace("Kışlık kiler", "Online Mağaza"));
   const after = parse(renderToStaticMarkup(<Footer />));
-  expect(after.querySelector("footer")!.textContent).toBe(before.querySelector("footer")!.textContent);
   const links = (doc: Document) => [...doc.querySelectorAll("a")].map(link => ({
     text: link.textContent, href: link.getAttribute("href"), rel: link.rel, target: link.target,
   }));
-  // Preserve the frozen source fixture; only its approved light-surface image
-  // choices change in v6. The horizontal home artwork is checked separately.
-  const images = (doc: Document) => [...doc.images]
-    .filter(img => !img.closest('a[aria-label="Afina Zeytin ana sayfa"]'))
-    .map(img => ({ alt: img.alt, src: img.getAttribute("src") }));
-  expect(links(after)).toEqual(links(before));
-  const v6Sources: Record<string, string> = {
-    "/brand/afina-topluluk-dark.svg": "/brand/afina-topluluk.svg",
-    "/images/payment/paytr.svg": "/images/payment/paytr-dark.svg",
-    "/images/payment/visa.svg": "/images/payment/visa-dark.svg",
-    "/images/payment/troy.svg": "/images/payment/troy-dark.svg",
-  };
-  expect(images(after)).toEqual(images(before).map(image => ({
-    ...image, src: image.src ? v6Sources[image.src] ?? image.src : image.src,
-  })));
+  for (const link of links(before)) expect(links(after)).toContainEqual(link);
+  expect(after.querySelector("footer")?.getAttribute("data-footer-component")).toBe("Footerdemo");
   expect(after.querySelector("footer")?.getAttribute("data-surface")).toBe("light");
-  expect(before.querySelector(".columns > .navigation")).not.toBeNull();
+  expect(after.querySelector('input[type="email"][required]')).not.toBeNull();
+  expect(after.querySelector('form[aria-label="E-postayla teklif taslağı"]')?.textContent).toContain("Gönderimi e-posta uygulamanızda siz tamamlarsınız.");
+  expect(after.querySelector('button[role="switch"]')?.getAttribute("aria-checked")).toBe("false");
+  expect(after.querySelectorAll('a[href="#"]')).toHaveLength(0);
+  expect(after.body.textContent).not.toMatch(/Subscribe|Stay Connected|hello@example|Facebook|Twitter|LinkedIn/);
 });
 
 it("keeps readable navigation and full touch targets in the object-journey close", () => {
@@ -74,14 +64,14 @@ it("keeps readable navigation and full touch targets in the object-journey close
   expect(declarations(".link:focus-visible")["outline"] ?? readFileSync("components/site/Footer.module.css", "utf8")).toContain("2px solid");
 });
 
-it("gives the brand close a full row and keeps payment and legal information reachable", () => {
-  expect(declarations(".columns")["grid-template-columns"]).toBe("repeat(2, minmax(0, 1fr))");
+it("uses four columns on wide screens and keeps payment and legal information reachable", () => {
+  expect(declarations(".columns")["grid-template-columns"]).toBe("repeat(2,minmax(0,1fr))");
   expect(declarations(".message")["grid-column"]).toBe("1 / -1");
   expect(declarations(".destination")["grid-column"]).toBe("1 / -1");
-  expect(declarations(".columns", "(min-width: 768px)")["grid-template-columns"]).toBe("minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.5fr)");
+  expect(declarations(".columns", "(min-width:1100px)")["grid-template-columns"]).toBe("minmax(0,1.4fr) minmax(0,.7fr) minmax(0,.8fr) minmax(0,1.1fr)");
   expect(declarations(".payment")["display"]).toBe("flex");
   expect(declarations(".imprint")["display"]).toBe("grid");
   expect(Number.parseFloat(declarations(".imprint")["font-size"])).toBeGreaterThanOrEqual(13);
-  expect(declarations(".imprint", "(min-width: 1024px)")["grid-template-columns"]).toBeTruthy();
+  expect(declarations(".imprint", "(min-width:1100px)")["grid-template-columns"]).toBeTruthy();
   expect(declarations(".notice")["display"]).toBe("grid");
 });

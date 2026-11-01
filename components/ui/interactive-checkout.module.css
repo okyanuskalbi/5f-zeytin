@@ -1,0 +1,10 @@
+.checkout { min-width: 0; }
+.page { display: grid; align-items: start; gap: 32px; }
+.drawer { display: flex; flex: 1; flex-direction: column; min-height: 0; }
+.value { display: inline-block; vertical-align: baseline; font-variant-numeric: tabular-nums; }
+@media (min-width: 1024px) {
+  .page { grid-template-columns: minmax(0, 1fr) minmax(340px, .66fr); gap: clamp(32px, 4vw, 64px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .value { transform: none !important; }
+}
