@@ -16,7 +16,7 @@ Yalnız≥1024×860 normal/ölçülmüşJS galeride tek pin ve x=−travel×prog
 
 ## Medya ve çalışan talep
 
-Kabul edilmiş A→B’den ücretsiz yerel ileri/geri6..65 loop:120kare24fps5sn1280×720/6.847.142bayt; yeniVeo/Omni üretimi veya kusursuz fiziksel kamera döngüsü iddiası değil. HeroAVIF75.957bayt/WebPfallback; onaylı şişeOG1200×630. Normal muted loop/pause/play/offscreen-hidden durma; reduced/saveData MP4 isteksiz poster, hata/blocked geri dönüş. Kontrol44px+ ve film transformu dışında. Diğer3Flowadayı kullanıcı/runtime onayı almadı; mevcut kredi/kaynak kapıları değişmez.
+Kabul edilmiş A→B’den ücretsiz yerel ileri/geri6..65 loop:120kare24fps5sn1280×720/2.742.609bayt; yeniVeo/Omni üretimi veya kusursuz fiziksel kamera döngüsü iddiası değil. HeroAVIF76.119bayt/WebPfallback; onaylı şişeOG1200×630. Normal muted loop/pause/play/offscreen-hidden durma; reduced/saveData MP4 isteksiz poster, hata/blocked geri dönüş. Kontrol44px+ ve film transformu dışında. Diğer3Flowadayı kullanıcı/runtime onayı almadı; mevcut kredi/kaynak kapıları değişmez.
 
 SKU→Teklife ekle ve üç gerçek segment→#teklif aynı context’i doldurur; hydration öncesi JS kontrolleri disabled, gerçek anchor’lar çalışır. Required/KVKK validasyonu gerçek talep özeti ve mailto taslağı hazırlar; gönderimi kullanıcı e-posta uygulamasında tamamlar. info@afina.com.tr/+903288827708 resmî AFİNA Şirketler Topluluğu kanalıdır, zeytin WhatsApp hattı veya sunucu e-posta transportu sayılmaz. Sahte gönderildi/CRM sonucu, provider/env/DB aktivasyonu yok. Beş nativeFAQ/schema, gerçek adres/ödeme/legal/support korunur.
 

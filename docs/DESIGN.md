@@ -8,7 +8,7 @@ Bu dosya tek aktif görsel sözleşmedir. Önceki v8 dosyası değişmeden [v8 a
 
 ## Marka, renk ve tipografi
 
-Orijinal AFİNA ZEYTİN ve topluluk logoları, gerçek ambalajlar ve **“Kökü toprakta. Yeri sofrada.”** korunur. Yeni planın aktif paleti: marka `--pro-brand: #84CC16`, hover `#A3E635`, taş `--pro-stone: #EDE8DD`, mürekkep `--pro-ink: #1C1F1A`, kâğıt `#F7F4EE`, yağ altını `--pro-gold: #C89B3C`. Küçük metinde erişilir koyu altın `--pro-gold-ink: #735519`, gövde/ikincil `#4F594B`; altın dekor rengi otomatik metin rengi değildir. Kaynak `app/globals.css`.
+Orijinal AFİNA ZEYTİN ve topluluk logoları, gerçek ambalajlar ve **“Kökü toprakta. Yeri sofrada.”** korunur. Yeni planın aktif paleti: marka `--pro-brand: #84CC16`, hover `#A3E635`, taş `--pro-stone: #EDE8DD`, mürekkep `--pro-ink: #1C1F1A`, kâğıt `#F7F4EE`, yağ altını `--pro-gold: #C89B3C`. Küçük metinde erişilir koyu altın `--pro-gold-ink: #735519`, gövde/ikincil `#4F594B`; altın dekor rengi otomatik metin rengi değildir. Kaynak `app/globals.css`. Yerel Türkçe/Latin font alt kümeleri `lib/media/pro-fonts.json` içinde kaynak/çıktı SHA, eksen ve glif kontrolüyle kayıtlıdır; özgün dosyalar ve OFL lisansları korunur. Diğer karakterler font fallback ile okunur.
 
 Başlık **Fraunces**, gövde **Inter**; resmî slogan aynı yüzle iki satırdır. Başlık/gerçek CTA ve içerik SSR'da görünür, video/loader/hydration beklemez. Ana aralıklar 8 px tabanlı 32/48/64/96; planın yuvarlatılmış ürün yüzeyleri ve tek cam navigasyonu v8'in kare/opak yüzey tercihini değiştirir. Sade içerik, kısa kaynaklı metin ve yaklaşık %65 üretici/kurumsal güven, %35 alışveriş dengesi sürer.
 
@@ -28,7 +28,7 @@ Navigasyon **26786**, footer **21474**: toplam **9 seçili ana kaynak**. **1635 
 
 ## Açılış ve tek scroll zirvesi
 
-Hero doğal bir viewport filmidir; v8'in 170svh ambalaj/kâğıt-plane pin'i kaldırılır. Orijinal ön dal ayrı dekoratif düzlem, gerçek DOM slogan/CTA sabit okunur düzlemdir. Filmdeki tek ağaç/dal birden fazla bağımsız medya gibi raporlanmaz. Açık renk cam nav özgün logo, gerçek menü/üyelik/sepet/mağaza yollarını taşır; glass fallback okunur taş zeminlidir. Blur sabit yüzey stilidir, animasyon değildir. İkinci sahne menüsü veya yabancı GSAP nav motoru yoktur.
+Hero doğal bir viewport filmidir; v8'in 170svh ambalaj/kâğıt-plane pin'i kaldırılır. Masaüstünde orijinal ön dal ayrı dekoratif düzlemdir. Mobil kadraj filmin kendi ön planını korur; ek dekoratif dal gizlenir. Gerçek DOM slogan/CTA tam opaktır; başlık ve açıklama mount hareketi beklemez. Yalnız CTA grubu kısa y girişi yapar. Filmdeki tek ağaç/dal birden fazla bağımsız medya gibi raporlanmaz. Açık renk cam nav özgün logo, gerçek menü/üyelik/sepet/mağaza yollarını taşır; glass fallback okunur taş zeminlidir. Blur sabit yüzey stilidir, animasyon değildir. İkinci sahne menüsü veya yabancı GSAP nav motoru yoktur.
 
 **Ürünleri Keşfet** → `#urunler`; **Kurumsal Teklif Al** → `#teklif`. Hero H1/eylemleri JS kapalıyken de gerçek anchor'dır. Yerel okunurluk zemini kompozit kontrastla doğrulanır; tüm ekranı saklayan loader veya yüklenene kadar gizli içerik yoktur.
 
@@ -36,9 +36,9 @@ Yalnız ürün galerisi pin olur: uygun viewport **en az 1024×860**, normal har
 
 ## Film, poster ve kabul sınırı
 
-Aktif film `public/videos/afina-zeytinlik-loop-5s.mp4`: kullanıcı kabulü olan A→B'den **ücretsiz yerel ileri/geri kurgu**, yeni Veo/Omni üretimi değildir. Kaynak kare **6..65** ileri/geri; **120 kare, 24 fps, 5 saniye, 1280×720**, sessiz H264/faststart; **6.847.142 bayt**, SHA-256 `778fe91b5f2a258ced10ae250fc31e576036043e0ef6d3bdd49501b70346c8fa`. Yön dönüşlü montajdır; fiziksel olarak kusursuz devamlı kamera iddiası yapılmaz. V9 planı eski genel loop yasağının bu kabul edilmiş türeve ilişkin uygulama tercihini değiştirir; yeni ücretli üretim yetkisi vermez.
+Aktif film `public/videos/afina-zeytinlik-loop-5s.mp4`: kullanıcı kabulü olan A→B'den **ücretsiz yerel ileri/geri kurgu**, yeni Veo/Omni üretimi değildir. Kaynak kare **6..65** ileri/geri; **120 kare, 24 fps, 5 saniye, 1280×720**, sessiz H264/faststart; **2.742.609 bayt**, SHA-256 `1a9b941dce0ab46c09570766458508647887dee7e2b9d2897b2a5a70108c5719`. 119 kare CRF28/no-B-frame kodlanır; son kareye ilk IDR paketi aynen eklenir. İlk/son decoded piksel eşliği SSIM1 kalırken önceki6,85MB kodlamaya göre%60 küçüldü. Yön dönüşlü montajdır; fiziksel olarak kusursuz devamlı kamera iddiası yapılmaz. V9 planı eski genel loop yasağının bu kabul edilmiş türeve ilişkin uygulama tercihini değiştirir; yeni ücretli üretim yetkisi vermez.
 
-Hero posteri aynı türevden `public/videos/afina-zeytinlik-poster.avif` **75.957 bayt**, SHA-256 `dfa0cd22c4f0d277af48ac45fe790b16311ecb9ad565708fdb4cdef57ab965f9`; WebP fallback, aynı kadraj ve sabit ölçüler. OG `public/brand/og-zeytinyagi.webp` onaylı şişe/marka görseli **1200×630**. Loop/metin okunurluğu, gerçek decoded kare ve telefon kadrajı son kaynakta ayrıca ölçülür.
+Hero posteri aynı türevden `public/videos/afina-zeytinlik-poster.avif` **76.119 bayt**, SHA-256 `3b174344ec775e4c0898493fbcc598102c1add25a1da272f4a5c16af4222030d`; WebP fallback, aynı kadraj ve sabit ölçüler. OG `public/brand/og-zeytinyagi.webp` onaylı şişe/marka görseli **1200×630**. Loop/metin okunurluğu, gerçek decoded kare ve telefon kadrajı son kaynakta ayrıca ölçülür.
 
 Normal mod muted/playsInline gerçek medya olaylarıyla döner; küçük görünür pause/play kontrolü ve kullanıcı pause kararı korunur. Sekme/görünüm dışında durur. Reduced-motion/saveData MP4 isteği başlatmaz; poster ve tüm gerçek eylemler kalır. Hata/blocked durumda poster ve uygun manuel kontrol vardır. Kontroller en az44px, hareketli video düzlemi dışında; video zamanına scroll/currentTime seek veya spring bağlanmaz. Mevcut SDR ikinci tone mapping almaz.
 

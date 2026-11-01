@@ -22,7 +22,9 @@
  .copy { bottom:112px; }
  .copy h1 { font-size:clamp(42px,9.4vw,76px); line-height:1.05; }
  .copy > p { font-size:17px; max-width:34ch; }
- .branch { width:110vw; right:-58%; top:-4%; }
+ /* The compact composition keeps the film's own foreground; the additional
+    decorative cutout belongs to the desktop depth composition. */
+ .branch { display:none; }
  .origin { justify-content:start; bottom:24px; }
  .origin span:last-child { display:none; }
  .hero::before { width:100%; inset:0; background:linear-gradient(90deg,rgba(10,22,13,.86),rgba(10,22,13,.68) 92%,transparent); }

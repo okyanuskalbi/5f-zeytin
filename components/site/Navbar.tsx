@@ -35,7 +35,7 @@ const links = [
 
 export function Navbar(): JSX.Element {
   const pathname = usePathname();
-  const landing = pathname === "/";
+  const landing = !pathname || pathname === "/";
   const cart = useCart();
   const openMembership = useMembershipDialog();
   const itemCount = cart?.state.items.reduce((count, item) => count + item.quantity, 0) ?? 0;

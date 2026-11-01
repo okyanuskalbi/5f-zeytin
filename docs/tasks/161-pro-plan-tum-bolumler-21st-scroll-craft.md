@@ -10,7 +10,7 @@ Kullanıcının yeni pro planı ve bütün bölümlerde 21st/Scroll Craft isteğ
 - Yedi bölüm: doğal tam ekran film → tek lineer yatay galeri → gerçek tesis parallax → üç aşamalı bento → üç B2B segmenti → teklif hazırlığı → SSS/adres/kapanış. Galerideki gerçek ürün ve B2B seçimi aynı forma taşınır.
 - Dokuz gerçek seçili 21st kaynak, iki reddedilen sonuç, bir yalnız incelenmiş referans `21ST-SOURCES.json` içinde component/demo/raw SHA ile kayıtlıdır. Tüm bölüm/nav/footer kaynakları okunup proje token/işlevlerine uyarlandı.
 - Mevcut `LazyMotion` ile `m as motion` ve bütün yeni importlar `motion/react` üzerinden. İkinci scroll motoru, input/body kilidi veya video playhead scrub yok. Scroll Craft motor dosyaları byte-identical referans; QA adaptörü yalnız araç belleğinde Motion sahnelerini okur.
-- Kabul edilmiş A→B Flow kaynağından ücretsiz 5 saniyelik ileri/geri kurgu; 120 kare/24 fps/1280×720/sessiz/faststart, 6.847.142 bayt. İlk/son decoded piksel eşliği ve SSIM1 ayrı kanıtla doğrulandı; build yalnız pinli kaynak/çıktı hash ve MP4 yapısını okur. Yeni üretim/kredi yok. Diğer üç aday klip public/runtime'a alınmadı.
+- Kabul edilmiş A→B Flow kaynağından ücretsiz 5 saniyelik ileri/geri kurgu; 120 kare/24 fps/1280×720/sessiz/faststart, 2.742.609 bayt. İlk/son decoded piksel eşliği ve SSIM1 ayrı kanıtla doğrulandı; build yalnız pinli kaynak/çıktı hash ve MP4 yapısını okur. Yeni üretim/kredi yok. Diğer üç aday klip public/runtime'a alınmadı.
 - SMTP/WhatsApp servisi bulunmuyor. Form alan/KVKK doğrulamasından sonra gerçek e-posta taslağı hazırlar; gönderimi kullanıcı mail uygulamasında tamamlar. Resmî çatı şirketin info@afina.com.tr ve +90 328 882 77 08 bilgileri kaynak niteliğiyle sunulur; sabit hat WhatsApp diye etiketlenmez. Teslim/CRM başarısı veya gerçek gönderim iddia edilmez.
 
 ## TDD ve yerel kabul
@@ -28,3 +28,13 @@ Yalnız paketli headless Chromium, worker≤2; açılan browser ve Next süreçl
 ## Durum: UYGULANIYOR
 
 Main CI → Vercel REST API → canlı viewport/etkileşim/HTTP/hash/görsel kabulü bekleniyor. V8 sonuçları v9 kabulü yerine geçmez.
+
+## Canlı ilk kontrol ve hız düzeltmesi
+
+İlk kaynak `0f1e4ec2a7d1454f3dcd6d9b1f3d14f8e592142f`, CI41313687355 SUCCESS ve API `dpl_2GwDbCwKS8CsHZLXVpP7ZxQm7Kw8` READY. İlk canlı e2e85PASS/8skip/2FAIL: test henüz route hydration olmadan koyu logo kaynağını okuyordu. Bilinmeyen ilk rota için doğru açık home nav varsayımı eklendi. Tam son kaynak tekrar kabulü bekliyor.
+
+Canlı ilk mobil Lighthouse85/A100/LCP4,31sn; hedef90/2,5sn henüz karşılanmadı. Döngünün ilk IDR paketi son kareye aynen kopyalanarak aynı piksel seam korunup video6.847.142→2.742.609bayt oldu (SSIM, önceki kodlamaya göre0,9686). Uygulanan font kimlikleri değişmeden yerel Türkçe/Latin alt kümeleri üretildi: Inter44.740B, Fraunces62.948B; glif/eksen/SHA/lisans kaydı `lib/media/pro-fonts.json`. Kullanılmayan italik preload ve kritik metin fade kaldırıldı. Mobil ek dekoratif dal yerine gerçek filmin kendi ön planını kullanır; masaüstü bağımsız katman korunur. Bu ölçülmüş performans düzeltmesidir; yeni medya üretimi/kredi yok.
+
+Son polish yerel kabulü:1208unit/lint/typecheck/build ve87e2e PASS. Altı boyutta görsel/axe/taşma/JS/HTTP kaynağı hatası0; son Scroll Craft masaüstü40/mobil41/reduced40kare, dead-scroll0, örneklenen kontrast≥4,5. Native headless harness yalnız doğrulama adaptörüyle Motion sahnelerini okur; ikinci runtime motoru eklenmez.
+
+Lighthouse iki yöntem ayrı tutulur: varsayılan Lantern simülasyonu mobil86/A100/LCP4,183sn (90/2,5 hedefi açık); ayrı gerçek DevTools mobil throttling (562,5ms istek gecikmesi/1474,56Kbps/4×CPU) yerelde100/A100/LCP0,868sn/TBT0. Bu sonuç Lantern başarısı veya fiziksel telefon kanıtı diye sunulmaz. Gözlenen hızlı localhost LCP ile simüle LCP karıştırılmaz. Bağımsız inceleme konfigürasyon hatası bulmadı; LCP H1, video ondan sonra isteniyor. Mobilde gizli dekoratif dal isteği lazy/low yapıldı. Canlı son kaynakta her iki yöntem ayrıca ölçülecek.

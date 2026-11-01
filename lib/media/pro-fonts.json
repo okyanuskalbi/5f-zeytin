@@ -1,0 +1,42 @@
+{
+  "sourceUrl": "https://github.com/google/fonts/tree/e1d6480102fed30739fead0faee463101f892c8f/ofl/inter",
+  "license": "app/fonts/Inter-OFL.txt",
+  "tool": "fontTools4.68.0",
+  "unicodeRanges": [
+    "0000-00FF",
+    "0300-036F",
+    "2010-2027",
+    "2190-2199",
+    "011E/011F/0130/0131/015E/015F/20AC/20BA/2122"
+  ],
+  "fonts": [
+    {
+      "family": "Inter",
+      "source": ".cache/task-161/Inter-source.ttf",
+      "sourceSha256": "29160a80ff49ddcab2c97711247e08b1fab27a484a329ce8b813d820dc559031",
+      "output": "app/fonts/Inter-tr.woff2",
+      "bytes": 44740,
+      "sha256": "373e895a384df80d6271ce539b7da912bf3d21be85423962b9bcf38a72b4c56f",
+      "axes": {
+        "opsz": 14,
+        "wght": [
+          400,
+          800
+        ]
+      },
+      "cmapCount": 300,
+      "turkishAndCurrenciesVerified": true
+    },
+    {
+      "family": "Fraunces",
+      "source": "app/fonts/Fraunces-normal.woff2",
+      "sourceSha256": "d61d2821b55701ec156950090de5c5b134efacbca7544b22fa95b347e8aa2f99",
+      "output": "app/fonts/Fraunces-tr.woff2",
+      "bytes": 62948,
+      "sha256": "177a503bbeb9103202df4cabb9bd9aae5a2821d2b47dd8c4721ebf78435b94db",
+      "axes": {},
+      "cmapCount": 234,
+      "turkishAndCurrenciesVerified": true
+    }
+  ]
+}

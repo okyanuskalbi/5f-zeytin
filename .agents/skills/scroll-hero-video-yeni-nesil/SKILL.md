@@ -23,7 +23,7 @@ Yeni API motion/react; transform/opacity dışında sürekli animasyon yok. Sabi
 
 ## Kaynak ve medya yaşam döngüsü
 
-Kabul edilmiş A→B’den ücretsiz yerel ileri/geri kurgu: kaynak kare6..65,120kare/24fps/5sn/1280×720,6.847.142bayt; `public/videos/afina-zeytinlik-loop-5s.mp4`. Yeni üretim veya kusursuz fiziksel kamera döngüsü iddiası değildir. HeroAVIF75.957bayt; aynı kadraj WebP fallback; onaylı şişeOG1200×630. Normal mod muted/playsInline loop, gerçek pause/play, kullanıcı pause/görünürlük temizliği; reduced/saveData MP4 istemez, hata/blocked poster ve uygun manuel kontrol. Kontrol44px+ ve video transformu dışında. Scroll currentTime/seek, ikinci SDR tone mapping veya yeni ödeme/kredi yok.
+Kabul edilmiş A→B’den ücretsiz yerel ileri/geri kurgu: kaynak kare6..65,120kare/24fps/5sn/1280×720,2.742.609bayt; `public/videos/afina-zeytinlik-loop-5s.mp4`. Yeni üretim veya kusursuz fiziksel kamera döngüsü iddiası değildir. HeroAVIF76.119bayt; aynı kadraj WebP fallback; onaylı şişeOG1200×630. Normal mod muted/playsInline loop, gerçek pause/play, kullanıcı pause/görünürlük temizliği; reduced/saveData MP4 istemez, hata/blocked poster ve uygun manuel kontrol. Kontrol44px+ ve video transformu dışında. Scroll currentTime/seek, ikinci SDR tone mapping veya yeni ödeme/kredi yok.
 
 `lib/media/pro-loop.ts` aktif türev yolunu taşır; önceki190kare/7,916667sn. A→B dosyası ve `lib/media/cinematic-film.json` kaynak tarihçesi korunur. Loop dikişi/gerçek decoded kare/kadraj/oynatım durumları yeni final kaynakta ayrıca kabul edilir; eski film ölçümüyle yeni loop’a PASS yazılmaz. Kaynak/çıktı hash ve boyut [DESIGN](../../../docs/DESIGN.md) içindedir.
 

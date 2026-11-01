@@ -39,7 +39,8 @@ test("full-film opening keeps the official copy, near plane and both real destin
   await expect(copy.getByRole("heading", { level: 1 })).toHaveText("Kökü toprakta. Yeri sofrada.");
   await expect(copy.getByRole("link", { name: "Ürünleri Keşfet" })).toHaveAttribute("href", "#urunler");
   await expect(copy.getByRole("link", { name: "Kurumsal Teklif Al" })).toHaveAttribute("href", "#teklif");
-  await expect(hero.locator("[data-hero-near-plane] img")).toBeVisible();
+  if (page.viewportSize()!.width > 900) await expect(hero.locator("[data-hero-near-plane] img")).toBeVisible();
+  else await expect(hero.locator("[data-hero-near-plane] img")).toBeHidden();
   const [copyBox, visualBox, heroBox] = await Promise.all([copy.boundingBox(), visual.boundingBox(), hero.boundingBox()]);
   expect(copyBox).not.toBeNull();
   expect(visualBox).not.toBeNull();

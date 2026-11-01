@@ -8,7 +8,7 @@ Yeni aktif #84CC16 marka/#EDE8DD taş/#1C1F1A mürekkep/#C89B3C yağ altını; k
 
 Hero doğal tam-film/özgün ön dal/cam nav. Yalnız galeride≥1024×860 normal/JS ortamında tek pin, x=−travel×progress lineer; kısa/mobil/reduced/JSkapalı native rail ve görünür son ürün/odak. Tesis yalnız görüntü parallax; diğer içerik doğal akış/SSR görünür once reveal. Yeni hareket motion/react; ikinci engine/GSAP/Lenis/rAF/body kilidi/currentTime scrub yok.
 
-Kabul edilmiş A→B'nin ücretsiz yerel ileri/geri loop'u: kaynak6..65,120kare/24fps/5sn/1280×720,6.847.142bayt. PosterAVIF75.957bayt; onaylı şişeOG1200×630. Normal muted loop/pause/play/görünürlük; reduced/saveData MP4 istemez, hata/blocked poster. Yeni üretim/kredi yok; B→C/C→D/D→F aday onay kapısı değişmez.
+Kabul edilmiş A→B'nin ücretsiz yerel ileri/geri loop'u: kaynak6..65,120kare/24fps/5sn/1280×720,2.742.609bayt. PosterAVIF76.119bayt; onaylı şişeOG1200×630. Normal muted loop/pause/play/görünürlük; reduced/saveData MP4 istemez, hata/blocked poster. Yeni üretim/kredi yok; B→C/C→D/D→F aday onay kapısı değişmez.
 
 Mevcut altı SKU sırası/verisi, detay/sepet/hesap/ödeme otoritesi değişmez. Galeri SKU'su ve B2B segmenti aynı #teklif formunu doldurur; required/KVKK doğrulaması gerçek özeti/mailto taslağını hazırlar, gönderimi kullanıcı tamamlar. info@afina.com.tr/+903288827708 yalnız resmî çatı şirket iletişimidir; WhatsApp veya sunucu e-posta transportu doğrulanmadı. Otomatik gönderim/CRM başarısı, provider/env/DB aktivasyonu yok. V8 QA/yayın aşağıda tarihçedir; Task161 final kaynağın yerel/CI/API/canlı kabulü ayrıca yazılacaktır.
 

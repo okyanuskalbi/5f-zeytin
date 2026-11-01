@@ -8,7 +8,7 @@ V6/V7'ye planlanan fark en az4/6: grammar, glass-nav, hero device, act shape, si
 ## Bölüm/kaynak/hareket
 | Semantik bölüm | 21st gerçek kaynak | Baskın cihaz ve sınır |
 |---|---|---|
-| Hero + nav |32829Elsewhere +26786Elevate Navbar| Lokal okunurluk, SSR görünür HTML; Motion line stagger/parallax1→1.1, gerçek bağımsız onaylı ön-dal. Sahte ses/gece/stockvideo/GSAP yok.15025 generic-counter çıktısı reddedildi. |
+| Hero + nav |32829Elsewhere +26786Elevate Navbar| Lokal okunurluk, SSR görünür HTML; Tam opak, statik SSR ana metin; yalnız CTA kısa y-giriş ve parallax1→1.1, gerçek bağımsız onaylı ön-dal. Sahte ses/gece/stockvideo/GSAP yok.15025 generic-counter çıktısı reddedildi. |
 | Galeri |24623motiondotdev Scroll Horizontal Gallery + mevcut gerçek ProductCard| Lineer x=−overflow×p, spring yok, ResizeObserver; tek bounded sticky, altı SKU+actualfocus+sepet/detail. |
 | Tesis |20023Parallax Image| Gerçek büyük fotoğraf overscan/y0→120 ve kısa sticky içerik; gerçek yer/adres. |
 | Hikâye |1197Aceternity Bento| Üç kaynaklı aşama, kırık simetri; görünürSSR, bir kez transform/opacity reveal. |
@@ -16,7 +16,7 @@ V6/V7'ye planlanan fark en az4/6: grammar, glass-nav, hero device, act shape, si
 | Teklif |35258Contact Form| Gerçek alan/validasyon/ürün-segment bağlamı, AnimatePresence özet; gönderim e-posta uygulamasında, doğrulanmamışWhatsApp yok. B2B'yle aynı doğal karar vuruşu; gereksiz pin yok. |
 | FAQ/contact/footer |31986FAQ Accordion Section +21474Agency Footer| Mevcut5cevap/schema/nativekeyboard; somut kurumsal iletişim ve ürünlere dönüş kapanışı. |
 
-Scroll Craft engine kaynakları build altında byte-identical reference olarak korunur; Next/Motion mevcut sürücüdür, iki scroll sahibi eklenmez. Hersectiondata-sc-scene/device/source ile skor görünür ve gerçek transform/etkileşimle doğrulanır. En az4aile: kinetic/pan/parallax/reveal/flow. Tek pan scrub; ardışık aynı baskın aile yok, B2B/form tek flow vuruşudur. Mobilde native yatay overflow veya stack, reduced/noJS hiçbir uzun pin/boş height bırakmaz.
+Scroll Craft engine kaynakları build altında byte-identical reference olarak korunur; Next/Motion mevcut sürücüdür, iki scroll sahibi eklenmez. Hersectiondata-sc-scene/device/source ile skor görünür ve gerçek transform/etkileşimle doğrulanır. En az4aile: pan/parallax/reveal/flow. Tek pan scrub; ardışık aynı baskın aile yok, B2B/form tek flow vuruşudur. Mobilde native yatay overflow veya stack, reduced/noJS hiçbir uzun pin/boş height bırakmaz.
 
 ## Ana ölçümler
 Desktop: rail travel=max(0,scrollWidth−viewportWidth), actualx≈−travel×p (2px tolerans), p0/.25/.5/.75/1; lastcardgörünür, ResizeObserveryeniler; tabfocus gizli karta geldiğinde verticalprogressaynıcard'ıgörünür yapar. Mobile/reduced/noJS altıSKU erişilir, ilk360×640H1+primaryCTA görünür; sayfada x-overflow0.

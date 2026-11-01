@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import type { JSX, ReactNode } from "react";
 import { Navbar } from "@/components/site/Navbar";
@@ -15,7 +14,7 @@ import "./globals.css";
 
 const Fraunces = localFont({
   src: [
-    { path: "./fonts/Fraunces-normal.woff2", weight: "400 700", style: "normal" },
+    { path: "./fonts/Fraunces-tr.woff2", weight: "500 700", style: "normal" },
   ],
   display: "swap",
   // The current design uses upright headings; do not preload the retired italic.
@@ -25,14 +24,13 @@ const Fraunces = localFont({
   fallback: ["Georgia", "Times New Roman", "serif"],
 });
 
-const bodyFont = Inter({
-  subsets: ["latin", "latin-ext"],
+const bodyFont = localFont({
+  src: [{ path: "./fonts/Inter-tr.woff2", weight: "400 800", style: "normal" }],
   display: "swap",
-  preload: false,
-  weight: ["400", "500", "600", "700", "800"],
+  preload: true,
   variable: "--font-body",
   fallback: ["Arial", "Helvetica Neue", "sans-serif"],
-  adjustFontFallback: true,
+  adjustFontFallback: "Arial",
 });
 
 export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover" };
