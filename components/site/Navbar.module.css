@@ -1,4 +1,4 @@
-.bar { position: fixed; inset: 0 0 auto; z-index: 30; background: transparent; color: var(--sut); padding-block: 18px; padding-top: calc(18px + env(safe-area-inset-top, 0px)); border-bottom: 1px solid transparent; transition: backdrop-filter .4s; }
+.bar { position: fixed; inset: 0 0 auto; z-index: 30; background: transparent; color: var(--sut); padding-block: 18px; padding-top: calc(18px + env(safe-area-inset-top, 0px)); border-bottom: 1px solid transparent; }
 .bar[data-tone="solid"] { background: rgba(14,21,16,.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom-color: rgba(255,255,255,.08); }
 .row { display: flex; min-height: 44px; align-items: center; justify-content: space-between; gap: 24px; }
 .bar[data-tone="paper"] { --altin: #172B21; --sut: #172B21; background: #F4F0E7; color: #172B21; border-bottom-color: #CFCDBF; }

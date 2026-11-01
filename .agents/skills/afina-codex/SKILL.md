@@ -16,3 +16,11 @@ description: AFİNA ZEYTİN için güncel Codex devir, mevcut mimari, medya onay
 - Task 157 güncel görsel yön: v6 Üretici Atlası, açık metin/görsel ayrımı, sade açık menü, açık ürün rafı/tesis anlatımı. Kullanıcı Task 156'nın koyu ortalanmış hero/cam menüsünü reddetti; o yayın makbuzu tarihsel kalır. DESIGN.md ve .21st tasarım bağlamı günceldir.
 - Kullanıcı canlı tarayıcı ve mobil kabulünü açıkça istedi; eski çalıştırmama yasağı bu kapsamda kalktı. Yalnız paketli headless Chromium, ≤2 worker ve düzgün kapanış. Viewport emülasyonu fiziksel telefon kabulü sayılmaz. Üretimde gerçek müşteri/sipariş/talep/ödeme mutasyonu yapılmaz. Diğer üç Flow klibi Google doğrulamasında; kalan bütçe 60, yeni kredi sorulmaz.
 - Task 157 yayın/kabul tamam: kaynak `9b7b505`, 1171 unit, 28 canlı Chromium etkileşim kontrolü ve dört genişlikte görsel/axe kabulü. Son makbuz docs/referans/yayin-v6-20261101.json. Omni 1.1 Flash ilk/son kare B→C taslağı hazır; 720p/8 sn./16:9/x1 için ekranda 12 kredi görüldü, üç geçiş 36 ve mevcut 60 sınırı içinde. Doğrulama engeli çözülmeden üretim gönderme; bu görevde ek harcama 0.
+
+## Güncel MD/hareket uyarlaması: Task 158
+
+[Profesyonel web](../profesyonel-web-sitesi-yeni-nesil/SKILL.md), [Scroll hero](../scroll-hero-video-yeni-nesil/SKILL.md), [Sinematik siteler](../sinematik-siteler-yeni-nesil/SKILL.md) ve [UI/UX Pro Max](../ui-ux-pro-max/SKILL.md) proje yerel birlikte kullanılır. [Kaynak/istisna kaydı](../../../docs/referans/yeni-nesil-md-uyarlamalari-20261101.md) v6'yı, mevcut 21st/Motion bağlantısını ve resmi shadcn CLI politikasını korur; global kurulum veya AGENTS overwrite yapılmaz.
+
+Ortak action/editorial spring'leri, bir kez ve içeriği gizlemeden açılış, küçük hover/tap ve 8 px tabanlı 32/48/64/96 aralıkları Task 158 kapsamındadır. Lineer sahne, statik reduced-motion posteri ve gerçek eylemler korunur. [Task 158](../../../docs/tasks/158-yeni-nesil-md-kitleri.md) test/yayın kabulü bekliyor; önceki Task 157 sonuçları yeni değişikliklerin kabulü değildir.
+
+Omni Chrome Use burada mevcut CUA/browser ile arayüz otomasyonu yaklaşımıdır; kurulu ayrı eklenti varsayılmaz, Omni 1.1 Flash modeliyle karıştırılmaz. Örnekler yeni Imagen/model/sağlayıcı/kredi yetkisi vermez; güncel harcama/kalan kaydı her çağrı öncesi okunur.

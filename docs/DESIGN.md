@@ -60,6 +60,14 @@ Kullanıcının paylaştığı `web-site-yetenegi-kiti.pdf`, sahne → kısa vid
 
 Mevcut Next.js + TypeScript + motion ve denetlenen canvas/kare dizisi kullanılır; ikinci video-seeking motoru eklenmez. PDF'deki global Claude skill kurulumu, GPT/Kling sağlayıcı örnekleri, tüm videoyu `preload="auto"` ile önden indirme ve 300–400vh tam ekran pin doğrudan alınmaz. Özellikle örnekte azaltılmış harekette `video.play()` çağrısı vardır; v6'da bu davranış **statik posterle değiştirilir**.
 
+## Yeni nesil MD'lerin proje uygulaması (Task 158)
+
+Dört yerel rehber: [Profesyonel web](../.agents/skills/profesyonel-web-sitesi-yeni-nesil/SKILL.md), [Scroll hero](../.agents/skills/scroll-hero-video-yeni-nesil/SKILL.md), [Sinematik siteler](../.agents/skills/sinematik-siteler-yeni-nesil/SKILL.md), [UI/UX Pro Max](../.agents/skills/ui-ux-pro-max/SKILL.md). [Kaynak/istisna tablosu](referans/yeni-nesil-md-uyarlamalari-20261101.md), kullanıcının reddettiği koyu/glass/autoplay yönünü geri getirmeden bu sözleşmeye uyarlanan ilkeleri kaydeder.
+
+Task 158'de ortak action/editorial spring'leri, SSR görünür içeriğin yalnız bir kez 8 px/0,96→1 açılış hareketi, küçük hover/tap ve ana aralıklarda 32/48/64/96 px tokenları kullanılır. Görsel/CTA yüklenmesini bekleten gizleme, filtre animasyonu, büyük süs hareketi veya video zamanına spring eklenmez. Sade modda hareket durur, içerik ve poster kalır. Kabul ve yayın henüz [Task 158](tasks/158-yeni-nesil-md-kitleri.md) içinde tamamlanmış sayılmaz.
+
+Bu MD'lerde **Omni Chrome Use** tarayıcı otomasyonu yaklaşımıdır; ayrı kurulu araç varsayılmaz. **Omni 1.1 Flash** modelinden, model ücretinden ve medya kabulünden ayrıdır. Mevcut CUA/browser erişimi ve geçerli üretim kapsamı esas alınır; yeni Imagen/sağlayıcı/ücretsiz hak veya kredi yetkisi çıkarılmaz.
+
 ## İşlev ve içerik sınırları
 
 - Resmî logo/slogan, ürün adı/ambalajı ve onaylı fotoğraf geometrisi korunur. İkinci tone mapping/ACES uygulanmaz.
@@ -76,4 +84,4 @@ Kullanıcının 1 Kasım 2026 tarihli açık isteği canlı siteyi tarayıcıda 
 - Azaltılmış hareket, JavaScript/medya yükleme hatası, kısa ekran ve mobil menü durumlarında temel içerik erişilir kalır. Klavye odak halkası ve modal Escape/odak dönüşü korunur; dokunma hedefleri en az 44 px hedefler.
 - Unit, lint, typecheck, medya kapıları ve production build çalışır. Canlı HTTP/API ve gerçek browser sonucu ayrı kanıt olarak kaydedilir. Testin yazılmış olması çalıştığı veya geçtiği anlamına gelmez.
 - Ekran boyutu emülasyonu fiziksel telefon kabulü değildir. Fiziksel cihaz, gerçek ödeme/e-posta/CRM ve uzak migration yapılmadıysa açık bırakılır.
-- Güncel çalışma ve kanıtlar [Task 157](tasks/157-tam-tasarim-ve-canli-kabul.md) içindedir. Bu tasarım sözleşmesi test/yayın sonucu veya görsel kullanıcı kabulü yerine geçmez.
+- V6'nın önceki yayın/tarayıcı kanıtı [Task 157](tasks/157-tam-tasarim-ve-canli-kabul.md), güncel MD/hareket uygulaması ve bekleyen kabul [Task 158](tasks/158-yeni-nesil-md-kitleri.md) içindedir. Bu tasarım sözleşmesi test/yayın sonucu veya görsel kullanıcı kabulü yerine geçmez.

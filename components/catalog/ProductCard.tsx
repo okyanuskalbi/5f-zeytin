@@ -5,7 +5,7 @@ import * as motion from "motion/react-m";
 import { V3Picture } from "@/components/media/V3Picture";
 import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
 import type { V3Image } from "@/lib/media/v3-assets";
-import { motionTokens } from "@/lib/ui-motion";
+import { motionTokens, springs } from "@/lib/ui-motion";
 import type { ProductVariant } from "@/types/catalog";
 import { getCategoryLabel } from "@/lib/catalog/category-label";
 import { AddToCart } from "./AddToCart";
@@ -22,9 +22,9 @@ export function ProductCard({ product, image, scene, index = 0, featured = true 
   const openDetail = useProductDetail();
   const categoryLabel = getCategoryLabel(product, "card");
   return <motion.div className={styles.reveal} data-product-reveal="" data-reduced-motion={reduced}
-    initial={false} whileInView={reduced ? undefined : { y: [motionTokens.products.distance, 0], opacity: [0, 1] }}
+    initial={false} whileInView={reduced ? undefined : { y: [motionTokens.entrance.distance, 0], opacity: [motionTokens.entrance.opacity, 1] }}
     viewport={{ once: true, amount: 0.15 }}
-    transition={{ duration: reduced ? 0 : motionTokens.products.duration, delay: reduced ? 0 : index * motionTokens.products.stagger, ease: motionTokens.products.ease }}>
+    transition={reduced ? { duration: 0 } : { ...springs.editorial, delay: Math.min(index, 2) * motionTokens.entrance.stagger }}>
     <article className={styles.card} aria-labelledby={`${id}-name`} data-product-id={product.id} data-category={product.category} data-size={product.weight}>
       {scene && <div data-product-scene="" aria-hidden="true" className={styles.scene}><V3Picture image={scene} sizes="(max-width: 767px) 50vw, 33vw" decorative /></div>}
       {featured && index === 0 && <span className={styles.badge}>KOLEKSİYONDAN</span>}

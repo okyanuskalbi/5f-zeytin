@@ -1,6 +1,6 @@
 .addArea { min-width: 0; }
 .add { appearance: none; display: inline-flex; align-items: center; justify-content: center; width: 100%; min-height: 44px; padding: 11px 12px; border: 1px solid transparent; border-radius: 999px; background: var(--altin); color: var(--ink); font-size: 14px; font-weight: 700; line-height: 1.4; cursor: pointer; opacity: 1; }
-.add:disabled { opacity: 1; -webkit-text-fill-color: var(--ink); cursor: not-allowed; }
+.add:disabled { opacity: 1; -webkit-text-fill-color: var(--ink); cursor: not-allowed; transform: none !important; }
 .add:focus-visible { outline: 2px solid var(--altin-2); outline-offset: 4px; }
 .add:not(:disabled):active { background: var(--altin-2); }
 .add[data-variant="ghost"] { background: transparent; border-color: var(--altin); color: var(--sut); -webkit-text-fill-color: var(--sut); }
@@ -14,5 +14,5 @@
   .add { padding-inline: 18px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .add { transition: none; }
+  .add { transition: none; transform: none !important; }
 }

@@ -15,7 +15,8 @@
     "tokens": [
       "components/landing/RenewalLanding.module.css",
       "app/globals.css",
-      "components/account/CustomerPanel.module.css"
+      "components/account/CustomerPanel.module.css",
+      "lib/ui-motion.ts"
     ],
     "components": [
       "components/ui"
@@ -29,7 +30,13 @@
       "docs/DESIGN.md",
       "PRODUCT.md",
       "AGENTS.md",
-      "docs/tasks/157-tam-tasarim-ve-canli-kabul.md"
+      "docs/tasks/157-tam-tasarim-ve-canli-kabul.md",
+      "docs/tasks/158-yeni-nesil-md-kitleri.md",
+      "docs/referans/yeni-nesil-md-uyarlamalari-20261101.md",
+      ".agents/skills/profesyonel-web-sitesi-yeni-nesil/SKILL.md",
+      ".agents/skills/scroll-hero-video-yeni-nesil/SKILL.md",
+      ".agents/skills/sinematik-siteler-yeni-nesil/SKILL.md",
+      ".agents/skills/ui-ux-pro-max/SKILL.md"
     ]
   },
   "design": {
@@ -82,6 +89,22 @@
       "--space-unit": {
         "value": "8px",
         "source": "app/globals.css"
+      },
+      "--afina-space-stack": {
+        "value": "calc(var(--space-unit) * 4)",
+        "source": "components/landing/RenewalLanding.module.css"
+      },
+      "--afina-space-gutter": {
+        "value": "calc(var(--space-unit) * 6)",
+        "source": "components/landing/RenewalLanding.module.css"
+      },
+      "--afina-space-wide": {
+        "value": "calc(var(--space-unit) * 8)",
+        "source": "components/landing/RenewalLanding.module.css"
+      },
+      "--afina-space-section": {
+        "value": "calc(var(--space-unit) * 12)",
+        "source": "components/landing/RenewalLanding.module.css"
       }
     },
     "radius": {
@@ -111,6 +134,14 @@
       "--duration-fast": {
         "value": "150ms",
         "source": "app/globals.css"
+      },
+      "actionSpring": {
+        "value": "spring stiffness 280, damping 26; hover -2px, tap .98; reduced motion disables transform",
+        "source": "lib/ui-motion.ts"
+      },
+      "editorialSpring": {
+        "value": "spring stiffness 160, damping 26; once entrance 8px, opacity .96 to 1, stagger .08s",
+        "source": "lib/ui-motion.ts"
       }
     },
     "density": "spacious"
@@ -153,7 +184,8 @@
       "Official slogan, verified content, existing SKU/price/stock authority and real DOM CTAs",
       "Approved Google Flow A→B media; native scroll and static reduced-motion/data-saver fallback",
       "Desktop/mobile browser checks only in bundled headless Chromium with at most two test workers and graceful cleanup",
-      "Keep media generation cost and acceptance separate from layout or deployment completion"
+      "Keep media generation cost and acceptance separate from layout or deployment completion",
+      "Project-local four MD skills; visible SSR, once entrance, bounded interaction springs; linear scrub remains unsprung"
     ],
     "avoid": [
       "Centered dark-scrim hero, glass navigation, backdrop blur cards or long full-screen pinned intro",
@@ -192,6 +224,11 @@
       "source": "User rejected current hero, requested full design-doc replacement, live browser/mobile checks, Google Flow/Omni and Web Site Yeteneği Kiti",
       "decision": "v6 Üretici Atlası: paper editorial canvas, solid light header, asymmetric split hero with accepted bright A→B visual in a separate frame, natural mobile stack, light factory/product sections and one olive B2B block. Preserve original branding, commerce and source-backed content. Static reduced-motion fallback; no autoplay or long full-screen pin. Latest browser authorization supersedes the old prohibition for this task.",
       "status": "current"
+    },
+    {
+      "date": "2026-11-01",
+      "source": "User four new-generation Markdown guides, Task 158",
+      "decision": "Adapt guides as four project-local skills with shared spacing and Motion interactions. Retrieved 21st source 26725. Preserve v6, approved Flow media and current credit ledger; Omni Chrome Use refers to automation, separately from Omni 1.1 Flash model."
     }
   ],
   "evidence": [
@@ -248,5 +285,5 @@
       "source": "lib/media/cinematic-hero.json"
     }
   ],
-  "generatedAt": "2026-10-31T21:45:58.617Z"
+  "generatedAt": "2026-11-01T09:53:05.422012+00:00"
 }

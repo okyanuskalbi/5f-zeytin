@@ -7,7 +7,7 @@
 - Ana slogan “Kökü toprakta. Yeri sofrada.”; güncel v6 Üretici Atlası sözleşmesi `docs/DESIGN.md` içinde. Kullanıcı koyu ortalanmış hero/cam menüyü reddetti; açık, asimetrik metin/görsel kompozisyonu esas alınır. Altın zeytin dalı + el logosu ve `docs/visual-prompts.md` korunur.
 - Yeni üretim yalnız Google Flow; eski P01–P12/Atlas görevleri tarihsel kayıttır. Görseller temsili ve adaydır; kullanıcı onayı olmadan sitede kullanılmaz, ücretli videoya geçilmez.
 - Supabase proje/org, ödeme, e-posta, kargo, indirim/süreler, gerçek ürün/fiyat/logo ve Vercel/domain kararları açıktır; kendin seçme. Ayrıntı ve bağımlılıklar `docs/PLAN.md` içinde.
-- 1 Kasım 2026 kullanıcı devri: Codex planlama, görev oluşturma, uygulama ve denetimi birlikte yürütür. Claude dosyaları ve eski kabul kanıtları tarihsel kaynak olarak korunur. Güncel tasarım/tarayıcı kabulü Task 157; Task 151/156 önceki uygulama ve yayın tarihçesidir.
+- 1 Kasım 2026 kullanıcı devri: Codex planlama, görev oluşturma, uygulama ve denetimi birlikte yürütür. Claude dosyaları ve eski kabul kanıtları tarihsel kaynak olarak korunur. Güncel MD/hareket uyarlaması Task 158; kabul/yayın sürüyor. Task 157 v6 tasarım/tarayıcı kanıtı, Task 151/156 önceki uygulama ve yayın tarihçesidir.
 
 # Rol: Codex / proje yürütücüsü
 
@@ -80,3 +80,11 @@ Yeniden kurgu sırasında (KURUMSAL 050–063, ZEYTİN 090–096 ve 100–106) b
 - Kullanıcının seçilen PDF'yi uygulama isteğiyle Task 156'da kabul edilen ilk A→B klibinin türevleri açılışa bağlandı ve API ile yayınlandı. 1280/960, 12 fps, 95'er kare; aynı başlangıçtan AVIF/WebP poster. Kaynak/çıktı kapısı scripts/check-cinematic-hero.mjs ve lib/media/cinematic-hero.json. Diğer üç klip bu yayında yok, ek kredi harcaması 0; son makbuz docs/referans/yayin-sinematik-20261101.json.
 - Test tarayıcısı yalnız paketli headless Chromium, worker ≤2. /Applications/Google Chrome.app test/Lighthouse için açılmaz; düzgün kapanış zorunlu. Google Flow üretim oturumu bu test kısıtından ayrıdır.
 - Task 157 son yayın: v6 Üretici Atlası, API kaynağı `9b7b505`, 1171 unit + 28 canlı headless etkileşim kontrolü; 1440/768/390/320 px kabulü geçti. Son kanıt docs/referans/yayin-v6-20261101.json. Google Flow/Omni B→C taslağı 12 kredi/8 sn./720p/x1 ile hazır; doğrulama engeli sürüyor, ek harcama 0, mevcut kalan 60 sınırı değişmedi.
+
+## Yeni nesil MD uyarlaması (Task 158)
+
+Bu projede [Profesyonel web](.agents/skills/profesyonel-web-sitesi-yeni-nesil/SKILL.md), [Scroll hero](.agents/skills/scroll-hero-video-yeni-nesil/SKILL.md), [Sinematik siteler](.agents/skills/sinematik-siteler-yeni-nesil/SKILL.md) ve [UI/UX Pro Max](.agents/skills/ui-ux-pro-max/SKILL.md) birlikte kullanılır. Kaynak SHA'ları ve v6 istisnaları [uyarlama kaydındadır](docs/referans/yeni-nesil-md-uyarlamalari-20261101.md); global skill/MCP/anahtar kurulumu yapılmaz.
+
+Task 158 ortak `lib/ui-motion.ts` action/editorial spring'leriyle kısa, bir kez açılış ve küçük hover/tap tepkilerini; ana bölüm aralıklarında 8 px tabanlı 32/48/64/96 tokenlarını uygular. SSR içerik/CTA görünür, reduced-motion posteri ve lineer scrub korunur. Bu task'ın test/yayın kabulü [görev kaydında](docs/tasks/158-yeni-nesil-md-kitleri.md) bekliyor; Task 157 kanıtı yeni kabul yerine geçmez.
+
+MD'lerdeki **Omni Chrome Use**, mevcut CUA/browser araçlarıyla oturumlu arayüz otomasyonu yaklaşımıdır; ayrı eklenti kurulu varsayılmaz ve **Omni 1.1 Flash** model adıyla karıştırılmaz. Örnek komutlar yeni model, sağlayıcı, hesap veya kredi yetkisi vermez; her üretim öncesi güncel provenans/kalan sınır okunur.
