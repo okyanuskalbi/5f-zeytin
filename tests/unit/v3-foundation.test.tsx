@@ -78,9 +78,10 @@ it("keeps matching SSR preloads and all hero sources within byte budgets", async
     "(max-width: 767px) and (orientation: portrait)", "(min-width: 768px), (orientation: landscape)",
   ]);
   expect(preloads.every(link => link.getAttribute("fetchpriority") === "high")).toBe(true);
-  const photo = doc.querySelector("[data-frame-sequence]")!;
+  const photo = doc.querySelector("[data-cinematic-film]")!;
   expect(photo.querySelector("img")?.getAttribute("fetchPriority")).toBe("high");
   expect(photo.querySelector("source")?.getAttribute("media")).toBe("(max-width: 767px) and (orientation: portrait)");
-  expect(statSync("public/images/hero/optimized/desktop.avif").size).toBeLessThanOrEqual(180000);
-  expect(statSync("public/images/hero/optimized/mobile.avif").size).toBeLessThanOrEqual(120000);
+  expect(photo.querySelector("video")?.hasAttribute("src")).toBe(false);
+  expect(statSync("public/frames/afina-agac-dal/poster-desktop.avif").size).toBeLessThanOrEqual(90000);
+  expect(statSync("public/frames/afina-agac-dal/poster-mobile.avif").size).toBeLessThanOrEqual(90000);
 });

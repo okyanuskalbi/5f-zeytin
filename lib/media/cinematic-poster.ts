@@ -16,3 +16,7 @@ export const editorialPoster = {
   mobileSrcSet: cinematicPoster.desktopSrcSet,
   mobileWebpSrcSet: cinematicPoster.desktopWebpSrcSet,
 };
+
+// Native full-bleed film uses the complete first frame on every screen, so
+// CSS can keep the same 70% mobile focal point in both poster and movie.
+export const cinematicFilmPoster = editorialPoster;

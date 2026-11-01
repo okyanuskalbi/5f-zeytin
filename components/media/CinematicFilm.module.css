@@ -1,0 +1,14 @@
+.film { position: absolute; inset: 0; }
+.poster, .poster img, .video { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.poster img, .video { object-fit: cover; object-position: center; }
+.video { opacity: 0; pointer-events: none; }
+.film[data-show-film="true"] .video { opacity: 1; }
+.controls { position: absolute; z-index: 20; right: max(24px, env(safe-area-inset-right)); bottom: max(24px, env(safe-area-inset-bottom)); display: flex; align-items: center; gap: 12px; max-width: calc(100% - 48px); }
+.controls button { display: inline-flex; align-items: center; justify-content: center; flex: none; gap: 8px; min-width: 44px; min-height: 44px; padding: 10px 14px; border: 1px solid color-mix(in srgb, var(--afina-paper) 50%, transparent); border-radius: 999px; background: color-mix(in srgb, var(--afina-olive) 86%, transparent); color: var(--afina-paper); font-size: 12px; line-height: 1.4; cursor: pointer; }
+.controls button:hover { background: var(--afina-olive); }
+.controls button:focus-visible { outline: 2px solid var(--afina-paper); outline-offset: 4px; }
+.controls button:disabled { cursor: default; }
+.controls p { margin: 0; max-width: 22ch; padding: 8px 10px; background: color-mix(in srgb, var(--afina-olive) 86%, transparent); color: var(--afina-paper); font-size: 11px; line-height: 1.5; }
+@media (max-width: 400px) { .controls { right: 20px; bottom: max(20px, env(safe-area-inset-bottom)); flex-wrap: wrap; justify-content: end; } }
+@media (max-width: 767px) and (orientation: portrait) { .poster img, .video { object-position: 70% center; } }
+@media (prefers-reduced-motion: reduce) { .video { display: none; } }

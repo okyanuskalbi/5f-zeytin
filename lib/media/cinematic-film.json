@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "authorization": "user-2026-11-01-cinematic-flow-hero-request",
+  "provider": "Google Flow",
+  "source": {
+    "file": "output/flow-keyframes/A-B-ilk-deneme.mp4",
+    "sha256": "be77f66a14e418791093fe53937598204313a99f6368204f1fbf6ebaacf14171",
+    "userAccepted": true,
+    "width": 1280,
+    "height": 720,
+    "fps": 24,
+    "videoFrames": 190,
+    "videoDurationSeconds": 7.916667,
+    "containerDurationSeconds": 7.93
+  },
+  "derivation": {
+    "codec": "h264",
+    "pixelFormat": "yuv420p",
+    "crf": 27,
+    "preset": "slow",
+    "audio": false,
+    "fastStart": true,
+    "crop": false,
+    "toneMapping": false
+  },
+  "output": {
+    "file": "/videos/afina-agac-dal.mp4",
+    "sha256": "5ff03b1b7a852d94f32fbb37487beaf1264c9e83d3e452aa0ead257d3cfebb3a",
+    "bytes": 2537380,
+    "width": 1280,
+    "height": 720,
+    "fps": 24,
+    "frames": 190,
+    "durationSeconds": 7.916667
+  }
+}

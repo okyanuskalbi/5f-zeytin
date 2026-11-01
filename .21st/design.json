@@ -2,7 +2,7 @@
   "version": 1,
   "project": {
     "name": "afina-zeytin",
-    "productType": "Olive producer editorial landing: production trust 65%, premium retail and B2B commerce 35%",
+    "productType": "Olive producer with cinematic Google Flow opening; production trust 65%, premium retail and B2B commerce 35%",
     "stack": [
       "nextjs",
       "react",
@@ -24,7 +24,8 @@
     "assets": [
       "public/brand",
       "public/images",
-      "public/frames/afina-agac-dal"
+      "public/frames/afina-agac-dal",
+      "public/videos"
     ],
     "instructions": [
       "docs/DESIGN.md",
@@ -36,11 +37,12 @@
       ".agents/skills/profesyonel-web-sitesi-yeni-nesil/SKILL.md",
       ".agents/skills/scroll-hero-video-yeni-nesil/SKILL.md",
       ".agents/skills/sinematik-siteler-yeni-nesil/SKILL.md",
-      ".agents/skills/ui-ux-pro-max/SKILL.md"
+      ".agents/skills/ui-ux-pro-max/SKILL.md",
+      "docs/tasks/159-flow-sinematik-hero.md"
     ]
   },
   "design": {
-    "colorMode": "light",
+    "colorMode": "mixed",
     "colors": {
       "--afina-olive": {
         "value": "#172B21",
@@ -169,8 +171,9 @@
       "textarea"
     ],
     "patterns": [
-      "Solid light navigation with original logo",
-      "Asymmetric editorial split hero with separate readable copy and framed native-scroll media",
+      "Solid original light navigation outside the film",
+      "Full-bleed accepted Flow film with left-bottom anchored readable copy and real DOM CTAs",
+      "One silent native-video pass with visible pause/play/replay and static preference/error fallback",
       "Light product shelf with real detail and cart actions",
       "One olive B2B enquiry section",
       "Source-backed FAQ and real contact/support links"
@@ -178,21 +181,23 @@
   },
   "constraints": {
     "must": [
-      "Use docs/DESIGN.md v6 Üretici Atlası as the single active visual contract",
-      "Warm paper canvas, olive ink, matte champagne, Fraunces/Figtree and original logo",
-      "Production/corporate trust approximately 65%; products/commerce approximately 35%",
-      "Official slogan, verified content, existing SKU/price/stock authority and real DOM CTAs",
-      "Approved Google Flow A→B media; native scroll and static reduced-motion/data-saver fallback",
+      "Use docs/DESIGN.md v7 Zeytinin İçinden as the single active visual contract",
+      "Full-bleed viewport accepted Flow film, left-bottom official slogan, genuine product and corporate CTA links",
+      "Original opaque paper navigation outside the film; Fraunces/Figtree and original brand assets",
+      "Approved source-derived silent native MP4; one pass, no fake loop as A/B differ, visible pause/play/replay controls",
+      "Visible SSR poster/H1/CTAs; static reduced-motion/saveData/blocked/error fallback; pause hidden/offscreen and preserve manual pause",
+      "Keep production-first body approximately 65% corporate and 35% commerce, existing SKU/price/stock authority and real flows",
+      "Motion/react only for new animation APIs; shared bounded transform/opacity tokens; no scroll currentTime engine",
       "Desktop/mobile browser checks only in bundled headless Chromium with at most two test workers and graceful cleanup",
-      "Keep media generation cost and acceptance separate from layout or deployment completion",
-      "Project-local four MD skills; visible SSR, once entrance, bounded interaction springs; linear scrub remains unsprung"
+      "Keep media cost/source approval and new test/deploy acceptance separate; no new paid production in this task"
     ],
     "avoid": [
-      "Centered dark-scrim hero, glass navigation, backdrop blur cards or long full-screen pinned intro",
-      "Autoplay loops, reduced-motion video.play(), scroll interception or preloader-hidden content",
-      "New fonts, decorative gold glow, fake popularity badges, invented statistics/reviews/capacity/certification",
-      "Invented stock/prices/SKU/contact channels or fake checkout/CRM success",
-      "Paid new models or provider fallback outside the user-authorized remaining transition scope",
+      "V6 split/frame-only hero, organic media window, hero product card or a static poster presented as playing film",
+      "Centered uniformly dark hero clone, glass navigation, demo fonts/nav/content, hidden SSR title or loader-gated CTA",
+      "Autoplay loops or autoplay in reduced-motion/saveData/blocked states; restarting after user pause or film end",
+      "Long 300–400vh pin, scroll interception, video currentTime seeking from scroll or spring on playback time",
+      "New fonts, decorative gold glow, invented statistics/reviews/capacity/certification or fake checkout/CRM success",
+      "Unapproved media, new provider/model/paid generation or global MCP/key setup inferred from guide examples",
       "Treating mobile viewport emulation as physical-device acceptance"
     ]
   },
@@ -205,7 +210,8 @@
     {
       "date": "2026-11-01",
       "source": "User explicitly requested 21st and Google Flow",
-      "decision": "Adapt retrieved 21st 9701,25310,35258. Use existing canvas engine. Google Flow generation requires approved first/last frames and capped credits."
+      "decision": "Adapt retrieved 21st 9701,25310,35258. Use existing canvas engine. Google Flow generation requires approved first/last frames and capped credits.",
+      "status": "historical-canvas-composition-before-task-159-native-film"
     },
     {
       "date": "2026-11-01",
@@ -223,12 +229,19 @@
       "date": "2026-11-01",
       "source": "User rejected current hero, requested full design-doc replacement, live browser/mobile checks, Google Flow/Omni and Web Site Yeteneği Kiti",
       "decision": "v6 Üretici Atlası: paper editorial canvas, solid light header, asymmetric split hero with accepted bright A→B visual in a separate frame, natural mobile stack, light factory/product sections and one olive B2B block. Preserve original branding, commerce and source-backed content. Static reduced-motion fallback; no autoplay or long full-screen pin. Latest browser authorization supersedes the old prohibition for this task.",
-      "status": "current"
+      "status": "superseded-by-task-159-cinematic-film-request"
     },
     {
       "date": "2026-11-01",
       "source": "User four new-generation Markdown guides, Task 158",
-      "decision": "Adapt guides as four project-local skills with shared spacing and Motion interactions. Retrieved 21st source 26725. Preserve v6, approved Flow media and current credit ledger; Omni Chrome Use refers to automation, separately from Omni 1.1 Flash model."
+      "decision": "Adapt guides as four project-local skills with shared spacing and Motion interactions. Retrieved 21st source 26725. Preserve v6, approved Flow media and current credit ledger; Omni Chrome Use refers to automation, separately from Omni 1.1 Flash model.",
+      "status": "historical-v6-normalization-updated-by-task-159"
+    },
+    {
+      "date": "2026-11-01",
+      "source": "User: Hero hâlâ aynı görünüyor; use Google Flow videos for a more cinematic opening, Task 159",
+      "decision": "v7 Zeytinin İçinden replaces split/frame-only and blanket no-autoplay preference for the opening. Full-bleed accepted A→B silent MP4 plays once with visible pause/play/replay, official copy anchored left-bottom and real DOM CTAs. Keep opaque original paper nav and production-first body. Static reduced-motion/saveData/blocked/error fallback, pause hidden/offscreen. Adapt 21st 12200 composition only; no demo media/fonts/nav/hidden content/framer-motion. No new paid production.",
+      "status": "current"
     }
   ],
   "evidence": [
@@ -269,10 +282,6 @@
       "source": "package.json"
     },
     {
-      "fact": "active-design:v6-uretici-atlasi",
-      "source": "docs/DESIGN.md"
-    },
-    {
       "fact": "historical-v4-v5-design-archived",
       "source": "docs/referans/DESIGN-v5-history-20261101.md"
     },
@@ -283,6 +292,18 @@
     {
       "fact": "accepted-flow-media-source-and-derivatives",
       "source": "lib/media/cinematic-hero.json"
+    },
+    {
+      "fact": "active-design:v7-zeytinin-icinden",
+      "source": "docs/DESIGN.md"
+    },
+    {
+      "fact": "historical-v6-design-archived-byte-identically",
+      "source": "docs/referans/DESIGN-v6-history-20261101.md"
+    },
+    {
+      "fact": "user-correction-native-flow-film-onepass-and-poster-fallback",
+      "source": "docs/tasks/159-flow-sinematik-hero.md"
     }
   ],
   "generatedAt": "2026-11-01T09:53:05.422012+00:00"

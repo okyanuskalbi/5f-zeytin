@@ -4,10 +4,10 @@
 - **KURUMSAL** = AFİNA Şirketler Topluluğu, afina.com.tr, `okyanuskalbi/afina-kurumsal`, `~/PROJELER/AFINA-KURUMSAL`.
 - Tek landing içinde premium vitrin ve satın alma; admin’den girilecek en fazla 5–6 ürün. Üyelik, hesabım, sipariş geçmişi, sepet drawer ve sayfası, upsell/çapraz satış, kademeli indirim, ödeme callback’i, kupon, terk edilen sepet e-postası, admin ve kargo takibi kapsamda.
 - Next.js App Router + TypeScript + Tailwind 4 + shadcn/ui + Framer Motion (`motion`) + Supabase + Vercel. AI Studio kodu `_legacy/` içinde yalnız referans; yeni runtime’a doğrudan bağlanmaz.
-- Ana slogan “Kökü toprakta. Yeri sofrada.”; güncel v6 Üretici Atlası sözleşmesi `docs/DESIGN.md` içinde. Kullanıcı koyu ortalanmış hero/cam menüyü reddetti; açık, asimetrik metin/görsel kompozisyonu esas alınır. Altın zeytin dalı + el logosu ve `docs/visual-prompts.md` korunur.
+- Ana slogan “Kökü toprakta. Yeri sofrada.”; güncel v7 Zeytinin İçinden sözleşmesi `docs/DESIGN.md` içinde. Kullanıcı hero'nun aynı göründüğünü belirterek gerçek Flow filmiyle sinematik açılış istedi: tam geniş film, sol-alt metin, gerçek CTA ve filmin dışında opak menü. V6 split/frame-only tercihi bu son istekle değişti. Altın zeytin dalı + el logosu ve `docs/visual-prompts.md` korunur.
 - Yeni üretim yalnız Google Flow; eski P01–P12/Atlas görevleri tarihsel kayıttır. Görseller temsili ve adaydır; kullanıcı onayı olmadan sitede kullanılmaz, ücretli videoya geçilmez.
 - Supabase proje/org, ödeme, e-posta, kargo, indirim/süreler, gerçek ürün/fiyat/logo ve Vercel/domain kararları açıktır; kendin seçme. Ayrıntı ve bağımlılıklar `docs/PLAN.md` içinde.
-- 1 Kasım 2026 kullanıcı devri: Codex planlama, görev oluşturma, uygulama ve denetimi birlikte yürütür. Claude dosyaları ve eski kabul kanıtları tarihsel kaynak olarak korunur. Güncel MD/hareket uyarlaması ve yayın kabulü Task 158 tamamlandı. Task 157 v6 tasarım/tarayıcı kanıtı, Task 151/156 önceki uygulama ve yayın tarihçesidir.
+- 1 Kasım 2026 kullanıcı devri: Codex planlama, görev oluşturma, uygulama ve denetimi birlikte yürütür. Claude dosyaları ve eski kabul kanıtları tarihsel kaynak olarak korunur. Güncel çalışma Task 159 gerçek Flow filmiyle v7 açılıştır; kabul/yayın sürüyor. Task 157/158 önceki v6 uygulama ve yayın tarihçesidir.
 
 # Rol: Codex / proje yürütücüsü
 
@@ -88,3 +88,7 @@ Bu projede [Profesyonel web](.agents/skills/profesyonel-web-sitesi-yeni-nesil/SK
 Task 158 ortak `lib/ui-motion.ts` action/editorial spring'leriyle kısa, bir kez açılış ve küçük hover/tap tepkilerini; ana bölüm aralıklarında 8 px tabanlı 32/48/64/96 tokenlarını uygular. SSR içerik/CTA görünür, reduced-motion posteri ve lineer scrub korunur. [Görev kaydı](docs/tasks/158-yeni-nesil-md-kitleri.md) tamamlandı: kaynak `862c1be`, 1176 unit, 28 yerel + 28 canlı etkileşim kontrolü, dört genişlikte görsel/axe kabulü ve API READY. Son makbuz [yayin-kitler-20261101.json](docs/referans/yayin-kitler-20261101.json); yeni medya/kredi 0.
 
 MD'lerdeki **Omni Chrome Use**, mevcut CUA/browser araçlarıyla oturumlu arayüz otomasyonu yaklaşımıdır; ayrı eklenti kurulu varsayılmaz ve **Omni 1.1 Flash** model adıyla karıştırılmaz. Örnek komutlar yeni model, sağlayıcı, hesap veya kredi yetkisi vermez; her üretim öncesi güncel provenans/kalan sınır okunur.
+
+## Gerçek Flow filmiyle sinematik açılış (Task 159)
+
+Son kullanıcı düzeltmesi v6 split/kare-penceresi ve genel no-autoplay uygulama tercihini değiştirir. Normal modda kabul edilmiş A→B kaynağının sessiz H264/faststart türevi bir kez oynar, son karede kalır; görünür duraklat/oynat/yeniden oynat kontrolü vardır. Yeni animasyon importları `motion/react` üzerinden, yeni dependency yok. Kaydırma yalnız küçük film-kabuğu transformudur; video zamanını seek etmez, body kilidi veya 300vh pin eklenmez. Reduced-motion/saveData poster, gizli sekme/görünüm dışında durma ve kullanıcı pause kararı korunur. Yeni medya/kredi 0. Kaynak/output `lib/media/cinematic-film.json` ve yeni build kapısında; güncel kabul [Task 159](docs/tasks/159-flow-sinematik-hero.md) içinde kaydedilir.

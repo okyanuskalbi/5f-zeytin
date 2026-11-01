@@ -1,5 +1,7 @@
 # Yeni nesil dört MD'nin AFİNA uyarlaması
 
+**Tarihsel Task 158 kaydı:** kullanıcı sonrasında hero'nun hâlâ aynı göründüğünü belirterek gerçek Flow videosuyla sinematik açılış istedi. Aşağıdaki v6 split/frame-only/genel no-autoplay uygulama tercihleri [v7 tasarımı](../DESIGN.md) ve [Task 159](../tasks/159-flow-sinematik-hero.md) ile değişmiştir. Özgün kaynak hash'leri ve bütçe/güvenlik/medya kabul sınırları geçerlidir; dört normalize skill güncel v7'yi izler.
+
 1 Kasım 2026 kullanıcı isteği: paylaşılan dört MD'yi bu projede uygulamak. Dosyalar tasarım/uygulama girdisidir; içlerindeki global kurulum, anahtar, model, ücretli üretim ve yayın örnekleri bağımsız işlem yetkisi değildir. Mevcut [v6 Üretici Atlası](../DESIGN.md), kullanıcının koyu/ortalanmış hero ve cam menü reddi, marka gerçekleri ve mevcut servis sınırları korunur. Yeni çalışma [Task 158](../tasks/158-yeni-nesil-md-kitleri.md) içindedir.
 
 ## Kaynak envanteri

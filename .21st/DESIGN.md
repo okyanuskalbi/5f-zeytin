@@ -1,31 +1,23 @@
-# AFİNA ZEYTİN v6 — Üretici Atlası
+# AFİNA ZEYTİN v7 — Zeytinin İçinden
 
-Tek güncel tasarım sözleşmesi: [docs/DESIGN.md](../docs/DESIGN.md). Kullanıcı eski hero'yu beğenmedi ve tasarım belgelerinin bütünüyle yenilenmesini istedi. Eski tarifler [v5 tarihçesinde](../docs/referans/DESIGN-v5-history-20261101.md); uygulama için aktif yön değildir.
+Tek güncel sözleşme [docs/DESIGN.md](../docs/DESIGN.md), uygulama [Task 159](../docs/tasks/159-flow-sinematik-hero.md). Kullanıcı önceki hero'nun hâlâ aynı göründüğünü belirterek gerçek Google Flow filmiyle daha sinematik açılış istedi. Bu son düzeltme v6 split/çerçeveli/frame-only ve genel no-autoplay uygulama tercihlerini değiştirir. Önceki DESIGN.md [v6 tarihçesinde](../docs/referans/DESIGN-v6-history-20261101.md) değişmeden saklanır.
 
-## Görsel karar
+## Kompozisyon
 
-Üretim/kurumsal güven yaklaşık %65, ürün/alışveriş %35. Ana yüzey sıcak kâğıt `#F4F0E7`; zeytin mürekkebi `#172B21`, mat şampanya `#B6A078`, antrasit `#252725`. Yerel Fraunces/Figtree ve orijinal AFİNA logosu.
+- Orijinal opak kâğıt nav dışında, kenardan kenara viewport Flow filmi; eski iki sütun, organik pencere ve hero ürün kartı yok.
+- Sol-alt resmî slogan ve iki gerçek DOM CTA. Sağ/üst sahne aydınlık; yalnız gerekli yerel kontrast perdesi. Cam nav, merkezlenmiş koyu klon, demo menü ve yeni font yok.
+- Normal modda aynı kabul edilmiş A→B kaynaktan sessiz H264/faststart MP4 bir kez oynar; A/B farklı olduğundan loop yok. Son karede kalır, görünür pause/play/replay denetimi vardır.
+- Poster ve video mobil odak/kadrajı eşleşir. Kısa ekran/metin büyütmede kontroller ve CTA kesilmez; 300–400vh pin veya body/wheel kilidi yoktur.
+- Reduced-motion/saveData/engelli oynatma/hata: statik poster ve görünür SSR H1/CTA. Gizli sekme/ekran dışında durur; kullanıcının manuel duraklatması korunur.
 
-- Açık opak üst menü; açık zemine uygun orijinal logo. Cam kapsül ve blur yok.
-- Asimetrik split hero: solda resmî slogan/iki gerçek CTA, sağda karartılmamış onaylı Flow sahnesi. Başlık görselin üzerine bindirilmez.
-- Mobilde doğal başlık → açıklama/CTA → çerçeveli sahne/poster akışı. Uzun tam ekran pin, body/wheel kilidi ve autoplay yok.
-- Büyük gerçek tesis fotoğrafı, açık ürün rafı, gerçek fiyat/stok/sepet ve tek belirgin koyu zeytin B2B bloğu.
-- Yeni tasarım mevcut altı SKU, oturum/üyelik, ödeme ve veritabanı iş kurallarını değiştirmez.
+Orijinal logo, Fraunces/Figtree, `#172B21`/`#F4F0E7`/`#B6A078`/`#252725` ve hero altındaki %65 üretim / %35 alışveriş akışı korunur. Altı gerçek SKU/fiyat/stok, detay/sepet/üyelik ve B2B servis sözleşmeleri değişmez.
 
-## Medya ve kit uyarlaması
+## Kaynak ve hareket
 
-Kabul edilen Google Flow A→B klibinin kaynaklı türevleri kullanılır. Google Flow ve Omni kullanıcı tarafından istendi; mevcut erişim/model/ücret doğrulanmadan yeni çıktı veya ücretsiz üretim varsayılmaz. Kalan 60 kredi yalnız daha önce istenen diğer üç geçiş kapsamındadır; son kayıt Google doğrulama engelidir.
+21st **12200 PrismaHero**, yalnız tam geniş medya + overlay içerik kompozisyonu için uyarlanır. Demo medya, metin, font, nav, gizli içerik ve `framer-motion` importu taşınmaz. Yeni API `motion/react`; ortak tokenlar `lib/ui-motion.ts`. Küçük film-kabuğu parallax isteğe bağlıdır; `currentTime` scroll'a bağlanmaz, video zamanına spring eklenmez.
 
-Web Site Yeteneği Kiti'nin sahne → video → native-scroll yaklaşımı mevcut Next.js/motion/canvas motoruna uyarlanır. PDF'nin global skill kurulumu, Kling/GPT örnek sağlayıcıları, 300–400vh pin, preload-auto ve azaltılmış harekette otomatik video oynatımı alınmaz. Reduced-motion/veri tasarrufu/hata modunda statik poster; her zaman gerçek DOM metin/CTA.
+[Proje yerel dört MD](../docs/referans/yeni-nesil-md-uyarlamalari-20261101.md) kaynak ilkeleridir; normalize skill'ler Task 159'a göre güncellenir. Google Flow/Omni erişimi, model, ücret ve kabul ayrı doğrulanır. Omni Chrome Use tarayıcı otomasyonu yaklaşımıdır; Omni 1.1 Flash model adıyla karıştırılmaz. Yeni üretim, model, sağlayıcı, anahtar veya kredi yetkisi yoktur; mevcut kabul edilmiş klip kullanılır.
 
-## 21st kullanımı
+## Kabul sınırı
 
-Mevcut shadcn/Radix primitive'leri önce kullanılır; 21st kaynakları marka tokenlarına uyarlanır. Önceki 12005 cam video hero görsel yönü kullanıcı tarafından reddedildiği için yeni tasarım referansı değildir. 20038/39096 üyelik etkileşimleri, 25310 editoryal blok ve 35258 form gibi önceki kaynaklar yalnız mevcut işlevlerin kökenidir; kaynakların demo içeriği/medyası taşınmaz. V6 kompozisyon kanıtı Task 157, yeni mikro etkileşim kaynağı 26725 ve uyarlaması Task 158'de tutulur.
-
-## Yeni nesil dört MD (Task 158)
-
-[Kaynak ve proje uyarlamaları](../docs/referans/yeni-nesil-md-uyarlamalari-20261101.md) altındaki dört yerel skill birlikte kullanılır. Ana bölüm aralıkları 8 px tabanlı 32/48/64/96 tokenlarından, action/editorial spring'leri `lib/ui-motion.ts` üzerinden gelir. Bir kez açılış metni gizlemez; hover/tap küçük ve reduced-motion'da durağandır. Video/kare ilerlemesi lineer kalır. Omni Chrome Use tarayıcı otomasyonu yaklaşımıdır; Omni 1.1 Flash model adı değildir. Global kurulum, yeni sağlayıcı veya ücretli medya bu uyarlamanın parçası değildir.
-
-## Doğrulama sınırı
-
-Kullanıcı bu görevde canlı tarayıcı ve mobil ölçü kontrolünü açıkça istedi. Yalnız paketli headless Chromium, en fazla 2 test worker ve düzgün kapanış. Kullanıcının Chrome'u test için açılmaz. Mobil emülasyon fiziksel cihaz testi sayılmaz. Unit/build, gerçek browser, canlı HTTP/API, fiziksel cihaz ve ödeme/e-posta/CRM sonuçları ayrı kaydedilir. Belgesiz başarı veya sahte iddia yazılmaz.
+Task 159 test/yayın kabulü bekliyor. Yeni medya kapısı, gerçek video zamanı/denetimler/tek geçiş, poster/tercihler ve dört genişlikte görünürlük/taşma/klavye/ürün/sepet/üyelik doğrulanır. Yalnız paketli headless Chromium, en fazla iki worker ve düzgün kapanış. Fiziksel cihaz ve gerçek servis işlemleri emülasyon/HTTP kabulünden ayrıdır. Önceki Task 157/158 kanıtı yeni film kabulü değildir.
