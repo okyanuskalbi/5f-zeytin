@@ -1,6 +1,6 @@
 # AFİNA ZEYTİN v9 — Hasat Rotası
 
-Tek aktif sözleşme [docs/DESIGN.md](../docs/DESIGN.md), uygulama öncesi [BRIEF/PLAN/COPY](../docs/scrollcraft/builds/afina-v9/BRIEF.md) ve [Task161](../docs/tasks/161-pro-plan-tum-bolumler-21st-scroll-craft.md). Durum **UYGULANIYOR; final kabul/CI/API yayını/canlı UI BEKLİYOR**. Önceki v8 byte-identical [arşivdedir](../docs/referans/DESIGN-v8-history-20261101.md); onun179df851/READY/1200unit/74e2e kanıtları v9 kabulü değildir.
+Tek aktif sözleşme [docs/DESIGN.md](../docs/DESIGN.md), uygulama öncesi [BRIEF/PLAN/COPY](../docs/scrollcraft/builds/afina-v9/BRIEF.md) ve [Task161](../docs/tasks/161-pro-plan-tum-bolumler-21st-scroll-craft.md). Durum **TAMAMLANDI; CI SUCCESS/API READY/canlı UI kabulü doğrulandı**. Önceki v8 byte-identical [arşivdedir](../docs/referans/DESIGN-v8-history-20261101.md); onun179df851/READY/1200unit/74e2e kanıtları v9 kabulü değildir.
 
 ## Aktif marka ve kompozisyon
 
@@ -23,3 +23,8 @@ SKU→Teklife ekle ve üç gerçek segment→#teklif aynı context’i doldurur;
 ## Kabul
 
 Task161 final-source unit/lint/type/build, gerçek hareket/yedi sahne/geometri/galeri-sonürün-fokus/ürün→segment→taslak/URI, telefon360×640 dahil/reduced/noJS/saveData/axe/taşma/kaynak kontrolleri ve CI/API/live ayrı kaydedilir. Yerelbuild eskiyayın yeni kabul değildir. Test paketli headlessChromium≤2/düzgün kapanış; kullanıcının Chrome’u testte açılmaz. Fiziksel cihaz/gerçek hesap/ödeme/e-posta teslimi ayrıca kabul edilmedikçe yapılmış sayılmaz.
+
+
+## Task161 nihai kabul kaydı
+
+Kaynak `31f251cee2e8b83601fbc2cb3a376c979011f39f`, CI41317227401 SUCCESS; Vercel REST `dpl_46Scpv4MqVnjKxb1pYt1bjwSD4Hq` READY. Yerel ve canlı87e2e PASS+8responsive skip;1208unit,lint/typecheck/build PASS. Altı canlı boyutta axe/taşma/JS/HTTPkaynak hatası0. Canlı Lighthouse mobil100/masaüstü99, erişilebilirlik100; ayrı mobil DevTools98. Fiziksel telefon ve gerçek işlem/SMTP/WhatsApp kabulü yapılmadı. Kanıt: `docs/referans/qa-161-20261101.json`, `docs/referans/yayin-pro-v9-20261101.json` ve `docs/scrollcraft/builds/afina-v9/VERIFICATION.md`. Önceki v8/ilk v9 ölçümleri tarihçedir.

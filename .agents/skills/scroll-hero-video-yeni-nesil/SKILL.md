@@ -7,6 +7,9 @@ metadata:
   source_sha256: f01ca525ec395387ffddaa3be045197b515158ecb0405db2ebe0f77580b051a3
 ---
 
+Task161/v9 nihai kabul: runtime31f251c; CI41317227401 SUCCESS, API READY;1208unit ve yerel/canlı87e2e+8responsive skip. [QA161](../../../docs/referans/qa-161-20261101.json) esastır; kaynak SHA ve aşağıdaki tarihçe değişmez.
+
+
 # AFİNA için v9 Flow filmi ve lineer sahne ilerlemesi
 
 ## Durum, kaynak ve yetki

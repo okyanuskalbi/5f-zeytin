@@ -1,0 +1,48 @@
+{
+  "task": 161,
+  "design": "v9 Hasat Rotası",
+  "status": "READY",
+  "sourceCommit": "31f251cee2e8b83601fbc2cb3a376c979011f39f",
+  "ci": {
+    "runId": 41317227401,
+    "conclusion": "success"
+  },
+  "deployment": {
+    "id": "dpl_46Scpv4MqVnjKxb1pYt1bjwSD4Hq",
+    "url": "https://afina-zeytin-o0o6igc9b-afina1.vercel.app",
+    "state": "READY",
+    "aliases": [
+      "afinazeytin.com",
+      "afina-zeytin.vercel.app",
+      "www.afinazeytin.com",
+      "afina-zeytin-afina1.vercel.app"
+    ],
+    "teamId": "team_IWBdFFE1yrN06w4L0BQxK1Cz",
+    "projectId": "prj_4nr3Qeu05CcoMgDXt7MeAfnflyPp"
+  },
+  "sourceSnapshot": {
+    "files": 1687,
+    "bytes": 82584101
+  },
+  "production": "https://afinazeytin.com",
+  "liveAcceptance": "complete",
+  "qa": "docs/referans/qa-161-20261101.json",
+  "verification": "docs/scrollcraft/builds/afina-v9/VERIFICATION.md",
+  "previousV9": {
+    "sourceCommit": "0f1e4ec2a7d1454f3dcd6d9b1f3d14f8e592142f",
+    "ci": 41313687355,
+    "deploymentId": "dpl_2GwDbCwKS8CsHZLXVpP7ZxQm7Kw8",
+    "liveE2e": {
+      "passed": 85,
+      "skipped": 8,
+      "failed": 2
+    },
+    "supersededReason": "Initial SSR navigation logo plus opening payload polish."
+  },
+  "previousV8": {
+    "sourceCommit": "179df851686a34d09a1e965315dc5e902a30c362",
+    "deploymentId": "dpl_7EUijPZwcnzr9ML3nHMFRwUErZ89"
+  },
+  "newPaidMediaCredits": 0,
+  "verifiedAt": "2026-11-01T14:54:57.934Z"
+}

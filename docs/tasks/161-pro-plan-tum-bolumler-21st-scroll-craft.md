@@ -1,5 +1,12 @@
 # Task 161 — Yedi bölümde pro plan, 21st ve Scroll Craft
 
+## Nihai teslim
+
+Kaynak `31f251cee2e8b83601fbc2cb3a376c979011f39f`, CI41317227401 SUCCESS; Vercel REST `dpl_46Scpv4MqVnjKxb1pYt1bjwSD4Hq` READY. Yerel ve canlı87e2e PASS+8responsive skip;1208unit,lint/typecheck/build PASS. Altı canlı boyutta axe/taşma/JS/HTTPkaynak hatası0. Canlı Lighthouse mobil100/masaüstü99, erişilebilirlik100; ayrı mobil DevTools98. Fiziksel telefon ve gerçek işlem/SMTP/WhatsApp kabulü yapılmadı. Son mobil LCP1.326ms, masaüstü923ms; ayrı uygulamalı mobil throttling LCP1.019ms. Doğal iki döngü ve16,88sn UI kaydı alındı. Yeni ücretli medya0. [QA](../referans/qa-161-20261101.json), [yayın](../referans/yayin-pro-v9-20261101.json), [ayrıntılı kabul](../scrollcraft/builds/afina-v9/VERIFICATION.md).
+
+Aşağıdaki yapım/ilk ölçüm/bekleme notları tarihçedir; son durum yukarıdaki makbuzlardır.
+
+
 Kullanıcının yeni pro planı ve bütün bölümlerde 21st/Scroll Craft isteği uygulanır. Yaratıcı yön için önceki “sormadan devam et” devri sürer. Ek dosyanın örnek fiyat, ürün, iletişim ve Vite komutları gerçek proje verisi veya mimari kararı değildir.
 
 ## Kaynaklar ve kapsam
@@ -25,7 +32,7 @@ Son kaynak: 91 dosya/1208 unit PASS; lint ve typecheck PASS; medya kapıları ve
 
 Yalnız paketli headless Chromium, worker≤2; açılan browser ve Next süreçleri düzgün kapatılır. Fiziksel telefon, gerçek hesap/sipariş/ödeme, doğrudan e-posta teslimi ve WhatsApp aktivasyonu kabul edilmez.
 
-## Durum: UYGULANIYOR
+## Durum: TAMAMLANDI
 
 Main CI → Vercel REST API → canlı viewport/etkileşim/HTTP/hash/görsel kabulü bekleniyor. V8 sonuçları v9 kabulü yerine geçmez.
 

@@ -7,6 +7,9 @@ metadata:
   source_sha256: aa630ea06c077ae0c96444c602a7a46328300e4435e4adbc2c1a7a450a4ebac6
 ---
 
+Task161/v9 nihai kabul: runtime31f251c; CI41317227401 SUCCESS, API READY;1208unit ve yerel/canlı87e2e+8responsive skip. [QA161](../../../docs/referans/qa-161-20261101.json) esastır; kaynak SHA ve aşağıdaki tarihçe değişmez.
+
+
 # AFİNA için v9 sinematik Hasat Rotası
 
 ## Durum, kaynak ve yetki

@@ -2,7 +2,7 @@
 
 ## Aktif çalışma: v9 Hasat Rotası — Task 161
 
-[Task161](tasks/161-pro-plan-tum-bolumler-21st-scroll-craft.md) **UYGULANIYOR; kabul/yayın BEKLİYOR**. Kullanıcı [pro planı](referans/afina-zeytin-pro-plan-20261101.md) ve bütün bölümlerde 21st/Scroll Craft istedi. [DESIGN](DESIGN.md), uygulama öncesi [BRIEF](scrollcraft/builds/afina-v9/BRIEF.md), [PLAN](scrollcraft/builds/afina-v9/PLAN.md), [COPY](scrollcraft/builds/afina-v9/COPY.md) ve [kaynak provenansı](scrollcraft/builds/afina-v9/21ST-SOURCES.json) aktiftir. Önceki v8 sözleşmesi byte-identical [arşivdedir](referans/DESIGN-v8-history-20261101.md); eski görev/karar tabloları tarihçe olarak korunur.
+[Task161](tasks/161-pro-plan-tum-bolumler-21st-scroll-craft.md) **TAMAMLANDI; API READY ve canlı UI kabulü doğrulandı**. Kullanıcı [pro planı](referans/afina-zeytin-pro-plan-20261101.md) ve bütün bölümlerde 21st/Scroll Craft istedi. [DESIGN](DESIGN.md), uygulama öncesi [BRIEF](scrollcraft/builds/afina-v9/BRIEF.md), [PLAN](scrollcraft/builds/afina-v9/PLAN.md), [COPY](scrollcraft/builds/afina-v9/COPY.md) ve [kaynak provenansı](scrollcraft/builds/afina-v9/21ST-SOURCES.json) aktiftir. Önceki v8 sözleşmesi byte-identical [arşivdedir](referans/DESIGN-v8-history-20261101.md); eski görev/karar tabloları tarihçe olarak korunur.
 
 Yeni aktif #84CC16 marka/#EDE8DD taş/#1C1F1A mürekkep/#C89B3C yağ altını; küçük metin altını#735519; Fraunces/Inter. Orijinal logo/slogan/ambalaj, kaynaklı içerik, yaklaşık65/35 kurumsal/alışveriş ve ticari mimari korunur. Yedi sahne: hero32829 → altıSKU galeri24623 → tesis20023 → üç gerçek aşama bento1197 → üç B2B segment7262 → teklif35258 → SSS/iletişim31986. Nav26786/footer21474 dahil9seçili ana kaynak;1635 yalnız referans, ProductCard mevcut kullanım. DemoVite/veri/logo/WhatsApp örnekleri gerçek değildir.
 
@@ -306,3 +306,8 @@ Kullanıcı “hero hâlâ aynı görünüyor” diyerek Google Flow videolarıy
 Envanterde yalnız kabul edilmiş A→B var; tüm 190 görüntü karesi korunarak ses içermeyen 2.537.380 bayt H264/faststart türevi hazırlandı. Yeni ücretli üretim yok. Normal modda tek oynatım/son kare, duraklat/oynat/yeniden; reduced-motion/saveData poster ve isteksiz kaynak, görünürlükte durma, hata/blocked geri dönüşleri uygulanır. Diğer üç geçişin önceki doğrulama/bütçe kaydı değişmez.
 
 Task 159 tamam: kaynak `5a3b1f6840057febccca9f926ce1b231a052297e`, 88 dosya/1197 unit, lint/typecheck/build ve CI 41297597853 SUCCESS. REST API `dpl_CpxqnTKPasKQNCQ8zjWnaNu5NpsF` READY ve afinazeytin.com bağlı. 44 yerel + 44 canlı tarayıcı kontrolü, 1440/768/390/320 px görsel/axe ve 10 HTTP/hash kabulü geçti. Canlı doğal oynatım190 kare/7,916667 sn./sessiz/son kare doğrulandı; hareketli sayfa önizlemesi kaydedildi. [Makbuz](referans/yayin-film-v7-20261101.json), [QA](referans/qa-159-20261101.json). Fiziksel cihaz veya gerçek hesap/ödeme/talep mutasyonu değil; ek Flow kredisi 0.
+
+
+## Task161 nihai kabul kaydı
+
+Kaynak `31f251cee2e8b83601fbc2cb3a376c979011f39f`, CI41317227401 SUCCESS; Vercel REST `dpl_46Scpv4MqVnjKxb1pYt1bjwSD4Hq` READY. Yerel ve canlı87e2e PASS+8responsive skip;1208unit,lint/typecheck/build PASS. Altı canlı boyutta axe/taşma/JS/HTTPkaynak hatası0. Canlı Lighthouse mobil100/masaüstü99, erişilebilirlik100; ayrı mobil DevTools98. Fiziksel telefon ve gerçek işlem/SMTP/WhatsApp kabulü yapılmadı. Kanıt: `docs/referans/qa-161-20261101.json`, `docs/referans/yayin-pro-v9-20261101.json` ve `docs/scrollcraft/builds/afina-v9/VERIFICATION.md`. Önceki v8/ilk v9 ölçümleri tarihçedir.

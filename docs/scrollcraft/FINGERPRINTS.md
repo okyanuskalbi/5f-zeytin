@@ -32,3 +32,12 @@ Tarihsel plan notu (yayın öncesi yazıldı): V8 **Object journey**, `builds/af
 ## Yeni satır ekleme
 
 Gerçek yayın ve final-source kabulünden sonra satırın bütün sütunlarını, kesin commit/makbuz/görsel kanıtını ve hangi önceki boyutları paylaştığını yaz. Bu dosyadaki eski iki baseline satırı korunur. Henüz teslim edilmemiş çalışma shipped diye kaydedilmez.
+
+
+## V9 yayın kaydı
+
+| Build | Grammar | Nav treatment | Hero device | Act-sequence shape | Close pattern | Signature move | World | Kanıt |
+|---|---|---|---|---|---|---|---|---|
+| AFİNA v9 — Hasat Rotası, Task161 | Galeri/catalog, üretici güveni ve aynı SKU'nun işletme talebi | Orijinal marka/ticaret yollarıyla açık cam pill | Doğal5sn kabul edilmiş Flow loop; desktop bağımsız ön dal parallax, statik SSR slogan; telefon doğal fotoğraf/metin | Doğal hero → tek lineer raf zirvesi → tesis parallax → üç aşama bento → segment/aynı talep bağlamı → native SSS/adres/footer | Gerçek adres/mağaza ve özgün marka/legal; önceki sürümlerle ortak, fark puanı değil | Altı gerçek SKU'dan seçilen ambalaj ile B2B segmentinin aynı validasyonlu, kullanıcı tarafından gönderilecek mailto özetinde devamı | AFİNA'nın onaylı ağaç/tesis/ambalajı; pro planın parlak yeşil/taş ve Fraunces/Inter yönü | Source31f251cee2e8b83601fbc2cb3a376c979011f39f; CI41317227401 SUCCESS; API dpl_46Scpv4MqVnjKxb1pYt1bjwSD4Hq READY; qa-161/yayin-pro-v9-20261101.json;6canlı boyut,87PASS/8skip,121native frame,iki doğal video döngüsü. |
+
+Geçmiş satırlar değişmedi. V6'ya5/6 (grammar/nav/hero/act/signature), v7'ye muhafazakâr4/6 (grammar/nav/act/signature; full-bleed hero ortaklığı sayılmaz), v8'e5/6 (grammar/nav/hero/act/signature). Kapanış ortaklığı ve renk/font değişimi puan değildir. Son pikseller/işlev ve kesin yayın kanıtından sonra bu satır eklendi; [VERIFICATION](builds/afina-v9/VERIFICATION.md) karşılaştırmanın sınırlarını kaydeder.

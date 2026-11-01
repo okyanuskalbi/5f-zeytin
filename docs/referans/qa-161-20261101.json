@@ -1,0 +1,457 @@
+{
+  "task": 161,
+  "design": "v9 Hasat Rotası",
+  "status": "complete",
+  "verifiedAt": "2026-11-01T14:54:57.934Z",
+  "sourceCommit": "31f251cee2e8b83601fbc2cb3a376c979011f39f",
+  "ci": {
+    "runId": 41317227401,
+    "conclusion": "success"
+  },
+  "checks": {
+    "unit": {
+      "files": 91,
+      "passed": 1208
+    },
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "productionBuild": "PASS",
+    "assetGates": "PASS",
+    "localE2e": {
+      "passed": 87,
+      "responsiveSkipped": 8,
+      "total": 95
+    },
+    "liveE2e": {
+      "passed": 87,
+      "responsiveSkipped": 8,
+      "total": 95
+    }
+  },
+  "visual": {
+    "local": [
+      {
+        "width": 1440,
+        "galleryMode": "scrub",
+        "axeViolations": 0,
+        "pageErrors": 0,
+        "httpResourceErrors": 0,
+        "overflow": 0
+      },
+      {
+        "width": 1024,
+        "galleryMode": "scrub",
+        "axeViolations": 0,
+        "pageErrors": 0,
+        "httpResourceErrors": 0,
+        "overflow": 0
+      },
+      {
+        "width": 768,
+        "galleryMode": "native",
+        "axeViolations": 0,
+        "pageErrors": 0,
+        "httpResourceErrors": 0,
+        "overflow": 0
+      },
+      {
+        "width": 390,
+        "galleryMode": "native",
+        "axeViolations": 0,
+        "pageErrors": 0,
+        "httpResourceErrors": 0,
+        "overflow": 0
+      },
+      {
+        "width": 360,
+        "galleryMode": "native",
+        "axeViolations": 0,
+        "pageErrors": 0,
+        "httpResourceErrors": 0,
+        "overflow": 0
+      },
+      {
+        "width": 320,
+        "galleryMode": "native",
+        "axeViolations": 0,
+        "pageErrors": 0,
+        "httpResourceErrors": 0,
+        "overflow": 0
+      }
+    ],
+    "live": [
+      {
+        "width": 1440,
+        "galleryMode": "scrub",
+        "axeViolations": 0,
+        "pageErrors": 0,
+        "httpResourceErrors": 0,
+        "overflow": 0
+      },
+      {
+        "width": 1024,
+        "galleryMode": "scrub",
+        "axeViolations": 0,
+        "pageErrors": 0,
+        "httpResourceErrors": 0,
+        "overflow": 0
+      },
+      {
+        "width": 768,
+        "galleryMode": "native",
+        "axeViolations": 0,
+        "pageErrors": 0,
+        "httpResourceErrors": 0,
+        "overflow": 0
+      },
+      {
+        "width": 390,
+        "galleryMode": "native",
+        "axeViolations": 0,
+        "pageErrors": 0,
+        "httpResourceErrors": 0,
+        "overflow": 0
+      },
+      {
+        "width": 360,
+        "galleryMode": "native",
+        "axeViolations": 0,
+        "pageErrors": 0,
+        "httpResourceErrors": 0,
+        "overflow": 0
+      },
+      {
+        "width": 320,
+        "galleryMode": "native",
+        "axeViolations": 0,
+        "pageErrors": 0,
+        "httpResourceErrors": 0,
+        "overflow": 0
+      }
+    ]
+  },
+  "scrollCraft": {
+    "local": [
+      {
+        "mode": "desktop",
+        "samples": 40,
+        "minSampledContrast": 5.19,
+        "consoleErrors": [],
+        "frameworkPrefetchAborts": [
+          "net::ERR_ABORTED http://localhost:3020/hesabim?_rsc=5CB68i4pnAekjehf",
+          "net::ERR_ABORTED http://localhost:3020/hesabim?_rsc=tXyZJ52UQVBCVsD3",
+          "net::ERR_ABORTED http://localhost:3020/sepet?_rsc=5CB68i4pnAekjehf",
+          "net::ERR_ABORTED http://localhost:3020/sepet?_rsc=tXyZJ52UQVBCVsD3"
+        ],
+        "report": ".cache/task-161/local/scrollcraft-desktop/report.json",
+        "contactSheet": ".cache/task-161/local/scrollcraft-desktop/sheet.png"
+      },
+      {
+        "mode": "mobile",
+        "samples": 41,
+        "minSampledContrast": 6.42,
+        "consoleErrors": [],
+        "frameworkPrefetchAborts": [
+          "net::ERR_ABORTED http://localhost:3020/sepet?_rsc=5CB68i4pnAekjehf",
+          "net::ERR_ABORTED http://localhost:3020/hesabim?_rsc=5CB68i4pnAekjehf",
+          "net::ERR_ABORTED http://localhost:3020/sepet?_rsc=tXyZJ52UQVBCVsD3",
+          "net::ERR_ABORTED http://localhost:3020/hesabim?_rsc=tXyZJ52UQVBCVsD3"
+        ],
+        "report": ".cache/task-161/local/scrollcraft-mobile/report.json",
+        "contactSheet": ".cache/task-161/local/scrollcraft-mobile/sheet.png"
+      },
+      {
+        "mode": "reduced",
+        "samples": 40,
+        "minSampledContrast": 5.19,
+        "consoleErrors": [],
+        "frameworkPrefetchAborts": [
+          "net::ERR_ABORTED http://localhost:3020/hesabim?_rsc=5CB68i4pnAekjehf",
+          "net::ERR_ABORTED http://localhost:3020/hesabim?_rsc=tXyZJ52UQVBCVsD3",
+          "net::ERR_ABORTED http://localhost:3020/sepet?_rsc=5CB68i4pnAekjehf"
+        ],
+        "report": ".cache/task-161/local/scrollcraft-reduced/report.json",
+        "contactSheet": ".cache/task-161/local/scrollcraft-reduced/sheet.png"
+      }
+    ],
+    "live": [
+      {
+        "mode": "desktop",
+        "samples": 40,
+        "minSampledContrast": 5.2,
+        "consoleErrors": [],
+        "frameworkPrefetchAborts": [
+          "net::ERR_ABORTED https://afinazeytin.com/hesabim?_rsc=tXyZJ52UQVBCVsD3",
+          "net::ERR_ABORTED https://afinazeytin.com/sepet?_rsc=5CB68i4pnAekjehf",
+          "net::ERR_ABORTED https://afinazeytin.com/sepet?_rsc=tXyZJ52UQVBCVsD3"
+        ],
+        "report": ".cache/task-161/live/scrollcraft-desktop/report.json",
+        "contactSheet": ".cache/task-161/live/scrollcraft-desktop/sheet.png"
+      },
+      {
+        "mode": "mobile",
+        "samples": 41,
+        "minSampledContrast": 5.94,
+        "consoleErrors": [],
+        "frameworkPrefetchAborts": [
+          "net::ERR_ABORTED https://afinazeytin.com/sepet?_rsc=5CB68i4pnAekjehf",
+          "net::ERR_ABORTED https://afinazeytin.com/hesabim?_rsc=5CB68i4pnAekjehf",
+          "net::ERR_ABORTED https://afinazeytin.com/sepet?_rsc=tXyZJ52UQVBCVsD3"
+        ],
+        "report": ".cache/task-161/live/scrollcraft-mobile/report.json",
+        "contactSheet": ".cache/task-161/live/scrollcraft-mobile/sheet.png"
+      },
+      {
+        "mode": "reduced",
+        "samples": 40,
+        "minSampledContrast": 5.19,
+        "consoleErrors": [],
+        "frameworkPrefetchAborts": [
+          "net::ERR_ABORTED https://afinazeytin.com/hesabim?_rsc=5CB68i4pnAekjehf",
+          "net::ERR_ABORTED https://afinazeytin.com/hesabim?_rsc=tXyZJ52UQVBCVsD3",
+          "net::ERR_ABORTED https://afinazeytin.com/sepet?_rsc=5CB68i4pnAekjehf"
+        ],
+        "report": ".cache/task-161/live/scrollcraft-reduced/report.json",
+        "contactSheet": ".cache/task-161/live/scrollcraft-reduced/sheet.png"
+      }
+    ]
+  },
+  "sourceReview": {
+    "errors": 0,
+    "warnings": 0,
+    "suggestions": 39,
+    "selectedSources": 9,
+    "rejectedSources": 2,
+    "referenceOnlySources": 1,
+    "manifest": "docs/scrollcraft/builds/afina-v9/21ST-SOURCES.json"
+  },
+  "lighthouse": {
+    "version": "13.5.0",
+    "localDefault": [
+      {
+        "mode": "mobile",
+        "performance": 86,
+        "accessibility": 100,
+        "lcp": 4183.0285,
+        "cls": 0.0003270077144968356,
+        "tbt": 1,
+        "errors": null
+      },
+      {
+        "mode": "desktop",
+        "performance": 100,
+        "accessibility": 100,
+        "lcp": 821.1699999999998,
+        "cls": 0.00004889758284036351,
+        "tbt": 0,
+        "errors": null
+      }
+    ],
+    "localAppliedThrottling": [
+      {
+        "mode": "mobile-actual",
+        "performance": 100,
+        "accessibility": 100,
+        "lcp": 868.35,
+        "cls": 0.000006560091790874685,
+        "tbt": 0,
+        "errors": null
+      }
+    ],
+    "liveDefault": [
+      {
+        "mode": "mobile",
+        "performance": 100,
+        "accessibility": 100,
+        "lcp": 1325.665,
+        "cls": 0.00033356780628771026,
+        "tbt": 9,
+        "errors": null
+      },
+      {
+        "mode": "desktop",
+        "performance": 99,
+        "accessibility": 100,
+        "lcp": 923.183,
+        "cls": 0.00002552354600694445,
+        "tbt": 0,
+        "errors": null
+      }
+    ],
+    "liveAppliedThrottling": [
+      {
+        "mode": "mobile-actual",
+        "performance": 98,
+        "accessibility": 100,
+        "lcp": 1019.23,
+        "cls": 0.0003270077144968356,
+        "tbt": 7.080999992371289,
+        "errors": null
+      }
+    ],
+    "productionTargetsMet": true,
+    "measurementLimit": "Lab/browser viewport results; no CrUX or physical phone acceptance."
+  },
+  "http": {
+    "at": "2026-11-01T14:44:01.744Z",
+    "origin": "https://afinazeytin.com",
+    "status": 200,
+    "sections": [
+      "baslangic",
+      "urunler",
+      "tesisimiz",
+      "uretim-yolculugu",
+      "toptan-iletisim",
+      "teklif",
+      "iletisim"
+    ],
+    "ssrNavigation": "paper",
+    "media": [
+      {
+        "file": "/videos/afina-zeytinlik-loop-5s.mp4",
+        "status": 200,
+        "bytes": 2742609,
+        "sha256": "1a9b941dce0ab46c09570766458508647887dee7e2b9d2897b2a5a70108c5719"
+      },
+      {
+        "file": "/videos/afina-zeytinlik-poster.avif",
+        "status": 200,
+        "bytes": 76119,
+        "sha256": "3b174344ec775e4c0898493fbcc598102c1add25a1da272f4a5c16af4222030d"
+      },
+      {
+        "file": "/videos/afina-zeytinlik-poster.webp",
+        "status": 200,
+        "bytes": 217778,
+        "sha256": "8f02ba2cbdccc43392681bc024b54689c67ab7e712c89107d7d72a304cad569f"
+      },
+      {
+        "file": "/brand/og-zeytinyagi.webp",
+        "status": 200,
+        "bytes": 56108,
+        "sha256": "b028874ba052eb71836b72584e348eb51faf16f822651f50c7111425ddfad9a0"
+      }
+    ],
+    "fonts": [
+      {
+        "family": "Inter",
+        "file": "/_next/static/immutable/media/Inter_tr-s.p.36p3he2qj4nt9.woff2",
+        "bytes": 44740,
+        "sha256": "373e895a384df80d6271ce539b7da912bf3d21be85423962b9bcf38a72b4c56f"
+      },
+      {
+        "family": "Fraunces",
+        "file": "/_next/static/immutable/media/Fraunces_tr-s.p.27jotr2_ixsop.woff2",
+        "bytes": 62948,
+        "sha256": "177a503bbeb9103202df4cabb9bd9aae5a2821d2b47dd8c4721ebf78435b94db"
+      }
+    ],
+    "paths": [
+      {
+        "path": "/giris",
+        "status": 200,
+        "cache": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "location": null
+      },
+      {
+        "path": "/kayit",
+        "status": 200,
+        "cache": "public, max-age=0, must-revalidate",
+        "location": null
+      },
+      {
+        "path": "/kvkk",
+        "status": 200,
+        "cache": "public, max-age=0, must-revalidate",
+        "location": null
+      },
+      {
+        "path": "/mesafeli-satis",
+        "status": 200,
+        "cache": "public, max-age=0, must-revalidate",
+        "location": null
+      },
+      {
+        "path": "/iade",
+        "status": 200,
+        "cache": "public, max-age=0, must-revalidate",
+        "location": null
+      },
+      {
+        "path": "/siparis-takip",
+        "status": 200,
+        "cache": "public, max-age=0, must-revalidate",
+        "location": null
+      },
+      {
+        "path": "/api/products",
+        "status": 200,
+        "cache": "no-store",
+        "location": null
+      },
+      {
+        "path": "/api/account/orders",
+        "status": 401,
+        "cache": "private, no-store",
+        "location": null
+      },
+      {
+        "path": "/api/admin/products",
+        "status": 401,
+        "cache": "private, no-store",
+        "location": null
+      },
+      {
+        "path": "/hesabim",
+        "status": 307,
+        "cache": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "location": "/giris?next=/hesabim"
+      }
+    ],
+    "range": {
+      "status": 206,
+      "contentRange": "bytes 0-63/2742609"
+    },
+    "wwwStatus": 200
+  },
+  "playback": {
+    "playback": {
+      "wraps": 2,
+      "paintedCallbacks": 216,
+      "elapsed": 9011.199999988079,
+      "time": 0.014,
+      "duration": 5,
+      "muted": true,
+      "loop": true,
+      "decoded": 245
+    },
+    "writes": []
+  },
+  "preview": {
+    "file": ".cache/task-161/live/site-preview.mp4",
+    "bytes": 4440644,
+    "sha256": "815c81bb64b3f163affc6aae7a9eda0e00ee7a03e6eced12b100eb5ca3e9c327",
+    "durationSeconds": 16.88
+  },
+  "media": {
+    "manifest": "lib/media/pro-loop.json",
+    "extraCreditsSpent": 0,
+    "firstLastDecodedPixelsIdentical": true,
+    "seamSSIM": 1,
+    "seamEvidence": ".cache/task-161/optimized-seam.log",
+    "originalEncodingSSIM": 0.968635
+  },
+  "policy": {
+    "bundledHeadlessChromium": true,
+    "maxWorkers": 2,
+    "ownedLocalServersClosed": true,
+    "noRealCustomerOrderPaymentOrMessageWrites": true
+  },
+  "limits": {
+    "physicalDeviceTested": false,
+    "realAccountOrPaymentTested": false,
+    "serverEmailDeliveryConfigured": false,
+    "whatsappVerified": false,
+    "quote": "Validated manual mailto draft to the published parent-company contact; no automated delivery."
+  }
+}

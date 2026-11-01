@@ -1,8 +1,8 @@
 # AFİNA ZEYTİN: Codex devir kaydı
 
-## Aktif devir: v9 Hasat Rotası — Task 161 UYGULANIYOR
+## Aktif devir: v9 Hasat Rotası — Task 161 TAMAMLANDI
 
-Kanonik repo `/Users/emre/PROJELER/5F-ZEYTIN`. Yeni kullanıcı pro planı ve bütün bölümlerde 21st/Scroll Craft talebi için [DESIGN](DESIGN.md), [Task161](tasks/161-pro-plan-tum-bolumler-21st-scroll-craft.md), uygulama öncesi [BRIEF/PLAN/COPY](scrollcraft/builds/afina-v9/BRIEF.md) aktiftir. V8 DESIGN byte-identical [arşivlendi](referans/DESIGN-v8-history-20261101.md); eski QA/READY kayıtları aşağıda tarihçedir. **Task161 final kabul/CI/API yayını/canlı UI BEKLİYOR**; v8PASS v9 sonucu değildir.
+Kanonik repo `/Users/emre/PROJELER/5F-ZEYTIN`. Yeni kullanıcı pro planı ve bütün bölümlerde 21st/Scroll Craft talebi için [DESIGN](DESIGN.md), [Task161](tasks/161-pro-plan-tum-bolumler-21st-scroll-craft.md), uygulama öncesi [BRIEF/PLAN/COPY](scrollcraft/builds/afina-v9/BRIEF.md) aktiftir. V8 DESIGN byte-identical [arşivlendi](referans/DESIGN-v8-history-20261101.md); eski QA/READY kayıtları aşağıda tarihçedir. **Task161 final kabul/CI/API yayını/canlı UI TAMAMLANDI**; v8PASS v9 sonucu değildir.
 
 Aktif palet#84CC16/#EDE8DD/#1C1F1A/#C89B3C (erişilir altın metin#735519), Fraunces/Inter; gerçek logo/slogan/ambalaj korunur. Doğal tam-film hero+özgün ön dal+cam nav → altıSKU lineer yatay galeri → gerçek tesis parallax → üç aşama bento → üç işlevsel B2B segment → gerçek talep taslağı → native SSS/adres/mağaza kapanışı. 7bölüm/9ana21stkaynak [exact SHA provenansında](scrollcraft/builds/afina-v9/21ST-SOURCES.json);1635 yalnız referans, mevcut ProductCard yeniden kullanılır.
 
@@ -10,7 +10,7 @@ Yalnız galeri≥1024×860 normal/JS'te pin; x=−travel×progress, kısa/mobil/
 
 Altı SKU verisi/sırası ve detay/sepet/üyelik/ödeme sözleşmesi korunur. Galeri SKU’su/segment seçimi #teklif alanlarına gider; required/KVKK sonrası gerçek özet ve mailto taslağı hazırlanır, kullanıcı e-posta uygulamasında gönderir. info@afina.com.tr/+903288827708 çatı şirketin resmî kanalıdır; zeytin WhatsApp hattı veya sunucu e-posta transportu değildir. Sahte gönderim/CRM sonucu, yeni provider/env/DB açılmadı.
 
-Sonraki yürütücü gerçek Task161 final-source test/lint/type/build, hareket/7sahne/galeri-sonürün-fokus/SKU→quote/URI, telefon/reduced/noJS/saveData/axe/taşma ve CI/API/live sonuçlarını ayrı kaydetmeli. Kaynak doküman örnekleri yeni kimlik/hizmet/ücret yetkisi değildir. Test paketli headlessChromium≤2/düzgün kapanış; gerçek hesap/ödeme/e-posta teslimi/fiziksel cihaz ayrı kapı.
+Task161 final-source test/lint/type/build, hareket/7sahne/galeri-sonürün-fokus/SKU→quote/URI, telefon/reduced/noJS/saveData/axe/taşma ve CI/API/live sonuçları QA161/yayın makbuzunda ayrı kaydedildi. Kaynak doküman örnekleri yeni kimlik/hizmet/ücret yetkisi değildir. Test paketli headlessChromium≤2/düzgün kapanış; gerçek hesap/ödeme/e-posta teslimi/fiziksel cihaz ayrı kapı.
 
 ## Tarihçe: v8 Object journey yayını ve canlı UI kabulü — Task 160
 
@@ -108,3 +108,8 @@ Kabul edilmiş aynı A→B kaynaktan 2.537.380 bayt sessiz H264/faststart, 1280�
 Yayındaki kaynak `5a3b1f6840057febccca9f926ce1b231a052297e`, 88 dosya/1197 test + lint/typecheck/build, CI 41297597853 SUCCESS. REST API `dpl_CpxqnTKPasKQNCQ8zjWnaNu5NpsF` READY, afinazeytin.com bağlı. 44 yerel + 44 canlı etkileşim, dört genişlikte görsel/axe ve 10 HTTP/hash kontrolü geçti; taşma/pageerror/başarısız kaynak/axe ihlali 0. Native canlı film190 kare/sessiz/ended doğrulandı. Canlı sayfa önizlemesi `.cache/task-159/live/hero-preview.mp4`; [son makbuz](referans/yayin-film-v7-20261101.json), [QA](referans/qa-159-20261101.json), [Task 159](tasks/159-flow-sinematik-hero.md). Açılan browser/server düzgün kapandı. Fiziksel cihaz veya gerçek hesap/ödeme/talep mutasyonu değildir. Son belge commit'i runtime yeniden yayını değildir.
 
 Son medya incelemesi: B→C/C→D örneklemde kullanıcı incelemesine hazır; D→F etiketin oluşması/bozulması nedeniyle yayına uygun değil. Yeni harcama36, bakiye194; üçü de kullanıcı kabulü/runtime onayı almamıştır. [Aday incelemesi](scrollcraft/builds/afina-v8/FLOW-CANDIDATE-REVIEW.md).
+
+
+## Task161 nihai kabul kaydı
+
+Kaynak `31f251cee2e8b83601fbc2cb3a376c979011f39f`, CI41317227401 SUCCESS; Vercel REST `dpl_46Scpv4MqVnjKxb1pYt1bjwSD4Hq` READY. Yerel ve canlı87e2e PASS+8responsive skip;1208unit,lint/typecheck/build PASS. Altı canlı boyutta axe/taşma/JS/HTTPkaynak hatası0. Canlı Lighthouse mobil100/masaüstü99, erişilebilirlik100; ayrı mobil DevTools98. Fiziksel telefon ve gerçek işlem/SMTP/WhatsApp kabulü yapılmadı. Kanıt: `docs/referans/qa-161-20261101.json`, `docs/referans/yayin-pro-v9-20261101.json` ve `docs/scrollcraft/builds/afina-v9/VERIFICATION.md`. Önceki v8/ilk v9 ölçümleri tarihçedir.

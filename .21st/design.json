@@ -321,7 +321,7 @@
       "date": "2026-11-01",
       "source": "User new pro plan and all-sections21st/ScrollCraft request, Task161",
       "decision": "v9 Hasat Rotası adopts bright brand/stone/ink/oil-gold and Fraunces/Inter; natural approved-Flow loop hero/near branch/glass nav, one eligible direct-linear gallery pin, real facility parallax, factual three-stage bento, shared B2B/SKU choices into a validated manual corporate mailto draft, native FAQ/contact/footer. Seven scenes/nine selected primary21st sources;1635 reference only. AcceptedA→B loop is a free local edit, no paid new media; real data/server authority and contact-source boundaries remain.",
-      "status": "implementing-final-acceptance-and-publication-pending",
+      "status": "complete-ci41317227401-api-ready-live-ui-accepted",
       "scope": "active-task161"
     }
   ],
@@ -441,20 +441,27 @@
     {
       "fact": "verified-parent-company-manual-email-draft-contact-source",
       "source": "lib/site/corporate-contact.ts"
-    }
+    },
+    "docs/referans/qa-161-20261101.json",
+    "docs/referans/yayin-pro-v9-20261101.json",
+    "docs/scrollcraft/builds/afina-v9/VERIFICATION.md"
   ],
   "generatedAt": "2026-11-01T13:36:35.959251+00:00",
   "release": {
     "task": 161,
     "design": "v9 Hasat Rotası",
-    "status": "IMPLEMENTING",
-    "runtimeCommit": null,
-    "ciStatus": "PENDING",
-    "deploymentStatus": "PENDING",
+    "status": "COMPLETE",
+    "runtimeCommit": "31f251cee2e8b83601fbc2cb3a376c979011f39f",
+    "ciStatus": "SUCCESS",
+    "deploymentStatus": "READY",
     "production": "https://afinazeytin.com",
-    "localAcceptance": "PENDING final Task161 source acceptance; historical Task160 PASS is separate",
-    "liveAcceptance": "PENDING; no Task161 READY/live/physical-device/transaction claim",
-    "sourceProvenance": "docs/scrollcraft/builds/afina-v9/21ST-SOURCES.json"
+    "localAcceptance": "1208unit/91files; lint/typecheck/build PASS;87e2e PASS+8responsive skips;6width clean;ScrollCraft40/41/40",
+    "liveAcceptance": "COMPLETE:87e2e PASS+8responsive skips;6width clean;ScrollCraft40/41/40;2natural loops/245decodedframes;Lighthouse mobile100 desktop99 A100;physical device/real transaction not tested",
+    "sourceProvenance": "docs/scrollcraft/builds/afina-v9/21ST-SOURCES.json",
+    "ciRunId": 41317227401,
+    "deploymentId": "dpl_46Scpv4MqVnjKxb1pYt1bjwSD4Hq",
+    "qa": "docs/referans/qa-161-20261101.json",
+    "receipt": "docs/referans/yayin-pro-v9-20261101.json"
   },
   "mediaContinuation": {
     "projectUrl": "https://flow.google.com/project/62040049-3473-446b-9d93-8e6cbc45f8bc",
