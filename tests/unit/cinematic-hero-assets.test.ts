@@ -130,10 +130,19 @@ describe("approved cinematic hero build gate", () => {
     await expect(checkCinematicHero({ root })).rejects.toThrow();
   });
 
-  it("keeps each responsive fallback under the 90 KB request budget", async () => {
-    const file = prefix + "poster-mobile.webp";
+  it.each(["poster-mobile.webp", "poster-mobile.avif", "poster-desktop.avif"])("keeps the primary and mobile fallback request budget: %s", async (name) => {
+    const file = prefix + name;
     const bytes = await readFile(join(root, `public${file}`));
     await replaceOutput(file, Buffer.concat([bytes, Buffer.alloc(90 * 1024)]));
+    await expect(checkCinematicHero({ root })).rejects.toThrow();
+  });
+
+  it("allows a detailed desktop WebP fallback within its separate 180 KB cap", async () => {
+    const file = prefix + "poster-desktop.webp";
+    const original = await readFile(join(root, `public${file}`));
+    await replaceOutput(file, Buffer.concat([original, Buffer.alloc(160_000 - original.length)]));
+    await expect(checkCinematicHero({ root })).resolves.toMatchObject({ checked: 9, frames: 2 });
+    await replaceOutput(file, Buffer.concat([original, Buffer.alloc(180_001 - original.length)]));
     await expect(checkCinematicHero({ root })).rejects.toThrow();
   });
 

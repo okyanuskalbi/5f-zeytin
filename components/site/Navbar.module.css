@@ -1,6 +1,8 @@
 .bar { position: fixed; inset: 0 0 auto; z-index: 30; background: transparent; color: var(--sut); padding-block: 18px; padding-top: calc(18px + env(safe-area-inset-top, 0px)); border-bottom: 1px solid transparent; transition: backdrop-filter .4s; }
 .bar[data-tone="solid"] { background: rgba(14,21,16,.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom-color: rgba(255,255,255,.08); }
 .row { display: flex; min-height: 44px; align-items: center; justify-content: space-between; gap: 24px; }
+/* Sinematik Siteler / 21st 12005: one legible glass surface over the hero. */
+.bar[data-tone="hero"] .row { max-width: 1560px; margin-inline: auto; padding: 8px 20px; border: 1px solid rgb(244 240 231 / .28); background: rgb(14 28 20 / .6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: inset 0 1px 0 rgb(244 240 231 / .1); }
 .home { display: inline-flex; flex: none; align-items: center; min-height: 44px; }
 .logo { display: block; width: 150px; height: 40px; object-fit: contain; }
 .home:hover { opacity: .8; }
@@ -18,7 +20,6 @@
 .cart { display: inline-flex; gap: 0; min-height: 44px; border: 1px solid rgba(255,255,255,.25); border-radius: 999px; padding: 8px 14px; font-weight: 600; }
 .badge { display: inline-flex; align-items: center; justify-content: center; min-width: 22px; padding-inline: 4px; margin-inline: 3px; border-radius: 999px; background: var(--altin); color: var(--ink); font-size: 12px; font-weight: 800; line-height: 1.4; font-variant-numeric: tabular-nums; }
 .trigger { display: none; }
-.bar[data-tone="hero"] .cart, .bar[data-tone="hero"] .trigger { background: rgba(14,21,16,.42); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
 .menu { inset: 0; width: 100%; max-width: none; height: 100dvh; max-height: none; display: flex; flex-direction: column; justify-content: space-between; gap: 32px; padding: max(64px, env(safe-area-inset-top, 0px)) max(24px, env(safe-area-inset-right, 0px)) max(32px, env(safe-area-inset-bottom, 0px)) max(24px, env(safe-area-inset-left, 0px)); background: var(--ink); color: var(--sut); }
 .menuLinks { display: grid; align-content: center; gap: 8px; flex: 1; }
 .menuLinks .link { font-family: var(--font-display, var(--font-display-fallback)); font-size: var(--step-head); font-weight: 500; line-height: 1.2; }
@@ -28,9 +29,16 @@
   .desktop, .account { display: none; }
   .logo { width: 120px; height: 32px; }
   .trigger { display: inline-flex; min-height: 44px; border: 1px solid rgba(255,255,255,.25); border-radius: 999px; padding: 8px 14px; font-weight: 600; }
+  .bar[data-tone="hero"] .row { padding: 6px 12px; gap: 12px; }
 }
 @media (max-width: 767px) { .shop { display: none; } }
-@media (max-width: 359px) { .row { gap: 8px; } .actions { gap: 0; } .cart, .trigger { padding-inline: 8px; } }
+@media (max-width: 400px) {
+  .logo { width: 96px; height: 26px; }
+  .actions { gap: 4px; }
+  .cart, .trigger { padding-inline: 8px; }
+  .bar[data-tone="hero"] .row { padding-inline: 8px; gap: 4px; }
+}
+@media (max-width: 359px) { .row { gap: 8px; } .actions { gap: 0; } .cart, .trigger { padding-inline: 8px; } .bar[data-tone="hero"] .row { padding-inline: 8px; gap: 4px; } }
 @media (prefers-reduced-motion: reduce) { .bar { transition: none; } .badge { transform: none !important; } }
 @media (orientation: landscape) and (max-height: 500px) and (max-width: 900px) {
   .bar { padding-block: 4px; padding-top: calc(4px + env(safe-area-inset-top, 0px)); }

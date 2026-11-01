@@ -64,7 +64,7 @@
   "approvedScope": "A→B accepted; user explicitly requested the remaining three same-method transitions on 2026-11-01 (3 × verified 20 credits = 60 additional)",
   "balanceAfterVideoGeneration": 230,
   "remainingApprovedCredits": 60,
-  "publicationApproval": "pending",
+  "publicationApproval": "accepted A→B clip; user requested selected cinematic kit application on 2026-11-01",
   "allFramesUploadedToFlow": true,
   "video": {
     "transition": "A→B",
@@ -82,7 +82,9 @@
     "flowUrl": "https://flow.google.com/project/62040049-3473-446b-9d93-8e6cbc45f8bc/edit/973f2107-b057-425e-87a9-20ac869c40aa",
     "preview": "output/flow-keyframes/A-B-onizleme.mp4",
     "reviewStrip": "output/flow-keyframes/A-B-kare-seridi.jpg",
-    "userAccepted": true
+    "userAccepted": true,
+    "runtimeDerivatives": "/frames/afina-agac-dal/manifest.json",
+    "originalMp4Published": false
   },
   "transitions": [
     {

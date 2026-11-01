@@ -28,3 +28,8 @@ Yerel tarayıcı/cihaz kabulü çalıştırılmadı. Canlı yayın, Search Conso
 - `web-site-yetenegi-kiti.pdf` SHA-256: `cca9cd34b53e510be095862a536a4b2ab6d4f3a48da601449918be3d0c7c0b9e`
 - `9-mayis-10-kiti.pdf` SHA-256: `ff51276bd80a0253e43f70b5ee05a11c8703d41ba953b2c9f1844e64e26bc604`
 - `AEO_GEO_Rehberi_Onur_Kocak.pdf` SHA-256: `1a88c4eeed3fcfcd06945ad20fa4080a6f984f7da36dfaf24dcdf7b8ae097f86`
+# Kullanıcının sonraki seçimi: Sinematik Siteler
+
+Kullanıcı dört rehberden birini seçip uygulamamı istedi. Task 156'da `sinematik-siteler.pdf` seçildi: tam ekran sakin arka plan, merkezlenmiş serif başlık, cam navigasyon/ikincil CTA, üst-alt okunurluk katmanı. 21st Glass Video Hero 12005 gerçek kaynağı bu yapıya referans alındı; demo videosu, mor tonları ve örnek ürün metinleri taşınmadı.
+
+Kabul edilen Google Flow A→B klibinden 1280/960 genişlikte 95'er WebP kare (12 fps, quality52), aynı başlangıç karesinden masaüstü/mobil AVIF ve WebP posterler hazırlandı. Kaynak SHA ve bütün türevler `lib/media/cinematic-hero.json` ile build öncesinde kontrol edilir. Bu işlem yeni üretim veya ek kredi tüketimi değildir. PDF'nin autoplay-loop, Vite iskeleti, Instrument Serif ve e-posta toplama örnekleri mevcut AFİNA sözleşmesini değiştirmez.

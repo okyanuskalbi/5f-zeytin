@@ -1,5 +1,7 @@
 # AFİNA ZEYTİN v5
 
+Task 156 seçimi: Sinematik Siteler. Kabul edilen ilk Flow klibi, merkezlenmiş Fraunces başlık ve hero üzerinde tek cam navigasyon yüzeyi; 21st 12005 kaynak uyarlaması. Native scroll, aynı ilk kareden responsive poster ve gerçek kurumsal/ürün CTA'ları korunur. Diğer üç Flow geçişi bekleyen adaydır.
+
 Current design: docs/DESIGN.md. Production/corporate-first landing. Scoped v5 palette: olive #172B21, paper #F4F0E7, champagne #B6A078, charcoal #252725. Fraunces/Figtree. Official logo and slogan, server-owned product prices/stock, existing cart/PayTR/Supabase. Native scroll canvas; poster/reduced-motion/data-saver fallback. Google Flow only for new videos, first/last references and credit cap before generation. 21st sources: 9701, 25310, 35258.
 
 The generated initial discovery below describes the previous global dark theme, retained for unchanged commerce/auth pages. V5 tokens live in components/landing/RenewalLanding.module.css.
