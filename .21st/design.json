@@ -2,7 +2,7 @@
   "version": 1,
   "project": {
     "name": "afina-zeytin",
-    "productType": "Olive producer Object journey: real packaging selection with Flow depth; production trust 65%, retail/B2B commerce 35%",
+    "productType": "Olive producer v9 Hasat Rotası: seven source-backed scenes, real six-SKU discovery→business email-draft journey; production trust 65%, retail/B2B commerce 35%",
     "stack": [
       "nextjs",
       "react",
@@ -17,7 +17,10 @@
       "app/globals.css",
       "components/account/CustomerPanel.module.css",
       "lib/ui-motion.ts",
-      "components/landing/CinematicHero.module.css"
+      "components/landing/CinematicHero.module.css",
+      "components/landing/HorizontalProductGallery.module.css",
+      "components/landing/QuoteComposer.module.css",
+      "components/site/Navbar.module.css"
     ],
     "components": [
       "components/ui"
@@ -44,39 +47,57 @@
       "docs/scrollcraft/builds/afina-v8/BRIEF.md",
       "docs/scrollcraft/builds/afina-v8/PLAN.md",
       ".agents/skills/scroll-craft/SKILL.md",
-      ".agents/skills/design-taste-frontend/SKILL.md"
+      ".agents/skills/design-taste-frontend/SKILL.md",
+      "docs/tasks/161-pro-plan-tum-bolumler-21st-scroll-craft.md",
+      "docs/referans/afina-zeytin-pro-plan-20261101.md",
+      "docs/scrollcraft/builds/afina-v9/BRIEF.md",
+      "docs/scrollcraft/builds/afina-v9/PLAN.md",
+      "docs/scrollcraft/builds/afina-v9/COPY.md",
+      "docs/scrollcraft/builds/afina-v9/21ST-SOURCES.json"
     ]
   },
   "design": {
     "colorMode": "mixed",
     "colors": {
-      "--afina-olive": {
-        "value": "#172B21",
-        "source": "components/landing/RenewalLanding.module.css"
+      "--pro-brand": {
+        "value": "#84CC16",
+        "source": "app/globals.css"
       },
-      "--afina-paper": {
-        "value": "#F4F0E7",
-        "source": "components/landing/RenewalLanding.module.css"
+      "--pro-brand-hover": {
+        "value": "#A3E635",
+        "source": "app/globals.css"
       },
-      "--afina-champagne": {
-        "value": "#B6A078",
-        "source": "components/landing/RenewalLanding.module.css"
+      "--pro-stone": {
+        "value": "#EDE8DD",
+        "source": "app/globals.css"
       },
-      "--afina-charcoal": {
-        "value": "#252725",
-        "source": "components/landing/RenewalLanding.module.css"
+      "--pro-ink": {
+        "value": "#1C1F1A",
+        "source": "app/globals.css"
       },
-      "--afina-body": {
-        "value": "#414A40",
-        "source": "components/landing/RenewalLanding.module.css"
+      "--pro-paper": {
+        "value": "#F7F4EE",
+        "source": "app/globals.css"
       },
-      "--afina-muted": {
-        "value": "#5A6558",
-        "source": "components/landing/RenewalLanding.module.css"
+      "--pro-gold": {
+        "value": "#C89B3C",
+        "source": "app/globals.css"
       },
-      "--afina-rule": {
-        "value": "#CFCDBF",
-        "source": "components/landing/RenewalLanding.module.css"
+      "--pro-gold-ink": {
+        "value": "#735519",
+        "source": "app/globals.css"
+      },
+      "--pro-muted": {
+        "value": "#4F594B",
+        "source": "app/globals.css"
+      },
+      "--pro-line": {
+        "value": "#919B87",
+        "source": "app/globals.css"
+      },
+      "--pro-error": {
+        "value": "#9D2822",
+        "source": "app/globals.css"
       }
     },
     "typography": {
@@ -85,7 +106,7 @@
         "source": "app/layout.tsx"
       },
       "--font-body": {
-        "value": "Figtree",
+        "value": "Inter",
         "source": "app/layout.tsx"
       }
     },
@@ -99,20 +120,24 @@
         "source": "app/globals.css"
       },
       "--afina-space-stack": {
-        "value": "calc(var(--space-unit) * 4)",
+        "value": "32px",
         "source": "components/landing/RenewalLanding.module.css"
       },
       "--afina-space-gutter": {
-        "value": "calc(var(--space-unit) * 6)",
+        "value": "48px",
         "source": "components/landing/RenewalLanding.module.css"
       },
       "--afina-space-wide": {
-        "value": "calc(var(--space-unit) * 8)",
+        "value": "64px",
         "source": "components/landing/RenewalLanding.module.css"
       },
       "--afina-space-section": {
-        "value": "calc(var(--space-unit) * 12)",
+        "value": "96px",
         "source": "components/landing/RenewalLanding.module.css"
+      },
+      "--pro-gutter": {
+        "value": "clamp(20px,4vw,64px)",
+        "source": "app/globals.css"
       }
     },
     "radius": {
@@ -135,6 +160,14 @@
       "--radius-xl": {
         "value": "var(--radius)",
         "source": "app/globals.css"
+      },
+      "navigationCapsule": {
+        "value": "999px",
+        "source": "components/site/Navbar.module.css"
+      },
+      "productSurface": {
+        "value": "24px",
+        "source": "components/landing/HorizontalProductGallery.module.css"
       }
     },
     "shadows": {},
@@ -150,6 +183,14 @@
       "editorialSpring": {
         "value": "spring stiffness 160, damping 26; once entrance 8px, opacity .96 to 1, stagger .08s",
         "source": "lib/ui-motion.ts"
+      },
+      "galleryScrub": {
+        "value": "x = -travel * progress, no spring; single pin only eligible >=1024x860 normal-motion measured JS; native rail on short/mobile/reduced/noJS",
+        "source": "components/landing/HorizontalProductGallery.tsx"
+      },
+      "facilityPhoto": {
+        "value": "isolated clipped overscan photograph y0→120px on eligible desktop; static on mobile/reduced",
+        "source": "components/landing/ScrollStage.tsx"
       }
     },
     "density": "spacious"
@@ -177,92 +218,111 @@
       "textarea"
     ],
     "patterns": [
-      "Opaque original paper navigation with real commerce and account routes",
-      "Object journey: approved Flow plane recedes, authentic packaging advances, solid paper copy plane remains readable",
-      "Three existing representative variants update matching object, name, price, detail and cart targets",
-      "One silent native film pass; static 44px controls outside the transformed media plane; preference/error fallback",
-      "Compact real factory proof and accessible native horizontal six-SKU gallery without data reordering",
-      "Closed-service notice outside native details, existing B2B preparation form inside",
-      "Resolved real address, return to products, source-backed FAQ and existing support/legal footer"
+      "One original-logo light glass navigation with real shopping/account/cart routes and existing accessible Radix mobile dialog",
+      "Natural full-bleed approved Flow-derived five-second film, original decorative near branch, two-line real DOM slogan and product/quote anchors",
+      "Single gallery peak: six authoritative SKU records, sticky direct linear horizontal travel on eligible desktop; native accessible rail fallbacks",
+      "Genuine Ellek facility photograph with short place/address copy and isolated parallax, then asymmetric three-stage factual bento",
+      "Three peer B2B segment buttons store the real selected audience and move to the same #teklif form",
+      "Labelled required/KVKK form prepares a real summary and manual mailto draft to the explicitly identified parent company; no automatic server email/WhatsApp claim",
+      "Final #iletisim scene embeds #sik-sorulanlar native five-answer FAQ/schema, actual address/maps/support and return to shopping",
+      "Original payment/legal/help destinations in source21474 footer; ProductCard is existing reuse, source1635 reference only"
     ]
   },
   "constraints": {
     "must": [
-      "Use docs/DESIGN.md v8 Object journey and docs/scrollcraft/builds/afina-v8 artifacts as the active visual contract",
-      "Taste seed 1601101 page-is-the-object, preserve palette/type, original logo, official two-line slogan and real CTAs",
-      "Desktop only one short 170svh layered sticky opening; phone/short-screen/reduced-motion use natural flow",
-      "Independent transform planes: film scale 1 to .82/x 0 to -8vw/y 0 to -48px; packaging y 80 to -8px/scale 1 to 1.12; paper copy y 0 to -24px",
-      "Match the selected existing SKU across approved packaging, name, amount, price, detail and AddToCart; keep catalog/server authority and existing SKU order",
-      "Visible SSR poster/H1/CTAs; one native silent pass/end hold/pause/play/replay; static reduced-motion/saveData fallback; preserve manual pause and offscreen stop",
-      "Keep mediaStyle on visual only: controls remain static at least 44px; compact phone heading/primary action before 280px film/260px product stage",
-      "Production-first 65/35 body: compact real factory, native gallery, honest closed-service B2B branch, resolved address and shopping return",
-      "Motion/react only, shared interactions, transform/opacity, no scroll currentTime engine or foreign runtime",
-      "Bundled headless Chromium only, at most two workers, graceful browser/server cleanup; final-source native Taste/e2e/live proof still required"
+      "Use docs/DESIGN.md v9 Hasat Rotası and pre-code afina-v9 BRIEF/PLAN/COPY as active visual contract; Task161 implementing/acceptance pending",
+      "Use plan palette #84CC16/#EDE8DD/#1C1F1A/#C89B3C with #735519 accessible small gold text, Fraunces/Inter, original logo/packaging/official two-line slogan",
+      "Keep seven semantic scenes in order: baslangic,urunler,tesisimiz,uretim-yolculugu,toptan-iletisim,teklif,iletisim; nested sik-sorulanlar and legacy kurumsal/kiler anchors preserved",
+      "Use nine selected real21st sources 32829,24623,20023,1197,7262,35258,31986,26786,21474; exact source/demo hashes and adaptation map in 21ST-SOURCES.json;1635 reference only",
+      "Natural viewport hero with accepted Flow film, original near branch and one glass nav; H1/real #urunler/#teklif anchors present in SSR",
+      "Only gallery pins on eligible >=1024x860 normal-motion measured JS; x=-travel*progress direct linear; native rail for short/mobile/reduced/noJS and focused/last product accessible",
+      "Preserve all six existing SKU identity/order/names/prices/stock/images/schema and existing detail/cart/account/checkout server authority; product and audience choices share real quote context",
+      "Accepted A→B free local forward/reverse frames6..65 derivative:120frames/24fps/5sec/1280x720/6847142bytes, muted loop with real pause/play, hidden/offscreen stop and preference/error poster fallback",
+      "Reduced-motion/saveData do not initiate MP4 requests; static poster and all real actions remain; controls44px+ outside moving video plane",
+      "Quote validation/KVKK produces a real user-completed mailto draft; info@afina.com.tr/+903288827708 explicitly parent-company contacts; no verified WhatsApp/server delivery transport",
+      "Motion/react only, shared action tokens, transform/opacity, no currentTime scroll engine; static glass blur is not animated",
+      "Bundled headless Chromium only, at most two workers and graceful cleanup; final Task161 local/CI/API/live/physical-device/transaction results remain separate gates"
     ],
     "avoid": [
-      "Recreating v7 full-bleed film plus overlay copy or v6 organic framed split hero plus miniature product card",
-      "Decorative index/eyebrow/scroll cue, italic or different-color headline accents, glass nav or full-frame scrim",
-      "Invented prices, stock, statistics, certification, reviews, delivery promises or fake checkout/CRM success",
-      "Changing imported/catalog-owned SKU names, data, order or product schema for visual variety",
-      "Long multiple pins, body/wheel/touch capture, hidden SSR CTA, autoplay loops, scroll seeking or spring on playback time",
-      "Transforming the film controls together with the video; hiding selected detail/cart targets on phone or under reduced motion",
-      "Unapproved clips, new provider/model/key/global setup or paid generation inferred from guide examples; bypassing Google verification",
-      "Counting previous v7/local build results as new live/device/transaction acceptance or claiming planned fingerprint differences as shipped"
+      "Treating v8 170svh package/paper-plane hero, opaque nav, Figtree/old palette or onepass-only preference as active v9 constraints",
+      "Invented prices, stock, capacity, certification, health/organic claims, reviews, scarcity, delivery promises or fake checkout/CRM/email success",
+      "Changing catalog/import-owned SKU data/order/ProductOffer schema for visual variety or hiding final/focused rail items",
+      "Multiple full-screen pins, body/wheel/touch capture, hidden SSR content/CTAs, spring-lag horizontal scrub, new rAF/GSAP/Lenis/foreign runtime",
+      "Moving/shrinking video controls with the film, autoplay for reduced/saveData, scroll seeking, animated blur/filter/layout",
+      "Copying demo media/fonts/nav/brand/SaaS prices, claiming1635 adapted ProductCard runtime, or using rejected15025/7091 as selected source",
+      "Unapproved B→C/C→D/D→F clips, new provider/model/key/global setup or paid generation inferred from examples; bypassing Google verification",
+      "Calling forward/reverse montage newly generated/seamless physical footage, or counting historical v8 acceptance as new v9 live/device/transaction proof"
     ]
   },
   "decisions": [
     {
       "date": "2026-11-01",
       "source": "Customer renewal PDF + user request",
-      "decision": "Production-first landing (~65% corporate, 35% products), olive #172B21, paper #F4F0E7, champagne #B6A078; Fraunces/Figtree; preserve official slogan and existing checkout architecture."
+      "decision": "Production-first landing (~65% corporate, 35% products), olive #172B21, paper #F4F0E7, champagne #B6A078; Fraunces/Figtree; preserve official slogan and existing checkout architecture.",
+      "scope": "historical-before-task161"
     },
     {
       "date": "2026-11-01",
       "source": "User explicitly requested 21st and Google Flow",
       "decision": "Adapt retrieved 21st 9701,25310,35258. Use existing canvas engine. Google Flow generation requires approved first/last frames and capped credits.",
-      "status": "historical-canvas-composition-before-task-159-native-film"
+      "status": "historical-canvas-composition-before-task-159-native-film",
+      "scope": "historical-before-task161"
     },
     {
       "date": "2026-11-01",
       "source": "User Bazgold screenshot + supplied PDF kits",
       "decision": "Adapt 21st 20038/39096 to AFİNA customer membership; source-aligned five-answer FAQ and machine discovery. First Flow A→B trial spent exactly 20 approved credits, remaining authority zero.",
-      "status": "historical-before-user-authorized-remaining-three-transitions"
+      "status": "historical-before-user-authorized-remaining-three-transitions",
+      "scope": "historical-before-task161"
     },
     {
       "date": "2026-11-01",
       "source": "User selected one supplied kit; Sinematik Siteler chosen, accepted first Flow clip",
       "decision": "Centered Fraunces hero over accepted A→B native-scroll frames; single glass header surface; same-frame responsive AVIF/WebP poster. Preserve real CTA/cart/auth, reduced motion and short-screen fallback. Source 21st 12005. Remaining three Flow transitions remain blocked and unpublished.",
-      "status": "superseded-by-v6-user-rejection"
+      "status": "superseded-by-v6-user-rejection",
+      "scope": "historical-before-task161"
     },
     {
       "date": "2026-11-01",
       "source": "User rejected current hero, requested full design-doc replacement, live browser/mobile checks, Google Flow/Omni and Web Site Yeteneği Kiti",
       "decision": "v6 Üretici Atlası: paper editorial canvas, solid light header, asymmetric split hero with accepted bright A→B visual in a separate frame, natural mobile stack, light factory/product sections and one olive B2B block. Preserve original branding, commerce and source-backed content. Static reduced-motion fallback; no autoplay or long full-screen pin. Latest browser authorization supersedes the old prohibition for this task.",
-      "status": "superseded-by-task-159-cinematic-film-request"
+      "status": "superseded-by-task-159-cinematic-film-request",
+      "scope": "historical-before-task161"
     },
     {
       "date": "2026-11-01",
       "source": "User four new-generation Markdown guides, Task 158",
       "decision": "Adapt guides as four project-local skills with shared spacing and Motion interactions. Retrieved 21st source 26725. Preserve v6, approved Flow media and current credit ledger; Omni Chrome Use refers to automation, separately from Omni 1.1 Flash model.",
-      "status": "historical-v6-normalization-updated-by-task-159"
+      "status": "historical-v6-normalization-updated-by-task-159",
+      "scope": "historical-before-task161"
     },
     {
       "date": "2026-11-01",
       "source": "User: Hero hâlâ aynı görünüyor; use Google Flow videos for a more cinematic opening, Task 159",
       "decision": "v7 Zeytinin İçinden replaces split/frame-only and blanket no-autoplay preference for the opening. Full-bleed accepted A→B silent MP4 plays once with visible pause/play/replay, official copy anchored left-bottom and real DOM CTAs. Keep opaque original paper nav and production-first body. Static reduced-motion/saveData/blocked/error fallback, pause hidden/offscreen. Adapt 21st 12200 composition only; no demo media/fonts/nav/hidden content/framer-motion. No new paid production.",
-      "status": "historical-v7-superseded-by-task-160-object-journey"
+      "status": "historical-v7-superseded-by-task-160-object-journey",
+      "scope": "historical-before-task161"
     },
     {
       "date": "2026-11-01",
       "source": "User Scroll Craft + frontend-design/frontend-ui-engineering + Taste request and correct Flow project, Task160",
       "decision": "v8 Object journey follows a real selectable package through one layered opening, factory proof, native six-SKU gallery, honest B2B details branch and resolved address. Taste seed1601101 keeps palette/type. Three existing SKU choices use the existing product/detail/cart contracts. Approved A→B remains the only runtime film; correct Flow project reconnected without the prior warning; three authorised first/last generations cost36credits, balance194; all three candidates complete/downloaded/technical-verified, with no new user/runtime approval.",
-      "status": "complete-deployed-ready-179df851-ci41304790349-live-ui-acceptance-complete"
+      "status": "complete-deployed-ready-179df851-ci41304790349-live-ui-acceptance-complete",
+      "scope": "historical-before-task161"
     },
     {
       "date": "2026-11-01",
       "source": "Task160 authorized Flow continuation and account balance screenshot",
       "decision": "Omni1.1Flash720p8s16:9x1 at12credits each. B→C/C→D/D→F all COMPLETE and downloaded; no user/runtime approval for new candidates. Three requested outputs charged36, balance230→194; cumulative56/80 credits. Prior blocked attempts preserved. No security bypass, extra attempts or runtime/user approval for new candidates.",
-      "status": "generation-candidates-only-review-and-user-approval-pending"
+      "status": "generation-candidates-only-review-and-user-approval-pending",
+      "scope": "historical-before-task161"
+    },
+    {
+      "date": "2026-11-01",
+      "source": "User new pro plan and all-sections21st/ScrollCraft request, Task161",
+      "decision": "v9 Hasat Rotası adopts bright brand/stone/ink/oil-gold and Fraunces/Inter; natural approved-Flow loop hero/near branch/glass nav, one eligible direct-linear gallery pin, real facility parallax, factual three-stage bento, shared B2B/SKU choices into a validated manual corporate mailto draft, native FAQ/contact/footer. Seven scenes/nine selected primary21st sources;1635 reference only. AcceptedA→B loop is a free local edit, no paid new media; real data/server authority and contact-source boundaries remain.",
+      "status": "implementing-final-acceptance-and-publication-pending",
+      "scope": "active-task161"
     }
   ],
   "evidence": [
@@ -327,8 +387,8 @@
       "source": "docs/tasks/159-flow-sinematik-hero.md"
     },
     {
-      "fact": "active-design:v8-object-journey",
-      "source": "docs/DESIGN.md"
+      "fact": "historical-design:v8-object-journey",
+      "source": "docs/referans/DESIGN-v8-history-20261101.md"
     },
     {
       "fact": "brief-first-object-journey-and-feeling-curve",
@@ -357,19 +417,44 @@
     {
       "fact": "three-authorized-omni-submissions-complete-downloaded-technical-verified-36credits-balance194-user-approval-pending",
       "source": "docs/referans/flow-keyframes.json"
+    },
+    {
+      "fact": "active-design:v9-hasat-rotasi-implementing-acceptance-pending",
+      "source": "docs/DESIGN.md"
+    },
+    {
+      "fact": "brief-first-v9-feeling-curve",
+      "source": "docs/scrollcraft/builds/afina-v9/BRIEF.md"
+    },
+    {
+      "fact": "all-seven-scenes-plus-nav-footer-actual-source-hashes",
+      "source": "docs/scrollcraft/builds/afina-v9/21ST-SOURCES.json"
+    },
+    {
+      "fact": "historical-v8-design-byte-identical-archive-sha07285a43",
+      "source": "docs/referans/DESIGN-v8-history-20261101.md"
+    },
+    {
+      "fact": "accepted-AB-free-five-second-local-loop",
+      "source": "lib/media/pro-loop.ts"
+    },
+    {
+      "fact": "verified-parent-company-manual-email-draft-contact-source",
+      "source": "lib/site/corporate-contact.ts"
     }
   ],
-  "generatedAt": "2026-11-01T12:23:18.065465+00:00",
+  "generatedAt": "2026-11-01T13:36:35.959251+00:00",
   "release": {
-    "runtimeCommit": "179df851686a34d09a1e965315dc5e902a30c362",
-    "ciRun": "41304790349",
-    "ciStatus": "SUCCESS",
-    "deploymentId": "dpl_7EUijPZwcnzr9ML3nHMFRwUErZ89",
-    "deploymentStatus": "READY",
+    "task": 161,
+    "design": "v9 Hasat Rotası",
+    "status": "IMPLEMENTING",
+    "runtimeCommit": null,
+    "ciStatus": "PENDING",
+    "deploymentStatus": "PENDING",
     "production": "https://afinazeytin.com",
-    "localAcceptance": "1200unit/89files; lint,typecheck,build;74e2e+6responsive skips;6visual widths clean; motion/noJS/reduced PASS;native inspector1FAIL5WARN and scenes0 preserved",
-    "liveAcceptance": "COMPLETE:74e2e PASS+6responsive skips;6visual widths zero axe/overflow/errors/bad;motion/noJS/reduced PASS;native190decoded frames,7.916667s ended/muted;12.04s UI recording",
-    "receipts": "forthcoming: docs/referans/yayin-object-v8-20261101.json and qa-160-20261101.json"
+    "localAcceptance": "PENDING final Task161 source acceptance; historical Task160 PASS is separate",
+    "liveAcceptance": "PENDING; no Task161 READY/live/physical-device/transaction claim",
+    "sourceProvenance": "docs/scrollcraft/builds/afina-v9/21ST-SOURCES.json"
   },
   "mediaContinuation": {
     "projectUrl": "https://flow.google.com/project/62040049-3473-446b-9d93-8e6cbc45f8bc",
@@ -384,6 +469,24 @@
     "newCandidateRuntimeApproval": false,
     "source": "docs/referans/flow-keyframes.json",
     "downloaded": true,
-    "runtimeFilm": "accepted A→B only"
-  }
+    "runtimeFilm": "Accepted A→B only, now free local forward/reverse5sec loop derivative; other3candidates have no runtime/user approval"
+  },
+  "releaseHistory": [
+    {
+      "task": 160,
+      "design": "v8 Object journey",
+      "scope": "historical-not-task161-acceptance",
+      "record": {
+        "runtimeCommit": "179df851686a34d09a1e965315dc5e902a30c362",
+        "ciRun": "41304790349",
+        "ciStatus": "SUCCESS",
+        "deploymentId": "dpl_7EUijPZwcnzr9ML3nHMFRwUErZ89",
+        "deploymentStatus": "READY",
+        "production": "https://afinazeytin.com",
+        "localAcceptance": "1200unit/89files; lint,typecheck,build;74e2e+6responsive skips;6visual widths clean; motion/noJS/reduced PASS;native inspector1FAIL5WARN and scenes0 preserved",
+        "liveAcceptance": "COMPLETE:74e2e PASS+6responsive skips;6visual widths zero axe/overflow/errors/bad;motion/noJS/reduced PASS;native190decoded frames,7.916667s ended/muted;12.04s UI recording",
+        "receipts": "forthcoming: docs/referans/yayin-object-v8-20261101.json and qa-160-20261101.json"
+      }
+    }
+  ]
 }

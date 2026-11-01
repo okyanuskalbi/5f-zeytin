@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 const sectionIds = [
-  "baslangic", "kurumsal", "tesisimiz", "urunler", "uretim-yolculugu", "toptan-iletisim", "iletisim",
+  "baslangic", "urunler", "tesisimiz", "uretim-yolculugu", "toptan-iletisim", "teklif", "iletisim",
 ] as const;
 
 async function expectNoHorizontalOverflow(page: Page): Promise<void> {
@@ -30,7 +30,7 @@ test.beforeEach(async ({ page, baseURL }, testInfo) => {
   await expect(page.getByRole("banner").getByRole("button", { name: /^Sepetim,/ })).toBeEnabled();
 });
 
-test("layered opening keeps the official copy, wide film and both real destinations", async ({ page }) => {
+test("full-film opening keeps the official copy, near plane and both real destinations", async ({ page }) => {
   const hero = page.locator("#baslangic");
   const copy = hero.locator("[data-hero-copy]");
   const visual = hero.locator("[data-hero-visual]");
@@ -38,24 +38,23 @@ test("layered opening keeps the official copy, wide film and both real destinati
   await expect(visual).toBeVisible();
   await expect(copy.getByRole("heading", { level: 1 })).toHaveText("Kökü toprakta. Yeri sofrada.");
   await expect(copy.getByRole("link", { name: "Ürünleri Keşfet" })).toHaveAttribute("href", "#urunler");
-  await expect(copy.getByRole("link", { name: "Kurumsal Teklif Al" })).toHaveAttribute("href", "#toptan-iletisim");
+  await expect(copy.getByRole("link", { name: "Kurumsal Teklif Al" })).toHaveAttribute("href", "#teklif");
+  await expect(hero.locator("[data-hero-near-plane] img")).toBeVisible();
   const [copyBox, visualBox, heroBox] = await Promise.all([copy.boundingBox(), visual.boundingBox(), hero.boundingBox()]);
   expect(copyBox).not.toBeNull();
   expect(visualBox).not.toBeNull();
   expect(heroBox).not.toBeNull();
   expect(visualBox!.width).toBeGreaterThanOrEqual(page.viewportSize()!.width - 2);
   const titleBox = await copy.getByRole("heading", { level: 1 }).boundingBox();
-  if (page.viewportSize()!.width > 900 && page.viewportSize()!.height > 680) {
-    expect(titleBox!.y).toBeGreaterThanOrEqual(visualBox!.y);
-    expect(titleBox!.y + titleBox!.height).toBeLessThanOrEqual(visualBox!.y + visualBox!.height + 1);
-    expect(heroBox!.height).toBeLessThan(page.viewportSize()!.height * 2.2);
-  } else {
-    expect(titleBox!.y + titleBox!.height).toBeLessThanOrEqual(visualBox!.y);
-  }
+  expect(titleBox!.y).toBeGreaterThanOrEqual(visualBox!.y);
+  expect(titleBox!.y + titleBox!.height).toBeLessThanOrEqual(visualBox!.y + visualBox!.height + 1);
+  expect(heroBox!.height).toBeLessThan(page.viewportSize()!.height * 1.5);
+  await expect(copy.getByRole("heading", { level: 1 })).toBeInViewport({ ratio: 1 });
+  await expect(copy.getByRole("link", { name: "Ürünleri Keşfet", exact: true })).toBeInViewport({ ratio: 1 });
   await expectNoHorizontalOverflow(page);
 });
 
-test("solid light navigation uses the readable original logo", async ({ page }) => {
+test("floating glass navigation keeps dark readable controls and the original logo", async ({ page }) => {
   const header = page.getByRole("banner");
   const logo = header.getByRole("img", { name: "AFİNA ZEYTİN", exact: true });
   await expect(header.getByRole("link", { name: "Afina Zeytin ana sayfa" })).toHaveAttribute("href", "/");
@@ -65,12 +64,14 @@ test("solid light navigation uses the readable original logo", async ({ page }) 
   const surface = await header.evaluate(element => {
     const style = getComputedStyle(element);
     const color = style.backgroundColor.match(/[\d.]+/g)?.map(Number) ?? [];
-    return { color, backdrop: style.backdropFilter };
+    const ink = getComputedStyle(element.querySelector('a[aria-label="Afina Zeytin ana sayfa"]')!).color.match(/[\d.]+/g)?.map(Number) ?? [];
+    return { color, ink, backdrop: style.backdropFilter };
   });
   expect(surface.color.length).toBeGreaterThanOrEqual(3);
   expect(Math.min(...surface.color.slice(0, 3))).toBeGreaterThan(180);
-  expect(surface.color[3] ?? 1).toBeGreaterThanOrEqual(0.95);
-  expect(surface.backdrop).toBe("none");
+  expect(surface.color[3] ?? 1).toBeGreaterThanOrEqual(0.9);
+  expect(Math.max(...surface.ink.slice(0, 3))).toBeLessThan(65);
+  expect(surface.backdrop).toMatch(/blur\(/);
 });
 
 test("all landing sections remain within the actual viewport while scrolling", async ({ page }) => {

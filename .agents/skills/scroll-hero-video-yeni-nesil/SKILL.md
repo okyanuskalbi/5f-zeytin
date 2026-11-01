@@ -1,40 +1,43 @@
 ---
 name: scroll-hero-video-yeni-nesil
-description: AFİNA v8 Object journey için bağımsız Motion düzlemleri, tek geçiş Flow filmi ve erişilir statik geri dönüşleri uygulayan proje yerel yetenek.
+description: AFİNA v9 Hasat Rotası için kabul edilmiş Flow loop türevi, lineer galeri, doğal akış ve erişilir poster geri dönüşlerini uygulayan proje yerel yetenek.
 metadata:
   scope: project
   source: scroll-hero-video-kiti-yeni-nesil.md
   source_sha256: f01ca525ec395387ffddaa3be045197b515158ecb0405db2ebe0f77580b051a3
 ---
 
-# AFİNA için bağımsız düzlemler ve gerçek Flow filmi
+# AFİNA için v9 Flow filmi ve lineer sahne ilerlemesi
 
-Aktif yön [v8 Object journey](../../../docs/DESIGN.md)/[Task 160](../../../docs/tasks/160-scroll-craft-taste-ve-flow.md); önce [BRIEF/PLAN](../../../docs/scrollcraft/builds/afina-v8/PLAN.md). Kullanıcının Scroll Craft/Taste isteği yalnız küçük v7 film-kabuğu hareketini değil kompozisyonu değiştirir. Kaynak MD yeni motor/ücret/model yetkisi değildir; [Task 158 kökeni](../../../docs/referans/yeni-nesil-md-uyarlamalari-20261101.md) korunur.
+## Durum, kaynak ve yetki
 
-## Düzlemler ve doğal akış
+[Task161](../../../docs/tasks/161-pro-plan-tum-bolumler-21st-scroll-craft.md) UYGULANIYOR; final yerel/CI/API/canlı kabul BEKLİYOR. Aktif [v9 Hasat Rotası](../../../docs/DESIGN.md), uygulama öncesi [BRIEF/PLAN/COPY](../../../docs/scrollcraft/builds/afina-v9/BRIEF.md), [dokuz ana 21st kaynak/SHA kaydı](../../../docs/scrollcraft/builds/afina-v9/21ST-SOURCES.json) okunur. Kullanıcının yeni pro planı, v8’in görsel uygulama tercihlerini değiştirir; veri/ticaret/medya onayı/harcama yetkisini değiştirmez. [Task158 kaynak kökeni](../../../docs/referans/yeni-nesil-md-uyarlamalari-20261101.md) ve bu dosyanın source_sha256 alanı korunur. V8 DESIGN [byte-identical arşivdedir](../../../docs/referans/DESIGN-v8-history-20261101.md).
 
-Desktop yeterli alan: tek kısa 170svh sticky. Motion useScroll/useTransform film scale1→.82/x0→-8vw/y0→-48px, ambalaj y80→-8px/scale1→1.12, kendi kâğıt zeminli copy y0→-24px. Film, gerçek alfa ambalaj ve HTML metin ayrı sahipliktedir. mediaStyle yalnız poster/video;44px+ kontrol transform dışında. Tek zirve ve açık taban teması; stage'ı boş tutan pin, body/wheel/touch capture yok.
-Telefon/kısa ekran/reduced pin yok: H1+ana CTA önce,280px film/260px ürün, sonra seçim/ayrıntı.360×640 ve büyütülmüş metin doğrulanır. SSR poster/H1/CTA görünür; seçim aynı id'nin gerçek görsel/ad/fiyat/detail/cart hedefini günceller.
-Yeni API motion/react; sadece transform/opacity. GSAP/Lenis/vanilla engine/yeni rAF/seek motoru eklenmez. Native currentTime scroll'a bağlanmaz ve video zamanına spring verilmez. Genel canvas/kare motoru diğer onaylı kullanımlarda kalabilir; bu MP4 yerine geçirilmez.
+## Açılış, galeri ve sahiplik
 
-## Kaynak ve film yaşam döngüsü
+Doğal tam geniş film, özgün dekoratif ön dal, okunur gerçek DOM sloganı/ikiCTA ve tek cam nav. Fraunces/Inter ve v9 pro tokenları; #urunler/#teklif gerçek anchor’ları SSR’da görünür. V8’in170svh ambalaj/kâğıt-plane pin’i yerine hero doğal viewport’tur; yeni plan bu eski tercihi ve genel no-loop uygulama kuralını kabul edilmiş türev için değiştirir. Tek videodaki dal/ağaç sahte bağımsız görüntüler diye raporlanmaz.
 
-1. Kabul edilmiş ilk A→B, docs/referans/flow-keyframes.json ve lib/media/cinematic-film.json provenansı. Web MP4 public/videos/afina-agac-dal.mp4, sessiz H264/faststart/190kare/7,916667sn./2.537.380bayt. Kaynak/çıktı SHA ve script kapısı korunur; yeni üretim veya ikinci SDR tone mapping yok.
-2. Normal mod hydration/tercih/gerçek görünürlükten sonra muted/playsInline ile **bir kez** oynar; son karede kalır. Loop/sahte dikiş yok. Pause/play/replay gerçek olaylarla; autoplay reddi oynuyor sayılmaz.
-3. Kullanıcı pause korunur; gizli sekme/ekran dışı durur; biten film observer'la yeniden başlamaz. Observer/event/video unmount temizliği korunur.
-4. Reduced/saveData kaynak/MP4 isteği başlatmaz; statik poster ve gerçek CTA kalır. Hata/blocked uygun poster/manuel retry; manuel gesture ve tercih değişimi ayrıca test edilir. Mobil poster/video odak eşliği korunur.
+Yalnız galeri≥1024×860 normal tercih ve JS ölçümü sonrası tek bounded pin; scroll ilerlemesi→x=−travel×progress, spring/lag olmadan. Son SKU ve odaklı kart görünür, galeri bitince body doğal akar. Mobil/kısa/reduced/JSkapalı native yatay rail. Tesis fotoğrafı klip/overscan içinde y0→120px; metin/CTA geometri sabit. Diğer bölümler SSR görünür, once reveal; yeni büyük pin veya scroll girdisi kilidi yok.
 
-## Doğru Flow ve yetki
+Yeni API motion/react; transform/opacity dışında sürekli animasyon yok. Sabit cam blur animate edilmez. GSAP/Lenis/vanilla engine/yeni rAF/seek motoru eklenmez. Video zamanı scroll’a bağlanmaz.21st32829 hero,24623 galeri,20023 parallax; tam9anaID eşlemesi linkedprovenansta.1635 mevcut ProductCard için yalnız incelenmiş referanstır.
 
-Doğru Flow projesi 62040049-3473-446b-9d93-8e6cbc45f8bc taze bağlantıda önceki reCAPTCHA uyarısı olmadan çalıştı; güvenlik engeli atlanmadı. Aynı ilk/son kare yöntemiyle Omni 1.1 Flash/720p/8 sn./16:9/x1,12 kredi/çıktı: B→C/C→D/D→F üçü de COMPLETE ve indirildi. Üç yetkili istek 36 kredi, bakiye 230→194; ilk 20 ile toplam 56, eski 80 tavanında 24 kredi kullanılmadı (ek deneme yetkisi değil). Yeni klipler yalnız aday; teknik/görsel inceleme ve kullanıcı onayı olmadan public/runtime yok. Sitede kabul edilmiş A→B kalır. Önceki blocked denemeler/0 harcama tarihçesi ve exact prompts docs/referans/flow-keyframes.json içinde korunur; bakiye kanıtı .cache/task-160/flow-194-credit-balance.png.
-Omni Chrome Use tarayıcı otomasyonu yaklaşımıdır, Omni 1.1 Flash model adı değildir. Üretim oturumu yetkisi kullanıcının Chrome'unu testte açma izni sayılmaz. Yeni Imagen/model/sağlayıcı/abonelik varsayılmaz.
+## Kaynak ve medya yaşam döngüsü
 
-## Kabul
+Kabul edilmiş A→B’den ücretsiz yerel ileri/geri kurgu: kaynak kare6..65,120kare/24fps/5sn/1280×720,6.847.142bayt; `public/videos/afina-zeytinlik-loop-5s.mp4`. Yeni üretim veya kusursuz fiziksel kamera döngüsü iddiası değildir. HeroAVIF75.957bayt; aynı kadraj WebP fallback; onaylı şişeOG1200×630. Normal mod muted/playsInline loop, gerçek pause/play, kullanıcı pause/görünürlük temizliği; reduced/saveData MP4 istemez, hata/blocked poster ve uygun manuel kontrol. Kontrol44px+ ve video transformu dışında. Scroll currentTime/seek, ikinci SDR tone mapping veya yeni ödeme/kredi yok.
 
-Final-source gerçek decoded film/zaman/son kare, kontrolün ayrı düzlemi, tercih/görünürlük/hata, nesne seçimi ve doğru detail/cart, SSR/JS kapalı, rail erişimi ve kompakt telefon kontrol edilir. Paketli headless Chromium ≤2 worker/düzgün kapanış. Önceki [v7 makbuzu](../../../docs/referans/yayin-film-v7-20261101.json) tarihçedir; v8 yerel/canlı UI kabulü tamamlandı; yeni medya kullanıcı onayı ayrıdır. Fiziksel cihaz/gerçek servis sonucu emülasyondan türetilmez.
-Birlikte [Scroll Craft](../scroll-craft/SKILL.md), [Sinematik](../sinematik-siteler-yeni-nesil/SKILL.md), [Profesyonel web](../profesyonel-web-sitesi-yeni-nesil/SKILL.md), [UI/UX](../ui-ux-pro-max/SKILL.md); upstream engine değiştirilmez/import edilmez.
+`lib/media/pro-loop.ts` aktif türev yolunu taşır; önceki190kare/7,916667sn. A→B dosyası ve `lib/media/cinematic-film.json` kaynak tarihçesi korunur. Loop dikişi/gerçek decoded kare/kadraj/oynatım durumları yeni final kaynakta ayrıca kabul edilir; eski film ölçümüyle yeni loop’a PASS yazılmaz. Kaynak/çıktı hash ve boyut [DESIGN](../../../docs/DESIGN.md) içindedir.
 
-## Güncel Task160 durumu
+Doğru Flow proje62040049-3473-446b-9d93-8e6cbc45f8bc; Task160 ilk/son kare üç yetkili Omni1.1Flash üretimi36kredi, bakiye194, toplam56/80 tarihçesidir. B→C/C→D/D→F adayları kullanıcı/runtime onayı almamıştır; D→F etiket kusuru nedeniyle bağlanmaz. Kullanılmamış24kredi ek deneme yetkisi değildir; güncel [medya kayıtları](../../../docs/referans/flow-keyframes.json) okunur. Omni Chrome Use mevcut CUA/browser ile otomasyon yaklaşımıdır, Omni1.1Flash model adı değildir. MD örnekleri yeni Imagen/model/provider/anahtar/abonelik/global kurulum/ücret yetkisi vermez; güvenlik doğrulaması atlanmaz.
+
+## Gerçek eylemler ve kabul
+
+Altı gerçek SKU’nun kimlik/sıra/ad/fiyat/stok/ambalaj/schema alanları korunur; mevcut ProductCard/detail/AddToCart/CatalogProvider/sunucu checkout otoritesi değişmez. SKU ve B2B segment seçimi tek quote context’inde gerçek alanlara taşınır. #teklif formu required/KVKK doğrulamasıyla gerçek özet/mailto taslağı hazırlar; gönderimi kullanıcı e-posta uygulamasında tamamlar. info@afina.com.tr/+903288827708 resmî AFİNA Şirketler Topluluğu kanalıdır; zeytin WhatsApp hattı veya sunucu e-posta teslimi varsayılmaz. Provider/env/DB etkinleştirmesi ve sahte gönderildi/CRM başarısı yok.
+
+Final-source kontrast/axe/taşma/odak/gerçek kaynak hatası, yedi sahnenin hareket/geometrisi, galeride lineer x/son ürün/odak ve SKU→segment→taslak/gerçek URI, modal/menü/üyelik, SSR/JSkapalı/reduced/saveData/film/kontrol/hata ayrıca test edilir. Telefon360×640/büyütülmüş metin dahil gerçek viewport görüntüsüyle görülür; fiziksel cihaz değildir. Unit/build, CI, API READY, canlı UI, gerçek hesap/ödeme/e-posta teslimi ayrı kapılardır; eski v8PASS yeni v9 kabulü değildir. Test paketli headlessChromium≤2worker, browser.close()/sunucuSIGTERM düzgün kapanış; kullanıcının Chrome’u testte açılmaz.
+
+Birlikte: [Profesyonel web](../profesyonel-web-sitesi-yeni-nesil/SKILL.md), [Scroll hero](../scroll-hero-video-yeni-nesil/SKILL.md), [Sinematik](../sinematik-siteler-yeni-nesil/SKILL.md), [UI/UX](../ui-ux-pro-max/SKILL.md), [Scroll Craft](../scroll-craft/SKILL.md), [Taste](../design-taste-frontend/SKILL.md). Upstream skill/engine değiştirilmez veya runtime’a kopyalanmaz.
+
+## Tarihçe: Task160/v8 kabulü (v9 sonucu değildir)
 
 V8 kaynak 179df851/CI 41304790349 ile afinazeytin.com üzerinde READY. Yerel 1200 unit/tam lint-type-build,74 e2e+6 responsive skip ve altı görsel genişlik PASS; Native inspector 1 FAIL/5 WARN korunur, Scenes exit0.
 

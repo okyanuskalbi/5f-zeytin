@@ -1,58 +1,59 @@
-# AFİNA ZEYTİN v8 — Object journey
+# AFİNA ZEYTİN v9 — Hasat Rotası
 
 ## Güncel yön ve durum
 
-Task 160: kullanıcı Scroll Craft, frontend-design, frontend-ui-engineering ve Taste ile tasarımı değiştirmeyi, verdiği Google Flow projesini kullanmayı istedi. Önceki “sormadan devam et” yaratıcı devri geçerlidir. [BRIEF](scrollcraft/builds/afina-v8/BRIEF.md) kullanıcı alıntılarını yazılmış yaratıcı kararlardan ayırır; [PLAN](scrollcraft/builds/afina-v8/PLAN.md), [COPY](scrollcraft/builds/afina-v8/COPY.md) ve [VERIFICATION](scrollcraft/builds/afina-v8/VERIFICATION.md) uygulama öncesinde yazıldı.
+[Task 161](tasks/161-pro-plan-tum-bolumler-21st-scroll-craft.md) **UYGULANIYOR; kabul ve yayın BEKLİYOR**. Kullanıcı yeni pro planı uygulamamızı ve bütün bölümlerde gerçek 21st kaynaklarını Scroll Craft yöntemiyle kullanmamızı istedi. “Sormadan devam et” yaratıcı devri sürer. [Kaynak plan](referans/afina-zeytin-pro-plan-20261101.md), uygulama öncesi [BRIEF](scrollcraft/builds/afina-v9/BRIEF.md), [PLAN](scrollcraft/builds/afina-v9/PLAN.md), [COPY](scrollcraft/builds/afina-v9/COPY.md) ve [21st provenansı](scrollcraft/builds/afina-v9/21ST-SOURCES.json) kaynak ve kararları ayırır. Örnek planın Vite logosu/fiyatları/istatistikleri/WhatsApp önerisi gerçek proje verisi değildir.
 
-Bu dosya tek aktif tasarım sözleşmesidir. Önceki v7 dosyası byte-identical [v7 tarihçesine](referans/DESIGN-v7-history-20261101.md) alındı; [v6](referans/DESIGN-v6-history-20261101.md)/[v5](referans/DESIGN-v5-history-20261101.md) ve yayın makbuzları tarihçedir. V8 [afinazeytin.com](https://afinazeytin.com) üzerinde Vercel API **READY**: kaynak `179df851686a34d09a1e965315dc5e902a30c362`, CI 41304790349 SUCCESS, dağıtım `dpl_7EUijPZwcnzr9ML3nHMFRwUErZ89`. READY yayını ve ayrı canlı etkileşim/görsel kabulü doğrulandı.
+Bu dosya tek aktif görsel sözleşmedir. Önceki v8 dosyası değişmeden [v8 arşivine](referans/DESIGN-v8-history-20261101.md) alındı; SHA-256 `07285a4340723309589e90cbdac00ed7583252ec14c446e6c437b2550620d686`. V6/v7/v8 kompozisyonları ve kabul makbuzları tarihçedir. V8 kaynak `179df851`/READY ve onun 1200 unit/74 e2e kabulü v9 sonucu sayılmaz. Task 161 için son kaynak CI, görsel/davranış kabulü, API yayını ve canlı kontrol ayrıca kaydedilecektir; burada tamamlandı iddiası yoktur.
 
-Yerel kabul: 89 dosya/1200 unit, tam ESLint/typecheck/build PASS; 74 e2e PASS + 6 responsive skip (80 toplam); 1440/1024/768/390/360×640/320 görsel/axe/taşma/pageerror/kaynak hatası0. Motion/JavaScript kapalı/reduced kontrolleri PASS. Native Scenes exit0; inspector 1 FAIL/5 WARN ham sonuçları ve semantik gerekçeleri korunur; inspector0 iddiası yok. 21st/Taste kaynak review tamam.
+## Marka, renk ve tipografi
 
-Canlı kabul: **TAMAMLANDI** — 74 e2e PASS + 6 responsive skip; 1440/1024/768/390/360×640/320 görsel/axe/taşma/pageerror/başarısız kaynak 0; motion/JavaScript kapalı/reduced PASS. Doğal film 190 decoded kare,7,916667 sn., ended/muted; 12,04 sn. gerçek UI oynatım kaydı alındı. Fiziksel cihaz veya gerçek hesap/ödeme/teklif mutasyonu değildir.
+Orijinal AFİNA ZEYTİN ve topluluk logoları, gerçek ambalajlar ve **“Kökü toprakta. Yeri sofrada.”** korunur. Yeni planın aktif paleti: marka `--pro-brand: #84CC16`, hover `#A3E635`, taş `--pro-stone: #EDE8DD`, mürekkep `--pro-ink: #1C1F1A`, kâğıt `#F7F4EE`, yağ altını `--pro-gold: #C89B3C`. Küçük metinde erişilir koyu altın `--pro-gold-ink: #735519`, gövde/ikincil `#4F594B`; altın dekor rengi otomatik metin rengi değildir. Kaynak `app/globals.css`.
 
-Final [yayın makbuzu](referans/yayin-object-v8-20261101.json) ve [QA kaydı](referans/qa-160-20261101.json) nihai Task 160 kanıt kayıtlarıdır; yeni Flow medya kabulü ayrı tutulur.
+Başlık **Fraunces**, gövde **Inter**; resmî slogan aynı yüzle iki satırdır. Başlık/gerçek CTA ve içerik SSR'da görünür, video/loader/hydration beklemez. Ana aralıklar 8 px tabanlı 32/48/64/96; planın yuvarlatılmış ürün yüzeyleri ve tek cam navigasyonu v8'in kare/opak yüzey tercihini değiştirir. Sade içerik, kısa kaynaklı metin ve yaklaşık %65 üretici/kurumsal güven, %35 alışveriş dengesi sürer.
 
-## Fikir, marka ve nesne
+## Yedi bölüm ve gerçek kaynaklar
 
-Taste tohumu **1601101**, `--keep palette,type`: **page-is-the-object**. Özel gramer **Object journey**; sayfanın birimi gerçek ambalaj ve ona bağlı seçim/üretici/alışveriş ihtiyacıdır. Yeni isim tek başına tasarım farkı değildir: açılış, beş vuruş ve çalışan seçim gerçekten değişmelidir. [Baseline fingerprint](scrollcraft/FINGERPRINTS.md) v6 ve v7'ye karşı dört planlı farkı kaydeder; v8 satırı nihai sonuç kanıtıyla kaydedilir.
+| Sıra | Semantik bölüm | 21st demo ID | Gerçek uyarlama |
+|---|---|---|---|
+| 1 | `#baslangic` | 32829 | Tam geniş kabul edilmiş Flow filmi, özgün ön dal, iki satır slogan ve iki gerçek eylem. |
+| 2 | `#urunler` (`#kiler` alias) | 24623 | Altı gerçek SKU için tek yatay keşif/karar zirvesi; detay/sepet ve teklife ürün aktarımı. |
+| 3 | `#tesisimiz` (`#kurumsal` alias) | 20023 | Gerçek Ellek tesis fotoğrafı, kısa yer/adres metni, izole görüntü parallax'ı. |
+| 4 | `#uretim-yolculugu` | 1197 | Toprağımız/Tesisimiz/Sunumumuz için bir büyük ve iki destekleyici gerçek fotoğraf/metin bento. |
+| 5 | `#toptan-iletisim` | 7262 | Otel/restoran, market/bayi, toplu tüketim: üç eşdeğer işlevsel segment seçimi. |
+| 6 | `#teklif` | 35258 | İsimli/validasyonlu form, KVKK, gerçek talep özeti ve kullanıcı tarafından gönderilen e-posta taslağı. |
+| 7 | `#iletisim` (iç `#sik-sorulanlar`) | 31986 | Beş kaynaklı native disclosure/schema, gerçek adres, destek ve mağazaya dönüş. |
 
-Orijinal yatay logo, **“Kökü toprakta. Yeri sofrada.”**, yerel Fraunces/Figtree ve mevcut semantik renkler korunur: kâğıt `#F4F0E7`, zeytin `#172B21`, şampanya `#B6A078`, antrasit `#252725`, gövde `#414A40`. H1 iki satır, aynı display yüzü ve tek zeytin rengidir; italic/renkli vurgu, eyebrow/indeks rozeti ve scroll oku yoktur. Başlık/CTA SSR'da görünür, film/loader beklemez.
+Navigasyon **26786**, footer **21474**: toplam **9 seçili ana kaynak**. **1635 yalnız incelenmiş referanstır**; mevcut ProductCard yeniden kullanılır, yeni 1635 uyarlaması veya tüm kaynakların literal kopyası iddia edilmez. 15025 (gerçekte generic sayaç) ve 7091 (global reset/particle motoru) kaynakları okunup reddedildi. Exact component/demo SHA, yazar, URL ve uyarlama sınırı [provenans kaydındadır](scrollcraft/builds/afina-v9/21ST-SOURCES.json); yabancı demo medya/metin/ürün/font/nav taşınmaz.
 
-## Açılış düzlemleri ve telefon
+## Açılış ve tek scroll zirvesi
 
-- Orijinal opak kâğıt nav, gerçek mağaza/sepet/hesap/menü yolları korunur. Cam nav veya sahne üstünde ikinci menü eklenmez.
-- Yeterli masaüstünde (en az901×681 viewport) toplam `170svh + header` alanda tek kısa sticky sahne. Film düzlemi uniform scale1→.82, x0→-8vw, y0→-48px ile geri çekilir. Gerçek ambalaj ayrı düzlemde y80→-8px/scale1→1.12 öne gelir. Katı kâğıt copy-plane kendi metin zeminiyle y0→-24px ilerler; metin zemine göre kaymaz.
-- Ambalaj oranı/etiketi bozulmaz; temas/örtüşme açık olmalı, nesne havada asılı görünmemelidir. Filmdeki ağaç/dalı üç bağımsız görüntü katmanıymış gibi raporlama. Tam kare scrim, blur/filter/layout animasyonu yoktur.
-- Native film kendi zamanında bir kez oynar; scroll yalnız kompozisyonu değiştirir. `CinematicFilm.mediaStyle` yalnız poster/video katmanına uygulanır; sabit 44px+ kontroller küçülmez/hareket etmez.
-- Telefon, kısa ekran ve reduced-motion'da pin yok. Başlık + iki gerçek eylem önce; mobil film satırı280px, ambalaj260px, seçim/ürün ayrıntıları ardından doğal akışta. Eski720/740px minimum yok. 360×640 ve büyütülmüş metin ayrıca doğrulanır; viewport kabulü fiziksel telefon değildir.
-- **Ürünleri Keşfet**→`#urunler`, **Kurumsal Teklif Al**→`#toptan-iletisim`; JS kapalı/poster/hata durumunda gerçek anchor'lar erişilir.
+Hero doğal bir viewport filmidir; v8'in 170svh ambalaj/kâğıt-plane pin'i kaldırılır. Orijinal ön dal ayrı dekoratif düzlem, gerçek DOM slogan/CTA sabit okunur düzlemdir. Filmdeki tek ağaç/dal birden fazla bağımsız medya gibi raporlanmaz. Açık renk cam nav özgün logo, gerçek menü/üyelik/sepet/mağaza yollarını taşır; glass fallback okunur taş zeminlidir. Blur sabit yüzey stilidir, animasyon değildir. İkinci sahne menüsü veya yabancı GSAP nav motoru yoktur.
 
-## Çalışan signature ve veri sınırı
+**Ürünleri Keşfet** → `#urunler`; **Kurumsal Teklif Al** → `#teklif`. Hero H1/eylemleri JS kapalıyken de gerçek anchor'dır. Yerel okunurluk zemini kompozit kontrastla doğrulanır; tüm ekranı saklayan loader veya yüklenene kadar gizli içerik yoktur.
 
-Üç mevcut temsilci: `sample-green-olive-10kg`, `sample-green-olive-1kg`, `sample-olive-oil-1l`. Seçim aynı ambalaj/ad/miktar/fiyat/incele/ekle hedefini birlikte değiştirir; `aria-pressed`, fieldset/legend ve görünür odak korunur. Tercih edilen id yoksa mevcut ürünlerden fallback yapılır; ürün yoksa satın alma uydurulmaz.
+Yalnız ürün galerisi pin olur: uygun viewport **en az 1024×860**, normal hareket ve JS ölçümü sonrasında `x = −travel × progress` doğrudan lineer eşlenir. Spring/Lenis/rAF/scroll girdisi yakalama yoktur. Son ürün ve odaklanan kart görünür kalır; alan sonrasında doğal dikey akış sürer. Telefon/kısa ekran/reduced/JS kapalı durumda native yatay rail; taşma sayfanın dışına yayılmaz. Hero/tesis/bento/B2B/teklif/kapanış yeni tam sayfa pin değildir. Tesis yalnız kliplenmiş görüntüde y0→120px; metin/CTA sabit, mobil/reduced statik. Reveal içerik SSR'da görünür, bir kez ve transform/opacity ile olur.
 
-Hero ad/fiyatı mevcut `ProductVariant` girdisinden okur; yeni fiyat/stok kaynağı oluşturmaz. `AddToCart` güncel CatalogProvider/hydration/stok kapısını, sunucu quote/checkout ise ticari otoriteyi korur. Statik örnekler temsili fiyatlardır. Ürün sırası/adı/fiyatı/stoku görsel gerekçeyle değiştirilmez; gerçek detay modalı ve sepet aynı id'yi kullanır.
+## Film, poster ve kabul sınırı
 
-## Tek zirve ve beş vuruş
+Aktif film `public/videos/afina-zeytinlik-loop-5s.mp4`: kullanıcı kabulü olan A→B'den **ücretsiz yerel ileri/geri kurgu**, yeni Veo/Omni üretimi değildir. Kaynak kare **6..65** ileri/geri; **120 kare, 24 fps, 5 saniye, 1280×720**, sessiz H264/faststart; **6.847.142 bayt**, SHA-256 `778fe91b5f2a258ced10ae250fc31e576036043e0ef6d3bdd49501b70346c8fa`. Yön dönüşlü montajdır; fiziksel olarak kusursuz devamlı kamera iddiası yapılmaz. V9 planı eski genel loop yasağının bu kabul edilmiş türeve ilişkin uygulama tercihini değiştirir; yeni ücretli üretim yetkisi vermez.
 
-Kısa yer kuran film → aynı sahnede nesnenin gelişi tek zirvedir; ikinci dev pin yok. Sonra kompakt gerçek tesis kanıtı → altı SKU native yatay galeri → kurumsal ihtiyacı açan dal → gerçek adres/mağazaya dönüş/SSS çözümü. Kısa üretim özeti ayrı büyük numaralı adım sahnesi değildir.
+Hero posteri aynı türevden `public/videos/afina-zeytinlik-poster.avif` **75.957 bayt**, SHA-256 `dfa0cd22c4f0d277af48ac45fe790b16311ecb9ad565708fdb4cdef57ab965f9`; WebP fallback, aynı kadraj ve sabit ölçüler. OG `public/brand/og-zeytinyagi.webp` onaylı şişe/marka görseli **1200×630**. Loop/metin okunurluğu, gerçek decoded kare ve telefon kadrajı son kaynakta ayrıca ölçülür.
 
-Tesis müşteri PDF'sindeki gerçek fotoğraftır. Galeri ilk üründe farklı görsel öncelik kullanabilir; mevcut altı SKU sırası ve her ürünün gerçek incele/ekle işlemi korunur. Yatay rail native scroll, klavye odağı ve reduced erişim taşır; gizli/ulaşılamayan son ürün yoktur. B2B'de kapalı gönderim mesajı açılmadan görünür, **Bilgileri hazırlayın** native details içinde mevcut formu açar. Servis/provider kendiliğinden açılmaz, sahte talep başarısı gösterilmez. Kapanış **Ellek’te buluşalım**, gerçek adres, **Ürünlere dön**, mevcut SSS/support/legal/footer yollarıdır; son içerik kaybolmaz.
+Normal mod muted/playsInline gerçek medya olaylarıyla döner; küçük görünür pause/play kontrolü ve kullanıcı pause kararı korunur. Sekme/görünüm dışında durur. Reduced-motion/saveData MP4 isteği başlatmaz; poster ve tüm gerçek eylemler kalır. Hata/blocked durumda poster ve uygun manuel kontrol vardır. Kontroller en az44px, hareketli video düzlemi dışında; video zamanına scroll/currentTime seek veya spring bağlanmaz. Mevcut SDR ikinci tone mapping almaz.
 
-Yaklaşık %65 üretici/kurumsal güven ve %35 alışveriş korunur. Yeni kapasite, sertifika, sağlık/organik, yorum, kıtlık, indirim veya teslimat iddiası yoktur. Telefon/e-posta yalnız mevcut gerçek yapılandırmadan gelir.
+Diğer B→C/C→D/D→F klipleri adaydır; kaynak, kredi ve kullanıcı kabul kayıtları [flow-keyframes.json](referans/flow-keyframes.json) içindedir. Task160 üç yetkili üretim36 kredi, bakiye194, toplam56/80 tarihçesini değiştirmez; kullanılmayan kredi yeni deneme yetkisi değildir. D→F etiket sorunu nedeniyle runtime'a alınmaz. Omni Chrome Use tarayıcı otomasyonu yaklaşımıdır; Omni1.1Flash ayrı modeldir.
 
-## Medya ve doğru Flow projesi
+## Çalışan ürün ve kurumsal talep
 
-Doğru Flow projesi 62040049-3473-446b-9d93-8e6cbc45f8bc taze bağlantıda önceki reCAPTCHA uyarısı olmadan çalıştı; güvenlik engeli atlanmadı. Aynı ilk/son kare yöntemiyle Omni 1.1 Flash/720p/8 sn./16:9/x1,12 kredi/çıktı: B→C/C→D/D→F üçü de COMPLETE ve indirildi. Üç yetkili istek 36 kredi, bakiye 230→194; ilk 20 ile toplam 56, eski 80 tavanında 24 kredi kullanılmadı (ek deneme yetkisi değil). Yeni klipler yalnız aday; teknik/görsel inceleme ve kullanıcı onayı olmadan public/runtime yok. Sitede kabul edilmiş A→B kalır. Önceki blocked denemeler/0 harcama tarihçesi ve exact prompts docs/referans/flow-keyframes.json içinde korunur; bakiye kanıtı .cache/task-160/flow-194-credit-balance.png.
+Altı SKU'nun kimliği, sırası, adı, ambalajı, fiyatı, stoğu ve Product/Offer şeması mevcut veri kaynağında kalır. Galerinin **Teklife ekle** seçimi aynı gerçek SKU'yu, B2B üç butonu aynı segmenti `QuoteJourneyProvider` üzerinden formda seçer. ProductCard detay/sepet ve AddToCart/CatalogProvider hydration/stok kapıları ile sunucu fiyat/checkout otoritesi korunur. JS eylemleri hydration'a kadar disabled; normal anchor'lar erişilir. Boş/kayıp/stok0 dürüst durumdur.
 
-Runtime yalnız kabul edilmiş A→B'nin `public/videos/afina-agac-dal.mp4` türevidir: sessiz H264/yuv420p/faststart,1280×720/24fps/190kare/7,916667sn.,2.537.380bayt. Kaynak/çıktı SHA ve kapı `lib/media/cinematic-film.json`, `scripts/check-cinematic-film.mjs`; poster aynı başlangıç karesinden. SDR'ye ikinci tone mapping yapılmaz. Diğer üç film hazır veya yayınlanmış sayılmaz; D yağ dökümü gerçek sıkım/fabrika kanıtı değildir.
+Form bir teslim servisi değildir: gerekli alan/KVKK doğrulaması sonrası gerçek özeti hazırlar, **E-postayla gönder** gerçek `mailto:info@afina.com.tr` taslağını açar. Gönderimi kullanıcı e-posta uygulamasında tamamlar; site otomatik gönderdi/CRM kaydetti demez. Alıcı ve **+90 328 882 77 08** (`+903288827708`) [AFİNA Şirketler Topluluğu'nun resmî iletişim kaynağıdır](https://afina.com.tr/#iletisim); zeytin destek hattı veya WhatsApp olduğu varsayılmaz. Sunucu e-posta transportu/wholesale endpoint/WhatsApp doğrulanmış değildir; yeni provider/env/DB etkinleştirilmez.
 
-Normal mod tercih/hydration/görünürlükten sonra tek oynatım, son kare ve pause/play/replay. Kullanıcı pause korunur; gizli sekme/ekran dışında durur; biten film observer'la yeniden başlamaz. Reduced/saveData film isteği başlatmaz; hata/blocked durumda poster ve uygun manuel kontrol kalır. Loop/scroll currentTime/yeni seek motoru yoktur.
+Gerçek tesis müşteri PDF'sinden; temsili Flow/yapay sahne üretim hattı veya sıkım kanıtı diye sunulmaz. Kapasite, sertifika, sağlık/organik, yorum, indirim/kıtlık veya teslimat sözü uydurulmaz. Gerçek adres, beş ortak FAQ cevabı/schema, üyelik/ödeme ve mevcut hukuk/support yolları korunur.
 
-## Araç ve kabul politikası
+## Uygulama ve kabul politikası
 
-[Scroll Craft](../.agents/skills/scroll-craft/SKILL.md), [Taste](../.agents/skills/design-taste-frontend/SKILL.md), frontend-design/frontend-ui-engineering ve dört proje yerel MD birlikte uygulanır. Upstream dosyalar değiştirilmez; vanilla engine/GSAP/Lenis/rAF runtime'a eklenmez. Yeni API'ler `motion/react`, ortak eylem tokenları `lib/ui-motion.ts`; sürekli hareket transform/opacity, reduced dönüşü zorunlu. 21st 1635 yalnız varyant/görsel durum örüntüsü, önceki 12200 yalnız tarihsel kompozisyon kaynağıdır; demo metin/medya/font/nav taşınmaz.
+[Scroll Craft](../.agents/skills/scroll-craft/SKILL.md), frontend-design/frontend-ui-engineering, [Taste](../.agents/skills/design-taste-frontend/SKILL.md) ve dört proje yerel MD birlikte uygulanır. Upstream dosyalar/engine değiştirilmez veya runtime'a import edilmez; yeni hareket API'si `motion/react`, eylemler `lib/ui-motion.ts`. shadcn için mevcut primitive ve resmî CLI; 21st için gerçek search/get kaynağı ve proje token uyarlaması. Örneklerin global kurulum/model/anahtar/kredi yetkisi yoktur.
 
-Final-source screenshot/contact sheet ve his kontrolü; bağımsız düzlem örnekleri, gerçek decoded film, üç ürün/detail/cart, kapalı B2B/menü/üyelik, SSR/reduced/saveData/error/JS kapalı, kompozit kontrast ve rail erişimi ayrı kanıtlanır. Yerel unit/build canlı kabul değildir. Test yalnız paketli headless Chromium ≤2 worker, düzgün browser/server kapanışı; kullanıcının Chrome'u testte açılmaz. Oturumlu Flow üretim yüzeyi ayrı yetkili kullanımdır. Gerçek hesap/ödeme/teklif, fiziksel cihaz ve Google güvenlik doğrulaması ayrı kapılardır.
-
-Son medya incelemesi: B→C/C→D örneklemde kullanıcı incelemesine hazır; D→F etiketin oluşması/bozulması nedeniyle yayına uygun değil. Yeni harcama36, bakiye194; üçü de kullanıcı kabulü/runtime onayı almamıştır. [Aday incelemesi](scrollcraft/builds/afina-v8/FLOW-CANDIDATE-REVIEW.md).
+Task161 final-source unit/lint/type/build, yedi bölümde hareket/geometri, galerinin lineer ilerlemesi/son ürünü/odak ve SKU→segment→özeti; gerçek URI, modal/menü/üyelik, SSR/JS kapalı/reduced/saveData/hata, poster/loop, kontrast/axe/taşma/kaynak hataları ve 360×640 dahil telefon kadrajları ayrı kaydedilir. Test yalnız paketli headless Chromium ≤2 worker, düzgün browser/server kapanışı; kullanıcının Chrome'u testte açılmaz. Yerel kabul, CI, API READY, canlı UI, fiziksel cihaz ve gerçek hesap/ödeme/e-posta teslimi ayrı kapılardır. Şu an **uygulama sürüyor; Task161 kabulü/yayını bekliyor**.

@@ -80,6 +80,18 @@ describe("cinematic film lifecycle", () => {
     expect(screen.getByRole("button", { name: "Filmi duraklat" })).toBeTruthy();
   });
 
+  it("lets the initial document and poster finish before downloading optional video", () => {
+    let ready: DocumentReadyState = "loading";
+    vi.spyOn(document, "readyState", "get").mockImplementation(() => ready);
+    const { container } = render(<CinematicFilm loop />);
+    enter();
+    expect(container.querySelector("video")?.hasAttribute("src")).toBe(false);
+    expect(play).not.toHaveBeenCalled();
+    act(() => { ready = "complete"; window.dispatchEvent(new Event("load")); });
+    expect(container.querySelector("video")?.getAttribute("src")).toBe("/videos/afina-agac-dal.mp4");
+    expect(play).toHaveBeenCalledTimes(1);
+  });
+
   it.each(["reduced motion", "save data"])("keeps %s poster-only and revokes an active source when the preference changes", (preference) => {
     const view = render(<CinematicFilm />);
     const video = view.container.querySelector("video")!;

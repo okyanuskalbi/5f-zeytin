@@ -31,7 +31,7 @@ export function Footer(): JSX.Element {
   const email = siteContact.email.trim();
 
   return (
-    <footer data-surface="light" className={styles.footer}>
+    <footer data-surface="light" data-21st-source="21474" className={styles.footer}>
       <div data-reading-safe="">
         <div className={styles.columns}>
           <div className={styles.message} aria-labelledby="footer-brand-title">

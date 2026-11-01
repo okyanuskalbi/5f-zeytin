@@ -7,6 +7,7 @@ import Home from "@/app/page";
 import { Footer } from "@/components/site/Footer";
 import { verifiedFaqs } from "@/components/landing/Faq";
 import { siteContact } from "@/lib/site/contact";
+import { corporateContact } from "@/lib/site/corporate-contact";
 
 vi.mock("server-only", () => ({}));
 
@@ -22,8 +23,32 @@ it("uses full factual sentences and removes unanswered wholesale questions", asy
   expect(doc.querySelector("#toptan-iletisim h2")?.textContent).toBe("İşletmeniz için AFİNA.");
   expect(doc.querySelector("#sik-sorulanlar h2")?.textContent).toBe("Sık sorulanlar");
   expect(doc.querySelectorAll("#sik-sorulanlar details > summary")).toHaveLength(5);
-  expect(doc.querySelector('#toptan-iletisim button[type="submit"]')?.textContent).toBe("Teklif talebini gönder");
-  expect(doc.querySelector('a[href^="tel:"], a[href*="wa.me"], a[href^="mailto:"]')).toBeNull();
+  const segments = doc.querySelector("#toptan-iletisim")!;
+  expect(segments.getAttribute("data-21st-source")).toBe("7262");
+  expect(doc.getElementById(segments.getAttribute("aria-labelledby")!)?.textContent).toBe("İşletmeniz için AFİNA.");
+  const segmentButtons = [...segments.querySelectorAll('button[type="button"]')];
+  expect(segmentButtons).toHaveLength(3);
+  expect(segmentButtons.map(button => button.textContent)).toEqual([
+    "Teklif hazırlayın: Otel ve restoran", "Teklif hazırlayın: Market ve bayi", "Teklif hazırlayın: Toplu tüketim",
+  ]);
+  for (const button of segmentButtons) {
+    expect(button.getAttribute("aria-pressed")).toBe("false");
+    expect(button.hasAttribute("disabled")).toBe(true);
+  }
+  expect(segments.querySelector("form")).toBeNull();
+  const quote = doc.querySelector("#teklif")!;
+  expect(quote.getAttribute("data-21st-source")).toBe("35258");
+  expect(quote.querySelector('form[aria-label="Kurumsal teklif talebi"]')).not.toBeNull();
+  expect(quote.querySelector('button[type="submit"]')?.textContent).toBe("Talep özetini hazırla");
+  expect(quote.querySelector('button[type="submit"]')?.hasAttribute("disabled")).toBe(true);
+  expect(quote.querySelector('input[name="kvkk"][required]')).not.toBeNull();
+  expect(quote.querySelector('a[href="/kvkk"]')).not.toBeNull();
+  expect(quote.textContent).toContain("Gönderimi e-posta uygulamanızda siz tamamlarsınız.");
+  expect(quote.querySelector(`a[href="mailto:${corporateContact.email}"]`)).not.toBeNull();
+  expect(quote.querySelector(`a[href="tel:${corporateContact.phone}"]`)).not.toBeNull();
+  expect(quote.textContent).toContain(corporateContact.name);
+  expect(doc.querySelector('a[href*="wa.me"]')).toBeNull();
+  expect(doc.body.textContent).not.toMatch(/Talebiniz gönderildi|Bilgileriniz gönderilmez\./);
   expect(doc.body.textContent).not.toMatch(/Toptan alım için bize yazın|İletişim bilgileri yakında/);
 });
 
@@ -52,7 +77,7 @@ it.each([
   expect(doc.querySelector("#toptan-iletisim h2")?.textContent).toBe("İşletmeniz için AFİNA.");
   if (contact.phone) expect(doc.querySelector('#iletisim a[href^="tel:"]')).not.toBeNull();
   if (contact.email) expect(doc.querySelector('#iletisim a[href^="mailto:"]')).not.toBeNull();
-  expect(doc.querySelector('#toptan-iletisim a[href="/kvkk"]')).not.toBeNull();
+  expect(doc.querySelector('#teklif form[aria-label="Kurumsal teklif talebi"] a[href="/kvkk"]')).not.toBeNull();
   expect(doc.querySelector('footer a[href="/#toptan-iletisim"]')?.textContent).toBe("Toptan Satış İçin İletişime Geçin");
 });
 it("retains seller identity, community and legal destinations", () => {

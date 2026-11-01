@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import type { JSX } from "react";
 import styles from "@/components/landing/RenewalLanding.module.css";
 import { OliveScrollHero } from "@/components/landing/OliveScrollHero";
-import { BrandIntroduction, ProductionFacility, RenewalProducts, ProductionJourney, BusinessSection, TrustAndContact } from "@/components/landing/RenewalLanding";
+import { ProductionFacility, RenewalProducts, ProductionJourney, BusinessSection, QuoteSection, TrustAndContact } from "@/components/landing/RenewalLanding";
+import { QuoteJourneyProvider } from "@/components/landing/QuoteJourneyProvider";
 import { BusinessJsonLd } from "@/components/site/BusinessJsonLd";
 import { ProductDetailProvider } from "@/components/catalog/ProductDetailProvider";
 import { readProductFamilies } from "@/lib/catalog/read";
@@ -22,14 +23,14 @@ export const metadata: Metadata = {
 export default async function Home(): Promise<JSX.Element> {
   const families = await readProductFamilies();
   const products = families.flatMap(family => family.variants);
-  return <ProductDetailProvider products={products}><main className={styles.root}>
+  return <ProductDetailProvider products={products}><QuoteJourneyProvider><main className={styles.root}>
     <BusinessJsonLd />
-    <OliveScrollHero products={products} />
-    <BrandIntroduction />
-    <ProductionFacility />
+    <OliveScrollHero />
     <RenewalProducts products={products} />
+    <ProductionFacility />
     <ProductionJourney />
-    <BusinessSection products={products} />
+    <BusinessSection />
+    <QuoteSection products={products} />
     <TrustAndContact />
-  </main></ProductDetailProvider>;
+  </main></QuoteJourneyProvider></ProductDetailProvider>;
 }

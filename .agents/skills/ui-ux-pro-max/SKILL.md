@@ -7,34 +7,39 @@ metadata:
   source_sha256: 9eb2268809dd3ee50376baf8d8d554141c4a75349803fabce4b15cca45ccb017
 ---
 
-# AFİNA UI/UX Pro Max
+# AFİNA v9 UI/UX Pro Max
 
-Aktif [v8 Object journey](../../../docs/DESIGN.md)/[Task 160](../../../docs/tasks/160-scroll-craft-taste-ve-flow.md), mevcut Next.js/React/TypeScript/motion/shadcn/Radix ve [BRIEF/PLAN](../../../docs/scrollcraft/builds/afina-v8/PLAN.md) esastır. Kaynak MD global kurulum/ücret/model yetkisi değildir; [Task 158 kökeni](../../../docs/referans/yeni-nesil-md-uyarlamalari-20261101.md) korunur. Scroll Craft/Taste yöntemi kullanılır, upstream runtime import edilmez.
+## Durum, kaynak ve yetki
 
-## Ortak hareket ve durumlar
+[Task161](../../../docs/tasks/161-pro-plan-tum-bolumler-21st-scroll-craft.md) UYGULANIYOR; final yerel/CI/API/canlı kabul BEKLİYOR. Aktif [v9 Hasat Rotası](../../../docs/DESIGN.md), uygulama öncesi [BRIEF/PLAN/COPY](../../../docs/scrollcraft/builds/afina-v9/BRIEF.md), [dokuz ana 21st kaynak/SHA kaydı](../../../docs/scrollcraft/builds/afina-v9/21ST-SOURCES.json) okunur. Kullanıcının yeni pro planı, v8’in görsel uygulama tercihlerini değiştirir; veri/ticaret/medya onayı/harcama yetkisini değiştirmez. [Task158 kaynak kökeni](../../../docs/referans/yeni-nesil-md-uyarlamalari-20261101.md) ve bu dosyanın source_sha256 alanı korunur. V8 DESIGN [byte-identical arşivdedir](../../../docs/referans/DESIGN-v8-history-20261101.md).
 
-- Yeni API motion/react; mevcut LazyMotion düzenini gerekmedikçe değiştirme. Ortak action/editorial tokenları lib/ui-motion.ts; küçük eylemlerde spring, lineer ilerleme/video zamanında spring yok.
-- V8 film/ambalaj/katı kâğıt copy-plane ayrı transform sahipleri; film kontrolü 44px+ ve mediaStyle dışında. Tek kısa desktop sticky; telefon/kısa ekran/reduced doğal akış. Tipografi zemine göre sabit; kompozisyonun okunurluğu/tıklanabilirliği korunur.
-- Sürekli animasyon yalnız transform/opacity; layout/width/height/top/left/filter-blur yok. Giriş/stagger bir kez, kısa ortak gecikme; SSR H1/CTA görünür, loader'a bağımlı değil. WhileInView yeniden gizleme/oynatma yok.
-- Hover/tap/focus/disabled/loading/error/success aynı ailede. Reduced başta ve tercih değişiminde transformları kapatır; sade modda gerçek eylem/odak görünür kalır.
-- Mevcut Radix modalında Escape/odak kapanı/geri dönüş korunur; modal scroll-lock sayfa sahnesini kilitleme izni değildir. AnimatePresence gerekirse kararlı key; uzun liste/layout motoru ekleme. Native details klavye/semantik durumuyla gerçek B2B dalıdır.
+## Ortak etkileşim ve okunurluk
 
-## Ürün ve medya sözleşmesi
+- Fraunces/Inter ve pro renk rolleri: marka#84CC16,taş#EDE8DD,mürekkep#1C1F1A,altın#C89B3C; küçük metinde#735519. Özgün logo/ambalaj/iki satır slogan; cam nav okunur taş fallback taşır. Sabit blur animasyon sayılmaz.
+- Yeni API motion/react, mevcut LazyMotion düzenini sebepsiz değiştirme; ortak action/editorial lib/ui-motion.ts. Küçük hover/tap spring; scrub x=−travel×progress doğrudan lineer. Layout/width/height/top/left/filter-blur animasyonu veya ikinci engine yok.
+- Galeri yalnız≥1024×860 normal/JS ortamında tek bounded pin; mobil/kısa/reduced/JSkapalı native yatay rail. Son SKU/klavye odağı görünür. Tesis yalnız izole görüntü parallax, diğer sahneler bir kez/SSR görünür. Hero doğal tam-film/ön dal/gerçek H1+anchor; v8ambalaj/kâğıt-plane170svh kontratı tarihçe.
+- Hover/tap/focus/disabled/loading/error/success aynı ailede. JS’e bağımlı segment/teklif/detail/sepet kontrolleri hydration öncesi disabled; gerçek anchor’lar açık. Üç segment button type=button/aria-pressed; form her input’a etiket/required/KVKK ve ilişkili hata/status verir.
+- Modal/menü RadixEscape/odak kapanı/geri dönüş ve arkaplan inert korunur; modal scroll-lock sahne scroll’unu ele geçirmez. AnimatePresence çıkışındaki özet linkleri odak/tıklama kabul etmez; değişen form eski özeti geçersiz kılar. Native FAQ details klavye ve açık durum semantiğini korur.
 
-Üç mevcut temsilcinin seçimi aynı görsel/ad/miktar/fiyat/detail/cart id'sini değiştirir; seçim aria-pressed/fieldset/legend ve görünür odak taşır. Gelen ProductVariant alanları yeni ticari veri kaynağı değildir; AddToCart/CatalogProvider hydration/stok ve sunucu fiyat/checkout otoritesi korunur. Altı SKU sırası/verisi pazarlama gerekçesiyle değişmez. Kayıp/boş/stock0 dürüst durum gösterir; kapalı B2B servisi açılmış veya gönderilmiş gibi sunulmaz.
-Mevcut kabul edilmiş A→B native MP4 kendi zamanında sessiz bir kez, son kare/pause/play/replay. Scroll currentTime/yeni seek/rAF/loop yok. Manuel pause, görünürlük ve olay temizliği korunur. Reduced/saveData MP4 istemez, poster/CTA kalır; hata/blocked/gesture/retry gerçek durumdur. Telefon H1+CTA önce,280px film/260px ürün ve doğal ayrıntı;360×640/büyütülmüş metin ayrıca kabul edilir.
-Yeni medya/Imagen/abonelik hakkı varsayılmaz. Doğru Flow projesi 62040049-3473-446b-9d93-8e6cbc45f8bc taze bağlantıda önceki reCAPTCHA uyarısı olmadan çalıştı; güvenlik engeli atlanmadı. Aynı ilk/son kare yöntemiyle Omni 1.1 Flash/720p/8 sn./16:9/x1,12 kredi/çıktı: B→C/C→D/D→F üçü de COMPLETE ve indirildi. Üç yetkili istek 36 kredi, bakiye 230→194; ilk 20 ile toplam 56, eski 80 tavanında 24 kredi kullanılmadı (ek deneme yetkisi değil). Yeni klipler yalnız aday; teknik/görsel inceleme ve kullanıcı onayı olmadan public/runtime yok. Sitede kabul edilmiş A→B kalır. Önceki blocked denemeler/0 harcama tarihçesi ve exact prompts docs/referans/flow-keyframes.json içinde korunur; bakiye kanıtı .cache/task-160/flow-194-credit-balance.png. Omni Chrome Use otomasyon yaklaşımı, Omni 1.1 Flash ayrı modeldir.
+## Gerçek ürün, talep ve medya
+
+Altı gerçek SKU’nun kimlik/sıra/ad/fiyat/stok/ambalaj/schema alanları korunur; mevcut ProductCard/detail/AddToCart/CatalogProvider/sunucu checkout otoritesi değişmez. SKU ve B2B segment seçimi tek quote context’inde gerçek alanlara taşınır. #teklif formu required/KVKK doğrulamasıyla gerçek özet/mailto taslağı hazırlar; gönderimi kullanıcı e-posta uygulamasında tamamlar. info@afina.com.tr/+903288827708 resmî AFİNA Şirketler Topluluğu kanalıdır; zeytin WhatsApp hattı veya sunucu e-posta teslimi varsayılmaz. Provider/env/DB etkinleştirmesi ve sahte gönderildi/CRM başarısı yok.
+
+Kabul edilmiş A→B’den ücretsiz yerel ileri/geri kurgu: kaynak kare6..65,120kare/24fps/5sn/1280×720,6.847.142bayt; `public/videos/afina-zeytinlik-loop-5s.mp4`. Yeni üretim veya kusursuz fiziksel kamera döngüsü iddiası değildir. HeroAVIF75.957bayt; aynı kadraj WebP fallback; onaylı şişeOG1200×630. Normal mod muted/playsInline loop, gerçek pause/play, kullanıcı pause/görünürlük temizliği; reduced/saveData MP4 istemez, hata/blocked poster ve uygun manuel kontrol. Kontrol44px+ ve video transformu dışında. Scroll currentTime/seek, ikinci SDR tone mapping veya yeni ödeme/kredi yok.
+
+Doğru Flow proje62040049-3473-446b-9d93-8e6cbc45f8bc; Task160 ilk/son kare üç yetkili Omni1.1Flash üretimi36kredi, bakiye194, toplam56/80 tarihçesidir. B→C/C→D/D→F adayları kullanıcı/runtime onayı almamıştır; D→F etiket kusuru nedeniyle bağlanmaz. Kullanılmamış24kredi ek deneme yetkisi değildir; güncel [medya kayıtları](../../../docs/referans/flow-keyframes.json) okunur. Omni Chrome Use mevcut CUA/browser ile otomasyon yaklaşımıdır, Omni1.1Flash model adı değildir. MD örnekleri yeni Imagen/model/provider/anahtar/abonelik/global kurulum/ücret yetkisi vermez; güvenlik doğrulaması atlanmaz.
 
 ## 21st ve shadcn
 
-Mevcut primitive/token önce; yeni kalıp için bağlı 21st search→gerçekID→get_component, sonra AFİNA uyarlaması. 1635 seçim/görsel durumu;12200 tarihsel film kompozisyonu. Demo marka/veri/metin/medya/font/nav ve framer-motion taşınmaz. Kod erişimi hostedAI/anahtar/global kurulum yetkisi değildir. shadcn MCP yok; gereken resmi CLI search/view/docs/add; mevcut primitive tercih edilir.
+Mevcut primitive/token önce. Bağlı21stsearch→gerçekID→get_component→exactSHA→uyarlama: yedi bölüm32829/24623/20023/1197/7262/35258/31986, nav26786/footer21474, toplam9ana kaynak.1635 yalnız kaynak referansı, ProductCard mevcut kullanım;15025genericcounter/7091invasivemotor reddedildi. Demo marka/veri/metin/medya/font/nav ve framer-motion taşıma; hostedAI/key/global kurulum yetkisi çıkarma. shadcn MCP yok, resmî CLI search/view/docs/add ve marka token uyarlaması.
 
 ## Kabul
 
-Gerçek nesne seçimi/detail/cart, native rail klavye/reduced erişimi ve gerçek overflow, B2B details/kapalı hizmet, modal/menü/üyelik odakları, gerçek decoded film/kontrol/fallback, SSR/JS kapalı, kompakt telefon ve kompozit kontrast test edilir. Unit/build, native Taste/e2e, canlı API/HTTP, fiziksel cihaz ve gerçek ödeme/e-posta ayrı sonuçlardır; v8 canlı kabulü ayrı doğrulandı; önceki v7 makbuzundan türetilmez. Test yalnız paketli headless Chromium ≤2 worker/düzgün kapanış; kullanıcının Chrome'u açılmaz. Kaynaktaki10.000+ bileşen/hız sloganları bu projenin kanıtı değildir.
-Birlikte [Profesyonel web](../profesyonel-web-sitesi-yeni-nesil/SKILL.md), [Scroll hero](../scroll-hero-video-yeni-nesil/SKILL.md), [Sinematik](../sinematik-siteler-yeni-nesil/SKILL.md), [Scroll Craft](../scroll-craft/SKILL.md), [Taste](../design-taste-frontend/SKILL.md).
+Final-source kontrast/axe/taşma/odak/gerçek kaynak hatası, yedi sahnenin hareket/geometrisi, galeride lineer x/son ürün/odak ve SKU→segment→taslak/gerçek URI, modal/menü/üyelik, SSR/JSkapalı/reduced/saveData/film/kontrol/hata ayrıca test edilir. Telefon360×640/büyütülmüş metin dahil gerçek viewport görüntüsüyle görülür; fiziksel cihaz değildir. Unit/build, CI, API READY, canlı UI, gerçek hesap/ödeme/e-posta teslimi ayrı kapılardır; eski v8PASS yeni v9 kabulü değildir. Test paketli headlessChromium≤2worker, browser.close()/sunucuSIGTERM düzgün kapanış; kullanıcının Chrome’u testte açılmaz.
 
-## Güncel Task160 durumu
+Birlikte: [Profesyonel web](../profesyonel-web-sitesi-yeni-nesil/SKILL.md), [Scroll hero](../scroll-hero-video-yeni-nesil/SKILL.md), [Sinematik](../sinematik-siteler-yeni-nesil/SKILL.md), [UI/UX](../ui-ux-pro-max/SKILL.md), [Scroll Craft](../scroll-craft/SKILL.md), [Taste](../design-taste-frontend/SKILL.md). Upstream skill/engine değiştirilmez veya runtime’a kopyalanmaz.
+
+## Tarihçe: Task160/v8 kabulü (v9 sonucu değildir)
 
 V8 kaynak 179df851/CI 41304790349 ile afinazeytin.com üzerinde READY. Yerel 1200 unit/tam lint-type-build,74 e2e+6 responsive skip ve altı görsel genişlik PASS; Native inspector 1 FAIL/5 WARN korunur, Scenes exit0.
 

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Figtree } from "next/font/google";
+import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import type { JSX, ReactNode } from "react";
 import { Navbar } from "@/components/site/Navbar";
@@ -16,26 +16,23 @@ import "./globals.css";
 const Fraunces = localFont({
   src: [
     { path: "./fonts/Fraunces-normal.woff2", weight: "400 700", style: "normal" },
-    { path: "./fonts/Fraunces-italic.woff2", weight: "400", style: "italic" },
   ],
   display: "swap",
-  // Both real faces are local; the hero emphasis never synthesizes an italic.
+  // The current design uses upright headings; do not preload the retired italic.
   preload: true,
   adjustFontFallback: "Times New Roman",
   variable: "--font-display",
   fallback: ["Georgia", "Times New Roman", "serif"],
 });
 
-const bodyFont = Figtree({
+const bodyFont = Inter({
   subsets: ["latin", "latin-ext"],
   display: "swap",
   preload: false,
   weight: ["400", "500", "600", "700", "800"],
   variable: "--font-body",
-  // Explicit Arial metrics in globals.css also cover builds where Google's
-  // loader emits no adjusted fallback. Values come from Next's Figtree metrics.
-  fallback: ["Afina Figtree Fallback", "Arial", "Helvetica Neue", "sans-serif"],
-  adjustFontFallback: false,
+  fallback: ["Arial", "Helvetica Neue", "sans-serif"],
+  adjustFontFallback: true,
 });
 
 export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover" };
@@ -53,14 +50,14 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteIdentity.title,
     description: siteIdentity.description,
-    images: ["/brand/og.png"],
+    images: ["/brand/og-zeytinyagi.webp"],
   },
   openGraph: {
     url: "/",
     type: "website",
     locale: "tr_TR",
     siteName: siteIdentity.name,
-    images: [{ url: "/brand/og.png", width: 1200, height: 630, alt: "Afina Zeytin. Kökü toprakta, yeri sofrada." }],
+    images: [{ url: "/brand/og-zeytinyagi.webp", width: 1200, height: 630, alt: "Afina Zeytin. Kökü toprakta, yeri sofrada." }],
   },
 };
 

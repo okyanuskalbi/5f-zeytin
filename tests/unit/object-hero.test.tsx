@@ -1,86 +1,60 @@
 import type { ReactNode } from "react";
+import path from "node:path";
+import sharp from "sharp";
 import { renderToStaticMarkup } from "react-dom/server";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { afterEach, beforeAll, beforeEach, expect, it, vi } from "vitest";
+import { beforeEach, expect, it, vi } from "vitest";
 import { OliveScrollHero } from "@/components/landing/OliveScrollHero";
-import { getProducts } from "@/lib/catalog/static-products";
-import type { Product, ProductVariant } from "@/types/catalog";
+import { proLoopMovie, proLoopPoster } from "@/lib/media/pro-loop";
 
-const boundary = vi.hoisted(() => ({ detail: vi.fn(), add: vi.fn() }));
+const boundary = vi.hoisted(() => ({ film: vi.fn() }));
 vi.mock("@/components/media/CinematicFilm", () => ({
-  CinematicFilm: ({ children }: { children?: ReactNode }) => <div data-test-film="">{children}</div>,
+  CinematicFilm: (props: { children?: ReactNode }) => {
+    boundary.film(props);
+    return <div data-test-film="">{props.children}</div>;
+  },
 }));
-vi.mock("@/components/catalog/ProductDetailProvider", () => ({ useProductDetail: () => boundary.detail }));
-vi.mock("@/components/catalog/AddToCart", () => ({
-  AddToCart: ({ product }: { product: Product }) => <button type="button" data-add-sku={product.id} data-add-stock={product.stock}
-    disabled={product.stock === 0} onClick={() => boundary.add(product.id, 1)}>Sepete ekle</button>,
-}));
+beforeEach(() => { boundary.film.mockClear(); });
 
-let products: readonly ProductVariant[];
-beforeAll(async () => { products = await getProducts(); });
-beforeEach(() => {
-  boundary.detail.mockClear(); boundary.add.mockClear();
-  vi.stubGlobal("matchMedia", (query: string) => ({ media: query, matches: false, addEventListener() {}, removeEventListener() {} }));
-  vi.stubGlobal("IntersectionObserver", class { observe(): void {} disconnect(): void {} });
-  vi.stubGlobal("ResizeObserver", class { observe(): void {} unobserve(): void {} disconnect(): void {} });
-});
-afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
-
-it("renders the actual default SKU and purchase data in the server opening", () => {
+function serverHero(): Document {
   const doc = document.implementation.createHTMLDocument();
-  doc.body.innerHTML = renderToStaticMarkup(<OliveScrollHero products={products} />);
-  const selected = doc.querySelector('[data-hero-product="sample-green-olive-10kg"]');
-  expect(selected).not.toBeNull();
-  expect(selected?.textContent).toContain("Doğal Kırma Yeşil Zeytin");
-  expect(selected?.textContent).toContain("10 kg");
-  expect(selected?.textContent).toMatch(/2[.\s]?200/);
-  expect(selected?.querySelector("[data-add-sku]")?.getAttribute("data-add-sku")).toBe("sample-green-olive-10kg");
-  expect(selected?.querySelector("[data-add-stock]")?.getAttribute("data-add-stock")).toBe("6");
-  expect(doc.querySelector('button[aria-label="Doğal Kırma Yeşil Zeytin, 10 kg seç"]')?.getAttribute("aria-pressed")).toBe("true");
-  expect(doc.querySelector('button[aria-label="Doğal Kırma Yeşil Zeytin, 1 kg seç"]')?.hasAttribute("disabled")).toBe(true);
-  expect(doc.querySelector('[data-product-plane] button')?.hasAttribute("disabled")).toBe(true);
+  doc.body.innerHTML = renderToStaticMarkup(<OliveScrollHero />);
+  return doc;
+}
+
+it("serves the official slogan and both actual destinations without a product-picker prerequisite", () => {
+  const doc = serverHero();
   expect(doc.querySelectorAll("h1")).toHaveLength(1);
   expect(doc.querySelector("h1")?.textContent).toBe("Kökü toprakta. Yeri sofrada.");
-  expect(doc.querySelector('a[href="#urunler"]')).not.toBeNull();
+  expect(doc.querySelector('a[href="#urunler"]')?.textContent).toContain("Ürünleri Keşfet");
+  expect(doc.querySelector('a[href="#teklif"]')?.textContent).toContain("Kurumsal Teklif Al");
+  expect(doc.querySelector("[data-hero-product], [data-product-plane], fieldset")).toBeNull();
+  expect(doc.querySelector("h1")?.closest('[style*="opacity:0"]')).toBeNull();
+  expect(doc.querySelector("#baslangic")?.getAttribute("aria-labelledby")).toBe(doc.querySelector("h1")?.id);
 });
 
-it("changes image, price, detail and cart SKU together while preserving selector focus", () => {
-  const view = render(<OliveScrollHero products={products} />);
-  const firstImage = view.container.querySelector("[data-product-plane] img")?.getAttribute("src");
-  expect(firstImage).toBeTruthy();
-  const choice = screen.getByRole("button", { name: "Doğal Kırma Yeşil Zeytin, 1 kg seç" });
-  choice.focus();
-  fireEvent.click(choice);
-  expect(document.activeElement).toBe(choice);
-  expect(choice.getAttribute("aria-pressed")).toBe("true");
-  expect(screen.getByRole("button", { name: "Doğal Kırma Yeşil Zeytin, 10 kg seç" }).getAttribute("aria-pressed")).toBe("false");
-  const selected = view.container.querySelector('[data-hero-product="sample-green-olive-1kg"]');
-  expect(selected?.textContent).toContain("1 kg");
-  expect(selected?.textContent).toMatch(/220/);
-  expect(selected?.textContent).not.toMatch(/2[.]200/);
-  expect(view.container.querySelector("[data-product-plane] img")?.getAttribute("src")).not.toBe(firstImage);
-  const detail = screen.getByRole("button", { name: "Ürünü incele" });
-  fireEvent.click(detail);
-  expect(boundary.detail).toHaveBeenCalledWith("sample-green-olive-1kg", detail);
-  fireEvent.click(screen.getByRole("button", { name: "Sepete ekle" }));
-  expect(boundary.add).toHaveBeenCalledExactlyOnceWith("sample-green-olive-1kg", 1);
+it("passes the accepted-source loop and its matching poster to the lifecycle-controlled film", () => {
+  serverHero();
+  expect(boundary.film).toHaveBeenCalledOnce();
+  expect(boundary.film.mock.calls[0][0]).toMatchObject({
+    movieSrc: proLoopMovie, poster: proLoopPoster, loop: true,
+    posterSrc: "/videos/afina-zeytinlik-poster.avif",
+  });
+  expect(proLoopMovie).toBe("/videos/afina-zeytinlik-loop-5s.mp4");
+  expect(proLoopPoster.src).toBe("/videos/afina-zeytinlik-poster.webp");
 });
 
-it("uses the selected oil variant's supplied price and stock instead of the previous package", () => {
-  const soldOut = products.map(product => product.id === "sample-olive-oil-1l" ? { ...product, priceKurus: 77700, stock: 0 } : product);
-  const view = render(<OliveScrollHero products={soldOut} />);
-  fireEvent.click(screen.getByRole("button", { name: "Natürel Sızma Zeytinyağı, 1 L seç" }));
-  const selected = view.container.querySelector('[data-hero-product="sample-olive-oil-1l"]');
-  expect(selected?.textContent).toContain("Natürel Sızma Zeytinyağı");
-  expect(selected?.textContent).toContain("1 L");
-  expect(selected?.textContent).toMatch(/777/);
-  const add = screen.getByRole("button", { name: "Sepete ekle" }) as HTMLButtonElement;
-  expect(add.getAttribute("data-add-sku")).toBe("sample-olive-oil-1l");
-  expect(add.getAttribute("data-add-stock")).toBe("0");
-  expect(add.disabled).toBe(true);
-  fireEvent.click(add);
-  expect(boundary.add).not.toHaveBeenCalled();
-  const detail = screen.getByRole("button", { name: "Ürünü incele" });
-  fireEvent.click(detail);
-  expect(boundary.detail).toHaveBeenCalledWith("sample-olive-oil-1l", detail);
+it("uses a real transparent near-branch layer independently of the film and semantic copy", async () => {
+  const doc = serverHero();
+  const branch = doc.querySelector("[data-hero-near-plane]");
+  const image = branch?.querySelector("img");
+  expect(branch).not.toBeNull();
+  expect(branch?.querySelector("h1,a,button")).toBeNull();
+  expect(image?.getAttribute("alt")).toBe("");
+  expect(image?.getAttribute("aria-hidden")).toBe("true");
+  expect(image?.getAttribute("src")).toBe("/images/hero-katman/on-dal-w1200.webp");
+  const filename = path.join(process.cwd(), "public", image!.getAttribute("src")!.slice(1));
+  const [metadata, stats] = await Promise.all([sharp(filename).metadata(), sharp(filename).stats()]);
+  expect(metadata.hasAlpha).toBe(true);
+  expect(stats.channels[3].min).toBe(0);
+  expect(stats.channels[3].max).toBe(255);
 });

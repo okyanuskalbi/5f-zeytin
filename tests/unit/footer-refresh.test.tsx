@@ -42,7 +42,7 @@ it("puts the small community logo and attribution in one safe external link", ()
   expect(links[0].querySelectorAll('img[alt="AFİNA Şirketler Topluluğu"]')).toHaveLength(1);
 });
 
-it("shows only the four supported payment logos directly on the light v6 footer", () => {
+it("shows only the four supported payment logos directly on the light pro footer", () => {
   const doc = footerDocument();
   const payment = doc.querySelector('[aria-label="Güvenli ödeme"]')!;
   expect(payment.querySelector("p")?.textContent).toBe("Güvenli Ödeme");
@@ -59,7 +59,7 @@ it("shows only the four supported payment logos directly on the light v6 footer"
   expect(payment.querySelector('[style*="background"]')).toBeNull();
 });
 
-it("keeps footer copy, legal metadata and focus above AA contrast on the v6 paper surface", () => {
+it("keeps footer copy, legal metadata and focus above AA contrast on the pro stone surface", () => {
   const tokens = new Map<string, string>();
   for (const file of ["app/globals.css", "components/site/Footer.module.css"]) {
     postcss.parse(readFileSync(file, "utf8")).walkDecls(/^--/, declaration => { tokens.set(declaration.prop, declaration.value); });
@@ -71,9 +71,11 @@ it("keeps footer copy, legal metadata and focus above AA contrast on the v6 pape
       .map(channel => channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4);
     return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
   }
-  expect(tokens.get("--footer-ink")).toBe("#E5E3D7");
+  expect(tokens.get("--footer-ink")).toBe("var(--pro-stone)");
   for (const [token, value] of Object.entries({
-    "--footer-copy": "#414A40", "--footer-muted": "#5A6558", "--sut": "#172B21", "--brand-gold": "#172B21",
+    "--footer-copy": "var(--pro-ink)", "--footer-muted": "var(--pro-muted)",
+    "--sut": "var(--pro-ink)", "--brand-gold": "var(--pro-gold-ink)",
+    "--pro-stone": "#EDE8DD", "--pro-ink": "#1C1F1A", "--pro-muted": "#4F594B", "--pro-gold-ink": "#735519",
   })) expect(tokens.get(token), token).toBe(value);
   const background = luminance("var(--footer-ink)");
   expect(background).toBeGreaterThan(0.7);

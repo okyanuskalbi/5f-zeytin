@@ -1,8 +1,22 @@
 # Proje Planı
 
-## Aktif çalışma: v8 Object journey — Task 160
+## Aktif çalışma: v9 Hasat Rotası — Task 161
 
-[Task 160](tasks/160-scroll-craft-taste-ve-flow.md), [DESIGN](DESIGN.md) ve [brief-first plan](scrollcraft/builds/afina-v8/BRIEF.md) aktiftir. Scroll Craft + Taste seed 1601101/page-is-the-object ile gerçek Flow/ambalaj/kâğıt ayrı düzlemler; yalnız desktop kısa 170svh tutuş, telefon/reduced doğal akış. Çalışan üç SKU seçimi mevcut detay/sepet sözleşmesini kullanır. Kompakt gerçek tesis, native altı SKU galerisi, kapalı-hizmet/native B2B details ve gerçek adres/ürünlere dönüş; sıra/fiyat/stok/servis mimarisi değişmez. V7 sözleşmesi byte-identical arşivde; v8 production READY; son kaynak 179df851.
+[Task161](tasks/161-pro-plan-tum-bolumler-21st-scroll-craft.md) **UYGULANIYOR; kabul/yayın BEKLİYOR**. Kullanıcı [pro planı](referans/afina-zeytin-pro-plan-20261101.md) ve bütün bölümlerde 21st/Scroll Craft istedi. [DESIGN](DESIGN.md), uygulama öncesi [BRIEF](scrollcraft/builds/afina-v9/BRIEF.md), [PLAN](scrollcraft/builds/afina-v9/PLAN.md), [COPY](scrollcraft/builds/afina-v9/COPY.md) ve [kaynak provenansı](scrollcraft/builds/afina-v9/21ST-SOURCES.json) aktiftir. Önceki v8 sözleşmesi byte-identical [arşivdedir](referans/DESIGN-v8-history-20261101.md); eski görev/karar tabloları tarihçe olarak korunur.
+
+Yeni aktif #84CC16 marka/#EDE8DD taş/#1C1F1A mürekkep/#C89B3C yağ altını; küçük metin altını#735519; Fraunces/Inter. Orijinal logo/slogan/ambalaj, kaynaklı içerik, yaklaşık65/35 kurumsal/alışveriş ve ticari mimari korunur. Yedi sahne: hero32829 → altıSKU galeri24623 → tesis20023 → üç gerçek aşama bento1197 → üç B2B segment7262 → teklif35258 → SSS/iletişim31986. Nav26786/footer21474 dahil9seçili ana kaynak;1635 yalnız referans, ProductCard mevcut kullanım. DemoVite/veri/logo/WhatsApp örnekleri gerçek değildir.
+
+Hero doğal tam-film/özgün ön dal/cam nav. Yalnız galeride≥1024×860 normal/JS ortamında tek pin, x=−travel×progress lineer; kısa/mobil/reduced/JSkapalı native rail ve görünür son ürün/odak. Tesis yalnız görüntü parallax; diğer içerik doğal akış/SSR görünür once reveal. Yeni hareket motion/react; ikinci engine/GSAP/Lenis/rAF/body kilidi/currentTime scrub yok.
+
+Kabul edilmiş A→B'nin ücretsiz yerel ileri/geri loop'u: kaynak6..65,120kare/24fps/5sn/1280×720,6.847.142bayt. PosterAVIF75.957bayt; onaylı şişeOG1200×630. Normal muted loop/pause/play/görünürlük; reduced/saveData MP4 istemez, hata/blocked poster. Yeni üretim/kredi yok; B→C/C→D/D→F aday onay kapısı değişmez.
+
+Mevcut altı SKU sırası/verisi, detay/sepet/hesap/ödeme otoritesi değişmez. Galeri SKU'su ve B2B segmenti aynı #teklif formunu doldurur; required/KVKK doğrulaması gerçek özeti/mailto taslağını hazırlar, gönderimi kullanıcı tamamlar. info@afina.com.tr/+903288827708 yalnız resmî çatı şirket iletişimidir; WhatsApp veya sunucu e-posta transportu doğrulanmadı. Otomatik gönderim/CRM başarısı, provider/env/DB aktivasyonu yok. V8 QA/yayın aşağıda tarihçedir; Task161 final kaynağın yerel/CI/API/canlı kabulü ayrıca yazılacaktır.
+
+## Tarihçe: v8 Object journey — Task 160
+
+Aşağıdaki kabul ve kompozisyon yalnız önceki Task160 kaydıdır; v9 kabulü değildir.
+
+[Task 160](tasks/160-scroll-craft-taste-ve-flow.md), [arşiv v8 DESIGN](referans/DESIGN-v8-history-20261101.md) ve [brief-first plan](scrollcraft/builds/afina-v8/BRIEF.md) o görevde aktiftir. Scroll Craft + Taste seed 1601101/page-is-the-object ile gerçek Flow/ambalaj/kâğıt ayrı düzlemler; yalnız desktop kısa 170svh tutuş, telefon/reduced doğal akış. Çalışan üç SKU seçimi mevcut detay/sepet sözleşmesini kullanır. Kompakt gerçek tesis, native altı SKU galerisi, kapalı-hizmet/native B2B details ve gerçek adres/ürünlere dönüş; sıra/fiyat/stok/servis mimarisi değişmez. V7 sözleşmesi byte-identical arşivde; v8 production READY; son kaynak 179df851.
 
 V8 [afinazeytin.com](https://afinazeytin.com) üzerinde Vercel API **READY**: kaynak `179df851686a34d09a1e965315dc5e902a30c362`, CI 41304790349 SUCCESS, dağıtım `dpl_7EUijPZwcnzr9ML3nHMFRwUErZ89`. READY yayını ve ayrı canlı etkileşim/görsel kabulü doğrulandı.
 
@@ -70,7 +84,7 @@ docs/tasks/              # sırayla uygulanacak bağımsız task’lar
 
 ## ZEYTİN kapsamı
 
-- Marka AFİNA ZEYTİN, ana slogan **“Kökü toprakta. Yeri sofrada.”**; alt slogan **“Toprağın sunduğu lezzet, Afina’nın özeniyle.”**. “Köklerinden aldığı güçle büyüyor” yalnız ikincil/hikâye metni olarak kalabilir; #172B21 zeytin yeşili, #F4F0E7 kâğıt, #B6A078 şampanya, altın dal + el logosu. Tek landing, scroll-linked/whileInView ürün sahneleri; en fazla 5–6 aktif ürün.
+- Marka AFİNA ZEYTİN, ana slogan **“Kökü toprakta. Yeri sofrada.”**; alt slogan **“Toprağın sunduğu lezzet, Afina’nın özeniyle.”**. “Köklerinden aldığı güçle büyüyor” yalnız ikincil/hikâye metni olarak kalabilir; orijinal altın dal + el logosu korunur. Aktif v9 renk/font rolleri üstte ve DESIGN içinde; eski #172B21/#F4F0E7/#B6A078/Figtree paleti tarihçedir. Tek landing, scroll-linked/whileInView ürün sahneleri; en fazla 5–6 aktif ürün.
 - Üyelik: kayıt/giriş, hesabım, yalnız kendine ait sipariş geçmişi. Sepet: drawer + sayfa, upsell/çapraz satış (ör. zeytin yanında zeytinyağı), onaylı eşiklerde kademeli adet indirimi.
 - Ödeme: yalnız **PayTR iFrame API**, site içine gömülü. `createPaytrSession(order) → {iframeUrl, token}` sunucuda `get-token` çağırır; `https://www.paytr.com/odeme/guvenli/<token>` ödeme sayfamızda `iframeResizer` ile açılır. Kart/3D Secure alanları PayTR iframe içindedir; kendi kart alanlarımız çizilmez. Sol özet/temsili kart görseli/güven bilgisi, sağ iframe; upsell/kupon/kargo çevresi marka tokenlarına uyarlanır. Sağlayıcı soyutlaması yok; ileride gerekirse ayrıca planlanır.
 - PayTR bildirimi sunucu-sunucu hash doğrulaması ve idempotent sipariş güncellemesi yapar, düz `OK` döner. `merchant_ok_url` / `merchant_fail_url` kendi sonuç sayfamıza döner; sipariş durumu **yalnız doğrulanmış callback** ile değişir. Test modu `PAYTR_TEST_MODE` env değerinden okunur; sandbox kanıtı canlı tahsilat kanıtı değildir.
@@ -78,13 +92,13 @@ docs/tasks/              # sırayla uygulanacak bağımsız task’lar
 - Kupon/reklam kodu: yüzde/tutar, süre, kullanım limiti, UTM; terk edilen sepet tespiti, onaylı bekleme süresi, izinli e-posta ve yüzde kuponu ayrı entegrasyonlar.
 - Admin: ürün (≤6), sipariş, kupon/kampanya, terk edilen sepet, müşteri, kargo bilgisi; shadcn CLI + tokenlara uyarlanmış UI. Admin firma/takip no girer, müşteri e-postası ve siparis-takip sayfası birbirinden ayrı görevler.
 - Ürün kapsamı: **sofralık zeytin, salamura zeytin, zeytinyağı**; perakende site satışı + toptan satış. En fazla 6 aktif ürün sınırı tüm kanal ve admin akışlarında korunur; gerçek SKU, ambalaj/fiyat/stok kullanıcıdan gelir.
-- Toptan CTA: **“Toptan Satış İçin İletişime Geçin”** → landing toptan talep formu (081) → onaylı e-posta servisiyle gerçek gönderim (082); doğrulama, KVKK ve hata/başarı durumları. Toptan fiyat/katalog/DB uydurulmaz.
+- Toptan CTA: **“Toptan Satış İçin İletişime Geçin”** → landing B2B/teklif yolu; v9 doğrulama/KVKK sonrası gerçek mailto taslağı ve açık kullanıcı gönderimi. 081/082 sunucu e-posta hedefi tarihsel plandır; transport/provider yokken teslim sayılmaz. Toptan fiyat/katalog/DB/WhatsApp uydurulmaz.
 - **Tesisimiz**: Osmaniye üretim tesisi; resmi marka hikâyesi bölüm 04 birebir kullanılır, görseller 004/005 ve onaylı 034 akışından gelir.
 - SEO/AEO: Product + Organization, canonical, sitemap, robots, llms.txt. KVKK, mesafeli satış ve iade sayfaları kullanıcı metin/onayını bekler; toptan formu da aydınlatma kapsamına alınır.
 
-## Kit uyarlaması — plan aşaması (20 Ekim 2026)
+## Tarihçe: kit uyarlaması — plan aşaması (20 Ekim 2026)
 
-Dört kaynak PDF’nin kendi özet/uyarlamaları kullanılır; PDF’ler repoya eklenmez. Tasarım sözleşmesi [DESIGN.md](DESIGN.md): mevcut marka tokenları, Z-A Fraunces/Figtree, AI-slop karşıtı hiyerarşi/gerçek içerik ve taste ev kuralları. Onaylı 086 okunurluk katmanı korunur. [Admin stil referansı](referans/admin-stil.md) ve kullanıcının JPG’si yalnız 062–069 yüzeylerini tarif eder; DB/auth **ONAY GEREKLİ** kapıları değişmez.
+20 Ekim planında dört kaynak PDF’nin kendi özet/uyarlamaları, önceki Fraunces/Figtree ve AI-slop karşıtı hiyerarşi/gerçek içerik kullanılmıştır; PDF’ler repoya eklenmez. Güncel görsel sözleşme [DESIGN.md](DESIGN.md) v9’dur; aşağıdaki eski kare/loop tercihleri Task161’in kabul edilmiş türev kararını geçersiz kılmaz. Onaylı 086 okunurluk katmanı korunur. [Admin stil referansı](referans/admin-stil.md) ve kullanıcının JPG’si yalnız 062–069 yüzeylerini tarif eder; DB/auth **ONAY GEREKLİ** kapıları değişmez.
 
 AEO/GEO akışı **074 → 087 → 076**; 074’ün dosyaları tek üretici olarak kalır. Hero denetimi **083 + 085 + 086 → 088 → 076**; mevcut kare dizisi loop’a çevrilmez. 087 ve 088 aşağıda BEKLİYOR’dur; bu belge güncellemesi uygulama/yayın kabulü değildir. KURUMSAL çıktıları AFINA-KAYNAK’ta ayrı taslaktır.
 

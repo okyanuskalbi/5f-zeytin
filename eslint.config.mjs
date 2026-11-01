@@ -10,6 +10,8 @@ export default defineConfig([
     "next-env.d.ts",
     "_legacy/**",
     ".agents/**",
+    // Byte-identical upstream engine references, never imported by the app.
+    "docs/scrollcraft/builds/**/scrollcraft.js",
     ".claude/**",
     ".cache/**",
     "coverage/**",

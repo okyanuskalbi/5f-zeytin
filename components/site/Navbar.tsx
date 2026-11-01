@@ -80,7 +80,7 @@ export function Navbar(): JSX.Element {
   }, [isOpen]);
 
   return (
-    <header data-site-navbar="" data-tone={landing ? "paper" : "solid"}
+    <header data-site-navbar="" data-21st-source="26786" data-tone={landing ? "paper" : "solid"}
       data-over-hero={landing} className={`site-bar ${styles.bar}`}>
       <div className={styles.row}>
         <Link ref={homeRef} href="/" onClick={() => { if (landing) window.scrollTo({ top: 0, behavior: "instant" }); }} aria-label="Afina Zeytin ana sayfa" className={styles.home}>

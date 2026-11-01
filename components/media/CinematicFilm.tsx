@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useReducer, useRef, type JSX, type ReactNode } from "react";
 import { PauseIcon, PlayIcon, RotateCcwIcon } from "lucide-react";
 import { cinematicFilmPoster as cinematicPoster } from "@/lib/media/cinematic-poster";
-import { motion, type MotionStyle } from "motion/react";
+import { m as motion, type MotionStyle } from "motion/react";
 import styles from "./CinematicFilm.module.css";
 
 type FilmState = {
@@ -17,7 +17,7 @@ const initialState: FilmState = {
   allowed: false, visible: false, inView: false, attached: false,
   hasFrame: false, playing: false, userPaused: false, ended: false, blocked: false, failed: false,
 };
-const filmURL = "/videos/afina-agac-dal.mp4";
+const defaultFilmURL = "/videos/afina-agac-dal.mp4";
 
 function filmReducer(state: FilmState, action: FilmAction): FilmState {
   if (action.type === "environment") {
@@ -41,9 +41,11 @@ function filmReducer(state: FilmState, action: FilmAction): FilmState {
 
 /** One accepted, silent Flow film. The responsive poster is the complete SSR
  * experience; its video URL is attached only after the visible scene qualifies. */
-export function CinematicFilm({ className = "", children, mediaStyle, controlsPosition = "bottom" }: {
+export function CinematicFilm({ className = "", children, mediaStyle, controlsPosition = "bottom", movieSrc = defaultFilmURL, poster = cinematicPoster, loop = false, posterSrc = "/frames/afina-agac-dal/poster-desktop.avif" }: {
   className?: string; children?: ReactNode; mediaStyle?: MotionStyle; controlsPosition?: "top" | "bottom";
+  movieSrc?: string; poster?: typeof cinematicPoster; loop?: boolean; posterSrc?: string;
 }): JSX.Element {
+  const filmURL = movieSrc;
   const container = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const previouslyAttached = useRef(false);
@@ -68,12 +70,13 @@ export function CinematicFilm({ className = "", children, mediaStyle, controlsPo
     const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)");
     const connection = (navigator as Navigator & { connection?: EventTarget & { saveData?: boolean } }).connection;
     const updatePolicy = (): void => dispatch({ type: "environment",
-      allowed: !!reduced && !reduced.matches && connection?.saveData !== true,
+      allowed: document.readyState === "complete" && !!reduced && !reduced.matches && connection?.saveData !== true,
       visible: document.visibilityState === "visible",
     });
     reduced?.addEventListener("change", updatePolicy);
     connection?.addEventListener("change", updatePolicy);
     document.addEventListener("visibilitychange", updatePolicy);
+    window.addEventListener("load", updatePolicy);
     updatePolicy();
     let observer: IntersectionObserver | undefined;
     let firstMeasure: number | undefined;
@@ -97,6 +100,7 @@ export function CinematicFilm({ className = "", children, mediaStyle, controlsPo
       reduced?.removeEventListener("change", updatePolicy);
       connection?.removeEventListener("change", updatePolicy);
       document.removeEventListener("visibilitychange", updatePolicy);
+      window.removeEventListener("load", updatePolicy);
     };
   }, []);
 
@@ -143,22 +147,22 @@ export function CinematicFilm({ className = "", children, mediaStyle, controlsPo
   return <div ref={container} className={`${styles.film} ${className}`} data-cinematic-film="" data-show-film={showFilm}>
     <motion.div className={styles.visual} data-film-plane="" style={mediaStyle}>
     <picture className={styles.poster}>
-      <source type="image/avif" media="(max-width: 767px) and (orientation: portrait)" srcSet={cinematicPoster.mobileSrcSet} sizes="100vw" />
-      <source type="image/webp" media="(max-width: 767px) and (orientation: portrait)" srcSet={cinematicPoster.mobileWebpSrcSet} sizes="100vw" />
-      <source type="image/avif" srcSet={cinematicPoster.desktopSrcSet} sizes="100vw" />
-      <source type="image/webp" srcSet={cinematicPoster.desktopWebpSrcSet} sizes="100vw" />
+      <source type="image/avif" media="(max-width: 767px) and (orientation: portrait)" srcSet={poster.mobileSrcSet} sizes="100vw" />
+      <source type="image/webp" media="(max-width: 767px) and (orientation: portrait)" srcSet={poster.mobileWebpSrcSet} sizes="100vw" />
+      <source type="image/avif" srcSet={poster.desktopSrcSet} sizes="100vw" />
+      <source type="image/webp" srcSet={poster.desktopWebpSrcSet} sizes="100vw" />
       {/* The responsive poster must paint before hydration or media permissions. */}
-      <img src={cinematicPoster.src} width={cinematicPoster.width} height={cinematicPoster.height} alt="" loading="eager" fetchPriority="high" decoding="async" />
+      <img src={poster.src} width={poster.width} height={poster.height} alt="" loading="eager" fetchPriority="high" decoding="async" />
     </picture>
-    <video ref={video} className={styles.video} poster="/frames/afina-agac-dal/poster-desktop.avif" src={state.attached ? filmURL : undefined}
-      width={1280} height={720} muted playsInline preload="metadata" aria-hidden="true" tabIndex={-1}
+    <video ref={video} className={styles.video} poster={posterSrc} src={state.attached ? filmURL : undefined}
+      width={1280} height={720} muted playsInline loop={loop} autoPlay={runningIntent} preload="metadata" aria-hidden="true" tabIndex={-1}
       onPlaying={() => {
         if (runningIntent) dispatch({ type: "playing" });
         else video.current?.pause();
       }} onPause={() => dispatch({ type: "paused" })} onEnded={() => dispatch({ type: "ended" })} onError={() => dispatch({ type: "error" })} />
     </motion.div>
     {children}
-    {state.allowed && <div className={styles.controls} data-position={controlsPosition}>
+    {state.allowed && <div className={styles.controls} data-cinematic-controls="" data-position={controlsPosition}>
       {state.failed && <p role="status">Film açılamadı. Görsel gösteriliyor.</p>}
       <button type="button" onClick={togglePlayback} disabled={!state.visible || !state.inView} aria-label={label}>
         <Icon size={15} aria-hidden="true" /><span>{label}</span>

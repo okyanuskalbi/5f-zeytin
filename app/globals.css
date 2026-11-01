@@ -15,6 +15,18 @@
 }
 
 :root {
+  /* Pro plan, Task161. Contrast companions keep gold/lime readable. */
+  --pro-brand: #84CC16;
+  --pro-brand-hover: #A3E635;
+  --pro-stone: #EDE8DD;
+  --pro-ink: #1C1F1A;
+  --pro-paper: #F7F4EE;
+  --pro-gold: #C89B3C;
+  --pro-gold-ink: #735519;
+  --pro-muted: #4F594B;
+  --pro-line: #919B87;
+  --pro-error: #9D2822;
+  --pro-gutter: clamp(20px,4vw,64px);
   color-scheme: dark;
   --ink: #0E1510;
   --zeytin: #1F3324;

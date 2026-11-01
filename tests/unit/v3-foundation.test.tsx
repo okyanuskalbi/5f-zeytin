@@ -8,20 +8,21 @@ import { TrustStrip } from "@/components/landing/TrustStrip";
 
 vi.mock("server-only", () => ({}));
 
-it("renders the new contentful sections in order with one footer preview note", async () => {
+it("renders seven semantic pro sections and three story articles with one footer preview note", async () => {
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}<Footer /></>);
   expect([...doc.querySelectorAll("main > section, main > div > section")].map(section => section.getAttribute("aria-labelledby") ?? section.getAttribute("aria-label"))).toEqual([
-    "renewal-hero-title", "kurumsal-title", "tesisimiz-title", "urunler-title", "yolculuk-title", "toptan-title", "sss-title", "iletisim-title",
+    "renewal-hero-title", "urunler-title", "tesisimiz-title", "yolculuk-title", "toptan-title", "teklif-title", "sss-title",
   ]);
   expect(doc.querySelectorAll("article[data-product-id]")).toHaveLength(6);
-  expect(doc.querySelectorAll("#uretim-yolculugu li")).toHaveLength(3);
+  expect([...doc.querySelectorAll("#uretim-yolculugu article h3")].map(node => node.textContent))
+    .toEqual(["Toprağımız", "Tesisimiz", "Sunumumuz"]);
   expect(doc.querySelectorAll("picture source").length).toBeGreaterThan(5);
   expect(doc.querySelector("#renewal-hero-title")?.textContent).toBe("Kökü toprakta. Yeri sofrada.");
   expect(doc.body.textContent?.match(/Önizleme: fiyatlar ve görseller temsilidir\./g)).toHaveLength(1);
   expect(doc.body.textContent).not.toMatch(/Örnek ürünler|Gerçek satış kataloğu|kullanıma açık değil|Temsili görsel/);
-  expect(doc.querySelector('#toptan-iletisim form[aria-label="Kurumsal teklif talebi"]')).not.toBeNull();
-  expect(doc.querySelector('#toptan-iletisim button[type="submit"]')?.hasAttribute("disabled")).toBe(true);
+  expect(doc.querySelector('#teklif form[aria-label="Kurumsal teklif talebi"]')?.getAttribute("method")).toBe("post");
+  expect(doc.querySelector('#teklif button[type="submit"]')?.hasAttribute("disabled")).toBe(true);
   for (const href of ["/kvkk", "/mesafeli-satis", "/iade", "https://afina.com.tr"]) expect(doc.querySelector(`a[href="${href}"]`)).not.toBeNull();
 });
 
@@ -74,14 +75,15 @@ it("keeps matching SSR preloads and all hero sources within byte budgets", async
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(await Home());
   const preloads = [...doc.querySelectorAll<HTMLLinkElement>('link[rel="preload"][as="image"]')];
-  expect(preloads.map(link => link.media)).toEqual([
-    "(max-width: 767px) and (orientation: portrait)", "(min-width: 768px), (orientation: landscape)",
-  ]);
+  expect(preloads).toHaveLength(1);
+  expect(preloads[0].type).toBe("image/avif");
+  expect(preloads[0].getAttribute("href")).toBe("/videos/afina-zeytinlik-poster.avif");
   expect(preloads.every(link => link.getAttribute("fetchpriority") === "high")).toBe(true);
   const photo = doc.querySelector("[data-cinematic-film]")!;
   expect(photo.querySelector("img")?.getAttribute("fetchPriority")).toBe("high");
   expect(photo.querySelector("source")?.getAttribute("media")).toBe("(max-width: 767px) and (orientation: portrait)");
   expect(photo.querySelector("video")?.hasAttribute("src")).toBe(false);
-  expect(statSync("public/frames/afina-agac-dal/poster-desktop.avif").size).toBeLessThanOrEqual(90000);
-  expect(statSync("public/frames/afina-agac-dal/poster-mobile.avif").size).toBeLessThanOrEqual(90000);
+  expect(photo.querySelector('source[type="image/avif"]')?.getAttribute("srcset"))
+    .toBe(`${preloads[0].getAttribute("href")} 1280w`);
+  expect(statSync(`public${preloads[0].getAttribute("href")}`).size).toBeLessThanOrEqual(90000);
 });

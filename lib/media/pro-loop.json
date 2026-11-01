@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "source": {
+    "file": "output/flow-keyframes/A-B-ilk-deneme.mp4",
+    "sha256": "be77f66a14e418791093fe53937598204313a99f6368204f1fbf6ebaacf14171",
+    "provider": "Google Flow",
+    "userAccepted": true
+  },
+  "derivation": {
+    "kind": "editorial-forward-reverse-loop",
+    "sourceStartFrame": 6,
+    "sourceEndFrameExclusive": 66,
+    "order": "60 frames forward, the same60 reversed",
+    "newPaidGeneration": false,
+    "extraCreditsSpent": 0,
+    "crop": false,
+    "toneMapping": false,
+    "codec": "h264",
+    "pixelFormat": "yuv420p",
+    "qp": 26,
+    "forcedIntraFrames": [
+      0,
+      119
+    ],
+    "audio": false,
+    "fastStart": true
+  },
+  "video": {
+    "width": 1280,
+    "height": 720,
+    "fps": 24,
+    "frames": 120,
+    "durationSeconds": 5
+  },
+  "seam": {
+    "decodedFirstLastPixelsIdentical": true,
+    "ssim": 1,
+    "evidence": ".cache/task-161/loop-seam.log",
+    "reversedCameraMotionDisclosed": true
+  },
+  "outputs": [
+    {
+      "file": "/videos/afina-zeytinlik-loop-5s.mp4",
+      "bytes": 6847142,
+      "sha256": "778fe91b5f2a258ced10ae250fc31e576036043e0ef6d3bdd49501b70346c8fa"
+    },
+    {
+      "file": "/videos/afina-zeytinlik-poster.avif",
+      "bytes": 75957,
+      "sha256": "dfa0cd22c4f0d277af48ac45fe790b16311ecb9ad565708fdb4cdef57ab965f9"
+    },
+    {
+      "file": "/videos/afina-zeytinlik-poster.webp",
+      "bytes": 238842,
+      "sha256": "c98c2e367f519cdce5751a8da1f8e2f82d0e386a3be61bbbeded467e94620503"
+    },
+    {
+      "file": "/brand/og-zeytinyagi.webp",
+      "bytes": 56108,
+      "sha256": "b028874ba052eb71836b72584e348eb51faf16f822651f50c7111425ddfad9a0"
+    }
+  ]
+}

@@ -4,10 +4,10 @@
 - **KURUMSAL** = AFİNA Şirketler Topluluğu, afina.com.tr, `okyanuskalbi/afina-kurumsal`, `~/PROJELER/AFINA-KURUMSAL`.
 - Tek landing içinde premium vitrin ve satın alma; admin’den girilecek en fazla 5–6 ürün. Üyelik, hesabım, sipariş geçmişi, sepet drawer ve sayfası, upsell/çapraz satış, kademeli indirim, ödeme callback’i, kupon, terk edilen sepet e-postası, admin ve kargo takibi kapsamda.
 - Next.js App Router + TypeScript + Tailwind 4 + shadcn/ui + Framer Motion (`motion`) + Supabase + Vercel. AI Studio kodu `_legacy/` içinde yalnız referans; yeni runtime’a doğrudan bağlanmaz.
-- Ana slogan “Kökü toprakta. Yeri sofrada.”; aktif v8 Object journey sözleşmesi `docs/DESIGN.md` ve brief-first kayıtları `docs/scrollcraft/builds/afina-v8/` içinde. Gerçek Flow arka düzlemi, bağımsız seçilebilir AFİNA ambalajı ve katı kâğıt copy-plane; telefon/reduced pin yok. Orijinal logo/palet/font ve gerçek eylemler korunur. V7 dosyası byte-identical arşivdedir; v8 yayın READY, canlı UI kabulü tamamlandı.
+- Ana slogan “Kökü toprakta. Yeri sofrada.”; aktif v9 Hasat Rotası sözleşmesi `docs/DESIGN.md`, brief-first kayıtları `docs/scrollcraft/builds/afina-v9/` içinde. Pro plan #84CC16/taş/mürekkep/altın, Fraunces/Inter, doğal tam-film hero+özgün ön dal+cam nav ve yalnız galeride tek pin; telefon/kısa ekran/reduced native akış. Orijinal logo, gerçek ambalaj ve eylemler korunur. Task161 UYGULANIYOR; kabul/yayın BEKLİYOR. V8 byte-identical arşiv ve yayın kanıtları tarihçedir.
 - Yeni üretim yalnız Google Flow; eski P01–P12/Atlas görevleri tarihsel kayıttır. Görseller temsili ve adaydır; kullanıcı onayı olmadan sitede kullanılmaz, ücretli videoya geçilmez.
 - Supabase proje/org, ödeme, e-posta, kargo, indirim/süreler, gerçek ürün/fiyat/logo ve Vercel/domain kararları açıktır; kendin seçme. Ayrıntı ve bağımlılıklar `docs/PLAN.md` içinde.
-- 1 Kasım 2026 kullanıcı devri: Codex planlama, görev oluşturma, uygulama ve denetimi birlikte yürütür. Claude dosyaları ve eski kabul kanıtları tarihsel kaynak olarak korunur. Task 160 v8 kaynak 179df851 production READY; canlı UI kabulü tamamlandı. Task 157/158/159 sonuçları yeni v8 kabulü yerine geçmez.
+- 1 Kasım 2026 kullanıcı devri: Codex planlama, görev oluşturma, uygulama ve denetimi birlikte yürütür. Claude dosyaları ve eski kabul kanıtları tarihsel kaynak olarak korunur. Son yayımlanmış v8 kaynak 179df851 kanıtı tarihçedir; Task157–160 sonuçları yeni Task161/v9 kabulü yerine geçmez.
 
 # Rol: Codex / proje yürütücüsü
 
@@ -95,9 +95,11 @@ Son kullanıcı düzeltmesi v6 split/kare-penceresi ve genel no-autoplay uygulam
 
 Task 159 yayındaki kaynak `5a3b1f6`, CI 41297597853 SUCCESS; REST API `dpl_CpxqnTKPasKQNCQ8zjWnaNu5NpsF` READY. 1197 unit, 44 yerel + 44 canlı etkileşim kontrolü, dört genişlikte görsel/axe kabulü; normal oynatım 190 kare/7,916667 sn./sessiz doğrulandı. Son makbuz [yayin-film-v7-20261101.json](docs/referans/yayin-film-v7-20261101.json), QA `qa-159-20261101.json`. Fiziksel cihaz veya gerçek hesap/ödeme/talep mutasyonu değildir; yeni Flow kredisi 0.
 
-## Aktif çalışma: v8 Object journey (Task 160)
+## Tarihçe: v8 Object journey (Task 160)
 
-Kullanıcı Scroll Craft, frontend-design/frontend-ui-engineering ve Taste ile tasarım düzeltmesini, verdiği doğru Flow projesini kullanmayı istedi. [Task 160](docs/tasks/160-scroll-craft-taste-ve-flow.md), [BRIEF/PLAN/COPY/VERIFICATION](docs/scrollcraft/builds/afina-v8/BRIEF.md) ve [DESIGN](docs/DESIGN.md) aktiftir. Yaratıcı kararlar açık devre dayanır; yeniden görüşme yapılmış gibi sunulmaz. V7 tek film+overlay ve v6 organik pencere/küçük kart aktif yön değildir.
+Bu bölüm Task160 sırasında geçerli olan kompozisyon/QA/yayın kaydıdır; v9 aktif sözleşmesi değildir.
+
+Kullanıcı Scroll Craft, frontend-design/frontend-ui-engineering ve Taste ile tasarım düzeltmesini, verdiği doğru Flow projesini kullanmayı istedi. [Task 160](docs/tasks/160-scroll-craft-taste-ve-flow.md), [BRIEF/PLAN/COPY/VERIFICATION](docs/scrollcraft/builds/afina-v8/BRIEF.md) ve [arşivlenmiş v8 DESIGN](docs/referans/DESIGN-v8-history-20261101.md) o görevde aktiftir. Yaratıcı kararlar açık devre dayanır; yeniden görüşme yapılmış gibi sunulmaz. V7 tek film+overlay ve v6 organik pencere/küçük kart aktif yön değildir.
 
 Taste seed 1601101/page-is-the-object, palet/font korunur. Desktop yalnız 170svh kısa sticky: film geri, gerçek ambalaj ileri, kendi zeminiyle kâğıt metin bağımsız hareket eder. Telefon/kısa ekran/reduced doğal akış; başlık/CTA önce,280px film/260px ürün sahnesi, ayrıntı sonra. Üç mevcut SKU aynı görsel/ad/fiyat/detail/cart hedefini günceller; AddToCart/CatalogProvider/sunucu otoritesi ve altı SKU sırası değişmez. Gerçek tesis→native galeri→kapalı B2B/native details→gerçek adres/mağazaya dönüş. İndeks/eyebrow/scroll oku/tam kare scrim/italic renk vurgusu yok.
 
@@ -112,3 +114,18 @@ Yerel kabul: 89 dosya/1200 unit, tam ESLint/typecheck/build PASS; 74 e2e PASS + 
 Canlı kabul: **TAMAMLANDI** — 74 e2e PASS + 6 responsive skip; 1440/1024/768/390/360×640/320 görsel/axe/taşma/pageerror/başarısız kaynak 0; motion/JavaScript kapalı/reduced PASS. Doğal film 190 decoded kare,7,916667 sn., ended/muted; 12,04 sn. gerçek UI oynatım kaydı alındı. Fiziksel cihaz veya gerçek hesap/ödeme/teklif mutasyonu değildir.
 
 Final [yayın makbuzu](docs/referans/yayin-object-v8-20261101.json) ve [QA kaydı](docs/referans/qa-160-20261101.json) nihai Task 160 kanıt kayıtlarıdır; yeni Flow medya kabulü ayrı tutulur. Fiziksel cihaz/gerçek hesap/ödeme/form mutasyonu bu kabul değildir.
+
+
+## Aktif çalışma: v9 Hasat Rotası (Task 161)
+
+Kullanıcının [pro planı](docs/referans/afina-zeytin-pro-plan-20261101.md) ve tüm bölümlere 21st/Scroll Craft isteği: [Task161](docs/tasks/161-pro-plan-tum-bolumler-21st-scroll-craft.md), [BRIEF/PLAN/COPY](docs/scrollcraft/builds/afina-v9/BRIEF.md), [DESIGN](docs/DESIGN.md) aktiftir. V8 DESIGN byte-identical [arşivdedir](docs/referans/DESIGN-v8-history-20261101.md); önceki 170svh ambalaj/kâğıt-plane, opak nav ve tek geçiş/no-loop uygulama tercihi yeni planla değişir. Task161 UYGULANIYOR; final QA/CI/API/live kabul BEKLİYOR.
+
+Aktif tokenlar #84CC16/#EDE8DD/#1C1F1A/#C89B3C, koyu altın metin #735519; Fraunces/Inter, özgün logo/slogan/ambalaj. Yedi sahne: hero32829 → galeri24623 → tesis20023 → hikâye1197 → B2B7262 → teklif35258 → SSS/iletişim31986; nav26786/footer21474 ile9seçili ana kaynak. 1635 yalnız incelenmiş referans, ProductCard mevcut kullanım;15025/7091 reddedildi. [Exact kaynak SHA/uyarlama kaydı](docs/scrollcraft/builds/afina-v9/21ST-SOURCES.json) esastır.
+
+Hero doğal film+orijinal ön dal+cam nav; H1/gerçek #urunler/#teklif anchor'ları SSR görünür. Tek pin uygun≥1024×860 galeride; x=−travel×progress lineer, kısa/mobil/reduced/JSkapalı native rail; son ürün/odak erişilir. Tesis görüntüsü izole parallax, diğer sahneler doğal akış/SSR görünür once reveal; motion/react dışında ikinci engine/GSAP/Lenis/rAF/currentTime seek yok.
+
+Kabul edilmiş A→B ücretsiz yerel ileri/geri kurgu: kaynak6..65,120kare/24fps/5sn/1280×720,6.847.142bayt. HeroAVIF75.957bayt ve onaylı şişeOG1200×630; yeni ücretli medya değil. Normal muted loop, pause/play/offscreen durma; reduced/saveData poster/MP4 isteksiz, hata/blocked fallback. V8'in no-loop tercihi bu açık planla değişir; yeni kredi yetkisi doğmaz. Diğer Flow adayları kullanıcı/runtime onayı almamıştır.
+
+Altı SKU sırası/adı/fiyatı/stoku ve mevcut detay/sepet/üyelik/checkout otoritesi değişmez. SKU ve üç segment seçimi aynı form bağlamına gider; hydration öncesi JS kontrolleri disabled. #teklif validasyon/KVKK sonrası gerçek mailto özeti hazırlar; kullanıcı e-posta uygulamasında gönderir. info@afina.com.tr ve+903288827708 resmî çatı şirket kanalıdır; zeytin destek hattı/WhatsApp veya sunucu e-posta teslimi doğrulanmış değildir. Yeni provider/env/DB açma ve sahte gönderildi başarısı yok.
+
+Dört proje yerel MD kaynağı/source_sha256 korunur; yeni v9 görsel bölümleri aktif, Task158/v8 kanıtları tarihçedir. Omni Chrome Use otomasyon yaklaşımı, Omni1.1Flash model adı; örnekler hesap/model/ücret yetkisi vermez. Test/publish/gerçek hizmet ve fiziksel cihaz kapıları ayrı; mevcut headless≤2/düzgün kapanış politikası sürer.

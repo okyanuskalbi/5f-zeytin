@@ -1,0 +1,507 @@
+{
+  "schemaVersion": 1,
+  "task": 161,
+  "project": "AFİNA ZEYTİN",
+  "design": "v9 — Hasat Rotası",
+  "recordedAtUtc": "2026-11-01T13:12:48.026629+00:00",
+  "purpose": "Durable metadata-only provenance of actual 21st source retrieval and project-specific adaptation. Raw third-party component/demo code remains in ignored local cache, not copied wholesale into repository documentation.",
+  "hashConvention": "SHA-256 over exact UTF-8 componentCode/demoCode strings returned in the structured get_component payload; no newline normalization. Raw-artifact SHA covers the on-disk JSON bytes.",
+  "retrieval": {
+    "tool": "21st MCP search/get_component",
+    "hostedAiGenerationUsed": false,
+    "componentCliInstallationUsed": false,
+    "rawArtifactsVersioned": false,
+    "selectedSources": 9,
+    "rejectedSources": 2,
+    "referenceOnlySources": 1
+  },
+  "sources": [
+    {
+      "demoId": 20023,
+      "componentId": 10316,
+      "name": "Parallax Image",
+      "demoName": "Default",
+      "author": "pulkitxm",
+      "authorUserId": "user_registry_pulkitxm_1783483415304",
+      "url": "https://21st.dev/@pulkitxm/components/parallax-image",
+      "registryUrl": "https://21st.dev/r/pulkitxm/parallax-image",
+      "previewUrl": "https://cdn.21st.dev/pulkitxm/parallax-image/default/preview.1784666327497-2d23e681-b32d-411a-bef2-1d35520e97ab.png",
+      "status": "adapted-runtime-awaiting-v9-acceptance",
+      "retrievalTool": "21st MCP get_component",
+      "retrievalOrigin": "body research cache",
+      "componentCodeSha256": "62b609a4d7875ceaa486d03dc052d16ec0c7bce346556715c7f8a43d2d1b61ec",
+      "componentCodeBytes": 1895,
+      "demoCodeSha256": "49e4909972b1a54716efe7d5d29088fc1bebe8f2adacce8c959d333f007b82a0",
+      "demoCodeBytes": 2787,
+      "rawArtifact": ".cache/task161/21st/facility-20023.json",
+      "rawArtifactSha256": "08fc8712f4b91b57e01bce083a5741874d49c794758ec5edae33fe1811855318",
+      "sourceCodeRetrieved": true,
+      "demoCodeRetrieved": true,
+      "licenseMetadata": "No component-specific license field was returned in the retrieved payload. Author/source attribution is recorded; no license is inferred.",
+      "exactExtractedFilesVerified": true
+    },
+    {
+      "demoId": 1197,
+      "componentId": 281,
+      "name": "Bento Grid",
+      "demoName": "Default",
+      "author": "manuarora700",
+      "authorUserId": "user_aceternity",
+      "url": "https://21st.dev/@manuarora700/components/bento-grid",
+      "registryUrl": "https://21st.dev/r/manuarora700/bento-grid",
+      "previewUrl": "https://cdn.21st.dev/user_aceternity/bento-grid/default/preview.png",
+      "status": "adapted-runtime-awaiting-v9-acceptance",
+      "retrievalTool": "21st MCP get_component",
+      "retrievalOrigin": "body research cache",
+      "componentCodeSha256": "0564e11b428219f87d823df18f3117f513921b74d23a26adbc7de36d8ef929f4",
+      "componentCodeBytes": 2310,
+      "demoCodeSha256": "517d989b570a0ac244d16a64a42e76dccea273da84f0051f47bf8c4bcdbe8586",
+      "demoCodeBytes": 2000,
+      "rawArtifact": ".cache/task161/21st/story-1197.json",
+      "rawArtifactSha256": "4c9e78930a3c85f7a72d85bc02b07677d7a6023dc435906796b536e13afb5eff",
+      "sourceCodeRetrieved": true,
+      "demoCodeRetrieved": true,
+      "licenseMetadata": "No component-specific license field was returned in the retrieved payload. Author/source attribution is recorded; no license is inferred.",
+      "exactExtractedFilesVerified": true
+    },
+    {
+      "demoId": 7262,
+      "componentId": 4891,
+      "name": "Pricing Cards",
+      "demoName": "Pricing  Card    Free,  Pro,  Enterprise.tsx",
+      "author": "prebuiltui",
+      "authorUserId": "user_prebuiltui",
+      "url": "https://21st.dev/@prebuiltui/components/pricing-cards",
+      "registryUrl": "https://21st.dev/r/prebuiltui/pricing-cards",
+      "previewUrl": "https://cdn.21st.dev/larsen66/pricing-cards/pricing-card-free-pro-enterprise/preview.1757656710832.png",
+      "status": "adapted-runtime-awaiting-v9-acceptance",
+      "retrievalTool": "21st MCP get_component",
+      "retrievalOrigin": "body research cache",
+      "componentCodeSha256": "8f9a4330ed82ef8124dfab4e82b196dbc2ee7a9186a54147d0540028a7a02023",
+      "componentCodeBytes": 10183,
+      "demoCodeSha256": "797268f73eb6a27382e143828062a668019e60c1f27667dde200e777d04be44d",
+      "demoCodeBytes": 16476,
+      "rawArtifact": ".cache/task161/21st/b2b-alt-7262.json",
+      "rawArtifactSha256": "bc585619ce2b137b5fba3f45bf7ed1426a6dd0a1ce57b690a0ad7b1cb3faf382",
+      "sourceCodeRetrieved": true,
+      "demoCodeRetrieved": true,
+      "licenseMetadata": "No component-specific license field was returned in the retrieved payload. Author/source attribution is recorded; no license is inferred.",
+      "exactExtractedFilesVerified": true
+    },
+    {
+      "demoId": 35258,
+      "componentId": 19744,
+      "name": "Contact Form",
+      "demoName": "Default",
+      "author": "kevingirelli",
+      "authorUserId": "user_registry_kevingirelli_1790903224160",
+      "url": "https://21st.dev/@kevingirelli/components/contact-form",
+      "registryUrl": "https://21st.dev/r/kevingirelli/contact-form",
+      "previewUrl": "https://cdn.21st.dev/kevingirelli/contact-form/default/preview.1791041663088-a865c431-ef9e-4289-9a4c-a145ff0ba6e4.png",
+      "status": "adapted-runtime-awaiting-v9-acceptance",
+      "retrievalTool": "21st MCP get_component",
+      "retrievalOrigin": "body research cache",
+      "componentCodeSha256": "f462d1a361411fb9482c0cf5053759921f833be7bc6dec4c3df6b666676afb4a",
+      "componentCodeBytes": 9172,
+      "demoCodeSha256": "d29ccd0e068bf6be8b5016198872a44ffe9790e98a2d1d02f8e08c2bd4cd8c27",
+      "demoCodeBytes": 249,
+      "rawArtifact": ".cache/task161/21st/quote-35258.json",
+      "rawArtifactSha256": "f09a5c78a5cb3b1c2e0a57c34b55f48a4ebbc51bfe4539cffd5fa3520860e7c3",
+      "sourceCodeRetrieved": true,
+      "demoCodeRetrieved": true,
+      "licenseMetadata": "No component-specific license field was returned in the retrieved payload. Author/source attribution is recorded; no license is inferred.",
+      "exactExtractedFilesVerified": true
+    },
+    {
+      "demoId": 31986,
+      "componentId": 17940,
+      "name": "FAQ Accordion Section",
+      "demoName": "Default",
+      "author": "hexui-sh",
+      "authorUserId": "user_registry_hexui-sh_1790350141592",
+      "url": "https://21st.dev/@hexui-sh/components/faq-1",
+      "registryUrl": "https://21st.dev/r/hexui-sh/faq-1",
+      "previewUrl": "https://cdn.21st.dev/hexui-sh/faq-1/default/preview.1790365508739-d1f340af-ccf5-413b-885e-a07e762b09dc.png",
+      "status": "adapted-runtime-awaiting-v9-acceptance",
+      "retrievalTool": "21st MCP get_component",
+      "retrievalOrigin": "body research cache",
+      "componentCodeSha256": "7521dcfc304ad1b0c40d987e7053241e1391a74363b285a91e9772d8dcb62894",
+      "componentCodeBytes": 24559,
+      "demoCodeSha256": "08de4233608d58da6ee428a6bb707953a2ba8a99ea83d1481995358d1a31b25a",
+      "demoCodeBytes": 200,
+      "rawArtifact": ".cache/task161/21st/faq-31986.json",
+      "rawArtifactSha256": "3005147d2841c00e3ae1e3e9ed316b6529e51a14211339162a0b1f6dde464a61",
+      "sourceCodeRetrieved": true,
+      "demoCodeRetrieved": true,
+      "licenseMetadata": "No component-specific license field was returned in the retrieved payload. Author/source attribution is recorded; no license is inferred.",
+      "exactExtractedFilesVerified": true
+    },
+    {
+      "demoId": 21474,
+      "componentId": 10510,
+      "name": "Agency Footer",
+      "demoName": "Default",
+      "author": "shadcnspace",
+      "authorUserId": "user_38qAOtph5HovpSn2yjNYXjbTOm2",
+      "url": "https://21st.dev/@shadcnspace/components/footer-01",
+      "registryUrl": "https://21st.dev/r/shadcnspace/footer-01",
+      "previewUrl": "https://cdn.21st.dev/shadcnspace/footer-01/default/preview.1784818505149-ed0e668f-bd79-4049-afa0-9f56f7faeba1.png",
+      "status": "adapted-runtime-awaiting-v9-acceptance",
+      "retrievalTool": "21st MCP get_component",
+      "retrievalOrigin": "body research cache",
+      "componentCodeSha256": "3a6ccc05ed0f838588f63466e3c64d8fd61060ba0873b0385ff641e09ddb1da3",
+      "componentCodeBytes": 9107,
+      "demoCodeSha256": "8eef57d39f2865f19fb1019538677a0a857e761777a78cea2a8a448519ee3800",
+      "demoCodeBytes": 879,
+      "rawArtifact": ".cache/task161/21st/contact-21474.json",
+      "rawArtifactSha256": "1a0824d852c71ecfd359c5888b18025682cb99f182964a0fbecc88efe7a3d436",
+      "sourceCodeRetrieved": true,
+      "demoCodeRetrieved": true,
+      "licenseMetadata": "No component-specific license field was returned in the retrieved payload. Author/source attribution is recorded; no license is inferred.",
+      "exactExtractedFilesVerified": true
+    },
+    {
+      "demoId": 32829,
+      "componentId": 18598,
+      "name": "Elsewhere — Day/Night Video Hero with Ambient Sound",
+      "demoName": "Day to Night",
+      "author": "gughigug",
+      "authorUserId": "user_3F5lLma84xIPGAIgJ4L79Ee7KwG",
+      "url": "https://21st.dev/@gughigug/components/elsewhere-hero",
+      "registryUrl": "https://21st.dev/r/gughigug/elsewhere-hero",
+      "previewUrl": "https://cdn.21st.dev/gughigug/elsewhere-hero/default/preview.1791230540335-4c3da6cb-af4a-4b5f-a592-ac64493c9b0a.png",
+      "status": "adapted-runtime-awaiting-v9-acceptance",
+      "retrievalTool": "21st MCP get_component",
+      "retrievalOrigin": "root research cache",
+      "componentCodeSha256": "8f74e0ef170b8526bf6909e64b9de04aa0063de0c0dc5a9fdd4c5f7af9ef21b5",
+      "componentCodeBytes": 18962,
+      "demoCodeSha256": "1bfda295b92d3d2cea0e242adb9642c1d79ef90b9c8f68a2b6fe6ff4ee67f335",
+      "demoCodeBytes": 902,
+      "rawArtifact": ".cache/task-161/21st/32829.json",
+      "rawArtifactSha256": "443448f740b7f8f5c7c04bdd41b45b6eed3fe6d2b05059bd876523db151f1db3",
+      "sourceCodeRetrieved": true,
+      "demoCodeRetrieved": true,
+      "licenseMetadata": "No component-specific license field was returned in the retrieved payload. Author/source attribution is recorded; no license is inferred."
+    },
+    {
+      "demoId": 26786,
+      "componentId": 13435,
+      "name": "Elevate Navbar",
+      "demoName": "Default",
+      "author": "hyperiux",
+      "authorUserId": "user_3IlVIzEF1oziaTRKTKA3Qak2f5C",
+      "url": "https://21st.dev/@hyperiux/components/elevate-navbar",
+      "registryUrl": "https://21st.dev/r/hyperiux/elevate-navbar",
+      "previewUrl": "https://cdn.21st.dev/hyperiux/elevate-navbar/default/preview.1788852004155-da85643e-4364-4422-9c4f-8607b60da151.jpg",
+      "status": "adapted-runtime-awaiting-v9-acceptance",
+      "retrievalTool": "21st MCP get_component",
+      "retrievalOrigin": "root research cache",
+      "componentCodeSha256": "ddae24290efa7b76c1d7e8e5462caed9faaa8105215dd84e50897ddb46b54ba2",
+      "componentCodeBytes": 71064,
+      "demoCodeSha256": "fb407e9924181f543cd9bcc5614b8ee94077451df1daf001e495cdb47ff77e87",
+      "demoCodeBytes": 152,
+      "rawArtifact": ".cache/task-161/21st/26786.json",
+      "rawArtifactSha256": "5d08e5c31e512f20e64c837f58169a07b97d64d0f7c00801ccc7af8b8f616b06",
+      "sourceCodeRetrieved": true,
+      "demoCodeRetrieved": true,
+      "licenseMetadata": "No component-specific license field was returned in the retrieved payload. Author/source attribution is recorded; no license is inferred."
+    },
+    {
+      "demoId": 24623,
+      "componentId": 11889,
+      "name": "Scroll Horizontal Gallery",
+      "demoName": "Default",
+      "author": "motiondotdev",
+      "authorUserId": "user_motion.dev",
+      "url": "https://21st.dev/@motiondotdev/components/motion-scroll-horizontal",
+      "registryUrl": "https://21st.dev/r/motiondotdev/motion-scroll-horizontal",
+      "previewUrl": "https://cdn.21st.dev/user_motion.dev/motion-scroll-horizontal/default/preview.1787676132415.png",
+      "status": "adapted-runtime-awaiting-v9-acceptance",
+      "retrievalTool": "21st MCP get_component",
+      "retrievalOrigin": "root research cache",
+      "componentCodeSha256": "065b6567b86509c57d0ff9e7233bd0b149782427a006266c48bb212ce6dd6a03",
+      "componentCodeBytes": 2705,
+      "demoCodeSha256": "a63d766a83edc42335a4392cb8ea93ff42f965f6ff7f01bbf598d265da419e01",
+      "demoCodeBytes": 259,
+      "rawArtifact": ".cache/task-161/21st/24623.json",
+      "rawArtifactSha256": "d7344d102f13baa63e8d3571c8d4cc6373f666a01c7cfe9471ffb0aa95c427b5",
+      "sourceCodeRetrieved": true,
+      "demoCodeRetrieved": true,
+      "licenseMetadata": "No component-specific license field was returned in the retrieved payload. Author/source attribution is recorded; no license is inferred."
+    }
+  ],
+  "rejectedSources": [
+    {
+      "demoId": 7091,
+      "componentId": 4815,
+      "name": "Pricing Cards",
+      "demoName": "Pricing  Three  Plans.tsx",
+      "author": "lyanchouss",
+      "authorUserId": "user_2xFgBhIEcC8WVjxizPEzB14AOkb",
+      "url": "https://21st.dev/@lyanchouss/components/pricing-cards",
+      "registryUrl": "https://21st.dev/r/lyanchouss/pricing-cards",
+      "previewUrl": "https://cdn.21st.dev/lyanchouss/pricing-cards/pricing-three-plans/preview.1757402696089.png",
+      "status": "retrieved-rejected",
+      "retrievalTool": "21st MCP get_component",
+      "retrievalOrigin": "body research cache",
+      "componentCodeSha256": "ef49cefdb5d2c6d3d023c6cf02791a7a9ad5ad30bd2882a218547aef4d0596d7",
+      "componentCodeBytes": 9778,
+      "demoCodeSha256": "d9fa587929052f3ab91765b388fbc549ec3f97ac9866c67e95609e9cdb230fcd",
+      "demoCodeBytes": 13626,
+      "rawArtifact": ".cache/task161/21st/b2b-7091.json",
+      "rawArtifactSha256": "4eed759e1d4e63b8994a344bc700cb572994180bf3a80744daa964ffb35e1e58",
+      "sourceCodeRetrieved": true,
+      "demoCodeRetrieved": true,
+      "licenseMetadata": "No component-specific license field was returned in the retrieved payload. Author/source attribution is recorded; no license is inferred.",
+      "rejectionReason": "Canvas particle rAF, global html/body dark-theme reset, decorative lines and default two-plan content make this unnecessarily invasive for three real B2B segments."
+    },
+    {
+      "demoId": 15025,
+      "componentId": 8618,
+      "name": "Glassmorphism Navigation",
+      "demoName": "Navigation",
+      "author": "akashsingh890901-crypto",
+      "authorUserId": "user_3FMsah56tWxmEzNbX8NbHpsoOta",
+      "url": "https://21st.dev/@akashsingh890901-crypto/components/glassmorphism-navigation",
+      "registryUrl": "https://21st.dev/r/akashsingh890901-crypto/glassmorphism-navigation",
+      "previewUrl": "https://cdn.21st.dev/user_3FMsah56tWxmEzNbX8NbHpsoOta/glassmorphism-navigation/default/preview.1787325170433.png",
+      "status": "retrieved-rejected",
+      "retrievalTool": "21st MCP get_component",
+      "retrievalOrigin": "root research cache",
+      "componentCodeSha256": "706fe0418b5e9bfee32f916d6c357be7a79ea437c6ca319d1ec15fb9c0ba6d18",
+      "componentCodeBytes": 568,
+      "demoCodeSha256": "4cee37502ef3c47024b2aa77f8962d8dfb15bce8d299f1c2a67264d6b092fdae",
+      "demoCodeBytes": 8543,
+      "rawArtifact": ".cache/task-161/21st/15025.json",
+      "rawArtifactSha256": "ae65f3a9edf8489084e2d828c40276293fd43d7492d9deacc326ecc9941bdab5",
+      "sourceCodeRetrieved": true,
+      "demoCodeRetrieved": true,
+      "licenseMetadata": "No component-specific license field was returned in the retrieved payload. Author/source attribution is recorded; no license is inferred.",
+      "rejectionReason": "The retrieved componentCode is a generic increment/decrement counter headed Component Example, not a usable navigation implementation; replaced by 26786 after actual source inspection."
+    }
+  ],
+  "sevenSections": [
+    {
+      "anchor": "baslangic",
+      "sourceDemoIds": [
+        32829
+      ],
+      "runtimeFiles": [
+        "components/landing/OliveScrollHero.tsx",
+        "components/landing/CinematicHero.module.css",
+        "components/media/CinematicFilm.tsx",
+        "lib/media/pro-loop.ts"
+      ],
+      "adaptedBehavior": "Full-bleed approved AFİNA Flow-film composition, two authored headline lines and real product/quote anchors. Existing Motion owns modest layer/entrance transforms; accepted A→B footage is locally edited into the documented five-second forward/reverse loop. Reduced-motion, save-data, paused/hidden/error states retain a real poster.",
+      "excludedDemoBehavior": "Demo day/night switch, ambient audio synthesis, foreign video URLs, demo navigation/fonts/copy and an additional scroll engine are not copied.",
+      "sourceMarker": {
+        "file": "components/landing/OliveScrollHero.tsx",
+        "value": "data-21st-source=\"32829\"",
+        "presentAtRecording": true
+      },
+      "status": "implemented-awaiting-v9-acceptance"
+    },
+    {
+      "anchor": "urunler",
+      "sourceDemoIds": [
+        24623
+      ],
+      "runtimeFiles": [
+        "components/landing/HorizontalProductGallery.tsx",
+        "components/landing/HorizontalProductGallery.module.css",
+        "components/catalog/ProductCard.tsx",
+        "components/catalog/ProductCard.module.css",
+        "components/landing/QuoteJourneyProvider.tsx"
+      ],
+      "adaptedBehavior": "24623 supplies sticky-viewport/direct scroll→x gallery geometry. Six real SKU records and existing ProductCard/detail/cart controls remain authoritative; quote selection carries the selected SKU into the shared form. Native horizontal/mobile/keyboard/reduced-motion fallbacks remain. Existing ProductCard is reused; no new1635 adaptation is claimed.",
+      "excludedDemoBehavior": "Colored demo blocks, example products/colors/prices and hover-only access to product information are not copied. No fabricated SKU or spring-lag scrub is introduced.",
+      "sourceMarker": {
+        "file": "components/landing/HorizontalProductGallery.tsx",
+        "value": "data-21st-source=\"24623\"",
+        "presentAtRecording": true
+      },
+      "status": "implemented-awaiting-v9-acceptance"
+    },
+    {
+      "anchor": "tesisimiz",
+      "sourceDemoIds": [
+        20023
+      ],
+      "runtimeFiles": [
+        "components/landing/RenewalLanding.tsx",
+        "components/landing/RenewalLanding.module.css",
+        "components/landing/ScrollStage.tsx"
+      ],
+      "adaptedBehavior": "Short sticky location/corporate copy beside the genuine Ellek facility photograph. Clipped 120px overscan supports a bounded Motion parallax image on eligible desktop; mobile/reduced-motion remain static. Existing #kurumsal anchor aliases the facility copy.",
+      "excludedDemoBehavior": "Raw framer-motion import, manual scroll listener, foreign images and invented capacity/production statistics are removed.",
+      "sourceMarker": {
+        "file": "components/landing/RenewalLanding.tsx",
+        "value": "id=\"tesisimiz\" device=\"parallax\" sourceId={20023}",
+        "presentAtRecording": true
+      },
+      "status": "implemented-awaiting-v9-acceptance"
+    },
+    {
+      "anchor": "uretim-yolculugu",
+      "sourceDemoIds": [
+        1197
+      ],
+      "runtimeFiles": [
+        "components/landing/RenewalLanding.tsx",
+        "components/landing/RenewalLanding.module.css",
+        "components/landing/ScrollStage.tsx"
+      ],
+      "adaptedBehavior": "Asymmetric one-large/two-supporting photo/text bento presents the existing Toprağımız/Tesisimiz/Sunumumuz story with approved grove, facility and packaging imagery. Once-only SSR-visible Motion entrance; natural one-column phone flow.",
+      "excludedDemoBehavior": "Demo illustrations, decorative shadows, transition-all and hover-hidden content are removed. Imagery is not presented as unverified process footage.",
+      "sourceMarker": {
+        "file": "components/landing/RenewalLanding.tsx",
+        "value": "id=\"uretim-yolculugu\" device=\"reveal\" sourceId={1197}",
+        "presentAtRecording": true
+      },
+      "status": "implemented-awaiting-v9-acceptance"
+    },
+    {
+      "anchor": "toptan-iletisim",
+      "sourceDemoIds": [
+        7262
+      ],
+      "runtimeFiles": [
+        "components/landing/RenewalLanding.tsx",
+        "components/landing/RenewalLanding.module.css",
+        "components/landing/QuoteJourneyProvider.tsx",
+        "components/landing/ScrollStage.tsx"
+      ],
+      "adaptedBehavior": "Three peer audience cards (hospitality, retail, bulk) adapt the three-card composition. Real hydration-gated native buttons expose aria-pressed, store the chosen segment in context, and move to #teklif. Commercial conditions remain explicitly subject to quotation.",
+      "excludedDemoBehavior": "SaaS plans, sample prices, Most Popular badge, duplicate H1 and indigo demo palette are replaced with factual AFİNA segments and the authored pro tokens.",
+      "sourceMarker": {
+        "file": "components/landing/RenewalLanding.tsx",
+        "value": "id=\"toptan-iletisim\" device=\"flow\" sourceId={7262}",
+        "presentAtRecording": true
+      },
+      "status": "implemented-awaiting-v9-acceptance"
+    },
+    {
+      "anchor": "teklif",
+      "sourceDemoIds": [
+        35258
+      ],
+      "runtimeFiles": [
+        "components/landing/RenewalLanding.tsx",
+        "components/landing/QuoteComposer.tsx",
+        "components/landing/QuoteComposer.module.css",
+        "components/landing/QuoteJourneyProvider.tsx",
+        "lib/site/corporate-contact.ts",
+        "components/landing/ScrollStage.tsx"
+      ],
+      "adaptedBehavior": "Separated labelled form with required field validation/KVKK, real catalog-product and business-segment context, summary/error/status regions, and an explicitly user-completed email draft to the verified parent-company corporate address. SSR controls are disabled until hydrated; real corporate telephone/email fallback is labelled as such.",
+      "excludedDemoBehavior": "No fake server success, automatic delivery/CRM claim, invented WhatsApp channel, demo recipient or response-time promise. Existing mail provider/backend credentials are not inferred.",
+      "sourceMarker": {
+        "file": "components/landing/RenewalLanding.tsx",
+        "value": "id=\"teklif\" device=\"flow\" sourceId={35258}",
+        "presentAtRecording": true
+      },
+      "status": "implemented-awaiting-v9-acceptance"
+    },
+    {
+      "anchor": "iletisim",
+      "sourceDemoIds": [
+        31986
+      ],
+      "runtimeFiles": [
+        "components/landing/RenewalLanding.tsx",
+        "components/landing/RenewalLanding.module.css",
+        "components/landing/Faq.tsx",
+        "components/landing/Faq.module.css",
+        "components/landing/FaqDisclosure.tsx",
+        "lib/site/faqs.ts"
+      ],
+      "adaptedBehavior": "One final semantic #iletisim scene embeds #sik-sorulanlar as a div with the existing five native disclosures and FAQPage schema, then genuine seller address/maps/shop/support destinations. Quote section supplies the separately identified parent-company contact fallback.",
+      "excludedDemoBehavior": "Sample SaaS questions, avatars, duplicate H1 and another accordion engine are omitted. Contact region does not duplicate the outer #iletisim id.",
+      "sourceMarker": {
+        "file": "components/landing/RenewalLanding.tsx",
+        "value": "id=\"iletisim\" device=\"reveal\" sourceId={31986}",
+        "presentAtRecording": true
+      },
+      "status": "implemented-awaiting-v9-acceptance"
+    }
+  ],
+  "additionalRegions": [
+    {
+      "anchor": "site-navigation",
+      "sourceDemoIds": [
+        26786
+      ],
+      "runtimeFiles": [
+        "components/site/Navbar.tsx",
+        "components/site/Navbar.module.css"
+      ],
+      "adaptedBehavior": "Responsive light glass-pill brand/navigation/CTA composition from26786, adapted around the original AFİNA logo, actual navigation/account/cart links and the existing accessible Radix mobile dialog/focus restoration. V9 explicitly adopts glass/pill styling with a readable stone fallback; it is not excluded.",
+      "excludedDemoBehavior": "Foreign demo logos/images/menu routes, GSAP text-swap/animation engine, demo dark/night reset and hidden-until-mounted navigation are omitted; AFİNA branding, SSR content and existing accessible behavior are retained.",
+      "sourceMarker": {
+        "file": "components/site/Navbar.tsx",
+        "value": "data-21st-source=\"26786\"",
+        "presentAtRecording": true
+      },
+      "status": "implemented-awaiting-v9-acceptance"
+    },
+    {
+      "anchor": "site-footer",
+      "sourceDemoIds": [
+        21474
+      ],
+      "runtimeFiles": [
+        "components/site/Footer.tsx",
+        "components/site/Footer.module.css"
+      ],
+      "adaptedBehavior": "Agency-footer composition adapted into factual AFİNA brand/slogan, shopping/help/contact columns, seller/address, original payment logos and legal destinations. Configured olive-brand channels remain conditional; parent-company attribution is preserved.",
+      "excludedDemoBehavior": "Demo company/contact details, invented payment brands and unsupported olive-brand telephone/email channels are not copied.",
+      "sourceMarker": {
+        "file": "components/site/Footer.tsx",
+        "value": "data-21st-source=\"21474\"",
+        "presentAtRecording": true
+      },
+      "status": "implemented-awaiting-v9-acceptance"
+    }
+  ],
+  "scrollCraftAdaptation": {
+    "documents": [
+      "docs/scrollcraft/builds/afina-v9/BRIEF.md",
+      "docs/scrollcraft/builds/afina-v9/PLAN.md",
+      "docs/scrollcraft/builds/afina-v9/COPY.md"
+    ],
+    "runtimeEngine": "Existing motion/react runtime, semantic data-sc scenes, one bounded gallery pan plus isolated image parallax and once-only entrances; no second input/scroll owner.",
+    "readingContract": "Real copy/links/images exist in SSR; reduced-motion/mobile remain readable natural flow; no hidden-content prerequisite or fabricated demo data."
+  },
+  "acceptance": {
+    "metadata": "Exact source hashes and all seven scene/navigation/footer source-marker strings verified locally at recording.",
+    "runtime": "Implementation present; final Task161 full checks/browser/live/physical-device acceptance are separate gates and are not claimed by this record.",
+    "referenceOnly1635": "Exact source/demo retrieved and hashed for reference only; not a selected or newly adapted runtime source."
+  },
+  "referenceOnlySources": [
+    {
+      "demoId": 1635,
+      "componentId": 1445,
+      "name": "ProductCard",
+      "demoName": "product card",
+      "author": "youcefbnm",
+      "authorUserId": "user_2sdAd21yCZlZRkVtZyf4K8ogkBh",
+      "url": "https://21st.dev/@youcefbnm/components/product-card",
+      "registryUrl": "https://21st.dev/r/youcefbnm/product-card",
+      "previewUrl": "https://cdn.21st.dev/user_2sdAd21yCZlZRkVtZyf4K8ogkBh/product-card/default/preview.1788881136343.webp",
+      "status": "retrieved-reference-only-not-new-runtime-adaptation",
+      "retrievalTool": "21st MCP get_component",
+      "retrievalOrigin": "root research cache",
+      "componentCodeSha256": "f3fc3dbd2f2230d90365b0b3dcec3c5aa9b4743efd1bd299976302af81f9ff39",
+      "componentCodeBytes": 5078,
+      "demoCodeSha256": "55c5660284ab5aacd8ac74eca1829bb6465a750aef49d02bfb7a511a5f7745c4",
+      "demoCodeBytes": 3253,
+      "rawArtifact": ".cache/task-161/21st/1635.json",
+      "rawArtifactSha256": "5d87127e7999bfee602ff0aabdb37601ea86898be17ab6c6a8c938677ad6b208",
+      "sourceCodeRetrieved": true,
+      "demoCodeRetrieved": true,
+      "licenseMetadata": "No component-specific license field was returned in the retrieved payload. Author/source attribution is recorded; no license is inferred.",
+      "adaptation": "Existing project ProductCard preserves real SKU/price/stock/detail/cart contracts. Demo hover colour swatches and image crossfade were not adopted; the gallery section actually derives from24623. Hydration guard and quote action slot are project changes, not falsely attributed demo features.",
+      "runtimeUse": "Reference inspection only. Existing ProductCard is reused; no Task161 source1635 runtime adaptation is claimed. Gallery primary source is24623."
+    }
+  ]
+}

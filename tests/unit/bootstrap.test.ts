@@ -8,6 +8,7 @@ import { scripts } from "../../package.json";
 vi.mock("next/font/google", () => ({
   Fraunces: () => ({ variable: "font-display" }),
   Figtree: () => ({ variable: "font-body" }),
+  Inter: () => ({ variable: "font-body" }),
 }));
 vi.mock("next/font/local", () => ({ default: () => ({ variable: "font-display" }) }));
 // RootLayout now reads the server-owned payment preview availability flag.

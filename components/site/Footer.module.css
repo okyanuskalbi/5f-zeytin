@@ -65,3 +65,7 @@
 @media (prefers-reduced-motion: reduce) {
   .home, .community, .link { transition: none; }
 }
+
+/* 21st21474 Agency Footer, rebuilt with the pro plan's solid roles. */
+.footer { --footer-ink:var(--pro-stone); --footer-copy:var(--pro-ink); --footer-muted:var(--pro-muted); --sut:var(--pro-ink); --brand-gold:var(--pro-gold-ink); padding-inline:var(--pro-gutter); border-top:8px solid var(--pro-brand); }
+.signature { max-width:22ch; font-size:clamp(32px,4vw,64px); }

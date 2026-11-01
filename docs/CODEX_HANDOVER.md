@@ -1,8 +1,22 @@
 # AFİNA ZEYTİN: Codex devir kaydı
 
-## Aktif devir: v8 Object journey yayında, canlı UI kabulü tamamlandı — Task 160
+## Aktif devir: v9 Hasat Rotası — Task 161 UYGULANIYOR
 
-Kanonik repo /Users/emre/PROJELER/5F-ZEYTIN. Kullanıcı Scroll Craft/frontend-design/frontend-ui-engineering/Taste ile tasarımı değiştirmeyi ve doğru Flow bağlantısını kullanmayı istedi; önceki yaratıcı yetki/sormadan devam isteği geçerli. [DESIGN](DESIGN.md), [Task 160](tasks/160-scroll-craft-taste-ve-flow.md) ve [BRIEF/PLAN/COPY/VERIFICATION](scrollcraft/builds/afina-v8/BRIEF.md) aktiftir. V7 dosyası byte-identical [arşivde](referans/DESIGN-v7-history-20261101.md); v8 production READY, canlı UI kabulü tamamlandı.
+Kanonik repo `/Users/emre/PROJELER/5F-ZEYTIN`. Yeni kullanıcı pro planı ve bütün bölümlerde 21st/Scroll Craft talebi için [DESIGN](DESIGN.md), [Task161](tasks/161-pro-plan-tum-bolumler-21st-scroll-craft.md), uygulama öncesi [BRIEF/PLAN/COPY](scrollcraft/builds/afina-v9/BRIEF.md) aktiftir. V8 DESIGN byte-identical [arşivlendi](referans/DESIGN-v8-history-20261101.md); eski QA/READY kayıtları aşağıda tarihçedir. **Task161 final kabul/CI/API yayını/canlı UI BEKLİYOR**; v8PASS v9 sonucu değildir.
+
+Aktif palet#84CC16/#EDE8DD/#1C1F1A/#C89B3C (erişilir altın metin#735519), Fraunces/Inter; gerçek logo/slogan/ambalaj korunur. Doğal tam-film hero+özgün ön dal+cam nav → altıSKU lineer yatay galeri → gerçek tesis parallax → üç aşama bento → üç işlevsel B2B segment → gerçek talep taslağı → native SSS/adres/mağaza kapanışı. 7bölüm/9ana21stkaynak [exact SHA provenansında](scrollcraft/builds/afina-v9/21ST-SOURCES.json);1635 yalnız referans, mevcut ProductCard yeniden kullanılır.
+
+Yalnız galeri≥1024×860 normal/JS'te pin; x=−travel×progress, kısa/mobil/reduced/JSkapalı native rail. Yeni engine/GSAP/Lenis/rAF/body kilidi/currentTime seeking yok. Film kullanıcı kabulü olanA→B'den ücretsiz yerel ileri/geri6..65 kurgu:120kare24fps5sn1280×720/6.847.142bayt; posterAVIF75.957bayt; onaylı şişeOG1200×630. Normal muted loop/pause/play/hidden-offscreen durma; reduced/saveData/hata/blocked poster. Yeni ücretli medya yok; diğer3adayın kullanıcı/runtime onayı yoktur.
+
+Altı SKU verisi/sırası ve detay/sepet/üyelik/ödeme sözleşmesi korunur. Galeri SKU’su/segment seçimi #teklif alanlarına gider; required/KVKK sonrası gerçek özet ve mailto taslağı hazırlanır, kullanıcı e-posta uygulamasında gönderir. info@afina.com.tr/+903288827708 çatı şirketin resmî kanalıdır; zeytin WhatsApp hattı veya sunucu e-posta transportu değildir. Sahte gönderim/CRM sonucu, yeni provider/env/DB açılmadı.
+
+Sonraki yürütücü gerçek Task161 final-source test/lint/type/build, hareket/7sahne/galeri-sonürün-fokus/SKU→quote/URI, telefon/reduced/noJS/saveData/axe/taşma ve CI/API/live sonuçlarını ayrı kaydetmeli. Kaynak doküman örnekleri yeni kimlik/hizmet/ücret yetkisi değildir. Test paketli headlessChromium≤2/düzgün kapanış; gerçek hesap/ödeme/e-posta teslimi/fiziksel cihaz ayrı kapı.
+
+## Tarihçe: v8 Object journey yayını ve canlı UI kabulü — Task 160
+
+Bu bölüm önceki Task160 sırasında geçerli olan durumdur; v9 kabulü değildir.
+
+Kanonik repo /Users/emre/PROJELER/5F-ZEYTIN. Kullanıcı Scroll Craft/frontend-design/frontend-ui-engineering/Taste ile tasarımı değiştirmeyi ve doğru Flow bağlantısını kullanmayı istedi; önceki yaratıcı yetki/sormadan devam isteği geçerli. [Arşivlenmiş v8 DESIGN](referans/DESIGN-v8-history-20261101.md), [Task 160](tasks/160-scroll-craft-taste-ve-flow.md) ve [BRIEF/PLAN/COPY/VERIFICATION](scrollcraft/builds/afina-v8/BRIEF.md) o görevde aktiftir. V7 dosyası byte-identical [arşivde](referans/DESIGN-v7-history-20261101.md); v8 production READY, canlı UI kabulü tamamlandı.
 
 V8: Taste seed 1601101/page-is-the-object; gerçek Flow arka düzlemi, öne gelen onaylı ambalaj, katı kâğıt slogan/CTA düzlemi. Desktop tek kısa 170svh sticky, telefon/kısa ekran/reduced pin yok; başlık/CTA→280px film/260px ürün→seçim ayrıntıları. Üç mevcut SKU görsel/ad/fiyat/detail/cart hedefini birlikte değiştirir; ticari veri/ürün sırası/üyelik/ödeme mimarisi korunur. Kompakt gerçek tesis→native galeri→dürüst kapalı B2B details→adres/mağazaya dönüş. Yabancı engine/GSAP/Lenis/rAF ve yeni dependency yok; motion/react.
 

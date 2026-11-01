@@ -7,6 +7,7 @@ import ts from "typescript";
 import { heroDerivativeManifest, verifyHeroDerivatives } from "./optimize-hero.mjs";
 import { verifyFacilityV4Derivatives } from "./prepare-facility-v4.mjs";
 import { verifyHorizontalLogoDerivatives } from "./prepare-horizontal-logo.mjs";
+import { verifyProPlanMedia } from "./verify-pro-plan-media.mjs";
 
 const MANIFEST = "public/images/generated/manifest.json";
 const DECISIONS = "docs/gorsel-onay.md";
@@ -287,6 +288,7 @@ export async function checkAssets({ root, id, mode = "all" }) {
   const facilityDerivatives = await verifyFacilityV4Derivatives(root);
   facilityDerivatives.forEach((asset) => files.add(asset.file));
   const logoDerivatives = await verifyHorizontalLogoDerivatives(root);
+  const proPlanDerivatives = await verifyProPlanMedia(root);
   await walk(root, "public/images/generated", async (file) => {
     requireThat(file === MANIFEST || files.has(`/${relative("public", file).split(sep).join("/")}`), `Kayıtsız dosya: ${file}`);
   });
@@ -298,7 +300,7 @@ export async function checkAssets({ root, id, mode = "all" }) {
   });
   const sequenceApproved = await verifyHeroSequence(root, decisions);
   // Selection never bypasses whole-registry integrity or runtime usage checks.
-  await verifyRuntime(root, [...manifest.assets, ...heroDerivatives, ...facilityDerivatives, ...logoDerivatives], sequenceApproved);
+  await verifyRuntime(root, [...manifest.assets, ...heroDerivatives, ...facilityDerivatives, ...logoDerivatives, ...proPlanDerivatives], sequenceApproved);
   const selected = manifest.assets.filter((asset) => (!id || asset.id === id) && (mode === "all" || asset.status === mode));
   requireThat(!id || selected.length > 0, `Görsel bulunamadı: ${id} (${mode}).`);
   return { checked: selected.length, mode };
