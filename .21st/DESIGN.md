@@ -1,23 +1,19 @@
-# AFİNA ZEYTİN v7 — Zeytinin İçinden
+# AFİNA ZEYTİN v8 — Object journey
 
-Tek güncel sözleşme [docs/DESIGN.md](../docs/DESIGN.md), uygulama [Task 159](../docs/tasks/159-flow-sinematik-hero.md). Kullanıcı önceki hero'nun hâlâ aynı göründüğünü belirterek gerçek Google Flow filmiyle daha sinematik açılış istedi. Bu son düzeltme v6 split/çerçeveli/frame-only ve genel no-autoplay uygulama tercihlerini değiştirir. Önceki DESIGN.md [v6 tarihçesinde](../docs/referans/DESIGN-v6-history-20261101.md) değişmeden saklanır.
+Tek aktif sözleşme [docs/DESIGN.md](../docs/DESIGN.md), uygulama [Task 160](../docs/tasks/160-scroll-craft-taste-ve-flow.md). Önce [BRIEF/PLAN/COPY/VERIFICATION](../docs/scrollcraft/builds/afina-v8/BRIEF.md); v7 byte-identical [arşivdedir](../docs/referans/DESIGN-v7-history-20261101.md). V8 tamamlandı/yayınlandı sayılmaz.
 
-## Kompozisyon
+## Kompozisyon ve gerçek eylem
 
-- Orijinal opak kâğıt nav dışında, kenardan kenara viewport Flow filmi; eski iki sütun, organik pencere ve hero ürün kartı yok.
-- Sol-alt resmî slogan ve iki gerçek DOM CTA. Sağ/üst sahne aydınlık; yalnız gerekli yerel kontrast perdesi. Cam nav, merkezlenmiş koyu klon, demo menü ve yeni font yok.
-- Normal modda aynı kabul edilmiş A→B kaynaktan sessiz H264/faststart MP4 bir kez oynar; A/B farklı olduğundan loop yok. Son karede kalır, görünür pause/play/replay denetimi vardır.
-- Poster ve video mobil odak/kadrajı eşleşir. Kısa ekran/metin büyütmede kontroller ve CTA kesilmez; 300–400vh pin veya body/wheel kilidi yoktur.
-- Reduced-motion/saveData/engelli oynatma/hata: statik poster ve görünür SSR H1/CTA. Gizli sekme/ekran dışında durur; kullanıcının manuel duraklatması korunur.
+- Taste seed 1601101/page-is-the-object: gerçek Flow arka düzlemi geri çekilir, AFİNA ambalajı ayrı düzlemde öne gelir, katı kâğıt copy-plane okunur kalır. V7 tek film+overlay veya v6 organik pencere+küçük kart tekrarlanmaz.
+- Desktop yalnız bir kısa 170svh sticky; film scale1→.82/x0→-8vw/y0→-48px; ambalaj y80→-8px/scale1→1.12; kendi zeminiyle copy y0→-24px. Telefon/kısa ekran/reduced pin yok; H1+CTA önce,280px film/260px ürün sahnesi ve doğal ayrıntı akışı.360×640 ayrıca kabul edilir.
+- Orijinal opak nav/logo, Fraunces/Figtree, resmî iki satır slogan ve kâğıt/zeytin/şampanya paleti. İtalik/renkli vurgu, indeks/eyebrow/scroll oku/tam kare scrim/glass yok. Gerçek ürün/kurumsal anchor'lar SSR'da görünür.
+- Üç mevcut varyant seçimi aynı görsel/ad/fiyat/incele/ekle hedefini günceller; mevcut AddToCart/CatalogProvider ve sunucu otoritesi korunur. Altı SKU sırası/fiyat/stok değiştirilmez.
+- Beş vuruş: nesne zirvesi → kompakt gerçek tesis → native ürün galerisi → kapalı hizmet bilgisi görünür B2B details dalı → gerçek adres/ürünlere dönüş/SSS. Yeni sayı/sertifika/yorum veya sahte servis başarısı yok.
 
-Orijinal logo, Fraunces/Figtree, `#172B21`/`#F4F0E7`/`#B6A078`/`#252725` ve hero altındaki %65 üretim / %35 alışveriş akışı korunur. Altı gerçek SKU/fiyat/stok, detay/sepet/üyelik ve B2B servis sözleşmeleri değişmez.
+## Medya, araç ve kabul
 
-## Kaynak ve hareket
+Yalnız kabul edilmiş A→B sessiz MP4; normal mod bir kez/son kare/pause/play/replay. Film kontrolü 44px+ ve mediaStyle düzlemi dışında sabit. Reduced/saveData poster/isteksiz kaynak; hata/blocked/görünürlük ve kullanıcı pause korunur. `currentTime` scroll'a bağlanmaz, loop/yeni motor yoktur. Yeni API `motion/react`; Scroll Craft/Taste upstream runtime'a kopyalanmaz. 21st 1635 yalnız seçim/görsel durum kaynağı; demo marka/metin/medya/font taşınmaz.
 
-21st **12200 PrismaHero**, yalnız tam geniş medya + overlay içerik kompozisyonu için uyarlanır. Demo medya, metin, font, nav, gizli içerik ve `framer-motion` importu taşınmaz. Yeni API `motion/react`; ortak tokenlar `lib/ui-motion.ts`. Küçük film-kabuğu parallax isteğe bağlıdır; `currentTime` scroll'a bağlanmaz, video zamanına spring eklenmez.
+Doğru [Flow projesi](https://flow.google.com/project/62040049-3473-446b-9d93-8e6cbc45f8bc) doğrudan incelendi. B→C doğru ilk/son kare ve C tam önizleme görüldü; Omni 1.1 Flash/720p/8 sn./x1 = 12 kredi. reCAPTCHA bağlantı engeli sürüyor; yeni çıktı/ek harcama 0, önceki kalan 60 sınırı değişmedi. Üretilmemiş üç film sitede varmış gibi sunulmaz.
 
-[Proje yerel dört MD](../docs/referans/yeni-nesil-md-uyarlamalari-20261101.md) kaynak ilkeleridir; normalize skill'ler Task 159'a göre güncellenir. Google Flow/Omni erişimi, model, ücret ve kabul ayrı doğrulanır. Omni Chrome Use tarayıcı otomasyonu yaklaşımıdır; Omni 1.1 Flash model adıyla karıştırılmaz. Yeni üretim, model, sağlayıcı, anahtar veya kredi yetkisi yoktur; mevcut kabul edilmiş klip kullanılır.
-
-## Kabul sınırı
-
-Task 159 yayın/kabul tamam: `5a3b1f6`, 1197 unit + 44 canlı etkileşim kontrolü; dört genişlikte görsel/axe, gerçek tek oynatım/son kare ve poster/tercihler doğrulandı. [Makbuz](../docs/referans/yayin-film-v7-20261101.json), [QA](../docs/referans/qa-159-20261101.json). Yalnız paketli headless Chromium, en fazla iki worker ve düzgün kapanış. Fiziksel cihaz ve gerçek servis işlemleri emülasyon/HTTP kabulünden ayrıdır; kullanıcının görsel kabulü yerine geçmez.
+Yerel 1200 unit/build PASS;1440/768/390/320 yerel axe/taşma/pageerror/kaynak hatası0. Native Taste, kapsamlı e2e, kompakt telefon/his/son kompozit kontrast ve production tekrar/yayın **BEKLİYOR**. Kanıt `.cache/task-160/local/results.json`, unit/build logları; önceki v7 makbuzu yalnız baseline. Testler paketli headless Chromium ≤2 worker ve düzgün kapanış; fiziksel cihaz/gerçek hesap/ödeme/teklif mutasyonu değildir.

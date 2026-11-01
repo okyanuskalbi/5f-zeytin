@@ -24,7 +24,7 @@ export default async function Home(): Promise<JSX.Element> {
   const products = families.flatMap(family => family.variants);
   return <ProductDetailProvider products={products}><main className={styles.root}>
     <BusinessJsonLd />
-    <OliveScrollHero />
+    <OliveScrollHero products={products} />
     <BrandIntroduction />
     <ProductionFacility />
     <RenewalProducts products={products} />

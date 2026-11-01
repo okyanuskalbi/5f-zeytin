@@ -1,37 +1,33 @@
-.bar { position: fixed; inset: 0 0 auto; z-index: 30; background: transparent; color: var(--sut); padding-block: 18px; padding-top: calc(18px + env(safe-area-inset-top, 0px)); border-bottom: 1px solid transparent; }
-.bar[data-tone="solid"] { background: rgba(14,21,16,.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom-color: rgba(255,255,255,.08); }
-.row { display: flex; min-height: 44px; align-items: center; justify-content: space-between; gap: 24px; }
-.bar[data-tone="paper"] { --altin: #172B21; --sut: #172B21; background: #F4F0E7; color: #172B21; border-bottom-color: #CFCDBF; }
-.row { max-width: 1440px; margin-inline: auto; }
-.bar[data-tone="paper"] .shop, .bar[data-tone="paper"] .cart, .bar[data-tone="paper"] .trigger { border-color: #A7AC9D; }
-.bar[data-tone="paper"] .badge { background: #172B21; color: #F4F0E7; }
-.bar[data-tone="paper"] .shop:hover, .bar[data-tone="paper"] .cart:hover, .bar[data-tone="paper"] .trigger:hover { background: #E5E3D7; }
+.bar { position: fixed; inset: 0 0 auto; z-index: 30; padding-block: 18px; padding-top: calc(18px + env(safe-area-inset-top, 0px)); background: var(--ink); color: var(--sut); }
+.bar[data-tone="solid"] { background: #172B21; color: #F4F0E7; }
+.bar[data-tone="paper"] { --altin: #172B21; --sut: #172B21; background: #F4F0E7; color: #172B21; }
+.row { display: flex; min-height: 44px; max-width: 1440px; margin-inline: auto; align-items: center; justify-content: space-between; gap: 24px; }
 .home { display: inline-flex; flex: none; align-items: center; min-height: 44px; }
 .logo { display: block; width: 150px; height: 40px; object-fit: contain; }
 .home:hover { opacity: .8; }
 .desktop { display: flex; align-items: center; justify-content: center; gap: 20px; }
-.shop { display: inline-flex; align-items: center; min-height: 44px; padding-inline: 14px; border: 1px solid rgba(255,255,255,.35); font-size: 12px; white-space: nowrap; }
-.shop:hover { background: rgba(255,255,255,.1); }
+.shop { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 14px; background: #F4F0E7; color: #172B21; font-size: 13px; font-weight: 600; line-height: 1.5; white-space: nowrap; }
+.bar[data-tone="paper"] .shop { background: #172B21; color: #F4F0E7; }
+.bar[data-tone="paper"] .shop:hover { background: #2C4435; }
+.shop:hover { background: #E5E3D7; }
 .link { display: inline-flex; align-items: center; min-height: 44px; padding-block: 8px; font-weight: 500; font-size: 15px; }
-.link:hover { text-decoration: underline; text-underline-offset: 6px; }
-.link:active { text-decoration: underline; text-decoration-thickness: 2px; }
+.link:hover, .link:active { text-decoration: underline; text-underline-offset: 6px; }
 .actions { display: flex; flex: none; align-items: center; gap: 8px; }
-.control { position: relative; background: transparent; color: inherit; outline-color: var(--altin); transition: none; padding: 8px; font-size: 14px; }
-.control:hover { background: transparent; color: inherit; text-decoration: underline; }
-.control:active { background: transparent; color: inherit; }
+.control { position: relative; background: transparent; color: inherit; outline-color: var(--altin); border: 0; border-radius: 0; transition: none; padding: 8px; font-size: 14px; }
+.control:hover, .control:active { background: transparent; color: inherit; text-decoration: underline; text-underline-offset: 5px; }
 .control:disabled { background: transparent; color: inherit; opacity: 1; }
-.cart { display: inline-flex; gap: 0; min-height: 44px; border: 1px solid rgba(255,255,255,.25); border-radius: 999px; padding: 8px 14px; font-weight: 600; }
-.badge { display: inline-flex; align-items: center; justify-content: center; min-width: 22px; padding-inline: 4px; margin-inline: 3px; border-radius: 999px; background: var(--altin); color: var(--ink); font-size: 12px; font-weight: 800; line-height: 1.4; font-variant-numeric: tabular-nums; }
+.cart { display: inline-flex; gap: 0; min-height: 44px; padding: 8px 12px; font-weight: 600; }
+.badge { display: inline-flex; align-items: center; justify-content: center; min-width: 20px; padding-inline: 4px; margin-inline: 3px; background: var(--altin); color: var(--ink); font-size: 13px; font-weight: 700; line-height: 1.4; font-variant-numeric: tabular-nums; }
+.bar[data-tone="paper"] .badge { background: #172B21; color: #F4F0E7; }
 .trigger { display: none; }
-.menu { inset: 0; width: 100%; max-width: none; height: 100dvh; max-height: none; display: flex; flex-direction: column; justify-content: space-between; gap: 32px; padding: max(64px, env(safe-area-inset-top, 0px)) max(24px, env(safe-area-inset-right, 0px)) max(32px, env(safe-area-inset-bottom, 0px)) max(24px, env(safe-area-inset-left, 0px)); background: var(--ink); color: var(--sut); }
+.menu { --ink: #172B21; --sut: #F4F0E7; inset: 0; width: 100%; max-width: none; height: 100dvh; max-height: none; display: flex; flex-direction: column; justify-content: space-between; gap: 32px; padding: max(64px, env(safe-area-inset-top, 0px)) max(24px, env(safe-area-inset-right, 0px)) max(32px, env(safe-area-inset-bottom, 0px)) max(24px, env(safe-area-inset-left, 0px)); background: var(--ink); color: var(--sut); }
 .menuLinks { display: grid; align-content: center; gap: 8px; flex: 1; }
 .menuLinks .link { font-family: var(--font-display, var(--font-display-fallback)); font-size: var(--step-head); font-weight: 500; line-height: 1.2; }
 @media (max-width: 1280px) {
   .bar { padding-block: 14px; padding-top: calc(14px + env(safe-area-inset-top, 0px)); padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
-  .bar[data-tone="solid"] { background: rgba(14,21,16,.94); }
   .desktop, .account { display: none; }
   .logo { width: 120px; height: 32px; }
-  .trigger { display: inline-flex; min-height: 44px; border: 1px solid rgba(255,255,255,.25); border-radius: 999px; padding: 8px 14px; font-weight: 600; }
+  .trigger { display: inline-flex; min-height: 44px; padding: 8px 12px; font-weight: 600; }
   .row { gap: 12px; }
 }
 @media (max-width: 767px) { .shop { display: none; } }

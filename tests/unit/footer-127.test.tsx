@@ -63,34 +63,25 @@ it("preserves footer content and destinations while selecting the v6 light-surfa
   expect(before.querySelector(".columns > .navigation")).not.toBeNull();
 });
 
-it("uses the requested compact rhythm and keeps separate mobile and desktop target sizes", () => {
-  const tokens = declarations(".footer");
-  expect(tokens).toMatchObject({
-    "--footer-heading-gap": "14px", "--footer-link-gap": "8px",
-    "--footer-link-target": "44px", "padding-block": "56px max(24px, env(safe-area-inset-bottom, 0px))",
-  });
-  expect(declarations(".heading")).toMatchObject({
-    "margin-bottom": "var(--footer-heading-gap)", "font-size": "13px", "font-weight": "600", "text-transform": "uppercase",
-  });
-  expect(declarations(".column ul")["gap"]).toBe("var(--footer-link-gap)");
+it("keeps readable navigation and full touch targets in the object-journey close", () => {
+  expect(declarations(".footer")["--footer-link-target"]).toBe("44px");
+  expect(Number.parseFloat(declarations(".heading")["font-size"])).toBeGreaterThanOrEqual(16);
+  expect(declarations(".heading")["text-transform"]).not.toBe("uppercase");
   expect(declarations(".link")["min-height"]).toBe("var(--footer-link-target)");
-  expect(declarations(".footer", "(min-width: 1024px)")["--footer-link-target"]).toBe("32px");
-  expect(declarations(".logo")["height"]).toBe("48px");
-  expect(declarations(".logo", "(min-width: 768px)")["height"] ?? declarations(".logo")["height"]).toBe("48px");
-  expect(declarations(".signature")["font-size"]).toBe("24px");
-  expect(declarations(".signature", "(min-width: 768px)")["font-size"]).toBe("28px");
+  expect(declarations(".footer", "(min-width: 1024px)")["--footer-link-target"] ?? "44px").toBe("44px");
+  expect(declarations(".signature")["font-size"]).toMatch(/^clamp\(/);
+  expect(declarations(".home")["min-height"]).toBe("44px");
+  expect(declarations(".link:focus-visible")["outline"] ?? readFileSync("components/site/Footer.module.css", "utf8")).toContain("2px solid");
 });
 
-it("defines the phone, tablet and desktop grids with compact payment and imprint rows", () => {
+it("gives the brand close a full row and keeps payment and legal information reachable", () => {
   expect(declarations(".columns")["grid-template-columns"]).toBe("repeat(2, minmax(0, 1fr))");
   expect(declarations(".message")["grid-column"]).toBe("1 / -1");
   expect(declarations(".destination")["grid-column"]).toBe("1 / -1");
-  expect(declarations(".columns", "(min-width: 768px)")["grid-template-columns"]).toBe("repeat(3, minmax(0, 1fr))");
-  expect(declarations(".columns", "(min-width: 1024px)")).toMatchObject({
-    "grid-template-columns": "minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.2fr)", "gap": "48px",
-  });
-  expect(declarations(".payment")).toMatchObject({ "margin-top": "32px", "padding-block": "16px" });
-  expect(declarations(".imprint")).toMatchObject({ "margin-top": "16px", "gap": "8px", "font-size": "12px" });
+  expect(declarations(".columns", "(min-width: 768px)")["grid-template-columns"]).toBe("minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.5fr)");
+  expect(declarations(".payment")["display"]).toBe("flex");
+  expect(declarations(".imprint")["display"]).toBe("grid");
+  expect(Number.parseFloat(declarations(".imprint")["font-size"])).toBeGreaterThanOrEqual(13);
   expect(declarations(".imprint", "(min-width: 1024px)")["grid-template-columns"]).toBeTruthy();
-  expect(declarations(".notice")["gap"]).toBe("8px");
+  expect(declarations(".notice")["display"]).toBe("grid");
 });

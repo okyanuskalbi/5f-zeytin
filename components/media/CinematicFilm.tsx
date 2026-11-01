@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useReducer, useRef, type JSX, type ReactNode } from "react";
 import { PauseIcon, PlayIcon, RotateCcwIcon } from "lucide-react";
 import { cinematicFilmPoster as cinematicPoster } from "@/lib/media/cinematic-poster";
+import { motion, type MotionStyle } from "motion/react";
 import styles from "./CinematicFilm.module.css";
 
 type FilmState = {
@@ -40,7 +41,9 @@ function filmReducer(state: FilmState, action: FilmAction): FilmState {
 
 /** One accepted, silent Flow film. The responsive poster is the complete SSR
  * experience; its video URL is attached only after the visible scene qualifies. */
-export function CinematicFilm({ className = "", children }: { className?: string; children?: ReactNode }): JSX.Element {
+export function CinematicFilm({ className = "", children, mediaStyle, controlsPosition = "bottom" }: {
+  className?: string; children?: ReactNode; mediaStyle?: MotionStyle; controlsPosition?: "top" | "bottom";
+}): JSX.Element {
   const container = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const previouslyAttached = useRef(false);
@@ -138,6 +141,7 @@ export function CinematicFilm({ className = "", children }: { className?: string
   const Icon = state.ended || state.failed ? RotateCcwIcon : runningIntent ? PauseIcon : PlayIcon;
   const showFilm = state.allowed && state.hasFrame && !state.failed;
   return <div ref={container} className={`${styles.film} ${className}`} data-cinematic-film="" data-show-film={showFilm}>
+    <motion.div className={styles.visual} data-film-plane="" style={mediaStyle}>
     <picture className={styles.poster}>
       <source type="image/avif" media="(max-width: 767px) and (orientation: portrait)" srcSet={cinematicPoster.mobileSrcSet} sizes="100vw" />
       <source type="image/webp" media="(max-width: 767px) and (orientation: portrait)" srcSet={cinematicPoster.mobileWebpSrcSet} sizes="100vw" />
@@ -146,14 +150,15 @@ export function CinematicFilm({ className = "", children }: { className?: string
       {/* The responsive poster must paint before hydration or media permissions. */}
       <img src={cinematicPoster.src} width={cinematicPoster.width} height={cinematicPoster.height} alt="" loading="eager" fetchPriority="high" decoding="async" />
     </picture>
-    <video ref={video} className={styles.video} src={state.attached ? filmURL : undefined}
+    <video ref={video} className={styles.video} poster="/frames/afina-agac-dal/poster-desktop.avif" src={state.attached ? filmURL : undefined}
       width={1280} height={720} muted playsInline preload="metadata" aria-hidden="true" tabIndex={-1}
       onPlaying={() => {
         if (runningIntent) dispatch({ type: "playing" });
         else video.current?.pause();
       }} onPause={() => dispatch({ type: "paused" })} onEnded={() => dispatch({ type: "ended" })} onError={() => dispatch({ type: "error" })} />
+    </motion.div>
     {children}
-    {state.allowed && <div className={styles.controls}>
+    {state.allowed && <div className={styles.controls} data-position={controlsPosition}>
       {state.failed && <p role="status">Film açılamadı. Görsel gösteriliyor.</p>}
       <button type="button" onClick={togglePlayback} disabled={!state.visible || !state.inView} aria-label={label}>
         <Icon size={15} aria-hidden="true" /><span>{label}</span>

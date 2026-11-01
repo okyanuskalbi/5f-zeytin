@@ -1,0 +1,40 @@
+{
+  "upstreamPin": "12af471f627f866411b4bd785b19646d3672784c",
+  "library": "library/heroes.json",
+  "selectedHeroId": "view-with-two-cards-in-the-corner",
+  "selectionMethod": "Manual source-library selection; native CLI alternatives/named override do not support hero. Raw draw retained unchanged for hero.",
+  "replaces": "invitation-card-cropped",
+  "reason": "Wedding-card content and geometry conflict with actual AFİNA packaging artefact and latest explicit full-bleed Flow opening. Selected library hero supports actual muted film, left two-line copy and right-side photographic objects.",
+  "sourceBlueprint": {
+    "id": "view-with-two-cards-in-the-corner",
+    "name": "View with two cards in the corner",
+    "archetype": "fullbleed-media",
+    "directions": [
+      "place-carries-it",
+      "hero-object",
+      "editorial-report"
+    ],
+    "needs": [],
+    "blueprint": "One photograph or muted film fills the viewport, `object-fit: cover`, with the subject in the right half. The headline sits on the left at mid-height: two lines at clamp(44px, 3.9vw, 60px), bold, leading 1.08, flush to the 32px margin on columns 1–5, the block vertically centred; 20px below it, one supporting sentence at 18px, max 40ch, in the paper colour. In the bottom-right corner, 32px from the right and bottom edges, two cards sit side by side with a 16px gap, each two columns wide (about 210px) at 3:2: a photograph of the newest thing (a project, an edition, an article) with a paper-colour bar 40px tall fused to its lower edge, holding its title at 16px on the left and a small arrow on the right. They are the next steps after the single action, which is a solid rectangle top-right beside a menu word. One short fact at 16px in the paper colour may be pinned onto the subject itself, beside a solid 8px dot on the point it describes, with no line joining them. Wordmark top-left on the 32px margin. If the left half is light, lay a neutral dark scrim under columns 1–6 only.",
+    "mobile": "The picture is re-cropped to portrait with the subject in the upper half. The headline sits at 9vw on two lines on the 16px margin at 44% of the height, with the sentence at 16px beneath it. The two cards sit side by side across the full width at the bottom, 16px from the edges, each about 171px wide at 3:2 with its title bar. Wordmark top-left; the action and a menu word top-right.",
+    "headline": "A plain two-line claim of 4–7 words, at most about 17 characters per line at 3.9vw.",
+    "motion": "slow-crossfade",
+    "seenIn": [
+      "aww-cominvi",
+      "aww-no-art"
+    ]
+  },
+  "afinaAdaptation": {
+    "medium": "existing approved grove-to-branch Flow native film and poster",
+    "copy": "official slogan as one two-line H1, one face and colour; one concrete olive/olive-oil support sentence",
+    "foreground": "one approved Doğal Kırma Yeşil Zeytin 10 kg packshot as the actual physical artefact; label and packaging geometry unchanged; no fabricated card data",
+    "layout": "full-bleed film, readable left two-line copy, one right/lower-right focal product; original opaque navigation outside film; two existing DOM actions",
+    "mobile": "one focal packshot with a portrait crop, no two miniature next-step cards, copy/controls never covered",
+    "motion": "motion/react transform/opacity product emergence in natural flow; no second engine, forced loop, wheel capture or hidden SSR content",
+    "remainingAssumptions": [
+      "Use the currently approved packshot file; do not assume a new transparent cutout exists. Keep any existing studio canvas if a transparent source is absent.",
+      "Normal one-pass native film and poster/reduced-motion/saveData controls remain authoritative.",
+      "Product detail/cart interaction is the live thing; no new mock interaction."
+    ]
+  }
+}

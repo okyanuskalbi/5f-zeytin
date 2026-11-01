@@ -2,7 +2,7 @@
   "version": 1,
   "project": {
     "name": "afina-zeytin",
-    "productType": "Olive producer with cinematic Google Flow opening; production trust 65%, premium retail and B2B commerce 35%",
+    "productType": "Olive producer Object journey: real packaging selection with Flow depth; production trust 65%, retail/B2B commerce 35%",
     "stack": [
       "nextjs",
       "react",
@@ -16,7 +16,8 @@
       "components/landing/RenewalLanding.module.css",
       "app/globals.css",
       "components/account/CustomerPanel.module.css",
-      "lib/ui-motion.ts"
+      "lib/ui-motion.ts",
+      "components/landing/CinematicHero.module.css"
     ],
     "components": [
       "components/ui"
@@ -38,7 +39,12 @@
       ".agents/skills/scroll-hero-video-yeni-nesil/SKILL.md",
       ".agents/skills/sinematik-siteler-yeni-nesil/SKILL.md",
       ".agents/skills/ui-ux-pro-max/SKILL.md",
-      "docs/tasks/159-flow-sinematik-hero.md"
+      "docs/tasks/159-flow-sinematik-hero.md",
+      "docs/tasks/160-scroll-craft-taste-ve-flow.md",
+      "docs/scrollcraft/builds/afina-v8/BRIEF.md",
+      "docs/scrollcraft/builds/afina-v8/PLAN.md",
+      ".agents/skills/scroll-craft/SKILL.md",
+      ".agents/skills/design-taste-frontend/SKILL.md"
     ]
   },
   "design": {
@@ -171,34 +177,37 @@
       "textarea"
     ],
     "patterns": [
-      "Solid original light navigation outside the film",
-      "Full-bleed accepted Flow film with left-bottom anchored readable copy and real DOM CTAs",
-      "One silent native-video pass with visible pause/play/replay and static preference/error fallback",
-      "Light product shelf with real detail and cart actions",
-      "One olive B2B enquiry section",
-      "Source-backed FAQ and real contact/support links"
+      "Opaque original paper navigation with real commerce and account routes",
+      "Object journey: approved Flow plane recedes, authentic packaging advances, solid paper copy plane remains readable",
+      "Three existing representative variants update matching object, name, price, detail and cart targets",
+      "One silent native film pass; static 44px controls outside the transformed media plane; preference/error fallback",
+      "Compact real factory proof and accessible native horizontal six-SKU gallery without data reordering",
+      "Closed-service notice outside native details, existing B2B preparation form inside",
+      "Resolved real address, return to products, source-backed FAQ and existing support/legal footer"
     ]
   },
   "constraints": {
     "must": [
-      "Use docs/DESIGN.md v7 Zeytinin İçinden as the single active visual contract",
-      "Full-bleed viewport accepted Flow film, left-bottom official slogan, genuine product and corporate CTA links",
-      "Original opaque paper navigation outside the film; Fraunces/Figtree and original brand assets",
-      "Approved source-derived silent native MP4; one pass, no fake loop as A/B differ, visible pause/play/replay controls",
-      "Visible SSR poster/H1/CTAs; static reduced-motion/saveData/blocked/error fallback; pause hidden/offscreen and preserve manual pause",
-      "Keep production-first body approximately 65% corporate and 35% commerce, existing SKU/price/stock authority and real flows",
-      "Motion/react only for new animation APIs; shared bounded transform/opacity tokens; no scroll currentTime engine",
-      "Desktop/mobile browser checks only in bundled headless Chromium with at most two test workers and graceful cleanup",
-      "Keep media cost/source approval and new test/deploy acceptance separate; no new paid production in this task"
+      "Use docs/DESIGN.md v8 Object journey and docs/scrollcraft/builds/afina-v8 artifacts as the active visual contract",
+      "Taste seed 1601101 page-is-the-object, preserve palette/type, original logo, official two-line slogan and real CTAs",
+      "Desktop only one short 170svh layered sticky opening; phone/short-screen/reduced-motion use natural flow",
+      "Independent transform planes: film scale 1 to .82/x 0 to -8vw/y 0 to -48px; packaging y 80 to -8px/scale 1 to 1.12; paper copy y 0 to -24px",
+      "Match the selected existing SKU across approved packaging, name, amount, price, detail and AddToCart; keep catalog/server authority and existing SKU order",
+      "Visible SSR poster/H1/CTAs; one native silent pass/end hold/pause/play/replay; static reduced-motion/saveData fallback; preserve manual pause and offscreen stop",
+      "Keep mediaStyle on visual only: controls remain static at least 44px; compact phone heading/primary action before 280px film/260px product stage",
+      "Production-first 65/35 body: compact real factory, native gallery, honest closed-service B2B branch, resolved address and shopping return",
+      "Motion/react only, shared interactions, transform/opacity, no scroll currentTime engine or foreign runtime",
+      "Bundled headless Chromium only, at most two workers, graceful browser/server cleanup; final-source native Taste/e2e/live proof still required"
     ],
     "avoid": [
-      "V6 split/frame-only hero, organic media window, hero product card or a static poster presented as playing film",
-      "Centered uniformly dark hero clone, glass navigation, demo fonts/nav/content, hidden SSR title or loader-gated CTA",
-      "Autoplay loops or autoplay in reduced-motion/saveData/blocked states; restarting after user pause or film end",
-      "Long 300–400vh pin, scroll interception, video currentTime seeking from scroll or spring on playback time",
-      "New fonts, decorative gold glow, invented statistics/reviews/capacity/certification or fake checkout/CRM success",
-      "Unapproved media, new provider/model/paid generation or global MCP/key setup inferred from guide examples",
-      "Treating mobile viewport emulation as physical-device acceptance"
+      "Recreating v7 full-bleed film plus overlay copy or v6 organic framed split hero plus miniature product card",
+      "Decorative index/eyebrow/scroll cue, italic or different-color headline accents, glass nav or full-frame scrim",
+      "Invented prices, stock, statistics, certification, reviews, delivery promises or fake checkout/CRM success",
+      "Changing imported/catalog-owned SKU names, data, order or product schema for visual variety",
+      "Long multiple pins, body/wheel/touch capture, hidden SSR CTA, autoplay loops, scroll seeking or spring on playback time",
+      "Transforming the film controls together with the video; hiding selected detail/cart targets on phone or under reduced motion",
+      "Unapproved clips, new provider/model/key/global setup or paid generation inferred from guide examples; bypassing Google verification",
+      "Counting previous v7/local build results as new live/device/transaction acceptance or claiming planned fingerprint differences as shipped"
     ]
   },
   "decisions": [
@@ -241,7 +250,13 @@
       "date": "2026-11-01",
       "source": "User: Hero hâlâ aynı görünüyor; use Google Flow videos for a more cinematic opening, Task 159",
       "decision": "v7 Zeytinin İçinden replaces split/frame-only and blanket no-autoplay preference for the opening. Full-bleed accepted A→B silent MP4 plays once with visible pause/play/replay, official copy anchored left-bottom and real DOM CTAs. Keep opaque original paper nav and production-first body. Static reduced-motion/saveData/blocked/error fallback, pause hidden/offscreen. Adapt 21st 12200 composition only; no demo media/fonts/nav/hidden content/framer-motion. No new paid production.",
-      "status": "current"
+      "status": "historical-v7-superseded-by-task-160-object-journey"
+    },
+    {
+      "date": "2026-11-01",
+      "source": "User Scroll Craft + frontend-design/frontend-ui-engineering + Taste request and correct Flow project, Task160",
+      "decision": "v8 Object journey follows a real selectable package through one layered opening, factory proof, native six-SKU gallery, honest B2B details branch and resolved address. Taste seed1601101 keeps palette/type. Three existing SKU choices use the existing product/detail/cart contracts. Approved A→B remains the only runtime film; correct Flow project was inspected but reCAPTCHA gate prevents new submission/spend.",
+      "status": "active-implementation-local-1200unit-build-and-four-width-visual-pass-native-taste-e2e-live-pending"
     }
   ],
   "evidence": [
@@ -294,8 +309,8 @@
       "source": "lib/media/cinematic-hero.json"
     },
     {
-      "fact": "active-design:v7-zeytinin-icinden",
-      "source": "docs/DESIGN.md"
+      "fact": "historical-v7-design-archived-byte-identically",
+      "source": "docs/referans/DESIGN-v7-history-20261101.md"
     },
     {
       "fact": "historical-v6-design-archived-byte-identically",
@@ -304,7 +319,23 @@
     {
       "fact": "user-correction-native-flow-film-onepass-and-poster-fallback",
       "source": "docs/tasks/159-flow-sinematik-hero.md"
+    },
+    {
+      "fact": "active-design:v8-object-journey",
+      "source": "docs/DESIGN.md"
+    },
+    {
+      "fact": "brief-first-object-journey-and-feeling-curve",
+      "source": "docs/scrollcraft/builds/afina-v8/BRIEF.md"
+    },
+    {
+      "fact": "task160-local-four-width-axe-overflow-console-network-clean",
+      "source": ".cache/task-160/local/results.json"
+    },
+    {
+      "fact": "correct-flow-project-recaptcha-gate-no-new-spend",
+      "source": "docs/tasks/160-scroll-craft-taste-ve-flow.md"
     }
   ],
-  "generatedAt": "2026-11-01T09:53:05.422012+00:00"
+  "generatedAt": "2026-11-01T11:40:22.480642+00:00"
 }

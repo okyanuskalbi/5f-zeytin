@@ -9,41 +9,27 @@ metadata:
 
 # AFİNA UI/UX Pro Max
 
-Bu proje [v7 Zeytinin İçinden](../../../docs/DESIGN.md), mevcut Next.js/React/TypeScript, motion ve shadcn/Radix primitive'lerini kullanır. Kullanıcının son [Task 159](../../../docs/tasks/159-flow-sinematik-hero.md) düzeltmesi v6 split/frame-only ve genel no-autoplay tercihinin yerini alır: normal modda tam geniş kabul edilmiş Flow filmi bir kez sessiz oynar; sol-alt resmî metin, iki gerçek CTA, opak orijinal nav ve hero altındaki üretici odaklı açık yüzeyler korunur. Bu yetenek mevcut bağlantılara kalite politikası ekler; global araç/anahtar/skill kurulumu yapmaz.
+Aktif [v8 Object journey](../../../docs/DESIGN.md)/[Task 160](../../../docs/tasks/160-scroll-craft-taste-ve-flow.md), mevcut Next.js/React/TypeScript/motion/shadcn/Radix ve [BRIEF/PLAN](../../../docs/scrollcraft/builds/afina-v8/PLAN.md) esastır. Kaynak MD global kurulum/ücret/model yetkisi değildir; [Task 158 kökeni](../../../docs/referans/yeni-nesil-md-uyarlamalari-20261101.md) korunur. Scroll Craft/Taste yöntemi kullanılır, upstream runtime import edilmez.
 
-## Ortak Motion sistemi
+## Ortak hareket ve durumlar
 
-- Yeni hero/film API'lerini `motion/react` üzerinden kullan; mevcut ortak bileşenlerin LazyMotion düzenini zorunluluk yokken değiştirme. `framer-motion` veya ikinci motor ekleme. Motion zaten projededir; yeniden paket kurmak bu görev değildir.
-- Mesafe, süre, scale ve spring kararlarını `lib/ui-motion.ts` üzerinden paylaş. Tekil bileşenlerde kopya stiffness/damping veya keyfî timing biriktirme. Spring küçük eylem/geri bildirimler içindir; süreli sade fade veya lineer ilerlemeyi körlemesine spring'e çevirme.
-- Yalnız transform/opacity animasyonu; width/height/top/left animasyonu ve örneklerdeki filter-blur alınmaz. Büyük parallax/scale yerine arayüzün okunurluğunu ve tıklanabilirliğini koruyan küçük mesafeler seç.
-- Giriş/stagger bir kez; mevcut 0.05–0.10 s aralığındaki paylaşılabilir tokenlarla kısa tutulur. `whileInView` tekrar tekrar başlatılmaz. SSR metni/CTA başlangıçta görünürdür; JavaScript/hareket paketi yüklenmediğinde içerik kaybolmaz.
-- Hover/tap, focus, loading, disabled, hata ve başarı durumları aynı ailede tutarlı olmalı. Spring hover/tap reduced-motion'da kapanır; görünür odak ve klavye erişimi hareketin yerine geçmez.
-- Reduced-motion başta ve tercih değişiminde desteklenir: transform/dekorasyon yok; gerekliyse yalnız kısa opacity geçişi. Bu tercih altında video veya kare dizisi otomatik oynatılmaz, statik poster kalır.
-- `AnimatePresence` kullanıldığında koşullu çocuklar kararlı key ve uygun exit alır. Mevcut Radix modalının odak kapanı, Escape, close/focus dönüşü ve scroll lock'u koru. Menü/modal kilidi sayfa sahnesinin kaydırma kilidi değildir.
-- `layout` yalnız küçük, kontrollü eleman/grup değişimlerinde değerlendirilebilir. Uzun/deep listeyi otomatik layout animasyonuna sokma; ürün sırası, adı, fiyatı ve stok verisini görsel gerekçeyle değiştirme.
+- Yeni API motion/react; mevcut LazyMotion düzenini gerekmedikçe değiştirme. Ortak action/editorial tokenları lib/ui-motion.ts; küçük eylemlerde spring, lineer ilerleme/video zamanında spring yok.
+- V8 film/ambalaj/katı kâğıt copy-plane ayrı transform sahipleri; film kontrolü 44px+ ve mediaStyle dışında. Tek kısa desktop sticky; telefon/kısa ekran/reduced doğal akış. Tipografi zemine göre sabit; kompozisyonun okunurluğu/tıklanabilirliği korunur.
+- Sürekli animasyon yalnız transform/opacity; layout/width/height/top/left/filter-blur yok. Giriş/stagger bir kez, kısa ortak gecikme; SSR H1/CTA görünür, loader'a bağımlı değil. WhileInView yeniden gizleme/oynatma yok.
+- Hover/tap/focus/disabled/loading/error/success aynı ailede. Reduced başta ve tercih değişiminde transformları kapatır; sade modda gerçek eylem/odak görünür kalır.
+- Mevcut Radix modalında Escape/odak kapanı/geri dönüş korunur; modal scroll-lock sayfa sahnesini kilitleme izni değildir. AnimatePresence gerekirse kararlı key; uzun liste/layout motoru ekleme. Native details klavye/semantik durumuyla gerçek B2B dalıdır.
 
-## Scroll ve performans
+## Ürün ve medya sözleşmesi
 
-V7 hero native Flow MP4'ü kendi zamanında bir kez oynatır; `currentTime` scroll'a bağlanmaz. `useScroll`/`useTransform` yalnız küçük, isteğe bağlı film-kabuğu transformu içindir. Video zamanına `useSpring` veya kopya seeking/rAF motoru eklenmez. Genel canvas/kare motoru diğer onaylı kullanımlar için korunabilir; oradaki kare zamanı lineer kalır ve görünürlük gerçek medya penceresinden alınır. V7 film duraklat/oynat/tekrar denetimiyle, son karede durma ve manuel kullanıcı durdurmasını koruma kuralıyla çalışır. Gizli sekme/ekran dışında durur; observer/event/video kaynakları temizlenir.
-
-SSR poster/H1/CTA görünür; native MP4 hydration/tercih/görünürlük kontrolünden sonra istenir. Reduced-motion/saveData/engelli oynatma/hata durumunda statik poster ve eylemler kalır. Başlangıç/bitiş kareleri farklı olduğundan loop yoktur; bitişte yalnız kullanıcı tekrar başlatabilir. Animasyon için tüm içeriği/kareleri önden indirme veya büyük client bundle ekleme. Yeni görsel/video, mevcut model/abonelik/ücretsiz hak varsayımıyla üretilmez; Google Flow kapsamı, gerçek ücret ve kabul kaydı gerekir.
+Üç mevcut temsilcinin seçimi aynı görsel/ad/miktar/fiyat/detail/cart id'sini değiştirir; seçim aria-pressed/fieldset/legend ve görünür odak taşır. Gelen ProductVariant alanları yeni ticari veri kaynağı değildir; AddToCart/CatalogProvider hydration/stok ve sunucu fiyat/checkout otoritesi korunur. Altı SKU sırası/verisi pazarlama gerekçesiyle değişmez. Kayıp/boş/stock0 dürüst durum gösterir; kapalı B2B servisi açılmış veya gönderilmiş gibi sunulmaz.
+Mevcut kabul edilmiş A→B native MP4 kendi zamanında sessiz bir kez, son kare/pause/play/replay. Scroll currentTime/yeni seek/rAF/loop yok. Manuel pause, görünürlük ve olay temizliği korunur. Reduced/saveData MP4 istemez, poster/CTA kalır; hata/blocked/gesture/retry gerçek durumdur. Telefon H1+CTA önce,280px film/260px ürün ve doğal ayrıntı;360×640/büyütülmüş metin ayrıca kabul edilir.
+Yeni medya/Imagen/abonelik hakkı varsayılmaz. Doğru Flow proje 62040049-3473-446b-9d93-8e6cbc45f8bc, reCAPTCHA hizmet bağlantısı engeli, yeni gönderim/harcama 0 ve önceki kalan 60 sınırı görev kaydında. Omni Chrome Use otomasyon, Omni 1.1 Flash modeldir; güvenlik engeli aşılmaz.
 
 ## 21st ve shadcn
 
-1. Mevcut proje bileşenini ve tokenlarını incele; aynı işi yapan ikinci primitive yazma.
-2. Yeni standart kalıp gerekiyorsa mevcut 21st MCP `search` → gerçek sonuç ID'si → `get_component` akışını kullan. Araç şeması esastır; kullanıcı adı metnini ID yerine geçirme.
-3. Gerçek kaynak erişimini doğrula; demo metni/medyası, fiyat planı, yorum veya ikon stilini aynen taşıma. V7'de 21st 12200 tam geniş medya/overlay içerik kompozisyonu uyarlanabilir; demo nav/font/gizli içerik ve `framer-motion` importları taşınmaz.
-4. Kod kotası/aboneliği hosted AI üretim yetkisi değildir. `generate`/anahtar yenileme/ayrı eklenti kurulumunu örnek listede var diye başlatma. Mevcut bağlantı çalışıyorsa CLI init veya manuel MCP config yazma.
-5. shadcn için MCP yoktur. Gerektiğinde resmi CLI ile `npx shadcn@latest search <bileşen>`, `view`, `docs` ve `add` kullanılır; mevcut primitive tercih edilir ve çıktılar tokenlara uyarlanır.
+Mevcut primitive/token önce; yeni kalıp için bağlı 21st search→gerçekID→get_component, sonra AFİNA uyarlaması. 1635 seçim/görsel durumu;12200 tarihsel film kompozisyonu. Demo marka/veri/metin/medya/font/nav ve framer-motion taşınmaz. Kod erişimi hostedAI/anahtar/global kurulum yetkisi değildir. shadcn MCP yok; gereken resmi CLI search/view/docs/add; mevcut primitive tercih edilir.
 
-Omni Chrome Use bu kitlerde tarayıcı otomasyonunu anlatır; ayrı eklenti kurulu varsayılmaz. Flow'daki Omni 1.1 Flash modeli, browser erişimi ve kredi sınırı ayrı doğrulanır. Testte kullanıcının Chrome'u açılmaz: yalnız paketli headless Chromium, en fazla iki worker ve düzgün kapanış.
+## Kabul
 
-## Kabul ve birlikte kullanım
-
-Klavye/modal, reduced-motion, kontrast, mobil/masaüstü taşma ve gerçek eylem durumlarını; filmde gerçek zaman ilerlemesi, tek geçiş/son kare, pause/play/replay ve autoplay reddi durumlarını test et. Task 159 kabul/yayın sonucu önceki testlerden türetilemez. Unit/build, tarayıcı, canlı HTTP/API, fiziksel cihaz ve gerçek ödeme/e-posta sonuçlarını ayrı kaydet. Kaynaktaki “test edilmiş 10.000+ bileşen” ve maliyet/hız sloganları projenin test kanıtı değildir.
-
-- [Profesyonel web](../profesyonel-web-sitesi-yeni-nesil/SKILL.md): marka ve hiyerarşi.
-- [Scroll hero](../scroll-hero-video-yeni-nesil/SKILL.md): lineer sahne ve kaynak kabulü.
-- [Sinematik siteler](../sinematik-siteler-yeni-nesil/SKILL.md): sakin görsel katmanlar.
-
-Kaynak/istisna kökeni: [Task 158 MD uyarlamaları](../../../docs/referans/yeni-nesil-md-uyarlamalari-20261101.md). Güncel hero oynatma/kompozisyon tercihi v7/Task 159'dur; eski split/frame-only/genel no-autoplay tercihi artık uygulanmaz.
+Gerçek nesne seçimi/detail/cart, native rail klavye/reduced erişimi ve gerçek overflow, B2B details/kapalı hizmet, modal/menü/üyelik odakları, gerçek decoded film/kontrol/fallback, SSR/JS kapalı, kompakt telefon ve kompozit kontrast test edilir. Unit/build, native Taste/e2e, canlı API/HTTP, fiziksel cihaz ve gerçek ödeme/e-posta ayrı sonuçlardır; v8 bekleyen kabul önceki v7 makbuzundan türetilmez. Test yalnız paketli headless Chromium ≤2 worker/düzgün kapanış; kullanıcının Chrome'u açılmaz. Kaynaktaki10.000+ bileşen/hız sloganları bu projenin kanıtı değildir.
+Birlikte [Profesyonel web](../profesyonel-web-sitesi-yeni-nesil/SKILL.md), [Scroll hero](../scroll-hero-video-yeni-nesil/SKILL.md), [Sinematik](../sinematik-siteler-yeni-nesil/SKILL.md), [Scroll Craft](../scroll-craft/SKILL.md), [Taste](../design-taste-frontend/SKILL.md).

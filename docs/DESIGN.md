@@ -1,71 +1,52 @@
-# AFİNA ZEYTİN v7 — Zeytinin İçinden
+# AFİNA ZEYTİN v8 — Object journey
 
-## Güncel kullanıcı düzeltmesi
+## Güncel yön ve durum
 
-1 Kasım 2026: kullanıcı “Hero hâlâ aynı görünüyor, Google Flow videolarını kullanıp MD’lerdeki gibi daha sinematik bir açılış yap” dedi. Bu istek, v6 split/çerçeveli sahne ve yalnız kare dizisiyle oynatma tercihinin yerini alır. Normal modda kısa filmin kendiliğinden sessiz bir kez ilerlemesi bu kapsamda istenir; önceki uygulamanın genel otomatik oynatma yasağı yeni hero için geçerli değildir. Reduced-motion ve veri tasarrufu sınırları korunur.
+Task 160: kullanıcı Scroll Craft, frontend-design, frontend-ui-engineering ve Taste ile tasarımı değiştirmeyi, verdiği Google Flow projesini kullanmayı istedi. Önceki “sormadan devam et” yaratıcı devri geçerlidir. [BRIEF](scrollcraft/builds/afina-v8/BRIEF.md) kullanıcı alıntılarını yazılmış yaratıcı kararlardan ayırır; [PLAN](scrollcraft/builds/afina-v8/PLAN.md), [COPY](scrollcraft/builds/afina-v8/COPY.md) ve [VERIFICATION](scrollcraft/builds/afina-v8/VERIFICATION.md) uygulama öncesinde yazıldı.
 
-Bu dosya tek güncel görsel sözleşmedir. Önceki DESIGN.md değişmeden [v6 tarihçesinde](referans/DESIGN-v6-history-20261101.md), daha eski tarifler [v5 tarihçesinde](referans/DESIGN-v5-history-20261101.md) saklanır. Geçmiş medya onayları ve yayın kanıtları silinmez. [Task 159](tasks/159-flow-sinematik-hero.md) uygulama/yayın kabulü tamamlandı; kaynak `5a3b1f6`, 1197 unit + 44 canlı etkileşim kontrolü, dört genişlikte görsel/axe ve gerçek video oynatımı doğrulandı. [Yayın makbuzu](referans/yayin-film-v7-20261101.json) ayrı kanıttır; bu sözleşme kullanıcının görsel kabulü yerine geçmez.
+Bu dosya tek aktif tasarım sözleşmesidir. Önceki v7 dosyası byte-identical [v7 tarihçesine](referans/DESIGN-v7-history-20261101.md) alındı; [v6](referans/DESIGN-v6-history-20261101.md)/[v5](referans/DESIGN-v5-history-20261101.md) ve yayın makbuzları tarihçedir. Yayındaki son doğrulanmış kaynak hâlâ v7 `5a3b1f6`dır; v8 henüz yayın/kullanıcı görsel kabulü almadı.
 
-## Görsel fikir ve marka
+Yerel v8: 1200 unit ve production build PASS; 1440/768/390/320 px görsel/axe/taşma/console/network kaydında hata 0. Kaynaklar `.cache/task-160/unit.log`, `build.log`, `local/results.json`. Native Taste, kapsamlı etkileşim/e2e, 360×640/1024, son his karşılaştırması ve canlı tekrar/yayın **BEKLİYOR**. Önceki v7 sonucu bunların yerine geçmez.
 
-İlk ekranın kendisi zeytinliğin içindedir: kenardan kenara gerçek Flow filmi, sol altta büyük ve okunur resmî slogan, iki gerçek eylem. Eski iki sütun, organik pencere, görüntü üstündeki ürün kartı ve boş kaydırma mesafesi açılış kompozisyonundan kalkar. Görüntünün sağ/üst kısmı aydınlık ve ayrıntılı kalır; metin için yalnız gereken yerel sol-alt kontrast katmanı kullanılır. Bütün sahneyi karartan merkezlenmiş hero veya cam menü geri gelmez.
+## Fikir, marka ve nesne
 
-Orijinal AFİNA logosu ve **“Kökü toprakta. Yeri sofrada.”** sloganı korunur. Yerel Fraunces başlıklar, Figtree gövde/arayüz; yeni font servisi yoktur.
+Taste tohumu **1601101**, `--keep palette,type`: **page-is-the-object**. Özel gramer **Object journey**; sayfanın birimi gerçek ambalaj ve ona bağlı seçim/üretici/alışveriş ihtiyacıdır. Yeni isim tek başına tasarım farkı değildir: açılış, beş vuruş ve çalışan seçim gerçekten değişmelidir. [Baseline fingerprint](scrollcraft/FINGERPRINTS.md) v6 ve v7'ye karşı dört planlı farkı kaydeder; v8 shipped satırı henüz eklenmez.
 
-| Rol | Renk | Kullanım |
-| --- | --- | --- |
-| Kâğıt | `#F4F0E7` | Opak üst menü ve üretim/ürün odaklı alt sayfa yüzeyleri; film üzerindeki okunur metin/eylem |
-| Zeytin | `#172B21` | Açık yüzeylerde başlık/eylem ve tek belirgin B2B bloğu |
-| Şampanya | `#B6A078` | Ölçülü vurgu ve denetim ayrıntısı |
-| Antrasit | `#252725` | Gövde ve yüksek okunurluk gereken metin |
+Orijinal yatay logo, **“Kökü toprakta. Yeri sofrada.”**, yerel Fraunces/Figtree ve mevcut semantik renkler korunur: kâğıt `#F4F0E7`, zeytin `#172B21`, şampanya `#B6A078`, antrasit `#252725`, gövde `#414A40`. H1 iki satır, aynı display yüzü ve tek zeytin rengidir; italic/renkli vurgu, eyebrow/indeks rozeti ve scroll oku yoktur. Başlık/CTA SSR'da görünür, film/loader beklemez.
 
-Renkler mevcut semantik tokenlardan gelir. Video üzerindeki metin ve küçük denetimler bütün kadrajlarda kontrast taşır; yalnız ilk postere göre renk seçilmez. Marka kaplaması, neon gradyan, metalik parıltı, büyük blur veya filtre animasyonu yoktur.
+## Açılış düzlemleri ve telefon
 
-## Menü, hero ve mobil kompozisyon
+- Orijinal opak kâğıt nav, gerçek mağaza/sepet/hesap/menü yolları korunur. Cam nav veya sahne üstünde ikinci menü eklenmez.
+- Yeterli masaüstünde (en az901×681 viewport) toplam `170svh + header` alanda tek kısa sticky sahne. Film düzlemi uniform scale1→.82, x0→-8vw, y0→-48px ile geri çekilir. Gerçek ambalaj ayrı düzlemde y80→-8px/scale1→1.12 öne gelir. Katı kâğıt copy-plane kendi metin zeminiyle y0→-24px ilerler; metin zemine göre kaymaz.
+- Ambalaj oranı/etiketi bozulmaz; temas/örtüşme açık olmalı, nesne havada asılı görünmemelidir. Filmdeki ağaç/dalı üç bağımsız görüntü katmanıymış gibi raporlama. Tam kare scrim, blur/filter/layout animasyonu yoktur.
+- Native film kendi zamanında bir kez oynar; scroll yalnız kompozisyonu değiştirir. `CinematicFilm.mediaStyle` yalnız poster/video katmanına uygulanır; sabit 44px+ kontroller küçülmez/hareket etmez.
+- Telefon, kısa ekran ve reduced-motion'da pin yok. Başlık + iki gerçek eylem önce; mobil film satırı280px, ambalaj260px, seçim/ürün ayrıntıları ardından doğal akışta. Eski720/740px minimum yok. 360×640 ve büyütülmüş metin ayrıca doğrulanır; viewport kabulü fiziksel telefon değildir.
+- **Ürünleri Keşfet**→`#urunler`, **Kurumsal Teklif Al**→`#toptan-iletisim`; JS kapalı/poster/hata durumunda gerçek anchor'lar erişilir.
 
-- Orijinal logo/mağaza/sepet/hesap/menü yolları opak kâğıt navigasyonda, filmin dışında kalır. Cam kapsül, başlığın önünde ikinci nav ve demo menü eklenmez.
-- Film navigasyonun altından başlayarak bütün genişliği kaplar. Hero viewport etkisi verir; 300–400vh pin, body/wheel/touch yakalama ve zorunlu uzun intro yoktur. Kısa ekran veya büyütülmüş metinde hero içerikle büyüyebilir, kesilmez.
-- Tek H1 sol alt bölgede yer alır; alt metin kısa üretici anlatımıdır. Başlık bir loader veya film çözümlemesini beklemez, SSR'da görünürdür.
-- **Ürünleri Keşfet** → `#urunler` ve **Kurumsal Teklif Al** → `#toptan-iletisim` gerçek DOM bağlantılarıdır. Poster/sade/hata durumunda da erişilir. Ürün detayları ve sepete ekleme koleksiyon/alışveriş akışında kalır.
-- Görünür, klavyeyle erişilir küçük film denetimi sol/sağ alt uygun boşlukta bulunur; en az 44 px dokunma hedefi vardır. Denetim başlığa, CTA'ya veya güvenli alanlara binmez.
-- Mobilde aynı Flow kadrajı `object-fit: cover` ve doğru odak noktasıyla kullanılır; poster/video odak noktası eşleşir. Ağacın/dalın hareketi ve yaprak ayrıntısı izlenebilir olmalıdır. Odak gerçek mobil görüntülerle ayarlanır; fotoğraf geometrisi veya ambalaj değiştirilmez.
-- Telefon yüksekliği tek başına bütün mobil videoları kapatma gerekçesi değildir. Reduced-motion/saveData/engelli oynatma/hata doğru geri dönüşlerdir. Film ve kontroller düşük yükseklik, yön değişimi ve metin büyütmede taşmamalıdır.
+## Çalışan signature ve veri sınırı
 
-## Google Flow filmi ve durum sözleşmesi
+Üç mevcut temsilci: `sample-green-olive-10kg`, `sample-green-olive-1kg`, `sample-olive-oil-1l`. Seçim aynı ambalaj/ad/miktar/fiyat/incele/ekle hedefini birlikte değiştirir; `aria-pressed`, fieldset/legend ve görünür odak korunur. Tercih edilen id yoksa mevcut ürünlerden fallback yapılır; ürün yoksa satın alma uydurulmaz.
 
-Yalnız kullanıcının kabul ettiği ilk **A→B ağaç → dal** klibi kullanılabilir. Diğer üç geçişin son kayıtlı durumu Google doğrulama engelidir; üretilmiş/yayınlanmış gibi gösterilmez. Aynı kabul edilmiş kaynaktan ses içermeyen, web için sıkıştırılmış H264/faststart MP4 türevi (`public/videos/afina-agac-dal.mp4`) hazırlanır. Bu yerel türetme yeni ücretli medya üretimi değildir. Kaynak/çıktı SHA, gerçek codec/süre/boyut ve medya kapısı doğrulanır; SDR'ye ikinci tone mapping uygulanmaz.
+Hero ad/fiyatı mevcut `ProductVariant` girdisinden okur; yeni fiyat/stok kaynağı oluşturmaz. `AddToCart` güncel CatalogProvider/hydration/stok kapısını, sunucu quote/checkout ise ticari otoriteyi korur. Statik örnekler temsili fiyatlardır. Ürün sırası/adı/fiyatı/stoku görsel gerekçeyle değiştirilmez; gerçek detay modalı ve sepet aynı id'yi kullanır.
 
-- Normal mod: tercih/hydration ve gerçek görünürlük kontrolünden sonra MP4 istenir; `muted` ve `playsInline` ile **bir kez** oynar. A ve B farklı olduğu için `loop` eklenmez veya sahte dikiş yapılmaz.
-- Film bitince son karede kalır. İlk postere sıçrama veya observer nedeniyle kendiliğinden tekrar başlama yoktur; kullanıcı **Tekrar oynat** ile başa alabilir.
-- Oynarken **Duraklat**, durduğunda **Oynat**, bittiğinde **Tekrar oynat** durumu gerçek video olaylarıyla eşleşir. Kullanıcının manuel duraklatma tercihi görünürlük olaylarıyla ezilmez. Autoplay reddi başarılı oynatma sayılmaz.
-- Gizli sekme veya ekran dışı medya durur. Görünürlük geri geldiğinde yalnız kullanıcının durdurmadığı/bitmemiş uygun oturum devam edebilir; biten film otomatik yeniden başlamaz.
-- Reduced-motion, saveData, engelli oynatma ve yükleme/codec hatasında statik, kaynaklı poster ile H1/CTA kalır. Bu koşullarda kendiliğinden `video.play()` veya gereksiz MP4 indirmesi başlatılmaz; gerçekten sunulan manuel denetim durumu anlaşılır olmalıdır.
-- Observer, event ve video kaynakları unmount'ta temizlenir. Başka sekme, tercih değişimi, autoplay promise reddi ve tekrar oynatmanın yaşam döngüsü test edilir.
+## Tek zirve ve beş vuruş
 
-## Motion ve rehberlerin uygulanması
+Kısa yer kuran film → aynı sahnede nesnenin gelişi tek zirvedir; ikinci dev pin yok. Sonra kompakt gerçek tesis kanıtı → altı SKU native yatay galeri → kurumsal ihtiyacı açan dal → gerçek adres/mağazaya dönüş/SSS çözümü. Kısa üretim özeti ayrı büyük numaralı adım sahnesi değildir.
 
-Yeni animasyon API'leri `motion/react` üzerinden kullanılır; demo `framer-motion` importu veya ikinci motor taşınmaz. Ortak değerler `lib/ui-motion.ts` içindedir. Açılış/hover/tap küçük transform/opacity hareketleriyle sınırlıdır; SSR metni görünür kalır. Filmin yüklenmesi veya başlaması bir giriş animasyonunun bitmesine bağlı değildir.
+Tesis müşteri PDF'sindeki gerçek fotoğraftır. Galeri ilk üründe farklı görsel öncelik kullanabilir; mevcut altı SKU sırası ve her ürünün gerçek incele/ekle işlemi korunur. Yatay rail native scroll, klavye odağı ve reduced erişim taşır; gizli/ulaşılamayan son ürün yoktur. B2B'de kapalı gönderim mesajı açılmadan görünür, **Bilgileri hazırlayın** native details içinde mevcut formu açar. Servis/provider kendiliğinden açılmaz, sahte talep başarısı gösterilmez. Kapanış **Ellek’te buluşalım**, gerçek adres, **Ürünlere dön**, mevcut SSS/support/legal/footer yollarıdır; son içerik kaybolmaz.
 
-`useScroll`/`useTransform` yalnız film kabuğuna küçük, isteğe bağlı bir parallax/scale etkisi verebilir. Native filmin `currentTime` değeri kaydırmaya bağlanmaz; bir seek/rAF motoru kurulmaz. Video zamanına spring uygulanmaz. Genel `ScrollFrameSequence`/canvas kodu diğer onaylı kullanım için korunabilir, fakat yeni hero'nun gerçek filmi yerine kullanılmaz. Reduced-motion'da kabuk hareketi kapanır, poster kalır.
+Yaklaşık %65 üretici/kurumsal güven ve %35 alışveriş korunur. Yeni kapasite, sertifika, sağlık/organik, yorum, kıtlık, indirim veya teslimat iddiası yoktur. Telefon/e-posta yalnız mevcut gerçek yapılandırmadan gelir.
 
-Dört proje yerel rehber birlikte kullanılır: [Profesyonel web](../.agents/skills/profesyonel-web-sitesi-yeni-nesil/SKILL.md), [Scroll hero](../.agents/skills/scroll-hero-video-yeni-nesil/SKILL.md), [Sinematik siteler](../.agents/skills/sinematik-siteler-yeni-nesil/SKILL.md), [UI/UX Pro Max](../.agents/skills/ui-ux-pro-max/SKILL.md). [Task 158 kaynak/uyarlama kaydı](referans/yeni-nesil-md-uyarlamalari-20261101.md) kaynak kökenidir; oradaki v6 split/frame-only ve genel no-autoplay tercihleri kullanıcının bu yeni düzeltmesiyle güncellenmiştir.
+## Medya ve doğru Flow projesi
 
-Sinematik MD'deki tam ekran gerçek film, kontrollü kamera ve katmanlı metin fikri v7'ye doğrudan karşılık bulur. Örnek siyah/glass/nav/email pill/Instrument Serif/demo sahneleri alınmaz; scroll kitinin 300–400vh pin ve reduced-motion `video.play()` davranışı uygulanmaz. 21st **12200 PrismaHero** yalnız tam geniş medya + overlay içerik kompozisyonu için uyarlanır; demo medya/metin/font/nav, gizli başlık ve `framer-motion` importları taşınmaz. Yeni global skill/MCP/anahtar veya bağımlılık kurulumu yoktur.
+Doğrudan incelenen proje [62040049-3473-446b-9d93-8e6cbc45f8bc](https://flow.google.com/project/62040049-3473-446b-9d93-8e6cbc45f8bc); ambient başka sekme adresi bu kaynak yerine geçmez. Bir kabul edilmiş A→B film ve beş referans vardır. B→C taslağında ilk B-dal/son C-hasat; C'nin iki krem kollu el/sepet içeren tam önizlemesi görüldü. Omni 1.1 Flash/Frames/16:9/720p/8 sn./x1 ekranda12 kredi. Google reCAPTCHA hizmet bağlantısı engeli sürüyor; yeni üretim gönderilmedi, ek harcama 0. Önceki kalan 60kredi yalnız üç yetkili geçiş içindir; güvenlik engeli aşılmaz.
 
-## Hero altındaki sayfa ve içerik sınırı
+Runtime yalnız kabul edilmiş A→B'nin `public/videos/afina-agac-dal.mp4` türevidir: sessiz H264/yuv420p/faststart,1280×720/24fps/190kare/7,916667sn.,2.537.380bayt. Kaynak/çıktı SHA ve kapı `lib/media/cinematic-film.json`, `scripts/check-cinematic-film.mjs`; poster aynı başlangıç karesinden. SDR'ye ikinci tone mapping yapılmaz. Diğer üç film hazır veya yayınlanmış sayılmaz; D yağ dökümü gerçek sıkım/fabrika kanıtı değildir.
 
-Hero sonrası üretim öncelikli site korunur: kısa marka anlatımı → gerçek tesis → açık ürün rafı → üretim yolculuğu → tek zeytin B2B alanı → kaynaklı beş SSS/iletişim/footer. Yaklaşık %65 kurumsal üretim güveni, %35 ürün/alışveriş; mevcut en fazla altı SKU, gerçek detay/sepet/hesap ve sunucu fiyat/stok otoritesi değişmez.
+Normal mod tercih/hydration/görünürlükten sonra tek oynatım, son kare ve pause/play/replay. Kullanıcı pause korunur; gizli sekme/ekran dışında durur; biten film observer'la yeniden başlamaz. Reduced/saveData film isteği başlatmaz; hata/blocked durumda poster ve uygun manuel kontrol kalır. Loop/scroll currentTime/yeni seek motoru yoktur.
 
-Gerçek tesis fotoğrafı yapay hat/hasat kanıtı yerine geçirilmez. Onaysız kapasite, sertifika, organik/sağlık, yorum ve satış/popülerlik iddiası eklenmez. Telefon/e-posta, CRM/ödeme/giriş veya talep gönderimi yapılandırılmadan başarılıymış gibi sunulmaz. Video kontrollü bir görsel yenilemedir; DB/auth/ödeme iş kuralı değişimi değildir.
+## Araç ve kabul politikası
 
-## Omni ve üretim yetkisi
+[Scroll Craft](../.agents/skills/scroll-craft/SKILL.md), [Taste](../.agents/skills/design-taste-frontend/SKILL.md), frontend-design/frontend-ui-engineering ve dört proje yerel MD birlikte uygulanır. Upstream dosyalar değiştirilmez; vanilla engine/GSAP/Lenis/rAF runtime'a eklenmez. Yeni API'ler `motion/react`, ortak eylem tokenları `lib/ui-motion.ts`; sürekli hareket transform/opacity, reduced dönüşü zorunlu. 21st 1635 yalnız varyant/görsel durum örüntüsü, önceki 12200 yalnız tarihsel kompozisyon kaynağıdır; demo metin/medya/font/nav taşınmaz.
 
-**Omni Chrome Use**, mevcut CUA/browser ile oturumlu Flow arayüzü otomasyonu yaklaşımıdır; ayrı eklenti kurulu varsayılmaz. **Omni 1.1 Flash** model adı, araç erişimi, ücret ve sonuç ayrı olgulardır. Yeni Imagen/sağlayıcı/ücretsiz hak veya yeni ücretli üretim bu görevden çıkarılmaz.
-
-Görev başlangıcında kalan 60 kredi yalnız önceki üç geçişin sınırıdır; her çağrıda güncel provenans ve kalan kullanım okunur, belge okumak bütçeyi yenilemez. Google doğrulama/CAPTCHA engeli atlanmaz. Yeni aday gerçek çıktı ve kabul kaydı olmadan runtime'a bağlanmaz. Bu görev mevcut kabul edilmiş filmin yerel türevini kullanır.
-
-## Kabul ve kanıt
-
-Task 159 için unit/lint/typecheck/build ve medya kapıları; paketli headless Chromium'da masaüstü/mobil görsel/etkileşim kabulü gerekir. En fazla iki worker, düzgün browser/server kapanışı; kullanıcının Chrome'u test/Lighthouse için açılmaz. Film zamanının gerçekten ilerlemesi, sessizlik, tek geçiş/son kare, duraklat/oynat/tekrar, görünürlük/tercih değişimi, autoplay reddi, poster, taşma ve klavye hedefleri ölçülür. Gerçek ürün/sepet/üyelik yolları regresyona karşı kontrol edilir.
-
-SSR/JavaScript kapalı ve reduced-motion/saveData durumunda poster/H1/CTA erişilir kalır. Viewport testi fiziksel telefon kabulü değildir; gerçek hesap/ödeme/teklif yazımı ve uzak migration ayrı kabul olarak kalır. Önceki [Task 157](tasks/157-tam-tasarim-ve-canli-kabul.md) ve [Task 158](tasks/158-yeni-nesil-md-kitleri.md) sonuçları tarihsel kanıttır; yeni film için test/yayın sonucu veya kullanıcının görsel kabulü yerine geçmez.
+Final-source screenshot/contact sheet ve his kontrolü; bağımsız düzlem örnekleri, gerçek decoded film, üç ürün/detail/cart, kapalı B2B/menü/üyelik, SSR/reduced/saveData/error/JS kapalı, kompozit kontrast ve rail erişimi ayrı kanıtlanır. Yerel unit/build canlı kabul değildir. Test yalnız paketli headless Chromium ≤2 worker, düzgün browser/server kapanışı; kullanıcının Chrome'u testte açılmaz. Oturumlu Flow üretim yüzeyi ayrı yetkili kullanımdır. Gerçek hesap/ödeme/teklif, fiziksel cihaz ve Google güvenlik doğrulaması ayrı kapılardır.

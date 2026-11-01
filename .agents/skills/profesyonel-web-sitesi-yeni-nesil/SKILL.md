@@ -9,36 +9,23 @@ metadata:
 
 # AFİNA için profesyonel web tasarımı
 
-Bu yetenek yalnız bu projeye uyarlanmıştır. Önce [güncel v7 tasarım sözleşmesini](../../../docs/DESIGN.md), `AGENTS.md`, `PRODUCT.md` ve ilgili görevi oku. Kaynak MD tasarım girdisidir; global kurulum, anahtar, model, harcama veya yayın yetkisi vermez. Kaynak/istisna tablosu [Task 158 uyarlama kaydındadır](../../../docs/referans/yeni-nesil-md-uyarlamalari-20261101.md); oradaki v6 split/frame-only ve genel no-autoplay uygulama tercihleri son kullanıcı düzeltmesiyle [Task 159](../../../docs/tasks/159-flow-sinematik-hero.md) için değişmiştir.
+Önce [aktif v8 Object journey](../../../docs/DESIGN.md), [Task 160](../../../docs/tasks/160-scroll-craft-taste-ve-flow.md), [BRIEF/PLAN/COPY/VERIFICATION](../../../docs/scrollcraft/builds/afina-v8/BRIEF.md), AGENTS ve PRODUCT okunur. Kaynak MD tasarım girdisidir; global kurulum/anahtar/model/ücret/yayın yetkisi değildir. [Task 158 kaynak kaydı](../../../docs/referans/yeni-nesil-md-uyarlamalari-20261101.md) korunur; v6/v7 kompozisyonları tarihçedir.
 
-## Marka, düzen ve gerçek içerik
+## Marka ve somut görsel değişim
 
-- AFİNA v7 Zeytinin İçinden yönünü koru: viewport Flow filmi ve hero altındaki üretim öncelikli açık yüzeyler; kâğıt `#F4F0E7`, zeytin `#172B21`, ölçülü şampanya `#B6A078`, antrasit `#252725`; Fraunces başlık ve Figtree arayüz. Renkleri mevcut semantik tokenlardan al; küçük metin kontrastını ayrıca kontrol et.
-- Bölüm boşluklarını 8/16/24/32/48/64/96 ölçeğinden seç. Optik düzeltme, yazı ölçüsü veya güvenli alan gibi istisnaları amaçlarıyla kaydet. Aynı kartı ve aynı boşluğu her bölümde yineleme; kırık simetri ve farklı bölüm ritimleri tek anlatımı desteklesin.
-- Tek H1, kademeli H2/H3 ve her bölümde tek ana mesaj kullan. V7 açılışında kabul edilmiş Flow filmi tam genişlikte, resmî slogan/iki gerçek CTA sol altta görünür DOM içeriğidir. Yalnız gerekli metin kontrastı katmanı kullanılır; cam nav veya tekdüze koyu merkez şablon eklenmez. İki gerçek ürün/kurumsal CTA müşteri gereğidir; genel şablon yasağı bunları kaldırma gerekçesi değildir.
-- Üretim/kurumsal güven yaklaşık %65, ürün/alışveriş %35 dengesini koru. Gerçek tesis, onaylı ambalajlar, mevcut en fazla altı SKU ve sunucunun fiyat/stok otoritesi esastır. Lorem ipsum, uydurma istatistik, kapasite, yorum, sertifika ve satış rozeti ekleme.
-- Orijinal logo ve resmî slogan değişmez. İkonlar mevcut Lucide SVG ailesinden gelir. Emoji ikonlar, mor-mavi/neon gradyanlar, sebepsiz blur/cam kartlar, dekoratif altın parıltıları ve konu dışı 3D stok sahneler kullanma.
+- Taste seed 1601101/page-is-the-object ve Scroll Craft yöntemi: gerçek Flow, gerçek seçilebilir ambalaj ve katı kâğıt metin ayrı düzlemler. V7 tek film+overlay veya v6 organik pencere/küçük kart tekrarlanmaz. Tek zirve nesnenin gerçek seçime gelişidir.
+- Orijinal logo, iki satır resmî slogan, Fraunces/Figtree, kâğıt #F4F0E7/zeytin #172B21/ölçülü şampanya #B6A078 ve semantik tokenlar. İtalik/renkli başlık vurgusu, tekrar eyebrow/indeks/scroll oku/tam kare scrim yok. Boşluklar mevcut 8px tabanlı32/48/64/96 ölçeğinde; optik istisna gerekçelidir.
+- Tek H1 ve gerçek iki CTA SSR'da görünür. Desktop yalnız kısa 170svh sticky; telefon/kısa ekran/reduced doğal akış, başlık/CTA önce,280px film/260px ürün sonra. 360×640 gerçek görüntüyle doğrulanır; min720/740px yok.
+- Yaklaşık %65 üretici/kurumsal güven, %35 alışveriş. Kompakt gerçek tesis, mevcut sırada altı SKU native galeri, kapalı hizmet mesajı açık B2B/native details ve gerçek adres/ürünlere dönüş. Yeni sayı/yorum/sertifika/kıtlık veya sahte servis başarısı yok.
+- Üç mevcut ürün seçimi görsel/ad/fiyat/incele/ekle hedefini eşler; yeni veri tablosu yaratmaz. AddToCart/CatalogProvider/sunucu otoritesi, ürün kimlikleri/sırası ve mevcut akışlar korunur.
 
-## Bileşen ve mikro etkileşim
+## UI, hareket ve medya
 
-Mevcut primitive ve bileşenleri önce incele. Yeni standart UI gerekiyorsa mevcut 21st bağlantısıyla `search` yap, seçilen sonucun gerçek demo ID'siyle `get_component` kaynağını al; sonra renk, font, boşluk, içerik ve erişilebilir durumlarını projeye uyarla. Demo metni/medyası aktarılmaz. Kod erişimi, hosted AI üretim veya sınırsız ücret yetkisi değildir.
+Mevcut primitive'i önce incele; yeni standart kalıp gerekiyorsa 21st search→gerçek ID→get_component, sonra AFİNA token/gerçek içerik/durum uyarlaması. 1635 seçim/görsel durumu kaynağıdır; eski 12200 tam geniş kompozisyonu zorunlu değildir. Demo medya/metin/nav/font ve hostedAI harcaması taşınmaz. shadcn için MCP yok; gereken resmi CLI search/view/docs/add, mevcut primitive tercih edilir.
+Yeni API motion/react; ortak değerler lib/ui-motion.ts. Sürekli hareket transform/opacity; film/ambalaj/copy zemini bağımsız, film kontrolleri 44px+ ve transform dışında. Yabancı Scroll Craft/Taste engine, GSAP/Lenis/yeni rAF/scroll kilidi yok. Giriş bir kez, SSR görünür; hover/tap/focus/disabled/loading/error aynı ailede; klavye/Escape/odak dönüşü korunur.
+Yalnız kabul edilmiş A→B sessiz native MP4: tek oynatım/son kare/pause/play/replay. Scroll currentTime/loop yok. Reduced/saveData poster/isteksiz kaynak; hata/blocked/görünürlük ve kullanıcı pause korunur. Yeni görsel/ücretsiz abonelik hakkı varsayılmaz; doğru Flow proje 62040049-3473-446b-9d93-8e6cbc45f8bc, mevcut reCAPTCHA engeli ve kalan kredi kaydı esastır.
 
-shadcn için MCP kurulmaz; gerektiğinde resmi CLI'nin `search`, `view`, `docs` ve `add` işlemleri kullanılır. Var olan `motion`, 21st bağlantısı ve primitive'ler yeniden kurulmaz; `AGENTS.md` ya da global MCP/skill ayarları kaynak MD ile değiştirilmez.
+## Kanıt ve birlikte kullanım
 
-Hover, tap, focus, disabled, loading, error ve success durumları amaçlı olmalı. Hareket aynı eylem ailesinde tutarlı, gölge/kenarlık marka tonlarından türemiş olmalıdır. Görünür odak, klavye/modal Escape ve odak dönüşü korunur.
-
-## Hareket ve medya
-
-Yeni hero/film animasyon API'leri `motion/react` üzerinden kullanılır; mevcut ortak bileşenlerin LazyMotion düzeni zorunluluk yokken değiştirilmez. `framer-motion` veya ayrı animasyon motoru ekleme. Değerler `lib/ui-motion.ts` içindeki ortak token/presetlerden gelir. Animasyon transform/opacity ile sınırlıdır; width/height/top/left veya filtre blur animasyonu ekleme. Uygun etkileşimde spring kullan; her bileşeni hareket ettirme ve lineer sahne ilerlemesine spring uygulama.
-
-Giriş/reveal bir kez çalışır, sonra sakinleşir. V7 native film normal modda sessiz bir kez oynayabilir; sürekli loop yoktur, duraklat/oynat/tekrar denetimi görünürdür. Kullanıcı durdurması korunur, gizli sekme/görünüm dışında film durur. SSR başlığı ve CTA görünür kalır; animasyon/film yüklenmeden `opacity:0`, gizli intro veya preloader engeli koyma. Reduced-motion/saveData/engelli oynatma/hata modunda statik poster ve içerik kalır; dönüşüm ve süs animasyonu kapanır. Yeni görsel gerektiğinde Imagen/abonelik hakkı varsayma: önce onaylı varlıkları kullan; üretim yalnız mevcut Google Flow kapsamı, doğrulanan ücret ve medya kabul süreciyle yapılabilir.
-
-## Kanıt
-
-Mobil/masaüstü taşma, AA kontrast, gerçek CTA, hover/odak ve sade modları kontrol et. Gerçek tarayıcı görüntüsünü ve uygulanan renk/font/hareket kararlarını ilgili görevde kaydet; yalnız “profesyonel oldu” değerlendirmesiyle tamamlandı yazma. Browser kabulü yalnız paketli headless Chromium ve en fazla iki worker ile; fiziksel cihaz veya gerçek servis işlemi yapılmadıysa ayrı belirtilir.
-
-## Birlikte kullanılan yetenekler
-
-- [UI/UX Pro Max](../ui-ux-pro-max/SKILL.md): ortak motion ve bileşen politikası.
-- [Scroll hero](../scroll-hero-video-yeni-nesil/SKILL.md): sahne ilerlemesi ve poster geri dönüşü.
-- [Sinematik siteler](../sinematik-siteler-yeni-nesil/SKILL.md): sakin görsel anlatım ve katmanlar.
+Unit/build eski kabulün yerine geçmez. Son kaynakta nesne seçimi/detail/cart, native galeri, B2B aç-kapa, okunurluk/kontrast, kompakt telefon, reduced/saveData ve gerçek film ölçülür; contact sheet okunur, his eğrisi karşılaştırılır. Test yalnız paketli headless Chromium ≤2 worker/düzgün kapanış; canlı/fiziksel cihaz/gerçek servis ayrı kayıttır. V8 tamamlanma/yayın ve fingerprint gerçek kanıt bekler.
+Birlikte: [Scroll Craft](../scroll-craft/SKILL.md), [Taste](../design-taste-frontend/SKILL.md), [UI/UX](../ui-ux-pro-max/SKILL.md), [Scroll hero](../scroll-hero-video-yeni-nesil/SKILL.md), [Sinematik](../sinematik-siteler-yeni-nesil/SKILL.md). Upstream kaynak dosyalar değiştirilmez.

@@ -21,7 +21,7 @@ it("ships the accepted Flow opening as a responsive poster before JavaScript loa
   }
   expect(doc.querySelector('link[rel="preload"][media*="max-width"]')?.getAttribute("imagesrcset"))
     .toBe("/frames/afina-agac-dal/poster-desktop.avif 1280w");
-  expect(doc.querySelector("[data-cinematic-opening] [data-cinematic-scene] [data-hero-visual]"))
+  expect(doc.querySelector("[data-cinematic-opening][data-cinematic-scene] [data-hero-visual]"))
     .not.toBeNull();
   expect(doc.querySelector("[data-hero-card], [data-frame-sequence]")).toBeNull();
 });

@@ -19,7 +19,7 @@ it("uses full factual sentences and removes unanswered wholesale questions", asy
   for (const faq of verifiedFaqs) expect(faq.answer).toMatch(/\.$/);
   expect(doc.querySelector('[data-faq="Z05"]')).toBeNull();
   expect(doc.querySelector("#toptan")).toBeNull();
-  expect(doc.querySelector("#toptan-iletisim h2")?.textContent).toContain("tedarikçisi.");
+  expect(doc.querySelector("#toptan-iletisim h2")?.textContent).toBe("İşletmeniz için AFİNA.");
   expect(doc.querySelector("#sik-sorulanlar h2")?.textContent).toBe("Sık sorulanlar");
   expect(doc.querySelectorAll("#sik-sorulanlar details > summary")).toHaveLength(5);
   expect(doc.querySelector('#toptan-iletisim button[type="submit"]')?.textContent).toBe("Teklif talebini gönder");
@@ -49,7 +49,7 @@ it.each([
   Object.assign(siteContact, contact);
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}<Footer /></>);
-  expect(doc.querySelector("#toptan-iletisim h2")?.textContent).toContain("tedarikçisi.");
+  expect(doc.querySelector("#toptan-iletisim h2")?.textContent).toBe("İşletmeniz için AFİNA.");
   if (contact.phone) expect(doc.querySelector('#iletisim a[href^="tel:"]')).not.toBeNull();
   if (contact.email) expect(doc.querySelector('#iletisim a[href^="mailto:"]')).not.toBeNull();
   expect(doc.querySelector('#toptan-iletisim a[href="/kvkk"]')).not.toBeNull();

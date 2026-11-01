@@ -30,7 +30,7 @@ test.beforeEach(async ({ page, baseURL }, testInfo) => {
   await expect(page.getByRole("banner").getByRole("button", { name: /^Sepetim,/ })).toBeEnabled();
 });
 
-test("cinematic opening fills the viewport behind readable copy and both real destinations", async ({ page }) => {
+test("layered opening keeps the official copy, wide film and both real destinations", async ({ page }) => {
   const hero = page.locator("#baslangic");
   const copy = hero.locator("[data-hero-copy]");
   const visual = hero.locator("[data-hero-visual]");
@@ -45,9 +45,13 @@ test("cinematic opening fills the viewport behind readable copy and both real de
   expect(heroBox).not.toBeNull();
   expect(visualBox!.width).toBeGreaterThanOrEqual(page.viewportSize()!.width - 2);
   const titleBox = await copy.getByRole("heading", { level: 1 }).boundingBox();
-  expect(titleBox!.y).toBeGreaterThanOrEqual(visualBox!.y);
-  expect(titleBox!.y + titleBox!.height).toBeLessThanOrEqual(visualBox!.y + visualBox!.height + 1);
-  expect(heroBox!.height).toBeLessThan(page.viewportSize()!.height * 1.6);
+  if (page.viewportSize()!.width > 900 && page.viewportSize()!.height > 680) {
+    expect(titleBox!.y).toBeGreaterThanOrEqual(visualBox!.y);
+    expect(titleBox!.y + titleBox!.height).toBeLessThanOrEqual(visualBox!.y + visualBox!.height + 1);
+    expect(heroBox!.height).toBeLessThan(page.viewportSize()!.height * 2.2);
+  } else {
+    expect(titleBox!.y + titleBox!.height).toBeLessThanOrEqual(visualBox!.y);
+  }
   await expectNoHorizontalOverflow(page);
 });
 

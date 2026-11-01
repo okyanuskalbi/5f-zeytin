@@ -8,7 +8,7 @@ if (!Number.isInteger(localPort) || localPort < 1 || localPort > 65535) {
 const baseURL = externalBaseURL ?? `http://localhost:${localPort}`;
 const targetURL = new URL(baseURL);
 const browserNames = ["chromium", "firefox", "webkit"] as const;
-const viewportWidths = [320, 390, 768, 1440];
+const viewportWidths = [320, 390, 768, 1024, 1440];
 
 if (!["http:", "https:"].includes(targetURL.protocol)) {
   throw new Error("PLAYWRIGHT_BASE_URL must use http or https.");

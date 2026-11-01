@@ -4,10 +4,10 @@
 - **KURUMSAL** = AFİNA Şirketler Topluluğu, afina.com.tr, `okyanuskalbi/afina-kurumsal`, `~/PROJELER/AFINA-KURUMSAL`.
 - Tek landing içinde premium vitrin ve satın alma; admin’den girilecek en fazla 5–6 ürün. Üyelik, hesabım, sipariş geçmişi, sepet drawer ve sayfası, upsell/çapraz satış, kademeli indirim, ödeme callback’i, kupon, terk edilen sepet e-postası, admin ve kargo takibi kapsamda.
 - Next.js App Router + TypeScript + Tailwind 4 + shadcn/ui + Framer Motion (`motion`) + Supabase + Vercel. AI Studio kodu `_legacy/` içinde yalnız referans; yeni runtime’a doğrudan bağlanmaz.
-- Ana slogan “Kökü toprakta. Yeri sofrada.”; güncel v7 Zeytinin İçinden sözleşmesi `docs/DESIGN.md` içinde. Kullanıcı hero'nun aynı göründüğünü belirterek gerçek Flow filmiyle sinematik açılış istedi: tam geniş film, sol-alt metin, gerçek CTA ve filmin dışında opak menü. V6 split/frame-only tercihi bu son istekle değişti. Altın zeytin dalı + el logosu ve `docs/visual-prompts.md` korunur.
+- Ana slogan “Kökü toprakta. Yeri sofrada.”; aktif v8 Object journey sözleşmesi `docs/DESIGN.md` ve brief-first kayıtları `docs/scrollcraft/builds/afina-v8/` içinde. Gerçek Flow arka düzlemi, bağımsız seçilebilir AFİNA ambalajı ve katı kâğıt copy-plane; telefon/reduced pin yok. Orijinal logo/palet/font ve gerçek eylemler korunur. V7 dosyası byte-identical arşivdedir; v8 henüz yayın/kullanıcı görsel kabulü almadı.
 - Yeni üretim yalnız Google Flow; eski P01–P12/Atlas görevleri tarihsel kayıttır. Görseller temsili ve adaydır; kullanıcı onayı olmadan sitede kullanılmaz, ücretli videoya geçilmez.
 - Supabase proje/org, ödeme, e-posta, kargo, indirim/süreler, gerçek ürün/fiyat/logo ve Vercel/domain kararları açıktır; kendin seçme. Ayrıntı ve bağımlılıklar `docs/PLAN.md` içinde.
-- 1 Kasım 2026 kullanıcı devri: Codex planlama, görev oluşturma, uygulama ve denetimi birlikte yürütür. Claude dosyaları ve eski kabul kanıtları tarihsel kaynak olarak korunur. Task 159 gerçek Flow filmiyle v7 açılış/yayın kabulü tamamlandı. Task 157/158 önceki v6 uygulama ve yayın tarihçesidir.
+- 1 Kasım 2026 kullanıcı devri: Codex planlama, görev oluşturma, uygulama ve denetimi birlikte yürütür. Claude dosyaları ve eski kabul kanıtları tarihsel kaynak olarak korunur. Task 160 v8 tasarım uygulaması sürüyor; son doğrulanmış production v7/Task 159 kaynağı 5a3b1f6. Task 157/158/159 sonuçları yeni v8 kabulü yerine geçmez.
 
 # Rol: Codex / proje yürütücüsü
 
@@ -79,7 +79,7 @@ Yeniden kurgu sırasında (KURUMSAL 050–063, ZEYTİN 090–096 ve 100–106) b
 - Onaysız medya public/runtime’a bağlanmaz. Hazır SDR’ye ikinci ACES/tone mapping uygulanmaz. Özel canvas Task 083 yeniden kullanılır; body/wheel/touch scroll kilidi veya autoplay loop eklenmez.
 - Kullanıcının seçilen PDF'yi uygulama isteğiyle Task 156'da kabul edilen ilk A→B klibinin türevleri açılışa bağlandı ve API ile yayınlandı. 1280/960, 12 fps, 95'er kare; aynı başlangıçtan AVIF/WebP poster. Kaynak/çıktı kapısı scripts/check-cinematic-hero.mjs ve lib/media/cinematic-hero.json. Diğer üç klip bu yayında yok, ek kredi harcaması 0; son makbuz docs/referans/yayin-sinematik-20261101.json.
 - Test tarayıcısı yalnız paketli headless Chromium, worker ≤2. /Applications/Google Chrome.app test/Lighthouse için açılmaz; düzgün kapanış zorunlu. Google Flow üretim oturumu bu test kısıtından ayrıdır.
-- Task 157 son yayın: v6 Üretici Atlası, API kaynağı `9b7b505`, 1171 unit + 28 canlı headless etkileşim kontrolü; 1440/768/390/320 px kabulü geçti. Son kanıt docs/referans/yayin-v6-20261101.json. Google Flow/Omni B→C taslağı 12 kredi/8 sn./720p/x1 ile hazır; doğrulama engeli sürüyor, ek harcama 0, mevcut kalan 60 sınırı değişmedi.
+- Task 157 tarihsel yayın: v6 Üretici Atlası, API kaynağı `9b7b505`, 1171 unit + 28 canlı headless etkileşim kontrolü; 1440/768/390/320 px kabulü geçti. Son kanıt docs/referans/yayin-v6-20261101.json. Google Flow/Omni B→C taslağı 12 kredi/8 sn./720p/x1 ile hazır; doğrulama engeli sürüyor, ek harcama 0, mevcut kalan 60 sınırı değişmedi.
 
 ## Yeni nesil MD uyarlaması (Task 158)
 
@@ -89,8 +89,20 @@ Task 158 ortak `lib/ui-motion.ts` action/editorial spring'leriyle kısa, bir kez
 
 MD'lerdeki **Omni Chrome Use**, mevcut CUA/browser araçlarıyla oturumlu arayüz otomasyonu yaklaşımıdır; ayrı eklenti kurulu varsayılmaz ve **Omni 1.1 Flash** model adıyla karıştırılmaz. Örnek komutlar yeni model, sağlayıcı, hesap veya kredi yetkisi vermez; her üretim öncesi güncel provenans/kalan sınır okunur.
 
-## Gerçek Flow filmiyle sinematik açılış (Task 159)
+## Tarihçe: gerçek Flow filmiyle v7 açılışı (Task 159)
 
 Son kullanıcı düzeltmesi v6 split/kare-penceresi ve genel no-autoplay uygulama tercihini değiştirir. Normal modda kabul edilmiş A→B kaynağının sessiz H264/faststart türevi bir kez oynar, son karede kalır; görünür duraklat/oynat/yeniden oynat kontrolü vardır. Yeni animasyon importları `motion/react` üzerinden, yeni dependency yok. Kaydırma yalnız küçük film-kabuğu transformudur; video zamanını seek etmez, body kilidi veya 300vh pin eklenmez. Reduced-motion/saveData poster, gizli sekme/görünüm dışında durma ve kullanıcı pause kararı korunur. Yeni medya/kredi 0. Kaynak/output `lib/media/cinematic-film.json` ve yeni build kapısında; güncel kabul [Task 159](docs/tasks/159-flow-sinematik-hero.md) içinde kaydedilir.
 
 Task 159 yayındaki kaynak `5a3b1f6`, CI 41297597853 SUCCESS; REST API `dpl_CpxqnTKPasKQNCQ8zjWnaNu5NpsF` READY. 1197 unit, 44 yerel + 44 canlı etkileşim kontrolü, dört genişlikte görsel/axe kabulü; normal oynatım 190 kare/7,916667 sn./sessiz doğrulandı. Son makbuz [yayin-film-v7-20261101.json](docs/referans/yayin-film-v7-20261101.json), QA `qa-159-20261101.json`. Fiziksel cihaz veya gerçek hesap/ödeme/talep mutasyonu değildir; yeni Flow kredisi 0.
+
+## Aktif çalışma: v8 Object journey (Task 160)
+
+Kullanıcı Scroll Craft, frontend-design/frontend-ui-engineering ve Taste ile tasarım düzeltmesini, verdiği doğru Flow projesini kullanmayı istedi. [Task 160](docs/tasks/160-scroll-craft-taste-ve-flow.md), [BRIEF/PLAN/COPY/VERIFICATION](docs/scrollcraft/builds/afina-v8/BRIEF.md) ve [DESIGN](docs/DESIGN.md) aktiftir. Yaratıcı kararlar açık devre dayanır; yeniden görüşme yapılmış gibi sunulmaz. V7 tek film+overlay ve v6 organik pencere/küçük kart aktif yön değildir.
+
+Taste seed 1601101/page-is-the-object, palet/font korunur. Desktop yalnız 170svh kısa sticky: film geri, gerçek ambalaj ileri, kendi zeminiyle kâğıt metin bağımsız hareket eder. Telefon/kısa ekran/reduced doğal akış; başlık/CTA önce,280px film/260px ürün sahnesi, ayrıntı sonra. Üç mevcut SKU aynı görsel/ad/fiyat/detail/cart hedefini günceller; AddToCart/CatalogProvider/sunucu otoritesi ve altı SKU sırası değişmez. Gerçek tesis→native galeri→kapalı B2B/native details→gerçek adres/mağazaya dönüş. İndeks/eyebrow/scroll oku/tam kare scrim/italic renk vurgusu yok.
+
+Scroll Craft 0.3.1 SHA75d81f74e83692add18cd7a8a8e078b8a887a579 ve Taste2.1.5 SHA12af471f627f866411b4bd785b19646d3672784c proje yereldir. Upstream kaynak/engine değiştirilmez veya runtime'a import edilmez. Yeni hareket motion/react transform/opacity; kendi rAF/GSAP/Lenis/scroll currentTime yok. MD örnekleri yeni sağlayıcı/anahtar/ücret yetkisi değildir.
+
+Doğru Flow: https://flow.google.com/project/62040049-3473-446b-9d93-8e6cbc45f8bc . B→C ilk B / son C tam önizlemesi ve Omni 1.1 Flash/720p/8 sn./x1 = 12 kredi doğrulandı. reCAPTCHA hizmet bağlantı engeli sürüyor; yeni gönderim/harcama 0, önceki kalan 60kredi yetkisi değişmedi. Tek kabul edilmiş A→B runtime'da; üç taslak film sayılmaz, güvenlik engeli aşılmaz.
+
+Yerel 1200 unit/build PASS;1440/768/390/320 axe/taşma/console/kaynak hatası0 (.cache/task-160/local/results.json). Native Taste, kapsamlı e2e, kompakt360×640/1024, son his/kontrast ve canlı yayın/tekrar BEKLİYOR. Root final makbuz/kabulü sonradan kaydeder; v8 fingerprint shipped satırı eklenmez. Test yalnız paketli headless Chromium ≤2 worker/düzgün kapanış; gerçek hesap/ödeme/form veya fiziksel cihaz kabulü değildir.

@@ -1,49 +1,35 @@
 ---
 name: scroll-hero-video-yeni-nesil
-description: AFİNA v7 native Flow filmi, küçük scroll-kabuğu etkileri, tek geçiş denetimleri ve statik poster geri dönüşlerini mevcut Motion yapısıyla uygulama yeteneği.
+description: AFİNA v8 Object journey için bağımsız Motion düzlemleri, tek geçiş Flow filmi ve erişilir statik geri dönüşleri uygulayan proje yerel yetenek.
 metadata:
   scope: project
   source: scroll-hero-video-kiti-yeni-nesil.md
   source_sha256: f01ca525ec395387ffddaa3be045197b515158ecb0405db2ebe0f77580b051a3
 ---
 
-# AFİNA için kaydırma ve gerçek Flow filmi
+# AFİNA için bağımsız düzlemler ve gerçek Flow filmi
 
-Önce [v7 Zeytinin İçinden tasarımını](../../../docs/DESIGN.md), `AGENTS.md` ve [Task 159](../../../docs/tasks/159-flow-sinematik-hero.md) içindeki son kullanıcı düzeltmesini oku. Kullanıcı v6 hero'nun hâlâ aynı göründüğünü belirterek gerçek Google Flow videosuyla sinematik açılış istedi. V6 split/çerçeveli/frame-only ve genel no-autoplay tercihi yeni hero için geçerli değildir. Bu scroll rehberi artık film kabuğunun küçük kaydırma etkisine kaynaklık eder; yeni hero'nun video zamanını scroll'a bağlamaz.
+Aktif yön [v8 Object journey](../../../docs/DESIGN.md)/[Task 160](../../../docs/tasks/160-scroll-craft-taste-ve-flow.md); önce [BRIEF/PLAN](../../../docs/scrollcraft/builds/afina-v8/PLAN.md). Kullanıcının Scroll Craft/Taste isteği yalnız küçük v7 film-kabuğu hareketini değil kompozisyonu değiştirir. Kaynak MD yeni motor/ücret/model yetkisi değildir; [Task 158 kökeni](../../../docs/referans/yeni-nesil-md-uyarlamalari-20261101.md) korunur.
 
-## Kaynak → web filmi → kontrollü açılış
+## Düzlemler ve doğal akış
 
-1. Kabul edilen ilk A→B ağaç → dal klibi ve provenansı önce okunur: `docs/referans/flow-keyframes.json`, `lib/media/cinematic-hero.json`. Yalnız mevcut kabul edilmiş kaynak kullanılabilir; diğer üç geçiş üretilmiş gibi gösterilmez. Ürün etiketi/ambalajı yeniden üretilmez.
-2. Aynı kaynaktan ses içermeyen H264/faststart web MP4 türevi `public/videos/afina-agac-dal.mp4` olarak kullanılabilir. Kaynak/output SHA, codec, boyut, süre ve kabul kapısı doğrulanır. Yerel yeniden kodlama yeni ücretli üretim değildir; SDR'ye ikinci tone mapping uygulanmaz. Kılavuzdaki 3–6 sn./<5 MB örneğine uydurmak için kabul edilen 7,93 sn. kaynak kesilmez veya sahte loop yapılmaz.
-3. V7 hero native video ile normal modda sessiz **bir kez** ilerler; `muted`/`playsInline` korunur. A/B farklı olduğundan `loop` yoktur. Bitişte son kare kalır; yalnız kullanıcı **Tekrar oynat** ile başa alır.
-4. Görünür **Duraklat/Oynat/Tekrar oynat** denetimi gerçek olaylarla eşleşir. Autoplay reddi “oynuyor” sayılmaz. Kullanıcının manuel durdurma tercihi görünürlük olaylarıyla ezilmez; biten film kendiliğinden tekrar başlamaz.
+Desktop yeterli alan: tek kısa 170svh sticky. Motion useScroll/useTransform film scale1→.82/x0→-8vw/y0→-48px, ambalaj y80→-8px/scale1→1.12, kendi kâğıt zeminli copy y0→-24px. Film, gerçek alfa ambalaj ve HTML metin ayrı sahipliktedir. mediaStyle yalnız poster/video;44px+ kontrol transform dışında. Tek zirve ve açık taban teması; stage'ı boş tutan pin, body/wheel/touch capture yok.
+Telefon/kısa ekran/reduced pin yok: H1+ana CTA önce,280px film/260px ürün, sonra seçim/ayrıntı.360×640 ve büyütülmüş metin doğrulanır. SSR poster/H1/CTA görünür; seçim aynı id'nin gerçek görsel/ad/fiyat/detail/cart hedefini günceller.
+Yeni API motion/react; sadece transform/opacity. GSAP/Lenis/vanilla engine/yeni rAF/seek motoru eklenmez. Native currentTime scroll'a bağlanmaz ve video zamanına spring verilmez. Genel canvas/kare motoru diğer onaylı kullanımlarda kalabilir; bu MP4 yerine geçirilmez.
 
-## Scroll ve doğal akış
+## Kaynak ve film yaşam döngüsü
 
-`motion/react` içindeki `useScroll`/`useTransform` yalnız film kabuğunda küçük isteğe bağlı transform parallax/scale içindir. Native `currentTime` scroll'a bağlanmaz; video zamanına spring veya ikinci seeking/rAF motoru eklenmez. Manuel tekrarın başa alma işlemi scroll seeking değildir. 300–400vh pin, body/wheel/touch yakalama ve boş uzun intro yoktur.
+1. Kabul edilmiş ilk A→B, docs/referans/flow-keyframes.json ve lib/media/cinematic-film.json provenansı. Web MP4 public/videos/afina-agac-dal.mp4, sessiz H264/faststart/190kare/7,916667sn./2.537.380bayt. Kaynak/çıktı SHA ve script kapısı korunur; yeni üretim veya ikinci SDR tone mapping yok.
+2. Normal mod hydration/tercih/gerçek görünürlükten sonra muted/playsInline ile **bir kez** oynar; son karede kalır. Loop/sahte dikiş yok. Pause/play/replay gerçek olaylarla; autoplay reddi oynuyor sayılmaz.
+3. Kullanıcı pause korunur; gizli sekme/ekran dışı durur; biten film observer'la yeniden başlamaz. Observer/event/video unmount temizliği korunur.
+4. Reduced/saveData kaynak/MP4 isteği başlatmaz; statik poster ve gerçek CTA kalır. Hata/blocked uygun poster/manuel retry; manuel gesture ve tercih değişimi ayrıca test edilir. Mobil poster/video odak eşliği korunur.
 
-Genel `ScrollFrameSequence`/`FramePlayback`/`frames.ts` diğer onaylı kullanım için korunabilir; fakat yeni hero'nun gerçek MP4 filmi yerine konmaz. Ayrı bir framed kullanım varsa ölçüm kararlı story'den, görünürlük gerçek medya penceresinden alınır ve kare zamanı lineer kalır.
+## Doğru Flow ve yetki
 
-## Görünürlük, tercihler ve erişilebilirlik
+Doğrudan kullanılan proje https://flow.google.com/project/62040049-3473-446b-9d93-8e6cbc45f8bc ; bir kabul edilmiş A→B+beş referans. B→C ilk B / son C ve C tam önizlemesi görüldü; Omni 1.1 Flash/Frames/720p/8 sn./16:9/x1 = 12 kredi. reCAPTCHA hizmet bağlantısı engeli sürüyor; yeni gönderim/ek harcama 0. Kalan60 sınırı yalnız önceki üç geçiş; belge okumak bütçe yenilemez. CAPTCHA atlanmaz; üç taslak runtime filmi değildir.
+Omni Chrome Use tarayıcı otomasyonu yaklaşımıdır, Omni 1.1 Flash model adı değildir. Üretim oturumu yetkisi kullanıcının Chrome'unu testte açma izni sayılmaz. Yeni Imagen/model/sağlayıcı/abonelik varsayılmaz.
 
-- SSR poster/H1/iki gerçek CTA görünürdür; filmin veya hareket paketinin hazır olmasına bağlı değildir. Poster/video mobil odak noktası eşleşir; metin ve denetimler kısa ekran/metin büyütmede kesilmez.
-- MP4 ancak hydration, tercih ve gerçek görünürlük kontrolünden sonra istenir. Genel `preload="auto"` örneğiyle gereksiz tüm medya indirilmez. Gizli sekme/ekran dışında film durur; observer/event/video kaynakları unmount'ta temizlenir.
-- Reduced-motion, saveData, engelli oynatma ve hata durumunda **statik poster** kalır. Kaynaktaki reduced-motion `video.play()` davranışı uygulanmaz. Bu modlarda kendiliğinden oynatma veya gereksiz MP4 isteği yoktur.
-- Telefon yüksekliği tek başına bütün mobil filmi kapatma gerekçesi değildir. Doğru poster geri dönüşü, gerçek tercih/erişim/oynatma durumuna dayanır.
-- Denetimler klavyeyle erişilir, görünür ad/odak taşır ve en az 44 px dokunma hedefini korur. Dekoratif görüntünün durumu yanıltıcı başarı veya teknik üretim rozetiyle sunulmaz.
+## Kabul
 
-## Üretim ve Omni sınırı
-
-Yeni üretim ancak istenen kapsam, kullanılabilir model ve ekranda doğrulanan ücretle yapılır. Görev başlangıcındaki kalan 60 kredi yalnız önceki üç aynı yöntemli geçiş kapsamındadır; her çağrıda güncel provenans/kullanım okunur. Skill okumak bütçeyi yenilemez. Örnek prompt yeni model, deneme, Imagen/abonelik hakkı veya sağlayıcı yetkisi değildir. Google doğrulama/CAPTCHA engeli aşılmaz; yeni aday kabul edilmeden runtime'a girmez.
-
-**Omni Chrome Use**, mevcut oturumlu Flow yüzeyinin CUA/browser ile otomasyonu yaklaşımıdır. Ayrı eklenti kurulu varsayılmaz ve **Omni 1.1 Flash** model seçeneğiyle karıştırılmaz. Araç erişimi, model, kredi ve sonuç ayrı doğrulanır. Yetkili üretim Chrome oturumu testte kullanıcının Chrome'unu açma yetkisi değildir.
-
-## Kabul ve birlikte kullanım
-
-Gerçek video zamanının ilerlemesi, sessizlik, tek geçiş/son kare, denetimler, kullanıcı durdurması, görünürlük/tercih değişimi, autoplay reddi ve poster kanıtlanır. Gerçek ürün/sepet/üyelik/kurumsal CTA'lar kalır. Test yalnız paketli headless Chromium, en fazla iki worker ve düzgün kapanışla yapılır; fiziksel telefon kabulü emülasyondan ayrıdır. Güncel [Task 159 makbuzu](../../../docs/referans/yayin-film-v7-20261101.json) tamamlanan yayın/kabulü kaydeder; önceki test sonucu yeni film kabulü sayılmaz.
-
-- [Profesyonel web](../profesyonel-web-sitesi-yeni-nesil/SKILL.md): kimlik ve gerçek içerik.
-- [Sinematik siteler](../sinematik-siteler-yeni-nesil/SKILL.md): tam geniş film kompozisyonu.
-- [UI/UX Pro Max](../ui-ux-pro-max/SKILL.md): ortak hareket ve durumlar.
-
-[Task 158 kaynak/istisna kaydı](../../../docs/referans/yeni-nesil-md-uyarlamalari-20261101.md) kaynak kökenidir; güncel görsel/oynatma kararı v7/Task 159'dur.
+Final-source gerçek decoded film/zaman/son kare, kontrolün ayrı düzlemi, tercih/görünürlük/hata, nesne seçimi ve doğru detail/cart, SSR/JS kapalı, rail erişimi ve kompakt telefon kontrol edilir. Paketli headless Chromium ≤2 worker/düzgün kapanış. Önceki [v7 makbuzu](../../../docs/referans/yayin-film-v7-20261101.json) tarihçedir; v8 native Taste/e2e/canlı kabulü ayrıca bekler. Fiziksel cihaz/gerçek servis sonucu emülasyondan türetilmez.
+Birlikte [Scroll Craft](../scroll-craft/SKILL.md), [Sinematik](../sinematik-siteler-yeni-nesil/SKILL.md), [Profesyonel web](../profesyonel-web-sitesi-yeni-nesil/SKILL.md), [UI/UX](../ui-ux-pro-max/SKILL.md); upstream engine değiştirilmez/import edilmez.

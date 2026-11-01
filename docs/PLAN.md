@@ -1,5 +1,13 @@
 # Proje Planı
 
+## Aktif çalışma: v8 Object journey — Task 160
+
+[Task 160](tasks/160-scroll-craft-taste-ve-flow.md), [DESIGN](DESIGN.md) ve [brief-first plan](scrollcraft/builds/afina-v8/BRIEF.md) aktiftir. Scroll Craft + Taste seed 1601101/page-is-the-object ile gerçek Flow/ambalaj/kâğıt ayrı düzlemler; yalnız desktop kısa 170svh tutuş, telefon/reduced doğal akış. Çalışan üç SKU seçimi mevcut detay/sepet sözleşmesini kullanır. Kompakt gerçek tesis, native altı SKU galerisi, kapalı-hizmet/native B2B details ve gerçek adres/ürünlere dönüş; sıra/fiyat/stok/servis mimarisi değişmez. V7 sözleşmesi byte-identical arşivde; son doğrulanmış production hâlâ5a3b1f6.
+
+Yerel 1200 unit/build ve1440/768/390/320 axe/taşma/hata 0 doğrulandı. Native Taste, geniş e2e,360×640/1024/son his/kontrast ve yeni CI/API yayın/canlı tekrar BEKLİYOR; v8 tamamlandı sayılmaz. Kaynak .cache/task-160/{unit.log,build.log,local/results.json}; final makbuzlar ayrı kaydedilecek.
+
+Doğru Flow project 62040049-3473-446b-9d93-8e6cbc45f8bc doğrudan incelendi; B→C referansları ve12 kredi/8 sn./720p/x1 doğrulandı. Google reCAPTCHA bağlantı engeli sürüyor; yeni üretim/harcama 0, önceki kalan 60 sınırı değişmedi. Yalnız kabul edilmiş A→B kullanılır. Aşağıdaki önceki görev/kararlar tarihçedir; yeni kabulün yerine geçmez.
+
 ## Hedef
 AFİNA ZEYTİN için afinazeytin.com üzerinde tek landing vitrin + perakende satın alma ve toptan talep akışı. En fazla 5–6 aktif ürün admin’den girilir; scroll ile sahneye giren ürünler, üyelik, sepet, ödeme, kampanya ve sipariş/kargo takibi tek müşteri yolunda birleşir. Örnek ürünler gerçek katalog değildir.
 
@@ -56,7 +64,7 @@ docs/tasks/              # sırayla uygulanacak bağımsız task’lar
 
 ## ZEYTİN kapsamı
 
-- Marka AFİNA ZEYTİN, ana slogan **“Kökü toprakta. Yeri sofrada.”**; alt slogan **“Toprağın sunduğu lezzet, Afina’nın özeniyle.”**. “Köklerinden aldığı güçle büyüyor” yalnız ikincil/hikâye metni olarak kalabilir; #243A29 zeytin yeşili, #F5F1E7 fildişi, #D4B483 şampanya altını, altın dal + el logosu. Tek landing, scroll-linked/whileInView ürün sahneleri; en fazla 5–6 aktif ürün.
+- Marka AFİNA ZEYTİN, ana slogan **“Kökü toprakta. Yeri sofrada.”**; alt slogan **“Toprağın sunduğu lezzet, Afina’nın özeniyle.”**. “Köklerinden aldığı güçle büyüyor” yalnız ikincil/hikâye metni olarak kalabilir; #172B21 zeytin yeşili, #F4F0E7 kâğıt, #B6A078 şampanya, altın dal + el logosu. Tek landing, scroll-linked/whileInView ürün sahneleri; en fazla 5–6 aktif ürün.
 - Üyelik: kayıt/giriş, hesabım, yalnız kendine ait sipariş geçmişi. Sepet: drawer + sayfa, upsell/çapraz satış (ör. zeytin yanında zeytinyağı), onaylı eşiklerde kademeli adet indirimi.
 - Ödeme: yalnız **PayTR iFrame API**, site içine gömülü. `createPaytrSession(order) → {iframeUrl, token}` sunucuda `get-token` çağırır; `https://www.paytr.com/odeme/guvenli/<token>` ödeme sayfamızda `iframeResizer` ile açılır. Kart/3D Secure alanları PayTR iframe içindedir; kendi kart alanlarımız çizilmez. Sol özet/temsili kart görseli/güven bilgisi, sağ iframe; upsell/kupon/kargo çevresi marka tokenlarına uyarlanır. Sağlayıcı soyutlaması yok; ileride gerekirse ayrıca planlanır.
 - PayTR bildirimi sunucu-sunucu hash doğrulaması ve idempotent sipariş güncellemesi yapar, düz `OK` döner. `merchant_ok_url` / `merchant_fail_url` kendi sonuç sayfamıza döner; sipariş durumu **yalnız doğrulanmış callback** ile değişir. Test modu `PAYTR_TEST_MODE` env değerinden okunur; sandbox kanıtı canlı tahsilat kanıtı değildir.
@@ -258,12 +266,12 @@ Kullanıcı ilk klibi kabul edip kalan üç geçişi istedi. Doğrulanan 20 kred
 
 Task 156 tamamlandı ve yayınlandı: `104b15f`, 85 dosya/1164 test + lint/typecheck/build ve CI SUCCESS; Vercel REST API `dpl_J2H5vNo7EFfvukU7ionhgRRVd2Wa` READY. afinazeytin.com üzerinde yeni poster/başlık/CTA ve 9 medya isteği/hash doğrulandı. Kanıt `docs/referans/yayin-sinematik-20261101.json`. Tarayıcı/cihaz kabulü yapılmadı; ek Flow harcaması 0.
 
-## Güncel yön: v6 Üretici Atlası ve tarayıcı kabulü
+## Tarihçe: v6 Üretici Atlası ve tarayıcı kabulü
 Kullanıcı mevcut hero'yu reddedip tasarım sözleşmelerini değiştirmemi, canlı siteyi masaüstü/mobil tarayıcıda kontrol edip eksikleri düzeltmemi istedi. [Task 157](tasks/157-tam-tasarim-ve-canli-kabul.md) önceki görsel yönün yerini alır. `docs/DESIGN.md` ve 21st bağlamı tek güncel v6'ya çevrildi; eski tasarım arşivde korunur. Web Site Yeteneği Kiti, Google Flow/Omni araç yönüyle mevcut native-scroll motora uyarlanır. Gerçek kullanıcı/ödeme/teklif yazımı ve servis etkinleştirmesi bu görsel kabul değildir.
 
 Task 157 tasarım ve yayın kabulü tamamlandı: `9b7b505`, 1171 unit test, 28 yerel + 28 canlı headless Chromium etkileşim kontrolü; 1440/768/390/320 px'te taşma/pageerror/HTTP kaynak hatası/axe ihlali 0. API READY `dpl_DRCshLDGWbDcVPPZvmTerhyU7aR5`; canlı alan adı ve yeni ekranlar doğrulandı. Son makbuz `docs/referans/yayin-v6-20261101.json`. Google doğrulaması sürdüğü için yeni Omni üretimi gönderilmedi; B→C ilk/son kareleri hazır, 12 kredi/çıktı ekranda doğrulandı, mevcut 60 sınırını değiştirmez.
 
-## Güncel çalışma: dört yeni nesil MD'nin uygulanması
+## Tarihçe: dört yeni nesil MD'nin uygulanması
 
 [Task 158](tasks/158-yeni-nesil-md-kitleri.md), kullanıcı tarafından verilen dört MD'yi bu projeye uyarlar: [Profesyonel web](../.agents/skills/profesyonel-web-sitesi-yeni-nesil/SKILL.md), [Scroll hero](../.agents/skills/scroll-hero-video-yeni-nesil/SKILL.md), [Sinematik siteler](../.agents/skills/sinematik-siteler-yeni-nesil/SKILL.md), [UI/UX Pro Max](../.agents/skills/ui-ux-pro-max/SKILL.md). Kaynak hash'leri ve v6 ile çelişen örneklerin uyarlaması [eşleme kaydındadır](referans/yeni-nesil-md-uyarlamalari-20261101.md). Global skill/MCP/anahtar veya yeni bağımlılık kurulumu yapılmaz.
 
@@ -271,7 +279,7 @@ Runtime kapsamı ortak Motion action/editorial spring'leri, SSR metni görünür
 
 Task 158 tamamlandı: kaynak `862c1be8c8803e1dc3dbb34f19e98a6988531d62`, 86 dosya/1176 test, lint/typecheck/build ve CI 41295337111 SUCCESS. API `dpl_8eMNwwHWCr2dod8aLYnzSw9DV9dQ` READY, afinazeytin.com alias bağlı. 28 yerel + 28 canlı etkileşim kontrolü ve 1440/768/390/320 px görsel/axe denetimi geçti; taşma, pageerror, başarısız kaynak ve axe ihlali 0. Reduced-motion tercih değişimi ve JavaScript kapalı gerçek anchor kabulü ayrıca geçti. [Yayın makbuzu](referans/yayin-kitler-20261101.json), [QA kanıtı](referans/qa-158-20261101.json). Yeni medya/kredi 0; fiziksel cihaz veya gerçek hesap/sipariş/ödeme/talep mutasyonu yapılmadı. Task 157 kanıtı tarihçe olarak değişmeden kalır.
 
-## Güncel düzeltme: gerçek Flow filmi, v7
+## Tarihçe: gerçek Flow filmi, v7
 
 Kullanıcı “hero hâlâ aynı görünüyor” diyerek Google Flow videolarıyla MD'lerdeki sinematik açılışı istedi. [Task 159](tasks/159-flow-sinematik-hero.md) görsel kompozisyonu değiştirir: gerçek tam geniş film, sol-alt slogan/iki CTA; eski split, organik pencere ve hero ürün kartı kalkar. V6 tasarımı değişmeden arşivlendi; güncel DESIGN ve dört skill v7'ye göre yenilendi. Yeni Motion API'leri kullanıcının belirttiği `motion/react` üzerinden.
 
