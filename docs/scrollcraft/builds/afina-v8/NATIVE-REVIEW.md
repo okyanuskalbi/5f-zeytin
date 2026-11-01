@@ -62,3 +62,5 @@ Yerel kanıt: `.cache/task-160/adapter-provenance.json`, `cdp-safety.patch`, `af
 Koşuma ait browser profili/süreci **0**;3020production sunucusu düzgün kapandı. Bu kayıttan sonra runtime/denetim kuralı değiştirilmedi.
 
 Tekrar üretilebilir denetim için kullanılan browser-helper farkı [cdp-safety.patch](tooling/cdp-safety.patch), tüm kaynak/kopya SHA kayıtları [adapter-provenance.json](tooling/adapter-provenance.json) içinde kalıcıdır. Upstream skill dosyası değiştirilmedi; güvenli fark yalnız audit kopyasına uygulanır.
+
+Kalıcı patch sıfır bağlamlı unified diff olarak saklanır (`git apply --unidiff-zero`): böylece boş context satırları belge whitespace hatası üretmez. Özgün helper'a özel cache dizininde uygulandı; sonuç güvenli koşum helper'ıyla bayt düzeyinde aynı doğrulandı. Upstream ve denetim kodu değişmedi.

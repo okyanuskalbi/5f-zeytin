@@ -1,19 +1,11 @@
---- original/scripts/lib/cdp.mjs
-+++ taste-safe/scripts/lib/cdp.mjs
-@@ -1,40 +1,17 @@
- // Zero-dependency Chrome DevTools Protocol client.
- // Drives an installed Chrome / Edge / Chromium in headless mode over Node's built-in WebSocket.
- // Requires Node 22+. No npm install.
+--- a/scripts/lib/cdp.mjs
++++ b/scripts/lib/cdp.mjs
+@@ -4 +4 @@
 -import { spawn, spawnSync } from 'node:child_process';
 +import { spawn } from 'node:child_process';
- import { existsSync, mkdtempSync, rmSync, writeFileSync, readFileSync, readdirSync } from 'node:fs';
- import { tmpdir, hostname } from 'node:os';
- import { join } from 'node:path';
- 
- const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
- 
+@@ -10,0 +11 @@
 +// Task 160 safety adapter: never discover or start the user's installed browser.
- export function findChrome() {
+@@ -12,26 +13,2 @@
 -  const env = process.env.CHROME_PATH || process.env.PUPPETEER_EXECUTABLE_PATH;
 -  if (env && existsSync(env)) return env;
 -  const home = process.env.HOME || process.env.USERPROFILE || '';
@@ -42,31 +34,19 @@
 -  return null;
 +  const bundled = '/Users/emre/Library/Caches/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-mac-arm64/chrome-headless-shell';
 +  return existsSync(bundled) ? bundled : null;
- }
- 
- // Each profile carries an owner file naming the machine and the two processes that use it (the run and
-@@ -63,15 +40,9 @@
- 
- export class Browser {
-   static async launch({ width = 1440, height = 900, extraArgs = [] } = {}) {
+@@ -66,3 +43 @@
 -    if (typeof WebSocket === 'undefined') {
 -      throw new Error('Node 22+ is required (built-in WebSocket missing). Current: ' + process.version);
 -    }
 +    if (typeof WebSocket === 'undefined') throw new Error('Node 22+ is required.');
-     const exe = findChrome();
+@@ -70,5 +45 @@
 -    if (!exe) {
 -      throw new Error('No Chrome/Edge/Chromium found. Install one or set CHROME_PATH to its executable.');
 -    }
 -    // A throwaway profile per run, its cache capped (each run starts cold anyway), removed on exit. It is
 -    // claimed with an owner file before Chrome starts, so another run's sweep can tell when it was abandoned.
 +    if (!exe) throw new Error('The explicit bundled Playwright headless shell is unavailable.');
-     const base = process.env.TASTE_SKILL_TMP || tmpdir();
-     sweepProfiles(base);
-     const dir = mkdtempSync(join(base, 'ad-chrome-'));
-@@ -79,14 +50,6 @@
-       try { writeFileSync(join(dir, OWNER), JSON.stringify({ host: hostname(), pid: process.pid, chrome })); } catch {}
-     };
-     claim();
+@@ -82,8 +52,0 @@
 -    // On exit Chrome still holds the profile's files: stop it first, then remove the folder.
 -    let pid = 0;
 -    const drop = () => {
@@ -75,13 +55,7 @@
 -    };
 -    process.once('exit', drop);
 -    for (const sig of ['SIGINT', 'SIGTERM', 'SIGHUP']) process.once(sig, () => { drop(); process.exit(130); });
-     const args = [
-       '--headless=new', '--remote-debugging-port=0', `--user-data-dir=${dir}`,
-       '--disk-cache-size=16777216', '--media-cache-size=16777216',
-@@ -97,34 +60,74 @@
-       '--enable-unsafe-swiftshader', `--window-size=${width},${height}`, ...extraArgs, 'about:blank',
-     ];
-     const proc = spawn(exe, args, { stdio: ['ignore', 'ignore', 'pipe'] });
+@@ -100,9 +63,49 @@
 -    pid = proc.pid;
 -    claim(pid);
 -    const wsUrl = await new Promise((resolve, reject) => {
@@ -140,7 +114,7 @@
 +        });
 +        proc.once('error', (error) => { clearTimeout(t); reject(error); });
 +        proc.once('exit', (code) => { clearTimeout(t); reject(new Error('Bundled browser exited early: ' + code + '\n' + buf.slice(-600))); });
-       });
+@@ -110,18 +113,18 @@
 -      proc.on('exit', (code) => { clearTimeout(t); reject(new Error('Chrome exited early, code ' + code + '\n' + buf.slice(-600))); });
 -    });
 -    const b = new Browser();
@@ -177,13 +151,7 @@
 +      };
 +      return b;
 +    } catch (error) { await shutdown(); throw error; }
-   }
- 
-   send(method, params = {}, sessionId, timeoutMs = 30000) {
-@@ -157,12 +160,9 @@
-   }
- 
-   async close() {
+@@ -160,6 +163,3 @@
 -    try { await this.send('Browser.close', {}, undefined, 3000); } catch {}
 -    try { this.ws.close(); } catch {}
 -    try { this.proc.kill(); } catch {}
@@ -193,6 +161,3 @@
 +    await this._closeGracefully();
 +  }
 +
- }
- 
- export class Page {
