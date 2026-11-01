@@ -30,7 +30,13 @@ commit'inin sonucu ayrıca doğrulanır.
   tarball'ı cache'de olmadığı için tamamlanmadı; dry-run kurulum başarısı değildir.
   Mevcut node_modules değiştirilmedi. Kanıt `.cache/task-166/lockfile-verification`.
 - İlgili workflow güvenlik testleri: 11/11 PASS.
-- Normal main push ve yeni GitHub Actions sonucu: bekliyor.
+- Normal main push: `60a320f425a32d9bf1e07ad8702ed63054ed48fb`.
+- Yeni GitHub Actions run `41339970932`: SUCCESS. Temiz `npm ci`, lint,
+  typecheck, unit ve production build adımlarının tümü geçti. Bu sonuç
+  doğrudan GitHub API'den doğrulandı; eski başarısız koşu tarihçede kalır.
 - Vercel deploy: yapılmadı.
 
-## Durum: UYGULANIYOR
+Vercel cihaz girişi kullanıcı için başlatıldı; yetkilendirme bekleniyor.
+Bu kayıt yalnız CI onarımının tamamlandığını bildirir. API yayını ayrı iştir.
+
+## Durum: TAMAMLANDI
