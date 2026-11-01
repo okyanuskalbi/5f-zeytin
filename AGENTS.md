@@ -1,4 +1,17 @@
-## Aktif kullanıcı işi: Task165 / kabul edilen v12 üzerine bileşenler (1 Kasım 2026)
+## Aktif kullanıcı işi: Task168 / üyelik penceresi (1 Kasım 2026)
+
+Kullanıcı canlı giriş penceresi ekran görüntüsünün düzenlenmesini istedi.
+Aktif kapsam docs/tasks/168-uyelik-penceresi-duzenleme.md: kompakt giriş/kayıt,
+görünür kapatma kontrolü ve ayrı kaydırma gövdesi, mobil logo, KVKK notu altta,
+kullanılamayan Google seçeneği gizli; mevcut auth/provider sözleşmesi korunur.
+
+Önceki v12 yayını tamamlandı: 782af321, CI41346485610 SUCCESS,
+REST dpl_J9muAjiHNwqwSJauFjJEXoAJcAy8 READY ve afinazeytin.com bağlı.
+Taze HTTP/içerik kontrolü yapıldı; etkileşimli tarayıcı kabulü değildir.
+Kanıt docs/referans/yayin-v12-20261101.json. Aşağıdaki eski DNS/erişim
+engelleri geçmişteki çalıştırma oturumuna aittir.
+
+## Tarihçe: Task165 / kabul edilen v12 üzerine bileşenler (1 Kasım 2026)
 
 Kullanıcı Task164 hareketli önizlemesini “güzel beyendim” ile kabul etti.
 Bu kurgu korunur. Aktif görev `docs/tasks/165-etkilesimli-bilesenler.md`:

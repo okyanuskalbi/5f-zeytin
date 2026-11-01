@@ -17,8 +17,17 @@
 .error { color: var(--destructive); }
 .password { position: relative; display: block; }
 .password input { width: 100%; padding-right: 48px; }
-.password button { position: absolute; top: 50%; right: 4px; transform: translateY(-50%); min-height: 0; min-width: 0; width: 36px; height: 36px; color: var(--sut); }
+.password button { position: absolute; top: 50%; right: 4px; transform: translateY(-50%); min-height: 44px; min-width: 44px; width: 44px; height: 44px; color: var(--sut); }
 .password button, .password button:hover, .password button:active, .password button:focus, .password button:focus-visible { background: transparent; }
+.labelRow { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; column-gap: 12px; margin-bottom: -6px; }
+.forgotPassword { min-height: 44px; padding: 8px 0 8px 8px; font-size: 12px; font-weight: 500; color: var(--muted-foreground); text-underline-offset: 3px; }
+.alternateSignIn { width: 100%; min-height: 48px; padding: 12px; border: 1px solid var(--customer-rule, var(--border)); border-radius: 999px; font-size: 13px; font-weight: 500; background: transparent; }
+.alternateSignIn:hover { background: var(--card); }
+.authFooter { display: grid; gap: 2px; margin-top: 4px; text-align: center; font-size: 13px; }
+.authFooter p { color: var(--muted-foreground); }
+.authFooter .textLink { color: var(--foreground); font-weight: 600; padding-inline: 4px; }
+.guestLink { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding-block: 8px; color: var(--muted-foreground); font-size: 12px; }
+.guestLink:hover { color: var(--foreground); text-decoration: underline; text-underline-offset: 4px; }
 .strength { display: flex; gap: 8px; align-items: center; }
 .strength meter { width: 100%; height: 16px; accent-color: var(--altin); }
 .strength span { white-space: nowrap; font-size: var(--step-small); }

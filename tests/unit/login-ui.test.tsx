@@ -25,18 +25,33 @@ beforeEach(() => {
 });
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.unstubAllEnvs(); });
 
-it("renders the real form in production, keeps guest/register links and disables Google", async () => {
+it("renders the real production form and guest/register links without an unavailable Google action", async () => {
   vi.stubEnv("NODE_ENV", "production");
   render(await Page({ searchParams: Promise.resolve({ next: "/sepet" }) }));
   expect(screen.getByRole("heading", { level: 1 }).textContent).toBe("Soframıza hoş geldiniz.");
   expect(form()).toBeTruthy();
   expect(metadata.robots).toEqual({ index: false, follow: false });
-  expect((screen.getByRole("button", { name: /Google/ }) as HTMLButtonElement).disabled).toBe(true);
+  expect(screen.queryByRole("button", { name: /Google/ })).toBeNull();
   expect(document.body.textContent).not.toMatch(/Demo|yakında/);
   expect(screen.getByRole("link", { name: "Üye ol" }).getAttribute("href")).toBe("/kayit");
   expect(screen.getByRole("link", { name: "Üye olmadan alışverişe devam et" }).getAttribute("href")).toBe("/sepet");
   expect(field("Şifre").autocomplete).toBe("current-password");
   expect(mocks.getUser).not.toHaveBeenCalled();
+});
+it("places the privacy notice after the real form and keeps one password recovery action beside its label", () => {
+  render(<SignIn />);
+  const notice = screen.getByRole("link", { name: "KVKK Aydınlatma Metni" });
+  expect(form().contains(notice)).toBe(false);
+  expect(form().compareDocumentPosition(notice) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  const recovery = screen.getByRole("button", { name: "Şifremi unuttum" });
+  expect(recovery.getAttribute("type")).toBe("button");
+  expect(screen.getAllByRole("button", { name: "Şifremi unuttum" })).toHaveLength(1);
+  expect(screen.getByText("Şifre", { selector: "label" }).parentElement?.contains(recovery)).toBe(true);
+  expect(form().contains(recovery)).toBe(true);
+  fireEvent.click(recovery);
+  expect(screen.queryByLabelText("Şifre", { exact: true })).toBeNull();
+  expect(screen.getByRole("button", { name: "Giriş bağlantısı iste" })).toBeTruthy();
+  expect(fetchMock).not.toHaveBeenCalled();
 });
 it("validates and focuses invalid fields without sending", async () => {
   render(<SignIn />);

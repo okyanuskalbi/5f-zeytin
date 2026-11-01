@@ -2,13 +2,15 @@ import { cleanup, fireEvent, render, screen, within } from "@testing-library/rea
 import { useState } from "react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { AuthDialog } from "@/components/account/AuthDialog";
+const navigation = vi.hoisted(() => ({ replace: vi.fn(), refresh: vi.fn() }));
 vi.mock("next/navigation", () => ({
-  useRouter: () => ({ replace: vi.fn(), refresh: vi.fn() }),
+  useRouter: () => navigation,
 }));
 const preventDocumentNavigation = (event: MouseEvent) => {
   if (event.target instanceof Element && event.target.closest("a[href]")) event.preventDefault();
 };
 beforeEach(() => {
+  navigation.replace.mockReset(); navigation.refresh.mockReset();
   vi.stubGlobal(
     "fetch",
     vi.fn().mockResolvedValue(Response.json({}, { status: 401 })),
@@ -49,20 +51,67 @@ it("keeps registration details when the required legal text opens in a new tab",
     .toBe("deniz@example.test");
 });
 
-it.each(["ctrlKey", "metaKey", "shiftKey", "altKey"] as const)(
-  "keeps the sign-in form when a navigation link is clicked with %s",
-  async (modifier) => {
+it("switches the embedded registration and sign-in forms without navigating or repeating the session lookup", async () => {
     render(<DialogJourney />);
     await screen.findByRole("form", { name: "E-posta ile giriş" });
-    fireEvent.change(screen.getByLabelText("E-posta", { exact: true }), {
-      target: { value: "deniz@example.test" },
-    });
+    const signUp = screen.getByRole("link", { name: "Üye ol" });
+    expect(signUp.getAttribute("href")).toBe("/kayit");
+    fireEvent.click(signUp);
+    expect(screen.getByRole("form", { name: "E-posta ile üyelik" })).toBeDefined();
+    expect(screen.queryByRole("form", { name: "E-posta ile giriş" })).toBeNull();
+    expect(screen.queryByRole("link", { name: "Üye ol" })).toBeNull();
+    const returnPrompt = screen.getByText(/Zaten hesabınız var mı/);
+    const signIn = within(returnPrompt).getByRole("link", { name: "Giriş yap" });
+    expect(signIn.getAttribute("href")).toBe("/giris");
+    fireEvent.click(signIn);
+    expect(screen.getByRole("form", { name: "E-posta ile giriş" })).toBeDefined();
+    expect(screen.getByRole("dialog", { name: "AFİNA üyelik" })).toBeDefined();
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith("/api/account", expect.objectContaining({ credentials: "same-origin", cache: "no-store" }));
+    expect(navigation.replace).not.toHaveBeenCalled(); expect(navigation.refresh).not.toHaveBeenCalled();
+});
+
+it.each(["ctrlKey", "metaKey", "shiftKey", "altKey"] as const)(
+  "retains native registration-link semantics and the current form with %s",
+  async modifier => {
+    render(<DialogJourney />);
+    await screen.findByRole("form", { name: "E-posta ile giriş" });
+    fireEvent.change(screen.getByLabelText("E-posta", { exact: true }), { target: { value: "deniz@example.test" } });
     fireEvent.click(screen.getByRole("link", { name: "Üye ol" }), { [modifier]: true });
     expect(screen.getByRole("form", { name: "E-posta ile giriş" })).toBeDefined();
-    expect((screen.getByLabelText("E-posta", { exact: true }) as HTMLInputElement).value)
-      .toBe("deniz@example.test");
+    expect((screen.getByLabelText("E-posta", { exact: true }) as HTMLInputElement).value).toBe("deniz@example.test");
+    expect(navigation.replace).not.toHaveBeenCalled();
   },
 );
+
+it.each(["ctrlKey", "metaKey", "shiftKey", "altKey"] as const)(
+  "retains native sign-in-link semantics and registration values with %s",
+  async modifier => {
+    render(<DialogJourney />);
+    await screen.findByRole("form", { name: "E-posta ile giriş" });
+    fireEvent.click(screen.getByRole("button", { name: "Hesap oluştur" }));
+    fireEvent.change(screen.getByLabelText("Ad soyad"), { target: { value: "Deniz Test" } });
+    const returnPrompt = screen.getByText(/Zaten hesabınız var mı/);
+    fireEvent.click(within(returnPrompt).getByRole("link", { name: "Giriş yap" }), { [modifier]: true });
+    expect(screen.getByRole("form", { name: "E-posta ile üyelik" })).toBeDefined();
+    expect((screen.getByLabelText("Ad soyad") as HTMLInputElement).value).toBe("Deniz Test");
+    expect(navigation.replace).not.toHaveBeenCalled();
+  },
+);
+
+it("keeps one accessible close control outside the internal scrolling body", async () => {
+  render(<DialogJourney />);
+  await screen.findByRole("form", { name: "E-posta ile giriş" });
+  const dialog = screen.getByRole("dialog", { name: "AFİNA üyelik" });
+  const body = dialog.querySelector("[data-auth-dialog-body]");
+  const close = within(dialog).getByRole("button", { name: "Kapat" });
+  expect(body).not.toBeNull();
+  expect(body?.contains(screen.getByRole("form", { name: "E-posta ile giriş" }))).toBe(true);
+  expect(body?.contains(close)).toBe(false);
+  expect(within(dialog).getAllByRole("button", { name: "Kapat" })).toHaveLength(1);
+  fireEvent.click(close);
+  expect(screen.queryByRole("dialog", { name: "AFİNA üyelik" })).toBeNull();
+});
 
 it("closes for ordinary same-tab navigation to continue shopping", async () => {
   render(<DialogJourney />);

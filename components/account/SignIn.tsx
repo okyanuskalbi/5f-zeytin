@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { MembershipFrame, GoogleAvailability } from "./MembershipFrame";
-import { Eye, EyeOff } from "lucide-react";
+import { MembershipFrame } from "./MembershipFrame";
+import { Eye, EyeOff, Mail, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MembershipError } from "@/lib/auth/adapter";
@@ -15,7 +15,7 @@ import styles from "./Membership.module.css";
 
 // 21st diarmuradi/sign-in-3 (39096): preserve the split/password composition.
 // Use the approved orchard and AFİNA tokens; Google awaits OAuth approval.
-export function SignIn({ next = "/hesabim", signedIn = false, unavailable = false, embedded = false, onAuthenticated }: { next?: string; signedIn?: boolean; unavailable?: boolean; embedded?: boolean; onAuthenticated?: () => void }) {
+export function SignIn({ next = "/hesabim", signedIn = false, unavailable = false, embedded = false, onAuthenticated, onRegister }: { next?: string; signedIn?: boolean; unavailable?: boolean; embedded?: boolean; onAuthenticated?: () => void; onRegister?: () => void }) {
   const router = useRouter();
   const [signedOut, setSignedOut] = useState(false);
   const sessionOpen = signedIn && !signedOut;
@@ -67,8 +67,7 @@ export function SignIn({ next = "/hesabim", signedIn = false, unavailable = fals
   const failed = feedback.error || initialFailure;
   const Heading = embedded ? "h2" : "h1";
   const content = <>
-        <header className={styles.intro}><Heading>Soframıza hoş geldiniz.</Heading><p>Hesabınıza giriş yapın, sofranız için seçtiklerinizi takip edin.</p></header>
-        {!sessionOpen && <GoogleAvailability />}
+        <header className={styles.intro}><Heading>Soframıza hoş geldiniz.</Heading><p>Siparişlerinizi ve size ait bilgileri tek yerden takip edin.</p></header>
         {sessionOpen ? <div className={styles.form}>
           <p>Oturumunuz açık.</p>
           <Button asChild><Link href={destination}>Alışverişe devam et</Link></Button>
@@ -77,21 +76,28 @@ export function SignIn({ next = "/hesabim", signedIn = false, unavailable = fals
           <fieldset disabled={busy}>
             <Field id="auth-email" name="email" label="E-posta" type="email" autoComplete="email" inputMode="email" maxLength={254} required error={errors.email} />
             {method === "password" ? <div className={styles.field}>
-              <label htmlFor="auth-password">Şifre</label>
+              <div className={styles.labelRow}>
+                <label htmlFor="auth-password">Şifre</label>
+                <Button variant="link" className={styles.forgotPassword} onClick={() => { setMethod("magic_link"); setPassword(""); setShowPassword(false); }}>Şifremi unuttum</Button>
+              </div>
               <div className={styles.password}>
                 <Input id="auth-password" name="password" type={showPassword ? "text" : "password"} autoComplete="current-password" value={password} onChange={event => setPassword(event.target.value)} maxLength={128} required aria-invalid={!!errors.password} aria-describedby={errors.password ? "auth-password-error" : undefined} />
                 <Button variant="ghost" size="icon" aria-label={showPassword ? "Şifreyi gizle" : "Şifreyi göster"} aria-pressed={showPassword} onClick={() => setShowPassword(!showPassword)}>{showPassword ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}</Button>
               </div>
               {errors.password && <small id="auth-password-error" className={styles.error}>{errors.password}</small>}
             </div> : <p className={styles.muted}>Şifrenizi kullanmadan, e-posta adresinize gönderilecek bağlantıyla giriş yapabilirsiniz.</p>}
-            <Button type="submit" className="w-full" disabled={busy}>{busy ? "İşleniyor…" : method === "password" ? "E-posta ile giriş yap" : "Giriş bağlantısı iste"}</Button>
-            <Button variant="link" className="justify-start px-0" onClick={() => { setMethod(method === "password" ? "magic_link" : "password"); setPassword(""); setShowPassword(false); }}>{method === "password" ? "E-posta bağlantısıyla giriş" : "Şifreyle girişe dön"}</Button>
+            <Button type="submit" className="w-full" disabled={busy}>{busy ? "İşleniyor…" : method === "password" ? "E-posta ile giriş yap" : "Giriş bağlantısı iste"}<ArrowRight aria-hidden="true" /></Button>
+            <Button variant="outline" className={styles.alternateSignIn} onClick={() => { setMethod(method === "password" ? "magic_link" : "password"); setPassword(""); setShowPassword(false); }}><Mail aria-hidden="true" />{method === "password" ? "E-posta bağlantısıyla giriş" : "Şifreyle girişe dön"}</Button>
           </fieldset>
         </form>}
         <p ref={feedbackRef} tabIndex={-1} role={failed ? "alert" : "status"} aria-live={failed ? "assertive" : "polite"} aria-atomic="true" className={`${styles.feedback} ${failed ? styles.error : ""}`}>{busy ? "İsteğiniz işleniyor…" : message}</p>
-        {!sessionOpen && <Button variant="link" onClick={() => { setMethod("magic_link"); setPassword(""); setShowPassword(false); }}>Şifremi unuttum</Button>}
-        <p>Hesabınız yok mu? <Link href="/kayit" className={styles.textLink}>Üye ol</Link></p>
-        <Link href="/sepet" className={styles.textLink}>Üye olmadan alışverişe devam et</Link>
+        {!sessionOpen && <div className={styles.authFooter}>
+          <p>Hesabınız yok mu? <Link href="/kayit" className={styles.textLink} onClick={onRegister ? (event) => {
+            if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+            event.preventDefault(); event.stopPropagation(); onRegister();
+          } : undefined}>Üye ol</Link></p>
+          <Link href="/sepet" className={styles.guestLink}>Üye olmadan alışverişe devam et<ArrowRight aria-hidden="true" size={15} /></Link>
+        </div>}
   </>;
   return embedded ? content : <MembershipFrame mode="login">{content}</MembershipFrame>;
 }

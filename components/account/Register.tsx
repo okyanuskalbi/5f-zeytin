@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
-import { MembershipFrame, GoogleAvailability } from "./MembershipFrame";
+import { MembershipFrame } from "./MembershipFrame";
 import Link from "next/link";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MembershipError, passwordStrength } from "@/lib/auth/adapter";
@@ -12,14 +12,18 @@ import { Field, useMembershipAction } from "./FormControls";
 import styles from "./Membership.module.css";
 
 // Reuses the existing 21st-derived split composition in SignIn and AFİNA tokens.
-export function Register({ embedded = false }: { embedded?: boolean } = {}) {
+export function Register({ embedded = false, onSignIn }: { embedded?: boolean; onSignIn?: () => void } = {}) {
   const Heading = embedded ? "h2" : "h1";
   const content = <>
     <header className={styles.intro}><Heading>Soframıza katılın.</Heading><p>E-posta adresinizle hesabınızı oluşturun. Üyeliğinizi e-posta bağlantısıyla doğrulayın.</p></header>
-    <GoogleAvailability />
     <RegisterForm />
-    <p>Zaten hesabınız var mı? <Link href="/giris" className={styles.textLink}>Giriş yap</Link></p>
-    <Link href="/sepet" className={styles.textLink}>Üye olmadan alışverişe devam et</Link>
+    <div className={styles.authFooter}>
+      <p>Zaten hesabınız var mı? <Link href="/giris" className={styles.textLink} onClick={onSignIn ? (event) => {
+        if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        event.preventDefault(); event.stopPropagation(); onSignIn();
+      } : undefined}>Giriş yap</Link></p>
+      <Link href="/sepet" className={styles.guestLink}>Üye olmadan alışverişe devam et<ArrowRight aria-hidden="true" size={15} /></Link>
+    </div>
   </>;
   return embedded ? content : <MembershipFrame mode="register">{content}</MembershipFrame>;
 }

@@ -1,4 +1,16 @@
-# Aktif iş: Task165 / kabul edilen v12 bileşen entegrasyonları
+# Aktif iş: Task168 / üyelik penceresi düzenlemesi
+
+[Task168](tasks/168-uyelik-penceresi-duzenleme.md) giriş/kayıt arayüzünü
+kompakt, küçük ekranda kaydırılabilir ve kapatma kontrolü görünür biçimde düzenler.
+Mevcut parola, e-posta bağlantısı, kayıt ve oturum sözleşmeleri korunur.
+Kullanılamayan Google seçeneği gizlenir; KVKK notu formun altındadır.
+
+Önceki v12 yayını tamamlandı: kaynak782af321, CI41346485610 SUCCESS,
+REST dpl_J9muAjiHNwqwSJauFjJEXoAJcAy8 READY. Taze HTTP/içerik kanıtı
+[yayın kaydı](referans/yayin-v12-20261101.json); etkileşimli tarayıcı kabulü değildir.
+Aşağıdaki Task165 erişim engelleri önceki oturumun tarihsel kayıtlarıdır.
+
+# Tarihçe: Task165 / kabul edilen v12 bileşen entegrasyonları
 
 Task164 hareketli önizlemesi kullanıcı tarafından “güzel beyendim” ile kabul
 edildi. V12 korunarak seçilen footer/menü/logo/ürün rayı/üyelik, sepet ve

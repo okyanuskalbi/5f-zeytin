@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogTitle,
@@ -54,6 +57,7 @@ export function AuthDialog({
       }}
     >
       <DialogContent
+        showCloseButton={false}
         onClick={(event) => {
           if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
           const link = event.target instanceof Element
@@ -77,20 +81,31 @@ export function AuthDialog({
           Hesabınıza giriş yapın veya hesap oluşturun. Misafir olarak alışverişe
           devam edebilirsiniz.
         </DialogDescription>
-        <MembershipFrame mode={mode} onModeChange={setMode} embedded>
-          {session === "loading" ? (
-            <p role="status">Üyelik bilgileri yükleniyor…</p>
-          ) : mode === "register" ? (
-            <Register embedded />
-          ) : (
-            <SignIn
-              embedded
-              onAuthenticated={onClose}
-              signedIn={session === "member"}
-              unavailable={session === "error"}
-            />
-          )}
-        </MembershipFrame>
+        <div className={styles.dialogToolbar}>
+          <span>AFİNA üyelik</span>
+          <DialogClose asChild>
+            <Button variant="ghost" size="icon" className={styles.dialogClose} aria-label="Kapat">
+              <X aria-hidden="true" />
+            </Button>
+          </DialogClose>
+        </div>
+        <div className={styles.dialogBody} data-auth-dialog-body>
+          <MembershipFrame mode={mode} onModeChange={setMode} embedded>
+            {session === "loading" ? (
+              <p role="status">Üyelik bilgileri yükleniyor…</p>
+            ) : mode === "register" ? (
+              <Register embedded onSignIn={() => setMode("login")} />
+            ) : (
+              <SignIn
+                embedded
+                onAuthenticated={onClose}
+                signedIn={session === "member"}
+                unavailable={session === "error"}
+                onRegister={() => setMode("register")}
+              />
+            )}
+          </MembershipFrame>
+        </div>
       </DialogContent>
     </Dialog>
   );

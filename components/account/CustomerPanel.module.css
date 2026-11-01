@@ -27,7 +27,9 @@
 }
 .authFrame {
   display: grid;
-  grid-template-columns: 1fr 1.1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  width: 100%;
+  min-width: 0;
   max-width: 1080px;
   margin-inline: auto;
   overflow: hidden;
@@ -88,8 +90,59 @@
   color: var(--customer-gold);
 }
 .authFormPanel {
+  --step-body: 14px;
+  --step-small: 12px;
+  --step-head: 32px;
+  --step-lead: 24px;
   min-width: 0;
   padding: 40px;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.compactBrand {
+  display: none;
+  align-items: center;
+  min-height: 40px;
+  margin-bottom: 20px;
+}
+.compactBrand img {
+  display: block;
+  width: 144px;
+  max-width: 100%;
+  height: auto;
+  max-height: 42px;
+  object-fit: contain;
+  object-position: left;
+}
+.authContent {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.authContent > * {
+  min-width: 0;
+}
+.authContent > p,
+.authContent header p {
+  font-size: 14px;
+  line-height: 1.55;
+}
+.authContent header {
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.authContent form,
+.authContent fieldset {
+  gap: 16px;
+}
+.authContent button {
+  min-width: 44px;
+  min-height: 44px;
+}
+.authFormPanel :is(a, button, input):focus-visible {
+  outline: 2px solid var(--customer-olive);
+  outline-offset: 3px;
 }
 .authTabs {
   display: grid;
@@ -119,58 +172,22 @@
   box-shadow: 0 1px 3px rgb(23 43 33 / 0.06);
 }
 .privacyNotice {
-  margin-bottom: 24px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--customer-rule);
   color: var(--customer-copy);
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.65;
 }
 .privacyNotice a {
   text-decoration: underline;
 }
-.googleArea {
-  margin-block: 24px;
-}
-.googleButton {
-  display: flex;
-  width: 100%;
-  min-height: 46px;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 12px;
-  border: 1px solid var(--customer-rule);
-  border-radius: 4px;
-  background: #fff;
-  color: var(--customer-olive);
-  font-size: 13px;
-  font-weight: 600;
-  cursor: not-allowed;
-}
-.googleArea > p {
-  color: var(--customer-copy);
-  font-size: 11px;
-  line-height: 1.5;
-  margin-top: 8px;
-}
-.or {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-block: 20px 0;
-  color: var(--customer-copy);
-  font-size: 12px;
-}
-.or::before,
-.or::after {
-  content: "";
-  flex: 1;
-  border-top: 1px solid var(--customer-rule);
-}
 .authFormPanel header h1,
 .authFormPanel header h2 {
-  font-size: 29px;
+  font-size: clamp(28px, 3vw, 34px);
   line-height: 1.2;
   font-weight: 400;
+  letter-spacing: -.02em;
 }
 .authFormPanel label {
   color: var(--customer-olive);
@@ -178,12 +195,12 @@
   font-weight: 500;
 }
 .authFormPanel input:not([type="checkbox"]) {
-  min-height: 50px;
+  min-height: 48px;
   border: 1px solid var(--customer-rule);
   border-radius: 12px;
   background: #fff;
   color: var(--customer-olive);
-  font-size: 15px;
+  font-size: 16px;
 }
 .authFormPanel button[type="submit"] {
   min-height: 50px;
@@ -196,7 +213,7 @@
   background: #2c4935;
 }
 .authFormPanel small {
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.6;
 }
 .authFormPanel :global(.w-full) {
@@ -218,21 +235,89 @@
   --sut: var(--customer-olive);
   --primary: var(--customer-olive);
   --primary-foreground: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: min(1080px, calc(100% - 32px));
+  max-height: calc(100dvh - 32px);
+  overflow: hidden;
   padding: 0;
   max-width: 1080px;
-  border-radius: 24px;
+  border: 1px solid var(--customer-rule);
+  border-radius: 20px;
+  background: var(--customer-paper);
+  color: var(--customer-olive);
   color-scheme: light;
+}
+.dialogToolbar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 60px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--customer-rule);
+  background: var(--customer-paper);
+}
+.dialogToolbar > span {
+  padding-left: 8px;
+  color: var(--customer-copy);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .04em;
+}
+.dialogClose {
+  display: grid;
+  flex: 0 0 44px;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 1px solid var(--customer-rule);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--customer-olive);
+  cursor: pointer;
+}
+.dialogClose:hover {
+  background: #e8ede3;
+}
+.dialogClose:focus-visible {
+  outline: 2px solid var(--customer-olive);
+  outline-offset: 3px;
+}
+.dialogClose svg {
+  width: 20px;
+  height: 20px;
+}
+.dialogBody {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scroll-padding-block: 20px;
+  scrollbar-gutter: stable;
 }
 .dialog .authFrame {
   border: 0;
+  border-radius: 0;
 }
-.dialog > button {
-  z-index: 2;
-  color: var(--customer-olive);
-  background: var(--customer-paper);
+.dialog .brandPanel {
+  padding: 32px;
+}
+.dialog .brandPanel h2 {
+  font-size: 32px;
+}
+.dialog .brandSignature {
+  padding-top: 32px;
 }
 .dialog .authFormPanel {
-  padding-top: 52px;
+  padding: 24px 32px 32px;
 }
 .customerPage {
   min-height: 75svh;
@@ -513,7 +598,7 @@
 }
 @media (max-width: 900px) {
   .authFrame {
-    grid-template-columns: 0.75fr 1.25fr;
+    grid-template-columns: minmax(0, .75fr) minmax(0, 1.25fr);
   }
   .brandPanel {
     padding: 32px 24px;
@@ -529,40 +614,39 @@
     gap: 24px;
   }
 }
+@media (max-width: 760px) {
+  .authFrame {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .brandPanel {
+    display: none;
+  }
+  .compactBrand {
+    display: flex;
+  }
+  .dialog .authFormPanel {
+    padding: 12px 24px 28px;
+  }
+}
 @media (max-width: 700px) {
   .authPage {
     padding-inline: 16px;
     padding-top: calc(var(--header-height) + 24px);
   }
-  .authFrame {
-    grid-template-columns: 1fr;
-  }
-  .brandPanel {
-    padding: 24px;
-  }
-  .brandArt,
-  .brandPanel h2,
-  .brandPanel > p,
-  .brandSignature {
-    display: none;
-  }
-  .brandLogo {
-    width: 160px;
-    height: 43px;
-  }
   .authFormPanel {
-    padding: 24px;
+    padding: 24px 20px;
   }
   .dialog {
-    width: calc(100% - 24px);
-    max-height: calc(100dvh - 24px);
-  }
-  .dialog > button {
-    color: #f4f0e7;
-    background: #172b21;
+    border-radius: 16px;
   }
   .dialog .authFormPanel {
-    padding-top: 24px;
+    padding: 8px 20px 24px;
+  }
+  .dialogToolbar {
+    padding-inline: 8px;
+  }
+  .dialog .compactBrand {
+    margin-bottom: 16px;
   }
   .customerPage {
     padding-top: calc(var(--header-height) + 28px);

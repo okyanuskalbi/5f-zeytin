@@ -1,0 +1,77 @@
+{
+  "at": "2026-11-01T20:27:21.361Z",
+  "url": "https://afinazeytin.com/",
+  "httpStatus": 200,
+  "freshFetch": true,
+  "harvestJourney": true,
+  "footer": true,
+  "liquidNavbar": true,
+  "productRail": true,
+  "phoneCountrySearch": true,
+  "productIds": [
+    "sample-green-olive-10kg",
+    "sample-green-olive-1kg",
+    "sample-black-olive-1kg",
+    "sample-olive-oil-1l",
+    "sample-olive-oil-5l",
+    "sample-brined-green-olive-5kg"
+  ],
+  "scenes": [
+    "baslangic",
+    "tesisimiz",
+    "uretim-yolculugu",
+    "urunler",
+    "toptan-iletisim",
+    "teklif",
+    "iletisim"
+  ],
+  "h1": 1,
+  "canonical": "https://afinazeytin.com/",
+  "scrapeId": "01a198cb-5d63-7079-8c07-9e77b8154114",
+  "browserInteractionTested": false,
+  "deployment": {
+    "id": "dpl_J9muAjiHNwqwSJauFjJEXoAJcAy8",
+    "url": "afina-zeytin-6lmr2qfib-afina1.vercel.app",
+    "readyState": "READY",
+    "target": "production",
+    "alias": [
+      "afinazeytin.com",
+      "afina-zeytin.vercel.app",
+      "www.afinazeytin.com",
+      "afina-zeytin-afina1.vercel.app"
+    ],
+    "aliasAssigned": true,
+    "errorCode": null,
+    "errorMessage": null,
+    "meta": {
+      "sourceCommit": "782af3211bbc133f93a4607942457033020c2554",
+      "sourceRepo": "okyanuskalbi/5f-zeytin",
+      "pipeline": "verified-rest-api",
+      "verificationRun": "41346485610",
+      "lambdaRuntimeStats": "{\"nodejs\":3}"
+    }
+  },
+  "ci": {
+    "id": 41346485610,
+    "head": "782af3211bbc133f93a4607942457033020c2554",
+    "conclusion": "success"
+  },
+  "publicReads": [
+    {
+      "url": "https://afinazeytin.com/giris",
+      "status": 200
+    },
+    {
+      "url": "https://afinazeytin.com/api/phone-countries?lang=tr&query=%2B44",
+      "status": 200
+    },
+    {
+      "url": "https://afinazeytin.com/api/address-options?kind=district&city=Osmaniye&query=duz",
+      "status": 200
+    }
+  ],
+  "limitations": [
+    "Read-only fresh HTTP/content checks; browser interactions not verified.",
+    "No real account, order or payment mutation."
+  ]
+}

@@ -5,11 +5,11 @@ import { AccountSummary } from "@/components/account/AccountSummary";
 vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn(), refresh: vi.fn() }) }));
 afterEach(cleanup);
 
-it("offers the reference's login/register navigation, clear Google availability and guest route", () => {
+it("offers login/register navigation and the guest route without an unavailable Google action", () => {
   render(<SignIn />);
   expect(screen.getByRole("navigation", { name: "Üyelik işlemleri" })).toBeDefined();
   expect(screen.getByRole("link", { name: "Hesap oluştur" }).getAttribute("href")).toBe("/kayit");
-  expect((screen.getByRole("button", { name: "Google ile giriş yap" }) as HTMLButtonElement).disabled).toBe(true);
+  expect(screen.queryByRole("button", { name: /Google/ })).toBeNull();
   expect(screen.getByRole("link", { name: "Üye olmadan alışverişe devam et" }).getAttribute("href")).toBe("/sepet");
 });
 

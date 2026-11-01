@@ -21,7 +21,7 @@ beforeEach(() => {
 });
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.unstubAllEnvs(); });
 
-it("renders a production registration form with separate unchecked consents, recovery links and an unavailable Google option", () => {
+it("renders a production registration form with unchecked consents and recovery links without unavailable Google", () => {
   vi.stubEnv("NODE_ENV", "production");
   render(<Page />);
   expect(screen.getByRole("heading", { level: 1 }).textContent).toBe("Soframıza katılın.");
@@ -29,13 +29,16 @@ it("renders a production registration form with separate unchecked consents, rec
   const marketing = screen.getByRole("checkbox", { name: /Ticari/ }) as HTMLInputElement;
   expect(marketing.checked).toBe(false);
   expect(marketing.required).toBe(false);
-  expect((screen.getByRole("button", { name: /Google/ }) as HTMLButtonElement).disabled).toBe(true);
+  expect(screen.queryByRole("button", { name: /Google/ })).toBeNull();
   expect(screen.getAllByRole("link", { name: "Giriş yap" }).every(link => link.getAttribute("href") === "/giris")).toBe(true);
   expect(screen.getByRole("link", { name: "Üye olmadan alışverişe devam et" }).getAttribute("href")).toBe("/sepet");
   expect(field("Şifre").autocomplete).toBe("new-password");
   expect(field("Şifre").minLength).toBe(10);
   expect(field("Şifre").maxLength).toBe(128);
   expect(document.getElementById("register-password-hint")?.textContent).toBe(passwordRule);
+  const notice = screen.getByRole("link", { name: "KVKK Aydınlatma Metni" });
+  expect(form().contains(notice)).toBe(false);
+  expect(form().compareDocumentPosition(notice) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
 });
 it.each(["Abcdefg12", "Şabcdefg12", "Çabcdefg12", "Şçğıöşü123"])("rejects invalid registration passwords locally (%#)", async password => {
   render(<Page />);

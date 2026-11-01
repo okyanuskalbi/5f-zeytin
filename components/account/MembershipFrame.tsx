@@ -2,7 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import { BrandLogo } from "@/components/site/BrandLogo";
 import { V3Picture } from "@/components/media/V3Picture";
 import { v3Image } from "@/lib/media/v3-assets";
 import { MembershipCard } from "@/components/ui/membership-card";
@@ -23,7 +23,7 @@ export function MembershipFrame({
 }) {
   const [secureFocus, setSecureFocus] = useState(false);
   const content = (
-    <div className={styles.authFrame}
+    <div className={styles.authFrame} data-membership-frame
       onFocusCapture={(event) => setSecureFocus(event.target instanceof HTMLInputElement && event.target.name === "password")}
       onBlurCapture={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) setSecureFocus(false);
@@ -49,6 +49,9 @@ export function MembershipFrame({
         </span>
       </aside>
       <div className={styles.authFormPanel}>
+        <div className={styles.compactBrand}>
+          <BrandLogo tone="light" loading="eager" />
+        </div>
         <nav aria-label="Üyelik işlemleri" className={styles.authTabs}>
           {(
             [
@@ -76,12 +79,12 @@ export function MembershipFrame({
             ),
           )}
         </nav>
+        <div className={styles.authContent}>{children}</div>
         <p className={styles.privacyNotice}>
           Kişisel verilerinizin işlenme amaçları ve haklarınız hakkında{" "}
-          <Link href="/kvkk">KVKK Aydınlatma Metni</Link> üzerinden bilgi
+          <Link href="/kvkk" target="_blank" rel="noopener noreferrer">KVKK Aydınlatma Metni</Link> üzerinden bilgi
           edinebilirsiniz.
         </p>
-        {children}
       </div>
     </div>
   );
@@ -89,28 +92,5 @@ export function MembershipFrame({
     content
   ) : (
     <main className={styles.authPage}>{content}</main>
-  );
-}
-
-export function GoogleAvailability() {
-  return (
-    <div className={styles.googleArea}>
-      <button
-        type="button"
-        disabled
-        className={styles.googleButton}
-        aria-describedby="google-availability"
-      >
-        <Image src="/icons/google-g.png" width={20} height={20} alt="" />
-        Google ile giriş yap
-      </button>
-      <p id="google-availability">
-        Google ile giriş şu anda kullanılamıyor. E-posta ile devam
-        edebilirsiniz.
-      </p>
-      <div className={styles.or}>
-        <span>veya</span>
-      </div>
-    </div>
   );
 }
