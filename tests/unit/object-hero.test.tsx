@@ -37,6 +37,8 @@ it("renders the actual default SKU and purchase data in the server opening", () 
   expect(selected?.querySelector("[data-add-sku]")?.getAttribute("data-add-sku")).toBe("sample-green-olive-10kg");
   expect(selected?.querySelector("[data-add-stock]")?.getAttribute("data-add-stock")).toBe("6");
   expect(doc.querySelector('button[aria-label="Doğal Kırma Yeşil Zeytin, 10 kg seç"]')?.getAttribute("aria-pressed")).toBe("true");
+  expect(doc.querySelector('button[aria-label="Doğal Kırma Yeşil Zeytin, 1 kg seç"]')?.hasAttribute("disabled")).toBe(true);
+  expect(doc.querySelector('[data-product-plane] button')?.hasAttribute("disabled")).toBe(true);
   expect(doc.querySelectorAll("h1")).toHaveLength(1);
   expect(doc.querySelector("h1")?.textContent).toBe("Kökü toprakta. Yeri sofrada.");
   expect(doc.querySelector('a[href="#urunler"]')).not.toBeNull();

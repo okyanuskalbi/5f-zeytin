@@ -17,6 +17,9 @@ import styles from "./CinematicHero.module.css";
 const desktopQuery = "(min-width: 901px) and (min-height: 681px)";
 const preferred = ["sample-green-olive-10kg", "sample-green-olive-1kg", "sample-olive-oil-1l"];
 const money = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 2 });
+const subscribeHydration = () => () => {};
+const clientReady = () => true;
+const serverReady = () => false;
 function useDesktopStage(): boolean {
   const subscribe = useCallback((notify: () => void) => {
     const query = window.matchMedia?.(desktopQuery);
@@ -30,6 +33,7 @@ function useDesktopStage(): boolean {
  * plane recedes as the real packaging moves forward into a working selection.
  * Variant/image state is grounded in 21st 1635; all commerce uses project APIs. */
 export function OliveScrollHero({ products = [] }: { products?: readonly ProductVariant[] }): JSX.Element {
+  const hydrated = useSyncExternalStore(subscribeHydration, clientReady, serverReady);
   const candidates = preferred.map(id => products.find(product => product.id === id)).filter((product): product is ProductVariant => !!product);
   const choices = candidates.length ? candidates : products.slice(0, 3);
   const [selectedId, setSelectedId] = useState(choices[0]?.id ?? "");
@@ -76,7 +80,7 @@ export function OliveScrollHero({ products = [] }: { products?: readonly Product
         </motion.div>
         {selected && <>
           <motion.div className={styles.object} data-product-plane="" style={live ? { y: objectY, scale: objectScale } : { transform: "none" }}>
-            <button type="button" aria-haspopup="dialog" aria-label={`${selected.name}, ${selected.weight} detayını aç`}
+            <button type="button" disabled={!hydrated} aria-haspopup="dialog" aria-label={`${selected.name}, ${selected.weight} detayını aç`}
               onClick={event => openDetail?.(selected.id, event.currentTarget)}>
               <V3Picture image={v3Image(selected.imageKey)} sizes="(max-width: 900px) 190px, 32vw" eager />
             </button>
@@ -84,7 +88,7 @@ export function OliveScrollHero({ products = [] }: { products?: readonly Product
           <aside className={styles.selection} data-ui="" data-hero-product={selected.id} aria-label="Sofranız için ürün seçimi">
             <fieldset>
               <legend>Ürün seçin</legend>
-              <div className={styles.options}>{choices.map(product => <button key={product.id} type="button"
+              <div className={styles.options}>{choices.map(product => <button key={product.id} type="button" disabled={!hydrated}
                 aria-label={`${product.name}, ${product.weight} seç`} aria-pressed={product.id === selected.id}
                 onClick={() => setSelectedId(product.id)}>{product.weight}</button>)}</div>
             </fieldset>
@@ -93,7 +97,7 @@ export function OliveScrollHero({ products = [] }: { products?: readonly Product
               <p><span>{selected.weight}</span><strong>{money.format(selected.priceKurus / 100)}</strong></p>
             </div>
             <div className={styles.buy}>
-              <button type="button" aria-haspopup="dialog" onClick={event => openDetail?.(selected.id, event.currentTarget)}>Ürünü incele <ArrowUpRightIcon size={16} aria-hidden="true" /></button>
+              <button type="button" disabled={!hydrated} aria-haspopup="dialog" onClick={event => openDetail?.(selected.id, event.currentTarget)}>Ürünü incele <ArrowUpRightIcon size={16} aria-hidden="true" /></button>
               <AddToCart key={selected.id} product={selected} />
             </div>
           </aside>

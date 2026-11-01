@@ -27,8 +27,13 @@ test.beforeEach(async ({ page }) => {
 });
 
 test("the hero's selected 1 kg package opens its real detail and adds only that SKU", async ({ page }) => {
+  let releaseScripts!: () => void;
+  const scriptsReady = new Promise<void>(resolve => { releaseScripts = resolve; });
+  await page.route("**/_next/static/**/*.js", async route => { await scriptsReady; await route.continue(); });
   await page.goto("/", { waitUntil: "domcontentloaded" });
   const choice = hero(page).getByRole("button", { name: "Doğal Kırma Yeşil Zeytin, 1 kg seç", exact: true });
+  await expect(choice).toBeDisabled();
+  releaseScripts();
   await choice.click();
   await expect(choice).toBeFocused();
   await expect(choice).toHaveAttribute("aria-pressed", "true");
