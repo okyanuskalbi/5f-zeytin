@@ -1,4 +1,18 @@
-# Aktif devir: Task162 / v10 yerel kod hazır
+# Aktif devir: Task163 / v11 kod hazır; görsel kabul bekliyor
+
+Kanonik repo /Users/emre/PROJELER/5F-ZEYTIN. Kullanıcı tüm senaryoyu devretti,
+$10K kalite ve dörtMD/dörtPDF/10kZIP istedi. Aktif [DESIGN](DESIGN.md),
+[Task163](tasks/163-10k-sinema-ve-aeo.md), [REQUIREMENTS](scrollcraft/builds/afina-v11/REQUIREMENTS.md),
+[VERIFICATION](scrollcraft/builds/afina-v11/VERIFICATION.md). Onaylı A→B'den
+4MB/GOP8 scrub, persistentCTA, statik telefon/reduced/touch; üç producer adımı,
+aynı6SKU/commerce/talep, ortak FAQ/llms-full/feed. Framer/UIPro/React Bits var.
+Yeni harcama0. Main push/deploy yapılmadı; v9 canlı. Piksel/scroll/axe/LH ve
+fiziksel cihaz kabulü yapılmadı; eski ölçümleri yeni sürüme taşımayın.
+Sonraki işlem izinli ortamda yalnız paketli headless Chromium≤2 ile mevcut
+163/162/161 senaryoları, ara kare/flick/contact-sheet kabulü ve somut tasarım
+incelemesidir. Sonuç kanıtlanmadan task TAMAMLANDI veya canlı iddiası yok.
+
+# Önceki devir: Task162 / v10 yerel kod hazır
 
 Kanonik repo ve ticari mimari korunur. Yeni kullanıcı isteği scrolling sections;
 Framer Motion14.4.0, proje yerel UIPro ve React Bits BlurText kullanıldı.

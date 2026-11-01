@@ -1,9 +1,9 @@
 # AFİNA ZEYTİN
 
-Güncel yerel tasarım: **v10 Dalından sofraya**, [Task162](docs/tasks/162-scrolling-sections.md).
-Framer Motion, proje yerel UIPro ve React Bits ile scrolling sections uygulandı.
-1216 unit/lint/typecheck/webpack build geçti; görsel tarayıcı kabulü ve yayın bekliyor.
-[Doğrulama kaydı](docs/scrollcraft/builds/afina-v10/VERIFICATION.md).
+Güncel yerel tasarım: **v11 Kökten sofraya**, [Task163](docs/tasks/163-10k-sinema-ve-aeo.md).
+Gerçek scroll film, Framer Motion, UIPro, React Bits ve kaynaklı AEO içeriği.
+Yerel kod kontrolleri geçti; görsel tarayıcı/gerçek cihaz/yayın kabulü bekliyor.
+[Doğrulama](docs/scrollcraft/builds/afina-v11/VERIFICATION.md).
 
 [afinazeytin.com](https://afinazeytin.com) için premium vitrin ve satın alma projesi.
 

@@ -1,19 +1,8 @@
-import type { ReactNode } from "react";
 import path from "node:path";
 import sharp from "sharp";
 import { renderToStaticMarkup } from "react-dom/server";
-import { beforeEach, expect, it, vi } from "vitest";
+import { expect, it } from "vitest";
 import { OliveScrollHero } from "@/components/landing/OliveScrollHero";
-import { proLoopMovie, proLoopPoster } from "@/lib/media/pro-loop";
-
-const boundary = vi.hoisted(() => ({ film: vi.fn() }));
-vi.mock("@/components/media/CinematicFilm", () => ({
-  CinematicFilm: (props: { children?: ReactNode }) => {
-    boundary.film(props);
-    return <div data-test-film="">{props.children}</div>;
-  },
-}));
-beforeEach(() => { boundary.film.mockClear(); });
 
 function serverHero(): Document {
   const doc = document.implementation.createHTMLDocument();
@@ -27,20 +16,20 @@ it("serves the official slogan and both actual destinations without a product-pi
   expect(doc.querySelector("h1")?.textContent).toBe("Kökü toprakta. Yeri sofrada.");
   expect(doc.querySelector('a[href="#urunler"]')?.textContent).toContain("Ürünleri Keşfet");
   expect(doc.querySelector('a[href="#teklif"]')?.textContent).toContain("Kurumsal Teklif Al");
-  expect(doc.querySelector("[data-hero-product], [data-product-plane], fieldset")).toBeNull();
+  expect(doc.querySelector("[data-hero-product]")?.getAttribute("aria-hidden")).toBe("true");
+  expect(doc.querySelector("[data-hero-product] img")?.getAttribute("src")).toContain("urun-01-kirma-10kg");
+  expect(doc.querySelector("fieldset")).toBeNull();
   expect(doc.querySelector("h1")?.closest('[style*="opacity:0"]')).toBeNull();
   expect(doc.querySelector("#baslangic")?.getAttribute("aria-labelledby")).toBe(doc.querySelector("h1")?.id);
 });
 
-it("passes the accepted-source loop and its matching poster to the lifecycle-controlled film", () => {
-  serverHero();
-  expect(boundary.film).toHaveBeenCalledOnce();
-  expect(boundary.film.mock.calls[0][0]).toMatchObject({
-    movieSrc: proLoopMovie, poster: proLoopPoster, loop: true,
-    posterSrc: "/videos/afina-zeytinlik-poster.avif",
-  });
-  expect(proLoopMovie).toBe("/videos/afina-zeytinlik-loop-5s.mp4");
-  expect(proLoopPoster.src).toBe("/videos/afina-zeytinlik-poster.webp");
+it("leaves an independent, persistent action bar outside the three decorative caption bands", () => {
+  const doc = serverHero();
+  const captions = doc.querySelectorAll("[data-hero-copy] a, [data-hero-beat] button");
+  expect(captions).toHaveLength(0);
+  expect(doc.querySelectorAll("[data-hero-beat]")).toHaveLength(2);
+  expect(doc.querySelector("[data-cinematic-scrub] video")?.getAttribute("src")).toBeNull();
+  expect(doc.querySelector("video")?.hasAttribute("autoplay")).toBe(false);
 });
 
 it("uses a real transparent near-branch layer independently of the film and semantic copy", async () => {

@@ -11,16 +11,16 @@ function serverHero(): Document {
 it("ships the accepted Flow opening as a responsive poster before JavaScript loads", () => {
   const doc = serverHero();
   const poster = doc.querySelector("#baslangic picture img");
-  expect(poster?.getAttribute("src")).toBe("/videos/afina-zeytinlik-poster.webp");
+  expect(poster?.getAttribute("src")).toBe("/frames/afina-agac-dal/poster-desktop.webp");
   expect(poster?.getAttribute("width")).toBe("1280");
   expect(poster?.getAttribute("height")).toBe("720");
   expect(poster?.getAttribute("fetchpriority")).toBe("high");
   for (const format of ["avif", "webp"]) {
     expect(doc.querySelector(`picture source[type="image/${format}"][media]`)?.getAttribute("srcset"))
-      .toBe(`/videos/afina-zeytinlik-poster.${format} 1280w`);
+      .toBe(`/frames/afina-agac-dal/poster-mobile.${format} 480w`);
   }
   expect(doc.querySelector('link[rel="preload"][as="image"]')?.getAttribute("href"))
-    .toBe("/videos/afina-zeytinlik-poster.avif");
+    .toBe("/frames/afina-agac-dal/poster-mobile.avif");
   expect(doc.querySelector("[data-cinematic-opening][data-cinematic-scene] [data-hero-visual]"))
     .not.toBeNull();
   expect(doc.querySelector("[data-hero-card], [data-frame-sequence]")).toBeNull();
@@ -34,7 +34,9 @@ it("keeps the official slogan and both real destinations readable without an ani
   expect(doc.querySelector('a[href="#teklif"]')?.textContent).toContain("Kurumsal Teklif Al");
   expect(doc.querySelector("iframe, canvas, [data-preloader]")).toBeNull();
   expect(doc.querySelector("video")?.getAttribute("src")).toBeNull();
-  expect(doc.querySelector("video")?.hasAttribute("loop")).toBe(true);
-  expect(doc.querySelector("video")?.getAttribute("poster")).toBe("/videos/afina-zeytinlik-poster.avif");
+  expect(doc.querySelector("video")?.hasAttribute("loop")).toBe(false);
+  expect(doc.querySelector("video")?.getAttribute("preload")).toBe("none");
+  expect(doc.querySelector("video")?.getAttribute("aria-hidden")).toBe("true");
+  expect(doc.querySelector("[data-hero-mode]")?.getAttribute("data-hero-mode")).toBe("native");
   expect(doc.querySelector("h1")?.getAttribute("style") ?? "").not.toContain("opacity:0");
 });

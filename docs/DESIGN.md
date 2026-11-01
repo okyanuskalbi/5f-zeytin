@@ -1,58 +1,74 @@
-# AFİNA ZEYTİN v10 — Dalından sofraya
+# AFİNA ZEYTİN v11 — Kökten sofraya
 
-## Güncel yön
+Kullanıcının $10K kalite hedefi ve tüm senaryoyu yeniden düşünme yetkisiyle
+[Task163](tasks/163-10k-sinema-ve-aeo.md) aktiftir. Dört MD, dört PDF ve ZIP
+[şart eşlemesinde](scrollcraft/builds/afina-v11/REQUIREMENTS.md) incelenir.
+Önceki v10 [byte-identical arşivdedir](referans/DESIGN-v10-history-20261101.md).
 
-Kullanıcı “zeytin sitesini baştan scrolling sectionla yapalım”, ardından
-Framer Motion, `uipro init --ai codex` ve React Bits kullanımını istedi.
-[Task162](tasks/162-scrolling-sections.md) uygulandı; yerel kod kontrolleri
-geçti. Görsel tarayıcı kabulü ve yayın tamamlanmadı. V9 değişmeden
-[arşivlendi](referans/DESIGN-v9-history-20261101.md); önceki kabul yeni sürümün
-kanıtı değildir. [Brief](scrollcraft/builds/afina-v10/BRIEF.md) kararları ve
-[provenans](scrollcraft/builds/afina-v10/SOURCES.json) gerçek kaynakları ayırır.
+## Tasarım fikri
 
-## Görsel sözleşme
+“Kökü toprakta. Yeri sofrada.” kaydırılan bir yolculuğa dönüşür. Kabul edilmiş
+A→B filmi ileri/geri hareket eder; özgün ön dal kendi düzleminde uzaklaşır,
+son bölümde gerçek AFİNA tenekesi yerleşir. Kalite bütçesi tek imza sahnesinde;
+alt bölüm düzenleri fotoğraf, metin, ürün rafı, işletme satırları ve form olarak
+değişir. Fake sayaç/yorum/sertifika yok. Üç konsept ve seçimin gerekçesi
+[DESIGN-PACKAGE](scrollcraft/builds/afina-v11/DESIGN-PACKAGE.md) içindedir.
 
-Orijinal logo, “Kökü toprakta. Yeri sofrada.”, altı mevcut SKU ve onaylı
-fotoğraf/film korunur. Fraunces başlık, Inter gövde; ana zemin #EDE8DD,
-yüzey #F7F4EE, zeytin #243A29, mürekkep #1C1F1A, koyu altın #735519.
-#84CC16 yalnız belirgin eylem/seçim vurgusudur. Örnek ürün verileri gerçek
-satış onayı sayılmaz. Yeni medya üretimi veya kredi harcaması yoktur.
+Derin zeytin #243A29, taş #F0EBDD, kâğıt #F7F4ED, mürekkep #172B21,
+yaprak #B4C58F, koyu altın #735519. Fraunces ve Inter; iki yerel font.
+Mevcut logo, ambalaj, ürün adları/fiyatları/stoku/sırası ve ticari otorite korunur.
+Ürün örnekleri gerçek satış onayı sayılmaz. Yeni üretim veya kredi harcaması0.
 
-Açılış artık tam film üstüne yazı değildir: kendi taş zemininde tam slogan,
-sağda ayrı yüksek film kadrajı ve bağımsız özgün ön dal. Yeterince büyük
-ekranda kısa 145svh tutuş; telefon/kısa/reduced/SSR doğal akış. H1 ve gerçek
-ürün/teklif bağlantıları görünür. Film kaynak ve lifecycle kontrolü korunur.
+## Açılış sözleşmesi
 
-## Bölümler ve davranış
+İlk SSR ekranı tam slogan, kısa coğrafi açıklama, responsive poster ve gerçek
+#urunler / #teklif bağlantılarıdır. Gövde/wheel/touch kontrolü ele geçirilmez.
+Yalnız uygun masaüstü, fine-pointer/hover, ≥1024×760, normal hareket,
+veri tasarrufu kapalı, yeterli donanım/görünür sekme: düşük öncelikli Blob
+indirilir. İlk çözülmüş kare ve görünür sahne sonrası400svh pin etkinleşir.
 
-1. #baslangic: ayrı başlık/film/ön dal düzlemleri, gerçek iki CTA.
-2. #uretim-yolculugu: 21st Scroll01 (18041) uyarlaması. Üç okuma adımı,
-   masaüstünde tek sabit fotoğraf ve beraber değişen bölüm işareti. Fotoğraf
-   hafif yakınlaşır; okuyucu bölüm bağlarıyla da ilerleyebilir. Telefon/kısa
-   ekran/reduced/JS kapalı durumda üç fotoğraf kendi metninin yanındadır.
-3. #tesisimiz / #kurumsal: gerçek Ellek tesisi ve adres, izole görüntü parallax.
-4. #urunler / #kiler: altı SKU'lu düz ambalaj rafı; tall desktop lineer yatay
-   geçiş, diğer ekranlarda native rail. Detay, sepet, stok ve teklif aktarımı.
-5. #toptan-iletisim: ikon kartları yerine üç büyük işletme seçim satırı.
-6. #teklif: solda sakin başlık, sağda mevcut doğrulamalı e-posta taslağı.
-7. #iletisim: native SSS, “Sofrada görüşürüz.”, gerçek adres ve mağazaya dönüş.
+Üç metnin tam okunur plateau'su84svh; geçişler12svh. Aralıklar0–.28,
+.36–.64, .72–1. Metinler aynı anda üst üste gelmez; eylemler bunlardan
+bağımsız ve odaklanabilir kalır. Son metin ve ambalaj yerinde kalır. Bunlar
+hesaplanmış başlangıç değerleridir; gerçek flick/ara kare kabulü bekliyor.
 
-React Bits BlurText'in gerçek kelime/keyframe/once-in-view çekirdeği B2B ve
-kapanış başlıklarında kullanılır. Filtre/loop/gizli SSR başlangıcı kaldırıldı;
-yalnız mevcut `framer-motion` çalışma zamanı. Framer-motion14.4.0 ve motion14.4.0
-aynı LazyMotion/useScroll nesnelerine çözülür. İkinci GSAP/Lenis motoru yok.
-UIPro araması storytelling/mobile/reduced-motion rehberi olarak kullanıldı;
-otomatik kırmızı restoran paleti AFİNA'nın marka tokenlarının yerini almadı.
+Film4.042.962bayt,190kare/24fps/7,916667sn; H264/yuv420p/fast-start/GOP8,
+sessiz. Hedef lineer; dt-normalize, overshoot yapmayan sonlu yaklaşım ve tek
+native seek; yalnız en son bekleyen hedef, hata/zaman aşımı reset ve cleanup.
+Film preload SSR'da none; izinli Blob sonrasıauto. Görünüm/sekme dışında RAF
+durur. Geç yükleme sahneyi ziyaretçinin üstünde uzatmaz. Native moda geçiş
+blob/decoder/RAF/seek/pending state'i temizler; geri dönüş yeniden ölçülür.
 
-## Korunan işlevler ve kabul
+Telefon/touch/kısa/reduced/saveData/JS yokluğu/medya hatası: kısa doğal hero,
+portrait poster, tam H1 ve aynı eylemler. Hiç MP4 talebi yok. Hareket tercihi
+iki yönde canlı izlenir; uzun boş pin bırakılmaz.
 
-Ürün kimliği/adı/fiyatı/stoğu/sırası, detay/sepet/üyelik ve sunucu otoritesi
-korunur. SKU ve B2B seçimi aynı teklif bağlamına gider. Form mailto taslağı
-hazırlar; gönderimi kullanıcı tamamlar. Servis/DB/ödeme kurulumu bu kapsamda
-etkinleştirilmez. Gerçek üretim/sertifika/kapasite/teslimat iddiası uydurulmaz.
+## Tam sayfa ve müşteri kararı
 
-1216 unit, lint/typecheck, onaylı medya kapıları ve webpack production build
-geçti. 21st değişen kaynak incelemesi 0 error/0 warning/1 info. E2E senaryoları
-hazır; bu oturumda headless tarayıcı ve localhost izni kullanılamadığı için
-piksel/scroll kabulü tamamlanmadı. Yeni sürüm yayımlanmadı; v9 canlı kalır.
-[Doğrulama kaydı](scrollcraft/builds/afina-v10/VERIFICATION.md).
+1. #baslangic: üç bantlı zeytinlik→ambalaj sahnesi; tek ana ürün eylemi.
+2. #uretim-yolculugu: üç kısa okuma adımı, fotoğraf/bölüm işareti senkronu;
+   uygun masaüstünde64svh adımlar, diğerlerinde bütün fotoğraflar doğal akış.
+3. #tesisimiz / #kurumsal: gerçek Ellek tesisi ve kaynaklı adres.
+4. #urunler: altı SKU, gerçek detay/sepet; uzun masaüstünde lineer yatay raf,
+   kısa/mobil/reduced/JS kapalı doğal yatay kaydırma ve klavye erişimi.
+5. #toptan-iletisim: üç işletme segmenti, seçilen ambalajla ortak talep bağlamı.
+6. #teklif: doğrulama/KVKK sonrası gerçek e-posta taslağı. Otomatik teslim yok.
+7. #iletisim: aynı5SSS, adres/kurumsal kanal, “Sofrada görüşürüz.” ve ürüne dönüş.
+
+21st gerçek kaynakları, proje yerel UIPro ve pinned React Bits BlurText devam
+eder. Lisans/pin [v10 SOURCES](scrollcraft/builds/afina-v10/SOURCES.json) içinde.
+framer-motion14.4.0 ve motion14.4.0 aynı runtime; ikinci GSAP/Lenis motoru yok.
+Ticari provider, ödeme, hesap ve DB kapıları değişmez.
+
+## AEO ve doğrulama
+
+Görünür5FAQ ve FAQPage aynı modülden, kurum/yer/ana sayfa bilgisi ortak entity
+verisinden gelir. llms.txt + llms-full.txt + tek gerçek ana sayfa güncellemesi
+olan Atom feed aynı kamuya açık bilgiyi kullanır. Robots özel yolları kapalı
+tutar; sitemap yalnız indekslenebilir ana sayfa, canonical/OG gerçek domaine
+açılır. İndeks/AI görünürlük veya FAQ rich result garantisi verilmez.
+
+Yerel unit/lint/typecheck/webpack build kanıtları ve açık kapılar
+[VERIFICATION](scrollcraft/builds/afina-v11/VERIFICATION.md) içindedir.
+Gerçek tarayıcı render/scroll/axe/Lighthouse, fiziksel cihaz ve canlı yayın
+kabulü tamamlanmadan bu tasarım TAMAMLANDI sayılmaz. Önceki v9 canlı kalır.

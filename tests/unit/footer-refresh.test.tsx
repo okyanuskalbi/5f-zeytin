@@ -75,7 +75,7 @@ it("keeps footer copy, legal metadata and focus above AA contrast on the pro sto
   for (const [token, value] of Object.entries({
     "--footer-copy": "var(--pro-ink)", "--footer-muted": "var(--pro-muted)",
     "--sut": "var(--pro-ink)", "--brand-gold": "var(--pro-gold-ink)",
-    "--pro-stone": "#EDE8DD", "--pro-ink": "#1C1F1A", "--pro-muted": "#4F594B", "--pro-gold-ink": "#735519",
+    "--pro-stone": "#F0EBDD", "--pro-ink": "#172B21", "--pro-muted": "#4F594B", "--pro-gold-ink": "#735519",
   })) expect(tokens.get(token), token).toBe(value);
   const background = luminance("var(--footer-ink)");
   expect(background).toBeGreaterThan(0.7);

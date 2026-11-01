@@ -11,7 +11,7 @@ async function painted(page: Page): Promise<void> {
 
 async function expectFullPoster(page: Page): Promise<void> {
   const hero = await page.locator("#baslangic [data-hero-visual]").boundingBox();
-  const poster = await page.locator("#baslangic [data-film-plane] picture img").boundingBox();
+  const poster = await page.locator("#baslangic [data-cinematic-scrub] picture img").boundingBox();
   expect(hero).not.toBeNull(); expect(poster).not.toBeNull();
   for (const axis of ["x", "y", "width", "height"] as const) expect(Math.abs(hero![axis] - poster![axis])).toBeLessThanOrEqual(1);
   await expect(page.locator("#baslangic [data-cinematic-controls]")).toHaveCount(0);

@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "source": {
+    "file": "output/flow-keyframes/A-B-ilk-deneme.mp4",
+    "sha256": "be77f66a14e418791093fe53937598204313a99f6368204f1fbf6ebaacf14171",
+    "userAccepted": true
+  },
+  "derivation": {
+    "codec": "h264",
+    "crf": 26,
+    "preset": "slow",
+    "gop": 8,
+    "pixelFormat": "yuv420p",
+    "fastStart": true,
+    "audio": false,
+    "crop": false,
+    "toneMapping": false
+  },
+  "output": {
+    "file": "/videos/afina-hasat-scrub.mp4",
+    "sha256": "ec190f5361016da1c3c99a18881131c9f4f375a143df9e96fd2677b69cfbbf5b",
+    "bytes": 4042962,
+    "width": 1280,
+    "height": 720,
+    "fps": 24,
+    "frames": 190,
+    "durationSeconds": 7.916666666666667,
+    "maxKeyframeGap": 8
+  }
+}

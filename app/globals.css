@@ -24,16 +24,17 @@ body:has([data-admin-shell]) footer { display:none; }
 }
 
 :root {
-  /* Pro plan, Task161. Contrast companions keep gold/lime readable. */
-  --pro-brand: #84CC16;
-  --pro-brand-hover: #A3E635;
-  --pro-stone: #EDE8DD;
-  --pro-ink: #1C1F1A;
-  --pro-paper: #F7F4EE;
+  /* v11: leaf/olive from the accepted grove and genuine packaging. */
+  --pro-brand: #B4C58F;
+  --pro-brand-hover: #C8D6AC;
+  --pro-stone: #F0EBDD;
+  --pro-ink: #172B21;
+  --pro-paper: #F7F4ED;
   --pro-gold: #C89B3C;
   --pro-gold-ink: #735519;
   --pro-muted: #4F594B;
   --pro-line: #919B87;
+  --pro-input: #717C69;
   --pro-error: #9D2822;
   --pro-gutter: clamp(20px,4vw,64px);
   color-scheme: dark;
@@ -94,6 +95,8 @@ body:has([data-admin-shell]) footer { display:none; }
   --font-display-fallback: Georgia, "Times New Roman", serif;
   --radius: 0px;
   --duration-fast: 150ms;
+  --ease-editorial: cubic-bezier(.22,1,.36,1);
+  --ease-action: cubic-bezier(.2,.8,.2,1);
 }
 
 @theme inline {
@@ -150,6 +153,7 @@ body:has([data-admin-shell]) footer { display:none; }
   }
 
   html { scroll-padding-top: calc(var(--header-height) + 16px); }
+  html,body { overflow-x:hidden; overflow-x:clip; }
 
   body {
     margin: 0;
@@ -223,6 +227,7 @@ body:has([data-admin-shell]) footer { display:none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  *,*::before,*::after { animation:none!important; transition-duration:0ms!important; transition-delay:0ms!important; scroll-behavior:auto!important; }
   [data-scene-reveal] { transform: none !important; opacity: 1 !important; }
   :root {
     --duration-fast: 0ms;

@@ -1,4 +1,16 @@
-## Aktif kullanıcı işi: Task162 / v10 (1 Kasım 2026)
+## Aktif kullanıcı işi: Task163 / v11 (1 Kasım 2026)
+
+$10K kalite hedefi ve tüm senaryoyu yeniden düşünme yetkisi: docs/DESIGN.md,
+docs/tasks/163-10k-sinema-ve-aeo.md ve docs/scrollcraft/builds/afina-v11 aktif.
+Dört MD/dört PDF/10k ZIP kaynakları REQUIREMENTS.md ve SOURCES.json içinde.
+Kabul edilmiş A→B artık gerçek forward/back scrub; Framer/UIPro/React Bits sürer.
+Task162/v10 ve aşağıdaki v9 görsel kuralları tarihçedir. Headless≤2, ticari
+veri/servis yetki kapıları, özgün medya onayları korunur. $10K kalite hedefi
+yeni harcama yetkisi değildir. Kendi sonlu scrub RAF/seek sürücüsü bu açık
+isteğin gereğidir; eski no-currentTime/no-RAF uygulama kuralı aktif değildir.
+Task163 kod hazır; görsel/piksel/gerçek telefon ve yayın kabulü bekliyor.
+
+## Tarihçe: Task162 / v10 (1 Kasım 2026)
 
 “Zeytin sitesini baştan scrolling sectionla yapalım”; kullanıcının açık
 Framer Motion, `uipro init --ai codex` ve React Bits tercihi uygulanır.
@@ -129,7 +141,7 @@ Canlı kabul: **TAMAMLANDI** — 74 e2e PASS + 6 responsive skip; 1440/1024/768/
 Final [yayın makbuzu](docs/referans/yayin-object-v8-20261101.json) ve [QA kaydı](docs/referans/qa-160-20261101.json) nihai Task 160 kanıt kayıtlarıdır; yeni Flow medya kabulü ayrı tutulur. Fiziksel cihaz/gerçek hesap/ödeme/form mutasyonu bu kabul değildir.
 
 
-## Aktif çalışma: v9 Hasat Rotası (Task 161)
+## Tarihçe: v9 Hasat Rotası (Task 161)
 
 Kullanıcının [pro planı](docs/referans/afina-zeytin-pro-plan-20261101.md) ve tüm bölümlere 21st/Scroll Craft isteği: [Task161](docs/tasks/161-pro-plan-tum-bolumler-21st-scroll-craft.md), [BRIEF/PLAN/COPY](docs/scrollcraft/builds/afina-v9/BRIEF.md), [DESIGN](docs/DESIGN.md) aktiftir. V8 DESIGN byte-identical [arşivdedir](docs/referans/DESIGN-v8-history-20261101.md); önceki 170svh ambalaj/kâğıt-plane, opak nav ve tek geçiş/no-loop uygulama tercihi yeni planla değişir. Task161 TAMAMLANDI; final QA/CI/API/live kabulü doğrulandı.
 

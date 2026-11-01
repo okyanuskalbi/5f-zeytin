@@ -134,7 +134,7 @@ describe("asset registry CLI", () => {
 
   it("runs the guard before both dev and production builds", async () => {
     const current = JSON.parse(await readFile(join(projectRoot, "package.json"), "utf8")).scripts;
-    expect(current["check:assets"]).toBe("node scripts/check-assets.mjs && node scripts/check-v3-assets.mjs && node scripts/check-hero-layers.mjs && node scripts/check-renewal-assets.mjs && node scripts/check-cinematic-hero.mjs && node scripts/check-cinematic-film.mjs && node scripts/check-pro-loop.mjs");
+    expect(current["check:assets"]).toBe("node scripts/check-assets.mjs && node scripts/check-v3-assets.mjs && node scripts/check-hero-layers.mjs && node scripts/check-renewal-assets.mjs && node scripts/check-cinematic-hero.mjs && node scripts/check-cinematic-film.mjs && node scripts/check-pro-loop.mjs && node scripts/check-cinematic-scrub.mjs");
     expect(current.prebuild).toBe("npm run check:assets");
     expect(current.predev).toBe("npm run check:assets");
     expect(scripts.build).toBe("next build");

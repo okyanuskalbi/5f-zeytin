@@ -1,18 +1,15 @@
-# AFİNA ZEYTİN v10 — Dalından sofraya
+# AFİNA ZEYTİN v11 — Kökten sofraya
 
-Aktif [DESIGN](../docs/DESIGN.md) ve [Task162](../docs/tasks/162-scrolling-sections.md).
-Yeni kullanıcı isteğiyle scrolling sections, doğrudan framer-motion14.4.0,
-proje yerel UIPro ve React Bits BlurText kullanılır. Kaynak/lisans/pin:
-[SOURCES](../docs/scrollcraft/builds/afina-v10/SOURCES.json).
+Aktif [DESIGN](../docs/DESIGN.md) ve [Task163](../docs/tasks/163-10k-sinema-ve-aeo.md).
+Dört MD/dört PDF/10k ZIP [şart eşlemesi](../docs/scrollcraft/builds/afina-v11/REQUIREMENTS.md).
+Kabul edilmiş A→B filmi scroll ile ileri/geri; sonra gerçek AFİNA ambalajı.
+Telefon/touch/kısa/reduced/saveData/JS yokluğu poster/native. Sahne hata halinde
+boş kalmaz, eylemler fading caption dışında. Fraunces/Inter, zeytin#243A29,
+taş#F0EBDD/kâğıt#F7F4ED/mürekkep#172B21/yaprak#B4C58F/koyu altın#735519.
 
-Taş zeminde bağımsız tipografi/film/ön dal → üç aşamalı sticky fotoğraf anlatısı
-→ gerçek tesis → altı SKU'nun lineer/native rafı → sade işletme seçimleri →
-gerçek mailto taslağı → SSS/adres ve “Sofrada görüşürüz.”
+Üç producer adımı → gerçek tesis → altıSKU rafı/detail/sepet → işletme satırları
+→ gerçek mailto taslağı → aynı5SSS/iletişim. 21st/UIPro/pinned React Bits sürer;
+[provenans](../docs/scrollcraft/builds/afina-v10/SOURCES.json). Tek Motion runtime.
 
-Özgün logo/slogan/ambalaj ve Fraunces/Inter korunur. Ana renkler #243A29,
-#EDE8DD,#F7F4EE,#1C1F1A,#735519; #84CC16 eylem/seçim vurgusu.
-Framer Motion ve motion aynı LazyMotion/useScroll nesnelerine çözülür. İkinci
-GSAP/Lenis motoru yok; içerik SSR'da görünür, reduced/mobile/short native.
-
-1216unit/lint/typecheck/webpack build PASS. Yeni görsel/e2e ve yayın kabulü
-bekliyor. V9 makbuzları tarihçedir. [VERIFICATION](../docs/scrollcraft/builds/afina-v10/VERIFICATION.md).
+Unit/lint/type/build sonuçları [VERIFICATION](../docs/scrollcraft/builds/afina-v11/VERIFICATION.md).
+Gerçek tarayıcı ve telefon/yayın kabulü bekliyor. V9 canlı kanıtları tarihçedir.

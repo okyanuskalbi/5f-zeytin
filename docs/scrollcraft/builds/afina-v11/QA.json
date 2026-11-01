@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "task": 163,
+  "design": "AFINA v11 Kokten sofraya",
+  "status": "LOCAL_CODE_READY_VISUAL_ACCEPTANCE_PENDING",
+  "unit": {
+    "files": 96,
+    "tests": 1230,
+    "status": "PASS",
+    "workers": 2
+  },
+  "lint": "PASS",
+  "typecheck": "PASS",
+  "build": {
+    "status": "PASS",
+    "bundler": "webpack",
+    "log": ".cache/task-163/build-accepted.log"
+  },
+  "assetGates": "PASS",
+  "compiledHtmlCheck": {
+    "sections": [
+      "baslangic",
+      "uretim-yolculugu",
+      "tesisimiz",
+      "urunler",
+      "toptan-iletisim",
+      "teklif",
+      "iletisim"
+    ],
+    "images": 23,
+    "missing": [],
+    "brokenSectionAnchors": [],
+    "h1": "Kökü toprakta. Yeri sofrada.",
+    "productCards": 6,
+    "reactBits": 2,
+    "canonical": "https://afinazeytin.com/",
+    "feed": "https://afinazeytin.com/feed.xml",
+    "theme": "#243A29",
+    "schemaTypes": [
+      "Organization",
+      "Place",
+      "WebPage",
+      "WebSite",
+      "FAQPage"
+    ],
+    "scope": "compiled HTML inspection, not browser render or live HTTP"
+  },
+  "independentCodeReview": {
+    "findings": 4,
+    "fixed": 4,
+    "openEstablishedIssues": 0,
+    "visualReview": false
+  },
+  "componentReview": {
+    "files": 4,
+    "errors": 0,
+    "warnings": 0,
+    "info": 3
+  },
+  "browserE2E": "NOT_RUN_ENVIRONMENT_RESTRICTIONS",
+  "visualAcceptance": "PENDING",
+  "physicalDevice": "NOT_RUN",
+  "lighthouse": "NOT_RUN",
+  "push": false,
+  "deploy": false,
+  "newPaidGeneration": false,
+  "newCreditsSpent": 0,
+  "staticPreview": ".cache/task-163/AFINA-v11-onizleme.html"
+}

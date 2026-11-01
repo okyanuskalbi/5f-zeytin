@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "task": 163,
+  "suppliedSources": [
+    {
+      "file": "/Users/emre/Downloads/profesyonel-web-sitesi-skill-yeni-nesil.md",
+      "bytes": 6039,
+      "sha256": "f0246c60cd7e5588d093228c38d178dbb945e323067c2165dfd1e9ec03445980",
+      "reviewed": true
+    },
+    {
+      "file": "/Users/emre/Downloads/scroll-hero-video-kiti-yeni-nesil.md",
+      "bytes": 7818,
+      "sha256": "f01ca525ec395387ffddaa3be045197b515158ecb0405db2ebe0f77580b051a3",
+      "reviewed": true
+    },
+    {
+      "file": "/Users/emre/Downloads/sinematik-siteler-yeni-nesil.md",
+      "bytes": 9212,
+      "sha256": "aa630ea06c077ae0c96444c602a7a46328300e4435e4adbc2c1a7a450a4ebac6",
+      "reviewed": true
+    },
+    {
+      "file": "/Users/emre/Downloads/ui-ux-pro-max.md",
+      "bytes": 5326,
+      "sha256": "9eb2268809dd3ee50376baf8d8d554141c4a75349803fabce4b15cca45ccb017",
+      "reviewed": true
+    },
+    {
+      "file": "/Users/emre/Desktop/WB AI PROJELER ICIN/sinematik-siteler.pdf",
+      "bytes": 140123,
+      "sha256": "828590362210075c916ce5258db3f3f0899a40a8cf7b2e0373507232549a971f",
+      "reviewed": true
+    },
+    {
+      "file": "/Users/emre/Desktop/WB AI PROJELER ICIN/web-site-yetenegi-kiti.pdf",
+      "bytes": 671423,
+      "sha256": "cca9cd34b53e510be095862a536a4b2ab6d4f3a48da601449918be3d0c7c0b9e",
+      "reviewed": true
+    },
+    {
+      "file": "/Users/emre/Desktop/WB AI PROJELER ICIN/9-mayis-10-kiti.pdf",
+      "bytes": 424620,
+      "sha256": "ff51276bd80a0253e43f70b5ee05a11c8703d41ba953b2c9f1844e64e26bc604",
+      "reviewed": true
+    },
+    {
+      "file": "/Users/emre/Desktop/WB AI PROJELER ICIN/AEO_GEO_Rehberi_Onur_Kocak.pdf",
+      "bytes": 318035,
+      "sha256": "1a88c4eeed3fcfcd06945ad20fa4080a6f984f7da36dfaf24dcdf7b8ae097f86",
+      "reviewed": true
+    },
+    {
+      "file": "/Users/emre/Desktop/WB AI PROJELER ICIN/10k-websites-skill.zip",
+      "bytes": 56626,
+      "sha256": "3aa5b6422068031ffc57a3d16fee29ec135c46eded1615bec7c33b0c46320cc5",
+      "reviewed": true
+    }
+  ],
+  "sourceOriginalsModified": false,
+  "componentProvenance": "../afina-v10/SOURCES.json",
+  "mediaManifest": "../../../../lib/media/cinematic-scrub.json",
+  "adaptation": "REQUIREMENTS.md",
+  "newPaidGeneration": false,
+  "newCreditsSpent": 0
+}

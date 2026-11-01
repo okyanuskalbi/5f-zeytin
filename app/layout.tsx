@@ -33,7 +33,7 @@ const bodyFont = localFont({
   adjustFontFallback: "Arial",
 });
 
-export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover" };
+export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#243A29" };
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteIdentity.origin),

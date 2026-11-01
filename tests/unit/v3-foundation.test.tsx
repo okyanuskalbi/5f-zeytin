@@ -75,15 +75,18 @@ it("keeps matching SSR preloads and all hero sources within byte budgets", async
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(await Home());
   const preloads = [...doc.querySelectorAll<HTMLLinkElement>('link[rel="preload"][as="image"]')];
-  expect(preloads).toHaveLength(1);
+  expect(preloads).toHaveLength(2);
   expect(preloads[0].type).toBe("image/avif");
-  expect(preloads[0].getAttribute("href")).toBe("/videos/afina-zeytinlik-poster.avif");
+  expect(preloads[0].getAttribute("href")).toBe("/frames/afina-agac-dal/poster-mobile.avif");
   expect(preloads.every(link => link.getAttribute("fetchpriority") === "high")).toBe(true);
-  const photo = doc.querySelector("[data-cinematic-film]")!;
+  const photo = doc.querySelector("[data-cinematic-scrub]")!;
   expect(photo.querySelector("img")?.getAttribute("fetchPriority")).toBe("high");
-  expect(photo.querySelector("source")?.getAttribute("media")).toBe("(max-width: 767px) and (orientation: portrait)");
+  expect(photo.querySelector("source")?.getAttribute("media")).toBe("(max-width: 767px)");
   expect(photo.querySelector("video")?.hasAttribute("src")).toBe(false);
   expect(photo.querySelector('source[type="image/avif"]')?.getAttribute("srcset"))
-    .toBe(`${preloads[0].getAttribute("href")} 1280w`);
-  expect(statSync(`public${preloads[0].getAttribute("href")}`).size).toBeLessThanOrEqual(90000);
+    .toBe(`${preloads[0].getAttribute("href")} 480w`);
+  for (const preload of preloads) {
+    expect(preload.media).toBeTruthy();
+    expect(statSync(`public${preload.getAttribute("href")}`).size).toBeLessThanOrEqual(90000);
+  }
 });

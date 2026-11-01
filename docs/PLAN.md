@@ -1,4 +1,15 @@
-# Aktif iş: Task162 / v10 Dalından sofraya
+# Aktif iş: Task163 / v11 Kökten sofraya
+
+Kullanıcının bütün site senaryosu ve $10K kalite hedefi uygulanıyor.
+[Task163](tasks/163-10k-sinema-ve-aeo.md), [DESIGN](DESIGN.md),
+[9 kaynak eşlemesi](scrollcraft/builds/afina-v11/REQUIREMENTS.md) ve
+[doğrulama](scrollcraft/builds/afina-v11/VERIFICATION.md) aktiftir.
+Gerçek scroll film, üç caption, gerçek ambalaj, producer story, aynı6SKU,
+B2B→talep ve ortak içerikten AEO. Önceki v10 ve v9 bölümleri tarihçedir.
+Yerel kod kontrolleri geçti; görsel/e2e/telefon/yayın kapısı henüz açık.
+Yeni ücretli medya/kredi/provider/DB yok; yayın yapılmadı.
+
+# Tarihçe: Task162 / v10 Dalından sofraya
 
 Kullanıcının baştan scrolling sections isteği ve Framer Motion/UIPro/React Bits
 tercihi [Task162](tasks/162-scrolling-sections.md) ile uygulanıyor. Güncel görsel
@@ -9,7 +20,7 @@ yapılmadı; task TAMAMLANDI değildir. Aşağıdaki v9 ve önceki tablolar tari
 
 # Proje Planı
 
-## Aktif çalışma: v9 Hasat Rotası — Task 161
+## Tarihçe: v9 Hasat Rotası — Task 161
 
 [Task161](tasks/161-pro-plan-tum-bolumler-21st-scroll-craft.md) **TAMAMLANDI; API READY ve canlı UI kabulü doğrulandı**. Kullanıcı [pro planı](referans/afina-zeytin-pro-plan-20261101.md) ve bütün bölümlerde 21st/Scroll Craft istedi. [DESIGN](DESIGN.md), uygulama öncesi [BRIEF](scrollcraft/builds/afina-v9/BRIEF.md), [PLAN](scrollcraft/builds/afina-v9/PLAN.md), [COPY](scrollcraft/builds/afina-v9/COPY.md) ve [kaynak provenansı](scrollcraft/builds/afina-v9/21ST-SOURCES.json) aktiftir. Önceki v8 sözleşmesi byte-identical [arşivdedir](referans/DESIGN-v8-history-20261101.md); eski görev/karar tabloları tarihçe olarak korunur.
 

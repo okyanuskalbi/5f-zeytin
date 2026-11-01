@@ -4,6 +4,7 @@ import { V3Picture } from "@/components/media/V3Picture";
 import facility from "@/lib/media/renewal-assets.json";
 import { seller } from "@/lib/site/seller";
 import { siteContact } from "@/lib/site/contact";
+import { quoteDeliveryExplanation } from "@/lib/site/public-content";
 import type { ProductVariant } from "@/types/catalog";
 import { Faq } from "./Faq";
 import { SectionReveal } from "./SectionReveal";
@@ -96,7 +97,7 @@ export function QuoteSection({ products }: { products: readonly ProductVariant[]
     <div className={styles.container}>
       <div className={styles.quoteHeading}>
         <h2 id="teklif-title">İhtiyacınızı<br />birlikte planlayalım.</h2>
-        <p>Form, talebinizin e-posta taslağını hazırlar. Gönderimi e-posta uygulamanızda siz tamamlarsınız.</p>
+        <p>{quoteDeliveryExplanation}</p>
       </div>
       <QuoteComposer products={products} />
     </div>

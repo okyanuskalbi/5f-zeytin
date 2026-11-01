@@ -2,7 +2,7 @@
   "version": 1,
   "project": {
     "name": "afina-zeytin",
-    "productType": "Olive producer v10: native scroll sections, three-chapter held media, real facility, six-SKU rail and manual quote",
+    "productType": "Olive producer v11: true scroll journey from grove to genuine packaging, real facility, six-SKU commerce and manual corporate enquiry",
     "stack": [
       "nextjs",
       "react",
@@ -23,7 +23,8 @@
       "components/site/Navbar.module.css",
       "components/landing/ScrollingHero.module.css",
       "components/landing/ScrollingSections.module.css",
-      "components/landing/ProductionStory.module.css"
+      "components/landing/ProductionStory.module.css",
+      "components/media/CinematicScrub.module.css"
     ],
     "components": [
       "components/ui",
@@ -61,30 +62,34 @@
       "docs/tasks/162-scrolling-sections.md",
       "docs/scrollcraft/builds/afina-v10/BRIEF.md",
       "docs/scrollcraft/builds/afina-v10/SOURCES.json",
-      ".codex/skills/ui-ux-pro-max/SKILL.md"
+      ".codex/skills/ui-ux-pro-max/SKILL.md",
+      "docs/tasks/163-10k-sinema-ve-aeo.md",
+      "docs/scrollcraft/builds/afina-v11/DESIGN-PACKAGE.md",
+      "docs/scrollcraft/builds/afina-v11/REQUIREMENTS.md",
+      ".agents/skills/10k-websites/SKILL.md"
     ]
   },
   "design": {
     "colorMode": "mixed",
     "colors": {
       "--pro-brand": {
-        "value": "#84CC16",
+        "value": "#B4C58F",
         "source": "app/globals.css"
       },
       "--pro-brand-hover": {
-        "value": "#A3E635",
+        "value": "#C8D6AC",
         "source": "app/globals.css"
       },
       "--pro-stone": {
-        "value": "#EDE8DD",
+        "value": "#F0EBDD",
         "source": "app/globals.css"
       },
       "--pro-ink": {
-        "value": "#1C1F1A",
+        "value": "#172B21",
         "source": "app/globals.css"
       },
       "--pro-paper": {
-        "value": "#F7F4EE",
+        "value": "#F7F4ED",
         "source": "app/globals.css"
       },
       "--pro-gold": {
@@ -105,6 +110,10 @@
       },
       "--pro-error": {
         "value": "#9D2822",
+        "source": "app/globals.css"
+      },
+      "--pro-input": {
+        "value": "#717C69",
         "source": "app/globals.css"
       }
     },
@@ -462,13 +471,13 @@
   ],
   "generatedAt": "2026-11-01T13:36:35.959251+00:00",
   "release": {
-    "task": 162,
-    "design": "v10 Dalından sofraya",
+    "task": 163,
+    "design": "v11 Kökten sofraya",
     "status": "LOCAL_IMPLEMENTATION_VISUAL_ACCEPTANCE_PENDING",
-    "localAcceptance": "1216unit/93files; lint/typecheck; webpack build PASS",
+    "localAcceptance": "See current VERIFICATION.md",
     "browserAcceptance": "not run: environment restrictions",
     "deploymentStatus": "NOT_DEPLOYED",
-    "verification": "docs/scrollcraft/builds/afina-v10/VERIFICATION.md"
+    "verification": "docs/scrollcraft/builds/afina-v11/VERIFICATION.md"
   },
   "mediaContinuation": {
     "projectUrl": "https://flow.google.com/project/62040049-3473-446b-9d93-8e6cbc45f8bc",
@@ -483,7 +492,7 @@
     "newCandidateRuntimeApproval": false,
     "source": "docs/referans/flow-keyframes.json",
     "downloaded": true,
-    "runtimeFilm": "Accepted A→B only, now free local forward/reverse5sec loop derivative; other3candidates have no runtime/user approval"
+    "runtimeFilm": "Accepted A→B only; free local 4MB/GOP8 forward scrub derivative, other candidates remain unapproved"
   },
   "releaseHistory": [
     {
@@ -519,6 +528,18 @@
         "deploymentId": "dpl_46Scpv4MqVnjKxb1pYt1bjwSD4Hq",
         "qa": "docs/referans/qa-161-20261101.json",
         "receipt": "docs/referans/yayin-pro-v9-20261101.json"
+      }
+    },
+    {
+      "scope": "historical-task162-before-task163",
+      "record": {
+        "task": 162,
+        "design": "v10 Dalından sofraya",
+        "status": "LOCAL_IMPLEMENTATION_VISUAL_ACCEPTANCE_PENDING",
+        "localAcceptance": "1216unit/93files; lint/typecheck; webpack build PASS",
+        "browserAcceptance": "not run: environment restrictions",
+        "deploymentStatus": "NOT_DEPLOYED",
+        "verification": "docs/scrollcraft/builds/afina-v10/VERIFICATION.md"
       }
     }
   ]

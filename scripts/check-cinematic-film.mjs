@@ -15,7 +15,7 @@ const hash = bytes => createHash("sha256").update(bytes).digest("hex");
 /** Top-level MP4 boxes establish progressive startup without requiring ffprobe
  * on the deployment builder. Geometry/streams were probed before the reviewed
  * artifact hash was recorded; CI checks that exact derivative remains intact. */
-function movieBoxes(bytes) {
+export function movieBoxes(bytes) {
   const boxes = [];
   let offset = 0;
   while (offset < bytes.length) {

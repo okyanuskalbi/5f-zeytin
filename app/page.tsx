@@ -14,7 +14,10 @@ export const dynamic = "force-static";
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  alternates: { canonical: "/" },
+  alternates: {
+    canonical: "/",
+    types: { "application/atom+xml": [{ url: "/feed.xml", title: "AFİNA ZEYTİN içerik güncellemeleri" }] },
+  },
   robots: process.env.VERCEL_ENV === "preview"
     ? { index: false, follow: false }
     : { "max-image-preview": "large", "max-snippet": -1 },

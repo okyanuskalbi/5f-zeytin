@@ -1,4 +1,4 @@
-.root { --afina-olive:var(--brand-olive); --afina-paper:var(--pro-paper); --afina-champagne:var(--pro-gold); --afina-body:var(--pro-ink); --afina-muted:var(--pro-muted); --afina-field:var(--pro-paper); --afina-input:var(--pro-line); --afina-error:var(--pro-error); color:var(--pro-ink); background:var(--pro-stone); color-scheme:light; }
+.root { --afina-olive:var(--brand-olive); --afina-paper:var(--pro-paper); --afina-champagne:var(--pro-gold); --afina-body:var(--pro-ink); --afina-muted:var(--pro-muted); --afina-field:var(--pro-paper); --afina-input:var(--pro-input); --afina-error:var(--pro-error); color:var(--pro-ink); background:var(--pro-stone); color-scheme:light; }
 .container { width:min(1440px,calc(100% - 2 * var(--pro-gutter))); margin-inline:auto; }
 .container > *, .facilityGrid > *, .segmentGrid > *, .quoteHeading > *, .contactGrid > * { min-width:0; }
 .facility,.business,.quote,.support,.introduction { scroll-margin-top:calc(var(--header-height) + 24px); }

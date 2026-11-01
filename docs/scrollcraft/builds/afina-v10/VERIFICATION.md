@@ -9,7 +9,10 @@
   bölüm işareti senkronu, cleanup, telefon/reduced/API yokluğu native alternatif,
   React Bits kelime geçişi ve görünür SSR kontrolleri. Eski üç sıralama beklentisi
   yeni kullanıcı isteğine göre güncellendi; ürün/fiyat/stok kontrolleri korundu.
-- Lint ve typecheck PASS; git diff --check PASS.
+- Lint ve typecheck PASS; elle düzenlenen diff whitespace kontrolü PASS.
+  Düzeltme: UIPro upstream CSV CRLF ve LICENSE sonu boş satır taşıdığı için
+  o commit bütününde standart git show --check uyarı verir; vendor kaynak
+  normalleştirilmedi. Ayrıntı Task163 VERIFICATION içinde kaydedildi.
 - Onaylı medya/hash/alpha/boyut kapıları PASS; ASSET_SKIP_REENCODE=1 ile
   `npm run build -- --webpack` production build PASS. Yeni medya 0.
 - 21st scoped review: 0 error/0 warning/1 informational token önerisi.
