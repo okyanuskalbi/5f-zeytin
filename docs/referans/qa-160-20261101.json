@@ -1337,5 +1337,67 @@
       "frames": 190,
       "durationSeconds": 7.916667
     }
+  },
+  "flowCandidateReview": {
+    "report": "docs/scrollcraft/builds/afina-v8/FLOW-CANDIDATE-REVIEW.md",
+    "scope": "6 phase samples per clip, 18 total; original F packaging compared, not every frame or audio",
+    "items": [
+      {
+        "transition": "B-C",
+        "file": "/Users/emre/PROJELER/5F-ZEYTIN/output/flow-keyframes/B-C-omni-first-last.mp4",
+        "sha256": "7bbc5e04f459932422b2ae505bf713c41bbbbbee58aec6c6d785937a434045a0",
+        "bytes": 4042969,
+        "videoDuration": 8.0,
+        "containerDuration": 8.042667,
+        "width": 1280,
+        "height": 720,
+        "frames": 192,
+        "fps": 24,
+        "reviewStatus": "candidate-review-only",
+        "userAccepted": false,
+        "runtimeApproved": false,
+        "runtimePublished": false
+      },
+      {
+        "transition": "C-D",
+        "file": "/Users/emre/PROJELER/5F-ZEYTIN/output/flow-keyframes/C-D-omni-first-last.mp4",
+        "sha256": "9ebfae531e048b1ff60c386a0b494c768701b9d9ce4f10db8fbfa684781312a6",
+        "bytes": 4520710,
+        "videoDuration": 8.0,
+        "containerDuration": 8.042667,
+        "width": 1280,
+        "height": 720,
+        "frames": 192,
+        "fps": 24,
+        "reviewStatus": "candidate-review-only",
+        "userAccepted": false,
+        "runtimeApproved": false,
+        "runtimePublished": false
+      },
+      {
+        "transition": "D-F",
+        "file": "/Users/emre/PROJELER/5F-ZEYTIN/output/flow-keyframes/D-F-omni-first-last.mp4",
+        "sha256": "750a57b22184c04e64ea48043d1f2b1b09a695eaf71255a128316c9a0bfb3887",
+        "bytes": 4522406,
+        "videoDuration": 8.0,
+        "containerDuration": 8.042667,
+        "width": 1280,
+        "height": 720,
+        "frames": 192,
+        "fps": 24,
+        "reviewStatus": "rejected-for-publication",
+        "userAccepted": false,
+        "runtimeApproved": false,
+        "runtimePublished": false
+      }
+    ]
+  },
+  "documentationCI": {
+    "conclusion": "success",
+    "databaseId": 41306490028,
+    "headSha": "26cbfc2e3adab7f47d16322db0383864ec220d7c",
+    "name": "Test ve build (API yayını ayrı)",
+    "status": "completed",
+    "url": "https://github.com/okyanuskalbi/5f-zeytin/actions/runs/41306490028"
   }
 }

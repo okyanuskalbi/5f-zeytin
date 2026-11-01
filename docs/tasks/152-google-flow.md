@@ -67,4 +67,8 @@ Tam gönderim metinleri `docs/referans/flow-keyframes.json` içindeki değişmed
 
 Tamamlanmış dört Flow kartı kanıtı `.cache/task-160/flow-all-four-complete.png`; yeni üçlü için özel görsel inceleme ve kullanıcı onayı ayrıdır. İlk A→B runtime onayı yeni kliplere otomatik taşınmaz.
 
-## Durum: ÜÇ ÜRETİM COMPLETE/İNDİRİLDİ; YENİ MEDYA İNCELEMESİ/KULLANICI ONAYI BEKLİYOR
+## Yeni Flow adaylarının görsel sonucu
+
+Altı zaman örneği/klip ile18kare, üç contact sheet ve özgün F ambalaj referansı incelendi. **B→C ve C→D kullanıcı incelemesine hazır aday**; tüm karelerde kusursuzluk veya kullanıcı kabulü iddiası yok. **D→F yayın için reddedildi:**4,79sn etiketsiz şişe,6,38sn sonradan oluşan etiket ve final küçük yazı bozulması. Üçü de public/runtime'a alınmadı; ilave ücretli tekrar yok. Ayrıntı `docs/scrollcraft/builds/afina-v8/FLOW-CANDIDATE-REVIEW.md`; kaynak SHA ve inceleme durumları Flow ledger/QA içinde. Canlı film kullanıcı onaylı A→B olarak kalır.
+
+## Durum: ÜÇ ÜRETİM COMPLETE/İNDİRİLDİ; ÖRNEKLEM İNCELEMESİ TAMAM; İKİ ADAY KULLANICI ONAYI BEKLİYOR, D→F YAYINA UYGUN DEĞİL

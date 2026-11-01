@@ -60,3 +60,5 @@ Son ham inspector raporu SHA-256: `da06eac0d49c39c080672113748b0e43c22894e2e96ea
 Yerel kanıt: `.cache/task-160/adapter-provenance.json`, `cdp-safety.patch`, `after2/inspect/report.json`, `after2/scenes/`, `after2/offline-contrast.json`, `after2/run-receipt.json`, `after2/cleanup-proof.json`. Önceki snapshot’lar `after-pass1/` ve `after2-previous-Rp054CNQnvHxgsq8ui4OT/`, v7 baseline `before/` altında değişmeden korunur. Inspector’ın320px için200pxyükseklik üreten varsayımı son native koşuma alınmadı; gerçek320px ve360×640 kabulü ayrı uygulama testleridir.
 
 Koşuma ait browser profili/süreci **0**;3020production sunucusu düzgün kapandı. Bu kayıttan sonra runtime/denetim kuralı değiştirilmedi.
+
+Tekrar üretilebilir denetim için kullanılan browser-helper farkı [cdp-safety.patch](tooling/cdp-safety.patch), tüm kaynak/kopya SHA kayıtları [adapter-provenance.json](tooling/adapter-provenance.json) içinde kalıcıdır. Upstream skill dosyası değiştirilmedi; güvenli fark yalnız audit kopyasına uygulanır.

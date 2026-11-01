@@ -273,7 +273,7 @@
       },
       "creditsCharged": 12,
       "flowTitle": "02 · Dal → Hasat · İlk ve Son Kare",
-      "status": "complete-downloaded-technical-verified-candidate-pending-visual-review-user-approval",
+      "status": "complete-downloaded-reviewed-unaccepted-unpublished",
       "exactPrompt": "B → C · 8-second continuous photorealistic olive harvest shot. Start exactly on the supplied first frame: the close-up green olive branch beside this ancient olive tree. Keep the same branch, leaf pattern, olives, tree, Mediterranean grove and warm natural afternoon lighting. The camera stays almost still with a very gentle push-in. A worker's two anatomically correct hands, wearing the exact cream sleeves seen in the last frame, slowly enter from the right, gently holding the branch and carefully picking an olive toward a wicker basket below. End exactly in the supplied last-frame composition, with the same two hands and basket. Natural restrained motion, five fingers per hand, coherent hand-to-olive contact, premium cinematic realism. No extra hands, duplicated fingers, shaking, abrupt cuts, dissolve, new labels or text. Preserve the reference geometry and finish steady. 16:9.",
       "promptSha256": "43af17c155d764f3f5e1d89c516fe1e97cc38335ca778f4d99dfbec04746d769",
       "localFile": "output/flow-keyframes/B-C-omni-first-last.mp4",
@@ -302,7 +302,15 @@
       "hasAudio": true,
       "audioCodec": "aac",
       "technicalVerification": "verified-local-file-hash-bytes-and-root-ffprobe;192 video frames /8s plusAACtail",
-      "completionProof": ".cache/task-160/flow-all-four-complete.png"
+      "completionProof": ".cache/task-160/flow-all-four-complete.png",
+      "visualReview": {
+        "status": "candidate-review-only",
+        "sampledFrames": 6,
+        "totalVideoFrames": 192,
+        "report": "docs/scrollcraft/builds/afina-v8/FLOW-CANDIDATE-REVIEW.md",
+        "userAccepted": false,
+        "runtimeApproved": false
+      }
     },
     {
       "transition": "C→D",
@@ -321,7 +329,7 @@
       },
       "creditsCharged": 12,
       "flowTitle": "03 · Hasat → Yağ · İlk ve Son Kare",
-      "status": "complete-downloaded-technical-verified-candidate-pending-visual-review-user-approval",
+      "status": "complete-downloaded-reviewed-unaccepted-unpublished",
       "exactPrompt": "C → D · 8-second continuous photorealistic cinematic shot. Begin exactly with the supplied harvest frame: the same two cream-sleeved hands, green olive branch and wicker basket at this ancient olive tree. The worker gently lowers the basket and moves the hands naturally out of view. A slow lateral camera slide and slight downward pan reveals a nearby stone tasting table with an ivory ceramic bowl. A plain stainless-steel spout is already pouring a thin, physically coherent stream of golden-green olive oil into the bowl. Use natural foreground leaves and the tree trunk to motivate the camera transition. Preserve the same Mediterranean grove, warm afternoon sun, realistic scale and calm movement. Finish exactly on the supplied final oil-pouring composition, steady for the final moment. The harvest and tasting are distinct actions; no transformation of olives into oil in the hands. No hand deformation, hard cuts, dissolve, object morphing, splashes, new packaging, labels or text. 16:9.",
       "promptSha256": "6454fea9f3a0f7d022b2e93143274dd0fac0c797da42917f53c1ae51dbe82f43",
       "localFile": "output/flow-keyframes/C-D-omni-first-last.mp4",
@@ -350,7 +358,15 @@
       "hasAudio": true,
       "audioCodec": "aac",
       "technicalVerification": "verified-local-file-hash-bytes-and-root-ffprobe;192 video frames /8s plusAACtail",
-      "completionProof": ".cache/task-160/flow-all-four-complete.png"
+      "completionProof": ".cache/task-160/flow-all-four-complete.png",
+      "visualReview": {
+        "status": "candidate-review-only",
+        "sampledFrames": 6,
+        "totalVideoFrames": 192,
+        "report": "docs/scrollcraft/builds/afina-v8/FLOW-CANDIDATE-REVIEW.md",
+        "userAccepted": false,
+        "runtimeApproved": false
+      }
     },
     {
       "transition": "D→F",
@@ -369,7 +385,7 @@
       },
       "creditsCharged": 12,
       "flowTitle": "04 · Yağ → AFİNA · İlk ve Son Kare",
-      "status": "complete-downloaded-technical-verified-candidate-pending-visual-review-user-approval",
+      "status": "complete-downloaded-reviewed-unaccepted-unpublished",
       "exactPrompt": "D → F · 8-second photorealistic premium olive oil brand reveal. Begin exactly with the supplied first frame: golden-green oil pouring from the stainless spout into the ivory bowl on a stone surface in the olive grove. Slowly slide and arc the camera to the right, passing naturally behind a foreground olive branch to reveal the exact AFİNA bottle already standing on the stone surface shown in the supplied final reference. Match the final reference's hillside backdrop and warm light through the motivated camera angle. Preserve the approved bottle silhouette, green glass, cap, label geometry, white logo panel, AFİNA lettering, gold product ribbon and all label artwork exactly. The bottle is stationary and solid; no rotation, floating, morphing, invented text or new packaging. Let the pour end naturally as it leaves the frame. End on the exact supplied product composition and hold it steady for the final second. Gentle cinematic movement, realistic reflections, no abrupt cut or dissolve. 16:9.",
       "promptSha256": "f2503b852128c044e574cb7fe7af07bc553ff85355c44efef049808ea3be78ec",
       "localFile": "output/flow-keyframes/D-F-omni-first-last.mp4",
@@ -398,7 +414,15 @@
       "hasAudio": true,
       "audioCodec": "aac",
       "technicalVerification": "verified-local-file-hash-bytes-and-root-ffprobe;192 video frames /8s plusAACtail",
-      "completionProof": ".cache/task-160/flow-all-four-complete.png"
+      "completionProof": ".cache/task-160/flow-all-four-complete.png",
+      "visualReview": {
+        "status": "rejected-for-publication",
+        "sampledFrames": 6,
+        "totalVideoFrames": 192,
+        "report": "docs/scrollcraft/builds/afina-v8/FLOW-CANDIDATE-REVIEW.md",
+        "userAccepted": false,
+        "runtimeApproved": false
+      }
     }
   ],
   "completedVideoCount": 4,
