@@ -17,10 +17,10 @@ it("ships the accepted Flow opening as a responsive poster before JavaScript loa
   expect(poster?.getAttribute("fetchpriority")).toBe("high");
   for (const format of ["avif", "webp"]) {
     expect(doc.querySelector(`picture source[type="image/${format}"][media]`)?.getAttribute("srcset"))
-      .toBe(`/frames/afina-agac-dal/poster-mobile.${format} 480w`);
+      .toBe(`/frames/afina-agac-dal/poster-desktop.${format} 1280w`);
   }
   expect(doc.querySelector('link[rel="preload"][media*="max-width"]')?.getAttribute("imagesrcset"))
-    .toBe("/frames/afina-agac-dal/poster-mobile.avif 480w");
+    .toBe("/frames/afina-agac-dal/poster-desktop.avif 1280w");
 });
 
 it("keeps the official slogan and both real destinations readable without an animation or preloader", () => {
