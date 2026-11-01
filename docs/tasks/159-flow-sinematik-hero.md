@@ -26,6 +26,12 @@ Proje yerel dört yeni nesil skill, 21st ui-build/search/get, mevcut Motion ve n
 
 ## Yayın
 
-Normal main push, CI ve doğrudan REST API sonrasında yeni canlı sonuç/kanıt bu bölüme yazılacak. Önceki Task 158 dağıtımı yeni hero'nun yayın kanıtı değildir.
+Normal main push sonrası **CI 41297597853 SUCCESS**; yayın snapshot kaynağı `5a3b1f6840057febccca9f926ce1b231a052297e`. Doğrulanmış AFINA/afina-zeytin hedefinde REST API production **`dpl_CpxqnTKPasKQNCQ8zjWnaNu5NpsF` READY**, afinazeytin.com/www alias bağlı. Git auto-deploy kapalı kalır.
 
-## Durum: UYGULANIYOR
+Canlı alan adında **44 etkileşim kontrolü PASS**. 1440/768/390/320 px'te film/H1/CTA/menü/ürün/sepet/üyelik ve ilk/son kadraj denetlendi. Taşma/pageerror/başarısız kaynak/axe ihlali 0. Reduced-motion: video source yok, MP4/kare isteği 0, H1/poster/CTA görünür. SaveData/hata geri dönüşü; hover/basılı durumda tercih değişimi ve JavaScript kapalı ürün anchor'ı çalıştı. HTTP 200 ve **10 medya/manifest/hash eşliği** doğrulandı.
+
+Canlı doğal oynatım ayrıca kaydedildi: **7,916667 sn., ended=true, 190 decoded frame, muted=true**. `.cache/task-159/live/hero-preview.mp4` tarayıcı kaydı 8,68 sn./2.761.804 bayt; kaynak MP4 değil, yeni hero'nun gerçek sayfa önizlemesidir. Browser/server düzgün kapandı; 3018/3019 listener yok. Fiziksel telefon veya gerçek servis mutasyonu değildir.
+
+[Yayın makbuzu](../referans/yayin-film-v7-20261101.json), [yerel/canlı QA](../referans/qa-159-20261101.json), ekranlar `.cache/task-159/live/`. Rollback önceki Task 158 `dpl_8eMNwwHWCr2dod8aLYnzSw9DV9dQ`. Son belge/kanıt commit'i yalnız dokümantasyondur; runtime kaynağı yukarıdaki hash'tir. Yeni ücretli üretim/Flow kredisi 0.
+
+## Durum: TAMAMLANDI

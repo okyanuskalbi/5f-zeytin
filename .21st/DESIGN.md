@@ -20,4 +20,4 @@ Orijinal logo, Fraunces/Figtree, `#172B21`/`#F4F0E7`/`#B6A078`/`#252725` ve hero
 
 ## Kabul sınırı
 
-Task 159 test/yayın kabulü bekliyor. Yeni medya kapısı, gerçek video zamanı/denetimler/tek geçiş, poster/tercihler ve dört genişlikte görünürlük/taşma/klavye/ürün/sepet/üyelik doğrulanır. Yalnız paketli headless Chromium, en fazla iki worker ve düzgün kapanış. Fiziksel cihaz ve gerçek servis işlemleri emülasyon/HTTP kabulünden ayrıdır. Önceki Task 157/158 kanıtı yeni film kabulü değildir.
+Task 159 yayın/kabul tamam: `5a3b1f6`, 1197 unit + 44 canlı etkileşim kontrolü; dört genişlikte görsel/axe, gerçek tek oynatım/son kare ve poster/tercihler doğrulandı. [Makbuz](../docs/referans/yayin-film-v7-20261101.json), [QA](../docs/referans/qa-159-20261101.json). Yalnız paketli headless Chromium, en fazla iki worker ve düzgün kapanış. Fiziksel cihaz ve gerçek servis işlemleri emülasyon/HTTP kabulünden ayrıdır; kullanıcının görsel kabulü yerine geçmez.

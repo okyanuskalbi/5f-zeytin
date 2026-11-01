@@ -40,7 +40,7 @@ Yeni üretim ancak istenen kapsam, kullanılabilir model ve ekranda doğrulanan 
 
 ## Kabul ve birlikte kullanım
 
-Gerçek video zamanının ilerlemesi, sessizlik, tek geçiş/son kare, denetimler, kullanıcı durdurması, görünürlük/tercih değişimi, autoplay reddi ve poster kanıtlanır. Gerçek ürün/sepet/üyelik/kurumsal CTA'lar kalır. Test yalnız paketli headless Chromium, en fazla iki worker ve düzgün kapanışla yapılır; fiziksel telefon kabulü emülasyondan ayrıdır. Task 159 kabul/yayını beklerken önceki test sonucu yeni film kabulü sayılmaz.
+Gerçek video zamanının ilerlemesi, sessizlik, tek geçiş/son kare, denetimler, kullanıcı durdurması, görünürlük/tercih değişimi, autoplay reddi ve poster kanıtlanır. Gerçek ürün/sepet/üyelik/kurumsal CTA'lar kalır. Test yalnız paketli headless Chromium, en fazla iki worker ve düzgün kapanışla yapılır; fiziksel telefon kabulü emülasyondan ayrıdır. Güncel [Task 159 makbuzu](../../../docs/referans/yayin-film-v7-20261101.json) tamamlanan yayın/kabulü kaydeder; önceki test sonucu yeni film kabulü sayılmaz.
 
 - [Profesyonel web](../profesyonel-web-sitesi-yeni-nesil/SKILL.md): kimlik ve gerçek içerik.
 - [Sinematik siteler](../sinematik-siteler-yeni-nesil/SKILL.md): tam geniş film kompozisyonu.

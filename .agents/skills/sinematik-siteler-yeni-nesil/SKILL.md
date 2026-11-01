@@ -41,7 +41,7 @@ Omni Chrome Use mevcut CUA/browser ile oturumlu Flow otomasyonu yaklaşımıdır
 
 ## Kabul ve birlikte kullanım
 
-Sahne netliği, gerçek video zamanı, tek geçiş/son kare, pause/play/replay, kullanıcı durdurması, normal/azaltılmış hareket, görünürlük, autoplay reddi, mobil kadraj ve okunurluk kanıtlanır. Task 159 test/yayın kabulü bekler; önceki ekran görüntüsü yeni filmi kanıtlamaz. Paketli headless Chromium, en fazla iki worker ve düzgün kapanış; fiziksel telefon/Lighthouse yapılmadıysa yapılmış sayılmaz.
+Sahne netliği, gerçek video zamanı, tek geçiş/son kare, pause/play/replay, kullanıcı durdurması, normal/azaltılmış hareket, görünürlük, autoplay reddi, mobil kadraj ve okunurluk kanıtlanır. Güncel [Task 159 makbuzu](../../../docs/referans/yayin-film-v7-20261101.json) tamamlanan yayın/kabul kanıtıdır; önceki ekran görüntüsü yeni filmi kanıtlamaz. Paketli headless Chromium, en fazla iki worker ve düzgün kapanış; fiziksel telefon/Lighthouse yapılmadıysa yapılmış sayılmaz.
 
 - [Profesyonel web](../profesyonel-web-sitesi-yeni-nesil/SKILL.md)
 - [Scroll hero](../scroll-hero-video-yeni-nesil/SKILL.md)

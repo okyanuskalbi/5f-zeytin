@@ -1,0 +1,185 @@
+{
+  "date": "2026-11-01",
+  "task": 159,
+  "sourceCommit": "5a3b1f6840057febccca9f926ce1b231a052297e",
+  "ci": {
+    "conclusion": "success",
+    "databaseId": 41297597853,
+    "headSha": "5a3b1f6840057febccca9f926ce1b231a052297e",
+    "status": "completed",
+    "url": "https://github.com/okyanuskalbi/5f-zeytin/actions/runs/41297597853"
+  },
+  "deployment": {
+    "id": "dpl_CpxqnTKPasKQNCQ8zjWnaNu5NpsF",
+    "url": "afina-zeytin-ms1bu23nv-afina1.vercel.app",
+    "readyState": "READY",
+    "target": "production",
+    "alias": [
+      "afinazeytin.com",
+      "afina-zeytin.vercel.app",
+      "www.afinazeytin.com",
+      "afina-zeytin-afina1.vercel.app"
+    ],
+    "aliasAssigned": true,
+    "errorCode": null,
+    "errorMessage": null,
+    "meta": {
+      "sourceCommit": "5a3b1f6840057febccca9f926ce1b231a052297e",
+      "sourceRepo": "okyanuskalbi/5f-zeytin",
+      "pipeline": "verified-rest-api",
+      "verificationRun": "41297597853",
+      "lambdaRuntimeStats": "{\"nodejs\":3}",
+      "bundler": "turbopack"
+    }
+  },
+  "project": {
+    "name": "afina-zeytin",
+    "id": "prj_4nr3Qeu05CcoMgDXt7MeAfnflyPp",
+    "teamId": "team_IWBdFFE1yrN06w4L0BQxK1Cz"
+  },
+  "previousProduction": {
+    "id": "dpl_8eMNwwHWCr2dod8aLYnzSw9DV9dQ",
+    "sourceCommit": "862c1be8c8803e1dc3dbb34f19e98a6988531d62"
+  },
+  "sourceSnapshot": {
+    "files": 1569,
+    "bytes": 76088284,
+    "manifestSha256": "92b4425b1b0289037ea27da362ec262b078a1f2ee832d1424ee17a1b3727798c"
+  },
+  "checks": {
+    "unitFiles": 88,
+    "unitTests": 1197,
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "productionBuild": "PASS",
+    "localInteractionTests": 44,
+    "liveInteractionTests": 44,
+    "axeViolationsPerViewport": 0
+  },
+  "qaEvidence": "docs/referans/qa-159-20261101.json",
+  "httpVerification": {
+    "home": {
+      "status": 200,
+      "sha256": "0acd71ffd2872813fa426e9e940f1bcbb2ae9dee95bdef0993dee649627fb5fa"
+    },
+    "officialSlogan": true,
+    "newResponsivePoster": true,
+    "oldHeroRemoved": true,
+    "realCtaLinks": true,
+    "assets": [
+      {
+        "path": "/frames/afina-agac-dal/manifest.json",
+        "status": 200,
+        "bytes": 127,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "907d5d72efd70a5370025cad22dfb24aeaea8bba60c39ad314027233ed5b58e0"
+      },
+      {
+        "path": "/frames/afina-agac-dal/poster-desktop.avif",
+        "status": 200,
+        "bytes": 71632,
+        "contentType": "image/avif",
+        "sha256": "61549ffb525579ab3df3e1a899f1f543312eb6d08093f6074ca33382d4bbdcc4"
+      },
+      {
+        "path": "/frames/afina-agac-dal/poster-desktop.webp",
+        "status": 200,
+        "bytes": 162326,
+        "contentType": "image/webp",
+        "sha256": "dc6dcc04c373c693c110d3e5d7cbf74de0d8b057b3385346e066b6b39a6d9bde"
+      },
+      {
+        "path": "/frames/afina-agac-dal/poster-mobile.avif",
+        "status": 200,
+        "bytes": 30613,
+        "contentType": "image/avif",
+        "sha256": "da231273b9ac2e361515a406cb28575e6bb0ea5d23e6ad0aca91b84d3843ba9d"
+      },
+      {
+        "path": "/frames/afina-agac-dal/poster-mobile.webp",
+        "status": 200,
+        "bytes": 68808,
+        "contentType": "image/webp",
+        "sha256": "499a96b4d6f7e297eec710758584afb9f039406dd61376fe5481c1e59cf7d958"
+      },
+      {
+        "path": "/frames/afina-agac-dal/1280/frame-0001.webp",
+        "status": 200,
+        "bytes": 174760,
+        "contentType": "image/webp",
+        "sha256": "b949f7b019a62f9a1487f0f19f2a7bce099b4e0e7c5585e11e6db2a24195b086"
+      },
+      {
+        "path": "/frames/afina-agac-dal/1280/frame-0095.webp",
+        "status": 200,
+        "bytes": 56876,
+        "contentType": "image/webp",
+        "sha256": "d7d600b01a227b65cf2d76223cc561843fe1076b6b839d3af4bc62e83890e22f"
+      },
+      {
+        "path": "/frames/afina-agac-dal/960/frame-0001.webp",
+        "status": 200,
+        "bytes": 111330,
+        "contentType": "image/webp",
+        "sha256": "355cec0dc398b9bbc8e1de4377d310afafa9e1239c905a6b76d8de8ef75cd566"
+      },
+      {
+        "path": "/frames/afina-agac-dal/960/frame-0095.webp",
+        "status": 200,
+        "bytes": 40418,
+        "contentType": "image/webp",
+        "sha256": "004cc7d3117d57c2a48a9fd132b361c8dc9212d43b68d5f4234efb9257c08a09"
+      },
+      {
+        "path": "/videos/afina-agac-dal.mp4",
+        "status": 200,
+        "bytes": 2537380,
+        "contentType": "video/mp4",
+        "sha256": "5ff03b1b7a852d94f32fbb37487beaf1264c9e83d3e452aa0ead257d3cfebb3a"
+      }
+    ],
+    "kind": "HTTP-and-hash-verification"
+  },
+  "browserAcceptance": true,
+  "physicalDeviceAcceptance": false,
+  "newMediaGenerated": false,
+  "extraFlowCreditsSpent": 0,
+  "film": {
+    "version": 1,
+    "authorization": "user-2026-11-01-cinematic-flow-hero-request",
+    "provider": "Google Flow",
+    "source": {
+      "file": "output/flow-keyframes/A-B-ilk-deneme.mp4",
+      "sha256": "be77f66a14e418791093fe53937598204313a99f6368204f1fbf6ebaacf14171",
+      "userAccepted": true,
+      "width": 1280,
+      "height": 720,
+      "fps": 24,
+      "videoFrames": 190,
+      "videoDurationSeconds": 7.916667,
+      "containerDurationSeconds": 7.93
+    },
+    "derivation": {
+      "codec": "h264",
+      "pixelFormat": "yuv420p",
+      "crf": 27,
+      "preset": "slow",
+      "audio": false,
+      "fastStart": true,
+      "crop": false,
+      "toneMapping": false
+    },
+    "output": {
+      "file": "/videos/afina-agac-dal.mp4",
+      "sha256": "5ff03b1b7a852d94f32fbb37487beaf1264c9e83d3e452aa0ead257d3cfebb3a",
+      "bytes": 2537380,
+      "width": 1280,
+      "height": 720,
+      "fps": 24,
+      "frames": 190,
+      "durationSeconds": 7.916667
+    }
+  },
+  "review21st": "4 UI files; 0 findings",
+  "createdAt": "2026-11-01T10:37:40.035677+00:00"
+}

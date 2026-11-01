@@ -7,7 +7,7 @@
 - Ana slogan “Kökü toprakta. Yeri sofrada.”; güncel v7 Zeytinin İçinden sözleşmesi `docs/DESIGN.md` içinde. Kullanıcı hero'nun aynı göründüğünü belirterek gerçek Flow filmiyle sinematik açılış istedi: tam geniş film, sol-alt metin, gerçek CTA ve filmin dışında opak menü. V6 split/frame-only tercihi bu son istekle değişti. Altın zeytin dalı + el logosu ve `docs/visual-prompts.md` korunur.
 - Yeni üretim yalnız Google Flow; eski P01–P12/Atlas görevleri tarihsel kayıttır. Görseller temsili ve adaydır; kullanıcı onayı olmadan sitede kullanılmaz, ücretli videoya geçilmez.
 - Supabase proje/org, ödeme, e-posta, kargo, indirim/süreler, gerçek ürün/fiyat/logo ve Vercel/domain kararları açıktır; kendin seçme. Ayrıntı ve bağımlılıklar `docs/PLAN.md` içinde.
-- 1 Kasım 2026 kullanıcı devri: Codex planlama, görev oluşturma, uygulama ve denetimi birlikte yürütür. Claude dosyaları ve eski kabul kanıtları tarihsel kaynak olarak korunur. Güncel çalışma Task 159 gerçek Flow filmiyle v7 açılıştır; kabul/yayın sürüyor. Task 157/158 önceki v6 uygulama ve yayın tarihçesidir.
+- 1 Kasım 2026 kullanıcı devri: Codex planlama, görev oluşturma, uygulama ve denetimi birlikte yürütür. Claude dosyaları ve eski kabul kanıtları tarihsel kaynak olarak korunur. Task 159 gerçek Flow filmiyle v7 açılış/yayın kabulü tamamlandı. Task 157/158 önceki v6 uygulama ve yayın tarihçesidir.
 
 # Rol: Codex / proje yürütücüsü
 
@@ -92,3 +92,5 @@ MD'lerdeki **Omni Chrome Use**, mevcut CUA/browser araçlarıyla oturumlu arayü
 ## Gerçek Flow filmiyle sinematik açılış (Task 159)
 
 Son kullanıcı düzeltmesi v6 split/kare-penceresi ve genel no-autoplay uygulama tercihini değiştirir. Normal modda kabul edilmiş A→B kaynağının sessiz H264/faststart türevi bir kez oynar, son karede kalır; görünür duraklat/oynat/yeniden oynat kontrolü vardır. Yeni animasyon importları `motion/react` üzerinden, yeni dependency yok. Kaydırma yalnız küçük film-kabuğu transformudur; video zamanını seek etmez, body kilidi veya 300vh pin eklenmez. Reduced-motion/saveData poster, gizli sekme/görünüm dışında durma ve kullanıcı pause kararı korunur. Yeni medya/kredi 0. Kaynak/output `lib/media/cinematic-film.json` ve yeni build kapısında; güncel kabul [Task 159](docs/tasks/159-flow-sinematik-hero.md) içinde kaydedilir.
+
+Task 159 yayındaki kaynak `5a3b1f6`, CI 41297597853 SUCCESS; REST API `dpl_CpxqnTKPasKQNCQ8zjWnaNu5NpsF` READY. 1197 unit, 44 yerel + 44 canlı etkileşim kontrolü, dört genişlikte görsel/axe kabulü; normal oynatım 190 kare/7,916667 sn./sessiz doğrulandı. Son makbuz [yayin-film-v7-20261101.json](docs/referans/yayin-film-v7-20261101.json), QA `qa-159-20261101.json`. Fiziksel cihaz veya gerçek hesap/ödeme/talep mutasyonu değildir; yeni Flow kredisi 0.

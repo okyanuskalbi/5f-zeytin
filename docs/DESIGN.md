@@ -4,7 +4,7 @@
 
 1 Kasım 2026: kullanıcı “Hero hâlâ aynı görünüyor, Google Flow videolarını kullanıp MD’lerdeki gibi daha sinematik bir açılış yap” dedi. Bu istek, v6 split/çerçeveli sahne ve yalnız kare dizisiyle oynatma tercihinin yerini alır. Normal modda kısa filmin kendiliğinden sessiz bir kez ilerlemesi bu kapsamda istenir; önceki uygulamanın genel otomatik oynatma yasağı yeni hero için geçerli değildir. Reduced-motion ve veri tasarrufu sınırları korunur.
 
-Bu dosya tek güncel görsel sözleşmedir. Önceki DESIGN.md değişmeden [v6 tarihçesinde](referans/DESIGN-v6-history-20261101.md), daha eski tarifler [v5 tarihçesinde](referans/DESIGN-v5-history-20261101.md) saklanır. Geçmiş medya onayları ve yayın kanıtları silinmez. Güncel uygulama ve bekleyen kabul [Task 159](tasks/159-flow-sinematik-hero.md) içindedir; bu belge tamamlanmış test/yayın iddiası değildir.
+Bu dosya tek güncel görsel sözleşmedir. Önceki DESIGN.md değişmeden [v6 tarihçesinde](referans/DESIGN-v6-history-20261101.md), daha eski tarifler [v5 tarihçesinde](referans/DESIGN-v5-history-20261101.md) saklanır. Geçmiş medya onayları ve yayın kanıtları silinmez. [Task 159](tasks/159-flow-sinematik-hero.md) uygulama/yayın kabulü tamamlandı; kaynak `5a3b1f6`, 1197 unit + 44 canlı etkileşim kontrolü, dört genişlikte görsel/axe ve gerçek video oynatımı doğrulandı. [Yayın makbuzu](referans/yayin-film-v7-20261101.json) ayrı kanıttır; bu sözleşme kullanıcının görsel kabulü yerine geçmez.
 
 ## Görsel fikir ve marka
 
