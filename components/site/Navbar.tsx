@@ -5,7 +5,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import * as motion from "motion/react-m";
-import { AnimatePresence, useMotionValueEvent, useScroll } from "motion/react";
+import { AnimatePresence } from "motion/react";
 import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
 import { springs, motionTokens } from "@/lib/ui-motion";
 import { Button } from "@/components/ui/button";
@@ -40,15 +40,9 @@ export function Navbar(): JSX.Element {
   const openMembership = useMembershipDialog();
   const itemCount = cart?.state.items.reduce((count, item) => count + item.quantity, 0) ?? 0;
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const homeRef = useRef<HTMLAnchorElement>(null);
   const reduced = usePrefersReducedMotion();
-  const { scrollY } = useScroll();
-
-  useMotionValueEvent(scrollY, "change", (value) => {
-    setScrolled(value > 40);
-  });
 
   useEffect(() => {
     let idle: number | undefined;
@@ -65,15 +59,6 @@ export function Navbar(): JSX.Element {
       clearTimeout(fallback);
     };
   }, []);
-
-  useEffect(() => {
-    if (!landing) return;
-
-    const syncSurface = (): void => { setScrolled(window.scrollY > 40); };
-    syncSurface();
-    window.addEventListener("pageshow", syncSurface);
-    return () => { window.removeEventListener("pageshow", syncSurface); };
-  }, [landing]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -95,11 +80,11 @@ export function Navbar(): JSX.Element {
   }, [isOpen]);
 
   return (
-    <header data-site-navbar="" data-tone={!landing || scrolled ? "solid" : "hero"}
+    <header data-site-navbar="" data-tone={landing ? "paper" : "solid"}
       data-over-hero={landing} className={`site-bar ${styles.bar}`}>
       <div className={styles.row}>
         <Link ref={homeRef} href="/" onClick={() => { if (landing) window.scrollTo({ top: 0, behavior: "instant" }); }} aria-label="Afina Zeytin ana sayfa" className={styles.home}>
-          <BrandLogo className={styles.logo} />
+          <BrandLogo tone={landing ? "light" : "dark"} className={styles.logo} />
         </Link>
         <nav aria-label="Ana navigasyon" className={styles.desktop}>
           {links.map(link => <Link key={link.href} href={link.href} className={styles.link}>{link.label}</Link>)}

@@ -23,6 +23,8 @@ interface ScrollFrameSequenceProps {
   initialCount?: number;
   mediaClassName?: string;
   scrollLength?: number;
+  /** A compact media window follows its containing story without pinning. */
+  layout?: "sticky" | "framed";
   /** A containing sticky scene can own the stable scroll measurement. */
   scrollTarget?: RefObject<HTMLDivElement | null>;
   fit?: "cover" | "contain";
@@ -56,7 +58,7 @@ function useMediaBudget(): boolean {
 }
 
 export function ScrollFrameSequence({
-  src, poster, deferPlayback = false, initialCount, mediaClassName = "", scrollLength = 300, scrollTarget, fit = "cover", positionX = 0.5, blurFill = false, children, label = "Kare dizisi",
+  src, poster, deferPlayback = false, initialCount, mediaClassName = "", scrollLength = 300, layout = "sticky", scrollTarget, fit = "cover", positionX = 0.5, blurFill = false, children, label = "Kare dizisi",
 }: ScrollFrameSequenceProps): JSX.Element {
   const target = useRef<HTMLDivElement>(null);
   const progress = useMotionValue(0);
@@ -104,7 +106,7 @@ export function ScrollFrameSequence({
 
   return (
     <div ref={target} data-frame-sequence data-status={failed ? "error" : manifest ? "ready" : "loading"}
-      className="relative bg-background" style={{ height: staticMedia ? (poster ? "var(--frame-height, 100vh)" : "100vh") : `${height}vh` }}>
+      className="relative bg-background" style={{ height: layout === "framed" ? "100%" : staticMedia ? (poster ? "var(--frame-height, 100vh)" : "100vh") : `${height}vh` }}>
       <div className="[position:var(--frame-position,sticky)] top-[var(--frame-top,0px)] h-[var(--frame-height,100vh)] overflow-hidden">
         {posterURL && (
           <div role={label ? "img" : undefined} aria-label={label || undefined} aria-hidden={!label || undefined} className={`absolute inset-0 ${mediaClassName}`}>
@@ -126,7 +128,7 @@ export function ScrollFrameSequence({
               className={`absolute inset-0 h-full w-full ${fit === "cover" ? "object-cover" : "object-contain"}`} />
             </picture>
             {manifest && !staticMedia && posterLoaded === posterKey && (!deferPlayback || playbackReady) && (
-              <ActiveSequence key={`frames:${src}`} target={scrollTarget ?? target} manifest={manifest} src={src} fit={fit} positionX={focusX} blurFill={blurFill} progress={progress} initialCount={initialCount} />
+              <ActiveSequence key={`frames:${src}`} target={scrollTarget ?? target} manifest={manifest} src={src} fit={fit} positionX={focusX} blurFill={blurFill} progress={progress} initialCount={initialCount} layout={layout} />
             )}
           </div>
         )}

@@ -4,10 +4,10 @@
 - **KURUMSAL** = AFİNA Şirketler Topluluğu, afina.com.tr, `okyanuskalbi/afina-kurumsal`, `~/PROJELER/AFINA-KURUMSAL`.
 - Tek landing içinde premium vitrin ve satın alma; admin’den girilecek en fazla 5–6 ürün. Üyelik, hesabım, sipariş geçmişi, sepet drawer ve sayfası, upsell/çapraz satış, kademeli indirim, ödeme callback’i, kupon, terk edilen sepet e-postası, admin ve kargo takibi kapsamda.
 - Next.js App Router + TypeScript + Tailwind 4 + shadcn/ui + Framer Motion (`motion`) + Supabase + Vercel. AI Studio kodu `_legacy/` içinde yalnız referans; yeni runtime’a doğrudan bağlanmaz.
-- Ana slogan “Kökü toprakta. Yeri sofrada.”; v5 kurumsal paleti/tasarımı `docs/DESIGN.md` içinde. Altın zeytin dalı + el logosu ve `docs/visual-prompts.md` korunur.
+- Ana slogan “Kökü toprakta. Yeri sofrada.”; güncel v6 Üretici Atlası sözleşmesi `docs/DESIGN.md` içinde. Kullanıcı koyu ortalanmış hero/cam menüyü reddetti; açık, asimetrik metin/görsel kompozisyonu esas alınır. Altın zeytin dalı + el logosu ve `docs/visual-prompts.md` korunur.
 - Yeni üretim yalnız Google Flow; eski P01–P12/Atlas görevleri tarihsel kayıttır. Görseller temsili ve adaydır; kullanıcı onayı olmadan sitede kullanılmaz, ücretli videoya geçilmez.
 - Supabase proje/org, ödeme, e-posta, kargo, indirim/süreler, gerçek ürün/fiyat/logo ve Vercel/domain kararları açıktır; kendin seçme. Ayrıntı ve bağımlılıklar `docs/PLAN.md` içinde.
-- 1 Kasım 2026 kullanıcı devri: Codex planlama, görev oluşturma, uygulama ve denetimi birlikte yürütür. Claude dosyaları ve eski kabul kanıtları tarihsel kaynak olarak korunur. Müşteri yenilemesi Task 151, son yayınlanan sinematik açılış Task 156; güncel kanıt docs/referans/yayin-sinematik-20261101.json.
+- 1 Kasım 2026 kullanıcı devri: Codex planlama, görev oluşturma, uygulama ve denetimi birlikte yürütür. Claude dosyaları ve eski kabul kanıtları tarihsel kaynak olarak korunur. Güncel tasarım/tarayıcı kabulü Task 157; Task 151/156 önceki uygulama ve yayın tarihçesidir.
 
 # Rol: Codex / proje yürütücüsü
 
@@ -50,7 +50,7 @@ Kullanıcının 1 Kasım 2026 devriyle planlama, görev dokümanları, uygulama 
 
 - **Yayın tercihi (1 Kasım, Task 153 tamam):** test/lint/typecheck/build yeşil değişiklikler normal main push; dağıtım doğrudan Vercel REST API ile. GitHub Actions yalnız lint/typecheck/unit/build yapar; Vercel Git auto-deploy kapalıdır. Doğru AFINA ekip/proje erişimi doğrulandı; kanıt `docs/referans/yayin-20261101.json`. Gelecek yayında hedef kimliklerini ve Git/Actions durumunu tekrar doğrula; tokenları gösterme. Branch protection bypass/force push/reset yok.
 
-- **Tarayıcı testleri Claude'da (kullanıcı kuralı, 21 Eki):** Playwright e2e, Lighthouse, inspect.mjs, ekran görüntüsü/kare şeridi ÇALIŞTIRMA. Yalnız kodu yaz, e2e testlerini yaz/güncelle (çalıştırmadan) ve `npm test` (unit), lint, typecheck, build çalıştır. Tarayıcı kabulünü "tarayıcı doğrulaması yapılmadı" olarak kaydet; Claude’un otomatik doğrulayacağını varsayma. Kod kapıları ile görsel/cihaz kabulünü ayrı bildir.
+- **Güncel tarayıcı yetkisi (1 Kasım, Task 157):** Kullanıcı açıkça canlı siteyi tarayıcıda ve mobilde kontrol edip eksikleri düzeltmeyi istedi; 21 Ekim'deki çalıştırmama sınırı bu kapsam için kalktı. Yalnız paketli headless Playwright Chromium, en fazla 2 worker; kullanıcı Chrome'u test/Lighthouse için açılmaz. Masaüstü/mobil viewport, klavye, taşma, menü, ürün/sepet/üyelik yüzeyi ve reduced-motion kabulü yapılır. Üretimde gerçek müşteri/sipariş/ödeme veya talep gönderimi yapılmaz; yerel sepet etkileşimi ve salt-okunur canlı yollar kontrol edilir. Her koşuda browser.close() ve başlatılan sunucuya SIGTERM ile düzgün kapanış zorunlu; fiziksel telefon kabulü viewport testinden ayrı bildirilir.
 
 - UI işlerinde önce 21st MCP ile ara/üret, sonra projenin token’larına uyarla; varsayılan halde bırakma. Erişim yoksa bunu Coder Notu’na yaz.
 - Animasyon: Framer Motion (`motion`) + ECC `motion-foundations`, `motion-patterns`, `motion-advanced`; `prefers-reduced-motion` zorunlu, sade modda içerik ve CTA erişilir kalır.

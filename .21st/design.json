@@ -2,7 +2,7 @@
   "version": 1,
   "project": {
     "name": "afina-zeytin",
-    "productType": "Olive producer: corporate trust, retail commerce, B2B enquiries",
+    "productType": "Olive producer editorial landing: production trust 65%, premium retail and B2B commerce 35%",
     "stack": [
       "nextjs",
       "react",
@@ -13,8 +13,8 @@
   },
   "sources": {
     "tokens": [
-      "app/globals.css",
       "components/landing/RenewalLanding.module.css",
+      "app/globals.css",
       "components/account/CustomerPanel.module.css"
     ],
     "components": [
@@ -23,266 +23,55 @@
     "assets": [
       "public/brand",
       "public/images",
-      "assets"
+      "public/frames/afina-agac-dal"
     ],
     "instructions": [
+      "docs/DESIGN.md",
       "PRODUCT.md",
       "AGENTS.md",
-      "CLAUDE.md"
+      "docs/tasks/157-tam-tasarim-ve-canli-kabul.md"
     ]
   },
   "design": {
-    "colorMode": "mixed",
+    "colorMode": "light",
     "colors": {
-      "--background": {
-        "value": "var(--ink)",
-        "source": "app/globals.css"
+      "--afina-olive": {
+        "value": "#172B21",
+        "source": "components/landing/RenewalLanding.module.css"
       },
-      "--foreground": {
-        "value": "var(--sut)",
-        "source": "app/globals.css"
+      "--afina-paper": {
+        "value": "#F4F0E7",
+        "source": "components/landing/RenewalLanding.module.css"
       },
-      "--card-foreground": {
-        "value": "var(--foreground)",
-        "source": "app/globals.css"
+      "--afina-champagne": {
+        "value": "#B6A078",
+        "source": "components/landing/RenewalLanding.module.css"
       },
-      "--popover-foreground": {
-        "value": "var(--foreground)",
-        "source": "app/globals.css"
+      "--afina-charcoal": {
+        "value": "#252725",
+        "source": "components/landing/RenewalLanding.module.css"
       },
-      "--primary": {
-        "value": "var(--altin)",
-        "source": "app/globals.css"
+      "--afina-body": {
+        "value": "#414A40",
+        "source": "components/landing/RenewalLanding.module.css"
       },
-      "--primary-foreground": {
-        "value": "var(--ink)",
-        "source": "app/globals.css"
+      "--afina-muted": {
+        "value": "#5A6558",
+        "source": "components/landing/RenewalLanding.module.css"
       },
-      "--primary-hover": {
-        "value": "var(--altin-2)",
-        "source": "app/globals.css"
-      },
-      "--secondary": {
-        "value": "var(--zeytin)",
-        "source": "app/globals.css"
-      },
-      "--secondary-foreground": {
-        "value": "var(--sut)",
-        "source": "app/globals.css"
-      },
-      "--secondary-hover": {
-        "value": "var(--zeytin-2)",
-        "source": "app/globals.css"
-      },
-      "--muted": {
-        "value": "var(--zeytin-2)",
-        "source": "app/globals.css"
-      },
-      "--muted-foreground": {
-        "value": "var(--gri)",
-        "source": "app/globals.css"
-      },
-      "--accent": {
-        "value": "var(--zeytin-2)",
-        "source": "app/globals.css"
-      },
-      "--accent-foreground": {
-        "value": "var(--sut)",
-        "source": "app/globals.css"
-      },
-      "--destructive": {
-        "value": "#F5B4A8",
-        "source": "app/globals.css"
-      },
-      "--destructive-foreground": {
-        "value": "var(--ink)",
-        "source": "app/globals.css"
-      },
-      "--destructive-hover": {
-        "value": "#F9CCBF",
-        "source": "app/globals.css"
-      },
-      "--border": {
-        "value": "#536451",
-        "source": "app/globals.css"
-      },
-      "--ring": {
-        "value": "var(--altin)",
-        "source": "app/globals.css"
-      },
-      "--color-background": {
-        "value": "var(--background)",
-        "source": "app/globals.css"
-      },
-      "--color-foreground": {
-        "value": "var(--foreground)",
-        "source": "app/globals.css"
-      },
-      "--color-card": {
-        "value": "var(--card)",
-        "source": "app/globals.css"
-      },
-      "--color-card-foreground": {
-        "value": "var(--card-foreground)",
-        "source": "app/globals.css"
-      },
-      "--color-popover": {
-        "value": "var(--popover)",
-        "source": "app/globals.css"
-      },
-      "--color-popover-foreground": {
-        "value": "var(--popover-foreground)",
-        "source": "app/globals.css"
-      },
-      "--color-primary": {
-        "value": "var(--primary)",
-        "source": "app/globals.css"
-      },
-      "--color-primary-foreground": {
-        "value": "var(--primary-foreground)",
-        "source": "app/globals.css"
-      },
-      "--color-primary-hover": {
-        "value": "var(--primary-hover)",
-        "source": "app/globals.css"
-      },
-      "--color-secondary": {
-        "value": "var(--secondary)",
-        "source": "app/globals.css"
-      },
-      "--color-secondary-foreground": {
-        "value": "var(--secondary-foreground)",
-        "source": "app/globals.css"
-      },
-      "--color-secondary-hover": {
-        "value": "var(--secondary-hover)",
-        "source": "app/globals.css"
-      },
-      "--color-muted": {
-        "value": "var(--muted)",
-        "source": "app/globals.css"
-      },
-      "--color-muted-foreground": {
-        "value": "var(--muted-foreground)",
-        "source": "app/globals.css"
-      },
-      "--color-accent": {
-        "value": "var(--accent)",
-        "source": "app/globals.css"
-      },
-      "--color-accent-foreground": {
-        "value": "var(--accent-foreground)",
-        "source": "app/globals.css"
-      },
-      "--color-brand-gold": {
-        "value": "var(--brand-gold)",
-        "source": "app/globals.css"
-      },
-      "--color-brand-ink": {
-        "value": "var(--brand-ink)",
-        "source": "app/globals.css"
-      },
-      "--color-brand-kraft": {
-        "value": "var(--brand-kraft)",
-        "source": "app/globals.css"
-      },
-      "--color-brand-walnut": {
-        "value": "var(--brand-walnut)",
-        "source": "app/globals.css"
-      },
-      "--color-body-ink": {
-        "value": "var(--body-ink)",
-        "source": "app/globals.css"
-      },
-      "--color-destructive": {
-        "value": "var(--destructive)",
-        "source": "app/globals.css"
-      },
-      "--color-destructive-foreground": {
-        "value": "var(--destructive-foreground)",
-        "source": "app/globals.css"
-      },
-      "--color-destructive-hover": {
-        "value": "var(--destructive-hover)",
-        "source": "app/globals.css"
-      },
-      "--color-border": {
-        "value": "var(--border)",
-        "source": "app/globals.css"
-      },
-      "--color-input": {
-        "value": "var(--input)",
-        "source": "app/globals.css"
-      },
-      "--color-ring": {
-        "value": "var(--ring)",
-        "source": "app/globals.css"
-      },
-      "--color-overlay": {
-        "value": "var(--overlay)",
-        "source": "app/globals.css"
+      "--afina-rule": {
+        "value": "#CFCDBF",
+        "source": "components/landing/RenewalLanding.module.css"
       }
     },
     "typography": {
-      "--font-body-fallback": {
-        "value": "\"Helvetica Neue\", Arial, sans-serif",
-        "source": "app/globals.css"
+      "--font-display": {
+        "value": "Fraunces",
+        "source": "app/layout.tsx"
       },
-      "--font-display-fallback": {
-        "value": "Georgia, \"Times New Roman\", serif",
-        "source": "app/globals.css"
-      },
-      "--font-sans": {
-        "value": "var(--font-body, var(--font-body-fallback))",
-        "source": "app/globals.css"
-      },
-      "--font-serif": {
-        "value": "var(--font-display, var(--font-display-fallback))",
-        "source": "app/globals.css"
-      },
-      "--font-weight-medium": {
-        "value": "600",
-        "source": "app/globals.css"
-      },
-      "--text-xs": {
-        "value": "var(--step-small)",
-        "source": "app/globals.css"
-      },
-      "--text-sm": {
-        "value": "var(--step-small)",
-        "source": "app/globals.css"
-      },
-      "--text-base": {
-        "value": "var(--step-body)",
-        "source": "app/globals.css"
-      },
-      "--text-lg": {
-        "value": "var(--step-body)",
-        "source": "app/globals.css"
-      },
-      "--text-xl": {
-        "value": "var(--step-lead)",
-        "source": "app/globals.css"
-      },
-      "--text-2xl": {
-        "value": "var(--step-lead)",
-        "source": "app/globals.css"
-      },
-      "--text-3xl": {
-        "value": "var(--step-head)",
-        "source": "app/globals.css"
-      },
-      "--text-4xl": {
-        "value": "var(--step-head)",
-        "source": "app/globals.css"
-      },
-      "--text-5xl": {
-        "value": "var(--step-display)",
-        "source": "app/globals.css"
-      },
-      "--text-6xl": {
-        "value": "var(--step-display)",
-        "source": "app/globals.css"
+      "--font-body": {
+        "value": "Figtree",
+        "source": "app/layout.tsx"
       }
     },
     "spacing": {
@@ -320,11 +109,11 @@
     "shadows": {},
     "motion": {
       "--duration-fast": {
-        "value": "0ms",
+        "value": "150ms",
         "source": "app/globals.css"
       }
     },
-    "density": "unknown"
+    "density": "spacious"
   },
   "components": {
     "installed": [
@@ -341,20 +130,38 @@
       "toggle",
       "toggle-group"
     ],
-    "preferredPrimitives": [],
-    "patterns": []
+    "preferredPrimitives": [
+      "button",
+      "dialog",
+      "sheet",
+      "input",
+      "textarea"
+    ],
+    "patterns": [
+      "Solid light navigation with original logo",
+      "Asymmetric editorial split hero with separate readable copy and framed native-scroll media",
+      "Light product shelf with real detail and cart actions",
+      "One olive B2B enquiry section",
+      "Source-backed FAQ and real contact/support links"
+    ]
   },
   "constraints": {
     "must": [
-      "AFİNA olive/paper/champagne palette and Fraunces/Figtree",
-      "Official slogan, real factual content and source-aligned schema",
-      "Native scroll with reduced-motion poster and real DOM CTAs",
-      "Only approved media in runtime; Flow credit cap is explicit"
+      "Use docs/DESIGN.md v6 Üretici Atlası as the single active visual contract",
+      "Warm paper canvas, olive ink, matte champagne, Fraunces/Figtree and original logo",
+      "Production/corporate trust approximately 65%; products/commerce approximately 35%",
+      "Official slogan, verified content, existing SKU/price/stock authority and real DOM CTAs",
+      "Approved Google Flow A→B media; native scroll and static reduced-motion/data-saver fallback",
+      "Desktop/mobile browser checks only in bundled headless Chromium with at most two test workers and graceful cleanup",
+      "Keep media generation cost and acceptance separate from layout or deployment completion"
     ],
     "avoid": [
-      "Autoplay loop or scroll interception",
-      "Invented statistics/reviews/Offer or private entity data",
-      "Generic blur cards, purple gradients or emoji UI"
+      "Centered dark-scrim hero, glass navigation, backdrop blur cards or long full-screen pinned intro",
+      "Autoplay loops, reduced-motion video.play(), scroll interception or preloader-hidden content",
+      "New fonts, decorative gold glow, fake popularity badges, invented statistics/reviews/capacity/certification",
+      "Invented stock/prices/SKU/contact channels or fake checkout/CRM success",
+      "Paid new models or provider fallback outside the user-authorized remaining transition scope",
+      "Treating mobile viewport emulation as physical-device acceptance"
     ]
   },
   "decisions": [
@@ -371,22 +178,26 @@
     {
       "date": "2026-11-01",
       "source": "User Bazgold screenshot + supplied PDF kits",
-      "decision": "Adapt 21st 20038/39096 to AFİNA customer membership; source-aligned five-answer FAQ and machine discovery. First Flow A→B trial spent exactly 20 approved credits, remaining authority zero."
+      "decision": "Adapt 21st 20038/39096 to AFİNA customer membership; source-aligned five-answer FAQ and machine discovery. First Flow A→B trial spent exactly 20 approved credits, remaining authority zero.",
+      "status": "historical-before-user-authorized-remaining-three-transitions"
     },
     {
       "date": "2026-11-01",
       "source": "User selected one supplied kit; Sinematik Siteler chosen, accepted first Flow clip",
-      "decision": "Centered Fraunces hero over accepted A→B native-scroll frames; single glass header surface; same-frame responsive AVIF/WebP poster. Preserve real CTA/cart/auth, reduced motion and short-screen fallback. Source 21st 12005. Remaining three Flow transitions remain blocked and unpublished."
+      "decision": "Centered Fraunces hero over accepted A→B native-scroll frames; single glass header surface; same-frame responsive AVIF/WebP poster. Preserve real CTA/cart/auth, reduced motion and short-screen fallback. Source 21st 12005. Remaining three Flow transitions remain blocked and unpublished.",
+      "status": "superseded-by-v6-user-rejection"
+    },
+    {
+      "date": "2026-11-01",
+      "source": "User rejected current hero, requested full design-doc replacement, live browser/mobile checks, Google Flow/Omni and Web Site Yeteneği Kiti",
+      "decision": "v6 Üretici Atlası: paper editorial canvas, solid light header, asymmetric split hero with accepted bright A→B visual in a separate frame, natural mobile stack, light factory/product sections and one olive B2B block. Preserve original branding, commerce and source-backed content. Static reduced-motion fallback; no autoplay or long full-screen pin. Latest browser authorization supersedes the old prohibition for this task.",
+      "status": "current"
     }
   ],
   "evidence": [
     {
       "fact": "components.installed",
       "source": "components/ui"
-    },
-    {
-      "fact": "design.colorMode:light",
-      "source": "app/globals.css"
     },
     {
       "fact": "design.tokens",
@@ -421,8 +232,20 @@
       "source": "package.json"
     },
     {
-      "fact": "project.stack:vite",
-      "source": "package.json"
+      "fact": "active-design:v6-uretici-atlasi",
+      "source": "docs/DESIGN.md"
+    },
+    {
+      "fact": "historical-v4-v5-design-archived",
+      "source": "docs/referans/DESIGN-v5-history-20261101.md"
+    },
+    {
+      "fact": "user-requested-native-scroll-kit-adaptation",
+      "source": "docs/tasks/157-tam-tasarim-ve-canli-kabul.md"
+    },
+    {
+      "fact": "accepted-flow-media-source-and-derivatives",
+      "source": "lib/media/cinematic-hero.json"
     }
   ],
   "generatedAt": "2026-10-31T21:45:58.617Z"

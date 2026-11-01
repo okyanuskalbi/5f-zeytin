@@ -127,3 +127,49 @@ test("real catalog detail opens and closes without submitting an order or accoun
   await expect(trigger).toBeFocused();
   expect(new URL(page.url()).searchParams.has("urun")).toBe(false);
 });
+
+test("adding a product updates the isolated browser cart and its drawer", async ({ page }) => {
+  const product = page.locator("#urunler [data-product-id]").first();
+  const add = product.getByRole("button", { name: "Sepete ekle", exact: true });
+  await expect(add).toBeEnabled();
+  await add.click();
+  const cartTrigger = page.getByRole("banner").getByRole("button", { name: "Sepetim, 1 adet" });
+  await expect(cartTrigger).toBeVisible();
+  await cartTrigger.click();
+  const cart = page.getByRole("dialog", { name: "Sepetim (1)" });
+  await expect(cart).toBeVisible();
+  await expect(cart.getByRole("list", { name: "Sepetteki ürünler" })).toBeVisible();
+  await expect(cart.getByRole("button", { name: "Ödemeye geç", exact: true })).toBeDisabled();
+  expect(await cart.evaluate(element => element.scrollWidth <= element.clientWidth + 1)).toBe(true);
+  await page.keyboard.press("Escape");
+  await expect(cart).toHaveCount(0);
+  await expect(cartTrigger).toBeFocused();
+});
+
+test("membership entry keeps registration values while opening required legal information", async ({ page, context }) => {
+  if (page.viewportSize()!.width < 1281) {
+    await page.getByRole("button", { name: "Menüyü aç" }).click();
+    await page.getByRole("dialog", { name: "Site menüsü" }).getByRole("link", { name: "Hesabım", exact: true }).click();
+    await expect(page).toHaveURL(/\/giris\?next=/);
+    await expect(page.getByRole("form", { name: "E-posta ile giriş" })).toBeVisible();
+    return;
+  }
+  const trigger = page.getByRole("banner").getByRole("link", { name: "Hesabım", exact: true });
+  await trigger.click();
+  const membership = page.getByRole("dialog", { name: "AFİNA üyelik" });
+  await expect(membership).toBeVisible();
+  await membership.getByRole("button", { name: "Hesap oluştur", exact: true }).click();
+  const form = membership.getByRole("form", { name: "E-posta ile üyelik" });
+  await form.getByLabel("Ad soyad", { exact: true }).fill("Deniz Test");
+  const popupPromise = context.waitForEvent("page");
+  await form.getByRole("link", { name: "KVKK aydınlatma metnini" }).click();
+  const legal = await popupPromise;
+  await legal.waitForLoadState("domcontentloaded");
+  expect(new URL(legal.url()).pathname).toBe("/kvkk");
+  await legal.close();
+  await expect(membership).toBeVisible();
+  await expect(form.getByLabel("Ad soyad", { exact: true })).toHaveValue("Deniz Test");
+  await page.keyboard.press("Escape");
+  await expect(membership).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+});

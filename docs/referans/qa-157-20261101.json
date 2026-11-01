@@ -1,0 +1,237 @@
+{
+  "date": "2026-11-01",
+  "task": 157,
+  "scope": "local production build; live acceptance follows deployment",
+  "browser": "Playwright bundled Chromium headless",
+  "testWorkers": 2,
+  "physicalDeviceAcceptance": false,
+  "baselineLive": [
+    {
+      "viewport": 1440,
+      "documentScrollWidth": 1440,
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "viewport": 768,
+      "documentScrollWidth": 768,
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "viewport": 390,
+      "documentScrollWidth": 527,
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "viewport": 320,
+      "documentScrollWidth": 527,
+      "pageErrors": [],
+      "httpErrors": []
+    }
+  ],
+  "local": {
+    "base": "http://localhost:3019",
+    "results": [
+      {
+        "width": 1440,
+        "scroll": [
+          {
+            "section": "#kurumsal",
+            "clientWidth": 1440,
+            "scrollWidth": 1440
+          },
+          {
+            "section": "#tesisimiz",
+            "clientWidth": 1440,
+            "scrollWidth": 1440
+          },
+          {
+            "section": "#urunler",
+            "clientWidth": 1440,
+            "scrollWidth": 1440
+          },
+          {
+            "section": "#uretim-yolculugu",
+            "clientWidth": 1440,
+            "scrollWidth": 1440
+          },
+          {
+            "section": "#toptan-iletisim",
+            "clientWidth": 1440,
+            "scrollWidth": 1440
+          },
+          {
+            "section": "#iletisim",
+            "clientWidth": 1440,
+            "scrollWidth": 1440
+          },
+          {
+            "section": "footer",
+            "clientWidth": 1440,
+            "scrollWidth": 1440
+          }
+        ],
+        "errors": [],
+        "bad": [],
+        "frame0": "0",
+        "frame1": "42",
+        "axe": []
+      },
+      {
+        "width": 768,
+        "scroll": [
+          {
+            "section": "#kurumsal",
+            "clientWidth": 768,
+            "scrollWidth": 768
+          },
+          {
+            "section": "#tesisimiz",
+            "clientWidth": 768,
+            "scrollWidth": 768
+          },
+          {
+            "section": "#urunler",
+            "clientWidth": 768,
+            "scrollWidth": 768
+          },
+          {
+            "section": "#uretim-yolculugu",
+            "clientWidth": 768,
+            "scrollWidth": 768
+          },
+          {
+            "section": "#toptan-iletisim",
+            "clientWidth": 768,
+            "scrollWidth": 768
+          },
+          {
+            "section": "#iletisim",
+            "clientWidth": 768,
+            "scrollWidth": 768
+          },
+          {
+            "section": "footer",
+            "clientWidth": 768,
+            "scrollWidth": 768
+          }
+        ],
+        "errors": [],
+        "bad": [],
+        "frame0": "0",
+        "frame1": "30",
+        "axe": []
+      },
+      {
+        "width": 390,
+        "scroll": [
+          {
+            "section": "#kurumsal",
+            "clientWidth": 390,
+            "scrollWidth": 390
+          },
+          {
+            "section": "#tesisimiz",
+            "clientWidth": 390,
+            "scrollWidth": 390
+          },
+          {
+            "section": "#urunler",
+            "clientWidth": 390,
+            "scrollWidth": 390
+          },
+          {
+            "section": "#uretim-yolculugu",
+            "clientWidth": 390,
+            "scrollWidth": 390
+          },
+          {
+            "section": "#toptan-iletisim",
+            "clientWidth": 390,
+            "scrollWidth": 390
+          },
+          {
+            "section": "#iletisim",
+            "clientWidth": 390,
+            "scrollWidth": 390
+          },
+          {
+            "section": "footer",
+            "clientWidth": 390,
+            "scrollWidth": 390
+          }
+        ],
+        "errors": [],
+        "bad": [],
+        "frame0": null,
+        "frame1": null,
+        "axe": []
+      },
+      {
+        "width": 320,
+        "scroll": [
+          {
+            "section": "#kurumsal",
+            "clientWidth": 320,
+            "scrollWidth": 320
+          },
+          {
+            "section": "#tesisimiz",
+            "clientWidth": 320,
+            "scrollWidth": 320
+          },
+          {
+            "section": "#urunler",
+            "clientWidth": 320,
+            "scrollWidth": 320
+          },
+          {
+            "section": "#uretim-yolculugu",
+            "clientWidth": 320,
+            "scrollWidth": 320
+          },
+          {
+            "section": "#toptan-iletisim",
+            "clientWidth": 320,
+            "scrollWidth": 320
+          },
+          {
+            "section": "#iletisim",
+            "clientWidth": 320,
+            "scrollWidth": 320
+          },
+          {
+            "section": "footer",
+            "clientWidth": 320,
+            "scrollWidth": 320
+          }
+        ],
+        "errors": [],
+        "bad": [],
+        "frame0": null,
+        "frame1": null,
+        "axe": []
+      }
+    ],
+    "reduced": {
+      "canvas": 0,
+      "frameRequests": 0,
+      "h1Visible": true
+    }
+  },
+  "localInteractionTests": 28,
+  "unitFiles": 85,
+  "unitTests": 1171,
+  "lint": "PASS",
+  "typecheck": "PASS",
+  "productionBuild": "PASS",
+  "flowOmni": {
+    "modelSeen": "Omni 1.1 Flash",
+    "draftPrepared": true,
+    "generationSubmitted": false,
+    "reason": "Google reCAPTCHA connection block persists; no free edit cost verified",
+    "extraCreditsSpent": 0
+  }
+}

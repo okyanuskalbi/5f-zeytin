@@ -37,7 +37,7 @@ export function ProductionFacility(): JSX.Element {
   return <section id="tesisimiz" aria-labelledby="tesisimiz-title" className={styles.facility}>
     <div className={styles.container}>
       <div className={styles.sectionHeading}>
-        <div><p className={styles.eyebrow}>ÜRETİM TESİSİMİZ</p><h2 id="tesisimiz-title">Güvenin somut bir yeri var.</h2></div>
+        <div><p className={styles.eyebrow}>ÜRETİM TESİSİMİZ</p><h2 id="tesisimiz-title">Üretimin adresi: Ellek.</h2></div>
         <span className={styles.location}><MapPinIcon size={17} aria-hidden="true" /> Ellek / Düziçi / Osmaniye</span>
       </div>
       <figure className={styles.facilityFigure}>
@@ -58,7 +58,7 @@ export function RenewalProducts({ products }: { products: readonly ProductVarian
   return <section id="urunler" aria-labelledby="urunler-title" className={styles.collection}>
     <div id="kiler" className={styles.container}>
       <div className={styles.sectionHeading}>
-        <div><p className={styles.eyebrow}>AFİNA KOLEKSİYONU</p><h2 id="urunler-title">Sofraya da yakışır.<br /><em>İşinize de.</em></h2></div>
+        <div><p className={styles.eyebrow}>AFİNA KOLEKSİYONU</p><h2 id="urunler-title">Zeytinin farklı halleri.<br /><em>Aynı özenle.</em></h2></div>
         <p className={styles.sectionLead}>Sofralık zeytin, salamura zeytin ve zeytinyağı.<br />Günlük sofranızdan profesyonel mutfaklara.</p>
       </div>
       <div className={styles.collectionChannels}>
@@ -76,9 +76,9 @@ export function ProductionJourney(): JSX.Element {
   return <section id="uretim-yolculugu" aria-labelledby="yolculuk-title" className={styles.journey}>
     <div className={styles.container}>
       <div className={styles.journeyGrid}>
-        <div className={styles.journeyImage}><V3Picture image={v3Image("04-naturel-sizma-zeytinyagi-1l-sahne")} sizes="(max-width: 767px) 100vw, 48vw" />
-          <p>Toprakta başlayan,<br /><em>sofrada tamamlanan.</em></p>
-        </div>
+        <figure className={styles.journeyImage}><V3Picture image={v3Image("04-naturel-sizma-zeytinyagi-1l-sahne")} sizes="(max-width: 900px) 100vw, 48vw" />
+          <figcaption>Toprakta başlayan, sofrada tamamlanan.</figcaption>
+        </figure>
         <div className={styles.journeyCopy}>
           <p className={styles.eyebrow}>ÜRETİM YOLCULUĞU</p><h2 id="yolculuk-title">Lezzetin ardında<br />bir emek var.</h2>
           <ol className={styles.steps}>

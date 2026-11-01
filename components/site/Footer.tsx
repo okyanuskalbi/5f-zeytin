@@ -31,18 +31,18 @@ export function Footer(): JSX.Element {
   const email = siteContact.email.trim();
 
   return (
-    <footer data-surface="dark" className={styles.footer}>
+    <footer data-surface="light" className={styles.footer}>
       <div data-reading-safe="">
         <div className={styles.columns}>
           <div className={styles.message} aria-labelledby="footer-brand-title">
             <h2 id="footer-brand-title" className="sr-only">AFİNA ZEYTİN</h2>
             <Link href="/" aria-label="Afina Zeytin ana sayfa" className={styles.home}>
-              <BrandLogo loading="lazy" className={styles.logo} />
+              <BrandLogo tone="light" loading="lazy" className={styles.logo} />
             </Link>
             <p className={styles.signature}>Kökü toprakta.<br /> Yeri sofrada.</p>
             <p>Toprağın sunduğu lezzet, Afina’nın özeniyle.</p>
             <a href="https://afina.com.tr" target="_blank" rel="noopener" className={styles.community} aria-label="AFİNA Şirketler Topluluğu">
-              <img src="/brand/afina-topluluk-dark.svg" alt="AFİNA Şirketler Topluluğu" width={381} height={225} loading="lazy" decoding="async" />
+              <img src="/brand/afina-topluluk.svg" alt="AFİNA Şirketler Topluluğu" width={381} height={225} loading="lazy" decoding="async" />
               <span>Bir AFİNA Şirketler Topluluğu markası</span>
             </a>
           </div>
@@ -70,10 +70,10 @@ export function Footer(): JSX.Element {
         <div className={styles.payment} role="group" aria-label="Güvenli ödeme">
           <div className={styles.provider}>
             <p>Güvenli Ödeme</p>
-            <PaymentLogos tone="light" brands={["paytr"]} className={styles.paymentLogo} />
+            <PaymentLogos tone="dark" brands={["paytr"]} className={styles.paymentLogo} />
           </div>
           <ul className={styles.cards} aria-label="Kabul edilen kartlar">
-            <PaymentLogos tone="light" brands={["visa", "mastercard", "troy"]} asListItems className={styles.paymentLogo} />
+            <PaymentLogos tone="dark" brands={["visa", "mastercard", "troy"]} asListItems className={styles.paymentLogo} />
           </ul>
         </div>
         <div className={styles.imprint}>

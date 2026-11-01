@@ -9,3 +9,10 @@ export const cinematicPoster = {
   desktopSrcSet: "/frames/afina-agac-dal/poster-desktop.avif 1280w",
   desktopWebpSrcSet: "/frames/afina-agac-dal/poster-desktop.webp 1280w",
 };
+
+// A landscape media window uses the same full frame at every breakpoint.
+export const editorialPoster = {
+  ...cinematicPoster,
+  mobileSrcSet: cinematicPoster.desktopSrcSet,
+  mobileWebpSrcSet: cinematicPoster.desktopWebpSrcSet,
+};

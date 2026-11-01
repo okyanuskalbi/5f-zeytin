@@ -1,55 +1,60 @@
 "use client";
 
-import type { CSSProperties, JSX } from "react";
+import { useRef, type CSSProperties, type JSX } from "react";
 import * as motion from "motion/react-m";
-import { useTransform, type MotionValue } from "motion/react";
 import { ArrowDownIcon, ArrowUpRightIcon } from "lucide-react";
 import { ScrollFrameSequence } from "@/components/media/ScrollFrameSequence";
-import { cinematicPoster } from "@/lib/media/cinematic-poster";
-import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
-import { motionTokens } from "@/lib/ui-motion";
+import { V3Picture } from "@/components/media/V3Picture";
+import { editorialPoster } from "@/lib/media/cinematic-poster";
+import { v3Image } from "@/lib/media/v3-assets";
 import { useProductDetail } from "@/components/catalog/ProductDetailProvider";
 import { AddToCart } from "@/components/catalog/AddToCart";
-import type { Product } from "@/types/catalog";
+import type { ProductVariant } from "@/types/catalog";
 import styles from "./RenewalLanding.module.css";
 
-function HeroContent({ progress, product }: { progress: MotionValue<number>; product?: Product }): JSX.Element {
+/** 21st Editorial Collage Hero (19074), adapted to AFİNA's producer story.
+ * The accepted Flow clip is a bright window beside the copy, never behind it.
+ * Native page scroll advances it; short screens/data saver retain the poster. */
+export function OliveScrollHero({ product }: { product?: ProductVariant }): JSX.Element {
+  const story = useRef<HTMLDivElement>(null);
   const openDetail = useProductDetail();
-  const reduced = usePrefersReducedMotion();
-  const translate = useTransform(progress, [0, 1], [0, -motionTokens.story.distance]);
-  return <div className={styles.heroContent}>
-    <motion.div className={styles.heroCopy} style={reduced ? undefined : { y: translate }}>
-      <p className={styles.eyebrow}>AFİNA ZEYTİN · OSMANİYE</p>
-      <h1 id="renewal-hero-title"><span>Kökü toprakta.</span>{" "}<em>Yeri sofrada.</em></h1>
-      <p className={styles.heroDescription}>Toprağın sunduğu lezzet, Afina’nın özeniyle.<br />Ellek’teki tesisimizden sofranıza ve işletmenize.</p>
-      <div className={styles.heroActions}>
-        <a href="#urunler" className={styles.lightButton}>Ürünleri Keşfet <ArrowUpRightIcon size={17} aria-hidden="true" /></a>
-        <a href="#toptan-iletisim" className={styles.ghostButton}>Kurumsal Teklif Al <ArrowUpRightIcon size={17} aria-hidden="true" /></a>
+  return <>
+    <link rel="preload" as="image" type="image/avif" media="(max-width: 767px) and (orientation: portrait)" imageSrcSet={editorialPoster.mobileSrcSet} imageSizes="100vw" fetchPriority="high" />
+    <link rel="preload" as="image" type="image/avif" media="(min-width: 768px), (orientation: landscape)" imageSrcSet={editorialPoster.desktopSrcSet} imageSizes="(min-width: 901px) 54vw, 100vw" fetchPriority="high" />
+    <section id="baslangic" data-hero-intro="" className={styles.hero} aria-labelledby="renewal-hero-title">
+      <div ref={story} className={`${styles.container} ${styles.heroLayout}`}>
+        <div data-hero-copy="" className={styles.heroCopy}>
+          <p className={styles.eyebrow}>AFİNA ZEYTİN · ELLEK, OSMANİYE</p>
+          <h1 id="renewal-hero-title"><span>Kökü toprakta.</span>{" "}<em>Yeri sofrada.</em></h1>
+          <p className={styles.heroDescription}>Toprağın sunduğu lezzet, Afina’nın özeniyle. Osmaniye’deki tesisimizden sofranıza ve işletmenize.</p>
+          <div className={styles.heroActions}>
+            <a href="#urunler" className={styles.darkButton}>Ürünleri Keşfet <ArrowUpRightIcon size={17} aria-hidden="true" /></a>
+            <a href="#toptan-iletisim" className={styles.outlineButton}>Kurumsal Teklif Al <ArrowUpRightIcon size={17} aria-hidden="true" /></a>
+          </div>
+          <a href="#tesisimiz" className={styles.heroSource}>Ellek’te üretiyoruz.<br /><span>Üretim tesisimizi tanıyın <ArrowUpRightIcon size={15} aria-hidden="true" /></span></a>
+        </div>
+        <figure data-hero-visual="" className={styles.heroVisual}>
+          <div className={styles.heroFilm} style={{ "--frame-height": "100%", "--frame-position": "relative" } as CSSProperties}>
+            <ScrollFrameSequence src="/frames/afina-agac-dal/manifest.json" poster={editorialPoster} layout="framed" scrollTarget={story} deferPlayback initialCount={8} label="" mediaClassName={styles.heroMedia}>
+              {progress => <motion.div aria-hidden="true" className={styles.heroProgress} style={{ scaleX: progress }} />}
+            </ScrollFrameSequence>
+          </div>
+          {product && <div className={styles.heroProduct}>
+            <V3Picture image={v3Image(product.imageKey)} sizes="90px" decorative />
+            <div><p>{product.name}<small>{product.weight}</small></p>
+              <div className={styles.heroProductActions}>
+                <button type="button" aria-haspopup="dialog" onClick={event => openDetail?.(product.id, event.currentTarget)}>Ürüne Bak <ArrowUpRightIcon size={14} aria-hidden="true" /></button>
+                <AddToCart product={product} />
+              </div>
+            </div>
+          </div>}
+          <figcaption>Zeytinin hikâyesi toprakta başlar.<span>AFİNA ZEYTİN</span></figcaption>
+        </figure>
       </div>
-    </motion.div>
-    <div className={styles.heroBottom}>
-      <a href="#kurumsal" className={styles.discover}>Topraktan sofraya uzanan hikâyemiz <ArrowDownIcon size={17} aria-hidden="true" /></a>
-      {product && <div className={styles.heroProduct}>
-        <span>{product.name}<small>{product.weight}</small></span>
-        <button type="button" aria-haspopup="dialog" onClick={event => openDetail?.(product.id, event.currentTarget)}>Ürüne Bak</button>
-        <AddToCart product={product} />
-      </div>}
-      <p className={styles.heroCaption}>Ellek, Osmaniye<span>Zeytin &amp; zeytinyağı</span></p>
-    </div>
-    <motion.div aria-hidden="true" className={styles.heroProgress} style={{ scaleX: progress }} />
-  </div>;
-}
-
-/** 21st Glass Video Hero (12005) + Sinematik Siteler: full-bleed calm media,
- * centered serif copy and restrained glass controls. Playback stays in Task 083;
- * no autoplay loops, video seeking, wheel capture or body scroll lock. */
-export function OliveScrollHero({ product }: { product?: Product }): JSX.Element {
-  return <><link rel="preload" as="image" type="image/avif" media="(max-width: 767px) and (orientation: portrait)" imageSrcSet={cinematicPoster.mobileSrcSet} imageSizes="100vw" fetchPriority="high" />
-    <link rel="preload" as="image" type="image/avif" media="(min-width: 768px), (orientation: landscape)" imageSrcSet={cinematicPoster.desktopSrcSet} imageSizes="100vw" fetchPriority="high" />
-    <section id="baslangic" data-hero-intro="" className={styles.hero} aria-labelledby="renewal-hero-title"
-    style={{ "--frame-height": "100svh" } as CSSProperties}>
-    <ScrollFrameSequence src="/frames/afina-agac-dal/manifest.json" poster={cinematicPoster} deferPlayback initialCount={8} scrollLength={200} label="" mediaClassName={styles.heroMedia}>
-      {progress => <HeroContent progress={progress} product={product} />}
-    </ScrollFrameSequence>
-  </section></>;
+      <div className={`${styles.container} ${styles.heroFootnote}`}>
+        <p>Sofralık zeytin <span>·</span> Salamura zeytin <span>·</span> Zeytinyağı</p>
+        <a href="#kurumsal">Hikâyemizi keşfedin <ArrowDownIcon size={16} aria-hidden="true" /></a>
+      </div>
+    </section>
+  </>;
 }

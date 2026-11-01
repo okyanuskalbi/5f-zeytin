@@ -15,14 +15,14 @@ vi.mock("motion/react", async importOriginal => ({
 
 afterEach(cleanup);
 
-it("identifies the header with the horizontal dark logo and an accessible home link", () => {
+it("identifies the paper landing header with the original horizontal logo and an accessible home link", () => {
   render(<Navbar />);
   const header = screen.getByRole("banner");
   const home = within(header).getByRole("link", { name: "Afina Zeytin ana sayfa" });
   const logo = within(home).getByRole("img", { name: "AFİNA ZEYTİN" });
   expect(home.getAttribute("href")).toBe("/");
   expect(home.textContent).toBe("");
-  expect(logo.getAttribute("src")).toBe("/brand/afina-zeytin-yatay-dark@2x.webp");
+  expect(logo.getAttribute("src")).toBe("/brand/afina-zeytin-yatay@2x.webp");
   expect(logo.getAttribute("width")).toBe("180");
   expect(logo.getAttribute("height")).toBe("48");
   expect(logo.hasAttribute("fetchpriority")).toBe(false);
@@ -32,21 +32,21 @@ it("identifies the header with the horizontal dark logo and an accessible home l
   expect(within(header).getByRole("button", { name: "Menüyü aç" })).toBeTruthy();
 });
 
-it("replaces the footer emblem with the same horizontal artwork and retains the community identity", () => {
+it("uses the original horizontal footer artwork and retains the light-surface community identity", () => {
   const doc = new DOMParser().parseFromString(renderToStaticMarkup(<Footer />), "text/html");
   const home = doc.querySelector<HTMLAnchorElement>('a[aria-label="Afina Zeytin ana sayfa"]')!;
   const logo = home.querySelector("img")!;
   expect(home.getAttribute("href")).toBe("/");
   expect(logo.alt).toBe("AFİNA ZEYTİN");
-  expect(logo.getAttribute("src")).toBe("/brand/afina-zeytin-yatay-dark@2x.webp");
+  expect(logo.getAttribute("src")).toBe("/brand/afina-zeytin-yatay@2x.webp");
   expect([logo.width, logo.height]).toEqual([180, 48]);
   expect(logo.getAttribute("loading")).toBe("lazy");
   const community = doc.querySelector('a[href="https://afina.com.tr"]')!;
   expect(community.textContent).toBe("Bir AFİNA Şirketler Topluluğu markası");
-  expect(community.querySelector("img")?.getAttribute("src")).toBe("/brand/afina-topluluk-dark.svg");
+  expect(community.querySelector("img")?.getAttribute("src")).toBe("/brand/afina-topluluk.svg");
 });
 
-it("offers 2x/3x WebP candidates through picture in both brand placements", () => {
+it("offers original 2x/3x WebP candidates through picture in both light-surface brand placements", () => {
   render(<Navbar />);
   const footer = new DOMParser().parseFromString(renderToStaticMarkup(<Footer />), "text/html");
   for (const root of [screen.getByRole("banner"), footer.querySelector("footer")!]) {
@@ -54,7 +54,7 @@ it("offers 2x/3x WebP candidates through picture in both brand placements", () =
     expect(picture).not.toBeNull();
     expect(picture.querySelector("source")?.getAttribute("type")).toBe("image/webp");
     expect(picture.querySelector("source")?.getAttribute("srcset")).toBe(
-      "/brand/afina-zeytin-yatay-dark@2x.webp 2x, /brand/afina-zeytin-yatay-dark@3x.webp 3x",
+      "/brand/afina-zeytin-yatay@2x.webp 2x, /brand/afina-zeytin-yatay@3x.webp 3x",
     );
   }
 });

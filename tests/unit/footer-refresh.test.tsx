@@ -42,23 +42,24 @@ it("puts the small community logo and attribution in one safe external link", ()
   expect(links[0].querySelectorAll('img[alt="AFİNA Şirketler Topluluğu"]')).toHaveLength(1);
 });
 
-it("shows only the four supported payment logos directly on a dark surface", () => {
+it("shows only the four supported payment logos directly on the light v6 footer", () => {
   const doc = footerDocument();
   const payment = doc.querySelector('[aria-label="Güvenli ödeme"]')!;
   expect(payment.querySelector("p")?.textContent).toBe("Güvenli Ödeme");
   expect([...payment.querySelectorAll("img")].map(image => image.alt)).toEqual(["PayTR", "Visa", "Mastercard", "Troy"]);
+  expect(payment.closest("[data-surface]")?.getAttribute("data-surface")).toBe("light");
   const backgrounds: string[] = [];
   postcss.parse(readFileSync("components/site/Footer.module.css", "utf8")).walkRules(rule => {
     if (/\.(?:payment\w*|provider|cards)\b/.test(rule.selector)) {
       rule.walkDecls(/^background(?:-color)?$/, declaration => { backgrounds.push(declaration.value); });
     }
   });
-  // White provider/card artwork must never inherit a cream or white plate again.
-  for (const background of backgrounds) expect(["none", "transparent", "var(--ink)", "#0A0F0B"]).toContain(background);
+  // Dark artwork shares the paper footer; payment groups add no separate plate.
+  for (const background of backgrounds) expect(["none", "transparent", "var(--footer-ink)", "#E5E3D7"]).toContain(background);
   expect(payment.querySelector('[style*="background"]')).toBeNull();
 });
 
-it("keeps footer copy and legal metadata above AA contrast on the ink surface", () => {
+it("keeps footer copy, legal metadata and focus above AA contrast on the v6 paper surface", () => {
   const tokens = new Map<string, string>();
   for (const file of ["app/globals.css", "components/site/Footer.module.css"]) {
     postcss.parse(readFileSync(file, "utf8")).walkDecls(/^--/, declaration => { tokens.set(declaration.prop, declaration.value); });
@@ -70,10 +71,15 @@ it("keeps footer copy and legal metadata above AA contrast on the ink surface", 
       .map(channel => channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4);
     return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
   }
+  expect(tokens.get("--footer-ink")).toBe("#E5E3D7");
+  for (const [token, value] of Object.entries({
+    "--footer-copy": "#414A40", "--footer-muted": "#5A6558", "--sut": "#172B21", "--brand-gold": "#172B21",
+  })) expect(tokens.get(token), token).toBe(value);
   const background = luminance("var(--footer-ink)");
-  expect(background).toBeLessThan(0.01);
+  expect(background).toBeGreaterThan(0.7);
   for (const foreground of ["--footer-copy", "--footer-muted", "--sut", "--brand-gold"]) {
-    const contrast = (luminance(`var(${foreground})`) + 0.05) / (background + 0.05);
+    const text = luminance(`var(${foreground})`);
+    const contrast = (Math.max(text, background) + 0.05) / (Math.min(text, background) + 0.05);
     expect(contrast, foreground).toBeGreaterThanOrEqual(4.5);
   }
 });

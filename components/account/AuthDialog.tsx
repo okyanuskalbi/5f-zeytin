@@ -55,11 +55,14 @@ export function AuthDialog({
     >
       <DialogContent
         onClick={(event) => {
-          if (
-            event.target instanceof Element &&
-            event.target.closest("a[href]")
-          )
-            onClose();
+          if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+          const link = event.target instanceof Element
+            ? event.target.closest<HTMLAnchorElement>("a[href]")
+            : null;
+          if (!link || (link.target && link.target.toLowerCase() !== "_self")) return;
+          // Next Link prevents the default browser navigation before this event
+          // bubbles; same-tab client navigation must still dismiss the overlay.
+          onClose();
         }}
         className={styles.dialog}
         onCloseAutoFocus={(event) => {

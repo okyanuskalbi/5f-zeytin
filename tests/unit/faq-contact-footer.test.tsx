@@ -92,7 +92,8 @@ it("names only the supported payment brands and serves safe local vector logos",
   expect(payment.textContent).toContain("Güvenli Ödeme");
   expect([...payment.querySelectorAll("img")].map(image => image.alt)).toEqual(["PayTR", "Visa", "Mastercard", "Troy"]);
   for (const image of payment.querySelectorAll("img")) {
-    expect(image.getAttribute("src")).toBe(`/images/payment/${image.alt.toLowerCase()}.svg`);
+    const suffix = image.alt === "Mastercard" ? "" : "-dark";
+    expect(image.getAttribute("src")).toBe(`/images/payment/${image.alt.toLowerCase()}${suffix}.svg`);
     expect(image.getAttribute("aria-hidden")).not.toBe("true");
     const svg = new DOMParser().parseFromString(readFileSync(`public${image.getAttribute("src")}`, "utf8"), "image/svg+xml");
     expect(svg.documentElement.localName).toBe("svg");

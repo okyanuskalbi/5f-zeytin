@@ -13,11 +13,12 @@ interface ActiveSequenceProps {
   blurFill: boolean;
   progress: MotionValue<number>;
   initialCount?: number;
+  layout?: "sticky" | "framed";
 }
 
-export function ActiveSequence({ target, manifest, src, fit, positionX, blurFill, progress, initialCount }: ActiveSequenceProps): JSX.Element {
+export function ActiveSequence({ target, manifest, src, fit, positionX, blurFill, progress, initialCount, layout = "sticky" }: ActiveSequenceProps): JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { scrollYProgress } = useScroll({ target, offset: ["start start", "end end"] });
+  const { scrollYProgress } = useScroll({ target, offset: layout === "framed" ? ["start start", "end 30%"] : ["start start", "end end"] });
   const index = useTransform(scrollYProgress, (value) => frameIndex(value, manifest.count));
 
   useEffect(() => {
@@ -119,7 +120,9 @@ export function ActiveSequence({ target, manifest, src, fit, positionX, blurFill
       nearby = entry.isIntersecting;
       syncActivity();
     });
-    observer.observe(section);
+    // Shared story geometry sets progression; visibility belongs to the actual
+    // media window so copy in view cannot keep off-screen rendering active.
+    observer.observe(layout === "framed" ? canvas : section);
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(canvas);
     window.addEventListener("resize", resize);
@@ -141,7 +144,7 @@ export function ActiveSequence({ target, manifest, src, fit, positionX, blurFill
       frames?.dispose();
       progress.set(0);
     };
-  }, [blurFill, fit, positionX, index, initialCount, manifest, progress, scrollYProgress, src, target]);
+  }, [blurFill, fit, positionX, index, initialCount, layout, manifest, progress, scrollYProgress, src, target]);
 
   return <canvas ref={canvasRef} aria-hidden="true" className="absolute inset-0 h-full w-full" />;
 }

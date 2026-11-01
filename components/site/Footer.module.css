@@ -1,7 +1,9 @@
 .footer {
-  --footer-ink: #0A0F0B;
-  --footer-copy: #C9CFC4;
-  --footer-muted: #AEB5AA;
+  --footer-ink: #E5E3D7;
+  --footer-copy: #414A40;
+  --footer-muted: #5A6558;
+  --sut: #172B21;
+  --brand-gold: #172B21;
   --footer-heading-gap: 14px;
   --footer-link-gap: 8px;
   --footer-link-target: 44px;

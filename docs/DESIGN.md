@@ -1,67 +1,79 @@
-# ZEYTİN v5: Toprağın özeni, üretimin güvencesi
+# AFİNA ZEYTİN v6 — Üretici Atlası
 
-1 Kasım 2026 müşteri PDF’si ve kullanıcı yeniden tasarım isteği güncel sözleşmedir. Eski v4 aşağıda tarihçe olarak korunur.
+## Güncel karar
 
-- Renkler: koyu zeytin `#172B21`, şampanya `#B6A078`, kırık beyaz `#F4F0E7`, antrasit `#252725`. V5 değişkenleri `RenewalLanding.module.css` kökünde; alışveriş/auth alt sayfalarının mevcut tokenları korunur.
-- Font: yerel Fraunces başlıklar ve Figtree arayüz.
-- Açılış: onaylı zeytinlik + mevcut canvas scrub, gerçek HTML slogan ve ürün/kurumsal CTA. Doğal sayfa kaydırması; reduced motion/veri tasarrufunda poster. Yeni Flow filmi onaylanınca aynı hat kullanılır.
-- Akış: zeytinlik → marka → müşteri tesis fotoğrafı → koleksiyon → üretim yolculuğu → kurumsal teklif → SSS/iletişim.
-- İmza: açık zeminli kurumsal anlatımın koyu yeşil ürün ve işletme bölümleriyle ritmi. Tesis görseli olduğu oranda ve gerçek tabelasıyla kullanılır.
-- 21st kaynakları: Scroll-Triggered Video Hero 9701, About Bento 25310, Contact Form 35258. Yerel Next.js/motion/primitive yapısına uyarlandı; kaynakların demo verileri, döngü videoları ve sahte istatistikleri alınmadı.
-- Afina Select/Professional sunum grupları SKU veya yeni ambalaj üretmez. Altı mevcut SKU üst sınırı, gerçek sepete ekleme, ürün detayı, stok kontrolleri korunur.
+1 Kasım 2026: kullanıcı canlı siteyi masaüstünde ve mobilde inceleyip eksikleri düzeltmeyi, beğenmediği hero ile tasarım belgelerini bütünüyle değiştirmeyi istedi. Bu dosya güncel görsel sözleşmedir. Önceki v4/v5 tarifleri ve Task 156'nın ortalanmış koyu hero/cam menü yönü geçerli tasarım hedefi değildir. Önceki DESIGN.md içeriği değiştirilmeden [tasarım tarihçesine](referans/DESIGN-v5-history-20261101.md) taşındı. Geçmiş medya onayları ve yayın kanıtları korunur.
 
----
+Tasarımın odağı **Osmaniye / Düziçi / Ellek'te üretim yapan AFİNA**: yaklaşık %65 üretim ve kurumsal güven, %35 ürün ve alışveriş. Perakende müşterisi ile işletme alıcısının gerçek yolları aynı sayfada açık olmalı.
 
-# ZEYTİN — Tasarım v4: "Sinematik sofra" (DESIGN.md)
+## Görsel dil
 
-## Karar geçmişi (21 Eki 2026)
-- v1 etiket, v2 toprak, v3 kiler reddedildi (arşiv: `DESIGN-v1-etiket.md`, `DESIGN-v2-toprak.md`, `DESIGN-v3-kiler.md`).
-- v4 adayları A Teneke / B Afiş / C Belgesel reddedildi (`DESIGN-v4-adaylar.md`).
-- **D "Sinematik sofra" kullanıcı onayı aldı ("d ok").** Ölçülecek sözleşme: `~/PROJELER/AFINA-KAYNAK/araclar/log/fable/mock/d.html` (tam sayfa, hareketli HTML prova) + kareler `mock-d-masa-00..06.png`, `mock-d-tel-00..07.png`.
-- Ürün gerçekleri ve iddia kuralı: `PRODUCT.md`.
+Açık kâğıt zemin, koyu zeytin mürekkebi, bol nefes alan asimetrik sayfa düzeni. Gerçek tesisi ve ürünün kendisini öne çıkaran bir üretici yayını. İnce çizgiler, belirgin tipografi ve gerçek fotoğraf sayfanın karakterini kurar. Şampanya rengi ölçülü vurgu içindir; parlama, metalik altın efekti ve cam kartlar kullanılmaz.
 
-## Fikir
-Kullanıcının verdiği kitlerin (sinematik site, scroll'a bağlı sahne, AI-slop→profesyonel) doğrudan uygulaması. Tam ekran yavaş yakınlaşan sofra hero'su, üstünde çalışan satın alma kartı; koyu zeytin yeşili zeminde ürün kartları; kaydırdıkça değişen sabit fotoğraf çerçevesiyle üç adımlı tesis öyküsü; paralakslı kahraman ürün bandı.
+| Rol | Renk | Kullanım |
+| --- | --- | --- |
+| Kâğıt | `#F4F0E7` | Ana sayfa, açılış, kurumsal anlatım ve ürün rafı |
+| Zeytin | `#172B21` | Başlık, birincil eylem, tek belirgin kurumsal teklif bölümü |
+| Şampanya | `#B6A078` | İnce vurgu ve açık/koyu yüzeylere uygun ikincil detay |
+| Antrasit | `#252725` | Gövde ve yüksek okunurluk gerektiren metin |
 
-## Renk
-| Rol | Değer |
-|---|---|
-| ink (zemin) | `#0E1510` |
-| zeytin (bölüm) | `#1F3324` |
-| altın (birincil eylem, fiyat) | `#D4B483` / açık `#E6CB97` |
-| süt (kart, metin) | `#F7F3EA` |
-| gri (ikincil metin) | `#B9C0B6` |
-Krem/fildişi **zemin olarak yok**; yalnız kart ve metin. Gradyan yalnız fotoğraf scrim'i ve kart arkası radyal parıltı.
+Renkler semantik tokenlarla kullanılır. Açık yüzeydeki buton/alan/ürün fiyatı ve koyu B2B yüzeyindeki buton/alan kendi kontrastını korur; dekoratif vurgu rengi otomatik olarak küçük metin rengi sayılmaz.
 
-## Tipografi
-Fraunces 400/500/600 (başlık, ürün adı; hero'da italik vurgu) + Figtree 400–800 (arayüz, fiyat tabular). Hero `clamp(52px,6.4vw,96px)`, bölüm `clamp(40px,5vw,68px)`, ürün adı 24px, gövde 17–19px.
+Yerel **Fraunces** başlıklarda, **Figtree** gövde ve arayüzde kullanılır. Yeni font servisi eklenmez. H1 masaüstünde geniş ama metin sütununa ait; mobilde satırları ve gerçek CTA'ları itmeyecek ölçüdedir. Gövde metni okunaklı 16–18 px, önemli arayüz etiketleri en az 12 px hedefler. Başlık italikleri tek vurgu olarak ölçülü kullanılabilir. Paragraflar çoğunlukla 45–65 karakter genişliğindedir.
 
-## Sayfa akışı (prova ile birebir)
-1. **Hero (100svh):** `hero-masaustu.webp` / telefonda `hero-mobil.webp`, Ken Burns 18 s. Sol: kicker "Ellek, Düziçi · Osmaniye", "Düziçi'nden *sofranıza.*", açıklama, iki hayalet düğme. Sağ alt: **satın alma kartı** (süt zemin): küçük teneke PNG, ad, boy anahtarı 1 kg | 10 kg, fiyat, "Sepete ekle" (gerçek sepet). Telefon: başlık üstte, kart altta; açıklama gizli.
-2. **Güven şeridi:** Kendi tesisimizde dolum · Kargo 2–4 iş günü · PayTR · Toptan teklif.
-3. **Ürünler (6, 3×2, telefonda 2 kolon):** koyu kart, şeffaf PNG, ad, boy çipi, altın fiyat, altın "Sepete ekle". Hover: kalkış + parıltı. İlk kartta "En çok alınan" etiketi.
-4. **Tesis öyküsü (sticky çerçeve + 3 adım):** sol sabit 4:5 çerçevede fotoğraf çapraz geçişle değişir (sahne-kırma → tesis → sahne-yağ), sağda 01 Kökü toprakta / 02 Kendi tesisimizde / 03 Yeri sofrada. Telefonda çerçeve üstte sticky, adımlar altında.
-5. **Kahraman band:** 16:9 sahne görseli paralaks, sol kutu: Doğal Kırma 10 kg · ₺2.200 · Sepete ekle.
-6. **Toptan + SSS + Footer:** teklif düğmesi; yalnız teyitli 3 soru; satıcı bilgisi, tek önizleme notu.
-- **Telefon sabit alt çubuk:** hero geçildikten sonra fiyat + "Sepete ekle" (güvenli alan).
+## Menü ve açılış
 
-## Hareket
-- İmza: **sticky fotoğraf çerçevesi** (scroll'a bağlı sahne değişimi) + hero Ken Burns.
-- Reveal: `whileInView`, y 26px, stagger 80 ms. Kahraman band paralaks (translateY, max 60 px). Nav 40 px sonra blur+koyu.
-- Yalnız transform/opacity/filter. `prefers-reduced-motion`: Ken Burns ve reveal yok.
+- Üst menü açık, opak ve sade yüzeydir. Hero üzerinde kayan cam kapsül, bulanık arka plan veya koyu örtü yoktur. Orijinal logonun açık zemine uygun yatay varyantı kullanılır; logo yeniden çizilmez.
+- Masaüstü hero asimetrik iki parçadır: solda yaklaşık 5/12 metin alanı, sağda yaklaşık 7/12 karartılmamış zeytinlik sahnesi. Görsel kendi çerçevesindedir; sloganın arkasına yayılmaz.
+- Tek H1 ve resmî slogan: **“Kökü toprakta. Yeri sofrada.”** Açıklama gerçek üretim bölgesini ve perakende/toptan odağını kısa biçimde anlatır.
+- İki gerçek DOM bağlantısı görünür kalır: **Ürünleri Keşfet** → `#urunler`; **Kurumsal Teklif Al** → `#toptan-iletisim`. Düğmelerin işlevi animasyonun hazır olmasına bağlı değildir.
+- Görselde küçük, kaynaklı Ellek / Düziçi / Osmaniye notu olabilir; sahte sezon, kapasite, sertifika, müşteri sayısı veya satış rozeti konmaz.
+- Mobilde başlık, açıklama, CTA ve görüntü doğal bir dikey akış kurar. Tam ekran yükseklik, iki ekran süren sabit intro veya küçük ekranı kaplayan satın alma kartı zorunlu değildir. Menü, başlık ve CTA kesilmez.
 
-## Görseller (hepsi onaylı, elde)
-`zeytin-v3-gorseller/hero-masaustu.webp`, `hero-mobil.webp`, `urun-01…06-*.png`; `urun-gorselleri/onayli/01/03/04-*-sahne.webp`; tesis `public/images/tesis/tesis-osmaniye-*.webp` (plaka bulanık). Yeni görsel gerekmez.
+## Sayfa akışı
 
-## Performans ve kabul
-Lighthouse mobil ≥ 85, LCP < 2,5 s (hero AVIF/WebP srcset, masaüstü ≤ 180 KB, mobil ≤ 120 KB, `fetchpriority=high`), CLS < 0,1, A11y ≥ 95. iPhone 14/SE (WebKit) + Pixel 7; dokunma ≥ 44 px. Her görevde masaüstü + iPhone kaydırma şeridi; prova kareleriyle karşılaştırılır.
+1. **Açık editoryal hero:** metin ve aydınlık hareketli sahne ayrı yüzeylerde.
+2. **Kısa marka anlatımı:** kökler, ürün odağı ve bireysel/kurumsal müşteri bağlamı; az sayıda kaynaklı bilgi.
+3. **Gerçek tesis:** müşteri fotoğrafı büyük, geometrisi ve okunur tabelası korunarak kullanılır. Gerçek dış cephe fotoğrafı yapay üretim hattı veya hasat belgesi yerine geçirilmez.
+4. **Açık ürün rafı:** mevcut en fazla altı SKU, onaylı ambalaj görselleri, sunucudan gelen fiyat/stok, ürün detayı ve gerçek sepete ekleme. Ağır koyu kartlar, radyal parıltılar ve sahte “en çok alınan” rozeti yoktur. Select/Professional sunum grupları yeni SKU ya da ambalaj anlamına gelmez.
+5. **Üretim yolculuğu:** kısa, kaynaklı adımlar ve onaylı sahne; görsel kanıtı olmayan makine/kapasite/sertifika iddiası eklenmez.
+6. **Tek belirgin zeytin yeşili B2B alanı:** işletme ihtiyaçları, net talep formu ve doğrulanmış gönderim durumu. Yapılandırılmamış servis için başarılı talep veya CRM kaydı gösterilmez.
+7. **SSS, iletişim ve footer:** ortak kaynaktaki beş cevap, gerçek satıcı/konum ve mevcut sipariş takibi, teslimat/iade ve satış koşulları yolları. Telefon/e-posta uydurulmaz.
 
-## Ev kuralları
-İddia kuralı (%100/organik/sertifika/sağlık yok). ≤ 2 font. Emoji, ikon kutusu, 01/02 numarası yalnız öykü adımlarında (prova ile aynı). Dağınık "temsili" yazısı yok; tek önizleme notu footer'da.
+Landing, menü, ürün sunumu ve mevcut müşteri/sepet yüzeyleri aynı tipografi ve eylem hiyerarşisinde anlaşılır kalır. Görsel yenileme fiyat, stok, ürün sahipliği, oturum, ödeme veya veritabanı sözleşmesini değiştirmez.
 
-## Uygulama
-Codex görevleri: (1) hero + satın alma kartı, (2) ürün ızgarası + sepet bağlantısı, (3) sticky öykü + kahraman band, (4) toptan/SSS/footer + mobil çubuk, (5) performans/kaydırma kapısı. Prova HTML'i referanstır; birebir ölçülür.
+## Google Flow, Omni ve hareket
 
-## 1 Kasım ek kit uyarlamaları (güncel v5)
+Kullanıcı Google Flow ve Omni ile çalışmayı istedi. Yeni medya için araç/erişim, model, ücret ve sonuç gerçek arayüzden doğrulanır. Omni'nin kullanılabilir olması veya hazırlanmış bir istem çıktı üretildiği anlamına gelmez. AtlasCloud/Kling/başka ücretli sağlayıcıya kendiliğinden geçilmez.
 
-Müşterinin dört ek PDF'si `docs/referans/kit-uyarlamalari-20261101.md` karar tablosuyla uyarlandı. Fraunces/Figtree ve #172B21/#F4F0E7/#B6A078 korunur; ana bölüm boşlukları 16/24/32/48/64/80 ölçeğindedir. Eski v4 tarifleri tarihsel kalır. Native-scroll canvas ve reduced-motion posteri geçerlidir; yeni Flow klibi 20 kredilik inceleme adayıdır. Paylaşılan SSS beş kaynaklı cevaptır.
+- Bugünkü kullanılabilir hareketli kaynak, kullanıcı tarafından kabul edilen ilk **A→B ağaç → dal** Flow klibidir. Kaynak onayı ve türevler `lib/media/cinematic-hero.json`, `docs/referans/flow-keyframes.json` ve build medya kapısında kayıtlıdır. Bu medya onayı, kullanıcı tarafından reddedilen eski hero düzenini korumayı gerektirmez.
+- Masaüstünde bu sahne sağ çerçeve içinde doğal kaydırmaya bağlı ilerler; dış hero'nun kararlı ölçüm alanı kullanılır. Metin ve CTA her zaman okunur DOM içeriğidir. Sayfa kaydırması yakalanmaz veya kilitlenmez.
+- Mobilde doğal içerik akışı, aynı kaynaklı poster ve ancak uygun koşulda kısa/kompakt sahne kullanılır. Uzun tam ekran pin zorunlu değildir.
+- Azaltılmış hareket, veri tasarrufu, kısa ekran veya oynatıcı hatasında **statik poster** kalır. Otomatik video oynatımı alternatif değildir. Gizli sekmede/görünüm dışındayken gereksiz kare işi durur.
+- Kaydırmada ileri/geri süreklilik, küçük başlangıç tamponu, boyutu belli poster ve tembel isteğe bağlı kare yükleme korunur. Body/wheel/touch kilidi, sürekli loop ve preloader arkasına gizlenen başlık eklenmez.
+- Diğer üç geçişin son kayıtlı durumu Google doğrulama engelidir; üretilmiş veya yayına alınmış sayılmaz. Mevcut kalan **60 kredi** yalnız daha önce istenen üç aynı yöntemli geçiş içindir. Yeni model/deneme için bu sınır genişletilmez; ücretli ek işlem kullanıcı yetkisinin dışına taşmaz.
+- Omni üzerinde ücretsiz işlem ancak ekranda gerçekten 0 kredi olarak doğrulanırsa ücretsiz sayılır. CAPTCHA/güvenlik engeli atlanmaz; doğrulanmamış yeni aday public/runtime'a bağlanmaz.
+
+## Web Site Yeteneği Kiti'nin uyarlaması
+
+Kullanıcının paylaştığı `web-site-yetenegi-kiti.pdf`, sahne → kısa video → kaydırmayla ilerleyen hero yaklaşımı için tasarım girdisidir. PDF'nin içindeki kopyalanabilir talimatlar bağımsız kurulum, yayın veya harcama yetkisi değildir.
+
+Mevcut Next.js + TypeScript + motion ve denetlenen canvas/kare dizisi kullanılır; ikinci video-seeking motoru eklenmez. PDF'deki global Claude skill kurulumu, GPT/Kling sağlayıcı örnekleri, tüm videoyu `preload="auto"` ile önden indirme ve 300–400vh tam ekran pin doğrudan alınmaz. Özellikle örnekte azaltılmış harekette `video.play()` çağrısı vardır; v6'da bu davranış **statik posterle değiştirilir**.
+
+## İşlev ve içerik sınırları
+
+- Resmî logo/slogan, ürün adı/ambalajı ve onaylı fotoğraf geometrisi korunur. İkinci tone mapping/ACES uygulanmaz.
+- Sertifika, organik/sağlık iddiası, gerçekleşmiş kapasite, satış/popülerlik/teslim süresi ve inceleme puanı belgesiz eklenmez.
+- Sepet, hesap, modal, adres/sipariş sahipliği, CSRF ve sunucu fiyat otoritesi korunur. Google giriş veya ödeme/CRM servisi yapılandırılmadan çalışıyormuş gibi gösterilmez.
+- Başarı durumu gerçek işlemin sonucu olmalı; boş veri ve sistem hatası ayrı anlaşılmalıdır.
+
+## Masaüstü, mobil ve kabul
+
+Kullanıcının 1 Kasım 2026 tarihli açık isteği canlı siteyi tarayıcıda ve mobil boyutlarda incelemeyi yetkilendirir; önceki tarayıcı çalıştırmama sınırının bu görevde yerini alır.
+
+- Yalnız paketli **headless Chromium**; test worker sayısı en fazla 2. Kullanıcının `/Applications/Google Chrome.app` uygulaması test/Lighthouse için açılmaz. Açılan browser ve yerel sunucular düzgün kapatılır; zorla sonlandırma kullanılmaz.
+- Masaüstü, tablet ve 320/360/390 px telefon genişliklerinde hero, menü, ürün detayı, sepet ve üyelik açılışları gözlenir. Dikey/yatay taşma, örtüşme, odak ve gerçek CTA hedefleri kontrol edilir.
+- Azaltılmış hareket, JavaScript/medya yükleme hatası, kısa ekran ve mobil menü durumlarında temel içerik erişilir kalır. Klavye odak halkası ve modal Escape/odak dönüşü korunur; dokunma hedefleri en az 44 px hedefler.
+- Unit, lint, typecheck, medya kapıları ve production build çalışır. Canlı HTTP/API ve gerçek browser sonucu ayrı kanıt olarak kaydedilir. Testin yazılmış olması çalıştığı veya geçtiği anlamına gelmez.
+- Ekran boyutu emülasyonu fiziksel telefon kabulü değildir. Fiziksel cihaz, gerçek ödeme/e-posta/CRM ve uzak migration yapılmadıysa açık bırakılır.
+- Güncel çalışma ve kanıtlar [Task 157](tasks/157-tam-tasarim-ve-canli-kabul.md) içindedir. Bu tasarım sözleşmesi test/yayın sonucu veya görsel kullanıcı kabulü yerine geçmez.
