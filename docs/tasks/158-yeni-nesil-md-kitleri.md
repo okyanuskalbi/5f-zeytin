@@ -24,6 +24,7 @@ Anlamlı giriş yaşam döngüsü RED/GREEN, mevcut ürün/sepet/üyelik davran�
 - Paketli headless Chromium ile **28 yerel etkileşim testi PASS**. 1440/768/390/320 px'te menü, ürün detayı, izole sepet, üyelik/KVKK, klavye/odak ve taşma kontrol edildi. Görsel/axe denetiminde taşma, pageerror, başarısız kaynak ve WCAG ihlali 0. Reduced-motion: canvas 0, kare isteği 0, H1 görünür.
 - Ek gerçek browser kontrolü: hover/pressed durumundayken reduced-motion'a geçiş transformu sıfırladı; gerçek ürün anchor'ı çalıştı. JavaScript kapalı 390 px'te H1/CTA görünür ve ürün anchor'ı çalışır. Ekranlar `.cache/task-158/local/`, ayrıntılar `.cache/task-158/local-motion.json`.
 - Başlatılan browser/server süreçleri düzgün kapatıldı. Ek medya/kredi kullanımı 0; onaylı A→B klibi ve mevcut üretim bütçesi değişmedi. Fiziksel telefon veya gerçek sipariş/hesap/ödeme/talep gönderimi yapılmadı.
+- İlk CI koşusunda eski `login-ui` testi, hata DOM'a yazıldıktan hemen sonra passive focus effect'ini beklemeden odağı kontrol ettiği için yarışa girdi. Aynı odak beklentileri `waitFor` ile effect tamamlanmasını bekliyor; uygulama/auth davranışı veya kabul beklentisi gevşetilmedi.
 
 ## Yayın kabulü
 

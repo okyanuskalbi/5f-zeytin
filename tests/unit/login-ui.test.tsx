@@ -66,7 +66,7 @@ it.each([401, 429, 503, "network", "malformed"])("handles %s without exposing ar
   render(<SignIn />); fill(); fireEvent.submit(form());
   await waitFor(() => expect(screen.getByRole("alert").textContent).not.toBe(""));
   expect(document.body.textContent).not.toContain("private-secret");
-  expect(document.activeElement).toBe(screen.getByRole("alert"));
+  await waitFor(() => expect(document.activeElement).toBe(screen.getByRole("alert")));
   expect(field("Şifre").value).toBe(" Sofrada123! ");
   expect(mocks.replace).not.toHaveBeenCalled();
   fireEvent.submit(form());
@@ -86,7 +86,7 @@ it("requests a magic link without a password, stays on the page and focuses neut
   fireEvent.change(field("E-posta"), { target: { value: "deniz@example.test" } });
   fireEvent.submit(form());
   await waitFor(() => expect(screen.getByRole("status").textContent).toBe(magicLinkConfirmation));
-  expect(document.activeElement).toBe(screen.getByRole("status"));
+  await waitFor(() => expect(document.activeElement).toBe(screen.getByRole("status")));
   expect(JSON.parse(String(fetchMock.mock.calls[0][1]?.body))).toEqual({ method: "magic_link", email: "deniz@example.test", next: "/odeme" });
   expect(mocks.replace).not.toHaveBeenCalled();
 });
