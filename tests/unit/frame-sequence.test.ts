@@ -144,6 +144,21 @@ describe("sequence lifecycle and fallback content", () => {
     expect((view.container.firstElementChild as HTMLElement).style.height).toBe("100vh");
   });
 
+  it("does not download framed motion while only the surrounding story is visible", async () => {
+    vi.stubGlobal("IntersectionObserver", class {
+      constructor(callback: typeof near) { near = callback; }
+      observe(element: Element): void { near?.([{ isIntersecting: element.tagName !== "CANVAS" }]); }
+      disconnect = disconnect;
+    });
+    const view = await mount({ layout: "framed" });
+    await waitFor(() => expect(view.container.querySelector("canvas")).not.toBeNull());
+    expect((view.container.firstElementChild as HTMLElement).style.height).toBe("100%");
+    expect(MockImage.requests).toHaveLength(0);
+    act(() => near?.([{ isIntersecting: true }]));
+    expect(MockImage.requests).toHaveLength(6);
+    view.unmount();
+  });
+
   it("keeps data saver and low-end devices poster-only, including preference changes", async () => {
     saveData = true;
     const view = await mount();
