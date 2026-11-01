@@ -1,6 +1,8 @@
 # V8 — native Taste incelemesi
 
-1 Kasım 2026; yerel production build `Rp054CNQnvHxgsq8ui4OT`. Native koşum **11:44:03–11:44:57 UTC**. Hedef `http://127.0.0.1:3020`; 1440×900, 768×1024, 390×844. Bu kayıt yerel tasarım ölçümüdür; canlı yayın kabulü ayrıca tutulur.
+1 Kasım 2026; yerel production build `aU9kRVEDWxduQepWaIxk_`. Native koşum **12:04:26–12:05:19 UTC**. Hedef `http://127.0.0.1:3020`; 1440×900, 768×1024, 390×844. Bu kayıt yerel tasarım ölçümüdür; canlı yayın kabulü ayrıca tutulur.
+
+Son runtime düzeltmesi, React hazır olmadan ürün seçimi/detay/görsel tetikleyicilerine tıklamanın kaybolmasını önler: bu kontroller hidrasyon hazır olana kadar devre dışıdır. Slogan, görseller, seçili ürün verisi ve alışveriş bağlantıları SSR’de kalır; yerleşim değişmedi. Bu üçüncü/son native koşum yeni build’de yapıldı. Geciktirilmiş JavaScript etkileşim regresyonunun kabulü ayrı E2E kaydındadır.
 
 ## Ham sonuç ve yorum
 
@@ -53,8 +55,8 @@ CDP kaynak SHA-256: `320fb75c6454a97b88458e5c33559a1188042aa0041bd5eff5345590023
 
 Güvenli kopya SHA-256: `43916bee42ceb74187ee1be2a7476f29d00e374a9362d05e72f38a1c26a74fe5`.
 
-Son ham inspector raporu SHA-256: `de13ee8960a11c3cdc0ce8f31016bee9ae7ad3c27aa97af8dfd9acfaf5c31b87`.
+Son ham inspector raporu SHA-256: `da06eac0d49c39c080672113748b0e43c22894e2e96ea590d068a941e8205d44`.
 
-Yerel kanıt: `.cache/task-160/adapter-provenance.json`, `cdp-safety.patch`, `after2/inspect/report.json`, `after2/scenes/`, `after2/offline-contrast.json`, `after2/run-receipt.json`, `after2/cleanup-proof.json`. Önceki snapshot `after-pass1/`, v7 baseline `before/` altında değişmeden korunur. Inspector’ın320px için200pxyükseklik üreten varsayımı son native koşuma alınmadı; gerçek320px ve360×640 kabulü ayrı uygulama testleridir.
+Yerel kanıt: `.cache/task-160/adapter-provenance.json`, `cdp-safety.patch`, `after2/inspect/report.json`, `after2/scenes/`, `after2/offline-contrast.json`, `after2/run-receipt.json`, `after2/cleanup-proof.json`. Önceki snapshot’lar `after-pass1/` ve `after2-previous-Rp054CNQnvHxgsq8ui4OT/`, v7 baseline `before/` altında değişmeden korunur. Inspector’ın320px için200pxyükseklik üreten varsayımı son native koşuma alınmadı; gerçek320px ve360×640 kabulü ayrı uygulama testleridir.
 
 Koşuma ait browser profili/süreci **0**;3020production sunucusu düzgün kapandı. Bu kayıttan sonra runtime/denetim kuralı değiştirilmedi.

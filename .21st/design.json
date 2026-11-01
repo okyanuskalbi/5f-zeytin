@@ -255,8 +255,14 @@
     {
       "date": "2026-11-01",
       "source": "User Scroll Craft + frontend-design/frontend-ui-engineering + Taste request and correct Flow project, Task160",
-      "decision": "v8 Object journey follows a real selectable package through one layered opening, factory proof, native six-SKU gallery, honest B2B details branch and resolved address. Taste seed1601101 keeps palette/type. Three existing SKU choices use the existing product/detail/cart contracts. Approved A→B remains the only runtime film; correct Flow project was inspected but reCAPTCHA gate prevents new submission/spend.",
-      "status": "active-implementation-local-1200unit-build-and-four-width-visual-pass-native-taste-e2e-live-pending"
+      "decision": "v8 Object journey follows a real selectable package through one layered opening, factory proof, native six-SKU gallery, honest B2B details branch and resolved address. Taste seed1601101 keeps palette/type. Three existing SKU choices use the existing product/detail/cart contracts. Approved A→B remains the only runtime film; correct Flow project reconnected without the prior warning; three authorised first/last generations cost36credits, balance194; all three candidates complete/downloaded/technical-verified, with no new user/runtime approval.",
+      "status": "complete-deployed-ready-179df851-ci41304790349-live-ui-acceptance-complete"
+    },
+    {
+      "date": "2026-11-01",
+      "source": "Task160 authorized Flow continuation and account balance screenshot",
+      "decision": "Omni1.1Flash720p8s16:9x1 at12credits each. B→C/C→D/D→F all COMPLETE and downloaded; no user/runtime approval for new candidates. Three requested outputs charged36, balance230→194; cumulative56/80 credits. Prior blocked attempts preserved. No security bypass, extra attempts or runtime/user approval for new candidates.",
+      "status": "generation-candidates-only-review-and-user-approval-pending"
     }
   ],
   "evidence": [
@@ -333,9 +339,51 @@
       "source": ".cache/task-160/local/results.json"
     },
     {
-      "fact": "correct-flow-project-recaptcha-gate-no-new-spend",
+      "fact": "historical-flow-blocked-zero-spend-before-authorized-task160-continuation",
+      "source": "docs/tasks/152-google-flow.md"
+    },
+    {
+      "fact": "historical-first-v8-runtime-deployment-ready-before-final-179df851",
       "source": "docs/tasks/160-scroll-craft-taste-ve-flow.md"
+    },
+    {
+      "fact": "v8-release-receipt-forthcoming",
+      "source": "docs/referans/yayin-object-v8-20261101.json"
+    },
+    {
+      "fact": "v8-final-qa-live-ui-acceptance-complete",
+      "source": "docs/referans/qa-160-20261101.json"
+    },
+    {
+      "fact": "three-authorized-omni-submissions-complete-downloaded-technical-verified-36credits-balance194-user-approval-pending",
+      "source": "docs/referans/flow-keyframes.json"
     }
   ],
-  "generatedAt": "2026-11-01T11:40:22.480642+00:00"
+  "generatedAt": "2026-11-01T12:23:18.065465+00:00",
+  "release": {
+    "runtimeCommit": "179df851686a34d09a1e965315dc5e902a30c362",
+    "ciRun": "41304790349",
+    "ciStatus": "SUCCESS",
+    "deploymentId": "dpl_7EUijPZwcnzr9ML3nHMFRwUErZ89",
+    "deploymentStatus": "READY",
+    "production": "https://afinazeytin.com",
+    "localAcceptance": "1200unit/89files; lint,typecheck,build;74e2e+6responsive skips;6visual widths clean; motion/noJS/reduced PASS;native inspector1FAIL5WARN and scenes0 preserved",
+    "liveAcceptance": "COMPLETE:74e2e PASS+6responsive skips;6visual widths zero axe/overflow/errors/bad;motion/noJS/reduced PASS;native190decoded frames,7.916667s ended/muted;12.04s UI recording",
+    "receipts": "forthcoming: docs/referans/yayin-object-v8-20261101.json and qa-160-20261101.json"
+  },
+  "mediaContinuation": {
+    "projectUrl": "https://flow.google.com/project/62040049-3473-446b-9d93-8e6cbc45f8bc",
+    "creditsSpent": 36,
+    "balance": 194,
+    "completedCandidates": [
+      "B→C",
+      "C→D",
+      "D→F"
+    ],
+    "generating": null,
+    "newCandidateRuntimeApproval": false,
+    "source": "docs/referans/flow-keyframes.json",
+    "downloaded": true,
+    "runtimeFilm": "accepted A→B only"
+  }
 }

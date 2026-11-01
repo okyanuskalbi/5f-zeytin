@@ -1,0 +1,1341 @@
+{
+  "date": "2026-11-01",
+  "task": 160,
+  "sourceCommit": "179df851686a34d09a1e965315dc5e902a30c362",
+  "scope": "V8 cinematic Google Flow object journey: independent film/package/copy planes, actual variant detail/cart selection, separate compact mobile, native product rail and honest B2B branch",
+  "unitFiles": 89,
+  "unitTests": 1200,
+  "lint": "PASS",
+  "typecheck": "PASS",
+  "productionBuild": "PASS",
+  "testBrowser": "bundled headless Playwright Chromium",
+  "testWorkers": 2,
+  "checks": {
+    "local": {
+      "interactionTestsPassed": 74,
+      "responsiveNotApplicableSkipped": 6,
+      "browser": {
+        "base": "http://localhost:3019",
+        "results": [
+          {
+            "width": 1440,
+            "scroll": [
+              {
+                "section": "#kurumsal",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "#tesisimiz",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "#urunler",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "#uretim-yolculugu",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "#toptan-iletisim",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "#iletisim",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "footer",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              }
+            ],
+            "errors": [],
+            "bad": [],
+            "frame0": {
+              "time": 1.9861,
+              "playing": true,
+              "readyState": 4,
+              "src": "/videos/afina-agac-dal.mp4"
+            },
+            "frame1": {
+              "time": 7.766667,
+              "paused": true,
+              "duration": 7.916667
+            },
+            "planes": [
+              {
+                "p": "",
+                "live": true,
+                "film": "none",
+                "object": "matrix(1, 0, 0, 1, 0, 80)"
+              },
+              {
+                "p": "0.2",
+                "live": true,
+                "film": "matrix(0.964, 0, 0, 0.964, -23.04, -9.6)",
+                "object": "matrix(1.024, 0, 0, 1.024, 0, 62.4)"
+              },
+              {
+                "p": "0.4",
+                "live": true,
+                "film": "matrix(0.928, 0, 0, 0.928, -46.08, -19.2)",
+                "object": "matrix(1.048, 0, 0, 1.048, 0, 44.8)"
+              },
+              {
+                "p": "0.6",
+                "live": true,
+                "film": "matrix(0.892, 0, 0, 0.892, -69.12, -28.8)",
+                "object": "matrix(1.072, 0, 0, 1.072, 0, 27.2)"
+              },
+              {
+                "p": "0.8",
+                "live": true,
+                "film": "matrix(0.856, 0, 0, 0.856, -92.16, -38.4)",
+                "object": "matrix(1.096, 0, 0, 1.096, 0, 9.6)"
+              },
+              {
+                "p": "1",
+                "live": true,
+                "film": "matrix(0.82, 0, 0, 0.82, -115.2, -48)",
+                "object": "matrix(1.12, 0, 0, 1.12, 0, -8)"
+              }
+            ],
+            "axe": []
+          },
+          {
+            "width": 1024,
+            "scroll": [
+              {
+                "section": "#kurumsal",
+                "clientWidth": 1024,
+                "scrollWidth": 1024
+              },
+              {
+                "section": "#tesisimiz",
+                "clientWidth": 1024,
+                "scrollWidth": 1024
+              },
+              {
+                "section": "#urunler",
+                "clientWidth": 1024,
+                "scrollWidth": 1024
+              },
+              {
+                "section": "#uretim-yolculugu",
+                "clientWidth": 1024,
+                "scrollWidth": 1024
+              },
+              {
+                "section": "#toptan-iletisim",
+                "clientWidth": 1024,
+                "scrollWidth": 1024
+              },
+              {
+                "section": "#iletisim",
+                "clientWidth": 1024,
+                "scrollWidth": 1024
+              },
+              {
+                "section": "footer",
+                "clientWidth": 1024,
+                "scrollWidth": 1024
+              }
+            ],
+            "errors": [],
+            "bad": [],
+            "frame0": {
+              "time": 1.926,
+              "playing": true,
+              "readyState": 4,
+              "src": "/videos/afina-agac-dal.mp4"
+            },
+            "frame1": {
+              "time": 7.766667,
+              "paused": true,
+              "duration": 7.916667
+            },
+            "planes": [
+              {
+                "p": "",
+                "live": true,
+                "film": "none",
+                "object": "matrix(1, 0, 0, 1, 0, 80)"
+              },
+              {
+                "p": "0.2",
+                "live": true,
+                "film": "matrix(0.964, 0, 0, 0.964, -16.384, -9.6)",
+                "object": "matrix(1.024, 0, 0, 1.024, 0, 62.4)"
+              },
+              {
+                "p": "0.4",
+                "live": true,
+                "film": "matrix(0.928, 0, 0, 0.928, -32.768, -19.2)",
+                "object": "matrix(1.048, 0, 0, 1.048, 0, 44.8)"
+              },
+              {
+                "p": "0.6",
+                "live": true,
+                "film": "matrix(0.892, 0, 0, 0.892, -49.152, -28.8)",
+                "object": "matrix(1.072, 0, 0, 1.072, 0, 27.2)"
+              },
+              {
+                "p": "0.8",
+                "live": true,
+                "film": "matrix(0.856, 0, 0, 0.856, -65.536, -38.4)",
+                "object": "matrix(1.096, 0, 0, 1.096, 0, 9.6)"
+              },
+              {
+                "p": "1",
+                "live": true,
+                "film": "matrix(0.82, 0, 0, 0.82, -81.92, -48)",
+                "object": "matrix(1.12, 0, 0, 1.12, 0, -8)"
+              }
+            ],
+            "axe": []
+          },
+          {
+            "width": 768,
+            "scroll": [
+              {
+                "section": "#kurumsal",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "#tesisimiz",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "#urunler",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "#uretim-yolculugu",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "#toptan-iletisim",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "#iletisim",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "footer",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              }
+            ],
+            "errors": [],
+            "bad": [],
+            "frame0": {
+              "time": 1.6104,
+              "playing": true,
+              "readyState": 4,
+              "src": "/videos/afina-agac-dal.mp4"
+            },
+            "frame1": {
+              "time": 7.766667,
+              "paused": true,
+              "duration": 7.916667
+            },
+            "planes": [
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              }
+            ],
+            "axe": []
+          },
+          {
+            "width": 390,
+            "scroll": [
+              {
+                "section": "#kurumsal",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "#tesisimiz",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "#urunler",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "#uretim-yolculugu",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "#toptan-iletisim",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "#iletisim",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "footer",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              }
+            ],
+            "errors": [],
+            "bad": [],
+            "frame0": {
+              "time": 1.4689,
+              "playing": true,
+              "readyState": 4,
+              "src": "/videos/afina-agac-dal.mp4"
+            },
+            "frame1": {
+              "time": 7.766667,
+              "paused": true,
+              "duration": 7.916667
+            },
+            "planes": [
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              }
+            ],
+            "axe": []
+          },
+          {
+            "width": 360,
+            "scroll": [
+              {
+                "section": "#kurumsal",
+                "clientWidth": 360,
+                "scrollWidth": 360
+              },
+              {
+                "section": "#tesisimiz",
+                "clientWidth": 360,
+                "scrollWidth": 360
+              },
+              {
+                "section": "#urunler",
+                "clientWidth": 360,
+                "scrollWidth": 360
+              },
+              {
+                "section": "#uretim-yolculugu",
+                "clientWidth": 360,
+                "scrollWidth": 360
+              },
+              {
+                "section": "#toptan-iletisim",
+                "clientWidth": 360,
+                "scrollWidth": 360
+              },
+              {
+                "section": "#iletisim",
+                "clientWidth": 360,
+                "scrollWidth": 360
+              },
+              {
+                "section": "footer",
+                "clientWidth": 360,
+                "scrollWidth": 360
+              }
+            ],
+            "errors": [],
+            "bad": [],
+            "frame0": {
+              "time": 1.5087,
+              "playing": true,
+              "readyState": 4,
+              "src": "/videos/afina-agac-dal.mp4"
+            },
+            "frame1": {
+              "time": 7.766667,
+              "paused": true,
+              "duration": 7.916667
+            },
+            "planes": [
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              }
+            ],
+            "axe": []
+          },
+          {
+            "width": 320,
+            "scroll": [
+              {
+                "section": "#kurumsal",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "#tesisimiz",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "#urunler",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "#uretim-yolculugu",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "#toptan-iletisim",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "#iletisim",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "footer",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              }
+            ],
+            "errors": [],
+            "bad": [],
+            "frame0": {
+              "time": 1.4544,
+              "playing": true,
+              "readyState": 4,
+              "src": "/videos/afina-agac-dal.mp4"
+            },
+            "frame1": {
+              "time": 7.766667,
+              "paused": true,
+              "duration": 7.916667
+            },
+            "planes": [
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              }
+            ],
+            "axe": []
+          }
+        ],
+        "reduced": {
+          "canvas": 0,
+          "frameRequests": 0,
+          "videoSource": null,
+          "h1Visible": true
+        }
+      },
+      "motionAndNoJS": {
+        "base": "http://localhost:3019",
+        "hover": {
+          "y": -1.31966,
+          "scale": 1,
+          "opacity": 1
+        },
+        "reducedHover": {
+          "y": 0,
+          "scale": 1,
+          "opacity": 1
+        },
+        "press": {
+          "y": -1.96012,
+          "scale": 0.988234,
+          "opacity": 1
+        },
+        "reducedPress": {
+          "y": 0,
+          "scale": 1,
+          "opacity": 1
+        },
+        "reducedPreferenceChange": "PASS",
+        "realAnchorNavigation": "PASS",
+        "withoutJavaScript": "visible H1 and working product anchor",
+        "extraMediaCredits": 0
+      }
+    },
+    "live": {
+      "interactionTestsPassed": 74,
+      "responsiveNotApplicableSkipped": 6,
+      "browser": {
+        "base": "https://afinazeytin.com",
+        "results": [
+          {
+            "width": 1440,
+            "scroll": [
+              {
+                "section": "#kurumsal",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "#tesisimiz",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "#urunler",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "#uretim-yolculugu",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "#toptan-iletisim",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "#iletisim",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              },
+              {
+                "section": "footer",
+                "clientWidth": 1440,
+                "scrollWidth": 1440
+              }
+            ],
+            "errors": [],
+            "bad": [],
+            "frame0": {
+              "time": 2.1956,
+              "playing": true,
+              "readyState": 4,
+              "src": "/videos/afina-agac-dal.mp4"
+            },
+            "frame1": {
+              "time": 7.766667,
+              "paused": true,
+              "duration": 7.916667
+            },
+            "planes": [
+              {
+                "p": "",
+                "live": true,
+                "film": "none",
+                "object": "matrix(1, 0, 0, 1, 0, 80)"
+              },
+              {
+                "p": "0.2",
+                "live": true,
+                "film": "matrix(0.964, 0, 0, 0.964, -23.04, -9.6)",
+                "object": "matrix(1.024, 0, 0, 1.024, 0, 62.4)"
+              },
+              {
+                "p": "0.4",
+                "live": true,
+                "film": "matrix(0.928, 0, 0, 0.928, -46.08, -19.2)",
+                "object": "matrix(1.048, 0, 0, 1.048, 0, 44.8)"
+              },
+              {
+                "p": "0.6",
+                "live": true,
+                "film": "matrix(0.892, 0, 0, 0.892, -69.12, -28.8)",
+                "object": "matrix(1.072, 0, 0, 1.072, 0, 27.2)"
+              },
+              {
+                "p": "0.8",
+                "live": true,
+                "film": "matrix(0.856, 0, 0, 0.856, -92.16, -38.4)",
+                "object": "matrix(1.096, 0, 0, 1.096, 0, 9.6)"
+              },
+              {
+                "p": "1",
+                "live": true,
+                "film": "matrix(0.82, 0, 0, 0.82, -115.2, -48)",
+                "object": "matrix(1.12, 0, 0, 1.12, 0, -8)"
+              }
+            ],
+            "axe": []
+          },
+          {
+            "width": 1024,
+            "scroll": [
+              {
+                "section": "#kurumsal",
+                "clientWidth": 1024,
+                "scrollWidth": 1024
+              },
+              {
+                "section": "#tesisimiz",
+                "clientWidth": 1024,
+                "scrollWidth": 1024
+              },
+              {
+                "section": "#urunler",
+                "clientWidth": 1024,
+                "scrollWidth": 1024
+              },
+              {
+                "section": "#uretim-yolculugu",
+                "clientWidth": 1024,
+                "scrollWidth": 1024
+              },
+              {
+                "section": "#toptan-iletisim",
+                "clientWidth": 1024,
+                "scrollWidth": 1024
+              },
+              {
+                "section": "#iletisim",
+                "clientWidth": 1024,
+                "scrollWidth": 1024
+              },
+              {
+                "section": "footer",
+                "clientWidth": 1024,
+                "scrollWidth": 1024
+              }
+            ],
+            "errors": [],
+            "bad": [],
+            "frame0": {
+              "time": 1.9117,
+              "playing": true,
+              "readyState": 4,
+              "src": "/videos/afina-agac-dal.mp4"
+            },
+            "frame1": {
+              "time": 7.766667,
+              "paused": true,
+              "duration": 7.916667
+            },
+            "planes": [
+              {
+                "p": "",
+                "live": true,
+                "film": "none",
+                "object": "matrix(1, 0, 0, 1, 0, 80)"
+              },
+              {
+                "p": "0.2",
+                "live": true,
+                "film": "matrix(0.964, 0, 0, 0.964, -16.384, -9.6)",
+                "object": "matrix(1.024, 0, 0, 1.024, 0, 62.4)"
+              },
+              {
+                "p": "0.4",
+                "live": true,
+                "film": "matrix(0.928, 0, 0, 0.928, -32.768, -19.2)",
+                "object": "matrix(1.048, 0, 0, 1.048, 0, 44.8)"
+              },
+              {
+                "p": "0.6",
+                "live": true,
+                "film": "matrix(0.892, 0, 0, 0.892, -49.152, -28.8)",
+                "object": "matrix(1.072, 0, 0, 1.072, 0, 27.2)"
+              },
+              {
+                "p": "0.8",
+                "live": true,
+                "film": "matrix(0.856, 0, 0, 0.856, -65.536, -38.4)",
+                "object": "matrix(1.096, 0, 0, 1.096, 0, 9.6)"
+              },
+              {
+                "p": "1",
+                "live": true,
+                "film": "matrix(0.82, 0, 0, 0.82, -81.92, -48)",
+                "object": "matrix(1.12, 0, 0, 1.12, 0, -8)"
+              }
+            ],
+            "axe": []
+          },
+          {
+            "width": 768,
+            "scroll": [
+              {
+                "section": "#kurumsal",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "#tesisimiz",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "#urunler",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "#uretim-yolculugu",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "#toptan-iletisim",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "#iletisim",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              },
+              {
+                "section": "footer",
+                "clientWidth": 768,
+                "scrollWidth": 768
+              }
+            ],
+            "errors": [],
+            "bad": [],
+            "frame0": {
+              "time": 1.6986,
+              "playing": true,
+              "readyState": 4,
+              "src": "/videos/afina-agac-dal.mp4"
+            },
+            "frame1": {
+              "time": 7.766667,
+              "paused": true,
+              "duration": 7.916667
+            },
+            "planes": [
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              }
+            ],
+            "axe": []
+          },
+          {
+            "width": 390,
+            "scroll": [
+              {
+                "section": "#kurumsal",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "#tesisimiz",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "#urunler",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "#uretim-yolculugu",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "#toptan-iletisim",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "#iletisim",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              },
+              {
+                "section": "footer",
+                "clientWidth": 390,
+                "scrollWidth": 390
+              }
+            ],
+            "errors": [],
+            "bad": [],
+            "frame0": {
+              "time": 1.88,
+              "playing": true,
+              "readyState": 4,
+              "src": "/videos/afina-agac-dal.mp4"
+            },
+            "frame1": {
+              "time": 7.766667,
+              "paused": true,
+              "duration": 7.916667
+            },
+            "planes": [
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              }
+            ],
+            "axe": []
+          },
+          {
+            "width": 360,
+            "scroll": [
+              {
+                "section": "#kurumsal",
+                "clientWidth": 360,
+                "scrollWidth": 360
+              },
+              {
+                "section": "#tesisimiz",
+                "clientWidth": 360,
+                "scrollWidth": 360
+              },
+              {
+                "section": "#urunler",
+                "clientWidth": 360,
+                "scrollWidth": 360
+              },
+              {
+                "section": "#uretim-yolculugu",
+                "clientWidth": 360,
+                "scrollWidth": 360
+              },
+              {
+                "section": "#toptan-iletisim",
+                "clientWidth": 360,
+                "scrollWidth": 360
+              },
+              {
+                "section": "#iletisim",
+                "clientWidth": 360,
+                "scrollWidth": 360
+              },
+              {
+                "section": "footer",
+                "clientWidth": 360,
+                "scrollWidth": 360
+              }
+            ],
+            "errors": [],
+            "bad": [],
+            "frame0": {
+              "time": 1.6912,
+              "playing": true,
+              "readyState": 4,
+              "src": "/videos/afina-agac-dal.mp4"
+            },
+            "frame1": {
+              "time": 7.766667,
+              "paused": true,
+              "duration": 7.916667
+            },
+            "planes": [
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              }
+            ],
+            "axe": []
+          },
+          {
+            "width": 320,
+            "scroll": [
+              {
+                "section": "#kurumsal",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "#tesisimiz",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "#urunler",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "#uretim-yolculugu",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "#toptan-iletisim",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "#iletisim",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              },
+              {
+                "section": "footer",
+                "clientWidth": 320,
+                "scrollWidth": 320
+              }
+            ],
+            "errors": [],
+            "bad": [],
+            "frame0": {
+              "time": 1.5758,
+              "playing": true,
+              "readyState": 4,
+              "src": "/videos/afina-agac-dal.mp4"
+            },
+            "frame1": {
+              "time": 7.766667,
+              "paused": true,
+              "duration": 7.916667
+            },
+            "planes": [
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              },
+              {
+                "p": "",
+                "live": false,
+                "film": "none",
+                "object": "none"
+              }
+            ],
+            "axe": []
+          }
+        ],
+        "reduced": {
+          "canvas": 0,
+          "frameRequests": 0,
+          "videoSource": null,
+          "h1Visible": true
+        }
+      },
+      "motionAndNoJS": {
+        "base": "https://afinazeytin.com",
+        "hover": {
+          "y": -1.32961,
+          "scale": 1,
+          "opacity": 1
+        },
+        "reducedHover": {
+          "y": 0,
+          "scale": 1,
+          "opacity": 1
+        },
+        "press": {
+          "y": -1.99378,
+          "scale": 0.987315,
+          "opacity": 1
+        },
+        "reducedPress": {
+          "y": 0,
+          "scale": 1,
+          "opacity": 1
+        },
+        "reducedPreferenceChange": "PASS",
+        "realAnchorNavigation": "PASS",
+        "withoutJavaScript": "visible H1 and working product anchor",
+        "extraMediaCredits": 0
+      }
+    }
+  },
+  "naturalLivePlayback": {
+    "time": 7.916667,
+    "ended": true,
+    "frames": 190,
+    "muted": true,
+    "duration": 7.916667
+  },
+  "screenshots": [
+    {
+      "width": 1440,
+      "file": ".cache/task-160/live/1440-hero.png",
+      "sha256": "4964b102eb2229c054965e8c183e781a70e558beceeb6a74a24ff86c6f397ef4"
+    },
+    {
+      "width": 1024,
+      "file": ".cache/task-160/live/1024-hero.png",
+      "sha256": "0852ab44f83bf4885965a7c8a46e82ff571350001bdb6105e71ced185806d2d1"
+    },
+    {
+      "width": 768,
+      "file": ".cache/task-160/live/768-hero.png",
+      "sha256": "4512163befb542b79ada66cdb1aa6b2e2a7a67c96937a85b444f9a26269bb3aa"
+    },
+    {
+      "width": 390,
+      "file": ".cache/task-160/live/390-hero.png",
+      "sha256": "600dbcb0e65956fd2e684ecfc3ff4193fa759944a11462580d92bad784a2a2ac"
+    },
+    {
+      "width": 360,
+      "file": ".cache/task-160/live/360-hero.png",
+      "sha256": "1e9b3c7865e205c96b71576ecb12e3bbc53d03a0dce4603d60fd8c5fe21af078"
+    },
+    {
+      "width": 320,
+      "file": ".cache/task-160/live/320-hero.png",
+      "sha256": "f0ff4ab6c0f07e6e6ad99cb8a0a47ecf2deaf6e820e3c0a96c3a8fc06a6c2c25"
+    }
+  ],
+  "preview": ".cache/task-160/live/hero-preview.mp4",
+  "nativeTaste": {
+    "rawInspector": {
+      "FAIL": 1,
+      "WARN": 5
+    },
+    "rawInspectorExit": 1,
+    "allowRules": [],
+    "sourceLint": {
+      "files": 10,
+      "findings": []
+    },
+    "scenesExit": 0,
+    "run": {
+      "base": "http://127.0.0.1:3020",
+      "startedAt": "2026-11-01T12:04:25.496Z",
+      "buildId": "aU9kRVEDWxduQepWaIxk_",
+      "runs": [
+        {
+          "name": "inspect",
+          "code": 1,
+          "startedAt": "2026-11-01T12:04:26.061Z",
+          "finishedAt": "2026-11-01T12:05:01.900Z"
+        },
+        {
+          "name": "scenes",
+          "code": 0,
+          "startedAt": "2026-11-01T12:05:01.900Z",
+          "finishedAt": "2026-11-01T12:05:19.559Z"
+        }
+      ],
+      "serverPid": 44186,
+      "serverStopped": true,
+      "finishedAt": "2026-11-01T12:05:19.563Z"
+    },
+    "rawReportSha256": "da06eac0d49c39c080672113748b0e43c22894e2e96ea590d068a941e8205d44",
+    "manualAdjudication": "Only raw FAIL is geometric eyebrow misclassification of real SKU weights/form label/cross-section brand link; no content hidden and no detector/rule changed. Five warnings and evidence defended in NATIVE-REVIEW.md. Not presented as native0FAIL.",
+    "review": "docs/scrollcraft/builds/afina-v8/NATIVE-REVIEW.md"
+  },
+  "review21st": {
+    "errors": 0,
+    "warnings": 0,
+    "suggestions": 19
+  },
+  "browserAcceptance": true,
+  "physicalDeviceAcceptance": false,
+  "newMediaGenerated": true,
+  "newMediaPublished": false,
+  "extraFlowCreditsSpent": 36,
+  "flow": {
+    "project": "https://flow.google.com/project/62040049-3473-446b-9d93-8e6cbc45f8bc",
+    "inspectedDirectly": true,
+    "runtime": "accepted A-B only",
+    "generation": "B-C, C-D and D-F completed in the correct project, first and last reference frames, Omni1.1Flash16:9/720p/8s/x1, 12credits each",
+    "creditBalance": 194,
+    "extraAuthorizedCap": 60,
+    "creditsSpent": 36,
+    "userAcceptedNewClips": false,
+    "newGenerationGate": "Google verification warning was absent on fresh reconnect; normal submissions succeeded without security changes. Candidates reviewed separately; runtime remains accepted A-B only."
+  },
+  "realAccountOrderPaymentLeadMutationsTested": false,
+  "remoteMigrationsApplied": false,
+  "cleanup": "owned test browser/server closed gracefully; no userChrome for testing",
+  "film": {
+    "version": 1,
+    "authorization": "user-2026-11-01-cinematic-flow-hero-request",
+    "provider": "Google Flow",
+    "source": {
+      "file": "output/flow-keyframes/A-B-ilk-deneme.mp4",
+      "sha256": "be77f66a14e418791093fe53937598204313a99f6368204f1fbf6ebaacf14171",
+      "userAccepted": true,
+      "width": 1280,
+      "height": 720,
+      "fps": 24,
+      "videoFrames": 190,
+      "videoDurationSeconds": 7.916667,
+      "containerDurationSeconds": 7.93
+    },
+    "derivation": {
+      "codec": "h264",
+      "pixelFormat": "yuv420p",
+      "crf": 27,
+      "preset": "slow",
+      "audio": false,
+      "fastStart": true,
+      "crop": false,
+      "toneMapping": false
+    },
+    "output": {
+      "file": "/videos/afina-agac-dal.mp4",
+      "sha256": "5ff03b1b7a852d94f32fbb37487beaf1264c9e83d3e452aa0ead257d3cfebb3a",
+      "bytes": 2537380,
+      "width": 1280,
+      "height": 720,
+      "fps": 24,
+      "frames": 190,
+      "durationSeconds": 7.916667
+    }
+  }
+}

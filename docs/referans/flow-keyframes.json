@@ -3,8 +3,8 @@
   "provider": "Google Flow",
   "imageModel": "Nano Banana 2.1",
   "imageCreditsDisplayed": 0,
-  "videoCount": 1,
-  "videoCreditsSpent": 20,
+  "videoCount": 4,
+  "videoCreditsSpent": 56,
   "newFrameApproval": "approved-for-requested-generation",
   "frames": [
     {
@@ -62,9 +62,9 @@
   "exactPrompts": "Flow project image version history",
   "approvedVideoCreditCap": 80,
   "approvedScope": "A→B accepted; user explicitly requested the remaining three same-method transitions on 2026-11-01 (3 × verified 20 credits = 60 additional)",
-  "balanceAfterVideoGeneration": 230,
-  "remainingApprovedCredits": 60,
-  "publicationApproval": "accepted A→B clip; user requested selected cinematic kit application on 2026-11-01",
+  "balanceAfterVideoGeneration": 194,
+  "remainingApprovedCredits": 24,
+  "publicationApproval": "Only accepted A→B and its approved existing runtime derivatives. New B→C/C→D/D→F generations are candidates only, pending download/review/user approval; no public/runtime inclusion.",
   "allFramesUploadedToFlow": true,
   "video": {
     "transition": "A→B",
@@ -97,17 +97,26 @@
     {
       "first": "B",
       "last": "C",
-      "status": "authorized-google-verification-blocked"
+      "status": "complete-downloaded-technical-verified-candidate-pending-visual-review-user-approval",
+      "model": "Omni 1.1 Flash",
+      "creditsCharged": 12,
+      "runtimeApproved": false
     },
     {
       "first": "C",
       "last": "D",
-      "status": "authorized-google-verification-blocked"
+      "status": "complete-downloaded-technical-verified-candidate-pending-visual-review-user-approval",
+      "model": "Omni 1.1 Flash",
+      "creditsCharged": 12,
+      "runtimeApproved": false
     },
     {
       "first": "D",
       "last": "F",
-      "status": "authorized-google-verification-blocked"
+      "status": "complete-downloaded-technical-verified-candidate-pending-visual-review-user-approval",
+      "model": "Omni 1.1 Flash",
+      "creditsCharged": 12,
+      "runtimeApproved": false
     }
   ],
   "balanceAfterRemainingAttempts": 230,
@@ -118,9 +127,9 @@
       "D→F"
     ],
     "creditCap": 60,
-    "actualCreditsSpent": 0,
-    "newVideos": 0,
-    "status": "google-verification-blocked",
+    "actualCreditsSpent": 36,
+    "newVideos": 3,
+    "status": "all-three-complete-downloaded-technical-verified-candidates-only",
     "failedAttempts": 3,
     "observedMessage": "Flow detected unusual activity; reCAPTCHA service could not connect",
     "recoveryAttempted": [
@@ -128,7 +137,20 @@
       "fresh reference selection and resubmission",
       "built-in Retry"
     ],
-    "balanceVerified": 230
+    "balanceVerified": 194,
+    "inProgressVideos": 0,
+    "submittedTransitions": [
+      "B→C",
+      "C→D",
+      "D→F"
+    ],
+    "previousBlockedAttemptsAreHistorical": true,
+    "verificationWarningAtSubmission": false,
+    "securityBypass": false,
+    "extraAttemptsBeyondThreeRequested": 0,
+    "proof": ".cache/task-160/flow-194-credit-balance.png",
+    "updatedAt": "2026-11-01T12:23:18.065465+00:00",
+    "completionProof": ".cache/task-160/flow-all-four-complete.png"
   },
   "remainingTransitionPrompts": {
     "B→C": "B → C · 8-second continuous photorealistic olive harvest shot. Start exactly on the supplied first frame: the close-up green olive branch beside this ancient olive tree. Keep the same branch, leaf pattern, olives, tree, Mediterranean grove and warm natural afternoon lighting. The camera stays almost still with a very gentle push-in. A worker's two anatomically correct hands, wearing the exact cream sleeves seen in the last frame, slowly enter from the right, gently holding the branch and carefully picking an olive toward a wicker basket below. End exactly in the supplied last-frame composition, with the same two hands and basket. Natural restrained motion, five fingers per hand, coherent hand-to-olive contact, premium cinematic realism. No extra hands, duplicated fingers, shaking, abrupt cuts, dissolve, new labels or text. Preserve the reference geometry and finish steady. 16:9.",
@@ -149,9 +171,270 @@
     "projectedCreditsForThree": 36,
     "authorizedRemainingCap": 60,
     "firstPreparedTransition": "B→C",
-    "status": "google-recaptcha-connection-blocked",
-    "submitted": false,
-    "extraSpent": 0,
-    "proof": ".cache/task-157/flow-omni-first-last-ready.png"
-  }
+    "status": "all-three-complete-downloaded-technical-verified-candidates-only",
+    "submitted": true,
+    "extraSpent": 36,
+    "proof": ".cache/task-160/flow-194-credit-balance.png",
+    "balanceBefore": 230,
+    "balanceAfter": 194,
+    "unusedApprovedCap": 24,
+    "noWarningOnFreshConnection": true,
+    "securityBypass": false,
+    "runtimeApproval": "pending-user-review-for-all-new-clips",
+    "updatedAt": "2026-11-01T12:23:18.065465+00:00"
+  },
+  "history": [
+    {
+      "recordedAt": "2026-11-01T12:17:45.746747+00:00",
+      "event": "prior-google-verification-blocked-state-preserved-before-task160-generation",
+      "videoCount": 1,
+      "videoCreditsSpent": 20,
+      "remainingApprovedCredits": 60,
+      "balanceAfterVideoGeneration": 230,
+      "remainingGeneration": {
+        "authorizedTransitions": [
+          "B→C",
+          "C→D",
+          "D→F"
+        ],
+        "creditCap": 60,
+        "actualCreditsSpent": 0,
+        "newVideos": 0,
+        "status": "google-verification-blocked",
+        "failedAttempts": 3,
+        "observedMessage": "Flow detected unusual activity; reCAPTCHA service could not connect",
+        "recoveryAttempted": [
+          "normal page reload",
+          "fresh reference selection and resubmission",
+          "built-in Retry"
+        ],
+        "balanceVerified": 230
+      },
+      "omniContinuation": {
+        "userRequested": true,
+        "model": "Omni 1.1 Flash",
+        "settings": {
+          "mode": "first-last-frames",
+          "resolution": "720p",
+          "seconds": 8,
+          "aspect": "16:9",
+          "outputs": 1
+        },
+        "displayedCredits": 12,
+        "projectedCreditsForThree": 36,
+        "authorizedRemainingCap": 60,
+        "firstPreparedTransition": "B→C",
+        "status": "google-recaptcha-connection-blocked",
+        "submitted": false,
+        "extraSpent": 0,
+        "proof": ".cache/task-157/flow-omni-first-last-ready.png"
+      }
+    },
+    {
+      "recordedAt": "2026-11-01T12:23:18.065465+00:00",
+      "event": "all-three-outputs-complete-after-D→F-progress18",
+      "priorCandidateStates": [
+        {
+          "transition": "B→C",
+          "status": "complete-candidate-pending-download-review-user-approval",
+          "lastObservedProgressPercent": null,
+          "flowTitle": "Worker picking olive from branch"
+        },
+        {
+          "transition": "C→D",
+          "status": "complete-candidate-pending-download-review-user-approval",
+          "lastObservedProgressPercent": null,
+          "flowTitle": "Worker lowers olive basket"
+        },
+        {
+          "transition": "D→F",
+          "status": "generating",
+          "lastObservedProgressPercent": 18,
+          "flowTitle": "Olive oil brand reveal"
+        }
+      ]
+    }
+  ],
+  "continuationCandidates": [
+    {
+      "transition": "B→C",
+      "first": "B",
+      "last": "C",
+      "firstFrameSha256": "7370b166c35c58ae7e326a2b317518cfb34150735d2db43028d60585f1827c67",
+      "lastFrameSha256": "c4e0ccff462cbebca3bd7dcff52195535ac9c320f1de7e33d4b75f6c659bdb14",
+      "provider": "Google Flow",
+      "model": "Omni 1.1 Flash",
+      "settings": {
+        "mode": "first-last-frames",
+        "resolution": "720p",
+        "seconds": 8,
+        "aspect": "16:9",
+        "outputs": 1
+      },
+      "creditsCharged": 12,
+      "flowTitle": "02 · Dal → Hasat · İlk ve Son Kare",
+      "status": "complete-downloaded-technical-verified-candidate-pending-visual-review-user-approval",
+      "exactPrompt": "B → C · 8-second continuous photorealistic olive harvest shot. Start exactly on the supplied first frame: the close-up green olive branch beside this ancient olive tree. Keep the same branch, leaf pattern, olives, tree, Mediterranean grove and warm natural afternoon lighting. The camera stays almost still with a very gentle push-in. A worker's two anatomically correct hands, wearing the exact cream sleeves seen in the last frame, slowly enter from the right, gently holding the branch and carefully picking an olive toward a wicker basket below. End exactly in the supplied last-frame composition, with the same two hands and basket. Natural restrained motion, five fingers per hand, coherent hand-to-olive contact, premium cinematic realism. No extra hands, duplicated fingers, shaking, abrupt cuts, dissolve, new labels or text. Preserve the reference geometry and finish steady. 16:9.",
+      "promptSha256": "43af17c155d764f3f5e1d89c516fe1e97cc38335ca778f4d99dfbec04746d769",
+      "localFile": "output/flow-keyframes/B-C-omni-first-last.mp4",
+      "downloadSha256": "7bbc5e04f459932422b2ae505bf713c41bbbbbee58aec6c6d785937a434045a0",
+      "reviewed": false,
+      "userAccepted": false,
+      "runtimeApproved": false,
+      "runtime": false,
+      "observedAt": "2026-11-01T12:17:45.746747+00:00",
+      "originalFlowTitle": "Worker picking olive from branch",
+      "flowEditId": "14b58a33-3456-4079-bbc3-e333c3778abc",
+      "flowUrl": "https://flow.google.com/project/62040049-3473-446b-9d93-8e6cbc45f8bc/edit/14b58a33-3456-4079-bbc3-e333c3778abc",
+      "downloaded": true,
+      "completed": true,
+      "uiSeconds": 8,
+      "updatedAt": "2026-11-01T12:23:18.065465+00:00",
+      "sha256": "7bbc5e04f459932422b2ae505bf713c41bbbbbee58aec6c6d785937a434045a0",
+      "bytes": 4042969,
+      "width": 1280,
+      "height": 720,
+      "fps": 24,
+      "codec": "h264",
+      "videoFrames": 192,
+      "videoDurationSeconds": 8.0,
+      "durationSeconds": 8.042667,
+      "hasAudio": true,
+      "audioCodec": "aac",
+      "technicalVerification": "verified-local-file-hash-bytes-and-root-ffprobe;192 video frames /8s plusAACtail",
+      "completionProof": ".cache/task-160/flow-all-four-complete.png"
+    },
+    {
+      "transition": "C→D",
+      "first": "C",
+      "last": "D",
+      "firstFrameSha256": "c4e0ccff462cbebca3bd7dcff52195535ac9c320f1de7e33d4b75f6c659bdb14",
+      "lastFrameSha256": "9f1babc9a64601ebc18e07a2f69734b5c10ca9a0b2fbd188880a1b39a516bbe4",
+      "provider": "Google Flow",
+      "model": "Omni 1.1 Flash",
+      "settings": {
+        "mode": "first-last-frames",
+        "resolution": "720p",
+        "seconds": 8,
+        "aspect": "16:9",
+        "outputs": 1
+      },
+      "creditsCharged": 12,
+      "flowTitle": "03 · Hasat → Yağ · İlk ve Son Kare",
+      "status": "complete-downloaded-technical-verified-candidate-pending-visual-review-user-approval",
+      "exactPrompt": "C → D · 8-second continuous photorealistic cinematic shot. Begin exactly with the supplied harvest frame: the same two cream-sleeved hands, green olive branch and wicker basket at this ancient olive tree. The worker gently lowers the basket and moves the hands naturally out of view. A slow lateral camera slide and slight downward pan reveals a nearby stone tasting table with an ivory ceramic bowl. A plain stainless-steel spout is already pouring a thin, physically coherent stream of golden-green olive oil into the bowl. Use natural foreground leaves and the tree trunk to motivate the camera transition. Preserve the same Mediterranean grove, warm afternoon sun, realistic scale and calm movement. Finish exactly on the supplied final oil-pouring composition, steady for the final moment. The harvest and tasting are distinct actions; no transformation of olives into oil in the hands. No hand deformation, hard cuts, dissolve, object morphing, splashes, new packaging, labels or text. 16:9.",
+      "promptSha256": "6454fea9f3a0f7d022b2e93143274dd0fac0c797da42917f53c1ae51dbe82f43",
+      "localFile": "output/flow-keyframes/C-D-omni-first-last.mp4",
+      "downloadSha256": "9ebfae531e048b1ff60c386a0b494c768701b9d9ce4f10db8fbfa684781312a6",
+      "reviewed": false,
+      "userAccepted": false,
+      "runtimeApproved": false,
+      "runtime": false,
+      "observedAt": "2026-11-01T12:17:45.746747+00:00",
+      "originalFlowTitle": "Worker lowers olive basket",
+      "flowEditId": "f9e32461-7e8c-4888-89fa-eed523279578",
+      "flowUrl": "https://flow.google.com/project/62040049-3473-446b-9d93-8e6cbc45f8bc/edit/f9e32461-7e8c-4888-89fa-eed523279578",
+      "downloaded": true,
+      "completed": true,
+      "uiSeconds": 8,
+      "updatedAt": "2026-11-01T12:23:18.065465+00:00",
+      "sha256": "9ebfae531e048b1ff60c386a0b494c768701b9d9ce4f10db8fbfa684781312a6",
+      "bytes": 4520710,
+      "width": 1280,
+      "height": 720,
+      "fps": 24,
+      "codec": "h264",
+      "videoFrames": 192,
+      "videoDurationSeconds": 8.0,
+      "durationSeconds": 8.042667,
+      "hasAudio": true,
+      "audioCodec": "aac",
+      "technicalVerification": "verified-local-file-hash-bytes-and-root-ffprobe;192 video frames /8s plusAACtail",
+      "completionProof": ".cache/task-160/flow-all-four-complete.png"
+    },
+    {
+      "transition": "D→F",
+      "first": "D",
+      "last": "F",
+      "firstFrameSha256": "9f1babc9a64601ebc18e07a2f69734b5c10ca9a0b2fbd188880a1b39a516bbe4",
+      "lastFrameSha256": "443a25a4e94dab740fecff0d5605f8e5c925c421720f4cc8c1160cc3394c20f4",
+      "provider": "Google Flow",
+      "model": "Omni 1.1 Flash",
+      "settings": {
+        "mode": "first-last-frames",
+        "resolution": "720p",
+        "seconds": 8,
+        "aspect": "16:9",
+        "outputs": 1
+      },
+      "creditsCharged": 12,
+      "flowTitle": "04 · Yağ → AFİNA · İlk ve Son Kare",
+      "status": "complete-downloaded-technical-verified-candidate-pending-visual-review-user-approval",
+      "exactPrompt": "D → F · 8-second photorealistic premium olive oil brand reveal. Begin exactly with the supplied first frame: golden-green oil pouring from the stainless spout into the ivory bowl on a stone surface in the olive grove. Slowly slide and arc the camera to the right, passing naturally behind a foreground olive branch to reveal the exact AFİNA bottle already standing on the stone surface shown in the supplied final reference. Match the final reference's hillside backdrop and warm light through the motivated camera angle. Preserve the approved bottle silhouette, green glass, cap, label geometry, white logo panel, AFİNA lettering, gold product ribbon and all label artwork exactly. The bottle is stationary and solid; no rotation, floating, morphing, invented text or new packaging. Let the pour end naturally as it leaves the frame. End on the exact supplied product composition and hold it steady for the final second. Gentle cinematic movement, realistic reflections, no abrupt cut or dissolve. 16:9.",
+      "promptSha256": "f2503b852128c044e574cb7fe7af07bc553ff85355c44efef049808ea3be78ec",
+      "localFile": "output/flow-keyframes/D-F-omni-first-last.mp4",
+      "downloadSha256": "750a57b22184c04e64ea48043d1f2b1b09a695eaf71255a128316c9a0bfb3887",
+      "reviewed": false,
+      "userAccepted": false,
+      "runtimeApproved": false,
+      "runtime": false,
+      "observedAt": "2026-11-01T12:17:45.746747+00:00",
+      "originalFlowTitle": "Olive oil brand reveal",
+      "flowEditId": "426cfaef-2cc2-4bd1-8f94-9a556b57345a",
+      "flowUrl": "https://flow.google.com/project/62040049-3473-446b-9d93-8e6cbc45f8bc/edit/426cfaef-2cc2-4bd1-8f94-9a556b57345a",
+      "downloaded": true,
+      "completed": true,
+      "uiSeconds": 8,
+      "updatedAt": "2026-11-01T12:23:18.065465+00:00",
+      "sha256": "750a57b22184c04e64ea48043d1f2b1b09a695eaf71255a128316c9a0bfb3887",
+      "bytes": 4522406,
+      "width": 1280,
+      "height": 720,
+      "fps": 24,
+      "codec": "h264",
+      "videoFrames": 192,
+      "videoDurationSeconds": 8.0,
+      "durationSeconds": 8.042667,
+      "hasAudio": true,
+      "audioCodec": "aac",
+      "technicalVerification": "verified-local-file-hash-bytes-and-root-ffprobe;192 video frames /8s plusAACtail",
+      "completionProof": ".cache/task-160/flow-all-four-complete.png"
+    }
+  ],
+  "completedVideoCount": 4,
+  "acceptedVideoCount": 1,
+  "inProgressVideoCount": 0,
+  "firstClipBalanceAfterVideoGeneration": 230,
+  "currentBalance": 194,
+  "remainingAuthorityNote": "24 unused credits within the original 60-credit three-transition cap; not authority for extra attempts, retries or new scope. All three requested outputs have now been submitted once at 12 credits each.",
+  "creditLedger": [
+    {
+      "event": "first-accepted-A→B",
+      "model": "Veo 3.1 Fast",
+      "spent": 20,
+      "balanceBefore": 250,
+      "balanceAfter": 230
+    },
+    {
+      "event": "prior-three-google-verification-blocked-attempts",
+      "spent": 0,
+      "balanceAfter": 230,
+      "historical": true
+    },
+    {
+      "event": "Task160-three-authorized-Omni-first-last-submissions",
+      "model": "Omni 1.1 Flash",
+      "transitions": [
+        "B→C",
+        "C→D",
+        "D→F"
+      ],
+      "unitCredits": 12,
+      "spent": 36,
+      "balanceBefore": 230,
+      "balanceAfter": 194,
+      "proof": ".cache/task-160/flow-194-credit-balance.png",
+      "recordedAt": "2026-11-01T12:17:45.746747+00:00"
+    }
+  ]
 }

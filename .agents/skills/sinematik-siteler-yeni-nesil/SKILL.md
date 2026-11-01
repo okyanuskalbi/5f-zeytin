@@ -26,10 +26,18 @@ Yalnız mevcut sessiz H264/faststart A→B türevi; normal bir kez/son kare, pau
 ## Gerçeklik ve araç sınırı
 
 Gerçek tesis müşteri PDF'sinden gelir; temsili Flow hasat/yağ dökümü gerçek üretim hattı kanıtı değildir. Ürün kimliği/fiyat/stok/sıra ve sunucu otoritesi korunur; sertifika/yorum/sağlık/kapasite uydurulmaz. Yeni sahne/model/ücretsiz abonelik hakkı varsayılmaz.
-Doğru Flow proje 62040049-3473-446b-9d93-8e6cbc45f8bc doğrudan incelendi; B→C ilk B / son C/C tam önizleme doğru, Omni 1.1 Flash/720p/8 sn./x1 = 12 kredi. reCAPTCHA hizmet bağlantısı engeli nedeniyle gönderim/ek harcama 0; önceki kalan 60 sınırı aynı. Üç film hazır sayılmaz, güvenlik engeli aşılmaz.
+Doğru Flow projesi 62040049-3473-446b-9d93-8e6cbc45f8bc taze bağlantıda önceki reCAPTCHA uyarısı olmadan çalıştı; güvenlik engeli atlanmadı. Aynı ilk/son kare yöntemiyle Omni 1.1 Flash/720p/8 sn./16:9/x1,12 kredi/çıktı: B→C/C→D/D→F üçü de COMPLETE ve indirildi. Üç yetkili istek 36 kredi, bakiye 230→194; ilk 20 ile toplam 56, eski 80 tavanında 24 kredi kullanılmadı (ek deneme yetkisi değil). Yeni klipler yalnız aday; teknik/görsel inceleme ve kullanıcı onayı olmadan public/runtime yok. Sitede kabul edilmiş A→B kalır. Önceki blocked denemeler/0 harcama tarihçesi ve exact prompts docs/referans/flow-keyframes.json içinde korunur; bakiye kanıtı .cache/task-160/flow-194-credit-balance.png.
 21st 1635 yalnız gerçek varyant/görsel durum örüntüsüne kaynak;12200 önceki kompozisyon tarihçesi. Demo medya/font/nav/metin, hostedAI/anahtar/global kurulum taşınmaz. Mevcut primitive/shadcn resmi CLI ve bağlı 21st kullanılır. Omni Chrome Use otomasyon yaklaşımı, Omni 1.1 Flash ayrı modeldir.
 
 ## Kabul ve birlikte kullanım
 
-Son kaynak contact sheet/gerçek pikseller, açılış altı konum örneği ve soğuk his kontrolü; tek zirve/temas, gerçek film, okunurluk/kompozit kontrast, nesne işlemleri, native galeri/B2B/menü ve reduced/phone testleri. Önceki v7 veya1200unit/build v8 canlı kabulü değildir. Test paketli headless Chromium ≤2 worker/düzgün kapanış; fiziksel cihaz ve gerçek servis ayrıdır. V8 native Taste/e2e/canlı sonuçları görev kaydında bekler.
+Son kaynak contact sheet/gerçek pikseller, açılış altı konum örneği ve soğuk his kontrolü; tek zirve/temas, gerçek film, okunurluk/kompozit kontrast, nesne işlemleri, native galeri/B2B/menü ve reduced/phone testleri. Önceki v7 veya1200unit/build v8 canlı kabulü değildir. Test paketli headless Chromium ≤2 worker/düzgün kapanış; fiziksel cihaz ve gerçek servis ayrıdır. V8 yerel ve canlı UI kabulü tamamlandı; yeni medya kullanıcı onayı ayrıdır.
 Birlikte [Scroll Craft](../scroll-craft/SKILL.md), [Taste](../design-taste-frontend/SKILL.md), [Profesyonel web](../profesyonel-web-sitesi-yeni-nesil/SKILL.md), [Scroll hero](../scroll-hero-video-yeni-nesil/SKILL.md), [UI/UX](../ui-ux-pro-max/SKILL.md). [Task 158](../../../docs/referans/yeni-nesil-md-uyarlamalari-20261101.md) kaynak kökeni korunur; upstream dosyalar değiştirilmez.
+
+## Güncel Task160 durumu
+
+V8 kaynak 179df851/CI 41304790349 ile afinazeytin.com üzerinde READY. Yerel 1200 unit/tam lint-type-build,74 e2e+6 responsive skip ve altı görsel genişlik PASS; Native inspector 1 FAIL/5 WARN korunur, Scenes exit0.
+
+Canlı kabul: **TAMAMLANDI** — 74 e2e PASS + 6 responsive skip; 1440/1024/768/390/360×640/320 görsel/axe/taşma/pageerror/başarısız kaynak 0; motion/JavaScript kapalı/reduced PASS. Doğal film 190 decoded kare,7,916667 sn., ended/muted; 12,04 sn. gerçek UI oynatım kaydı alındı. Fiziksel cihaz veya gerçek hesap/ödeme/teklif mutasyonu değildir.
+
+Final [yayın makbuzu](../../../docs/referans/yayin-object-v8-20261101.json) ve [QA kaydı](../../../docs/referans/qa-160-20261101.json) nihai Task 160 kanıt kayıtlarıdır; yeni Flow medya kabulü ayrı tutulur.

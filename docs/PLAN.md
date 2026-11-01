@@ -2,11 +2,17 @@
 
 ## Aktif çalışma: v8 Object journey — Task 160
 
-[Task 160](tasks/160-scroll-craft-taste-ve-flow.md), [DESIGN](DESIGN.md) ve [brief-first plan](scrollcraft/builds/afina-v8/BRIEF.md) aktiftir. Scroll Craft + Taste seed 1601101/page-is-the-object ile gerçek Flow/ambalaj/kâğıt ayrı düzlemler; yalnız desktop kısa 170svh tutuş, telefon/reduced doğal akış. Çalışan üç SKU seçimi mevcut detay/sepet sözleşmesini kullanır. Kompakt gerçek tesis, native altı SKU galerisi, kapalı-hizmet/native B2B details ve gerçek adres/ürünlere dönüş; sıra/fiyat/stok/servis mimarisi değişmez. V7 sözleşmesi byte-identical arşivde; son doğrulanmış production hâlâ5a3b1f6.
+[Task 160](tasks/160-scroll-craft-taste-ve-flow.md), [DESIGN](DESIGN.md) ve [brief-first plan](scrollcraft/builds/afina-v8/BRIEF.md) aktiftir. Scroll Craft + Taste seed 1601101/page-is-the-object ile gerçek Flow/ambalaj/kâğıt ayrı düzlemler; yalnız desktop kısa 170svh tutuş, telefon/reduced doğal akış. Çalışan üç SKU seçimi mevcut detay/sepet sözleşmesini kullanır. Kompakt gerçek tesis, native altı SKU galerisi, kapalı-hizmet/native B2B details ve gerçek adres/ürünlere dönüş; sıra/fiyat/stok/servis mimarisi değişmez. V7 sözleşmesi byte-identical arşivde; v8 production READY; son kaynak 179df851.
 
-Yerel 1200 unit/build ve1440/768/390/320 axe/taşma/hata 0 doğrulandı. Native Taste, geniş e2e,360×640/1024/son his/kontrast ve yeni CI/API yayın/canlı tekrar BEKLİYOR; v8 tamamlandı sayılmaz. Kaynak .cache/task-160/{unit.log,build.log,local/results.json}; final makbuzlar ayrı kaydedilecek.
+V8 [afinazeytin.com](https://afinazeytin.com) üzerinde Vercel API **READY**: kaynak `179df851686a34d09a1e965315dc5e902a30c362`, CI 41304790349 SUCCESS, dağıtım `dpl_7EUijPZwcnzr9ML3nHMFRwUErZ89`. READY yayını ve ayrı canlı etkileşim/görsel kabulü doğrulandı.
 
-Doğru Flow project 62040049-3473-446b-9d93-8e6cbc45f8bc doğrudan incelendi; B→C referansları ve12 kredi/8 sn./720p/x1 doğrulandı. Google reCAPTCHA bağlantı engeli sürüyor; yeni üretim/harcama 0, önceki kalan 60 sınırı değişmedi. Yalnız kabul edilmiş A→B kullanılır. Aşağıdaki önceki görev/kararlar tarihçedir; yeni kabulün yerine geçmez.
+Yerel kabul: 89 dosya/1200 unit, tam ESLint/typecheck/build PASS; 74 e2e PASS + 6 responsive skip (80 toplam); 1440/1024/768/390/360×640/320 görsel/axe/taşma/pageerror/kaynak hatası0. Motion/JavaScript kapalı/reduced kontrolleri PASS. Native Scenes exit0; inspector 1 FAIL/5 WARN ham sonuçları ve semantik gerekçeleri korunur; inspector0 iddiası yok. 21st/Taste kaynak review tamam.
+
+Canlı kabul: **TAMAMLANDI** — 74 e2e PASS + 6 responsive skip; 1440/1024/768/390/360×640/320 görsel/axe/taşma/pageerror/başarısız kaynak 0; motion/JavaScript kapalı/reduced PASS. Doğal film 190 decoded kare,7,916667 sn., ended/muted; 12,04 sn. gerçek UI oynatım kaydı alındı. Fiziksel cihaz veya gerçek hesap/ödeme/teklif mutasyonu değildir.
+
+Final [yayın makbuzu](referans/yayin-object-v8-20261101.json) ve [QA kaydı](referans/qa-160-20261101.json) nihai Task 160 kanıt kayıtlarıdır; yeni Flow medya kabulü ayrı tutulur.
+
+Doğru Flow projesi 62040049-3473-446b-9d93-8e6cbc45f8bc taze bağlantıda önceki reCAPTCHA uyarısı olmadan çalıştı; güvenlik engeli atlanmadı. Aynı ilk/son kare yöntemiyle Omni 1.1 Flash/720p/8 sn./16:9/x1,12 kredi/çıktı: B→C/C→D/D→F üçü de COMPLETE ve indirildi. Üç yetkili istek 36 kredi, bakiye 230→194; ilk 20 ile toplam 56, eski 80 tavanında 24 kredi kullanılmadı (ek deneme yetkisi değil). Yeni klipler yalnız aday; teknik/görsel inceleme ve kullanıcı onayı olmadan public/runtime yok. Sitede kabul edilmiş A→B kalır. Önceki blocked denemeler/0 harcama tarihçesi ve exact prompts docs/referans/flow-keyframes.json içinde korunur; bakiye kanıtı .cache/task-160/flow-194-credit-balance.png.
 
 ## Hedef
 AFİNA ZEYTİN için afinazeytin.com üzerinde tek landing vitrin + perakende satın alma ve toptan talep akışı. En fazla 5–6 aktif ürün admin’den girilir; scroll ile sahneye giren ürünler, üyelik, sepet, ödeme, kampanya ve sipariş/kargo takibi tek müşteri yolunda birleşir. Örnek ürünler gerçek katalog değildir.

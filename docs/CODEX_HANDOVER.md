@@ -1,14 +1,20 @@
 # AFİNA ZEYTİN: Codex devir kaydı
 
-## Aktif devir: v8 Object journey uygulanıyor — Task 160
+## Aktif devir: v8 Object journey yayında, canlı UI kabulü tamamlandı — Task 160
 
-Kanonik repo /Users/emre/PROJELER/5F-ZEYTIN. Kullanıcı Scroll Craft/frontend-design/frontend-ui-engineering/Taste ile tasarımı değiştirmeyi ve doğru Flow bağlantısını kullanmayı istedi; önceki yaratıcı yetki/sormadan devam isteği geçerli. [DESIGN](DESIGN.md), [Task 160](tasks/160-scroll-craft-taste-ve-flow.md) ve [BRIEF/PLAN/COPY/VERIFICATION](scrollcraft/builds/afina-v8/BRIEF.md) aktiftir. V7 dosyası byte-identical [arşivde](referans/DESIGN-v7-history-20261101.md); son doğrulanmış production v7/5a3b1f6, v8 henüz yayınlanmadı.
+Kanonik repo /Users/emre/PROJELER/5F-ZEYTIN. Kullanıcı Scroll Craft/frontend-design/frontend-ui-engineering/Taste ile tasarımı değiştirmeyi ve doğru Flow bağlantısını kullanmayı istedi; önceki yaratıcı yetki/sormadan devam isteği geçerli. [DESIGN](DESIGN.md), [Task 160](tasks/160-scroll-craft-taste-ve-flow.md) ve [BRIEF/PLAN/COPY/VERIFICATION](scrollcraft/builds/afina-v8/BRIEF.md) aktiftir. V7 dosyası byte-identical [arşivde](referans/DESIGN-v7-history-20261101.md); v8 production READY, canlı UI kabulü tamamlandı.
 
 V8: Taste seed 1601101/page-is-the-object; gerçek Flow arka düzlemi, öne gelen onaylı ambalaj, katı kâğıt slogan/CTA düzlemi. Desktop tek kısa 170svh sticky, telefon/kısa ekran/reduced pin yok; başlık/CTA→280px film/260px ürün→seçim ayrıntıları. Üç mevcut SKU görsel/ad/fiyat/detail/cart hedefini birlikte değiştirir; ticari veri/ürün sırası/üyelik/ödeme mimarisi korunur. Kompakt gerçek tesis→native galeri→dürüst kapalı B2B details→adres/mağazaya dönüş. Yabancı engine/GSAP/Lenis/rAF ve yeni dependency yok; motion/react.
 
-Doğru Flow projesi https://flow.google.com/project/62040049-3473-446b-9d93-8e6cbc45f8bc ; tek kabul edilmiş A→B+beş referans. B→C ilk B / son C ve C tam önizlemesi doğrulandı, Omni 1.1 Flash/Frames/720p/8 sn./16:9/x1 = 12 kredi. reCAPTCHA hizmet bağlantısı uyarısı sürüyor; üretim gönderilmedi, ek harcama 0. Önceki kalan 60 sınırı aynı; güvenlik engeli aşılmaz, diğer üç film mevcut sayılmaz.
+Doğru Flow projesi 62040049-3473-446b-9d93-8e6cbc45f8bc taze bağlantıda önceki reCAPTCHA uyarısı olmadan çalıştı; güvenlik engeli atlanmadı. Aynı ilk/son kare yöntemiyle Omni 1.1 Flash/720p/8 sn./16:9/x1,12 kredi/çıktı: B→C/C→D/D→F üçü de COMPLETE ve indirildi. Üç yetkili istek 36 kredi, bakiye 230→194; ilk 20 ile toplam 56, eski 80 tavanında 24 kredi kullanılmadı (ek deneme yetkisi değil). Yeni klipler yalnız aday; teknik/görsel inceleme ve kullanıcı onayı olmadan public/runtime yok. Sitede kabul edilmiş A→B kalır. Önceki blocked denemeler/0 harcama tarihçesi ve exact prompts docs/referans/flow-keyframes.json içinde korunur; bakiye kanıtı .cache/task-160/flow-194-credit-balance.png.
 
-Ara kabul:1200unit/build PASS;1440/768/390/320 yerel axe/taşma/console/network hata 0. .cache/task-160/{unit.log,build.log,local/results.json}. Native Taste/kapsamlı e2e/kompakt360×640/1024/son his/kontrast/yayın/canlı tekrar BEKLİYOR. Final makbuz/QA/tamamlanma görev yürütücüsünde; v8 fingerprint shipped satırı yok. Test yalnız paketli headless Chromium ≤2 worker ve düzgün kapanış; fiziksel cihaz/gerçek hesap/ödeme/teklif kabulü değil.
+V8 [afinazeytin.com](https://afinazeytin.com) üzerinde Vercel API **READY**: kaynak `179df851686a34d09a1e965315dc5e902a30c362`, CI 41304790349 SUCCESS, dağıtım `dpl_7EUijPZwcnzr9ML3nHMFRwUErZ89`. READY yayını ve ayrı canlı etkileşim/görsel kabulü doğrulandı.
+
+Yerel kabul: 89 dosya/1200 unit, tam ESLint/typecheck/build PASS; 74 e2e PASS + 6 responsive skip (80 toplam); 1440/1024/768/390/360×640/320 görsel/axe/taşma/pageerror/kaynak hatası0. Motion/JavaScript kapalı/reduced kontrolleri PASS. Native Scenes exit0; inspector 1 FAIL/5 WARN ham sonuçları ve semantik gerekçeleri korunur; inspector0 iddiası yok. 21st/Taste kaynak review tamam.
+
+Canlı kabul: **TAMAMLANDI** — 74 e2e PASS + 6 responsive skip; 1440/1024/768/390/360×640/320 görsel/axe/taşma/pageerror/başarısız kaynak 0; motion/JavaScript kapalı/reduced PASS. Doğal film 190 decoded kare,7,916667 sn., ended/muted; 12,04 sn. gerçek UI oynatım kaydı alındı. Fiziksel cihaz veya gerçek hesap/ödeme/teklif mutasyonu değildir.
+
+Final [yayın makbuzu](referans/yayin-object-v8-20261101.json) ve [QA kaydı](referans/qa-160-20261101.json) nihai Task 160 kanıt kayıtlarıdır; yeni Flow medya kabulü ayrı tutulur. Fiziksel cihaz/gerçek servis sonucu değildir.
 
 Aşağıdaki başlangıç ve Task151–159 kayıtları tarihçedir. Eski bütçe/yayın/tarayıcı sınırları güncel üst kaydın yerine geçmez; geçmiş kanıtlar silinmez.
 

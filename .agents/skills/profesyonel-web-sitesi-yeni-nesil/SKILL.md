@@ -23,9 +23,19 @@ metadata:
 
 Mevcut primitive'i önce incele; yeni standart kalıp gerekiyorsa 21st search→gerçek ID→get_component, sonra AFİNA token/gerçek içerik/durum uyarlaması. 1635 seçim/görsel durumu kaynağıdır; eski 12200 tam geniş kompozisyonu zorunlu değildir. Demo medya/metin/nav/font ve hostedAI harcaması taşınmaz. shadcn için MCP yok; gereken resmi CLI search/view/docs/add, mevcut primitive tercih edilir.
 Yeni API motion/react; ortak değerler lib/ui-motion.ts. Sürekli hareket transform/opacity; film/ambalaj/copy zemini bağımsız, film kontrolleri 44px+ ve transform dışında. Yabancı Scroll Craft/Taste engine, GSAP/Lenis/yeni rAF/scroll kilidi yok. Giriş bir kez, SSR görünür; hover/tap/focus/disabled/loading/error aynı ailede; klavye/Escape/odak dönüşü korunur.
-Yalnız kabul edilmiş A→B sessiz native MP4: tek oynatım/son kare/pause/play/replay. Scroll currentTime/loop yok. Reduced/saveData poster/isteksiz kaynak; hata/blocked/görünürlük ve kullanıcı pause korunur. Yeni görsel/ücretsiz abonelik hakkı varsayılmaz; doğru Flow proje 62040049-3473-446b-9d93-8e6cbc45f8bc, mevcut reCAPTCHA engeli ve kalan kredi kaydı esastır.
+Yalnız kabul edilmiş A→B sessiz native MP4: tek oynatım/son kare/pause/play/replay. Scroll currentTime/loop yok. Reduced/saveData poster/isteksiz kaynak; hata/blocked/görünürlük ve kullanıcı pause korunur. Yeni görsel/ücretsiz abonelik hakkı varsayılmaz; doğru Flow proje 62040049-3473-446b-9d93-8e6cbc45f8bc, güncel üretim/kredi/kullanıcı kabul kaydı esastır.
 
 ## Kanıt ve birlikte kullanım
 
-Unit/build eski kabulün yerine geçmez. Son kaynakta nesne seçimi/detail/cart, native galeri, B2B aç-kapa, okunurluk/kontrast, kompakt telefon, reduced/saveData ve gerçek film ölçülür; contact sheet okunur, his eğrisi karşılaştırılır. Test yalnız paketli headless Chromium ≤2 worker/düzgün kapanış; canlı/fiziksel cihaz/gerçek servis ayrı kayıttır. V8 tamamlanma/yayın ve fingerprint gerçek kanıt bekler.
+Unit/build eski kabulün yerine geçmez. Son kaynakta nesne seçimi/detail/cart, native galeri, B2B aç-kapa, okunurluk/kontrast, kompakt telefon, reduced/saveData ve gerçek film ölçülür; contact sheet okunur, his eğrisi karşılaştırılır. Test yalnız paketli headless Chromium ≤2 worker/düzgün kapanış; canlı/fiziksel cihaz/gerçek servis ayrı kayıttır. V8 yayın READY ve canlı UI kabulü tamam; fingerprint/QA ayrıntıları nihai görev kanıtındadır.
 Birlikte: [Scroll Craft](../scroll-craft/SKILL.md), [Taste](../design-taste-frontend/SKILL.md), [UI/UX](../ui-ux-pro-max/SKILL.md), [Scroll hero](../scroll-hero-video-yeni-nesil/SKILL.md), [Sinematik](../sinematik-siteler-yeni-nesil/SKILL.md). Upstream kaynak dosyalar değiştirilmez.
+
+## Güncel Task160 durumu
+
+V8 kaynak 179df851/CI 41304790349 ile afinazeytin.com üzerinde READY. Yerel 1200 unit/tam lint-type-build,74 e2e+6 responsive skip ve altı görsel genişlik PASS; Native inspector 1 FAIL/5 WARN korunur, Scenes exit0.
+
+Canlı kabul: **TAMAMLANDI** — 74 e2e PASS + 6 responsive skip; 1440/1024/768/390/360×640/320 görsel/axe/taşma/pageerror/başarısız kaynak 0; motion/JavaScript kapalı/reduced PASS. Doğal film 190 decoded kare,7,916667 sn., ended/muted; 12,04 sn. gerçek UI oynatım kaydı alındı. Fiziksel cihaz veya gerçek hesap/ödeme/teklif mutasyonu değildir.
+
+Final [yayın makbuzu](../../../docs/referans/yayin-object-v8-20261101.json) ve [QA kaydı](../../../docs/referans/qa-160-20261101.json) nihai Task 160 kanıt kayıtlarıdır; yeni Flow medya kabulü ayrı tutulur.
+
+Flow devamı: üç yetkili Omni ilk/son kare isteği36kredi, bakiye 194; B→C/C→D/D→F üç tamamlanmış ve indirilmiş aday. İnceleme/kullanıcı onayı olmadan yeni klip public/runtime değildir; mevcut sitede kabul edilmiş A→B kalır. Tam harcama/istem/tarihçe docs/referans/flow-keyframes.json içindedir.

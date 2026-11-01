@@ -26,10 +26,18 @@ Yeni API motion/react; sadece transform/opacity. GSAP/Lenis/vanilla engine/yeni 
 
 ## Doğru Flow ve yetki
 
-Doğrudan kullanılan proje https://flow.google.com/project/62040049-3473-446b-9d93-8e6cbc45f8bc ; bir kabul edilmiş A→B+beş referans. B→C ilk B / son C ve C tam önizlemesi görüldü; Omni 1.1 Flash/Frames/720p/8 sn./16:9/x1 = 12 kredi. reCAPTCHA hizmet bağlantısı engeli sürüyor; yeni gönderim/ek harcama 0. Kalan60 sınırı yalnız önceki üç geçiş; belge okumak bütçe yenilemez. CAPTCHA atlanmaz; üç taslak runtime filmi değildir.
+Doğru Flow projesi 62040049-3473-446b-9d93-8e6cbc45f8bc taze bağlantıda önceki reCAPTCHA uyarısı olmadan çalıştı; güvenlik engeli atlanmadı. Aynı ilk/son kare yöntemiyle Omni 1.1 Flash/720p/8 sn./16:9/x1,12 kredi/çıktı: B→C/C→D/D→F üçü de COMPLETE ve indirildi. Üç yetkili istek 36 kredi, bakiye 230→194; ilk 20 ile toplam 56, eski 80 tavanında 24 kredi kullanılmadı (ek deneme yetkisi değil). Yeni klipler yalnız aday; teknik/görsel inceleme ve kullanıcı onayı olmadan public/runtime yok. Sitede kabul edilmiş A→B kalır. Önceki blocked denemeler/0 harcama tarihçesi ve exact prompts docs/referans/flow-keyframes.json içinde korunur; bakiye kanıtı .cache/task-160/flow-194-credit-balance.png.
 Omni Chrome Use tarayıcı otomasyonu yaklaşımıdır, Omni 1.1 Flash model adı değildir. Üretim oturumu yetkisi kullanıcının Chrome'unu testte açma izni sayılmaz. Yeni Imagen/model/sağlayıcı/abonelik varsayılmaz.
 
 ## Kabul
 
-Final-source gerçek decoded film/zaman/son kare, kontrolün ayrı düzlemi, tercih/görünürlük/hata, nesne seçimi ve doğru detail/cart, SSR/JS kapalı, rail erişimi ve kompakt telefon kontrol edilir. Paketli headless Chromium ≤2 worker/düzgün kapanış. Önceki [v7 makbuzu](../../../docs/referans/yayin-film-v7-20261101.json) tarihçedir; v8 native Taste/e2e/canlı kabulü ayrıca bekler. Fiziksel cihaz/gerçek servis sonucu emülasyondan türetilmez.
+Final-source gerçek decoded film/zaman/son kare, kontrolün ayrı düzlemi, tercih/görünürlük/hata, nesne seçimi ve doğru detail/cart, SSR/JS kapalı, rail erişimi ve kompakt telefon kontrol edilir. Paketli headless Chromium ≤2 worker/düzgün kapanış. Önceki [v7 makbuzu](../../../docs/referans/yayin-film-v7-20261101.json) tarihçedir; v8 yerel/canlı UI kabulü tamamlandı; yeni medya kullanıcı onayı ayrıdır. Fiziksel cihaz/gerçek servis sonucu emülasyondan türetilmez.
 Birlikte [Scroll Craft](../scroll-craft/SKILL.md), [Sinematik](../sinematik-siteler-yeni-nesil/SKILL.md), [Profesyonel web](../profesyonel-web-sitesi-yeni-nesil/SKILL.md), [UI/UX](../ui-ux-pro-max/SKILL.md); upstream engine değiştirilmez/import edilmez.
+
+## Güncel Task160 durumu
+
+V8 kaynak 179df851/CI 41304790349 ile afinazeytin.com üzerinde READY. Yerel 1200 unit/tam lint-type-build,74 e2e+6 responsive skip ve altı görsel genişlik PASS; Native inspector 1 FAIL/5 WARN korunur, Scenes exit0.
+
+Canlı kabul: **TAMAMLANDI** — 74 e2e PASS + 6 responsive skip; 1440/1024/768/390/360×640/320 görsel/axe/taşma/pageerror/başarısız kaynak 0; motion/JavaScript kapalı/reduced PASS. Doğal film 190 decoded kare,7,916667 sn., ended/muted; 12,04 sn. gerçek UI oynatım kaydı alındı. Fiziksel cihaz veya gerçek hesap/ödeme/teklif mutasyonu değildir.
+
+Final [yayın makbuzu](../../../docs/referans/yayin-object-v8-20261101.json) ve [QA kaydı](../../../docs/referans/qa-160-20261101.json) nihai Task 160 kanıt kayıtlarıdır; yeni Flow medya kabulü ayrı tutulur.

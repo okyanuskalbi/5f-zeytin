@@ -23,7 +23,7 @@ Aktif [v8 Object journey](../../../docs/DESIGN.md)/[Task 160](../../../docs/task
 
 Üç mevcut temsilcinin seçimi aynı görsel/ad/miktar/fiyat/detail/cart id'sini değiştirir; seçim aria-pressed/fieldset/legend ve görünür odak taşır. Gelen ProductVariant alanları yeni ticari veri kaynağı değildir; AddToCart/CatalogProvider hydration/stok ve sunucu fiyat/checkout otoritesi korunur. Altı SKU sırası/verisi pazarlama gerekçesiyle değişmez. Kayıp/boş/stock0 dürüst durum gösterir; kapalı B2B servisi açılmış veya gönderilmiş gibi sunulmaz.
 Mevcut kabul edilmiş A→B native MP4 kendi zamanında sessiz bir kez, son kare/pause/play/replay. Scroll currentTime/yeni seek/rAF/loop yok. Manuel pause, görünürlük ve olay temizliği korunur. Reduced/saveData MP4 istemez, poster/CTA kalır; hata/blocked/gesture/retry gerçek durumdur. Telefon H1+CTA önce,280px film/260px ürün ve doğal ayrıntı;360×640/büyütülmüş metin ayrıca kabul edilir.
-Yeni medya/Imagen/abonelik hakkı varsayılmaz. Doğru Flow proje 62040049-3473-446b-9d93-8e6cbc45f8bc, reCAPTCHA hizmet bağlantısı engeli, yeni gönderim/harcama 0 ve önceki kalan 60 sınırı görev kaydında. Omni Chrome Use otomasyon, Omni 1.1 Flash modeldir; güvenlik engeli aşılmaz.
+Yeni medya/Imagen/abonelik hakkı varsayılmaz. Doğru Flow projesi 62040049-3473-446b-9d93-8e6cbc45f8bc taze bağlantıda önceki reCAPTCHA uyarısı olmadan çalıştı; güvenlik engeli atlanmadı. Aynı ilk/son kare yöntemiyle Omni 1.1 Flash/720p/8 sn./16:9/x1,12 kredi/çıktı: B→C/C→D/D→F üçü de COMPLETE ve indirildi. Üç yetkili istek 36 kredi, bakiye 230→194; ilk 20 ile toplam 56, eski 80 tavanında 24 kredi kullanılmadı (ek deneme yetkisi değil). Yeni klipler yalnız aday; teknik/görsel inceleme ve kullanıcı onayı olmadan public/runtime yok. Sitede kabul edilmiş A→B kalır. Önceki blocked denemeler/0 harcama tarihçesi ve exact prompts docs/referans/flow-keyframes.json içinde korunur; bakiye kanıtı .cache/task-160/flow-194-credit-balance.png. Omni Chrome Use otomasyon yaklaşımı, Omni 1.1 Flash ayrı modeldir.
 
 ## 21st ve shadcn
 
@@ -31,5 +31,13 @@ Mevcut primitive/token önce; yeni kalıp için bağlı 21st search→gerçekID�
 
 ## Kabul
 
-Gerçek nesne seçimi/detail/cart, native rail klavye/reduced erişimi ve gerçek overflow, B2B details/kapalı hizmet, modal/menü/üyelik odakları, gerçek decoded film/kontrol/fallback, SSR/JS kapalı, kompakt telefon ve kompozit kontrast test edilir. Unit/build, native Taste/e2e, canlı API/HTTP, fiziksel cihaz ve gerçek ödeme/e-posta ayrı sonuçlardır; v8 bekleyen kabul önceki v7 makbuzundan türetilmez. Test yalnız paketli headless Chromium ≤2 worker/düzgün kapanış; kullanıcının Chrome'u açılmaz. Kaynaktaki10.000+ bileşen/hız sloganları bu projenin kanıtı değildir.
+Gerçek nesne seçimi/detail/cart, native rail klavye/reduced erişimi ve gerçek overflow, B2B details/kapalı hizmet, modal/menü/üyelik odakları, gerçek decoded film/kontrol/fallback, SSR/JS kapalı, kompakt telefon ve kompozit kontrast test edilir. Unit/build, native Taste/e2e, canlı API/HTTP, fiziksel cihaz ve gerçek ödeme/e-posta ayrı sonuçlardır; v8 canlı kabulü ayrı doğrulandı; önceki v7 makbuzundan türetilmez. Test yalnız paketli headless Chromium ≤2 worker/düzgün kapanış; kullanıcının Chrome'u açılmaz. Kaynaktaki10.000+ bileşen/hız sloganları bu projenin kanıtı değildir.
 Birlikte [Profesyonel web](../profesyonel-web-sitesi-yeni-nesil/SKILL.md), [Scroll hero](../scroll-hero-video-yeni-nesil/SKILL.md), [Sinematik](../sinematik-siteler-yeni-nesil/SKILL.md), [Scroll Craft](../scroll-craft/SKILL.md), [Taste](../design-taste-frontend/SKILL.md).
+
+## Güncel Task160 durumu
+
+V8 kaynak 179df851/CI 41304790349 ile afinazeytin.com üzerinde READY. Yerel 1200 unit/tam lint-type-build,74 e2e+6 responsive skip ve altı görsel genişlik PASS; Native inspector 1 FAIL/5 WARN korunur, Scenes exit0.
+
+Canlı kabul: **TAMAMLANDI** — 74 e2e PASS + 6 responsive skip; 1440/1024/768/390/360×640/320 görsel/axe/taşma/pageerror/başarısız kaynak 0; motion/JavaScript kapalı/reduced PASS. Doğal film 190 decoded kare,7,916667 sn., ended/muted; 12,04 sn. gerçek UI oynatım kaydı alındı. Fiziksel cihaz veya gerçek hesap/ödeme/teklif mutasyonu değildir.
+
+Final [yayın makbuzu](../../../docs/referans/yayin-object-v8-20261101.json) ve [QA kaydı](../../../docs/referans/qa-160-20261101.json) nihai Task 160 kanıt kayıtlarıdır; yeni Flow medya kabulü ayrı tutulur.

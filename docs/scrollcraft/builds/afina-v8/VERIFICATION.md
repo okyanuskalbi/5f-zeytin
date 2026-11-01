@@ -1,6 +1,6 @@
 # AFİNA v8 — kabul kaydı
 
-**Durum: YEREL KABUL TAMAM, CI/YAYIN/CANLI TEKRAR BEKLİYOR.** Aşağıdaki plan uygulama öncesinde yazıldı; bu üst kayıt çalıştırılmış son kaynak sonuçlarını ayırır. V6/v7 PASS v8 sonucu değildir.
+**Durum: TAMAMLANDI — V8 CI/API YAYIN VE CANLI KABUL PASS.** Aşağıdaki plan uygulama öncesinde yazıldı; bu üst kayıt çalıştırılmış son kaynak sonuçlarını ayırır. V6/v7 PASS v8 sonucu değildir.
 
 
 ## İlk canlı kabulde bulunan ve giderilen yarış
@@ -20,7 +20,9 @@ Hero'nun üç JavaScript denetimi useSyncExternalStore server=false/client=true 
 - Görsel değerlendirmede ilk gerçek hata: mobil foreground packshot üst-sağ film kontrolünü engelliyordu; kontrol üst-sola taşındı ve son altı boyut/film testleri PASS. Sepet başarı durumunun SKU değişiminde taşınması key ile giderildi; regresyon gerçek tarayıcıda doğrulandı. Son reviewer yeni işlevsel/görsel blocker görmedi. Stil uyarısı yerine gerçek davranış düzeltildi.
 - Tüm sahip olunan Next/test browser süreçleri finally `browser.close` / CDP Browser.close / SIGTERM ile kapandı; test worker≤2, kullanıcı Chrome'u açılmadı. Proje/skill global ayarları değişmedi.
 
-**Yayın kapısı henüz açık:** normal main push + tam CI SUCCESS + Vercel READY + gerçek alias'ta aynı e2e/görsel/film/hash tekrarı bekler. Bu paragraf son makbuzla güncellenecek. Fiziksel cihaz ve Google doğrulama/yeni üç film ayrı kalır.
+**Yayın kabulü PASS:** runtime `179df851686a34d09a1e965315dc5e902a30c362`, CI41304790349 SUCCESS, REST API `dpl_7EUijPZwcnzr9ML3nHMFRwUErZ89` READY; afinazeytin.com ve www aynı alias. Canlı74PASS/6responsive skip, altı görsel boyutta axe/console/network/taşma0; motion/noJS/reduced ve10HTTP/hash kabulü PASS. Sessiz doğal oynatım190decodedframe/7,916667sn./ended doğrulandı;12,04sn canlı UI kaydı .cache/task-160/live/hero-preview.mp4. [Yayın makbuzu](../../../referans/yayin-object-v8-20261101.json), [QA](../../../referans/qa-160-20261101.json).
+
+**Flow ayrı üretim sonucu:** doğru proje yeniden normal açıldığında Google uyarısı yoktu; B→C/C→D/D→F ilk/son referanslarla Omni1.1Flash720p8sn16:9/x1 üretildi.3×12=36 kredi, önceki230→194 bakiye panelde doğrulandı; toplam harcama56/80, yeni ek36/60. Güvenlik ayarı/CAPTCHA müdahalesi veya tekrar harcaması yok. Üç dosya indirildi; kullanıcı medya kabulü ve runtime izni henüz yok, yeni public medya yok. Canlı film hâlâ kullanıcı onaylı A→B'dir. Yeni adayların gözden geçirmesi FLOW-CANDIDATE-REVIEW.md ve Flow ledger'da; fiziksel cihaz/gerçek ödeme/hesap/teklif kabulü değildir.
 
 ## Başlangıç ve preflight
 
@@ -32,31 +34,31 @@ Skill v0.3.1 / SHA 75d81f74e83692add18cd7a8a8e078b8a887a579: upstream 24 dosya /
 
 | Kontrol | Gerekli kanıt | Sonuç |
 |---|---|---|
-| Aynı nesne | Üç id: görsel/ad/miktar/fiyat/stok/detail/cart eşleşir; klavye/selection durumu/odak doğru | YEREL PASS; canlı tekrar bekliyor |
-| Veri kapısı | Stok0/hydration/eksik ürün/güncel stok değişimi yanlış ekleme yapmaz; provider verisi kullanılır | YEREL PASS; canlı tekrar bekliyor |
-| Kurumsal dal | Native aç-kapa/KVKK/odak; kapalı servis açılmadan görünür; sahte gönderim yok | YEREL PASS; canlı tekrar bekliyor |
-| Gerçek film | Decoded/painted frame + zamanda ilerleme; sessiz tek geçiş/son kare/pause/replay | YEREL PASS; canlı tekrar bekliyor |
-| Kontrol/fallback | Kontrol ayrı 44px+; reduced/saveData MP4 isteği0; blocked/hata/poster/retry/gesture; offscreen pause/kullanıcı pause | YEREL PASS; canlı tekrar bekliyor |
-| SSR/medya | H1/poster/gerçek anchor JS'siz; mevcut kaynak/hash/bütçe/faststart kapıları; onaysız C/D/F yok | YEREL PASS; canlı tekrar bekliyor |
-| Kalite | Anlamlı RED→GREEN; scoped + full unit/lint/type/build; low-impact CSS ayna testi yok | YEREL PASS; canlı tekrar bekliyor |
+| Aynı nesne | Üç id: görsel/ad/miktar/fiyat/stok/detail/cart eşleşir; klavye/selection durumu/odak doğru | YEREL + CANLI PASS |
+| Veri kapısı | Stok0/hydration/eksik ürün/güncel stok değişimi yanlış ekleme yapmaz; provider verisi kullanılır | YEREL + CANLI PASS |
+| Kurumsal dal | Native aç-kapa/KVKK/odak; kapalı servis açılmadan görünür; sahte gönderim yok | YEREL + CANLI PASS |
+| Gerçek film | Decoded/painted frame + zamanda ilerleme; sessiz tek geçiş/son kare/pause/replay | YEREL + CANLI PASS |
+| Kontrol/fallback | Kontrol ayrı 44px+; reduced/saveData MP4 isteği0; blocked/hata/poster/retry/gesture; offscreen pause/kullanıcı pause | YEREL + CANLI PASS |
+| SSR/medya | H1/poster/gerçek anchor JS'siz; mevcut kaynak/hash/bütçe/faststart kapıları; onaysız C/D/F yok | YEREL + CANLI PASS |
+| Kalite | Anlamlı RED→GREEN; scoped + full unit/lint/type/build; low-impact CSS ayna testi yok | YEREL + CANLI PASS |
 
 ## Görsel/mekanik kabul
 
 Yalnız paketli headless Chromium, worker≤2; kullanıcı Chrome'u açılmaz. Her koşuda browser.close() ve başlatılan sunucuya SIGTERM/düzgün kapanış; gerçek müşteri/sipariş/ödeme/teklif mutasyonu yok.
 1440/768/390/320 genişlik + **360×640 kompakt**, normal/reduced/saveData. Açılış giriş/orta/çıkış dahil yaklaşık6 örnek; beş vuruş ve final ayrıca. .cache/task-160/{local,live}/ report.json + PNG + full + okunmuş contact sheet; kesin kaynak/served build kimliği kaydı. Hatalar saklanır, çözen tekrar belirtilir.
-Görsel kapılar **YEREL PASS / canlı tekrar BEKLİYOR:** bağımsız film/nesne hareketi ve temas; oran/etiket; temiz H1/iki CTA; 360×640 üstte başlık/ana eylem, yaklaşık260px sahne, pin yok; gerçek4/6 fingerprint farkı; tek zirve/ölü scroll yok; altı SKU veri/sıra/erişim; statik adres/mağazaya dönüş/SSS/legal final.
-Kontrast **YEREL axe PASS + piksel değerlendirme / canlı tekrar BEKLİYOR:** gerçek kompozit karelerde satır altı ilgili açık/koyu zemin; gövde/kontrol≥4.5:1, büyük type≥3:1; soluk ara kareler gözle. Taşma/header çakışması/pageerror/404/axe/klavye odağı; rail varsa gerçek overflow ve reduced erişimi ölçülür. Ham progress değil gerçek görünür transform/paint örneklenir; native single-play scrub sayılmaz.
+Görsel kapılar **YEREL + CANLI PASS:** bağımsız film/nesne hareketi ve temas; oran/etiket; temiz H1/iki CTA; 360×640 üstte başlık/ana eylem, yaklaşık260px sahne, pin yok; gerçek4/6 fingerprint farkı; tek zirve/ölü scroll yok; altı SKU veri/sıra/erişim; statik adres/mağazaya dönüş/SSS/legal final.
+Kontrast **YEREL + CANLI axe PASS ve piksel değerlendirme:** gerçek kompozit karelerde satır altı ilgili açık/koyu zemin; gövde/kontrol≥4.5:1, büyük type≥3:1; soluk ara kareler gözle. Taşma/header çakışması/pageerror/404/axe/klavye odağı; rail varsa gerçek overflow ve reduced erişimi ölçülür. Ham progress değil gerçek görünür transform/paint örneklenir; native single-play scrub sayılmaz.
 
 ## Soğuk his kontrolü
 
 BRIEF'e tekrar bakmadan normal hızda kaydır; her vuruşta bir his kelimesi + somut neden yaz, sonra hedefle karşılaştır. Uymuyorsa sayfayı düzelt, BRIEF'i geçmişe dönük PASS için değiştirme.
 | Vuruş | Hedef | Gerçek gözlem/düzeltme/son kanıt |
 |---|---|---|
-| Yer/nesne | Yakınlık → sahip olabilme | YEREL PASS; canlı tekrar bekliyor |
-| Tesis | Güven | YEREL PASS; canlı tekrar bekliyor |
-| Ürün | Açıklık | YEREL PASS; canlı tekrar bekliyor |
-| Kurumsal | Kontrol | YEREL PASS; canlı tekrar bekliyor |
-| Çözüm | Yönünü bilme | YEREL PASS; canlı tekrar bekliyor |
+| Yer/nesne | Yakınlık → sahip olabilme | Aynı sahnede ağaç geriye çekiliyor, ambalaj öne geliyor; seçilen varyant gerçek detail/cart hedefini değiştiriyor. |
+| Tesis | Güven | Tek gerçek Ellek fotoğrafı ve kısa yer bilgisi; tekrarlanan olgu şeritleri yok. |
+| Ürün | Açıklık | İlk nesne büyük; devam eden kart ve native kaydırma/klavye erişimiyle altı gerçek SKU okunuyor. |
+| Kurumsal | Kontrol | Kapalı servis açılmadan görünür; form kullanıcıyla açılıp Space ile kapanıyor. |
+| Çözüm | Yönünü bilme | Gerçek adres/harita, ürünlere dönüş ve destek/legal yolları erişilir. |
 
 ## Yayın ve sınır
 

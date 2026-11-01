@@ -4,13 +4,17 @@
 
 Task 160: kullanıcı Scroll Craft, frontend-design, frontend-ui-engineering ve Taste ile tasarımı değiştirmeyi, verdiği Google Flow projesini kullanmayı istedi. Önceki “sormadan devam et” yaratıcı devri geçerlidir. [BRIEF](scrollcraft/builds/afina-v8/BRIEF.md) kullanıcı alıntılarını yazılmış yaratıcı kararlardan ayırır; [PLAN](scrollcraft/builds/afina-v8/PLAN.md), [COPY](scrollcraft/builds/afina-v8/COPY.md) ve [VERIFICATION](scrollcraft/builds/afina-v8/VERIFICATION.md) uygulama öncesinde yazıldı.
 
-Bu dosya tek aktif tasarım sözleşmesidir. Önceki v7 dosyası byte-identical [v7 tarihçesine](referans/DESIGN-v7-history-20261101.md) alındı; [v6](referans/DESIGN-v6-history-20261101.md)/[v5](referans/DESIGN-v5-history-20261101.md) ve yayın makbuzları tarihçedir. Yayındaki son doğrulanmış kaynak hâlâ v7 `5a3b1f6`dır; v8 henüz yayın/kullanıcı görsel kabulü almadı.
+Bu dosya tek aktif tasarım sözleşmesidir. Önceki v7 dosyası byte-identical [v7 tarihçesine](referans/DESIGN-v7-history-20261101.md) alındı; [v6](referans/DESIGN-v6-history-20261101.md)/[v5](referans/DESIGN-v5-history-20261101.md) ve yayın makbuzları tarihçedir. V8 [afinazeytin.com](https://afinazeytin.com) üzerinde Vercel API **READY**: kaynak `179df851686a34d09a1e965315dc5e902a30c362`, CI 41304790349 SUCCESS, dağıtım `dpl_7EUijPZwcnzr9ML3nHMFRwUErZ89`. READY yayını ve ayrı canlı etkileşim/görsel kabulü doğrulandı.
 
-Yerel v8: 1200 unit ve production build PASS; 1440/768/390/320 px görsel/axe/taşma/console/network kaydında hata 0. Kaynaklar `.cache/task-160/unit.log`, `build.log`, `local/results.json`. Native Taste, kapsamlı etkileşim/e2e, 360×640/1024, son his karşılaştırması ve canlı tekrar/yayın **BEKLİYOR**. Önceki v7 sonucu bunların yerine geçmez.
+Yerel kabul: 89 dosya/1200 unit, tam ESLint/typecheck/build PASS; 74 e2e PASS + 6 responsive skip (80 toplam); 1440/1024/768/390/360×640/320 görsel/axe/taşma/pageerror/kaynak hatası0. Motion/JavaScript kapalı/reduced kontrolleri PASS. Native Scenes exit0; inspector 1 FAIL/5 WARN ham sonuçları ve semantik gerekçeleri korunur; inspector0 iddiası yok. 21st/Taste kaynak review tamam.
+
+Canlı kabul: **TAMAMLANDI** — 74 e2e PASS + 6 responsive skip; 1440/1024/768/390/360×640/320 görsel/axe/taşma/pageerror/başarısız kaynak 0; motion/JavaScript kapalı/reduced PASS. Doğal film 190 decoded kare,7,916667 sn., ended/muted; 12,04 sn. gerçek UI oynatım kaydı alındı. Fiziksel cihaz veya gerçek hesap/ödeme/teklif mutasyonu değildir.
+
+Final [yayın makbuzu](referans/yayin-object-v8-20261101.json) ve [QA kaydı](referans/qa-160-20261101.json) nihai Task 160 kanıt kayıtlarıdır; yeni Flow medya kabulü ayrı tutulur.
 
 ## Fikir, marka ve nesne
 
-Taste tohumu **1601101**, `--keep palette,type`: **page-is-the-object**. Özel gramer **Object journey**; sayfanın birimi gerçek ambalaj ve ona bağlı seçim/üretici/alışveriş ihtiyacıdır. Yeni isim tek başına tasarım farkı değildir: açılış, beş vuruş ve çalışan seçim gerçekten değişmelidir. [Baseline fingerprint](scrollcraft/FINGERPRINTS.md) v6 ve v7'ye karşı dört planlı farkı kaydeder; v8 shipped satırı henüz eklenmez.
+Taste tohumu **1601101**, `--keep palette,type`: **page-is-the-object**. Özel gramer **Object journey**; sayfanın birimi gerçek ambalaj ve ona bağlı seçim/üretici/alışveriş ihtiyacıdır. Yeni isim tek başına tasarım farkı değildir: açılış, beş vuruş ve çalışan seçim gerçekten değişmelidir. [Baseline fingerprint](scrollcraft/FINGERPRINTS.md) v6 ve v7'ye karşı dört planlı farkı kaydeder; v8 satırı nihai sonuç kanıtıyla kaydedilir.
 
 Orijinal yatay logo, **“Kökü toprakta. Yeri sofrada.”**, yerel Fraunces/Figtree ve mevcut semantik renkler korunur: kâğıt `#F4F0E7`, zeytin `#172B21`, şampanya `#B6A078`, antrasit `#252725`, gövde `#414A40`. H1 iki satır, aynı display yüzü ve tek zeytin rengidir; italic/renkli vurgu, eyebrow/indeks rozeti ve scroll oku yoktur. Başlık/CTA SSR'da görünür, film/loader beklemez.
 
@@ -39,7 +43,7 @@ Yaklaşık %65 üretici/kurumsal güven ve %35 alışveriş korunur. Yeni kapasi
 
 ## Medya ve doğru Flow projesi
 
-Doğrudan incelenen proje [62040049-3473-446b-9d93-8e6cbc45f8bc](https://flow.google.com/project/62040049-3473-446b-9d93-8e6cbc45f8bc); ambient başka sekme adresi bu kaynak yerine geçmez. Bir kabul edilmiş A→B film ve beş referans vardır. B→C taslağında ilk B-dal/son C-hasat; C'nin iki krem kollu el/sepet içeren tam önizlemesi görüldü. Omni 1.1 Flash/Frames/16:9/720p/8 sn./x1 ekranda12 kredi. Google reCAPTCHA hizmet bağlantısı engeli sürüyor; yeni üretim gönderilmedi, ek harcama 0. Önceki kalan 60kredi yalnız üç yetkili geçiş içindir; güvenlik engeli aşılmaz.
+Doğru Flow projesi 62040049-3473-446b-9d93-8e6cbc45f8bc taze bağlantıda önceki reCAPTCHA uyarısı olmadan çalıştı; güvenlik engeli atlanmadı. Aynı ilk/son kare yöntemiyle Omni 1.1 Flash/720p/8 sn./16:9/x1,12 kredi/çıktı: B→C/C→D/D→F üçü de COMPLETE ve indirildi. Üç yetkili istek 36 kredi, bakiye 230→194; ilk 20 ile toplam 56, eski 80 tavanında 24 kredi kullanılmadı (ek deneme yetkisi değil). Yeni klipler yalnız aday; teknik/görsel inceleme ve kullanıcı onayı olmadan public/runtime yok. Sitede kabul edilmiş A→B kalır. Önceki blocked denemeler/0 harcama tarihçesi ve exact prompts docs/referans/flow-keyframes.json içinde korunur; bakiye kanıtı .cache/task-160/flow-194-credit-balance.png.
 
 Runtime yalnız kabul edilmiş A→B'nin `public/videos/afina-agac-dal.mp4` türevidir: sessiz H264/yuv420p/faststart,1280×720/24fps/190kare/7,916667sn.,2.537.380bayt. Kaynak/çıktı SHA ve kapı `lib/media/cinematic-film.json`, `scripts/check-cinematic-film.mjs`; poster aynı başlangıç karesinden. SDR'ye ikinci tone mapping yapılmaz. Diğer üç film hazır veya yayınlanmış sayılmaz; D yağ dökümü gerçek sıkım/fabrika kanıtı değildir.
 
