@@ -58,7 +58,24 @@ Next yerel CSS rehberi incelendi. Ücretli AI/medya üretimi yok.
   `motion/local-1793648533943/report.json`, `nav-local/report.json`.
 - Skill eşlemesi: `docs/referans/mobile-174-skill-review.md`.
 
-## Durum: YEREL KONTROLLER PASS / MAIN VE API YAYINI SIRADA
+## Durum: İLK YAYIN READY / ÜRETİM CSS DÜZELTMESİ YEREL PASS
 
 Canlı kabul ve Device Hub sonucu ayrıca kaydedilir. Tarayıcı emülasyonu fiziksel
 iPhone veya gerçek yazılım klavyesi kabulü olarak sunulmaz.
+
+
+### Üretim derlemesi düzeltmesi
+
+İlk218843c sürümü CI41513120323 / dpl_6iebb5Xpa1YNFvX1CFeiu8py1LNV ile
+READY oldu. Canlı QA mobil quote picker'ın x=-viewport/2 kaydığını yakaladı.
+Yerel webpack başarılı olsa da Turbopack CSS optimizasyonu `translate:none`
+bildirimini kaldırıyor; global Tailwind merkezleme değişkenleri -50% kalıyordu.
+Aynı sorun yerel Turbopack build ile tekrar üretildi. Yalnız daha güçlü selector
+tek başına yeterli olmadı. Mobil `.panel[data-quote-picker]` içinde
+`--tw-translate-x/y:0px` açıkça sıfırlanır; desktop merkezleme ve giriş animasyonu
+korunur. Tarayıcı teşhisi `.cache/task-174/picker-css-diagnosis.json`.
+Son düzeltme Vercel ile aynı Turbopack production build ile PASS. Altı profil
+picker konumu/çoklu seçim/adet/odak ve 45/45 form kontrolü PASS. Kanıtlar
+`.cache/task-174/picker-turbopack-report.json` ve
+`.cache/task-174/qa-local-2026-11-02T19-58-52-244Z/report.json`.
+Düzeltme ayrı main commit/API yayınına gider. Nihai kaynak/canlı kabul `.cache/task-174/final-receipt.json`.

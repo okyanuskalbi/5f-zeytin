@@ -14,8 +14,16 @@ Task174 yerel kapıları PASS: 119dosya/1424unit; lint/typecheck/webpack build;
 9profil/48mobil + 5viewport/45teklif + 12profil/63motion; navbar9viewport.
 Dolu sepet 390/320/844yatay dönüşü, ilk gerçek tap, adet/silme ve odak PASS.
 21st8343/31360/8297 ve frontend skill eşlemesi docs/referans/mobile-174-*.
-Kaynak makbuzu .cache/task-174/local-verification.json. Main/API yayını sırada;
+İlk yerel kaynak makbuzu .cache/task-174/local-verification.json;
 Task174 Device Hub ve canlı kabul henüz bu makbuzun parçası değildir.
+
+Task174 ilk218843c API READY sonrası canlı kontrolde picker çeviri kayması bulundu.
+Turbopack, CSS module `translate:none` sıfırlamasını optimize ederek kaldırıyor;
+mobil selector'da Tailwind --tw-translate-x/y değişkenleri0px de sıfırlanır.
+Son CSS düzeltmesi Turbopack build, 6 picker profili ve45/45 form kontrolü PASS;
+ayrıca main/API yayını ve canlı QA gerektirir. UI kabulünde
+webpack sonucu tek başına production Turbopack doğrulaması sayılmaz.
+Nihai durumun kaynağı .cache/task-174/final-receipt.json olacaktır.
 
 ## Önceki iş: Task173 / sepet ikonu ve Device Hub (2 Kasım 2026)
 

@@ -43,8 +43,11 @@
 .done { min-width:96px; min-height:44px; border-radius:4px; padding:10px 20px; background:var(--pro-ink); color:var(--pro-paper); font-size:14px; }
 .empty { padding:24px 0; color:var(--pro-muted); }
 @media(max-width:620px) {
-  .panel {
-    /* Tailwind v4 centres DialogContent with the individual translate property. */
+  .panel[data-quote-picker] {
+    /* Outrank DialogContent utilities regardless of production chunk order.
+       Turbopack can fold away translate:none; neutralise Tailwind's variables
+       too, so a surviving individual translate utility still computes zero. */
+    --tw-translate-x:0px; --tw-translate-y:0px;
     top:auto; bottom:var(--quote-picker-viewport-bottom,0px); left:0; right:0;
     translate:none; transform:none; width:100%; max-width:none;
     max-height:min(90dvh,calc(var(--quote-picker-viewport-height,100dvh) - max(12px,env(safe-area-inset-top,0px))));
