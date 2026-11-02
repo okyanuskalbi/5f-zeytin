@@ -133,10 +133,10 @@ export function HorizontalProductGallery({ products }: { products: readonly Prod
             {ordered.map((product, index) => <GalleryProduct key={product.id} product={product} index={index} total={ordered.length}
               active={scrub} railX={x} windowWidth={windowWidth}>
               <ProductCard product={product} image={v3Image(product.imageKey)} index={index} featured={false} quoteAction={
-              <button type="button" disabled={!ready} className={styles.quote} data-selected={journey.productId === product.id}
+              <button type="button" disabled={!ready} className={styles.quote} data-selected={Object.hasOwn(journey.quantities, product.id)}
                 aria-label={`Teklife ekle: ${product.name}, ${product.weight}`}
                 onClick={() => { journey.chooseProduct(product.id); window.location.hash = "teklif"; }}>
-                {journey.productId === product.id ? <CheckIcon size={18} aria-hidden="true" /> : <ArrowUpRightIcon size={18} aria-hidden="true" />}
+                {Object.hasOwn(journey.quantities, product.id) ? <CheckIcon size={18} aria-hidden="true" /> : <ArrowUpRightIcon size={18} aria-hidden="true" />}
                 Teklife ekle
               </button>} />
             </GalleryProduct>)}

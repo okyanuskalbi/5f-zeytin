@@ -12,14 +12,16 @@ import { AddressSearchField } from "@/components/ui/address-search-field";
 import { CustomerPhoneField } from "@/components/ui/customer-phone-field";
 import { phoneForm } from "@/lib/contact/customer-phone";
 import { ArrowUpRight, Mail, Phone } from "lucide-react";
+import { QuoteProductPicker } from "@/components/ui/quote-product-picker";
+import { validateQuoteQuantity } from "@/lib/site/quote-lines";
 
 const businessLabels: Record<Exclude<BusinessSegment, "">, string> = {
   hospitality: "Otel & restoran", retail: "Market & bayi", bulk: "Toplu tüketim",
 };
-type Field = "name" | "quantity" | "city" | "district" | "phone";
+type Field = "name" | "city" | "district" | "phone";
 type Errors = Partial<Record<Field | "segment" | "productId" | "consent", string>>;
-type PreparedQuote = { fingerprint: string; draft: QuoteEmailDraft; stock: number };
-const limits: Record<Field, number> = { name: 120, quantity: 100, city: 80, district: 80, phone: 30 };
+type PreparedQuote = { fingerprint: string; draft: QuoteEmailDraft; lines: { id: string; product: string; quantity: number; stock: number }[] };
+const limits: Record<Field, number> = { name: 120, city: 80, district: 80, phone: 30 };
 const subscribe = () => () => {};
 const clientSnapshot = () => true;
 const serverSnapshot = () => false;
@@ -33,10 +35,12 @@ function QuoteSummary({ quote, reduced }: { quote: PreparedQuote; reduced: boole
     animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, pointerEvents: "none" }} transition={reduced ? { duration: 0 } : springs.editorial}>
     <h3 ref={heading} tabIndex={-1}>Talep özeti</h3>
     <dl>
-      {[["Ad / firma", quote.draft.name], ["İşletme türü", quote.draft.business], ["Ürün", quote.draft.product],
-        ["Miktar", quote.draft.quantity], ["Şehir", quote.draft.city], ["İlçe", quote.draft.district], ["Telefon", quote.draft.phone],
-        ["Katalog stok durumu", quote.stock > 0 ? "Mevcut" : "Mevcut değil"]].map(([name, value]) => <div key={name}><dt>{name}</dt><dd>{value}</dd></div>)}
+      {[["Ad / firma", quote.draft.name], ["İşletme türü", quote.draft.business],
+        ["Şehir", quote.draft.city], ["İlçe", quote.draft.district], ["Telefon", quote.draft.phone]].map(([name, value]) => <div key={name}><dt>{name}</dt><dd>{value}</dd></div>)}
     </dl>
+    <ul className={styles.summaryProducts} aria-label="Seçilen ürünler ve adetler">
+      {quote.lines.map(line => <li key={line.id}><span>{line.product}<small>Katalog stok durumu: {line.stock > 0 ? "Mevcut" : "Mevcut değil"}</small></span><strong>{line.quantity.toLocaleString("tr-TR")} adet</strong></li>)}
+    </ul>
     <p>Bu sayfa e-posta göndermedi. Gönderimi e-posta uygulamanızda tamamlayın. Alıcı {corporateContact.name}: {corporateContact.email}.</p>
     <p>Fiyat, stok, ambalaj ve teslimat koşulları teklif aşamasında teyit edilir.</p>
     <a className={styles.emailAction} href={present ? buildQuoteMailto(quote.draft) : undefined} tabIndex={present ? undefined : -1}>E-postayla gönder</a>
@@ -50,7 +54,7 @@ export function QuoteComposer({ products }: { products: readonly ProductVariant[
   const journey = useQuoteJourney();
   const reduced = usePrefersReducedMotion();
   const hydrated = useSyncExternalStore(subscribe, clientSnapshot, serverSnapshot);
-  const [values, setValues] = useState<Record<Field, string>>({ name: "", quantity: "", city: "", district: "", phone: "" });
+  const [values, setValues] = useState<Record<Field, string>>({ name: "", city: "", district: "", phone: "" });
   const [consent, setConsent] = useState(false);
   const [errors, setErrors] = useState<Errors>({});
   const [prepared, setPrepared] = useState<PreparedQuote | null>(null);
@@ -58,10 +62,9 @@ export function QuoteComposer({ products }: { products: readonly ProductVariant[
     setValues(previous => previous.phone === phone ? previous : { ...previous, phone });
     setErrors(previous => previous.phone ? { ...previous, phone: undefined } : previous);
   }, []);
-  const product = products.find(item => item.id === journey.productId);
-  const productId = product?.id ?? "";
-  const fingerprint = JSON.stringify({ values, consent, segment: journey.segment,
-    product: product && { id: product.id, name: product.name, weight: product.weight, stock: product.stock, priceKurus: product.priceKurus } });
+  const selected = products.filter(product => Object.hasOwn(journey.quantities, product.id));
+  const fingerprint = JSON.stringify({ values, consent, segment: journey.segment, quantities: journey.quantities,
+    products: selected.map(product => ({ id: product.id, name: product.name, weight: product.weight, stock: product.stock, priceKurus: product.priceKurus })) });
   const summary = prepared?.fingerprint === fingerprint ? prepared : null;
 
   function clearError(field: keyof Errors): void { setErrors(previous => ({ ...previous, [field]: undefined })); }
@@ -80,7 +83,7 @@ export function QuoteComposer({ products }: { products: readonly ProductVariant[
     const next: Errors = {};
     const clean = Object.fromEntries(Object.entries(values).map(([key, value]) => [key, cleanQuoteLine(value)])) as Record<Field, string>;
     for (const name of Object.keys(limits) as Field[]) {
-      if (clean[name].length < (name === "quantity" ? 1 : 2) || clean[name].length > limits[name]) next[name] = "Bu alanı uygun uzunlukta doldurun.";
+      if (clean[name].length < 2 || clean[name].length > limits[name]) next[name] = "Bu alanı uygun uzunlukta doldurun.";
     }
     try {
       const contact = phoneForm(new FormData(event.currentTarget), "phone");
@@ -88,17 +91,22 @@ export function QuoteComposer({ products }: { products: readonly ProductVariant[
       else clean.phone = contact.phone;
     } catch { next.phone = "Seçili ülkeye uygun geçerli bir telefon numarası girin."; }
     if (!Object.hasOwn(businessLabels, journey.segment)) next.segment = "İşletme türünü seçin.";
-    if (!product) next.productId = "Mevcut ürünlerden birini seçin.";
+    const lines = selected.map(product => ({ id: product.id, product: `${product.name} · ${product.weight}`, quantity: validateQuoteQuantity(journey.quantities[product.id]), stock: product.stock }));
+    if (!lines.length) next.productId = "En az bir ürün seçin.";
+    else if (selected.length !== Object.keys(journey.quantities).length) next.productId = "Seçiminizde artık katalogda bulunmayan ürün var. Ürün seçimini güncelleyin.";
+    else if (lines.some(line => line.quantity === null)) next.productId = "Her ürün için 1–99.999 arasında tam adet girin.";
     if (!consent) next.consent = "KVKK aydınlatma metnini okuduğunuzu belirtin.";
     setErrors(next);
-    if (Object.keys(next).length || !product || !journey.segment) {
+    if (Object.keys(next).length || !journey.segment) {
       setPrepared(null);
       const first = Object.keys(next)[0];
       (event.currentTarget.elements.namedItem(first === "consent" ? "kvkk" : first) as HTMLElement | null)?.focus();
       return;
     }
-    setPrepared({ fingerprint, stock: product.stock, draft: {
-      ...clean, business: businessLabels[journey.segment], product: `${product.name} · ${product.weight}`,
+    // Every selected row has passed the catalogue and integer checks above.
+    const validated = lines.map(line => ({ ...line, quantity: line.quantity! }));
+    setPrepared({ fingerprint, lines: validated, draft: {
+      ...clean, business: businessLabels[journey.segment], items: validated.map(({ product, quantity }) => ({ product, quantity })),
     } });
   }
 
@@ -112,13 +120,11 @@ export function QuoteComposer({ products }: { products: readonly ProductVariant[
             onChange={event => { journey.chooseSegment(event.target.value as BusinessSegment); clearError("segment"); }}>
             <option value="">Seçiniz</option>{Object.entries(businessLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
           </select>{error("segment")}</div>
-        <div className={`${styles.field} ${styles.product}`}><label htmlFor={`${id}-product`}>İlgilendiğiniz ürün</label>
-          <select id={`${id}-product`} name="productId" required value={productId} aria-invalid={!!errors.productId || undefined} aria-describedby={errors.productId ? `${id}-productId-error` : undefined}
-            onChange={event => { journey.chooseProduct(event.target.value); clearError("productId"); }}>
-            <option value="">{products.length ? "Katalogdan seçiniz" : "Şu anda ürün listelenmiyor"}</option>
-            {products.map(item => <option key={item.id} value={item.id}>{item.name} · {item.weight}</option>)}
-          </select>{error("productId")}</div>
-        <div className={`${styles.field} ${styles.quantity}`}><label htmlFor={`${id}-quantity`}>Miktar</label><input {...field("quantity")} placeholder="Örn. aylık 100 kg" />{error("quantity")}</div>
+        <div className={`${styles.field} ${styles.product}`}><label htmlFor={`${id}-products`}>İlgilendiğiniz ürünler</label>
+          <QuoteProductPicker id={`${id}-products`} products={products} quantities={journey.quantities} disabled={!hydrated}
+            onChange={next => { journey.setQuantities(next); clearError("productId"); }} invalid={!!errors.productId} errorId={errors.productId ? `${id}-productId-error` : undefined} />
+          {error("productId")}
+        </div>
         <div className={`${styles.field} ${styles.location}`}><AddressSearchField name="city" label="Şehir" value={values.city} kind="city" lang="tr" placeholder="Şehir seçin" autoComplete="address-level1" invalid={!!errors.city} errorId={errors.city ? `${id}-city-error` : undefined}
           onChange={city => { setValues(previous => previous.city === city ? previous : { ...previous, city, district: "" }); clearError("city"); clearError("district"); }} />{error("city")}</div>
         <div className={`${styles.field} ${styles.location}`}><AddressSearchField key={values.city} name="district" label="İlçe" value={values.district} kind="district" city={values.city} lang="tr" placeholder="İlçe seçin" autoComplete="address-level2" invalid={!!errors.district} errorId={errors.district ? `${id}-district-error` : undefined}

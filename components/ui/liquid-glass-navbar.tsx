@@ -80,6 +80,8 @@ const NIMBUS_CSS = `
 .nimbus-item{position:relative;z-index:1;display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 16px;border:0;border-radius:999px;background:none;color:var(--n-fg-soft);
   font-family:inherit;font-weight:500;font-size:14px;line-height:1;letter-spacing:-.01em;text-decoration:none;cursor:pointer;transition:color .25s}
 .nimbus-item:hover,.nimbus-item[aria-current]{color:var(--n-fg)}
+.nimbus-item[aria-current]{background:var(--pro-brand,#B4C58F);color:var(--pro-ink,#172B21);box-shadow:inset 0 0 0 1px rgba(247,244,237,.35)}
+.nimbus-nav[data-gl="on"] .nimbus-item[aria-current]{background:rgba(180,197,143,.2);color:var(--n-fg)}
 .nimbus-item:focus-visible{outline:2px solid var(--pro-brand,#B4C58F);outline-offset:2px}
 .nv-ico{position:relative;display:inline-flex;flex:none}
 .nv-ico svg{transition:transform .45s cubic-bezier(.3,1.6,.5,1)}

@@ -198,11 +198,14 @@ test("gallery SKU and business segment reach an actual, unsent email enquiry sum
   await expect(page).toHaveURL(/#teklif$/);
   const quote = page.locator("#teklif");
   const form = quote.getByRole("form");
-  await expect(form.getByRole("combobox", { name: "İlgilendiğiniz ürün", exact: true })).toHaveValue("sample-green-olive-1kg");
+  await form.getByRole("button", { name: "İlgilendiğiniz ürünler", exact: true }).click();
+  const picker = page.getByRole("dialog", { name: "Ürünleri seçin", exact: true });
+  await expect(picker.getByRole("checkbox", { name: "Ürün · Doğal Kırma Yeşil Zeytin · 1 kg", exact: true })).toBeChecked();
+  await picker.getByRole("textbox", { name: "Adet · Doğal Kırma Yeşil Zeytin · 1 kg", exact: true }).fill("24");
+  await picker.getByRole("button", { name: "Tamam", exact: true }).click();
   await page.locator("#toptan-iletisim").getByRole("button", { name: /Market.*bayi/i }).click();
   await expect(form.getByRole("combobox", { name: "İşletme türü", exact: true })).toHaveValue("retail");
   await form.getByRole("textbox", { name: "Adınız veya firma adı", exact: true }).fill("Yerel QA İşletmesi");
-  await form.getByRole("textbox", { name: "Miktar", exact: true }).fill("24 kavanoz");
   await form.getByRole("combobox", { name: "Şehir", exact: true }).fill("Osmaniye");
   await form.getByRole("combobox", { name: "İlçe", exact: true }).fill("Düziçi");
   await form.getByRole("textbox", { name: "Telefon", exact: true }).fill("05320000000");
@@ -214,7 +217,7 @@ test("gallery SKU and business segment reach an actual, unsent email enquiry sum
   expect(uri.protocol).toBe("mailto:");
   expect(uri.pathname).toBe("info@afina.com.tr");
   const body = uri.searchParams.get("body")!;
-  for (const value of ["Yerel QA İşletmesi", "Doğal Kırma Yeşil Zeytin", "1 kg", "24 kavanoz", "Osmaniye", "05320000000"]) expect(body).toContain(value);
+  for (const value of ["Yerel QA İşletmesi", "Doğal Kırma Yeşil Zeytin", "1 kg", "24 adet", "Osmaniye", "+905320000000"]) expect(body).toContain(value);
   expect(body).toMatch(/market|bayi/i);
   expect(body).not.toContain("10 kg");
   await expect(form).not.toContainText(/Talebiniz gönderildi/);

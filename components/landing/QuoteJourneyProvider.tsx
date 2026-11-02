@@ -7,6 +7,8 @@ import { motionTokens, springs } from "@/lib/ui-motion";
 
 export type BusinessSegment = "hospitality" | "retail" | "bulk" | "";
 type QuoteJourney = {
+  quantities: Readonly<Record<string, string>>;
+  setQuantities: (next: Record<string, string>) => void;
   productId: string;
   segment: BusinessSegment;
   chooseProduct: (id: string) => void;
@@ -14,18 +16,25 @@ type QuoteJourney = {
 };
 
 const QuoteJourneyContext = createContext<QuoteJourney>({
-  productId: "", segment: "", chooseProduct: () => {}, chooseSegment: () => {},
+  quantities: {}, setQuantities: () => {}, productId: "", segment: "", chooseProduct: () => {}, chooseSegment: () => {},
 });
 const subscribe = () => () => {};
 const clientSnapshot = () => true;
 const serverSnapshot = () => false;
 
 export function QuoteJourneyProvider({ children }: { children: ReactNode }): JSX.Element {
-  const [productId, setProductId] = useState("");
+  const [quantities, updateQuantities] = useState<Record<string, string>>({});
+  const [lastProductId, setLastProductId] = useState("");
   const [segment, setSegment] = useState<BusinessSegment>("");
-  const chooseProduct = useCallback((id: string) => setProductId(id), []);
+  const setQuantities = useCallback((next: Record<string, string>) => updateQuantities({ ...next }), []);
+  const chooseProduct = useCallback((id: string) => {
+    if (!id) return;
+    setLastProductId(id);
+    updateQuantities(previous => Object.hasOwn(previous, id) ? previous : { ...previous, [id]: "1" });
+  }, []);
   const chooseSegment = useCallback((value: BusinessSegment) => setSegment(value), []);
-  const value = useMemo(() => ({ productId, segment, chooseProduct, chooseSegment }), [productId, segment, chooseProduct, chooseSegment]);
+  const productId = Object.hasOwn(quantities, lastProductId) ? lastProductId : Object.keys(quantities)[0] ?? "";
+  const value = useMemo(() => ({ quantities, setQuantities, productId, segment, chooseProduct, chooseSegment }), [quantities, setQuantities, productId, segment, chooseProduct, chooseSegment]);
   return <QuoteJourneyContext.Provider value={value}>{children}</QuoteJourneyContext.Provider>;
 }
 

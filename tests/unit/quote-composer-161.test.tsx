@@ -13,6 +13,7 @@ function Handoff() {
   const journey = useQuoteJourney();
   return <>
     <button onClick={() => journey.chooseProduct("sample-green-olive-1kg")}>Galeriden kavanozu seç</button>
+    <button onClick={() => journey.chooseProduct("sample-olive-oil-1l")}>Galeriden yağı seç</button>
     <BusinessSegmentChoice segment="hospitality">Otel ve restoran seç</BusinessSegmentChoice>
     <BusinessSegmentChoice segment="retail">Market ve bayi seç</BusinessSegmentChoice>
   </>;
@@ -24,7 +25,7 @@ function Page({ products }: { products: readonly ProductVariant[] }) {
 
 function fillDetails() {
   for (const [label, value] of [
-    ["Adınız veya firma adı", "Ellek & Ortakları"], ["Miktar", "100 kg / ay"],
+    ["Adınız veya firma adı", "Ellek & Ortakları"],
     ["Şehir", "Osmaniye"], ["İlçe", "Düziçi"], ["Telefon", "+90 555 123 45 67"],
   ]) fireEvent.change(screen.getByLabelText(label), { target: { value } });
 }
@@ -62,7 +63,7 @@ it("carries the actual gallery SKU and segment into a truthful encoded corporate
   const fetch = vi.spyOn(globalThis, "fetch");
   render(<Page products={await getProducts()} />);
   const anchor = await prepare();
-  expect((screen.getByLabelText("İlgilendiğiniz ürün") as HTMLSelectElement).value).toBe("sample-green-olive-1kg");
+  expect(screen.getByRole("button", { name: "İlgilendiğiniz ürünler" }).textContent).toContain("1 ürün");
   expect((screen.getByLabelText("İşletme türü") as HTMLSelectElement).value).toBe("hospitality");
   const uri = new URL(anchor.getAttribute("href")!);
   expect(uri.protocol).toBe("mailto:");
@@ -122,27 +123,49 @@ it("disables segment actions in SSR and stores a hydrated choice before navigati
   expect(retail.getAttribute("aria-pressed")).toBe("true");
 });
 
-it("removes stale drafts after edits and uses the current product list/stock rather than a lost SKU snapshot", async () => {
+it("keeps all selected SKUs and typed quantities in the draft and invalidates it after any edit", async () => {
+  const products = await getProducts();
+  render(<Page products={products} />);
+  await prepare();
+  fireEvent.click(screen.getByRole("button", { name: "Galeriden yağı seç" }));
+  await waitFor(() => expect(screen.queryByRole("link", { name: "E-postayla gönder" })).toBeNull());
+  fireEvent.click(screen.getByRole("button", { name: "İlgilendiğiniz ürünler" }));
+  const olive = screen.getByRole("textbox", { name: "Adet · Doğal Kırma Yeşil Zeytin · 1 kg" });
+  const oil = screen.getByRole("textbox", { name: "Adet · Natürel Sızma Zeytinyağı · 1 L" });
+  fireEvent.change(olive, { target: { value: "24" } });
+  fireEvent.change(oil, { target: { value: "12" } });
+  fireEvent.click(screen.getByRole("button", { name: "Tamam" }));
+  fireEvent.click(screen.getByRole("button", { name: "Talep özetini hazırla" }));
+  const anchor = await screen.findByRole("link", { name: "E-postayla gönder" });
+  const body = new URL(anchor.getAttribute("href")!).searchParams.get("body")!;
+  expect(body).toContain("Doğal Kırma Yeşil Zeytin · 1 kg · Miktar: 24 adet");
+  expect(body).toContain("Natürel Sızma Zeytinyağı · 1 L · Miktar: 12 adet");
+  fireEvent.click(screen.getByRole("button", { name: "İlgilendiğiniz ürünler" }));
+  fireEvent.change(screen.getByRole("textbox", { name: "Adet · Natürel Sızma Zeytinyağı · 1 L" }), { target: { value: "" } });
+  fireEvent.click(screen.getByRole("button", { name: "Kapat" }));
+  await waitFor(() => expect(screen.queryByRole("link", { name: "E-postayla gönder" })).toBeNull());
+  fireEvent.click(screen.getByRole("button", { name: "Talep özetini hazırla" }));
+  expect(screen.getByRole("button", { name: "İlgilendiğiniz ürünler" }).getAttribute("aria-invalid")).toBe("true");
+  expect(screen.queryByRole("link", { name: "E-postayla gönder" })).toBeNull();
+});
+
+it("blocks missing catalogue items and refreshes stock instead of sending a stale snapshot", async () => {
   const products = await getProducts();
   const view = render(<Page products={products} />);
   await prepare();
-  fireEvent.change(screen.getByLabelText("Miktar"), { target: { value: "200 kg / ay" } });
-  await waitFor(() => expect(screen.queryByRole("link", { name: "E-postayla gönder" })).toBeNull());
-  fireEvent.click(screen.getByRole("button", { name: "Talep özetini hazırla" }));
-  expect(new URL((await screen.findByRole("link", { name: "E-postayla gönder" })).getAttribute("href")!).searchParams.get("body")).toContain("200 kg / ay");
   const oil = { ...products.find(product => product.id === "sample-olive-oil-1l")!, stock: 0, priceKurus: 45600 };
   view.rerender(<Page products={[oil]} />);
   await waitFor(() => expect(screen.queryByRole("link", { name: "E-postayla gönder" })).toBeNull());
-  expect((screen.getByLabelText("İlgilendiğiniz ürün") as HTMLSelectElement).value).toBe("");
   fireEvent.click(screen.getByRole("button", { name: "Talep özetini hazırla" }));
-  expect(screen.getByLabelText("İlgilendiğiniz ürün").getAttribute("aria-invalid")).toBe("true");
-  fireEvent.change(screen.getByLabelText("İlgilendiğiniz ürün"), { target: { value: oil.id } });
+  expect(screen.getByRole("button", { name: "İlgilendiğiniz ürünler" }).getAttribute("aria-invalid")).toBe("true");
+  fireEvent.click(screen.getByRole("button", { name: "İlgilendiğiniz ürünler" }));
+  fireEvent.click(screen.getByRole("button", { name: "Seçimi temizle" }));
+  fireEvent.click(screen.getByRole("button", { name: "Tümünü seç" }));
+  fireEvent.click(screen.getByRole("button", { name: "Tamam" }));
   fireEvent.click(screen.getByRole("button", { name: "Talep özetini hazırla" }));
   const region = await screen.findByRole("region", { name: "Talep özeti" });
-  expect(region.textContent).toContain("Natürel Sızma Zeytinyağı");
   expect(region.textContent).toContain("Mevcut değil");
-  const href = screen.getByRole("link", { name: "E-postayla gönder" }).getAttribute("href")!;
-  expect(new URL(href).searchParams.get("body")).toContain("Natürel Sızma Zeytinyağı · 1 L");
-  expect(new URL(href).searchParams.get("body")).not.toContain("Doğal Kırma");
-  expect(screen.queryByText("Talebiniz gönderildi.")).toBeNull();
+  const body = new URL(screen.getByRole("link", { name: "E-postayla gönder" }).getAttribute("href")!).searchParams.get("body");
+  expect(body).toContain("Natürel Sızma Zeytinyağı · 1 L");
+  expect(body).not.toContain("Doğal Kırma");
 });

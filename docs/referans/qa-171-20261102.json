@@ -1,0 +1,101 @@
+{
+  "task": 171,
+  "at": "2026-11-02T06:57:11.627259+00:00",
+  "state": "LOCAL_VERIFIED_BEFORE_RELEASE",
+  "checks": {
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "unit": {
+      "files": 113,
+      "passed": 1351
+    },
+    "webpackBuild": "PASS",
+    "quoteBrowser": {
+      "passed": 45,
+      "failed": 0,
+      "viewports": [
+        "1440×900",
+        "1366×768",
+        "1280×720",
+        "390×844",
+        "320×568"
+      ],
+      "screenshots": 6
+    },
+    "navbarBrowser": {
+      "passed": true,
+      "viewports": [
+        "1440x900",
+        "1366x768",
+        "1281x720",
+        "1280x720",
+        "1024x768",
+        "768x1024",
+        "390x844",
+        "320x568",
+        "844x390"
+      ],
+      "scrollTracking": [
+        {
+          "id": "urunler",
+          "expected": "/#urunler",
+          "href": "/#urunler",
+          "hash": "#urunler",
+          "tone": "glass",
+          "passed": true
+        },
+        {
+          "id": "toptan-iletisim",
+          "expected": "/#toptan-iletisim",
+          "href": "/#toptan-iletisim",
+          "hash": "#urunler",
+          "tone": "glass",
+          "passed": true
+        },
+        {
+          "id": "iletisim",
+          "expected": "/#iletisim",
+          "href": "/#iletisim",
+          "hash": "#urunler",
+          "tone": "glass",
+          "passed": true
+        },
+        {
+          "id": "baslangic",
+          "expected": "/",
+          "href": "/",
+          "hash": "#urunler",
+          "tone": "glass",
+          "passed": true
+        }
+      ],
+      "fallback": [
+        {
+          "mode": "reduced",
+          "gl": "off",
+          "current": "/",
+          "background": "rgb(180, 197, 143)",
+          "color": "rgb(23, 43, 33)"
+        },
+        {
+          "mode": "no-js",
+          "gl": "off",
+          "current": "/",
+          "background": "rgb(180, 197, 143)",
+          "color": "rgb(23, 43, 33)"
+        }
+      ],
+      "interiorNavigation": {
+        "solidOnKvkk": true,
+        "glassOnHome": true
+      }
+    }
+  },
+  "sources": "docs/referans/quote-picker-171-source.json",
+  "artifacts": {
+    "quote": ".cache/task-171/qa-local-2026-11-02T06-51-10-530Z/report.json",
+    "navbar": ".cache/task-171/nav-production/report.json",
+    "releaseReceipt": ".cache/task-171/final-receipt.json"
+  },
+  "scope": "Bundled Chromium headless, sequential contexts, no account/order/payment/mail writes; physical devices not tested."
+}

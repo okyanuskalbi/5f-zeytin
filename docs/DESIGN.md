@@ -1,5 +1,13 @@
 # AFİNA ZEYTİN v12 — Hasadın içinden
 
+**Güncel ek çalışma: [Task171](tasks/171-fotografli-coklu-urun-ve-menu.md).**
+Teklifte fotoğraflı çoklu ürün seçimi, ambalaj başına elle adet ve +/-;
+kompakt kapalı alan, mobilde içi kaydırılan erişilebilir panel. Katalogdaki
+özgün ürünler ve manuel e-posta taslağı korunur.21st109/20055 kaynakları
+marka tokenlarına uyarlanır. Menü21st43059: scroll ile aktif bölüm, görünür
+CSS fallback,13px masaüstü yazı ve1360px altında taşmayan mobil menü.
+Aşağıdaki Task165 yayın durumu tarihçedir; güncel kabul Task171 kaydındadır.
+
 **Aktif ek çalışma: [Task165](tasks/165-etkilesimli-bilesenler.md).** Kullanıcı
 V12 hareketli önizlemesini “güzel beyendim” ile kabul etti; aşağıdaki sahne
 kurgusu ve gerçek varlıklar korunur. Seçilen Footer, LiquidNavbar, glass logo

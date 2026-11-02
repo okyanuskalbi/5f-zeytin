@@ -6,8 +6,7 @@
 .field input, .field select { width:100%; min-width:0; min-height:48px; padding:10px 12px; border:1px solid var(--pro-input); border-radius:6px; color:var(--pro-ink); background:var(--pro-paper); font:inherit; font-size:16px; line-height:1.5; }
 .field select { text-overflow: ellipsis; }
 .field input::placeholder { color: var(--pro-muted, #565D50); }
-.product { grid-column:span 8; }
-.quantity { grid-column:span 4; }
+.product { grid-column:1 / -1; }
 .location { grid-column:span 3; }
 .phone { display:grid; gap:6px; min-width:0; grid-column:span 6; }
 .consent { grid-column:span 7; align-self:center; }
@@ -42,5 +41,10 @@
 .contact a { display:inline-flex; align-items:center; gap:8px; min-height:44px; font-size:12px; line-height:1.5; text-decoration:underline; text-underline-offset:4px; }
 .contact svg { flex:none; }
 @media(max-width:900px) { .location { grid-column:span 6; } .phone { grid-column:1 / -1; } }
-@media(max-width:600px) { .composer { padding:20px 16px; } .explanation { text-align:left; } .fields { grid-template-columns:minmax(0,1fr); gap:14px; } .field,.product,.quantity,.location,.phone,.consent,.prepare { grid-column:1 / -1; } .consent label { font-size:12px; } .contact { gap:0 16px; } .contact p { width:100%; margin-bottom:4px; } .summary { padding:20px; } .summary dl > div { grid-template-columns:minmax(0,1fr); gap:4px; } }
+@media(max-width:600px) { .composer { padding:20px 16px; } .explanation { text-align:left; } .fields { grid-template-columns:minmax(0,1fr); gap:14px; } .field,.product,.location,.phone,.consent,.prepare { grid-column:1 / -1; } .consent label { font-size:12px; } .contact { gap:0 16px; } .contact p { width:100%; margin-bottom:4px; } .summary { padding:20px; } .summary dl > div { grid-template-columns:minmax(0,1fr); gap:4px; } }
 @media (prefers-reduced-motion: reduce) { .summary { transform: none !important; opacity: 1 !important; } }
+
+.summaryProducts { display:grid; margin:0; padding:0; list-style:none; }
+.summaryProducts li { display:flex; align-items:center; justify-content:space-between; gap:16px; padding-block:12px; border-top:1px solid var(--pro-line); font-size:14px; }
+.summaryProducts small { display:block; margin-top:4px; font-size:12px; color:var(--pro-muted); }
+.summaryProducts strong { flex:none; font-variant-numeric:tabular-nums; }

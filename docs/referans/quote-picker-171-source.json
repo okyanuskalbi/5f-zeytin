@@ -1,0 +1,50 @@
+{
+  "task": 171,
+  "sources": [
+    {
+      "id": 109,
+      "componentId": 1148,
+      "name": "Interactive Checkout",
+      "url": "https://21st.dev/@kokonutd/components/interactive-checkout",
+      "componentSha256": "cde52b8c7374d64d0ae36d4b24c6e0bdd2c5aaec7f5fe28f7d2afd63cfd46880",
+      "demoSha256": "1b54f0ae66723a942a43e88b48a5bf82555e23f3752809e1769abd3d30a0a6de",
+      "quota": {
+        "tier": "paid",
+        "remaining": null,
+        "perDay": null,
+        "resetAt": null,
+        "upgradeUrl": null
+      }
+    },
+    {
+      "id": 20055,
+      "componentId": 10348,
+      "name": "Quantity",
+      "url": "https://21st.dev/@youcefbnm/components/quantity",
+      "componentSha256": "770b70818e4334c01c6a28abe0f5c4f21e586680848ada9db9db81a1e19d4f40",
+      "demoSha256": "b3541131caca551f87005d85991da69de295a318a1347092ce84c85a8035f94d",
+      "quota": {
+        "tier": "paid",
+        "remaining": null,
+        "perDay": null,
+        "resetAt": null,
+        "upgradeUrl": null
+      }
+    },
+    {
+      "id": 43059,
+      "name": "Liquid Navbar",
+      "url": "https://21st.dev/@gughigug/components/liquid-glass-navbar",
+      "componentSha256": "82cca48bd39aeee2d910238af66c214348731fb93bfe39b33ba368576afa641a",
+      "demoSha256": "261cb96a79c2f9e2bae97101071a5a2a4f6a5c4398cefc379045b7296c228765",
+      "retrievedVia": "21st MCP paid"
+    }
+  ],
+  "adaptation": [
+    "Existing AFİNA catalogue and approved product photographs; no demo assets or prices.",
+    "Controlled multi-selection with manual quantity and44px increment/decrement targets.",
+    "Compact trigger with selected thumbnails; accessible dialog using installed Radix primitive.",
+    "All selected quantities included in the existing manual mailto draft; no order/cart/payment mutation."
+  ],
+  "aiGenerationUsed": false
+}

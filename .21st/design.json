@@ -23,7 +23,8 @@
       "components/site/Navbar.module.css",
       "components/landing/ScrollingSections.module.css",
       "components/media/CinematicScrub.module.css",
-      "components/landing/HarvestJourney.module.css"
+      "components/landing/HarvestJourney.module.css",
+      "components/ui/quote-product-picker.module.css"
     ],
     "components": [
       "components/ui",
@@ -65,7 +66,9 @@
       "docs/tasks/163-10k-sinema-ve-aeo.md",
       "docs/scrollcraft/builds/afina-v11/DESIGN-PACKAGE.md",
       "docs/scrollcraft/builds/afina-v11/REQUIREMENTS.md",
-      ".agents/skills/10k-websites/SKILL.md"
+      ".agents/skills/10k-websites/SKILL.md",
+      "docs/tasks/171-fotografli-coklu-urun-ve-menu.md",
+      "docs/referans/quote-picker-171-source.json"
     ]
   },
   "design": {
@@ -354,6 +357,14 @@
       "evidence": [
         "docs/referans/quote-170-source.json",
         "docs/referans/footer-170-source.json"
+      ]
+    },
+    {
+      "source": "User Task171: photo multi-product selection with editable quantities; menu repair; use paid21st MCP",
+      "decision": "21st109/20055 adapted to a compact photo trigger and accessible multi-select dialog with raw integer quantities,44px controls and separate manual mailto lines. Real catalogue/media and contact flow retained.21st43059 menu compared; public-path snapshot, scroll active section,13px desktop items and1360px mobile breakpoint restore navigation.",
+      "references": [
+        "docs/tasks/171-fotografli-coklu-urun-ve-menu.md",
+        "docs/referans/quote-picker-171-source.json"
       ]
     }
   ],

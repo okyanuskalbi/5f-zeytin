@@ -7,7 +7,7 @@
 .logo { display:block; width:132px; height:36px; object-fit:contain; }
 .home:hover { opacity:.85; }
 .bar .desktop { display:flex; align-items:center; justify-content:center; gap:2px; padding:6px; flex-shrink:0; }
-.desktop :global(.nimbus-item) { font-size:12px; padding-inline:10px; gap:6px; }
+.desktop :global(.nimbus-item) { font-size:13px; padding-inline:10px; gap:6px; white-space:nowrap; }
 .desktop :global(.nv-ico) svg { width:15px; height:15px; }
 .link { display:inline-flex; align-items:center; min-height:44px; padding-block:8px; font-size:13px; font-weight:500; white-space:nowrap; }
 .link:hover,.link:active { text-decoration:underline; text-underline-offset:6px; text-decoration-color:var(--pro-brand); }
@@ -22,10 +22,10 @@
 .trigger { display:none; }
 .home:focus-visible,.link:focus-visible,.shop:focus-visible { outline:2px solid var(--pro-brand); outline-offset:4px; }
 .menu { --ink:var(--pro-ink); --sut:var(--pro-paper); inset:0; width:100%; max-width:none; height:100dvh; max-height:none; display:flex; flex-direction:column; justify-content:space-between; gap:32px; padding:max(64px,env(safe-area-inset-top,0px)) max(24px,env(safe-area-inset-right,0px)) max(32px,env(safe-area-inset-bottom,0px)) max(24px,env(safe-area-inset-left,0px)); background:var(--ink); color:var(--sut); }
-.menuLinks { display:grid; align-content:center; gap:8px; flex:1; }
-.menuLinks .link { font-family:var(--font-display,var(--font-display-fallback)); font-size:var(--step-head); font-weight:400; letter-spacing:-.02em; line-height:1.2; }
-@media(max-width:1380px) { .desktop :global(.nimbus-item) { padding-inline:8px; font-size:11px; } .row { gap:16px; } .logo { width:120px; height:32px; } .actions { gap:4px; } }
-@media(max-width:1280px) {
+.menuLinks { display:grid; grid-template-columns:minmax(0,1fr); min-width:0; align-content:center; gap:8px; flex:1; }
+.menuLinks .link { min-width:0; max-width:100%; white-space:normal; overflow-wrap:anywhere; font-family:var(--font-display,var(--font-display-fallback)); font-size:clamp(28px,8vw,44px); font-weight:400; letter-spacing:-.02em; line-height:1.2; }
+@media(max-width:1440px) { .desktop :global(.nimbus-item) { padding-inline:8px; } .row { gap:16px; } .logo { width:120px; height:32px; } .actions { gap:4px; } }
+@media(max-width:1360px) {
  .bar { padding-block:12px; padding-top:calc(12px + env(safe-area-inset-top,0px)); padding-left:max(20px,env(safe-area-inset-left,0px)); padding-right:max(20px,env(safe-area-inset-right,0px)); }
  .bar .desktop,.account { display:none; }
  .trigger { display:inline-flex; min-height:44px; padding:8px 12px; font-weight:500; }

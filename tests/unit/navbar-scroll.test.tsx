@@ -8,6 +8,7 @@ vi.mock("next/navigation", () => ({ usePathname: () => state.pathname }));
 
 beforeEach(() => {
   state.pathname = "/";
+  window.history.replaceState(null, "", "/");
   Object.defineProperty(window, "scrollY", { configurable: true, writable: true, value: 0 });
   const hero = document.createElement("section");
   hero.setAttribute("data-hero-intro", "");
@@ -18,6 +19,7 @@ beforeEach(() => {
 
 afterEach(() => {
   cleanup();
+  window.history.replaceState(null, "", "/");
   Object.assign(siteContact, { phone: "", whatsapp: "", email: "" });
   document.querySelector("[data-hero-intro]")?.remove();
   Object.defineProperty(window, "scrollY", { configurable: true, writable: true, value: 0 });
@@ -56,6 +58,7 @@ it("retains the dark glass surface on a restored landing load and pageshow", () 
 
 it("keeps interior routes on the solid dark surface while scrolling", () => {
   state.pathname = "/kvkk";
+  window.history.replaceState(null, "", state.pathname);
   render(<Navbar />);
   window.scrollY = 240;
   fireEvent.scroll(window);

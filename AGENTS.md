@@ -1,4 +1,17 @@
-## Aktif iş: Task170 / kompakt teklif ve footer (2 Kasım 2026)
+## Aktif iş: Task171 / fotoğraflı çoklu ürün ve menü (2 Kasım 2026)
+
+Kullanıcı çoklu ürün seçimini fotoğraf ve elle düzenlenen adetlerle istedi;
+21stMCP kullanılacak. Menü görünümü ayrıca kontrol edilip düzeltilecek.
+Kapsam `docs/tasks/171-fotografli-coklu-urun-ve-menu.md`.
+Yerel1351unit/lint/typecheck/build,45form kontrolü ve9navbar viewport PASS;
+kanıt `docs/referans/qa-171-20261102.json`, main/API yayın makbuzu `.cache/task-171/final-receipt.json`. Gerçek katalog,
+kompakt form, manuel mailto ve mevcut API yayın tercihi korunur.
+
+Task170 b23713e yayında: CI41379351499 SUCCESS,
+REST dpl_9biBmvXXrD6uc9RyLW2sEiiA7bgk READY.5viewport/39canlıkontrol PASS;
+makbuz `.cache/task-170/final-receipt.json`.
+
+## Önceki iş: Task170 / kompakt teklif ve footer (2 Kasım 2026)
 
 Kullanıcı teklif bölümünü masaüstünde tek ekrana sığdırmayı,21st.dev kaynaklı
 footer'ı küçültmeyi ve günceli canlıya almayı istedi.21st27904 ortalı form ve
