@@ -48,6 +48,7 @@ beforeEach(() => {
 });
 afterEach(() => {
   cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals();
+  vi.useRealTimers();
   delete (navigator as Navigator & { connection?: unknown }).connection;
 });
 async function enter(isIntersecting = true) {
@@ -57,8 +58,8 @@ function tick(time: number) {
   act(() => { const waiting = [...frames]; frames.clear(); waiting.forEach(([, fn]) => fn(time)); });
 }
 
-it.each(["touch/phone/short/reduced", "save data", "low hardware"])("never requests the movie under the %s static policy", async policy => {
-  if (policy === "touch/phone/short/reduced") eligible = false;
+it.each(["ineligible screen/reduced", "save data", "low hardware"])("never requests the movie under the %s static policy", async policy => {
+  if (policy === "ineligible screen/reduced") eligible = false;
   if (policy === "save data") saveData = true;
   if (policy === "low hardware") vi.spyOn(navigator, "hardwareConcurrency", "get").mockReturnValue(2);
   const { container } = render(<Harness />);
@@ -131,15 +132,138 @@ it("returns a decoded movie to the native poster after a decoder error", async (
   expect(frames.size).toBe(0);
 });
 
-it("does not insert a tall scene above a visitor who left during the download", async () => {
+it.each(["offscreen", "hidden"] as const)("aborts an unfinished download when %s, ignores its late result and reloads only on return", async state => {
   let finish!: (response: Response) => void;
-  fetchMovie.mockReturnValue(new Promise<Response>(resolve => { finish = resolve; }));
+  fetchMovie.mockReturnValueOnce(new Promise<Response>(resolve => { finish = resolve; }));
   const { container } = render(<Harness />);
-  await enter(); await enter(false);
+  await enter();
+  const signal = fetchMovie.mock.calls[0][1].signal as AbortSignal;
+  if (state === "offscreen") await enter(false);
+  else act(() => { visibility = "hidden"; document.dispatchEvent(new Event("visibilitychange")); });
+  expect(signal.aborted).toBe(true);
   await act(async () => finish(new Response(new Blob(["late film"]))));
-  fireEvent.canPlay(container.querySelector("video")!);
+  expect(URL.createObjectURL).not.toHaveBeenCalled();
+  expect(container.querySelector("video")!.hasAttribute("src")).toBe(false);
   expect(onMode).not.toHaveBeenCalledWith(true);
   expect(frames.size).toBe(0);
-  await enter();
+  if (state === "offscreen") await enter();
+  else await act(async () => { visibility = "visible"; document.dispatchEvent(new Event("visibilitychange")); });
+  expect(fetchMovie).toHaveBeenCalledTimes(2);
+  fireEvent.canPlay(container.querySelector("video")!);
   expect(onMode).toHaveBeenLastCalledWith(true);
+});
+
+it("ignores a late response body after a newer download has already attached", async () => {
+  let finish!: (blob: Blob) => void;
+  fetchMovie.mockResolvedValueOnce({ ok: true, headers: new Headers(), blob: () => new Promise<Blob>(resolve => { finish = resolve; }) });
+  const { container } = render(<Harness />);
+  await enter(); await enter(false); await enter();
+  expect(fetchMovie).toHaveBeenCalledTimes(2);
+  expect(URL.createObjectURL).toHaveBeenCalledOnce();
+  await act(async () => finish(new Blob(["obsolete response body"])));
+  expect(URL.createObjectURL).toHaveBeenCalledOnce();
+  expect(container.querySelector("video")!.src).toBe("blob:afina-film");
+  fireEvent.canPlay(container.querySelector("video")!);
+  expect(onMode).toHaveBeenLastCalledWith(true);
+});
+
+it("drops pending seeks while offscreen and never arms their watchdog from a late seeked event", async () => {
+  vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+  const { container } = render(<Harness />); await enter();
+  const video = container.querySelector("video")!;
+  Object.defineProperty(video, "duration", { value: 8 });
+  const writes = vi.spyOn(video, "currentTime", "set");
+  fireEvent.canPlay(video); tick(16);
+  act(() => progress.set(.8)); tick(32); tick(48);
+  expect(writes).toHaveBeenCalledTimes(1);
+  await enter(false);
+  fireEvent.seeked(video);
+  expect(writes).toHaveBeenCalledTimes(1);
+  act(() => vi.advanceTimersByTime(5000));
+  expect(video.hasAttribute("src")).toBe(true);
+  expect(URL.revokeObjectURL).not.toHaveBeenCalled();
+  expect(frames.size).toBe(0);
+});
+
+it("pauses an active seek deadline in a hidden document and safely resumes an unfinished native seek", async () => {
+  vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+  const { container } = render(<Harness />); await enter();
+  const video = container.querySelector("video")!;
+  Object.defineProperty(video, "duration", { value: 8 });
+  let seeking = false;
+  vi.spyOn(video, "seeking", "get").mockImplementation(() => seeking);
+  const writes = vi.spyOn(video, "currentTime", "set");
+  fireEvent.canPlay(video); tick(16);
+  act(() => progress.set(.8)); tick(32); seeking = true;
+  act(() => { visibility = "hidden"; document.dispatchEvent(new Event("visibilitychange")); vi.advanceTimersByTime(5000); });
+  expect(video.hasAttribute("src")).toBe(true);
+  expect(frames.size).toBe(0);
+  act(() => { visibility = "visible"; document.dispatchEvent(new Event("visibilitychange")); });
+  tick(48);
+  expect(writes).toHaveBeenCalledTimes(1);
+  seeking = false; fireEvent.seeked(video); tick(64);
+  expect(writes).toHaveBeenCalledTimes(2);
+});
+
+it("returns to the complete poster if a native seek setter throws", async () => {
+  const { container } = render(<Harness />); await enter();
+  const video = container.querySelector("video")!;
+  Object.defineProperty(video, "duration", { value: 8 });
+  fireEvent.canPlay(video); tick(16);
+  vi.spyOn(video, "currentTime", "set").mockImplementation(() => { throw new DOMException("decoder unavailable", "InvalidStateError"); });
+  act(() => progress.set(.8)); tick(32);
+  expect(video.hasAttribute("src")).toBe(false);
+  expect(container.querySelector("[data-painted]")!.getAttribute("data-painted")).toBe("false");
+  expect(container.querySelector("picture img")).not.toBeNull();
+  expect(onMode).toHaveBeenLastCalledWith(false);
+  expect(URL.revokeObjectURL).toHaveBeenCalledWith("blob:afina-film");
+  expect(frames.size).toBe(0);
+});
+
+it.each(["download", "seek"] as const)("keeps the poster fallback when an active %s never completes", async operation => {
+  vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+  if (operation === "download") fetchMovie.mockReturnValue(new Promise<Response>(() => {}));
+  const { container } = render(<Harness />); await enter();
+  const video = container.querySelector("video")!;
+  if (operation === "seek") {
+    Object.defineProperty(video, "duration", { value: 8 });
+    fireEvent.canPlay(video); tick(16);
+    act(() => progress.set(.8)); tick(32);
+  }
+  act(() => vi.advanceTimersByTime(operation === "seek" ? 4001 : 20001));
+  expect(video.hasAttribute("src")).toBe(false);
+  expect(container.querySelector("[data-painted]")!.getAttribute("data-painted")).toBe("false");
+  expect(container.querySelector("picture img")).not.toBeNull();
+  expect(frames.size).toBe(0);
+  expect((fetchMovie.mock.calls[0][1].signal as AbortSignal).aborted).toBe(true);
+});
+
+it.each([
+  { width: 320, height: 640, coarse: true, reduced: false, expected: true },
+  { width: 390, height: 844, coarse: true, reduced: false, expected: true },
+  { width: 390, height: 639, coarse: true, reduced: false, expected: false },
+  { width: 319, height: 844, coarse: true, reduced: false, expected: false },
+  { width: 844, height: 390, coarse: true, reduced: false, expected: false },
+  { width: 390, height: 844, coarse: true, reduced: true, expected: false },
+  { width: 390, height: 844, coarse: false, reduced: false, expected: false },
+  { width: 1023, height: 1200, coarse: true, reduced: false, expected: true },
+  { width: 1024, height: 1200, coarse: true, reduced: false, expected: false },
+  { width: 1440, height: 900, coarse: false, reduced: false, expected: true },
+  { width: 1440, height: 900, coarse: false, reduced: true, expected: false },
+])("evaluates the actual screen policy at $width×$height (reduced=$reduced)", async viewport => {
+  vi.stubGlobal("matchMedia", (query: string) => ({
+    matches: query.split(",").some(branch => [...branch.matchAll(/\(([-\w]+)\s*:\s*([^)]*)\)/g)].every(([, feature, value]) => {
+      if (feature === "prefers-reduced-motion") return (value === "reduce") === viewport.reduced;
+      if (feature === "pointer") return value === (viewport.coarse ? "coarse" : "fine");
+      if (feature === "hover") return value === (viewport.coarse ? "none" : "hover");
+      if (feature === "orientation") return value === (viewport.height >= viewport.width ? "portrait" : "landscape");
+      const dimension = /^(min|max)-(width|height)$/.exec(feature);
+      if (!dimension) return false;
+      const size = viewport[dimension[2] as "width" | "height"];
+      return dimension[1] === "min" ? size >= Number.parseFloat(value) : size <= Number.parseFloat(value);
+    })),
+    addEventListener() {}, removeEventListener() {},
+  }));
+  render(<Harness />); await enter();
+  expect(fetchMovie.mock.calls.length).toBe(viewport.expected ? 1 : 0);
 });

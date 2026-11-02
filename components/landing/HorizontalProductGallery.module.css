@@ -75,4 +75,22 @@
  .number { left:8px; }
  .foot { flex-direction:column; gap:8px; }
 }
+/* One package fills a portrait scene. The ray and its light move, while touch
+   targets retain their full size instead of scaling with the desktop cards. */
+.section[data-gallery-mode="scrub"][data-gallery-layout="touch"] { --gallery-card-width:min(420px,calc(100vw - 2 * var(--pro-gutter))); }
+.section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .stage { padding-top:calc(var(--header-height) + 8px); padding-bottom:max(8px,env(safe-area-inset-bottom,0px)); }
+.section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .heading { gap:0; margin-bottom:4px; }
+.section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .heading h2 { max-width:none; font-size:clamp(28px,7.7vw,44px); line-height:1.02; }
+.section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .heading .eyebrow { margin-bottom:5px; font-size:10px; }
+.section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .heading > div > p:last-child { margin-top:6px; font-size:12px; line-height:1.35; }
+.section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .explanation { display:none; }
+.section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .track { gap:24px; }
+.section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .item { width:var(--gallery-card-width); }
+.section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .item article { padding-inline:4px; padding-bottom:0; }
+.section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .item article > button[aria-haspopup="dialog"] { min-height:120px; max-height:440px; padding:4px 16px 12px; }
+.section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .item article h3 { padding-top:4px; font-size:17px; line-height:1.2; }
+.section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .item article h3 + div { margin-block:2px 4px; }
+.section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .item article > div > span { padding-block:2px; font-size:12px; }
+.section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .item article [aria-label="Fiyat"] { font-size:22px; }
+.section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .foot { flex-direction:row; gap:8px; margin-top:4px; font-size:11px; }
 @media(prefers-reduced-motion:reduce) { .item,.item article > button[aria-haspopup="dialog"] picture { transform:none !important; } .spotlight,.item article > button[aria-haspopup="dialog"] picture { transition:none; } }

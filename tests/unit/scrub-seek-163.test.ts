@@ -21,9 +21,11 @@ describe("scroll film seek queue", () => {
   });
   it("releases busy and stale pending state after an error or thrown seek", () => {
     const write = vi.fn().mockImplementationOnce(() => { throw Error("not ready"); });
-    const queue = createSeekQueue(() => 0, write);
+    const onError = vi.fn();
+    const queue = createSeekQueue(() => 0, write, onError);
     queue.request(1); queue.request(2); queue.request(3); queue.reset(); queue.request(4);
     expect(write.mock.calls).toEqual([[1], [2], [4]]);
+    expect(onError).toHaveBeenCalledOnce();
   });
   it("clamps media endpoints and converges without overshooting at different refresh rates", () => {
     expect(progressTime(-1, 8)).toBe(0);

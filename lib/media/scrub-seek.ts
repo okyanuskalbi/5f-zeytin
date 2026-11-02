@@ -1,6 +1,6 @@
 /** One native seek in flight. A fast reversal replaces, rather than queues,
  * intermediate frames. Same-time writes never arm a wait for a missing event. */
-export function createSeekQueue(read: () => number, write: (time: number) => void) {
+export function createSeekQueue(read: () => number, write: (time: number) => void, onError?: () => void) {
   let busy = false;
   let pending: number | undefined;
   function request(time: number): void {
@@ -8,7 +8,7 @@ export function createSeekQueue(read: () => number, write: (time: number) => voi
     if (busy) { pending = time; return; }
     if (Math.abs(read() - time) < 1 / 120) return;
     busy = true;
-    try { write(time); } catch { busy = false; pending = undefined; }
+    try { write(time); } catch { busy = false; pending = undefined; onError?.(); }
   }
   return {
     request,

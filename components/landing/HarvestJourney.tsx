@@ -9,6 +9,7 @@ import { v3Image } from "@/lib/media/v3-assets";
 import facility from "@/lib/media/renewal-assets.json";
 import { seller } from "@/lib/site/seller";
 import { useDesktopMotion } from "./ScrollStage";
+import { MOBILE_SCROLL_QUERY } from "@/lib/media/mobile-motion";
 import styles from "./HarvestJourney.module.css";
 
 const destinations = [
@@ -30,12 +31,18 @@ const serverResources = () => false;
  * The same semantic sections form the complete native/mobile document. */
 export function HarvestJourney() {
   const journey = useRef<HTMLDivElement>(null);
+  const stage = useRef<HTMLDivElement>(null);
   const eligibleScreen = useDesktopMotion("(min-width: 1024px) and (min-height: 760px) and (hover: hover) and (pointer: fine)");
+  const mobile = useDesktopMotion(MOBILE_SCROLL_QUERY);
   const resources = useSyncExternalStore(subscribeResources, resourcePolicy, serverResources);
-  const cinematic = eligibleScreen && resources;
+  const cinematic = (eligibleScreen || mobile) && resources;
   const [filmReady, setFilmReady] = useState(false);
   const [chapter, setChapter] = useState(0);
-  const { scrollYProgress: p } = useScroll({ target: journey, offset: cinematic ? ["start start", "end end"] : ["start start", "end start"] });
+  const [stageHeight, setStageHeight] = useState(0);
+  const { scrollYProgress } = useScroll({ target: journey, offset: cinematic ? ["start start", stageHeight > 0 ? `end ${stageHeight}px` : "end end"] : ["start start", "end start"] });
+  // A function transform keeps scene styles on the same JS timeline. It does
+  // not inherit stale native acceleration when offsets change after hydration.
+  const p = useTransform(() => scrollYProgress.get());
   const filmProgress = useTransform(p, [0, .35], [0, 1]);
   const orchardScale = useTransform(p, [0, .4], [1, 1.12]);
   const orchardOpacity = useTransform(p, [.35, .48], [1, 0]);
@@ -60,8 +67,20 @@ export function HarvestJourney() {
   const wordRight = useTransform(p, [.7, .9], [100, 0]);
 
   useLayoutEffect(() => {
+    const element = stage.current;
+    if (!cinematic || !element) return;
+    const measure = () => setStageHeight(element.clientHeight || window.innerHeight);
+    measure();
+    const observer = typeof ResizeObserver === "function" ? new ResizeObserver(measure) : undefined;
+    observer?.observe(element);
+    window.addEventListener("resize", measure);
+    return () => { observer?.disconnect(); window.removeEventListener("resize", measure); };
+  }, [cinematic]);
+
+  useLayoutEffect(() => {
     const element = journey.current;
-    const range = element ? element.clientHeight - innerHeight : 0;
+    const height = stage.current?.clientHeight || stageHeight || window.innerHeight;
+    const range = element ? element.clientHeight - height : 0;
     // Native SSR IDs become position markers when the common stage pins.
     // Re-resolve a deep link after that layout change, in both directions.
     const hash = window.location.hash.slice(1);
@@ -69,21 +88,23 @@ export function HarvestJourney() {
     if (destination && element) {
       if (cinematic) {
         window.scrollTo({ top: element.getBoundingClientRect().top + window.scrollY + Math.max(0, range) * destination.progress, behavior: "instant" });
-        p.set(destination.progress);
+        scrollYProgress.set(destination.progress); p.set(destination.progress);
         return;
       }
       document.getElementById(hash)?.scrollIntoView?.({ block: "start", behavior: "instant" });
     }
-    p.set(cinematic && element && range > 0 ? Math.max(0, Math.min(1, -element.getBoundingClientRect().top / range)) : 0);
-  }, [cinematic, p]);
+    const progress = cinematic && element && range > 0 ? Math.max(0, Math.min(1, -element.getBoundingClientRect().top / range)) : 0;
+    scrollYProgress.set(progress); p.set(progress);
+  }, [cinematic, stageHeight, scrollYProgress, p]);
   useMotionValueEvent(p, "change", value => setChapter(value < .4 ? 0 : value < .75 ? 1 : 2));
 
   function showScene(progress: number) {
     if (!cinematic || !journey.current) return;
     const element = journey.current;
     const top = element.getBoundingClientRect().top + window.scrollY;
-    window.scrollTo({ top: top + Math.max(0, element.clientHeight - innerHeight) * progress, behavior: "instant" });
-    p.set(progress);
+    const height = stage.current?.clientHeight || stageHeight || window.innerHeight;
+    window.scrollTo({ top: top + Math.max(0, element.clientHeight - height) * progress, behavior: "instant" });
+    scrollYProgress.set(progress); p.set(progress);
   }
   function revealFocusedScene(index: number) {
     const value = p.get();
@@ -93,16 +114,16 @@ export function HarvestJourney() {
     if (!readable) showScene(destinations[index].progress);
   }
 
-  return <div ref={journey} className={styles.journey} data-harvest-journey="" data-mode={cinematic ? "cinematic" : "native"} data-film-ready={filmReady}>
+  return <div ref={journey} className={styles.journey} data-harvest-journey="" data-mode={cinematic ? "cinematic" : "native"} data-motion-device={cinematic && mobile && !eligibleScreen ? "touch" : "desktop"} data-film-ready={filmReady}>
     <link rel="preload" as="image" type="image/avif" href="/frames/afina-agac-dal/poster-mobile.avif" media="(max-width: 767px)" fetchPriority="high" />
     <link rel="preload" as="image" type="image/avif" href="/frames/afina-agac-dal/poster-desktop.avif" media="(min-width: 768px)" fetchPriority="high" />
     {cinematic && <div className={styles.markers} aria-hidden="true">
       <span id="baslangic" style={{ top: 0 }} />
-      <span id="kurumsal" style={{ top: "calc((100% - 100svh) * .55)" }} />
-      <span id="tesisimiz" style={{ top: "calc((100% - 100svh) * .55)" }} />
-      <span id="uretim-yolculugu" style={{ top: "calc((100% - 100svh) * .9)" }} />
+      <span id="kurumsal" style={{ top: `calc((100% - ${stageHeight > 0 ? `${stageHeight}px` : "100svh"}) * .55)` }} />
+      <span id="tesisimiz" style={{ top: `calc((100% - ${stageHeight > 0 ? `${stageHeight}px` : "100svh"}) * .55)` }} />
+      <span id="uretim-yolculugu" style={{ top: `calc((100% - ${stageHeight > 0 ? `${stageHeight}px` : "100svh"}) * .9)` }} />
     </div>}
-    <div className={styles.stage}>
+    <div ref={stage} data-harvest-stage="" className={styles.stage}>
       <motion.section id={cinematic ? undefined : "baslangic"} className={styles.orchard}
         data-sc-scene="baslangic" data-sc-device="cinematic" data-sc-engine="framer-motion" data-21st-source="32829"
         aria-labelledby="renewal-hero-title" onFocusCapture={() => revealFocusedScene(0)}
@@ -137,7 +158,7 @@ export function HarvestJourney() {
         </motion.figure>
         <motion.div className={styles.factoryCopy} style={cinematic ? { y: factoryCopyY } : undefined}>
           <p className={styles.eyebrow}>TOPRAĞINDAN AYRILMADAN</p>
-          <h2 id="tesisimiz-title">Üretimin<br />adresi: <em>Ellek.</em></h2>
+          <h2 id="tesisimiz-title">Üretimin<br />{" "}adresi: <em>Ellek.</em></h2>
           <p>Zeytinin seçimi, hazırlanması ve dolumu. Osmaniye’deki kendi üretim tesisimizde.</p>
           <address>{seller.address}</address>
           <a href="https://afina.com.tr" target="_blank" rel="noopener noreferrer" className={styles.textLink}>Bir AFİNA Şirketler Topluluğu markası <ArrowUpRightIcon size={16} aria-hidden="true" /></a>

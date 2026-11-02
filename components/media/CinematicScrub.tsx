@@ -3,10 +3,11 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
 import { useMotionValueEvent, type MotionValue } from "framer-motion";
 import { cinematicPoster } from "@/lib/media/cinematic-poster";
+import { MOBILE_SCROLL_QUERY } from "@/lib/media/mobile-motion";
 import { approachTime, createSeekQueue, progressTime } from "@/lib/media/scrub-seek";
 import styles from "./CinematicScrub.module.css";
 
-export const SCRUB_QUERY = "(min-width: 1024px) and (min-height: 760px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)";
+export const SCRUB_QUERY = `(min-width: 1024px) and (min-height: 760px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference), ${MOBILE_SCROLL_QUERY} and (prefers-reduced-motion: no-preference)`;
 const movie = "/videos/afina-hasat-scrub.mp4";
 
 /** Poster-first and src-less SSR. A complete small Blob avoids host Range
@@ -38,13 +39,17 @@ export function CinematicScrub({ progress, scene, onMode }: {
     const active = () => policy() && visible && document.visibilityState === "visible" && loaded && !failed;
     const queue = createSeekQueue(() => video.currentTime, time => {
       video.currentTime = time;
-      clearTimeout(seekTimer);
-      // A missing seeked event must never leave a busy queue or endless pin.
-      seekTimer = setTimeout(fail, 4000);
-    });
+      watchSeek();
+    }, fail);
+    function watchSeek(): void {
+      // Re-arm after returning from a hidden document, without overlapping a
+      // native seek that was already in flight when work was suspended.
+      if (seekTimer === undefined) seekTimer = setTimeout(fail, 4000);
+    }
     function stop(): void {
       if (raf !== undefined) cancelAnimationFrame(raf);
       raf = undefined; last = 0;
+      clearTimeout(seekTimer); seekTimer = undefined; queue.reset();
     }
     function unload(): void {
       stop(); clearTimeout(timer); clearTimeout(seekTimer);
@@ -58,12 +63,14 @@ export function CinematicScrub({ progress, scene, onMode }: {
     function tick(now: number): void {
       raf = undefined;
       if (!active()) { last = 0; return; }
+      if (video.seeking) { last = 0; watchSeek(); return; }
       const target = progressTime(progress.get(), video.duration);
       shown = approachTime(shown, target, last ? now - last : 1000 / 60);
       last = now;
       const settled = Math.abs(shown - target) < 1 / 120;
       if (settled) shown = target;
       queue.request(shown);
+      if (!active()) return; // A throwing native setter may have unloaded it.
       if (!settled) raf = requestAnimationFrame(tick);
       else last = 0;
     }
@@ -73,8 +80,10 @@ export function CinematicScrub({ progress, scene, onMode }: {
       hasFrame = true; setPainted(true); onMode(true);
     }
     function seeked(): void {
-      clearTimeout(seekTimer); queue.complete();
-      frameReady();
+      clearTimeout(seekTimer); seekTimer = undefined;
+      if (!active()) { queue.reset(); return; }
+      queue.complete();
+      frameReady(); start();
     }
     function canplay(): void {
       if (!policy() || disposed || failed || !video.hasAttribute("src")) return;
@@ -85,24 +94,29 @@ export function CinematicScrub({ progress, scene, onMode }: {
     async function load(): Promise<void> {
       if (abort || loaded || failed || !policy() || !visible || document.visibilityState !== "visible" || document.readyState !== "complete") return;
       const controller = new AbortController(); abort = controller;
-      timer = setTimeout(fail, 20000);
+      const current = () => abort === controller && !controller.signal.aborted && !disposed && policy() && visible && document.visibilityState === "visible";
+      timer = setTimeout(() => { if (current()) fail(); }, 20000);
       try {
         // Yield critical image/font bandwidth. The poster is already the full UI.
         if (poster.current && !poster.current.complete && typeof poster.current.decode === "function") {
           await poster.current.decode().catch(() => {});
         }
-        if (controller.signal.aborted) return;
+        if (!current()) return;
         const response = await fetch(movie, { signal: controller.signal, priority: "low" });
         if (!response.ok || Number(response.headers.get("content-length")) > 8_000_000) throw Error("media");
         const blob = await response.blob();
         if (blob.size > 8_000_000 || !blob.size) throw Error("media size");
-        if (controller.signal.aborted || disposed || !policy()) return;
+        if (!current()) return;
         objectURL = URL.createObjectURL(blob); video.preload = "auto"; video.src = objectURL; video.load();
-      } catch { if (!controller.signal.aborted && !disposed) fail(); }
+      } catch { if (current()) fail(); }
     }
     function update(): void {
       if (!policy()) { failed = false; unload(); return; }
-      if (document.visibilityState !== "visible" || !visible) { stop(); return; }
+      if (document.visibilityState !== "visible" || !visible) {
+        // An already decoded Blob stays bounded and reusable on reverse scroll;
+        // an unfinished download/decoder never attaches after the visitor left.
+        stop(); if (!loaded) unload(); return;
+      }
       void load(); frameReady(); start();
     }
     const observer = new IntersectionObserver(entries => { visible = entries.some(entry => entry.isIntersecting); update(); });

@@ -1,6 +1,13 @@
 # AFİNA ZEYTİN v12 — Hasadın içinden
 
-**Güncel ek çalışma: [Task171](tasks/171-fotografli-coklu-urun-ve-menu.md).**
+**Güncel ek çalışma: [Task172](tasks/172-mobil-scroll-animasyonlari.md).**
+Dikey dokunmatik320–1023px ve en az640px yükseklikte ilk üç sahne480svh
+üzerinden aynı scroll zaman çizgisini kullanır; tesis fotoğrafı/metni üst üste,
+sofra ürünleri ve44px kontroller ekrana sığar. Galeri aynı doğrusal yatay
+rayı telefon kartlarıyla kullanır. B2B/kapanış yalnız görsel katmanda hafif
+hareket eder. Kısa/yatay/reduced/saveData/düşük CPU için native içerik sürer.
+
+**Önceki çalışma: [Task171](tasks/171-fotografli-coklu-urun-ve-menu.md).**
 Teklifte fotoğraflı çoklu ürün seçimi, ambalaj başına elle adet ve +/-;
 kompakt kapalı alan, mobilde içi kaydırılan erişilebilir panel. Katalogdaki
 özgün ürünler ve manuel e-posta taslağı korunur.21st109/20055 kaynakları
@@ -55,13 +62,17 @@ medya yok; kabul edilmiş A→B, gerçek tesis ve özgün ambalajlar kullanılı
 
 ## Hareket ve erişim
 
-İlk üç sahne tek 600svh sticky alanı paylaşır. Yalnız ≥1024×760, fine pointer,
-hover, normal hareket, saveData kapalı ve yeterli donanımda. Pin videonun geç
+İlk üç sahne masaüstünde600svh, uygun dikey dokunmatik ekranda480svh sticky
+alanı paylaşır. Desktop ≥1024×760 fine pointer/hover; touch320–1023px genişlik
+ve ≥640px yükseklik. Her ikisinde normal hareket, saveData kapalı ve yeterli
+donanım gerekir. Pin videonun geç
 hazır olmasına bağlı değildir; medya hatasında aynı sahne posterle devam eder.
 Film 4 MB/GOP8; mevcut sonlu seek/cleanup sürücüsü değişmez.
 
-Derin bağlantılar ve klavye odağı ilgili sahne konumuna eşlenir. Mobil/kısa
-ve reduced-motion: aynı içerikler doğal sırada; film talebi/uzun boş pin yok.
+Derin bağlantılar ve klavye odağı ilgili sahne konumuna eşlenir. Task172 ile
+uygun dikey dokunmatik ekran da480svh sahne/film scrub ve yatay galeri alır.
+Kısa/yatay, reduced-motion, saveData ve düşük CPU: aynı içerikler doğal
+sırada; film talebi/uzun boş pin yok.
 Alt bölüm metinleri/form kontrol geometrisi sabit, görsel katmanlar hareketli.
 Wheel/touch/body kilidi veya ikinci GSAP/Lenis motoru yok.
 

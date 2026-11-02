@@ -1,4 +1,16 @@
-## Aktif iş: Task171 / fotoğraflı çoklu ürün ve menü (2 Kasım 2026)
+## Aktif iş: Task172 / mobil scroll animasyonları (2 Kasım 2026)
+
+Kullanıcı beğenilen masaüstü scroll ve animasyonlarını mümkün olduğunca
+mobile istedi. Kapsam `docs/tasks/172-mobil-scroll-animasyonlari.md`:
+portrait touch sahne/galeri, kısa/yatay/reduced/saveData native fallback,
+aynı varlıklar ve ticari işlemler. Mevcut desktop görseli korunur.
+Task172 yerel1410unit/lint/typecheck/build ve12profil63kontrol PASS;
+menü9viewport/4scroll/içsayfa geçişi PASS. Kanıt docs/referans/qa-172-20261102.json.
+Main/API yayını sırada. Task171 b517ba7 yayında; CI41403186829 ve REST
+`dpl_F5s6yihRrPXNCq9WeChH2pDv3cPL` READY; canlı44form kontrolü ve9menü
+viewport PASS. Makbuz `.cache/task-171/final-receipt.json`.
+
+## Önceki iş: Task171 / fotoğraflı çoklu ürün ve menü (2 Kasım 2026)
 
 Kullanıcı çoklu ürün seçimini fotoğraf ve elle düzenlenen adetlerle istedi;
 21stMCP kullanılacak. Menü görünümü ayrıca kontrol edilip düzeltilecek.

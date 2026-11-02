@@ -1,0 +1,15 @@
+{
+  "task": 172,
+  "retrieved": "2026-11-02",
+  "provider": "21st.dev MCP",
+  "search": "scroll sticky responsive horizontal",
+  "componentId": 24623,
+  "url": "https://21st.dev/@motiondotdev/components/motion-scroll-horizontal",
+  "adaptation": "Existing sticky useScroll x translation preserved; mobile policy and geometry extended, no dependency or catalogue changes",
+  "localFiles": [
+    "components/landing/HorizontalProductGallery.tsx",
+    "components/landing/HarvestJourney.tsx"
+  ],
+  "boundaries": "Original AFINA assets, product data, auth/cart/payment/mailto retained",
+  "mcpResponseSha256": "4162cabb6537db7770c851bdda33d059b7c7b4557367299deb2fe11c9783a91e"
+}

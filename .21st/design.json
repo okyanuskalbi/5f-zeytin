@@ -68,7 +68,9 @@
       "docs/scrollcraft/builds/afina-v11/REQUIREMENTS.md",
       ".agents/skills/10k-websites/SKILL.md",
       "docs/tasks/171-fotografli-coklu-urun-ve-menu.md",
-      "docs/referans/quote-picker-171-source.json"
+      "docs/referans/quote-picker-171-source.json",
+      "docs/tasks/172-mobil-scroll-animasyonlari.md",
+      "docs/referans/mobile-scroll-172-source.json"
     ]
   },
   "design": {
@@ -204,7 +206,7 @@
         "source": "lib/ui-motion.ts"
       },
       "galleryScrub": {
-        "value": "x = -travel * progress, no spring; single pin only eligible >=1024x860 normal-motion measured JS; native rail on short/mobile/reduced/noJS",
+        "value": "x = -travel * progress, no spring; desktop >=1024x680 or portrait coarse320..1023x>=640; measured sticky100svh, native short/landscape/reduced/saveData/low-CPU/noJS; last product and44px actions fit",
         "source": "components/landing/HorizontalProductGallery.tsx"
       },
       "facilityPhoto": {
@@ -239,7 +241,7 @@
     "patterns": [
       "One original-logo light glass navigation with real shopping/account/cart routes and existing accessible Radix mobile dialog",
       "Natural full-bleed approved Flow-derived five-second film, original decorative near branch, two-line real DOM slogan and product/quote anchors",
-      "Single gallery peak: six authoritative SKU records, sticky direct linear horizontal travel on eligible desktop; native accessible rail fallbacks",
+      "Six authoritative SKU records, direct linear horizontal travel on eligible desktop and portrait touch, native accessible rail fallbacks",
       "Genuine Ellek facility photograph with short place/address copy and isolated parallax, then asymmetric three-stage factual bento",
       "Three peer B2B segment buttons store the real selected audience and move to the same #teklif form",
       "Labelled required/KVKK form prepares a real summary and manual mailto draft to the explicitly identified parent company; no automatic server email/WhatsApp claim",
@@ -249,18 +251,18 @@
   },
   "constraints": {
     "must": [
-      "Use docs/DESIGN.md v9 Hasat Rotası and pre-code afina-v9 BRIEF/PLAN/COPY as active visual contract; Task161 implementing/acceptance pending",
+      "Use docs/DESIGN.md accepted v12 visual contract with Task172 mobile adaptation; previous v9 records are historical",
       "Use plan palette #84CC16/#EDE8DD/#1C1F1A/#C89B3C with #735519 accessible small gold text, Fraunces/Inter, original logo/packaging/official two-line slogan",
-      "Keep seven semantic scenes in order: baslangic,urunler,tesisimiz,uretim-yolculugu,toptan-iletisim,teklif,iletisim; nested sik-sorulanlar and legacy kurumsal/kiler anchors preserved",
+      "Keep semantic destinations and source order: baslangic,tesisimiz,uretim-yolculugu,urunler,toptan-iletisim,teklif,iletisim; nested sik-sorulanlar and legacy kurumsal/kiler anchors preserved",
       "Use nine selected real21st sources 32829,24623,20023,1197,7262,35258,31986,26786,21474; exact source/demo hashes and adaptation map in 21ST-SOURCES.json;1635 reference only",
       "Natural viewport hero with accepted Flow film, original near branch and one glass nav; H1/real #urunler/#teklif anchors present in SSR",
-      "Only gallery pins on eligible >=1024x860 normal-motion measured JS; x=-travel*progress direct linear; native rail for short/mobile/reduced/noJS and focused/last product accessible",
+      "Harvest desktop600svh/touch480svh and gallery measured sticky scroll; native layout for short/landscape/reduced/saveData/low-CPU/noJS; focused last product and real actions accessible",
       "Preserve all six existing SKU identity/order/names/prices/stock/images/schema and existing detail/cart/account/checkout server authority; product and audience choices share real quote context",
-      "Accepted A→B free local forward/reverse frames6..65 derivative:120frames/24fps/5sec/1280x720/2742609bytes, muted loop with real pause/play, hidden/offscreen stop and preference/error poster fallback",
+      "Accepted4MB7.9167sec1280x72024fps scrub film; finite native seek queue, forward/reverse scroll, hidden/offscreen stop, preference/error poster fallback",
       "Reduced-motion/saveData do not initiate MP4 requests; static poster and all real actions remain; controls44px+ outside moving video plane",
       "Quote validation/KVKK produces a real user-completed mailto draft; info@afina.com.tr/+903288827708 explicitly parent-company contacts; no verified WhatsApp/server delivery transport",
-      "Motion/react only, shared action tokens, transform/opacity, no currentTime scroll engine; static glass blur is not animated",
-      "Bundled headless Chromium only, at most two workers and graceful cleanup; final Task161 local/CI/API/live/physical-device/transaction results remain separate gates"
+      "Shared framer-motion/motion runtime14.4; transform/opacity, bounded existing currentTime scrub driver, no second scroll engine or body lock",
+      "Bundled headless Chromium only, at most two workers and graceful cleanup; local/CI/API/live/physical-device/transaction results remain separate gates"
     ],
     "avoid": [
       "Treating v8 170svh package/paper-plane hero, opaque nav, Figtree/old palette or onepass-only preference as active v9 constraints",
@@ -562,5 +564,13 @@
         "verification": "docs/scrollcraft/builds/afina-v10/VERIFICATION.md"
       }
     }
-  ]
+  ],
+  "mobileScroll172": {
+    "source": "User 2026-11-02: bring accepted desktop scroll effects to mobile",
+    "scene": "Harvest480svh on portrait coarse320..1023x>=640; desktop600svh unchanged",
+    "gallery": "21st24623 direct scroll-to-x; measured layout width excludes decorative spotlight overflow",
+    "lower": "B2B pack28px/bottle16px, closing20px; stable form and controls",
+    "fallback": "native semantic content on short/landscape/reduced/saveData/cores<4/noJS; no video request when restricted",
+    "validation": "Local1410unit/lint/typecheck/webpack build; production Chromium12profiles63checks andnavbar9viewports PASS. Physical device and real transactions not tested; release receipt separate."
+  }
 }

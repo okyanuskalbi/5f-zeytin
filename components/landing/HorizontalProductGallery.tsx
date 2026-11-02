@@ -6,8 +6,8 @@ import { ArrowDownRightIcon, ArrowUpRightIcon, CheckIcon } from "lucide-react";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { PendantLampRail } from "@/components/ui/pendant-lamp-rail";
 import { v3Image } from "@/lib/media/v3-assets";
+import { useGalleryMotion } from "@/lib/media/use-gallery-motion";
 import type { ProductVariant } from "@/types/catalog";
-import { useDesktopMotion } from "./ScrollStage";
 import { useQuoteJourney } from "./QuoteJourneyProvider";
 import styles from "./HorizontalProductGallery.module.css";
 const subscribeReady = () => () => {};
@@ -25,8 +25,8 @@ export function galleryFocusProgress(left: number, width: number, viewportWidth:
   return Math.max(0, Math.min(1, (left - (viewportWidth - width) / 2) / travel));
 }
 
-function GalleryProduct({ product, index, total, active, railX, windowWidth, children }: {
-  product: ProductVariant; index: number; total: number; active: boolean;
+function GalleryProduct({ product, index, total, active, touch, railX, windowWidth, children }: {
+  product: ProductVariant; index: number; total: number; active: boolean; touch: boolean;
   railX: MotionValue<number>; windowWidth: MotionValue<number>; children: ReactNode;
 }) {
   const item = useRef<HTMLDivElement>(null);
@@ -45,7 +45,7 @@ function GalleryProduct({ product, index, total, active, railX, windowWidth, chi
     return () => observer?.disconnect();
   }, [active, centre]);
   return <motion.div ref={item} data-gallery-item={product.id} data-rail-item={product.id} className={styles.item}
-    initial={false} style={active ? { scale } : { transform: "none" }}>
+    initial={false} style={active && !touch ? { scale } : { transform: "none" }}>
     <motion.div className={styles.spotlight} aria-hidden="true" style={{ opacity: light }} />
     <span className={styles.number} aria-hidden="true">{String(index + 1).padStart(2, "0")} <span>/ {String(total).padStart(2, "0")}</span></span>
     {children}
@@ -59,24 +59,58 @@ function GalleryProduct({ product, index, total, active, railX, windowWidth, chi
 export function HorizontalProductGallery({ products }: { products: readonly ProductVariant[] }) {
   const ordered = [...products].sort((a, b) => a.imageKey.localeCompare(b.imageKey));
   const section = useRef<HTMLElement>(null);
+  const stage = useRef<HTMLDivElement>(null);
   const viewport = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
+  const wasScrub = useRef(false);
+  const previousGeometry = useRef({ travel: 0, stageHeight: 0 });
   const [travel, setTravel] = useState(0);
+  const [stageHeight, setStageHeight] = useState(0);
   const distance = useMotionValue(0);
   const windowWidth = useMotionValue(0);
-  const desktop = useDesktopMotion("(min-width: 1024px) and (min-height: 680px) and (hover: hover) and (pointer: fine)");
-  const scrub = desktop && travel > 1;
+  const layout = useGalleryMotion();
+  const scrub = layout !== "native" && travel > 1;
   const journey = useQuoteJourney();
   const ready = useSyncExternalStore(subscribeReady, clientReady, serverReady);
-  const { scrollYProgress } = useScroll({ target: section, offset: ["start start", "end end"] });
-  const x = useTransform(() => -distance.get() * scrollYProgress.get());
+  // A phone's visible viewport may grow when browser chrome retracts, while
+  // 100svh remains stable. The last package meets the actual sticky stage end.
+  const { scrollYProgress } = useScroll({ target: section, offset: ["start start", stageHeight > 0 ? `end ${stageHeight}px` : "end end"] });
+  // The rail subscribes to x to update its active product. Deriving x during
+  // render can notify that child while this component is rendering on rotation.
+  // Input/measurement events update the same value without a render-time write.
+  const x = useMotionValue(0);
+  useMotionValueEvent(distance, "change", next => x.set(-next * scrollYProgress.get()));
   useLayoutEffect(() => {
-    if (!scrub || !section.current) return;
+    const previous = wasScrub.current;
+    const resized = previousGeometry.current.travel !== travel || previousGeometry.current.stageHeight !== stageHeight;
+    wasScrub.current = scrub;
+    previousGeometry.current = { travel, stageHeight };
+    if (!section.current || !viewport.current) return;
     const element = section.current;
-    const span = element.clientHeight - window.innerHeight;
-    scrollYProgress.set(span > 0 ? Math.max(0, Math.min(1, -element.getBoundingClientRect().top / span)) : 0);
-  }, [scrub, travel, scrollYProgress]);
+    const windowElement = viewport.current;
+    const focused = windowElement.contains(document.activeElement)
+      ? document.activeElement?.closest<HTMLElement>("[data-gallery-item]") : null;
+    if (!scrub) {
+      if (previous) windowElement.scrollLeft = focused
+        ? galleryFocusProgress(focused.offsetLeft, focused.offsetWidth, windowElement.clientWidth, travel) * travel
+        : Math.max(0, -x.get());
+      return;
+    }
+    const span = element.clientHeight - (stage.current?.clientHeight ?? window.innerHeight);
+    // overflow:clip may have already cleared native scrollLeft at this point.
+    // The focused SKU remains the reliable source for preserving visibility.
+    // A native→pin commit first carries the old travel; re-reveal after the
+    // new card width is measured, never on ordinary scroll progress updates.
+    const revealFocused = focused && (!previous || resized);
+    const progress = revealFocused
+      ? galleryFocusProgress(focused.offsetLeft, focused.offsetWidth, windowElement.clientWidth, travel)
+      : span > 0 ? Math.max(0, Math.min(1, -element.getBoundingClientRect().top / span)) : 0;
+    windowElement.scrollLeft = 0;
+    scrollYProgress.set(progress);
+    if (revealFocused) window.scrollTo({ top: element.getBoundingClientRect().top + window.scrollY + progress * span, behavior: "instant" });
+  }, [scrub, travel, stageHeight, scrollYProgress, x]);
   useMotionValueEvent(scrollYProgress, "change", p => {
+    x.set(-distance.get() * p);
     if (!section.current || !scrub) return;
     section.current.style.setProperty("--sc-p", String(p));
   });
@@ -84,18 +118,22 @@ export function HorizontalProductGallery({ products }: { products: readonly Prod
     const rail = track.current, windowElement = viewport.current;
     if (!rail || !windowElement) return;
     const measure = () => {
-      const next = Math.max(0, rail.scrollWidth - windowElement.clientWidth);
+      // Decorative spotlight paint overhangs the last narrow phone card.
+      // scrollWidth counts that paint and would push the final controls left.
+      const next = Math.max(0, rail.offsetWidth - windowElement.clientWidth);
       windowWidth.set(windowElement.clientWidth);
       distance.set(next); setTravel(next);
+      setStageHeight(scrub ? stage.current?.clientHeight ?? 0 : 0);
     };
     measure();
     const observer = typeof ResizeObserver === "function" ? new ResizeObserver(measure) : undefined;
     observer?.observe(rail); observer?.observe(windowElement);
+    if (stage.current) observer?.observe(stage.current);
     let current = true;
     void document.fonts?.ready.then(() => { if (current) measure(); });
     rail.addEventListener("load", measure, true);
     return () => { current = false; observer?.disconnect(); rail.removeEventListener("load", measure, true); };
-  }, [distance, windowWidth]);
+  }, [distance, windowWidth, scrub]);
 
   function revealFocus(event: FocusEvent<HTMLDivElement>) {
     if (!scrub || !section.current || !viewport.current || !track.current) return;
@@ -106,12 +144,12 @@ export function HorizontalProductGallery({ products }: { products: readonly Prod
     if (itemRect.left >= viewportRect.left - 2 && itemRect.right <= viewportRect.right + 2) return;
     const progress = galleryFocusProgress(item.offsetLeft, item.offsetWidth, viewport.current.clientWidth, travel);
     const sceneRect = section.current.getBoundingClientRect();
-    const span = Math.max(0, section.current.clientHeight - window.innerHeight);
+    const span = Math.max(0, section.current.clientHeight - (stage.current?.clientHeight ?? window.innerHeight));
     window.scrollTo({ top: sceneRect.top + scrollY + progress * span, behavior: "instant" });
   }
   function seekGallery(offset: number) {
     if (!section.current || travel <= 0) return;
-    const span = Math.max(0, section.current.clientHeight - window.innerHeight);
+    const span = Math.max(0, section.current.clientHeight - (stage.current?.clientHeight ?? window.innerHeight));
     const top = section.current.getBoundingClientRect().top + window.scrollY;
     const progress = Math.max(0, Math.min(1, offset / travel));
     scrollYProgress.set(progress);
@@ -119,9 +157,9 @@ export function HorizontalProductGallery({ products }: { products: readonly Prod
   }
   return <section ref={section} id="urunler" aria-labelledby="urunler-title" className={styles.section}
     data-sc-scene="urunler" data-sc-device="pan" data-sc-engine="motion" data-21st-source="24623"
-    data-gallery-mode={scrub ? "scrub" : "native"} style={{ "--gallery-span": `${travel}px` } as CSSProperties}>
+    data-gallery-mode={scrub ? "scrub" : "native"} data-gallery-layout={layout} style={{ "--gallery-span": `${travel}px` } as CSSProperties}>
     <noscript><span className={styles.noJs} /><p className={styles.noJsMessage}>Ürün bilgilerini inceleyebilir, sipariş ve toptan talep için <a href="#iletisim">iletişim bilgilerine ulaşabilirsiniz.</a></p></noscript>
-    <div className={styles.stage}>
+    <div ref={stage} className={styles.stage}>
       <div className={styles.heading} id="kiler">
         <div><p className={styles.eyebrow}>AFİNA KOLEKSİYONU</p><h2 id="urunler-title">Sofranızdan{" "}<em>işletmenize.</em></h2><p>Her sofraya bir AFİNA. Zeytin, salamura ve zeytinyağı.</p></div>
         <p className={styles.explanation}>Ambalajı seçin. Sofranız için sepete,<br className={styles.desktopBreak} /> işletmeniz için teklifinize ekleyin.<ArrowDownRightIcon aria-hidden="true" size={24} /></p>
@@ -131,8 +169,8 @@ export function HorizontalProductGallery({ products }: { products: readonly Prod
           viewportRef={viewport} trackRef={track} viewportClassName={styles.viewport} trackClassName={styles.track}
           onOffsetChange={seekGallery} onFocusCapture={revealFocus}>
             {ordered.map((product, index) => <GalleryProduct key={product.id} product={product} index={index} total={ordered.length}
-              active={scrub} railX={x} windowWidth={windowWidth}>
-              <ProductCard product={product} image={v3Image(product.imageKey)} index={index} featured={false} quoteAction={
+              active={scrub} touch={layout === "touch"} railX={x} windowWidth={windowWidth}>
+              <ProductCard product={product} image={v3Image(product.imageKey)} imageSizes={layout === "touch" ? "(max-width: 767px) 90vw, 420px" : undefined} index={index} featured={false} quoteAction={
               <button type="button" disabled={!ready} className={styles.quote} data-selected={Object.hasOwn(journey.quantities, product.id)}
                 aria-label={`Teklife ekle: ${product.name}, ${product.weight}`}
                 onClick={() => { journey.chooseProduct(product.id); window.location.hash = "teklif"; }}>

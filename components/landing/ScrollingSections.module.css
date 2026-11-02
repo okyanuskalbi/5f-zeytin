@@ -140,9 +140,9 @@
 .closingLandscape::after { content:""; position:absolute; inset:0; background:linear-gradient(0deg,rgba(23,43,33,.6),transparent 30%); pointer-events:none; }
 .closingLocation { position:absolute; z-index:1; bottom:32px; left:var(--pro-gutter); color:var(--pro-paper); font-size:12px; line-height:1.6; letter-spacing:.07em; }
 @media(min-width:1024px) and (min-height:760px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
- .businessStage { position:sticky; top:calc(var(--header-height) + 32px); }
- .businessChapter { min-height:62svh; }
- .businessProducts { height:min(43svh,440px); }
+ .business[data-business-mode="held"] .businessStage { position:sticky; top:calc(var(--header-height) + 32px); }
+ .business[data-business-mode="held"] .businessChapter { min-height:62svh; }
+ .business[data-business-mode="held"] .businessProducts { height:min(43svh,440px); }
  .businessTitle h2 { font-size:clamp(52px,4.7vw,72px); }
 }
 @media(max-width:1100px) {
@@ -196,7 +196,8 @@
  .contactGrid h2 { font-size:clamp(56px,15vw,76px); }
  .contactGrid > div:last-child { padding:0; }
  .closingLandscape { height:400px; margin-top:64px; }
- .closingImage { inset:-24px 0; }
+ /* Cover the frame throughout ±20px travel and the initial .97 scale. */
+ .closingImage { inset:-32px -4%; }
  .closingImage img { object-position:50% 48%; }
  .closingLocation { bottom:24px; font-size:11px; }
 }

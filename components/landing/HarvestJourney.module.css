@@ -113,6 +113,34 @@
  .factory { padding-top:120px; padding-bottom:80px; }
  .tableTitle { font-size:12vw; }
 }
+/* The phone shares the desktop timeline, with shorter travel and a stacked
+   facility scene that keeps every link inside the held viewport. */
+.journey[data-mode="cinematic"][data-motion-device="touch"] { height:480svh; }
+.journey[data-motion-device="touch"] .heroCopy { bottom:31%; }
+.journey[data-motion-device="touch"] .heroCopy h1 { font-size:clamp(42px,11vw,84px); }
+.journey[data-motion-device="touch"] .heroActions { bottom:12%; }
+.journey[data-motion-device="touch"] .heroFoot { display:none; }
+.journey[data-motion-device="touch"] .branchCopy p { font-size:clamp(56px,16vw,100px); }
+.journey[data-motion-device="touch"] .branchCopy span { max-width:26ch; font-size:14px; }
+.journey[data-motion-device="touch"] .factory { display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(130px,1fr) auto; gap:14px; padding:calc(var(--header-height) + 16px) var(--pro-gutter) 68px; }
+.journey[data-motion-device="touch"] .factoryPhoto { grid-column:1; grid-row:1; height:100%; min-height:0; max-height:32svh; transform-origin:center; }
+.journey[data-motion-device="touch"] .factoryPhoto figcaption { padding:24px 12px 10px; font-size:8px; }
+.journey[data-motion-device="touch"] .factoryCopy { grid-column:1; grid-row:2; }
+.journey[data-motion-device="touch"] .factoryCopy .eyebrow { font-size:9px; }
+.journey[data-motion-device="touch"] .factoryCopy h2 { margin-top:8px; max-width:none; font-size:clamp(32px,8.5vw,48px); line-height:1.04; }
+.journey[data-motion-device="touch"] .factoryCopy h2 br { display:none; }
+.journey[data-motion-device="touch"] .factoryCopy > p:not(.eyebrow) { margin-top:12px; font-size:13px; line-height:1.5; }
+.journey[data-motion-device="touch"] .factoryCopy address { margin-top:10px; max-width:none; font-size:10px; line-height:1.5; }
+.journey[data-motion-device="touch"] .textLink { margin-top:6px; min-height:44px; font-size:11px; }
+.journey[data-motion-device="touch"] .table { padding-top:calc(var(--header-height) + 18px); }
+.journey[data-motion-device="touch"] .tableTitle { top:19%; font-size:clamp(48px,13vw,110px); }
+.journey[data-motion-device="touch"] .productStage { top:32%; bottom:29%; left:15%; right:15%; }
+.journey[data-motion-device="touch"] .tableFoot { bottom:10%; display:block; }
+.journey[data-motion-device="touch"] .tableFoot p { font-size:13px; line-height:1.5; }
+.journey[data-motion-device="touch"] .tableFoot a { margin-top:12px; min-height:48px; }
+.journey[data-motion-device="touch"] .sceneNav { inset-inline:var(--pro-gutter); bottom:12px; justify-content:flex-end; gap:18px; }
+.journey[data-motion-device="touch"] .sceneNav a { min-width:44px; font-size:10px; }
+.journey[data-motion-device="touch"] .rule { flex:1; max-width:56px; }
 @media(prefers-reduced-motion:reduce) {
  .journey { height:auto!important; }
  .stage { position:relative!important; height:auto!important; }
