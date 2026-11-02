@@ -1,6 +1,6 @@
 'use client';
 
-import {useEffect,useId,useLayoutEffect,useRef,useState,type CSSProperties,type KeyboardEvent} from 'react';
+import {useEffect,useId,useLayoutEffect,useRef,useState,useSyncExternalStore,type CSSProperties,type KeyboardEvent} from 'react';
 import {Check,ChevronDown,Search} from 'lucide-react';
 import type {ContactLanguage as Lang} from '@/lib/contact/language';
 import {phoneCountry,phoneCode,type countryPhoneOptions,type PhoneParts} from '@/lib/contact/customer-phone';
@@ -8,6 +8,7 @@ import './phone-country-search.css';
 
 type Option=ReturnType<typeof countryPhoneOptions>[number];
 type Result={key:string;status:'loading'|'ready'|'error';items:Option[]};
+const subscribeReady=()=>()=>{},clientReady=()=>true,serverReady=()=>false;
 const copy={
  tr:{search:'Ülke veya kod ara',loading:'Yükleniyor…',empty:'Ülke bulunamadı.',retry:'Yeniden dene',error:'Ülke listesi yüklenemedi.'},
  en:{search:'Search country or code',loading:'Loading…',empty:'No countries found.',retry:'Retry',error:'Unable to load countries.'},
@@ -15,10 +16,14 @@ const copy={
 };
 
 export function PhoneCountrySearch({name,value,options,label,autoComplete,lang,onChange}:{name:string;value:PhoneParts['phoneCountry'];options:Option[];label:string;autoComplete:string;lang:Lang;onChange:(value:PhoneParts['phoneCountry'])=>void}){
+ // Node and Chromium can use different CLDR names/order. The server and first
+ // hydration render use ISO labels/order; localization follows hydration.
+ const hydrated=useSyncExternalStore(subscribeReady,clientReady,serverReady);
+ const renderedOptions=hydrated?options:options.map(item=>({...item,name:item.country})).sort((a,b)=>a.country<b.country?-1:a.country>b.country?1:0);
  const root=useRef<HTMLDivElement>(null),trigger=useRef<HTMLButtonElement>(null),select=useRef<HTMLSelectElement>(null),panel=useRef<HTMLDivElement>(null),search=useRef<HTMLInputElement>(null),list=useRef<HTMLUListElement>(null),id=useId(),c=copy[lang];
  const[open,setOpen]=useState(false),[query,setQuery]=useState(''),[active,setActive]=useState(-1),[result,setResult]=useState<Result|null>(null),[retry,setRetry]=useState(0),[position,setPosition]=useState({left:12,top:12,width:300,height:300});
  const key=JSON.stringify([lang,query]),current=result?.key===key?result:null,status=current?.status||'loading';
- const items=current?.status==='ready'?[...current.items].sort((a,b)=>Number(b.country===value)-Number(a.country===value)):[],selected=options.find(item=>item.country===value)!;
+ const items=current?.status==='ready'?[...current.items].sort((a,b)=>Number(b.country===value)-Number(a.country===value)):[],selected=renderedOptions.find(item=>item.country===value)!;
  function close(focus=false){setOpen(false);setActive(-1);if(focus)trigger.current?.focus({preventScroll:true})}
  function choose(item:Option){
   // Keep native form/autofill/change semantics while replacing its visible menu.
@@ -72,7 +77,7 @@ export function PhoneCountrySearch({name,value,options,label,autoComplete,lang,o
  }
  const message=status==='loading'?c.loading:status==='error'?c.error:!items.length?c.empty:'';
  return <div ref={root} className="phone-country-search">
-  <select ref={select} hidden name={name} value={value} onChange={event=>{const next=phoneCountry(event.target.value);if(next)onChange(next)}} autoComplete={autoComplete} tabIndex={-1} aria-hidden="true">{options.map(item=><option key={item.country} value={item.country}>{item.code} · {item.name}</option>)}</select>
+  <select ref={select} hidden name={name} value={value} onChange={event=>{const next=phoneCountry(event.target.value);if(next)onChange(next)}} autoComplete={autoComplete} tabIndex={-1} aria-hidden="true">{renderedOptions.map(item=><option key={item.country} value={item.country}>{item.code} · {item.name}</option>)}</select>
   <button ref={trigger} type="button" className="phone-country-trigger" aria-label={label+': '+selected.code+' · '+selected.name} aria-haspopup="dialog" aria-expanded={open} aria-controls={open?id:undefined} title={selected.code+' · '+selected.name} onClick={()=>{if(open)close();else{setQuery('');setOpen(true)}}} onKeyDown={event=>{if(event.key==='ArrowDown'||event.key==='ArrowUp'){event.preventDefault();setQuery('');setOpen(true)}}}><span dir="auto">{selected.code} · {selected.name}</span><ChevronDown size={16} aria-hidden="true"/></button>
   {open&&<div ref={panel} id={id} popover="manual" className="phone-country-panel" role="dialog" aria-label={label} onKeyDown={event=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();close(true)}}} style={{left:position.left,top:position.top,width:position.width,'--phone-country-height':position.height+'px'} as CSSProperties}>
    <div className="phone-country-query"><Search size={17} aria-hidden="true"/><input ref={search} type="search" role="combobox" aria-label={c.search} aria-autocomplete="list" aria-expanded="true" aria-controls={id+'-list'} aria-activedescendant={active>=0&&items[active]?id+'-'+items[active].country:undefined} aria-describedby={id+'-status'} placeholder={c.search} value={query} maxLength={80} autoComplete="off" onChange={event=>{event.stopPropagation();setQuery(event.target.value);setActive(-1)}} onKeyDown={keyboard}/></div>

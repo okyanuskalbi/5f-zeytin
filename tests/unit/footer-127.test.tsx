@@ -24,10 +24,14 @@ it("places all four columns and three imprint groups in source order without los
   expect([...columns.children].map(node => node.getAttribute("aria-labelledby"))).toEqual([
     "footer-brand-title", "footer-shopping-title", "footer-help-title", "footer-contact-title",
   ]);
-  const payment = columns.nextElementSibling!;
-  expect(payment.getAttribute("aria-label")).toBe("Güvenli ödeme");
+  const service = columns.nextElementSibling!;
+  const form = service.querySelector('form[aria-label="E-postayla teklif taslağı"]')!;
+  expect(form).not.toBeNull();
+  const payment = service.querySelector('[aria-label="Güvenli ödeme"]')!;
+  expect(payment).not.toBeNull();
+  expect(payment.contains(form)).toBe(false);
   expect([...payment.querySelectorAll("img")].map(img => img.alt)).toEqual(["PayTR", "Visa", "Mastercard", "Troy"]);
-  const imprint = payment.nextElementSibling!;
+  const imprint = service.nextElementSibling!;
   expect(imprint.children).toHaveLength(3);
   expect(imprint.children[0].textContent).toBe(`${seller.name} · ${seller.taxOffice} VD · VKN ${seller.taxId}`);
   expect([...imprint.children[1].querySelectorAll("a")].map(link => link.getAttribute("href"))).toEqual(["/kvkk", "/mesafeli-satis", "/iade"]);
@@ -45,6 +49,7 @@ it("retains established footer destinations while integrating the requested emai
   }));
   for (const link of links(before)) expect(links(after)).toContainEqual(link);
   expect(after.querySelector("footer")?.getAttribute("data-footer-component")).toBe("Footerdemo");
+  expect(after.querySelector("footer")?.getAttribute("data-21st-source")).toBe("26006");
   expect(after.querySelector("footer")?.getAttribute("data-surface")).toBe("light");
   expect(after.querySelector('input[type="email"][required]')).not.toBeNull();
   expect(after.querySelector('form[aria-label="E-postayla teklif taslağı"]')?.textContent).toContain("Gönderimi e-posta uygulamanızda siz tamamlarsınız.");

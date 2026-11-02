@@ -36,7 +36,7 @@ it("serves seven ordered, named sections with their actual 21st sources before J
   const doc = await serverDocument();
   const contract = [
     ["baslangic", "32829"], ["tesisimiz", "20023"], ["uretim-yolculugu", "18041"],
-    ["urunler", "24623"], ["toptan-iletisim", "7262"], ["teklif", "35258"], ["iletisim", "31986"],
+    ["urunler", "24623"], ["toptan-iletisim", "7262"], ["teklif", "27904"], ["iletisim", "31986"],
   ];
   const sections = [...doc.querySelectorAll("main section[data-sc-scene]")];
   expect(sections.map(section => section.id)).toEqual(contract.map(([id]) => id));

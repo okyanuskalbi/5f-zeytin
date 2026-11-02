@@ -1,0 +1,234 @@
+{
+  "task": 170,
+  "recordedAt": "2026-11-02T02:43:54.944Z",
+  "target": "local production build",
+  "checks": {
+    "passed": 40,
+    "failed": 0
+  },
+  "viewports": [
+    {
+      "viewport": "1440×900",
+      "quoteHeight": 646.765625,
+      "quoteBottom": 750.765625,
+      "footerHeight": 520.375,
+      "pageErrors": 0,
+      "failedGETs": 0,
+      "checks": [
+        {
+          "name": "quote initial geometry and 44px controls",
+          "passed": true
+        },
+        {
+          "name": "quote horizontal overflow",
+          "passed": true
+        },
+        {
+          "name": "quote screenshot",
+          "passed": true
+        },
+        {
+          "name": "footer compact geometry and legal destinations",
+          "passed": true
+        },
+        {
+          "name": "footer horizontal overflow",
+          "passed": true
+        },
+        {
+          "name": "footer screenshot",
+          "passed": true
+        },
+        {
+          "name": "no page exceptions, HTTP failures or attempted network writes",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "viewport": "1366×768",
+      "quoteHeight": 610.703125,
+      "quoteBottom": 715.171875,
+      "footerHeight": 520.375,
+      "pageErrors": 0,
+      "failedGETs": 0,
+      "checks": [
+        {
+          "name": "quote initial geometry and 44px controls",
+          "passed": true
+        },
+        {
+          "name": "quote horizontal overflow",
+          "passed": true
+        },
+        {
+          "name": "quote screenshot",
+          "passed": true
+        },
+        {
+          "name": "footer compact geometry and legal destinations",
+          "passed": true
+        },
+        {
+          "name": "footer horizontal overflow",
+          "passed": true
+        },
+        {
+          "name": "footer screenshot",
+          "passed": true
+        },
+        {
+          "name": "local quote validation, city reset, country and draft only",
+          "passed": true
+        },
+        {
+          "name": "1366×768 gallery scroll and keyboard End",
+          "passed": true
+        },
+        {
+          "name": "updated membership dialog and hidden unavailable Google",
+          "passed": true
+        },
+        {
+          "name": "no page exceptions, HTTP failures or attempted network writes",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "viewport": "1280×720",
+      "quoteHeight": 610.703125,
+      "quoteBottom": 714.296875,
+      "footerHeight": 520.375,
+      "pageErrors": 0,
+      "failedGETs": 0,
+      "checks": [
+        {
+          "name": "quote initial geometry and 44px controls",
+          "passed": true
+        },
+        {
+          "name": "quote horizontal overflow",
+          "passed": true
+        },
+        {
+          "name": "quote screenshot",
+          "passed": true
+        },
+        {
+          "name": "footer compact geometry and legal destinations",
+          "passed": true
+        },
+        {
+          "name": "footer horizontal overflow",
+          "passed": true
+        },
+        {
+          "name": "footer screenshot",
+          "passed": true
+        },
+        {
+          "name": "no page exceptions, HTTP failures or attempted network writes",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "viewport": "390×844",
+      "quoteHeight": 1191.578125,
+      "quoteBottom": 1287.390625,
+      "footerHeight": 1180.59375,
+      "pageErrors": 0,
+      "failedGETs": 0,
+      "checks": [
+        {
+          "name": "quote initial geometry and 44px controls",
+          "passed": true
+        },
+        {
+          "name": "quote horizontal overflow",
+          "passed": true
+        },
+        {
+          "name": "quote screenshot",
+          "passed": true
+        },
+        {
+          "name": "mobile form uses normal document scrolling",
+          "passed": true
+        },
+        {
+          "name": "footer compact geometry and legal destinations",
+          "passed": true
+        },
+        {
+          "name": "footer horizontal overflow",
+          "passed": true
+        },
+        {
+          "name": "footer screenshot",
+          "passed": true
+        },
+        {
+          "name": "no page exceptions, HTTP failures or attempted network writes",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "viewport": "320×568",
+      "quoteHeight": 1235.578125,
+      "quoteBottom": 1331.359375,
+      "footerHeight": 1246.03125,
+      "pageErrors": 0,
+      "failedGETs": 0,
+      "checks": [
+        {
+          "name": "quote initial geometry and 44px controls",
+          "passed": true
+        },
+        {
+          "name": "quote horizontal overflow",
+          "passed": true
+        },
+        {
+          "name": "quote screenshot",
+          "passed": true
+        },
+        {
+          "name": "mobile form uses normal document scrolling",
+          "passed": true
+        },
+        {
+          "name": "footer compact geometry and legal destinations",
+          "passed": true
+        },
+        {
+          "name": "footer horizontal overflow",
+          "passed": true
+        },
+        {
+          "name": "footer screenshot",
+          "passed": true
+        },
+        {
+          "name": "no page exceptions, HTTP failures or attempted network writes",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    "/Users/emre/PROJELER/5F-ZEYTIN/.cache/task-170/qa-local-2026-11-02T02-43-46-289Z/1366-quote.png",
+    "/Users/emre/PROJELER/5F-ZEYTIN/.cache/task-170/qa-local-2026-11-02T02-43-46-289Z/1366-footer.png",
+    "/Users/emre/PROJELER/5F-ZEYTIN/.cache/task-170/qa-local-2026-11-02T02-43-46-289Z/390-quote.png",
+    "/Users/emre/PROJELER/5F-ZEYTIN/.cache/task-170/qa-local-2026-11-02T02-43-46-289Z/390-footer.png"
+  ],
+  "browser": "Bundled Chromium headless shell, sequential contexts, closed",
+  "scope": "Rendered geometry, responsive overflow, quote validation locally, footer targets, auth and gallery smoke. No real auth, mail, order or payment acceptance.",
+  "fixtures": {
+    "accountGET": "401 anonymous UI fixture",
+    "addressAndCountryGET": "deterministic local fixtures when opened"
+  },
+  "rawReport": ".cache/task-170/qa-local-2026-11-02T02-43-46-289Z/report.json"
+}

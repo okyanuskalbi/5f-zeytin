@@ -4,7 +4,6 @@ import { V3Picture } from "@/components/media/V3Picture";
 import facility from "@/lib/media/renewal-assets.json";
 import { seller } from "@/lib/site/seller";
 import { siteContact } from "@/lib/site/contact";
-import { quoteDeliveryExplanation } from "@/lib/site/public-content";
 import type { ProductVariant } from "@/types/catalog";
 import { Faq } from "./Faq";
 import { SectionReveal } from "./SectionReveal";
@@ -16,6 +15,7 @@ import { QuoteComposer } from "./QuoteComposer";
 import { ProductionStory } from "./ProductionStory";
 import { BlurText } from "@/components/animation/react-bits/BlurText";
 import styles from "./ScrollingSections.module.css";
+import quoteStyles from "./QuoteSection.module.css";
 
 /** Retained for existing consumers; the active route uses the producer story. */
 export function BrandIntroduction(): JSX.Element {
@@ -69,19 +69,15 @@ export function BusinessSection(): JSX.Element {
   return <BusinessJourney />;
 }
 
-/** 21st 35258: the actual form/validation and email-draft response are owned by
+/** 21st 27904: the actual form/validation and email-draft response are owned by
  * QuoteComposer. This section never reports automatic delivery or WhatsApp. */
 export function QuoteSection({ products }: { products: readonly ProductVariant[] }): JSX.Element {
-  return <ScrollStage id="teklif" device="flow" sourceId={35258} labelledBy="teklif-title" className={styles.quote}>
-    <div className={styles.container}>
-      <div className={styles.quoteHeading}>
-        <p className={styles.sceneLabel}>Bir sonraki adım</p>
-        <h2 id="teklif-title">İhtiyacınızı<br /><em>birlikte</em><br />planlayalım.</h2>
-        <p>{quoteDeliveryExplanation}</p>
-        <ScrollArtwork className={styles.quoteStillLife} distance={24} grow={.04}>
-          <V3Picture image={v3Image("urun-06-salamura-yesil-5kg")} sizes="(max-width: 900px) 160px, 260px" decorative />
-        </ScrollArtwork>
-      </div>
+  return <ScrollStage id="teklif" device="flow" sourceId={27904} labelledBy="teklif-title" className={quoteStyles.section}>
+    <div className={quoteStyles.container}>
+      <header className={quoteStyles.heading}>
+        <p>Toptan & kurumsal</p>
+        <h2 id="teklif-title">İhtiyacınızı <em>birlikte</em> planlayalım.</h2>
+      </header>
       <QuoteComposer products={products} />
     </div>
   </ScrollStage>;

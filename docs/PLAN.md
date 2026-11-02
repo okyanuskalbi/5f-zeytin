@@ -1,4 +1,16 @@
-# Aktif iş: Task169 / ürün galerisi scroll düzeltmesi
+# Aktif iş: Task170 / kompakt teklif ve footer (2 Kasım 2026)
+
+Kullanıcı teklif bölümünü masaüstünde tek ekrana sığdırmayı,21st.dev kaynaklı
+footer'ı küçültmeyi ve günceli canlıya almayı istedi.21st27904 ortalı form ve
+26006 Footer04, mevcut marka tokenları ve gerçek akışlara uyarlanır. Telefon/
+ülke, il/ilçe ve KVKK korunur; mobil doğal akışta kalır. Kapsam
+`docs/tasks/170-kompakt-teklif-ve-footer.md`. Main push ve doğrudan Vercel REST
+yayını yetkilidir; Actions yalnız doğrulama yapar.
+
+Task169 f746c2a artık canlı: CI41349447805 SUCCESS,
+REST dpl_7DwL3JEKtGBqG8zPdNqoXE41Nioy READY, afinazeytin.com bağlı.
+
+# Önceki iş: Task169 / ürün galerisi scroll düzeltmesi
 
 [Task169](tasks/169-urun-galerisi-scroll.md) yatay ürün akışını normal dizüstü
 ekranlarında geri getirir. Eski 860px şartı ve sabit görsel yüksekliği birlikte

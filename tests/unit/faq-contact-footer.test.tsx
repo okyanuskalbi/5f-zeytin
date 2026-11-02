@@ -37,7 +37,7 @@ it("uses full factual sentences and removes unanswered wholesale questions", asy
   }
   expect(segments.querySelector("form")).toBeNull();
   const quote = doc.querySelector("#teklif")!;
-  expect(quote.getAttribute("data-21st-source")).toBe("35258");
+  expect(quote.getAttribute("data-21st-source")).toBe("27904");
   expect(quote.querySelector('form[aria-label="Kurumsal teklif talebi"]')).not.toBeNull();
   expect(quote.querySelector('button[type="submit"]')?.textContent).toBe("Talep özetini hazırla");
   expect(quote.querySelector('button[type="submit"]')?.hasAttribute("disabled")).toBe(true);

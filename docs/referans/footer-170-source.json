@@ -1,0 +1,35 @@
+{
+  "task": 170,
+  "recordedAt": "2026-11-02T02:31:03.960Z",
+  "selected": {
+    "id": 26006,
+    "componentId": 12951,
+    "name": "Footer 04",
+    "author": "shadcnui-blocks",
+    "url": "https://21st.dev/@shadcnui-blocks/components/footer-04",
+    "previewUrl": "https://cdn.21st.dev/shadcnui-blocks/footer-04/default/preview.1788331739303-b5d48979-9c2a-4c33-9101-b81a80f700fa.png",
+    "componentSha256": "b422b51451fc55fa334794e404362fdc390374695a7ed289613ebf40a616a4d0",
+    "demoSha256": "767225f59dcbe920b1614388928157e52a4b9782314b2812414f2a9813904309"
+  },
+  "retrieval": {
+    "tier": "paid",
+    "unlimited": true,
+    "aiGenerationEnabled": false,
+    "aiGenerationUsed": false
+  },
+  "considered": [
+    {
+      "id": 27511,
+      "name": "Newsletter Footer",
+      "reason": "Multiple separated content bands add unnecessary height for this footer."
+    }
+  ],
+  "adaptation": [
+    "Compact original AFİNA logo, grouped actual destinations and thin horizontal dividers.",
+    "Real email draft retained; no subscription endpoint, demo address or social link.",
+    "Payment and scoped footer theme sit beside the small email form on desktop.",
+    "Existing 44px touch targets, legal identity, contact gates and no-JS destinations preserved."
+  ],
+  "license": "No license statement was included in the retrieved source; no new license claim is made.",
+  "originalCache": ".cache/task-170/footer-source.json"
+}

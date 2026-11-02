@@ -1,0 +1,28 @@
+{
+  "task": 170,
+  "recordedAt": "2026-11-02T02:40:57.634462+00:00",
+  "selected": {
+    "id": 27904,
+    "componentId": 14378,
+    "name": "Centered Contact Form",
+    "author": "ln-dev7",
+    "url": "https://21st.dev/@ln-dev7/components/contact-01",
+    "previewUrl": "https://cdn.21st.dev/ln-dev7/contact-01/default/preview.1789819769701-36011358-a4c4-4a59-9010-76215de9d861.png",
+    "componentSha256": "02f96ca91fa08d33a9d82969d189bf73e5d505b3ac82417ab0a88406eb1627ac",
+    "demoSha256": "6a160d2e48bef9fddce14586109bea542bcc1529ec999f0ac5e18b5dc4b196aa"
+  },
+  "retrieval": {
+    "tier": "paid",
+    "unlimited": true,
+    "aiGenerationEnabled": false,
+    "aiGenerationUsed": false
+  },
+  "adaptation": [
+    "Centered compact heading and bordered form shell using existing AFİNA tokens.",
+    "Existing fields arranged in three desktop rows; phone/country and searchable city/district retained.",
+    "Natural single-column mobile document flow, 16px inputs and at least44px controls.",
+    "Real validation, KVKK consent and manual mailto draft retained; no demo success or reply-time promise."
+  ],
+  "license": "No license statement was included in the retrieved source; no new license claim is made.",
+  "originalCache": ".cache/task-170/quote-source.json"
+}

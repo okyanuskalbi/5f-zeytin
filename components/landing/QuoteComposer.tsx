@@ -11,6 +11,7 @@ import styles from "./QuoteComposer.module.css";
 import { AddressSearchField } from "@/components/ui/address-search-field";
 import { CustomerPhoneField } from "@/components/ui/customer-phone-field";
 import { phoneForm } from "@/lib/contact/customer-phone";
+import { ArrowUpRight, Mail, Phone } from "lucide-react";
 
 const businessLabels: Record<Exclude<BusinessSegment, "">, string> = {
   hospitality: "Otel & restoran", retail: "Market & bayi", bulk: "Toplu tüketim",
@@ -42,7 +43,7 @@ function QuoteSummary({ quote, reduced }: { quote: PreparedQuote; reduced: boole
   </motion.section>;
 }
 
-/** 21st 35258 Contact Form: responsive labelled field groups and persistent
+/** 21st 27904 Contact01: compact labelled field groups and persistent
  * result/error regions, adapted to a real mail draft instead of demo success. */
 export function QuoteComposer({ products }: { products: readonly ProductVariant[] }): JSX.Element {
   const id = useId();
@@ -101,8 +102,8 @@ export function QuoteComposer({ products }: { products: readonly ProductVariant[
     } });
   }
 
-  return <div className={styles.composer} data-quote-composer="" data-ui-source="21st-35258">
-    <p className={styles.explanation}>Talebinizi hazırlayın; göndermek için e-posta uygulamanız açılır. Alıcı {corporateContact.name}’nun kurumsal iletişim adresidir.</p>
+  return <div className={styles.composer} data-quote-composer="" data-ui-source="21st-27904">
+    <p className={styles.explanation}>Form, talebinizin e-posta taslağını hazırlar. Gönderimi e-posta uygulamanızda siz tamamlarsınız.</p>
     <form aria-label="Kurumsal teklif talebi" noValidate method="post" onSubmit={prepare} aria-describedby={`${id}-status`}>
       <fieldset disabled={!hydrated} className={styles.fields}>
         <div className={styles.field}><label htmlFor={`${id}-name`}>Adınız veya firma adı</label><input {...field("name")} autoComplete="organization" />{error("name")}</div>
@@ -111,33 +112,33 @@ export function QuoteComposer({ products }: { products: readonly ProductVariant[
             onChange={event => { journey.chooseSegment(event.target.value as BusinessSegment); clearError("segment"); }}>
             <option value="">Seçiniz</option>{Object.entries(businessLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
           </select>{error("segment")}</div>
-        <div className={`${styles.field} ${styles.full}`}><label htmlFor={`${id}-product`}>İlgilendiğiniz ürün</label>
+        <div className={`${styles.field} ${styles.product}`}><label htmlFor={`${id}-product`}>İlgilendiğiniz ürün</label>
           <select id={`${id}-product`} name="productId" required value={productId} aria-invalid={!!errors.productId || undefined} aria-describedby={errors.productId ? `${id}-productId-error` : undefined}
             onChange={event => { journey.chooseProduct(event.target.value); clearError("productId"); }}>
             <option value="">{products.length ? "Katalogdan seçiniz" : "Şu anda ürün listelenmiyor"}</option>
             {products.map(item => <option key={item.id} value={item.id}>{item.name} · {item.weight}</option>)}
           </select>{error("productId")}</div>
-        <div className={styles.field}><label htmlFor={`${id}-quantity`}>Miktar</label><input {...field("quantity")} placeholder="Örn. aylık 100 kg" />{error("quantity")}</div>
-        <div className={styles.field}><AddressSearchField name="city" label="Şehir" value={values.city} kind="city" lang="tr" placeholder="Şehir seçin" autoComplete="address-level1" invalid={!!errors.city} errorId={errors.city ? `${id}-city-error` : undefined}
+        <div className={`${styles.field} ${styles.quantity}`}><label htmlFor={`${id}-quantity`}>Miktar</label><input {...field("quantity")} placeholder="Örn. aylık 100 kg" />{error("quantity")}</div>
+        <div className={`${styles.field} ${styles.location}`}><AddressSearchField name="city" label="Şehir" value={values.city} kind="city" lang="tr" placeholder="Şehir seçin" autoComplete="address-level1" invalid={!!errors.city} errorId={errors.city ? `${id}-city-error` : undefined}
           onChange={city => { setValues(previous => previous.city === city ? previous : { ...previous, city, district: "" }); clearError("city"); clearError("district"); }} />{error("city")}</div>
-        <div className={styles.field}><AddressSearchField key={values.city} name="district" label="İlçe" value={values.district} kind="district" city={values.city} lang="tr" placeholder="İlçe seçin" autoComplete="address-level2" invalid={!!errors.district} errorId={errors.district ? `${id}-district-error` : undefined}
+        <div className={`${styles.field} ${styles.location}`}><AddressSearchField key={values.city} name="district" label="İlçe" value={values.district} kind="district" city={values.city} lang="tr" placeholder="İlçe seçin" autoComplete="address-level2" invalid={!!errors.district} errorId={errors.district ? `${id}-district-error` : undefined}
           onChange={district => { setValues(previous => ({ ...previous, district })); clearError("district"); }} />{error("district")}</div>
-        <div className={`${styles.phone} ${styles.full}`}><CustomerPhoneField name="phone" lang="tr" autoComplete="section-quote" onValueChange={updatePhone} invalid={!!errors.phone} errorId={errors.phone ? `${id}-phone-error` : undefined} />{error("phone")}</div>
-        <div className={`${styles.consent} ${styles.full}`}>
+        <div className={styles.phone}><CustomerPhoneField name="phone" lang="tr" autoComplete="section-quote" onValueChange={updatePhone} invalid={!!errors.phone} errorId={errors.phone ? `${id}-phone-error` : undefined} />{error("phone")}</div>
+        <div className={styles.consent}>
           <label><input type="checkbox" name="kvkk" checked={consent} required aria-invalid={!!errors.consent || undefined} aria-describedby={errors.consent ? `${id}-consent-error` : undefined}
             onChange={event => { setConsent(event.target.checked); clearError("consent"); }} /><span><a href="/kvkk" target="_blank" rel="noopener noreferrer">KVKK aydınlatma metnini</a> okudum.</span></label>
           {error("consent")}
         </div>
+        <button className={styles.prepare} type="submit" disabled={!hydrated}>Talep özetini hazırla<ArrowUpRight size={17} aria-hidden="true" /></button>
       </fieldset>
-      <button className={styles.prepare} type="submit" disabled={!hydrated}>Talep özetini hazırla</button>
       <p className={styles.status} id={`${id}-status`} role="status" aria-atomic="true">{summary ? "Talep özetiniz hazır. E-posta henüz gönderilmedi." : ""}</p>
       <p role="alert" className={styles.error}>{Object.values(errors).some(Boolean) ? "Lütfen işaretli alanları kontrol edin." : ""}</p>
     </form>
     <AnimatePresence initial={false}>{summary && <QuoteSummary key="quote-summary" quote={summary} reduced={reduced} />}</AnimatePresence>
     <div className={styles.contact}>
-      <p>E-posta uygulamanız yoksa çatı şirketin kurumsal iletişim kanalını kullanabilirsiniz.</p>
-      <a href={`tel:${corporateContact.phone}`}>{corporateContact.name}’nu arayın · {corporateContact.displayPhone}</a>
-      <a href={`mailto:${corporateContact.email}`}>Kurumsal e-posta · {corporateContact.email}</a>
+      <p>{corporateContact.name}<span>Kurumsal iletişim</span></p>
+      <a href={`tel:${corporateContact.phone}`} aria-label={`${corporateContact.name}’nu arayın · ${corporateContact.displayPhone}`}><Phone size={15} aria-hidden="true" />{corporateContact.displayPhone}</a>
+      <a href={`mailto:${corporateContact.email}`}><Mail size={15} aria-hidden="true" />{corporateContact.email}</a>
     </div>
     <noscript><p>Talep özeti hazırlamak için JavaScript gerekir. Yukarıdaki kurumsal e-posta veya telefon bağlantısını kullanabilirsiniz.</p></noscript>
   </div>;

@@ -345,6 +345,16 @@
       "source": "User scrolling sections + npm i framer-motion + uipro init --ai codex + React Bits",
       "decision": "Rebuild hero/title-film layout, three producer chapters before catalog, broad B2B rows and warm closing. Shared framer-motion14.4.0, project-local UIPro, pinned React Bits BlurText; preserve approved brand/media and commerce.",
       "status": "implemented-local-visual-acceptance-pending"
+    },
+    {
+      "date": "2026-11-02",
+      "source": "User: tek sayfada gorunsun / footer21st / biraz daha kucult / canliya al; Task170",
+      "decision": "21st27904 centered contact form adapted to existing quote flow: compact heading, three desktop rows, city/district/country/phone controls, manual mailto;21st26006 Footer04 adapted with180x48 authentic logo, four compact groups, email draft/payment/theme service band. Existing cream/olive tokens and44px targets retained. Smaller screens use natural document flow.",
+      "status": "implemented-local-production-qa40-pass-publish-receipt-separate",
+      "evidence": [
+        "docs/referans/quote-170-source.json",
+        "docs/referans/footer-170-source.json"
+      ]
     }
   ],
   "evidence": [
