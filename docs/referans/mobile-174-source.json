@@ -1,0 +1,39 @@
+{
+  "task": 174,
+  "date": "2026-11-02",
+  "sourceCommit": "3be79e51ca8757b5892c6b05f4a8095e804bd44f",
+  "tier": "paid",
+  "hostedAiUsed": false,
+  "sources": [
+    {
+      "id": 8343,
+      "name": "Bottom Nav Bar",
+      "codeSha256": "d6c323cf6f8f7790af9f6d946fc74bc2f4d0a1f02ca32d8a4e24b0a0a275f2ba",
+      "source": "21st MCP get_component",
+      "adaptation": "Icon-labelled quick actions within mobile menu; no permanent bottom dock",
+      "url": "https://21st.dev/@arunachalam/components/bottom-nav-bar"
+    },
+    {
+      "id": 31360,
+      "name": "Drawer",
+      "codeSha256": "50ccf2a137dc8d3335903dfa6fc8fef71dadc6beaea227cd0a4bbe07630fb7b0",
+      "source": "21st MCP get_component",
+      "adaptation": "Bottom anchored panel, separate header/body/footer, reduced motion; installed Radix retained",
+      "url": "https://21st.dev/@wensity/components/drawer"
+    },
+    {
+      "id": 8297,
+      "name": "Product Carousel",
+      "codeSha256": "826f81de9b485ee94dbd51c8fde3fec45d94c2e26d53298071b4fff0198ae348",
+      "source": "21st MCP get_component",
+      "adaptation": "Visible previous/next product navigation and current item; real catalogue and existing Motion rail retained",
+      "url": "https://21st.dev/@ravikatiyar162/components/product-carousel"
+    }
+  ],
+  "invariants": [
+    "real catalogue and authority preserved",
+    "existing branding and approved media",
+    "desktop layout retained",
+    "no paid media or generated placeholders"
+  ]
+}

@@ -7,4 +7,4 @@
 .heading h2 { font-family:var(--font-display); font-size:clamp(30px,3vw,44px); font-weight:400; letter-spacing:-.025em; line-height:1.12; text-wrap:balance; }
 .heading em { color:var(--pro-gold-ink); }
 @media(min-width:901px) and (max-height:800px) { .section { padding-block:20px; } .heading { margin-bottom:16px; } .heading h2 { font-size:36px; } }
-@media(max-width:600px) { .section { padding:40px 16px; } .heading { margin-bottom:20px; } .heading h2 { max-width:16ch; margin-inline:auto; } }
+@media(max-width:600px) { .section { padding:28px 16px; } .heading { margin-bottom:16px; } .heading h2 { max-width:16ch; margin-inline:auto; } }

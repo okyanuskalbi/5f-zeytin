@@ -13,6 +13,13 @@ import styles from "./HorizontalProductGallery.module.css";
 const subscribeReady = () => () => {};
 const clientReady = () => true;
 const serverReady = () => false;
+const compactQuery = "(max-width: 1023px)";
+const compactSnapshot = () => window.matchMedia?.(compactQuery).matches ?? false;
+function subscribeCompact(notify: () => void) {
+  const media = window.matchMedia?.(compactQuery);
+  media?.addEventListener("change", notify);
+  return () => media?.removeEventListener("change", notify);
+}
 
 /** Distance from the viewport's centre controls the light, never availability. */
 export function gallerySpotlight(centre: number, viewportWidth: number): number {
@@ -72,6 +79,7 @@ export function HorizontalProductGallery({ products }: { products: readonly Prod
   const scrub = layout !== "native" && travel > 1;
   const journey = useQuoteJourney();
   const ready = useSyncExternalStore(subscribeReady, clientReady, serverReady);
+  const compact = useSyncExternalStore(subscribeCompact, compactSnapshot, serverReady);
   // A phone's visible viewport may grow when browser chrome retracts, while
   // 100svh remains stable. The last package meets the actual sticky stage end.
   const { scrollYProgress } = useScroll({ target: section, offset: ["start start", stageHeight > 0 ? `end ${stageHeight}px` : "end end"] });
@@ -166,6 +174,8 @@ export function HorizontalProductGallery({ products }: { products: readonly Prod
       </div>
       {ordered.length ? <>
         <PendantLampRail variant="product" label="Ürün galerisi" x={x} scrub={scrub} travel={travel}
+          controlsPlacement={compact ? "before" : "after"} controlsClassName={compact ? styles.mobileControls : undefined}
+          hint={compact ? scrub ? "Aşağı kaydırın veya okları kullanın." : "Yana kaydırın veya okları kullanın." : undefined}
           viewportRef={viewport} trackRef={track} viewportClassName={styles.viewport} trackClassName={styles.track}
           onOffsetChange={seekGallery} onFocusCapture={revealFocus}>
             {ordered.map((product, index) => <GalleryProduct key={product.id} product={product} index={index} total={ordered.length}

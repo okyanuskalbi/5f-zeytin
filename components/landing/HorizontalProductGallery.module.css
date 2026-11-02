@@ -75,6 +75,30 @@
  .number { left:8px; }
  .foot { flex-direction:column; gap:8px; }
 }
+/* Navigation precedes the product on phones, so the next SKU is discoverable
+   before a large image. Photo height leaves room for name, price and actions. */
+@media(max-width:1023px) {
+ .stage { padding-top:20px; }
+ .heading { gap:8px; margin-bottom:12px; }
+ .heading h2 { max-width:none; font-size:clamp(28px,7.7vw,44px); }
+ .heading .eyebrow { margin-bottom:6px; font-size:10px; }
+ .heading > div > p:last-child { margin-top:8px; font-size:12px; line-height:1.4; }
+ .explanation { display:none; }
+ .mobileControls { gap:12px; margin:0 0 8px; padding-block:8px; border-block:1px solid var(--pro-line); background:var(--pro-paper); }
+ .mobileControls p { max-width:16ch; font-size:11px; line-height:1.4; }
+ .mobileControls [role="group"] { gap:10px; flex-shrink:0; }
+ .item article { padding-top:0; }
+ .item article > button[aria-haspopup="dialog"] { height:clamp(140px,28svh,280px); flex-basis:clamp(140px,28svh,280px); padding-block:4px 12px; }
+ .item article h3 { margin-top:0; padding-top:8px; font-size:17px; line-height:1.2; }
+ .item article h3 + div { margin-block:4px 8px; }
+ .item article [aria-label="Fiyat"] { font-size:22px; }
+ .item article > div:has([aria-label="Fiyat"]) { flex-direction:row; flex-wrap:wrap; align-items:center; justify-content:space-between; }
+}
+@media(max-width:767px) and (max-height:639px) {
+ .stage { padding-top:12px; }
+ .heading > div > p:last-child { display:none; }
+ .item article > button[aria-haspopup="dialog"] { height:clamp(104px,22svh,160px); flex-basis:clamp(104px,22svh,160px); }
+}
 /* One package fills a portrait scene. The ray and its light move, while touch
    targets retain their full size instead of scaling with the desktop cards. */
 .section[data-gallery-mode="scrub"][data-gallery-layout="touch"] { --gallery-card-width:min(420px,calc(100vw - 2 * var(--pro-gutter))); }
@@ -87,7 +111,7 @@
 .section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .track { gap:24px; }
 .section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .item { width:var(--gallery-card-width); }
 .section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .item article { padding-inline:4px; padding-bottom:0; }
-.section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .item article > button[aria-haspopup="dialog"] { min-height:120px; max-height:440px; padding:4px 16px 12px; }
+.section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .item article > button[aria-haspopup="dialog"] { min-height:104px; max-height:min(34svh,300px); padding:4px 16px 12px; }
 .section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .item article h3 { padding-top:4px; font-size:17px; line-height:1.2; }
 .section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .item article h3 + div { margin-block:2px 4px; }
 .section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .item article > div > span { padding-block:2px; font-size:12px; }

@@ -1,4 +1,23 @@
-## Aktif iş: Task173 / sepet ikonu ve Device Hub (2 Kasım 2026)
+## Aktif iş: Task174 / mobil öncelikli deneyim (2 Kasım 2026)
+
+Kullanıcı daha kapsamlı mobil uyarlama, 21st.dev ve frontend skill incelemesi
+istedi. Kapsam docs/tasks/174-mobil-oncelikli-deneyim.md: kompakt alt menü,
+kısa ekranda görünür CTA, galeri kontrolleri, telefon form/picker/sepet düzeni.
+Masaüstü ve mevcut animasyon/gerçek katalog/PayTR/manual mailto sözleşmeleri
+korunur. 21st8343/31360/8297 incelendi; kaynak docs/referans/mobile-174-source.json.
+Task173 3be79e5 yayımlandı; CI41505621413 SUCCESS ve REST
+ dpl_4THkJ7HbKowJTtrqTyzRxcm74a4T READY. Canlı9viewport ikon/drawer PASS;
+Device Hub Safari simülatörü açılış/menü/ürün/sepet ve yeniikon görüldü,
+gesture kabulü kısmi. Makbuz .cache/task-173/final-receipt.json.
+
+Task174 yerel kapıları PASS: 119dosya/1424unit; lint/typecheck/webpack build;
+9profil/48mobil + 5viewport/45teklif + 12profil/63motion; navbar9viewport.
+Dolu sepet 390/320/844yatay dönüşü, ilk gerçek tap, adet/silme ve odak PASS.
+21st8343/31360/8297 ve frontend skill eşlemesi docs/referans/mobile-174-*.
+Kaynak makbuzu .cache/task-174/local-verification.json. Main/API yayını sırada;
+Task174 Device Hub ve canlı kabul henüz bu makbuzun parçası değildir.
+
+## Önceki iş: Task173 / sepet ikonu ve Device Hub (2 Kasım 2026)
 
 Kullanıcı navbar sepet ikonunu ve canlı mobil sitenin Device Hub üzerinden
 kontrolünü istedi. Kapsam `docs/tasks/173-sepet-ikonu-ve-device-hub.md`:

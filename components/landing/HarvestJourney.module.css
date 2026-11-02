@@ -78,7 +78,7 @@
  .tableFoot { bottom:8%; }
 }
 @media(max-width:767px) {
- .orchard { min-height:820px; min-height:max(820px,100svh); }
+ .orchard { min-height:100svh; }
  .film :global(img),.film :global(video) { object-position:62% center; }
  .heroShade { background:linear-gradient(180deg,rgba(12,24,16,.25),transparent 24%,rgba(12,24,16,.62) 55%,rgba(12,24,16,.9)); }
  .heroCopy { bottom:28%; }
@@ -102,6 +102,11 @@
  .tableFoot { bottom:7%; display:block; }
  .tableFoot p { font-size:14px; }
  .tableFoot a { margin-top:20px; }
+ /* A short/restricted phone keeps the complete poster story. Natural text
+    flow places the primary action in the first screen without an 820px floor. */
+ .journey[data-mode="native"] .orchard { display:flex; flex-direction:column; justify-content:center; gap:20px; padding:calc(var(--header-height) + 24px) var(--pro-gutter) max(24px,env(safe-area-inset-bottom,0px)); }
+ .journey[data-mode="native"] .heroCopy,.journey[data-mode="native"] .heroActions,.journey[data-mode="native"] .heroFoot { position:relative; inset:auto; }
+ .journey[data-mode="native"] .heroFoot { margin-top:0; }
 }
 @media(min-width:1024px) and (max-height:800px) {
  .heroCopy h1 { font-size:clamp(68px,8vw,116px); }
@@ -138,8 +143,8 @@
 .journey[data-motion-device="touch"] .tableFoot { bottom:10%; display:block; }
 .journey[data-motion-device="touch"] .tableFoot p { font-size:13px; line-height:1.5; }
 .journey[data-motion-device="touch"] .tableFoot a { margin-top:12px; min-height:48px; }
-.journey[data-motion-device="touch"] .sceneNav { inset-inline:var(--pro-gutter); bottom:12px; justify-content:flex-end; gap:18px; }
-.journey[data-motion-device="touch"] .sceneNav a { min-width:44px; font-size:10px; }
+.journey[data-motion-device="touch"] .sceneNav { inset-inline:var(--pro-gutter); bottom:max(12px,env(safe-area-inset-bottom,0px)); justify-content:flex-end; gap:12px; }
+.journey[data-motion-device="touch"] .sceneNav a { min-width:44px; min-height:44px; padding-inline:4px; font-size:11px; }
 .journey[data-motion-device="touch"] .rule { flex:1; max-width:56px; }
 @media(prefers-reduced-motion:reduce) {
  .journey { height:auto!important; }

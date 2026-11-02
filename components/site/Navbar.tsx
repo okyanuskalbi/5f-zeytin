@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import * as motion from "motion/react-m";
 import { AnimatePresence } from "motion/react";
-import { ShoppingCart } from "lucide-react";
+import { Menu, ShoppingCart } from "lucide-react";
 import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
 import { springs, motionTokens } from "@/lib/ui-motion";
 import { Button } from "@/components/ui/button";
@@ -169,7 +169,9 @@ export function Navbar(): JSX.Element {
           </Button>
           <Button ref={triggerRef} variant="ghost" className={`${styles.control} ${styles.trigger}`} aria-label="Menüyü aç"
             onPointerEnter={preloadNavbarMenu} onFocus={preloadNavbarMenu} onTouchStart={preloadNavbarMenu}
-            aria-haspopup="dialog" aria-expanded={isOpen} onClick={() => setIsOpen(true)}>Menü</Button>
+            aria-haspopup="dialog" aria-expanded={isOpen} onClick={() => setIsOpen(true)}>
+            <Menu className={styles.menuIcon} strokeWidth={1.75} aria-hidden="true" /><span className={styles.menuLabel}>Menü</span>
+          </Button>
           {isOpen && <NavbarMenu links={links} onClose={() => setIsOpen(false)}
             onRestoreFocus={() => (window.matchMedia("(min-width: 1361px)").matches ? homeRef : triggerRef).current?.focus()} />}
 

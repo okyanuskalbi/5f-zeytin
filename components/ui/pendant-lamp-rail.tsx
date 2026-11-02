@@ -23,6 +23,9 @@ export interface PendantLampRailProps {
   trackRef: RefObject<HTMLDivElement | null>;
   viewportClassName?: string;
   trackClassName?: string;
+  controlsClassName?: string;
+  controlsPlacement?: "before" | "after";
+  hint?: string;
   onOffsetChange: (offset: number) => void;
   onFocusCapture?: (event: FocusEvent<HTMLDivElement>) => void;
 }
@@ -36,7 +39,7 @@ export function nearestRailOffset(value: number, offsets: readonly number[]): nu
 }
 
 export function PendantLampRail({ variant, label, children, x, scrub, travel, viewportRef, trackRef,
-  viewportClassName, trackClassName, onOffsetChange, onFocusCapture }: PendantLampRailProps) {
+  viewportClassName, trackClassName, controlsClassName, controlsPlacement = "after", hint = "Dokunun, sürükleyin, keşfedin.", onOffsetChange, onFocusCapture }: PendantLampRailProps) {
   const reduced = usePrefersReducedMotion();
   const ready = useSyncExternalStore(subscribeReady, () => true, () => false);
   const [active, setActive] = useState(0);
@@ -118,11 +121,13 @@ export function PendantLampRail({ variant, label, children, x, scrub, travel, vi
 
   function pointerDown(event: PointerEvent<HTMLDivElement>) {
     if (event.button !== 0 || event.isPrimary === false) return;
+    // A fresh tap starts a new interaction, including purchase/quote controls.
+    // Cancellation of a previous swipe must never consume this real click.
+    stop(); suppressClick.current = false;
     const target = event.target as HTMLElement;
     const control = target.closest("button,a,input,select,textarea");
     // Product-image/detail buttons may be dragged. Purchase and form controls stay native.
     if (control && !control.matches('[aria-haspopup="dialog"]')) return;
-    stop(); suppressClick.current = false;
     drag.current = { id: event.pointerId, startX: event.clientX, startY: event.clientY, offset: currentOffset(), moved: false,
       vertical: false, lastX: event.clientX, time: performance.now(), velocity: 0 };
   }
@@ -161,8 +166,8 @@ export function PendantLampRail({ variant, label, children, x, scrub, travel, vi
       const velocity = performance.now() - state.time > 90 ? 0 : state.velocity;
       moveTo(nearestRailOffset(clamp(currentOffset() - velocity * 130), offsets()));
     }
-    if (cancelled) { suppressClick.current = true; stop(); }
-    else restoreTilt();
+    if (cancelled) { suppressClick.current = state.moved; stop(); }
+    else if (state.moved) restoreTilt();
   }
   function choose(index: number, focus: boolean) {
     const all = items();
@@ -181,7 +186,18 @@ export function PendantLampRail({ variant, label, children, x, scrub, travel, vi
     choose(event.key === "Home" ? 0 : event.key === "End" ? items().length - 1 : from + (event.key === "ArrowRight" ? 1 : -1), true);
   }
 
+  // Task174: visible directional controls adapted from 21st8297 Product
+  // Carousel (ravikatiyar162). Existing SKU/scroll ownership stays in this rail.
+  const controls = <div data-rail-controls="" data-21st-controls-source={controlsPlacement === "before" ? "8297" : undefined} className={`${styles.controls} ${controlsClassName ?? ""}`}>
+    <p>{hint}</p>
+    <div className={styles.navigation} role="group" aria-label="Ürünler arasında gezin">
+      <button type="button" aria-label="Önceki ürün" disabled={active <= 0} onClick={() => choose(active - 1, false)}><ArrowLeftIcon size={19} aria-hidden="true" /></button>
+      <span aria-live="polite">{String(count ? active + 1 : 0).padStart(2, "0")} <span>/ {String(count).padStart(2, "0")}</span></span>
+      <button type="button" aria-label="Sonraki ürün" disabled={!count || active >= count - 1} onClick={() => choose(active + 1, false)}><ArrowRightIcon size={19} aria-hidden="true" /></button>
+    </div>
+  </div>;
   return <div data-slot="pendant-lamp-rail" data-variant={variant} className={styles.rail}>
+    {controlsPlacement === "before" && controls}
     <div ref={viewportRef} role="region" aria-label={label} tabIndex={0} data-gallery-viewport="" data-rail-dragging="false" data-rail-enhanced={ready}
       className={`${styles.viewport} ${viewportClassName ?? ""}`} onPointerDown={pointerDown} onPointerMove={pointerMove}
       onPointerUp={event => finish(event)} onPointerCancel={event => finish(event, true)}
@@ -196,14 +212,7 @@ export function PendantLampRail({ variant, label, children, x, scrub, travel, vi
         {children}
       </motion.div>
     </div>
-    <div className={styles.controls}>
-      <p>Dokunun, sürükleyin, keşfedin.</p>
-      <div className={styles.navigation} role="group" aria-label="Ürünler arasında gezin">
-        <button type="button" aria-label="Önceki ürün" disabled={active <= 0} onClick={() => choose(active - 1, false)}><ArrowLeftIcon size={19} aria-hidden="true" /></button>
-        <span aria-live="polite">{String(count ? active + 1 : 0).padStart(2, "0")} <span>/ {String(count).padStart(2, "0")}</span></span>
-        <button type="button" aria-label="Sonraki ürün" disabled={!count || active >= count - 1} onClick={() => choose(active + 1, false)}><ArrowRightIcon size={19} aria-hidden="true" /></button>
-      </div>
-    </div>
+    {controlsPlacement === "after" && controls}
   </div>;
 }
 export default PendantLampRail;

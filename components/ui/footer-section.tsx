@@ -4,7 +4,7 @@
 import { useState, useSyncExternalStore, type FormEvent } from "react";
 import Link from "next/link";
 import { Switch as SwitchPrimitive } from "radix-ui";
-import { ArrowUpRight, Moon, Send, Sun } from "lucide-react";
+import { ArrowUpRight, ChevronDown, Moon, Send, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { BrandLogo } from "@/components/site/BrandLogo";
@@ -17,6 +17,27 @@ import styles from "@/components/site/Footer.module.css";
 const subscribeReady = () => () => {};
 const clientReady = () => true;
 const serverReady = () => false;
+
+const footerMobileQuery = "(max-width: 767px)";
+const footerMobileSnapshot = () => typeof window.matchMedia === "function" && window.matchMedia(footerMobileQuery).matches;
+function subscribeFooterMobile(changed: () => void) {
+  if (typeof window.matchMedia !== "function") return () => {};
+  const query = window.matchMedia(footerMobileQuery);
+  query.addEventListener("change", changed);
+  return () => query.removeEventListener("change", changed);
+}
+
+function FooterLinkGroup({ id, title, links }: { id: string; title: string; links: readonly { label: string; href: string }[] }) {
+  const mobile = useSyncExternalStore(subscribeFooterMobile, footerMobileSnapshot, serverReady);
+  const [expanded, setExpanded] = useState(false);
+  return <details className={`${styles.column} ${styles.linkGroup}`} aria-labelledby={id} open={!mobile || expanded}
+    onToggle={event => { if (mobile) setExpanded(event.currentTarget.open); }}>
+    <summary tabIndex={mobile ? 0 : -1} onClick={event => { if (!mobile) event.preventDefault(); }}>
+      <h2 id={id} className={styles.heading}>{title}</h2><ChevronDown size={18} aria-hidden="true" />
+    </summary>
+    <nav aria-labelledby={id}><ul>{links.map(link => <li key={link.href}><Link className={styles.link} href={link.href}>{link.label}</Link></li>)}</ul></nav>
+  </details>;
+}
 
 const shoppingLinks = [
   { label: "Ürünler", href: "/#kiler" },
@@ -73,14 +94,8 @@ export function Footerdemo({ contact }: { contact: SiteContact }) {
           <p className={styles.signature}>Kökü toprakta.<br /> Yeri sofrada.</p>
           <p>Toprağın sunduğu lezzet, Afina’nın özeniyle.</p>
         </div>
-        <nav className={styles.column} aria-labelledby="footer-shopping-title">
-          <h2 id="footer-shopping-title" className={styles.heading}>Alışveriş</h2>
-          <ul>{shoppingLinks.map(link => <li key={link.href}><Link className={styles.link} href={link.href}>{link.label}</Link></li>)}</ul>
-        </nav>
-        <nav className={styles.column} aria-labelledby="footer-help-title">
-          <h2 id="footer-help-title" className={styles.heading}>Yardım</h2>
-          <ul>{helpLinks.map(link => <li key={link.href}><Link className={styles.link} href={link.href}>{link.label}</Link></li>)}</ul>
-        </nav>
+        <FooterLinkGroup id="footer-shopping-title" title="Alışveriş" links={shoppingLinks} />
+        <FooterLinkGroup id="footer-help-title" title="Yardım" links={helpLinks} />
         <div className={`${styles.column} ${styles.destination}`} aria-labelledby="footer-contact-title">
           <h2 id="footer-contact-title" className={styles.heading}>İletişim</h2>
           <address><span>{street}, </span><span>{locality.join(", ")}</span></address>

@@ -45,6 +45,37 @@ it("vertical touch scrolling never seeks the rail or captures a purchase control
   expect(seek).not.toHaveBeenCalled();
 });
 
+it.each(["Sepete ekle 1", "Teklife ekle 1"])("the first %s tap works after native vertical scrolling cancels the pointer", label => {
+  const { seek, cart, quote, viewport } = setup();
+  pointer(screen.getByRole("button", { name: "Ürün 1" }), "pointerdown", 200, 100);
+  pointer(viewport, "pointermove", 204, 200);
+  pointer(viewport, "pointercancel", 204, 200);
+  const action = screen.getByRole("button", { name: label });
+  pointer(action, "pointerdown", 100, 100);
+  pointer(action, "pointerup", 100, 100);
+  fireEvent.click(action, { detail: 1 });
+  expect(label.startsWith("Sepete") ? cart : quote).toHaveBeenCalledExactlyOnceWith("bir");
+  expect(seek).not.toHaveBeenCalled();
+});
+
+it("preserves drag ghost-click protection while accepting a new purchase tap", () => {
+  const { open, cart, viewport } = setup();
+  const detail = screen.getByRole("button", { name: "Ürün 1" });
+  pointer(detail, "pointerdown", 200, 100);
+  pointer(viewport, "pointermove", 80, 104);
+  pointer(viewport, "pointercancel", 80, 104);
+  fireEvent.click(detail, { detail: 1 });
+  expect(open).not.toHaveBeenCalled();
+  pointer(detail, "pointerdown", 200, 100);
+  pointer(viewport, "pointermove", 80, 104);
+  pointer(viewport, "pointercancel", 80, 104);
+  const purchase = screen.getByRole("button", { name: "Sepete ekle 1" });
+  pointer(purchase, "pointerdown", 100, 100);
+  pointer(purchase, "pointerup", 100, 100);
+  fireEvent.click(purchase, { detail: 1 });
+  expect(cart).toHaveBeenCalledExactlyOnceWith("bir");
+});
+
 it("accepts a new drag after a pending press was released outside the rail or the window blurred", () => {
   const { seek, viewport } = setup();
   const detail = screen.getByRole("button", { name: "Ürün 1" });
@@ -91,16 +122,18 @@ it("settles inside the real first/last package bounds without inventing another 
   expect(nearestRailOffset(500, [])).toBe(0);
 });
 
-function setup() {
+function setup({ scrub = true, controlsPlacement = "after" }: { scrub?: boolean; controlsPlacement?: "before" | "after" } = {}) {
   const seek = vi.fn();
   const open = vi.fn();
+  const cart = vi.fn(), quote = vi.fn();
   const viewport = { current: null as HTMLDivElement | null };
   const track = { current: null as HTMLDivElement | null };
-  render(<PendantLampRail variant="product" label="AFİNA ürünleri" x={motionValue(0)} scrub={true} travel={560}
+  render(<PendantLampRail variant="product" label="AFİNA ürünleri" x={motionValue(0)} scrub={scrub} travel={560} controlsPlacement={controlsPlacement}
     viewportRef={viewport} trackRef={track} onOffsetChange={seek}>
     {["bir", "iki", "uc"].map((id, index) => <article key={id} data-rail-item={id}>
       <button type="button" aria-haspopup="dialog" onClick={() => open(id)}>Ürün {index + 1}</button>
-      <button type="button">Sepete ekle {index + 1}</button>
+      <button type="button" onClick={() => cart(id)}>Sepete ekle {index + 1}</button>
+      <button type="button" onClick={() => quote(id)}>Teklife ekle {index + 1}</button>
     </article>)}
   </PendantLampRail>);
   Object.defineProperty(viewport.current, "clientWidth", { value: 300, configurable: true });
@@ -108,7 +141,7 @@ function setup() {
     Object.defineProperty(item, "offsetLeft", { value: i * 280, configurable: true });
     Object.defineProperty(item, "offsetWidth", { value: 300, configurable: true });
   });
-  return { seek, open, viewport: viewport.current! };
+  return { seek, open, cart, quote, viewport: viewport.current! };
 }
 
 it("keyboard navigation moves focus to the actual detail control and leaves purchase controls native", () => {
@@ -122,4 +155,21 @@ it("keyboard navigation moves focus to the actual detail control and leaves purc
   seek.mockClear();
   fireEvent.keyDown(screen.getByRole("button", { name: "Sepete ekle 3" }), { key: "ArrowLeft" });
   expect(seek).not.toHaveBeenCalled();
+});
+
+it.each([true, false])("places one visible navigation group before the products and uses the same SKU offsets (scrub=%s)", scrub => {
+  const { seek, viewport } = setup({ scrub, controlsPlacement: "before" });
+  const navigation = screen.getByRole("group", { name: "Ürünler arasında gezin" });
+  expect(navigation.compareDocumentPosition(viewport) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  expect(screen.getAllByRole("button", { name: "Sonraki ürün" })).toHaveLength(1);
+  expect((screen.getByRole("button", { name: "Önceki ürün" }) as HTMLButtonElement).disabled).toBe(true);
+  fireEvent.click(screen.getByRole("button", { name: "Sonraki ürün" }));
+  if (scrub) expect(seek).toHaveBeenLastCalledWith(280);
+  else { expect(viewport.scrollLeft).toBe(280); expect(seek).not.toHaveBeenCalled(); }
+  expect(navigation.textContent).toContain("02 / 03");
+  fireEvent.click(screen.getByRole("button", { name: "Sonraki ürün" }));
+  expect(navigation.textContent).toContain("03 / 03");
+  expect((screen.getByRole("button", { name: "Sonraki ürün" }) as HTMLButtonElement).disabled).toBe(true);
+  fireEvent.click(screen.getByRole("button", { name: "Önceki ürün" }));
+  expect(navigation.textContent).toContain("02 / 03");
 });

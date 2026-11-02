@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { ChevronDown, Minus, PackageOpen, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -28,6 +28,7 @@ export interface QuoteProductPickerProps {
 export function QuoteProductPicker({ products, quantities, onChange, invalid = false, errorId, disabled = false, id }: QuoteProductPickerProps) {
   const instance = useId();
   const trigger = useRef<HTMLButtonElement>(null);
+  const panel = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const selected = products.filter(product => Object.hasOwn(quantities, product.id));
   const hasInvalid = selected.some(product => validateQuoteQuantity(quantities[product.id]) === null);
@@ -35,6 +36,32 @@ export function QuoteProductPicker({ products, quantities, onChange, invalid = f
   const summary = selected.length
     ? `${selected.length} ürün · ${hasInvalid ? "Adetleri kontrol edin" : `${total.toLocaleString("tr-TR")} adet`}`
     : "Ürünleri seçin";
+
+  // Task174 / 21st Drawer 31360: mobile bottom panel, stationary controls and
+  // an independently scrolling list. Keep Radix focus/escape/scroll locking.
+  // iOS's keyboard shrinks the visual viewport without always changing dvh.
+  useEffect(() => {
+    if (!open || !window.visualViewport) return;
+    const viewport = window.visualViewport;
+    let frame = 0;
+    const measure = () => {
+      panel.current?.style.setProperty("--quote-picker-viewport-height", `${viewport.height}px`);
+      panel.current?.style.setProperty("--quote-picker-viewport-bottom", `${Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop)}px`);
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(() => { frame = 0; measure(); }); };
+    measure();
+    // Radix's portal can attach after the parent's first open effect.
+    schedule();
+    viewport.addEventListener("resize", schedule);
+    viewport.addEventListener("scroll", schedule);
+    window.addEventListener("resize", schedule);
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      viewport.removeEventListener("resize", schedule);
+      viewport.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+    };
+  }, [open]);
 
   function select(productId: string, checked: boolean) {
     if (disabled) return;
@@ -71,7 +98,7 @@ export function QuoteProductPicker({ products, quantities, onChange, invalid = f
         <span className={styles.triggerText}>{summary}</span><ChevronDown size={18} aria-hidden="true" />
       </Button>
     </DialogTrigger>
-    <DialogContent className={styles.panel} showCloseButton={false}
+    <DialogContent ref={panel} className={styles.panel} showCloseButton={false} data-quote-picker=""
       onCloseAutoFocus={event => { if (trigger.current && !trigger.current.disabled) { event.preventDefault(); trigger.current.focus(); } }}>
       <div className={styles.header}>
         <div className={styles.titleRow}>
@@ -84,7 +111,7 @@ export function QuoteProductPicker({ products, quantities, onChange, invalid = f
           <Button variant="ghost" size="sm" disabled={disabled || Object.keys(quantities).length === 0} onClick={() => { if (!disabled) onChange({}); }}>Seçimi temizle</Button>
         </div>
       </div>
-      <div className={styles.body}>
+      <div className={styles.body} data-quote-picker-body="">
         {products.length ? <ul className={styles.products} aria-label="Teklif için ambalajlar">
           {products.map((product, index) => {
             const chosen = Object.hasOwn(quantities, product.id);

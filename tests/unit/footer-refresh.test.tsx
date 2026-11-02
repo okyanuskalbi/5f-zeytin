@@ -26,8 +26,10 @@ it("keeps the three navigation columns beside the complete brand block in one gr
   expect(brand.textContent).toContain("Toprağın sunduğu lezzet, Afina’nın özeniyle.");
   const headings = ["footer-shopping-title", "footer-help-title", "footer-contact-title"].map(id => doc.getElementById(id)!);
   expect(headings.map(node => node.textContent)).toEqual(["Alışveriş", "Yardım", "İletişim"]);
-  const navigation = headings[0].parentElement!.parentElement!;
-  expect(headings.every(node => node.parentElement!.parentElement === navigation)).toBe(true);
+  const navigation = brand.parentElement!;
+  // Mobile groups now use native details/summary; each heading still belongs
+  // to its own direct grid column beside the complete brand block.
+  expect(headings.every(node => [...navigation.children].some(column => column !== brand && column.contains(node)))).toBe(true);
   expect(navigation.contains(brand)).toBe(true);
   expect(navigation.children).toHaveLength(4);
 });

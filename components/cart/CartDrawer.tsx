@@ -35,10 +35,19 @@ const CartPanel = forwardRef<HTMLDivElement, HTMLMotionProps<"div">>(function Ca
   const present = useIsPresent();
   return <motion.div {...props} ref={ref} aria-hidden={!present} inert={!present} />;
 });
+const mobileCartQuery = "(max-width: 767px), (max-width: 900px) and (max-height: 500px) and (orientation: landscape)";
+function subscribeMobileCart(notify: () => void): () => void {
+  if (typeof window.matchMedia !== "function") return () => {};
+  const media = window.matchMedia(mobileCartQuery);
+  media.addEventListener("change", notify);
+  return () => media.removeEventListener("change", notify);
+}
+const mobileCartSnapshot = () => typeof window.matchMedia === "function" && window.matchMedia(mobileCartQuery).matches;
 // 21st ddoemonn/Drawer 23558: right panel, scroll body and anchored footer.
 // Radix retains the modal/focus/scroll behavior; mobile uses the full viewport.
 export function CartDrawer({ store, products, open, onOpenChange, trigger, returnFocusRef, upsell, checkoutHref = null }: CartDrawerProps): JSX.Element {
   const state = useSyncExternalStore(store.subscribe, store.getSnapshot, store.getServerSnapshot);
+  const mobile = useSyncExternalStore(subscribeMobileCart, mobileCartSnapshot, () => false);
   const id = useId();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -108,7 +117,7 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
             opener.focus();
           }
         }}>
-      <CartPanel data-slot="dialog-content" data-cart-drawer=""
+      <CartPanel data-slot="dialog-content" data-cart-drawer="" data-empty={state.hydrated && lines.length === 0}
         className={styles.drawer} layoutRoot
         initial={reduced ? false : { x: "100%" }}
         animate={{ x: 0 }} exit={reduced ? { opacity: 0 } : { x: "100%" }} transition={transition}>
@@ -143,6 +152,7 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
           <p role={feedback.error ? "alert" : "status"} aria-atomic="true" className={`text-base ${feedback.error ? "text-destructive" : "text-muted-foreground"}`}>
             {feedback.message}
           </p>
+          {mobile && state.hydrated && lines.length > 0 && <div className={styles.drawerBodyTrust}><CartTrust /></div>}
         </motion.div>
 
         <div className={styles.drawerFooter}>
@@ -152,7 +162,7 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
             <DialogClose asChild><Button asChild className={styles.checkout}><Link href={checkoutHref} prefetch={false}>Ödemeye geç<ArrowRight aria-hidden="true" /></Link></Button></DialogClose>
           ) : <Button disabled className={styles.checkout} aria-describedby={`${id}-payment-help`}>Ödemeye geç</Button>}
           <p id={`${id}-payment-help`} className={styles.paymentHelp}>{checkoutHref ? "Kesin tutar ödeme öncesinde doğrulanır." : "Ödeme hazırlıkları sürüyor."}</p>
-          <CartTrust />
+          {!mobile && <CartTrust />}
           <DialogClose asChild><Button asChild variant="link" className={styles.secondaryLink}><Link href="/sepet" prefetch={false}>Sepeti görüntüle</Link></Button></DialogClose>
         </div>
         </InteractiveCheckout>
