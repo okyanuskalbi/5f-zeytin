@@ -1,4 +1,23 @@
-## Aktif iş: Task172 / mobil scroll animasyonları (2 Kasım 2026)
+## Aktif iş: Task173 / sepet ikonu ve Device Hub (2 Kasım 2026)
+
+Kullanıcı navbar sepet ikonunu ve canlı mobil sitenin Device Hub üzerinden
+kontrolünü istedi. [Görev kapsamı](tasks/173-sepet-ikonu-ve-device-hub.md):
+44×44 px sepet düğmesi, 22 px ShoppingCart ikonu, boş sepette gizli rozet,
+pozitif adette sayaç ve 99+ sınırı; mevcut sepet/menü/üyelik akışı korunur.
+Mevcut ikon değişimi yeni 21st bileşeni gerektirmez; frontend-patterns ve
+tdd-workflow uygulanır. Yerel navbar kanıtı `.cache/task-173/nav-local/report.json`:
+9 viewport, sepet aç/kapat/odak dönüşü, 4 scroll durumu ve fallback PASS.
+117 dosya/1411 unit, lint, typecheck ve webpack build PASS; kod kapıları
+`.cache/task-173/local-verification.json` ile kayıtlıdır. Main/API yayını sıradadır.
+
+Device Hub (`com.apple.dt.Devices`) içindeki iPhone 17 Pro / iOS 26.5 Safari
+SIMULATOR üzerinde canlı site, açılan menü, Ürünlerimiz hedefi ve ilk ürünün
+fotoğraf/fiyat/CTA görünümü gözlendi. Bu Task172 yayınına ait kısmi kontroldür;
+Task173 canlı ikon kabulü veya fiziksel telefon testi değildir. Diğer hareket,
+rotation/klavye/reduced testleri bekliyor. Gerçek hesap/ödeme/e-posta işlemi yok.
+Son yayın makbuzu hedefi `.cache/task-173/final-receipt.json`; hazır varsayılmaz.
+
+## Önceki iş: Task172 / mobil scroll animasyonları (2 Kasım 2026)
 
 Kullanıcı beğenilen masaüstü scroll ve animasyonlarını mümkün olduğunca
 mobile istedi. Kapsam `docs/tasks/172-mobil-scroll-animasyonlari.md`:
@@ -6,7 +25,11 @@ portrait touch sahne/galeri, kısa/yatay/reduced/saveData native fallback,
 aynı varlıklar ve ticari işlemler. Mevcut desktop görseli korunur.
 Task172 yerel1410unit/lint/typecheck/build ve12profil63kontrol PASS;
 menü9viewport/4scroll/içsayfa geçişi PASS. Kanıt docs/referans/qa-172-20261102.json.
-Main/API yayını sırada. Task171 b517ba7 yayında; CI41403186829 ve REST
+Task172 main `a6640f2d864aee6e268152514d0f0697a4cbc227` yayımlandı;
+CI41499058867 SUCCESS, REST `dpl_A4dNzMdgntjEwCz9TTkyNjvS7e3g` READY ve
+afinazeytin.com alias bağlı. Canlı Chromium 12 profil/63 kontrol, 9 navbar
+viewport ve 4 scroll durumu PASS; makbuz `.cache/task-172/final-receipt.json`.
+Bu kabul fiziksel iOS/Android testi değildir. Task171 b517ba7 yayında; CI41403186829 ve REST
 `dpl_F5s6yihRrPXNCq9WeChH2pDv3cPL` READY; canlı44form kontrolü ve9menü
 viewport PASS. Makbuz `.cache/task-171/final-receipt.json`.
 

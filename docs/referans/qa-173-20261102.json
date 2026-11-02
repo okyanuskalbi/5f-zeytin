@@ -1,0 +1,225 @@
+{
+  "task": 173,
+  "at": "2026-11-02T18:54:48.406Z",
+  "baseHead": "a6640f2d864aee6e268152514d0f0697a4cbc227",
+  "ownedFiles": [
+    {
+      "file": "components/site/Navbar.tsx",
+      "sha256": "d81c202d32844722a4b9074cd46542d3f272b8647cdc7c61424774b9a45f417f"
+    },
+    {
+      "file": "components/site/Navbar.module.css",
+      "sha256": "218d1973eaae8c069e4288288ad8e93d8292b3aa032b900e17d21b528863d920"
+    },
+    {
+      "file": "tests/unit/navbar-scroll.test.tsx",
+      "sha256": "fdae860799a720675824395194f39492315fceb4c1998d8d434a8245843be069"
+    }
+  ],
+  "checks": [
+    {
+      "name": "lint",
+      "command": "npm run lint",
+      "exitCode": 0,
+      "log": "lint.log"
+    },
+    {
+      "name": "typecheck",
+      "command": "npm run typecheck",
+      "exitCode": 0,
+      "log": "typecheck.log"
+    },
+    {
+      "name": "unit",
+      "command": "npm test -- --maxWorkers=2 --testTimeout=30000",
+      "exitCode": 0,
+      "files": 117,
+      "tests": 1411,
+      "log": "unit.log"
+    },
+    {
+      "name": "build",
+      "command": "ASSET_SKIP_REENCODE=1 npm run build -- --webpack",
+      "exitCode": 0,
+      "log": "build.log"
+    }
+  ],
+  "browser": {
+    "success": true,
+    "url": "http://127.0.0.1:3021/",
+    "viewports": 9,
+    "cartChecks": [
+      {
+        "width": 1440,
+        "height": 900,
+        "icon": true,
+        "emptyBadgeHidden": true,
+        "box": {
+          "x": 1296.78125,
+          "y": 20,
+          "width": 44,
+          "height": 44
+        },
+        "drawerOpened": true,
+        "escapeClosed": true,
+        "focusRestored": true
+      },
+      {
+        "width": 1366,
+        "height": 768,
+        "icon": true,
+        "emptyBadgeHidden": true,
+        "box": {
+          "x": 1222.78125,
+          "y": 20,
+          "width": 44,
+          "height": 44
+        },
+        "drawerOpened": true,
+        "escapeClosed": true,
+        "focusRestored": true
+      },
+      {
+        "width": 1281,
+        "height": 720,
+        "icon": true,
+        "emptyBadgeHidden": true,
+        "box": {
+          "x": 1153.859375,
+          "y": 12,
+          "width": 44,
+          "height": 44
+        },
+        "drawerOpened": true,
+        "escapeClosed": true,
+        "focusRestored": true
+      },
+      {
+        "width": 1280,
+        "height": 720,
+        "icon": true,
+        "emptyBadgeHidden": true,
+        "box": {
+          "x": 1152.859375,
+          "y": 12,
+          "width": 44,
+          "height": 44
+        },
+        "drawerOpened": true,
+        "escapeClosed": true,
+        "focusRestored": true
+      },
+      {
+        "width": 1024,
+        "height": 768,
+        "icon": true,
+        "emptyBadgeHidden": true,
+        "box": {
+          "x": 896.859375,
+          "y": 12,
+          "width": 44,
+          "height": 44
+        },
+        "drawerOpened": true,
+        "escapeClosed": true,
+        "focusRestored": true
+      },
+      {
+        "width": 768,
+        "height": 1024,
+        "icon": true,
+        "emptyBadgeHidden": true,
+        "box": {
+          "x": 640.859375,
+          "y": 12,
+          "width": 44,
+          "height": 44
+        },
+        "drawerOpened": true,
+        "escapeClosed": true,
+        "focusRestored": true
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "icon": true,
+        "emptyBadgeHidden": true,
+        "box": {
+          "x": 274.859375,
+          "y": 10,
+          "width": 44,
+          "height": 44
+        },
+        "drawerOpened": true,
+        "escapeClosed": true,
+        "focusRestored": true
+      },
+      {
+        "width": 320,
+        "height": 568,
+        "icon": true,
+        "emptyBadgeHidden": true,
+        "box": {
+          "x": 208.859375,
+          "y": 10,
+          "width": 44,
+          "height": 44
+        },
+        "drawerOpened": true,
+        "escapeClosed": true,
+        "focusRestored": true
+      },
+      {
+        "width": 844,
+        "height": 390,
+        "icon": true,
+        "emptyBadgeHidden": true,
+        "box": {
+          "x": 716.859375,
+          "y": 4,
+          "width": 44,
+          "height": 44
+        },
+        "drawerOpened": true,
+        "escapeClosed": true,
+        "focusRestored": true
+      }
+    ],
+    "scrollChecks": 4,
+    "fallback": [
+      "reduced",
+      "no-js"
+    ],
+    "runtimeErrors": [],
+    "blockedWrites": [],
+    "report": "nav-local/report.json",
+    "screenshots": [
+      "nav-local/1281-header.png",
+      "nav-local/1440-cart-drawer.png",
+      "nav-local/1440-header.png",
+      "nav-local/320-cart-drawer.png",
+      "nav-local/320-header.png",
+      "nav-local/320-menu.png",
+      "nav-local/390-cart-drawer.png",
+      "nav-local/390-header.png",
+      "nav-local/390-menu.png",
+      "nav-local/844-menu.png",
+      "nav-local/no-js-header.png",
+      "nav-local/reduced-header.png"
+    ]
+  },
+  "cleanup": {
+    "serverPid": 12254,
+    "port": 3021,
+    "startedAt": "2026-11-02T18:54:07.356Z",
+    "qaExitCode": 0,
+    "serverClosed": true,
+    "qaPid": 12259,
+    "serverExit": {
+      "code": 143,
+      "signal": null
+    },
+    "finishedAt": "2026-11-02T18:54:33.368Z"
+  },
+  "note": "Local production acceptance; Device Hub manual observations are recorded separately in the task document. Real customer transactions not exercised."
+}

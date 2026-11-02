@@ -17,8 +17,9 @@
 .control { position:relative; background:transparent; color:inherit; outline-color:var(--pro-brand); border:0; border-radius:0; padding:8px; font-size:13px; }
 .control:hover,.control:active { background:transparent; color:inherit; text-decoration:underline; text-underline-offset:5px; }
 .control:disabled { background:transparent; color:inherit; opacity:1; }
-.cart { display:inline-flex; gap:0; min-height:44px; padding:8px; font-weight:500; }
-.badge { display:inline-flex; align-items:center; justify-content:center; min-width:16px; margin-inline:2px; color:var(--pro-brand); font-size:12px; font-weight:600; font-variant-numeric:tabular-nums; }
+.cart { display:inline-flex; gap:0; width:44px; min-width:44px; height:44px; min-height:44px; padding:8px; font-weight:500; }
+.cartIcon { width:22px; height:22px; }
+.badge { position:absolute; top:0; right:0; display:inline-flex; align-items:center; justify-content:center; min-width:18px; height:18px; padding-inline:3px; border:1px solid var(--pro-ink); border-radius:999px; background:var(--pro-brand); color:var(--pro-ink); font-size:10px; line-height:1; font-weight:700; font-variant-numeric:tabular-nums; }
 .trigger { display:none; }
 .home:focus-visible,.link:focus-visible,.shop:focus-visible { outline:2px solid var(--pro-brand); outline-offset:4px; }
 .menu { --ink:var(--pro-ink); --sut:var(--pro-paper); inset:0; width:100%; max-width:none; height:100dvh; max-height:none; display:flex; flex-direction:column; justify-content:space-between; gap:32px; padding:max(64px,env(safe-area-inset-top,0px)) max(24px,env(safe-area-inset-right,0px)) max(32px,env(safe-area-inset-bottom,0px)) max(24px,env(safe-area-inset-left,0px)); background:var(--ink); color:var(--sut); }

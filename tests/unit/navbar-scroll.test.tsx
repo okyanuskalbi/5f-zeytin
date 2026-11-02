@@ -2,12 +2,15 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { Navbar } from "@/components/site/Navbar";
 import { siteContact } from "@/lib/site/contact";
+import { createCartStore } from "@/lib/cart/store";
 
-const state = vi.hoisted(() => ({ pathname: "/" }));
+const state = vi.hoisted(() => ({ pathname: "/", cart: null as ReturnType<typeof import("@/components/cart/CartProvider").useCart> }));
 vi.mock("next/navigation", () => ({ usePathname: () => state.pathname }));
+vi.mock("@/components/cart/CartProvider", () => ({ useCart: () => state.cart }));
 
 beforeEach(() => {
   state.pathname = "/";
+  state.cart = null;
   window.history.replaceState(null, "", "/");
   Object.defineProperty(window, "scrollY", { configurable: true, writable: true, value: 0 });
   const hero = document.createElement("section");
@@ -32,7 +35,25 @@ it("keeps corporate section destinations and the cart control", () => {
   for (const [name, href] of [["Kurumsal", "/#kurumsal"], ["Ürünlerimiz", "/#urunler"], ["Üretim Tesisimiz", "/#tesisimiz"], ["Toptan Satış", "/#toptan-iletisim"], ["İletişim", "/#iletisim"]]) {
     expect(screen.getByRole("link", { name }).getAttribute("href")).toBe(href);
   }
-  expect(screen.getByRole("button", { name: "Sepetim, 0 adet" }).textContent).toBe("Sepet (0)");
+  const cart = screen.getByRole("button", { name: "Sepetim, 0 adet" });
+  expect(cart.textContent).toBe("");
+  expect(cart.querySelector('svg[aria-hidden="true"]')).not.toBeNull();
+  expect(cart.querySelector('[data-slot="count-badge"]')).toBeNull();
+});
+
+it("keeps the exact cart quantity accessible and opens the drawer from its icon when the visual badge is capped", () => {
+  const openCart = vi.fn();
+  state.cart = {
+    store: createCartStore({ products: [], storage: null }),
+    state: { items: [{ productId: "first", quantity: 99 }, { productId: "second", quantity: 6 }], hydrated: true, storageError: false },
+    products: [], open: false, openCart, addItem: vi.fn(), checkoutHref: null,
+  };
+  render(<Navbar />);
+  const cart = screen.getByRole("button", { name: "Sepetim, 105 adet" });
+  expect(cart.textContent).toBe("99+");
+  expect(cart.querySelector('[data-slot="count-badge"]')?.getAttribute("aria-hidden")).toBe("true");
+  fireEvent.click(cart);
+  expect(openCart).toHaveBeenCalledWith(cart);
 });
 
 it("keeps the landing navigation on dark glass before and after every scroll threshold", () => {

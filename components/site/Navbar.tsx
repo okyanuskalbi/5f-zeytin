@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import * as motion from "motion/react-m";
 import { AnimatePresence } from "motion/react";
+import { ShoppingCart } from "lucide-react";
 import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
 import { springs, motionTokens } from "@/lib/ui-motion";
 import { Button } from "@/components/ui/button";
@@ -149,18 +150,19 @@ export function Navbar(): JSX.Element {
           }))} />
         <div className={styles.actions}>
           <Link href="/#urunler" className={styles.shop}>Online Mağaza</Link>
-          <Button variant="ghost" className={`${styles.control} ${styles.cart}`}
+          <Button variant="ghost" size="icon" className={`${styles.control} ${styles.cart}`}
             aria-label={`Sepetim, ${itemCount} adet`} aria-haspopup="dialog" aria-expanded={cart?.open ?? false}
             disabled={!cart?.state.hydrated || cart.products === null}
             onClick={event => cart?.openCart(event.currentTarget)}>
-            Sepet (<AnimatePresence initial={false} mode="wait">
-              <motion.span key={itemCount} data-slot="count-badge" aria-hidden="true"
+            <ShoppingCart className={styles.cartIcon} strokeWidth={1.75} aria-hidden="true" />
+            <AnimatePresence initial={false} mode="wait">
+              {itemCount > 0 && <motion.span key={itemCount} data-slot="count-badge" aria-hidden="true"
                 className={styles.badge}
                 initial={reduced ? false : { y: -motionTokens.distance.xs }} animate={{ y: 0 }}
                 exit={{ opacity: 0 }} transition={reduced ? { duration: 0 } : springs.badge}>
                 {itemCount > 99 ? "99+" : itemCount}
-              </motion.span>
-            </AnimatePresence>)
+              </motion.span>}
+            </AnimatePresence>
           </Button>
           <Button asChild variant="ghost" className={`${styles.control} ${styles.account}`}>
             <Link href="/hesabim" onClick={event => { if(openMembership && pathname !== "/giris" && pathname !== "/kayit" && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey){event.preventDefault();openMembership(event.currentTarget);} }}>Hesabım</Link>
