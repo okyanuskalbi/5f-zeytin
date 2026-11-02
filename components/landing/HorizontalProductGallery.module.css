@@ -75,8 +75,8 @@
  .number { left:8px; }
  .foot { flex-direction:column; gap:8px; }
 }
-/* Navigation precedes the product on phones, so the next SKU is discoverable
-   before a large image. Photo height leaves room for name, price and actions. */
+/* Compact galleries lead directly into the products. Scroll, swipe and keyboard
+   navigation remain on the rail; the auxiliary controls are desktop-only. */
 @media(max-width:1023px) {
  .stage { padding-top:20px; }
  .heading { gap:8px; margin-bottom:12px; }
@@ -84,9 +84,7 @@
  .heading .eyebrow { margin-bottom:6px; font-size:10px; }
  .heading > div > p:last-child { margin-top:8px; font-size:12px; line-height:1.4; }
  .explanation { display:none; }
- .mobileControls { gap:12px; margin:0 0 8px; padding-block:8px; border-block:1px solid var(--pro-line); background:var(--pro-paper); }
- .mobileControls p { max-width:16ch; font-size:11px; line-height:1.4; }
- .mobileControls [role="group"] { gap:10px; flex-shrink:0; }
+ .section [data-rail-controls] { display:none; }
  .item article { padding-top:0; }
  .item article > button[aria-haspopup="dialog"] { height:clamp(140px,28svh,280px); flex-basis:clamp(140px,28svh,280px); padding-block:4px 12px; }
  .item article h3 { margin-top:0; padding-top:8px; font-size:17px; line-height:1.2; }

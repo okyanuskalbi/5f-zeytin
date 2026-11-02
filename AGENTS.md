@@ -1,3 +1,12 @@
+## Aktif iş: Task175 / mobil galeri kontrol şeridini kaldırma (2 Kasım 2026)
+
+Kullanıcının ekran görüntüsüyle istediği açıklama/sayaç/önceki-sonraki ok şeridi,
+kompakt galeride (1023px ve altı) kaldırılır. CSS, hydration öncesinde de şeridi
+gizler; yer ayırmaz. Ürün içi numara, dokunma/kaydırma/klavye, altı gerçek SKU,
+CTA ve masaüstü galeri korunur. Task174 final6c0e151 API READY ve102canlı
+kontrol PASS; makbuz .cache/task-174/final-receipt.json.
+Task175 kabul/yayın makbuzu .cache/task-175/final-receipt.json hedefindedir.
+
 ## Aktif iş: Task174 / mobil öncelikli deneyim (2 Kasım 2026)
 
 Kullanıcı daha kapsamlı mobil uyarlama, 21st.dev ve frontend skill incelemesi
