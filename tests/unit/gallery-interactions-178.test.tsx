@@ -57,6 +57,32 @@ it.each([true, false])("keeps vertical intent locked and leaves native page scro
   expect(r.offset()).toBe(0);
   expect(r.seek).not.toHaveBeenCalled();
 });
+it.each([true, false])("keeps a touch drag alive when implicit child capture transfers to the viewport, scrub=%s", scrub => {
+  const r = rail(scrub);
+  const child = screen.getByRole("button", { name: "Eylem 0" });
+  for (const [start, end, expected] of [[330, 70, 300], [70, 330, 0]]) {
+    pointer(child, "pointerdown", start, 100, "touch");
+    const direction = Math.sign(end - start);
+    pointer(child, "pointermove", start + direction * 8, 100, "touch");
+    // Touch implicitly captures its hit target. setPointerCapture(viewport)
+    // releases that child; its lostpointercapture bubbles through the viewport.
+    pointer(child, "lostpointercapture", start + direction * 8, 100, "touch");
+    pointer(r.viewport, "pointermove", end, 100, "touch");
+    expect(r.offset()).toBe(expected === 300 ? 260 : 40);
+    pointer(r.viewport, "pointerup", end, 100, "touch");
+    expect(r.offset()).toBe(expected);
+    expect(child.closest("[data-rail-item]")!.getAttribute("data-rail-active")).toBe(String(expected === 0));
+  }
+});
+it("still cancels when the viewport itself loses pointer capture", () => {
+  const r = rail(true);
+  pointer(r.viewport, "pointerdown", 330, 100, "touch");
+  pointer(r.viewport, "pointermove", 300, 100, "touch");
+  pointer(r.viewport, "lostpointercapture", 300, 100, "touch");
+  pointer(r.viewport, "pointermove", 70, 100, "touch");
+  expect(r.offset()).toBe(30);
+  expect(r.viewport.getAttribute("data-rail-dragging")).toBe("false");
+});
 function QuoteState() { return <output data-testid="quote-state">{useQuoteJourney().productId}</output>; }
 async function gallery() {
   const products = await getProducts();

@@ -10,8 +10,10 @@ kaydedilir; Task177 aşağıda tarihsel başlangıç olarak korunur.
 Task178 kaynak `2d6fcce`; 1440unit/lint/typecheck/Turbopack PASS,
 CI41620563438 SUCCESS, REST `dpl_8ic3NZX3HH5wQJKYCVxmXsSHpGXF` READY ve alan adı bağlı.
 HTTP/yeni içerik/dört siyah zeytin görsel hash kontrolü PASS. Makbuz
-`.cache/task-178/final-receipt.json`. Kesin boş-görsel nedeni tarayıcı yeniden
-üretimiyle doğrulanamadığı için Task178 BEKLİYOR; Claude'a devredildi.
+`.cache/task-178/final-receipt.json`. İlk yayının boş-görsel maddesi Claude tarafından kapatıldı.
+Düzeltme178-1 touch capture aktarımındaki yanlış iptali giderir;
+1443 unit/lint/typecheck/Turbopack PASS. Yeni kaynak yayını sıradadır;
+tarayıcı dokunma regresyonu Claude'a bırakılmıştır.
 
 ## Önceki iş: Task177 / ilk açılış ve panel akıcılığı (3 Kasım 2026)
 

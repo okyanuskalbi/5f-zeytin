@@ -125,4 +125,29 @@ frontend
 3. Test: dokunma tipi pointer dizisiyle (pointerType "touch") yatay 260 px sola → active 1; sağa geri → active 0; dikey baskın dokunma galeriyi değiştirmiyor. Mümkünse yukarıdaki repro betiğini e2e/uyum testine çevir (canlı yerine yerel `next start`).
 4. Masaüstü sürükleme, panel ve diğer davranışlar değişmesin. Yayın + makbuz aynı.
 
+## Coder Notu — Düzeltme 178-1
+
+- Neden komut testiyle yeniden üretildi: touch pointer, ilk basılan çocuk
+  öğeyi örtük olarak yakalar. Yatay yön kilidinden sonra viewport'a yapılan
+  `setPointerCapture`, çocukta `lostpointercapture` üretir. Yukarı yayılan bu
+  olay viewport'un iptal handler'ına girip hareketi ilk 8px'te durduruyordu.
+  Handler artık yalnız viewport'un kendi capture kaybını iptal sayıyor.
+  Scrub/native konum hesabı, atalet ve dikey intent değiştirilmedi.
+- RED: capture aktarımını simüle eden scrub/native iki testte 260 yerine 8px
+  alındı. GREEN: aynı touch dizisi sola 260px → active1, sağa → active0;
+  viewport'un gerçek capture kaybı iptali ve dikey intent testleri PASS.
+- `npm test -- --maxWorkers=2`: 122 dosya / 1443 test PASS.
+  `npm run lint`, `npm run typecheck`, `npm run build` (Turbopack),
+  yeni e2e dosyası için ESLint ve `git diff --check`: PASS.
+  Loglar `.cache/task-178/*-178-1.log`; RED/ara commit oluşturulmadı.
+- `tests/e2e/gallery-touch-178.spec.ts` Claude repro'sunu yerel `next start`
+  kullanan Playwright testine taşır. Çalıştırılmadı. Claude komutu:
+  `npm run test:e2e -- gallery-touch-178 --project=chromium-390`.
+  Mevcut e2e testleri değiştirilmedi; tarayıcı/cihaz/akıcılık kabulü Claude'da.
+- Görev skill'leri ve yerel Next.js rehberi okundu; mevcut raydaki olay
+  düzeltmesi için yeni UI kaynağı veya bağımlılık gerekmedi.
+- Siyah zeytin görseli için yukarıdaki Claude denetimi ilk uygulamanın açık
+  maddesini kapatmıştır; yeni düzeltmenin tarayıcı teyidi ayrıca yapılmalıdır.
+- Bu kaynak commit'inin main/CI/REST yayın makbuzu sıradadır.
+
 ## Durum: BEKLİYOR

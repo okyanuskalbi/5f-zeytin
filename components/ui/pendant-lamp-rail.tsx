@@ -204,7 +204,11 @@ export function PendantLampRail({ variant, label, children, x, scrub, travel, vi
       onDragStart={event => event.preventDefault()}
       onPointerUp={event => finish(event)} onPointerCancel={event => finish(event, true)}
       onPointerLeave={() => { if (!drag.current.moved) drag.current.id = -1; }}
-      onLostPointerCapture={event => finish(event, true)} onKeyDown={keyboard}
+      onLostPointerCapture={event => {
+        // Touch implicitly captures the child hit target. Transferring capture
+        // to this viewport emits a bubbling loss on that child, not a cancel.
+        if (event.target === event.currentTarget) finish(event, true);
+      }} onKeyDown={keyboard}
       onClickCapture={event => { if (suppressClick.current && event.detail > 0) { event.preventDefault(); event.stopPropagation(); suppressClick.current = false; } }}>
       <motion.div ref={trackRef} data-gallery-track="" className={trackClassName} onFocusCapture={event => {
         const item = (event.target as HTMLElement).closest<HTMLElement>("[data-rail-item]");
