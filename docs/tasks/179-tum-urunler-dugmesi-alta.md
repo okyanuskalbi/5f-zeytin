@@ -29,7 +29,7 @@ Task 178'de başlığın altına eklenen "Tüm ürünler" düğmesi galerinin al
 - [x] Birim/kaynak testi: düğme "Sepete ekle" ile aynı stil kaynağını (sınıf/token/bileşen) kullanıyor.
 - [x] Birim/kaynak testi: telefon menüsünde `menuToolbar` koyu zemin (`--pro-ink`) kullanıyor; "Ana Sayfa" ve Kapat açık renk.
 - [x] Mevcut Task 178 panel testleri geçiyor (sıra, sayı, Esc, odak dönüşü, teklif).
-- [ ] `npm test`, lint, typecheck, build yeşil. Yayın + makbuz `.cache/task-179/final-receipt.json`.
+- [x] `npm test`, lint, typecheck, build yeşil. Yayın + makbuz `.cache/task-179/final-receipt.json`.
 - Görsel kabul (mobil menü üst satırı, mobil 390, masaüstü 1280/1440, son ürünle görünürlük): Claude doğrular.
 
 ## Yapılmaması gerekenler
@@ -46,6 +46,8 @@ Task 178'de başlığın altına eklenen "Tüm ürünler" düğmesi galerinin al
 - RED: `npm test -- tests/unit/gallery-interactions-178.test.tsx`: 11 PASS, yeni iki test FAIL. GREEN: aynı komut 13/13 PASS; sıra/tek düğme/ortak sınıf/menü kaynakları ve mevcut panel Esc/odak/teklif/sepet testleri geçti.
 - `npm test`: 122 dosya, 1445 test PASS. `npm run lint`, `npm run typecheck`, `npm run build` (Turbopack) PASS. Loglar `.cache/task-179/{red,green,unit,lint,typecheck,build}.log`.
 - Tarayıcı/cihaz/görsel testleri kullanıcının talimatıyla çalıştırılmadı; 390/1280/1440 ve son ürün/düğme görünürlüğü Claude'a aittir. Komut kabulü görsel kabul iddiası değildir.
-- Main/API yayını ve `.cache/task-179/final-receipt.json` sırada.
+- Main kaynak `d452f5d` push edildi; CI `41623736302` SUCCESS. REST `dpl_xGfzf7rhj9WM6tHibJKY2re63Kk3` READY; afinazeytin.com bağlı.
+- Derlenmiş CSS 5/5 ve canlı HTTP/HTML/inline CSS 9/9 PASS. Next.js inline CSS çıktısı da kontrol edildi; bu işlem tarayıcı çalıştırmaz.
+- Nihai makbuz `.cache/task-179/final-receipt.json`. Uygulama/komut/yayın kapsamı tamamlandı; görsel kabul Claude'a devredildi.
 
-## Durum: BEKLİYOR
+## Durum: TAMAMLANDI

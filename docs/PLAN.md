@@ -3,7 +3,10 @@
 [Task179](tasks/179-tum-urunler-dugmesi-alta.md): Tüm ürünler düğmesi foot öncesine
 alındı; satın alma düğmesiyle ortak görünüm/hareket bileşeni kullanır. Telefon
 menüsünün üst satırı koyu zemin ve açık logo/metin taşır. 1445 unit, lint,
-typecheck ve Turbopack build PASS; main/API yayın makbuzu sırada.
+typecheck ve Turbopack build PASS. Kaynak `d452f5d` main'de; CI41623736302
+SUCCESS, REST `dpl_xGfzf7rhj9WM6tHibJKY2re63Kk3` READY ve alan adı bağlı.
+Canlı HTTP/HTML/CSS 9/9 PASS; `.cache/task-179/final-receipt.json` hazır.
+Task179 uygulama/komut/yayın kapsamı TAMAMLANDI.
 Tarayıcı/görsel kabul kullanıcı talimatıyla Claude'a aittir.
 
 ## Önceki iş: Task178 / galeri sürükleme ve tüm ürünler (3 Kasım 2026)
