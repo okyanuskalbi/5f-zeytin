@@ -126,8 +126,8 @@ export function PendantLampRail({ variant, label, children, x, scrub, travel, vi
     stop(); suppressClick.current = false;
     const target = event.target as HTMLElement;
     const control = target.closest("button,a,input,select,textarea");
-    // Product-image/detail buttons may be dragged. Purchase and form controls stay native.
-    if (control && !control.matches('[aria-haspopup="dialog"]')) return;
+    // Buttons and links retain taps, but a deliberate drag must not activate them.
+    if (control?.matches("input,select,textarea")) return;
     drag.current = { id: event.pointerId, startX: event.clientX, startY: event.clientY, offset: currentOffset(), moved: false,
       vertical: false, lastX: event.clientX, time: performance.now(), velocity: 0 };
   }
@@ -150,6 +150,7 @@ export function PendantLampRail({ variant, label, children, x, scrub, travel, vi
       event.currentTarget.setAttribute("data-rail-dragging", "true");
       event.currentTarget.setPointerCapture?.(event.pointerId);
     }
+    event.preventDefault();
     const now = performance.now();
     state.velocity = state.velocity * .6 + ((event.clientX - state.lastX) / Math.max(1, now - state.time)) * .4;
     state.lastX = event.clientX; state.time = now;
@@ -163,7 +164,7 @@ export function PendantLampRail({ variant, label, children, x, scrub, travel, vi
     if (event.currentTarget.hasPointerCapture?.(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
     event.currentTarget.setAttribute("data-rail-dragging", "false");
     if (state.moved && !cancelled) {
-      const velocity = performance.now() - state.time > 90 ? 0 : state.velocity;
+      const velocity = reduced || performance.now() - state.time > 90 ? 0 : state.velocity;
       moveTo(nearestRailOffset(clamp(currentOffset() - velocity * 130), offsets()));
     }
     if (cancelled) { suppressClick.current = state.moved; stop(); }
@@ -200,6 +201,7 @@ export function PendantLampRail({ variant, label, children, x, scrub, travel, vi
     {controlsPlacement === "before" && controls}
     <div ref={viewportRef} role="region" aria-label={label} tabIndex={0} data-gallery-viewport="" data-rail-dragging="false" data-rail-enhanced={ready}
       className={`${styles.viewport} ${viewportClassName ?? ""}`} onPointerDown={pointerDown} onPointerMove={pointerMove}
+      onDragStart={event => event.preventDefault()}
       onPointerUp={event => finish(event)} onPointerCancel={event => finish(event, true)}
       onPointerLeave={() => { if (!drag.current.moved) drag.current.id = -1; }}
       onLostPointerCapture={event => finish(event, true)} onKeyDown={keyboard}

@@ -17,8 +17,8 @@ const subscribeReady = () => () => {};
 const clientReady = () => true;
 const serverReady = () => false;
 
-export function ProductCard({ product, image, scene, index = 0, featured = true, quoteAction, imageSizes = "(max-width: 767px) 40vw, (max-width: 1023px) 25vw, 320px" }: {
-  product: ProductVariant; image: V3Image; scene?: V3Image; index?: number; featured?: boolean; quoteAction?: ReactNode; imageSizes?: string;
+export function ProductCard({ product, image, scene, index = 0, featured = true, quoteAction, imageLoading, imageSizes = "(max-width: 767px) 40vw, (max-width: 1023px) 25vw, 320px" }: {
+  product: ProductVariant; image: V3Image; scene?: V3Image; index?: number; featured?: boolean; quoteAction?: ReactNode; imageLoading?: "eager" | "lazy"; imageSizes?: string;
 }): JSX.Element {
   const id = useId();
   const reduced = usePrefersReducedMotion();
@@ -34,7 +34,7 @@ export function ProductCard({ product, image, scene, index = 0, featured = true,
       {featured && index === 0 && <span className={styles.badge}>KOLEKSİYONDAN</span>}
       <button type="button" disabled={!ready} className={`${styles.image} ${styles.detailTrigger}`} aria-haspopup="dialog"
         aria-label={`${product.name}, ${product.weight} detayını aç`} onClick={event => openDetail?.(product.id, event.currentTarget)}>
-        <V3Picture image={image} sizes={imageSizes} />
+        <V3Picture image={image} sizes={imageSizes} loading={imageLoading} />
       </button>
       <h3 id={`${id}-name`} aria-label={`${product.name}, ${product.weight}`}><button type="button" disabled={!ready} className={styles.detailTrigger} aria-haspopup="dialog" aria-label={`${product.name}, ${product.weight}`}
         onClick={event => openDetail?.(product.id, event.currentTarget)}>{product.name}</button></h3>

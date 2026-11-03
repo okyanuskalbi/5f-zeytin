@@ -34,15 +34,19 @@ it("a horizontal drag moves the actual rail and suppresses its accidental detail
   expect(open).toHaveBeenCalledWith("bir");
 });
 
-it("vertical touch scrolling never seeks the rail or captures a purchase control", () => {
-  const { seek, viewport } = setup();
+it("vertical touch scrolling stays native; a horizontal pull on a purchase control drags without purchasing", () => {
+  const { seek, cart, viewport } = setup();
   pointer(screen.getByRole("button", { name: "Ürün 1" }), "pointerdown", 200, 100);
   pointer(viewport, "pointermove", 204, 200);
   pointer(viewport, "pointercancel", 204, 200);
   expect(seek).not.toHaveBeenCalled();
-  pointer(screen.getByRole("button", { name: "Sepete ekle 1" }), "pointerdown", 200, 100);
+  const purchase = screen.getByRole("button", { name: "Sepete ekle 1" });
+  pointer(purchase, "pointerdown", 200, 100);
   pointer(viewport, "pointermove", 80, 104);
-  expect(seek).not.toHaveBeenCalled();
+  expect(seek).toHaveBeenLastCalledWith(120);
+  pointer(viewport, "pointerup", 80, 104);
+  fireEvent.click(purchase, { detail: 1 });
+  expect(cart).not.toHaveBeenCalled();
 });
 
 it.each(["Sepete ekle 1", "Teklife ekle 1"])("the first %s tap works after native vertical scrolling cancels the pointer", label => {
@@ -172,4 +176,18 @@ it.each([true, false])("places one visible navigation group before the products 
   expect((screen.getByRole("button", { name: "Sonraki ürün" }) as HTMLButtonElement).disabled).toBe(true);
   fireEvent.click(screen.getByRole("button", { name: "Önceki ürün" }));
   expect(navigation.textContent).toContain("02 / 03");
+});
+
+it("projects a short release velocity into the nearest card using the existing finite Motion animation", async () => {
+  vi.stubGlobal("matchMedia", () => ({ matches: false, addEventListener() {}, removeEventListener() {} }));
+  const { animate } = await import("framer-motion");
+  vi.mocked(animate).mockClear();
+  const { viewport } = setup({ scrub: false });
+  const clock = vi.spyOn(performance, "now").mockReturnValue(0);
+  pointer(screen.getByRole("button", { name: "Ürün 1" }), "pointerdown", 200, 100);
+  clock.mockReturnValue(100);
+  pointer(viewport, "pointermove", 80, 104);
+  expect(viewport.scrollLeft).toBe(120);
+  pointer(viewport, "pointerup", 80, 104);
+  expect(animate).toHaveBeenCalledWith(120, 280, expect.objectContaining({ duration: .38, onUpdate: expect.any(Function) }));
 });

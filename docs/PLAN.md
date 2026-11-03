@@ -1,4 +1,13 @@
-## Aktif iş: Task177 / ilk açılış ve panel akıcılığı (3 Kasım 2026)
+## Aktif iş: Task178 / galeri sürükleme ve tüm ürünler (3 Kasım 2026)
+
+[Task178](tasks/178-galeri-surukle-ve-tum-urunler.md): mevcut rayın pointer
+hareketi scrub/native konuma yazılır; tüm ürünler mevcut Dialog/ProductCard
+ile aynı katalog sırasındaki ızgarada açılır. Yeni motor/bağımlılık yok.
+Tarayıcı/cihaz/akıcılık testleri kullanıcının bu görevdeki talimatıyla Claude'a
+aittir. Komut kabulü, normal main push ve Vercel REST makbuzu Task178'de
+kaydedilir; Task177 aşağıda tarihsel başlangıç olarak korunur.
+
+## Önceki iş: Task177 / ilk açılış ve panel akıcılığı (3 Kasım 2026)
 
 Kullanıcının “başla” talimatı, Task176 denetiminde saptanan masaüstü açılış
 sıçraması, ilk ana sayfa menü tonu ve yavaş işlemcide panel açılışlarını

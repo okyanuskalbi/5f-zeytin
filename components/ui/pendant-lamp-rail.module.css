@@ -14,3 +14,8 @@
 .navigation button:not(:disabled):hover { background:var(--pro-paper,#f7f4ed); }
 .navigation button:focus-visible { outline:2px solid var(--pro-ink,#172b21); outline-offset:3px; }
 @media(max-width:500px) { .controls { gap:12px; } .controls p { max-width:14ch; } .navigation { gap:10px; } }
+/* The existing Motion settle owns snapping after pointer release. Native CSS
+   snapping must not round each intermediate scrollLeft assignment. */
+.viewport[data-rail-enhanced="true"] { scroll-snap-type:none; }
+.viewport button[aria-haspopup="dialog"] { cursor:grab; }
+.viewport[data-rail-dragging="true"] :is(button,a) { cursor:grabbing; }

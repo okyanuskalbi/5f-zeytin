@@ -145,7 +145,7 @@ describe("product gallery viewport policy", () => {
     expect(section.dataset.galleryMode).toBe(viewport.mode);
     expect(container.querySelectorAll("[data-gallery-item]")).toHaveLength(6);
     expect(screen.getAllByRole("button", { name: /^Teklife ekle:/ })).toHaveLength(6);
-    expect(screen.getByText(viewport.mode === "scrub" ? "Kaydırdıkça keşfedin." : "Ürünleri yatay kaydırarak keşfedin.")).toBeTruthy();
+    expect(screen.getByText("Kaydırarak ya da sürükleyerek keşfedin.")).toBeTruthy();
 
     // The real rail keyboard handler reaches the last product through document
     // scroll in scrub mode and through the local scroll area in native mode.

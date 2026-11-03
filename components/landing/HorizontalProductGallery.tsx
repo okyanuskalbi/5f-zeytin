@@ -2,7 +2,9 @@
 
 import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type CSSProperties, type FocusEvent, type ReactNode } from "react";
 import { m as motion, useMotionValue, useMotionValueEvent, useScroll, useTransform, type MotionValue } from "framer-motion";
-import { ArrowDownRightIcon, ArrowUpRightIcon, CheckIcon } from "lucide-react";
+import { ArrowDownRightIcon, ArrowUpRightIcon, CheckIcon, Grid2X2Icon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { PendantLampRail } from "@/components/ui/pendant-lamp-rail";
 import { v3Image } from "@/lib/media/v3-assets";
@@ -64,6 +66,9 @@ function GalleryProduct({ product, index, total, active, touch, railX, windowWid
  * SKU-to-enquiry handoff. Product-rail pointer intent writes to the same scroll
  * position; it does not introduce a second scroll engine or body input lock. */
 export function HorizontalProductGallery({ products }: { products: readonly ProductVariant[] }) {
+  const [allOpen, setAllOpen] = useState(false);
+  const allTrigger = useRef<HTMLButtonElement>(null);
+  const quoteAfterClose = useRef(false);
   const ordered = [...products].sort((a, b) => a.imageKey.localeCompare(b.imageKey));
   const section = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
@@ -163,6 +168,17 @@ export function HorizontalProductGallery({ products }: { products: readonly Prod
     scrollYProgress.set(progress);
     window.scrollTo({ top: top + progress * span, behavior: "instant" });
   }
+  function quoteButton(product: ProductVariant, inPanel = false) {
+    return <button type="button" disabled={!ready} className={styles.quote} data-selected={Object.hasOwn(journey.quantities, product.id)}
+      aria-label={`Teklife ekle: ${product.name}, ${product.weight}`} onClick={() => {
+        journey.chooseProduct(product.id);
+        if (inPanel) { quoteAfterClose.current = true; setAllOpen(false); }
+        else window.location.hash = "teklif";
+      }}>
+      {Object.hasOwn(journey.quantities, product.id) ? <CheckIcon size={18} aria-hidden="true" /> : <ArrowUpRightIcon size={18} aria-hidden="true" />}
+      Teklife ekle
+    </button>;
+  }
   return <section ref={section} id="urunler" aria-labelledby="urunler-title" className={styles.section}
     data-sc-scene="urunler" data-sc-device="pan" data-sc-engine="motion" data-21st-source="24623"
     data-gallery-mode={scrub ? "scrub" : "native"} data-gallery-layout={layout} style={{ "--gallery-span": `${travel}px` } as CSSProperties}>
@@ -170,26 +186,47 @@ export function HorizontalProductGallery({ products }: { products: readonly Prod
     <div ref={stage} className={styles.stage}>
       <div className={styles.heading} id="kiler">
         <div><p className={styles.eyebrow}>AFİNA KOLEKSİYONU</p><h2 id="urunler-title">Sofranızdan{" "}<em>işletmenize.</em></h2><p>Her sofraya bir AFİNA. Zeytin, salamura ve zeytinyağı.</p></div>
-        <p className={styles.explanation}>Ambalajı seçin. Sofranız için sepete,<br className={styles.desktopBreak} /> işletmeniz için teklifinize ekleyin.<ArrowDownRightIcon aria-hidden="true" size={24} /></p>
+        <div className={styles.headingActions}><p className={styles.explanation}>Ambalajı seçin. Sofranız için sepete,<br className={styles.desktopBreak} /> işletmeniz için teklifinize ekleyin.<ArrowDownRightIcon aria-hidden="true" size={24} /></p>
+          <Dialog open={allOpen} onOpenChange={setAllOpen}>
+            <DialogTrigger asChild><Button ref={allTrigger} disabled={!ready || !ordered.length} variant="outline" className={styles.allButton}>
+              <Grid2X2Icon aria-hidden="true" />Tüm ürünler
+            </Button></DialogTrigger>
+            <DialogContent className={styles.allPanel} showCloseButton={false} onCloseAutoFocus={event => {
+              event.preventDefault();
+              if (quoteAfterClose.current) {
+                quoteAfterClose.current = false;
+                window.location.hash = "teklif";
+                const target = document.getElementById("teklif");
+                const focusTarget = target?.querySelector<HTMLElement>("input,button,a,select,textarea") ?? target;
+                focusTarget?.focus({ preventScroll: true });
+              } else allTrigger.current?.focus({ preventScroll: true });
+            }}>
+              <div className={styles.panelHeading}>
+                <DialogHeader><DialogTitle>Tüm ürünler</DialogTitle><DialogDescription>Ambalajınızı seçin, sepetinize veya teklifinize ekleyin.</DialogDescription></DialogHeader>
+                <DialogClose asChild><Button variant="outline">Kapat</Button></DialogClose>
+              </div>
+              <div className={styles.productGrid}>
+                {ordered.map(product => <div key={product.id} className={`${styles.item} ${styles.gridItem}`}>
+                  <ProductCard product={product} image={v3Image(product.imageKey)} featured={false}
+                    imageSizes="(max-width: 380px) 90vw, (max-width: 767px) 45vw, 30vw" quoteAction={quoteButton(product, true)} />
+                </div>)}
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
       {ordered.length ? <>
         <PendantLampRail variant="product" label="Ürün galerisi" x={x} scrub={scrub} travel={travel}
           controlsPlacement={compact ? "before" : "after"} controlsClassName={compact ? styles.mobileControls : undefined}
-          hint={compact ? scrub ? "Aşağı kaydırın veya okları kullanın." : "Yana kaydırın veya okları kullanın." : undefined}
+          hint={compact ? "Kaydırın, sürükleyin veya okları kullanın." : undefined}
           viewportRef={viewport} trackRef={track} viewportClassName={styles.viewport} trackClassName={styles.track}
           onOffsetChange={seekGallery} onFocusCapture={revealFocus}>
             {ordered.map((product, index) => <GalleryProduct key={product.id} product={product} index={index} total={ordered.length}
               active={scrub} touch={layout === "touch"} railX={x} windowWidth={windowWidth}>
-              <ProductCard product={product} image={v3Image(product.imageKey)} imageSizes={layout === "touch" ? "(max-width: 767px) 90vw, 420px" : undefined} index={index} featured={false} quoteAction={
-              <button type="button" disabled={!ready} className={styles.quote} data-selected={Object.hasOwn(journey.quantities, product.id)}
-                aria-label={`Teklife ekle: ${product.name}, ${product.weight}`}
-                onClick={() => { journey.chooseProduct(product.id); window.location.hash = "teklif"; }}>
-                {Object.hasOwn(journey.quantities, product.id) ? <CheckIcon size={18} aria-hidden="true" /> : <ArrowUpRightIcon size={18} aria-hidden="true" />}
-                Teklife ekle
-              </button>} />
+              <ProductCard product={product} image={v3Image(product.imageKey)} imageSizes={layout === "touch" ? "(max-width: 767px) 90vw, 420px" : undefined} index={index} featured={false} imageLoading="eager" quoteAction={quoteButton(product)} />
             </GalleryProduct>)}
         </PendantLampRail>
-        <div className={styles.foot}><span>{ordered.length} ambalaj. Aynı üretici.</span><span>{scrub ? "Kaydırdıkça keşfedin." : "Ürünleri yatay kaydırarak keşfedin."}</span></div>
+        <div className={styles.foot}><span>{ordered.length} ambalaj. Aynı üretici.</span><span>Kaydırarak ya da sürükleyerek keşfedin.</span></div>
       </> : <p role="status">Görüntülenecek ürün bulunmuyor.</p>}
     </div>
   </section>;

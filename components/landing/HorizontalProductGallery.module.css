@@ -116,3 +116,24 @@
 .section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .item article [aria-label="Fiyat"] { font-size:22px; }
 .section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .foot { flex-direction:row; gap:8px; margin-top:4px; font-size:11px; }
 @media(prefers-reduced-motion:reduce) { .item,.item article > button[aria-haspopup="dialog"] picture { transform:none !important; } .spotlight,.item article > button[aria-haspopup="dialog"] picture { transition:none; } }
+
+.headingActions { display:flex; flex-direction:column; align-items:flex-start; gap:12px; }
+.allButton { border:1px solid var(--pro-line); background:var(--pro-paper); color:var(--pro-ink); }
+.allPanel[data-slot="dialog-content"] { width:min(1200px,calc(100% - 48px)); max-width:none; max-height:calc(100dvh - 48px); padding:0; gap:0; background:var(--pro-stone); color:var(--pro-ink); overflow:hidden; grid-template-rows:auto minmax(0,1fr); }
+.panelHeading { display:flex; align-items:start; justify-content:space-between; gap:16px; padding:24px; }
+.panelHeading [data-slot="dialog-description"] { color:var(--pro-muted); }
+.productGrid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:32px 16px; overflow-y:auto; overscroll-behavior:contain; padding:8px 24px 32px; }
+.gridItem { width:auto; min-width:0; }
+.gridItem article > button[aria-haspopup="dialog"] { height:240px; flex-basis:240px; }
+.gridItem article h3 { font-size:18px; }
+.gridItem article [aria-label="Fiyat"] { font-size:22px; }
+.gridItem article > div:has([aria-label="Fiyat"]) { flex-direction:column; align-items:stretch; }
+@media(max-width:767px) {
+ .allPanel[data-slot="dialog-content"] { inset:0; width:100%; height:100dvh; max-height:100dvh; transform:none; translate:none; --tw-translate-x:0px; --tw-translate-y:0px; }
+ .panelHeading { padding: max(16px,env(safe-area-inset-top)) 16px 16px; }
+ .panelHeading [data-slot="dialog-header"] { padding-right:0; }
+ .productGrid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px 8px; padding:8px 12px max(24px,env(safe-area-inset-bottom)); }
+ .gridItem article > button[aria-haspopup="dialog"] { height:170px; flex-basis:170px; padding-inline:4px; }
+ .gridItem article h3 { font-size:16px; }
+}
+@media(max-width:380px) { .productGrid { grid-template-columns:minmax(0,1fr); } }
