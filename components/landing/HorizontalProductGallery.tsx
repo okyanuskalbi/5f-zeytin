@@ -5,6 +5,7 @@ import { m as motion, useMotionValue, useMotionValueEvent, useScroll, useTransfo
 import { ArrowDownRightIcon, ArrowUpRightIcon, CheckIcon, Grid2X2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger, DialogClose } from "@/components/ui/dialog";
+import { PurchaseButton } from "@/components/catalog/PurchaseButton";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { PendantLampRail } from "@/components/ui/pendant-lamp-rail";
 import { v3Image } from "@/lib/media/v3-assets";
@@ -187,10 +188,25 @@ export function HorizontalProductGallery({ products }: { products: readonly Prod
       <div className={styles.heading} id="kiler">
         <div><p className={styles.eyebrow}>AFİNA KOLEKSİYONU</p><h2 id="urunler-title">Sofranızdan{" "}<em>işletmenize.</em></h2><p>Her sofraya bir AFİNA. Zeytin, salamura ve zeytinyağı.</p></div>
         <div className={styles.headingActions}><p className={styles.explanation}>Ambalajı seçin. Sofranız için sepete,<br className={styles.desktopBreak} /> işletmeniz için teklifinize ekleyin.<ArrowDownRightIcon aria-hidden="true" size={24} /></p>
+
+        </div>
+      </div>
+      {ordered.length ? <>
+        <PendantLampRail variant="product" label="Ürün galerisi" x={x} scrub={scrub} travel={travel}
+          controlsPlacement={compact ? "before" : "after"} controlsClassName={compact ? styles.mobileControls : undefined}
+          hint={compact ? "Kaydırın, sürükleyin veya okları kullanın." : undefined}
+          viewportRef={viewport} trackRef={track} viewportClassName={styles.viewport} trackClassName={styles.track}
+          onOffsetChange={seekGallery} onFocusCapture={revealFocus}>
+            {ordered.map((product, index) => <GalleryProduct key={product.id} product={product} index={index} total={ordered.length}
+              active={scrub} touch={layout === "touch"} railX={x} windowWidth={windowWidth}>
+              <ProductCard product={product} image={v3Image(product.imageKey)} imageSizes={layout === "touch" ? "(max-width: 767px) 90vw, 420px" : undefined} index={index} featured={false} imageLoading="eager" quoteAction={quoteButton(product)} />
+            </GalleryProduct>)}
+        </PendantLampRail>
+        <div className={styles.allActions}>
           <Dialog open={allOpen} onOpenChange={setAllOpen}>
-            <DialogTrigger asChild><Button ref={allTrigger} disabled={!ready || !ordered.length} variant="outline" className={styles.allButton}>
-              <Grid2X2Icon aria-hidden="true" />Tüm ürünler
-            </Button></DialogTrigger>
+            <DialogTrigger asChild><PurchaseButton ref={allTrigger} disabled={!ready || !ordered.length}>
+              <Grid2X2Icon size={16} aria-hidden="true" />Tüm ürünler
+            </PurchaseButton></DialogTrigger>
             <DialogContent className={styles.allPanel} showCloseButton={false} onCloseAutoFocus={event => {
               event.preventDefault();
               if (quoteAfterClose.current) {
@@ -214,18 +230,6 @@ export function HorizontalProductGallery({ products }: { products: readonly Prod
             </DialogContent>
           </Dialog>
         </div>
-      </div>
-      {ordered.length ? <>
-        <PendantLampRail variant="product" label="Ürün galerisi" x={x} scrub={scrub} travel={travel}
-          controlsPlacement={compact ? "before" : "after"} controlsClassName={compact ? styles.mobileControls : undefined}
-          hint={compact ? "Kaydırın, sürükleyin veya okları kullanın." : undefined}
-          viewportRef={viewport} trackRef={track} viewportClassName={styles.viewport} trackClassName={styles.track}
-          onOffsetChange={seekGallery} onFocusCapture={revealFocus}>
-            {ordered.map((product, index) => <GalleryProduct key={product.id} product={product} index={index} total={ordered.length}
-              active={scrub} touch={layout === "touch"} railX={x} windowWidth={windowWidth}>
-              <ProductCard product={product} image={v3Image(product.imageKey)} imageSizes={layout === "touch" ? "(max-width: 767px) 90vw, 420px" : undefined} index={index} featured={false} imageLoading="eager" quoteAction={quoteButton(product)} />
-            </GalleryProduct>)}
-        </PendantLampRail>
         <div className={styles.foot}><span>{ordered.length} ambalaj. Aynı üretici.</span><span>Kaydırarak ya da sürükleyerek keşfedin.</span></div>
       </> : <p role="status">Görüntülenecek ürün bulunmuyor.</p>}
     </div>

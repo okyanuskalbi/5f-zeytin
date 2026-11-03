@@ -8,6 +8,7 @@ import { CartProvider } from "@/components/cart/CartProvider";
 import { getProducts } from "@/lib/catalog/static-products";
 import { v3Image } from "@/lib/media/v3-assets";
 import sharp from "sharp";
+import { readFileSync } from "node:fs";
 
 vi.mock("@/components/cart/MiniCart", () => ({ MiniCart: () => null }));
 vi.mock("@/lib/media/use-gallery-motion", () => ({ useGalleryMotion: () => "native" }));
@@ -144,4 +145,26 @@ it("keeps cart actions working inside the grid and traps Tab at the last control
   const card = dialog.querySelector<HTMLElement>('[data-product-id="sample-green-olive-10kg"]')!;
   fireEvent.click(within(card).getByRole("button", { name: "Sepete ekle" }));
   expect(within(card).getByRole("status").textContent).toContain("sepete eklendi.");
+});
+
+it("places one shared purchase-style products trigger below the rail and before the footer", async () => {
+  const { container } = await gallery();
+  const triggers = screen.getAllByRole("button", { name: "Tüm ürünler" });
+  expect(triggers).toHaveLength(1);
+  const trigger = triggers[0];
+  expect(container.querySelector("#kiler")!.contains(trigger)).toBe(false);
+  const rail = screen.getByRole("region", { name: "Ürün galerisi" });
+  const foot = screen.getByText("6 ambalaj. Aynı üretici.");
+  expect(rail.compareDocumentPosition(trigger) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  expect(trigger.compareDocumentPosition(foot) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  const purchase = screen.getAllByRole("button", { name: "Sepete ekle" })[0];
+  expect(trigger.className).toBe(purchase.className);
+});
+it("gives the phone toolbar a dark surface and light text, logo and focus", () => {
+  const css = readFileSync("components/site/Navbar.module.css", "utf8").split("@media(max-width:767px)")[1];
+  expect(css.match(/\.menuToolbar \{([^}]+)\}/)?.[1]).toContain("background:var(--pro-ink)");
+  expect(css.match(/\.menuHome \{([^}]+)\}/)?.[1]).toContain("color:var(--pro-paper)");
+  expect(css.match(/\.menuClose \{([^}]+)\}/)?.[1]).toContain("color:var(--pro-paper)");
+  expect(css).toContain(".menuToolbar :is(a,button):focus-visible");
+  expect(readFileSync("components/site/NavbarMenu.tsx", "utf8")).toContain('<BrandLogo tone="dark" className={styles.menuLogo}');
 });

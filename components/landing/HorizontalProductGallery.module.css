@@ -35,7 +35,7 @@
 .quote:focus-visible { outline:2px solid var(--pro-ink); outline-offset:2px; }
 .foot { display:flex; justify-content:space-between; gap:24px; margin-top:12px; padding-inline:var(--pro-gutter); font-size:12px; }
 .section[data-gallery-mode="scrub"] { height:calc(100svh + var(--gallery-span)); padding:0; }
-.section[data-gallery-mode="scrub"] .stage { position:sticky; top:0; height:100svh; display:grid; grid-template-rows:auto minmax(0,1fr) auto; padding-top:calc(var(--header-height) + 12px); padding-bottom:12px; overflow:hidden; }
+.section[data-gallery-mode="scrub"] .stage { position:sticky; top:0; height:100svh; display:grid; grid-template-rows:auto minmax(0,1fr) auto auto; padding-top:calc(var(--header-height) + 12px); padding-bottom:12px; overflow:hidden; }
 /* The image uses the space left after text and 44px controls. A fixed image
    height clips purchase actions on a laptop, even when the scroll pin works. */
 .section[data-gallery-mode="scrub"] .heading { gap:24px; margin-bottom:8px; }
@@ -118,7 +118,8 @@
 @media(prefers-reduced-motion:reduce) { .item,.item article > button[aria-haspopup="dialog"] picture { transform:none !important; } .spotlight,.item article > button[aria-haspopup="dialog"] picture { transition:none; } }
 
 .headingActions { display:flex; flex-direction:column; align-items:flex-start; gap:12px; }
-.allButton { border:1px solid var(--pro-line); background:var(--pro-paper); color:var(--pro-ink); }
+.allActions { --altin:var(--brand-olive); --altin-2:var(--pro-ink); --ink:var(--pro-paper); width:min(280px,calc(100% - 2 * var(--pro-gutter))); margin:8px auto 0; }
+.allActions > button { gap:8px; }
 .allPanel[data-slot="dialog-content"] { width:min(1200px,calc(100% - 48px)); max-width:none; max-height:calc(100dvh - 48px); padding:0; gap:0; background:var(--pro-stone); color:var(--pro-ink); overflow:hidden; grid-template-rows:auto minmax(0,1fr); }
 .panelHeading { display:flex; align-items:start; justify-content:space-between; gap:16px; padding:24px; }
 .panelHeading [data-slot="dialog-description"] { color:var(--pro-muted); }

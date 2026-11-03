@@ -42,11 +42,11 @@
  .trigger { width:44px; min-width:44px; height:44px; padding:8px; }
  .menuIcon { display:block; }
  .menu { --sut:var(--pro-paper); --ink:var(--pro-ink); inset:auto 0 0; height:auto; max-height:calc(100dvh - max(12px,env(safe-area-inset-top,0px))); padding:0; gap:0; overflow:hidden; translate:none; border:1px solid rgba(23,43,33,.16); border-bottom:0; border-radius:24px 24px 0 0; background:var(--pro-paper); color:var(--pro-ink); box-shadow:0 -16px 64px rgba(0,0,0,.16); animation:menu-enter 240ms cubic-bezier(.22,1,.36,1); }
- .menuToolbar { display:flex; flex:none; align-items:center; justify-content:space-between; gap:12px; min-height:68px; padding:12px max(16px,env(safe-area-inset-right,0px)) 12px max(16px,env(safe-area-inset-left,0px)); border-bottom:1px solid rgba(23,43,33,.14); }
- .menuHome { display:flex; align-items:center; gap:12px; min-height:44px; min-width:0; color:var(--pro-muted); font-size:12px; }
+ .menuToolbar { display:flex; flex:none; align-items:center; justify-content:space-between; gap:12px; min-height:68px; padding:12px max(16px,env(safe-area-inset-right,0px)) 12px max(16px,env(safe-area-inset-left,0px)); border-bottom:1px solid rgba(247,244,237,.16); background:var(--pro-ink); color:var(--pro-paper); border-radius:23px 23px 0 0; }
+ .menuHome { display:flex; align-items:center; gap:12px; min-height:44px; min-width:0; color:var(--pro-paper); font-size:12px; }
  .menuLogo { display:block; width:100px; height:28px; object-fit:contain; }
- .menuClose { position:static; border:1px solid rgba(23,43,33,.18); border-radius:50%; }
- .menuClose:hover { background:rgba(23,43,33,.06); }
+ .menuClose { position:static; color:var(--pro-paper); border:1px solid rgba(247,244,237,.35); border-radius:50%; }
+ .menuClose:hover { background:rgba(247,244,237,.12); }
  .menuBody { min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:16px max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px)); scroll-padding-block:12px; }
  .phoneLinks { display:grid; gap:16px; }
  .quickLinks { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
@@ -60,6 +60,7 @@
  .corporateLink svg { width:16px; height:16px; flex:none; }
  .menuTagline { margin-top:12px; color:var(--pro-muted); font-family:var(--font-display,var(--font-display-fallback)); font-size:14px; line-height:1.5; }
  .menu :is(a,button):focus-visible { outline:2px solid var(--pro-gold-ink); outline-offset:2px; }
+ .menuToolbar :is(a,button):focus-visible { outline-color:var(--pro-paper); }
 }
 @media (min-width:600px) and (max-width:900px) and (max-height:500px) and (orientation:landscape) {
  .quickLinks { grid-template-columns:repeat(4,minmax(0,1fr)); }

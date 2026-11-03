@@ -1,4 +1,12 @@
-## Aktif iş: Task178 / galeri sürükleme ve tüm ürünler (3 Kasım 2026)
+## Aktif iş: Task179 / galeri alt düğmesi ve mobil menü (3 Kasım 2026)
+
+[Task179](tasks/179-tum-urunler-dugmesi-alta.md): Tüm ürünler düğmesi foot öncesine
+alındı; satın alma düğmesiyle ortak görünüm/hareket bileşeni kullanır. Telefon
+menüsünün üst satırı koyu zemin ve açık logo/metin taşır. 1445 unit, lint,
+typecheck ve Turbopack build PASS; main/API yayın makbuzu sırada.
+Tarayıcı/görsel kabul kullanıcı talimatıyla Claude'a aittir.
+
+## Önceki iş: Task178 / galeri sürükleme ve tüm ürünler (3 Kasım 2026)
 
 [Task178](tasks/178-galeri-surukle-ve-tum-urunler.md): mevcut rayın pointer
 hareketi scrub/native konuma yazılır; tüm ürünler mevcut Dialog/ProductCard
