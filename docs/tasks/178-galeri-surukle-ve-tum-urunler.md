@@ -113,4 +113,16 @@ frontend
   yeniden üretimi olmadan kanıtlanamadı. Varlık/yükleme koruması ve komut
   kabulü tamamdır; Claude'un neden/görsel teyidi henüz yok.
 
+## Claude Denetimi (3 Kas, canlı dpl_8ic3NZX3HH5wQJKYCVxmXsSHpGXF, headless Playwright)
+- GEÇTİ: Masaüstü fare sürüklemesi (Chromium 1440/1280 + WebKit 1440): 360 px sürükleme bir sonraki karta oturuyor (active 0→1). Tüm ürünler paneli masaüstünde 3 sütun, mobilde 2 sütun, 6/6 görsel yüklü, yatay taşma yok, Esc kapatıyor ve odak düğmeye dönüyor. Konsol hatası yok.
+- GEÇTİ: Siyah zeytin görseli galeride ve panelde yüklü (naturalWidth > 0). Madde 3 kapandı. Ekran görüntüsündeki boşluk eager yüklemeden önceki lazy gecikmesiydi.
+- GEÇTİ: Mobilde dikey dokunma sayfayı kaydırıyor (250 px hareket → 253 px).
+- KALDI: **Mobil yatay parmak kaydırması çalışmıyor.** 390×844, isMobile+hasTouch, scrub modu. `Input.synthesizeScrollGesture` ile 260 px sola kaydırma: rail `translateX` 0 → -8, ikinci kaydırmada -16, `data-rail-active` 0'da kalıyor. Sayfa `scrollY` +96 kayıyor. pointerdown/move/up olayları #urunler'e ulaşıyor, pointercancel yok. Yani sürükleme konumu ya çok küçük ölçekle yazılıyor ya da bırakınca 0. karta geri dönülüyor. Tekrar üretim: `PW=$PWD/node_modules/playwright node .cache/task-178/claude-touch-repro.cjs`.
+
+## Düzeltme 178-1
+1. Mobil/dokunma scrub modunda yatay parmak kaydırması parmak mesafesi kadar rayı taşısın (260 px sola → en az bir kart ileri). Bırakınca hıza göre bir sonraki/önceki karta otursun. Kısa ve yavaş sürüklemede en yakın karta otursun; 0. karta geri sıçramasın.
+2. Nedeni bul: dokunma pointer olaylarında `touch-action: pan-y` altında `pointermove` yön kilidi, sayfa dikey kaydırmasının (`scrollY` +96) seek ile çakışması ya da settle hedefinin yanlış hesaplanması. Nedeni Coder Notu'na yaz.
+3. Test: dokunma tipi pointer dizisiyle (pointerType "touch") yatay 260 px sola → active 1; sağa geri → active 0; dikey baskın dokunma galeriyi değiştirmiyor. Mümkünse yukarıdaki repro betiğini e2e/uyum testine çevir (canlı yerine yerel `next start`).
+4. Masaüstü sürükleme, panel ve diğer davranışlar değişmesin. Yayın + makbuz aynı.
+
 ## Durum: BEKLİYOR
