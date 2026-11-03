@@ -42,7 +42,7 @@ frontend
 - [x] Birim/bileşen testi: "Tüm ürünler" paneli tüm ürünleri galeriyle aynı sırada ve aynı sayıda gösteriyor; Esc ile kapanıyor, odak düğmeye dönüyor; "Teklife ekle" ürünü seçip `#teklif`'e gidiyor.
 - [x] Salamura Siyah görseli testle ya da derlenmiş çıktıyla doğrulanmış.
 - [ ] `npm test`, lint, typecheck, build yeşil. Mevcut galeri/scroll/e2e testleri zayıflatılmadan geçiyor.
-- [ ] Yayın (main + Vercel REST) ve makbuz `.cache/task-178/final-receipt.json`.
+- [x] Yayın (main + Vercel REST) ve makbuz `.cache/task-178/final-receipt.json`.
 - Gerçek tarayıcıda masaüstü fare sürüklemesi, iPhone/Android dokunma, takılma ölçümü: Claude doğrular.
 
 ## Yapılmaması gerekenler
@@ -100,7 +100,15 @@ frontend
 - Loglar `.cache/task-178/{red,focused,unit,lint,typecheck,build}.log`.
 - e2e dosyaları değiştirilmedi; kullanıcı isteğiyle çalıştırılmadı. Bu nedenle
   e2e içeren birleşik kabul satırı komut başarılarına rağmen işaretlenmedi.
-- Main/API yayını sırada; nihai makbuz `.cache/task-178/final-receipt.json`.
+- Main kaynak `2d6fcce` push edildi. CI41620563438 SUCCESS.
+- REST `dpl_8ic3NZX3HH5wQJKYCVxmXsSHpGXF` READY; afinazeytin.com alias bağlı.
+  Canlı HTTP200, yeni düğme/ipucu ve siyah zeytinin dört AVIF/WebP SHA256
+  eşleşmesi PASS. Bu, tarayıcı/görsel kabulü değildir.
+- Derlenmiş CSS: 2/3 sütun, mobil100dvh, touch-action ve panellerde
+  --tw-translate-x/y:0px doğrulandı (`compiled-css.json`).
+- Nihai makbuz `.cache/task-178/final-receipt.json`.
+- Yeni/revizyonlu 45 hedef test ve toplam 1440 test PASS; tüm komut logları
+  yukarıdaki dizinde. Yayın sonrası bu kayıt güncellemesi yalnız dokümantasyondur.
 - BEKLİYOR nedeni: ekran görüntüsündeki boş görselin kesin nedeni tarayıcı
   yeniden üretimi olmadan kanıtlanamadı. Varlık/yükleme koruması ve komut
   kabulü tamamdır; Claude'un neden/görsel teyidi henüz yok.
