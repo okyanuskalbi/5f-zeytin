@@ -2,8 +2,10 @@
 
 [Task180](tasks/180-menu-ana-sayfa-yazisi-kaldir.md): yalnız telefon menüsünün
 üst satırındaki görünür Ana Sayfa metni kaldırıldı; logo bağlantısı ve odak
-korundu. 1446 unit, lint/typecheck/Turbopack build PASS. Main/CI/API yayın
-makbuzu bekleniyor; tarayıcı ve 390 px görsel kabul Claude'a aittir.
+korundu. 1446 unit, lint/typecheck/Turbopack build PASS. Kaynak `cc1eb30`
+main'de; CI41628551599 SUCCESS, REST `dpl_4zycEgjdnsoyjs2hvLFWhgGumAkW`
+READY ve afinazeytin.com bağlı, HTTP 200. `.cache/task-180/final-receipt.json`
+hazır; uygulama/komut/yayın TAMAMLANDI. Tarayıcı ve 390 px görsel kabul Claude'a aittir.
 
 ## Önceki iş: Task179 / galeri alt düğmesi ve mobil menü (3 Kasım 2026)
 

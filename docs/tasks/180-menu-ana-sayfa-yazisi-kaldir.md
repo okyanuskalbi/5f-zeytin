@@ -22,7 +22,7 @@ Telefon menüsünün koyu yeşil üst satırında logonun yanındaki görünür 
 ## Kabul kriterleri
 - [x] Birim testi: telefon menüsü üst satırında görünür "Ana Sayfa" metni yok; logo bağlantısının erişilebilir adı "Ana Sayfa" ve href "/".
 - [x] Mevcut menü/odak testleri geçiyor.
-- [ ] `npm test`, lint, typecheck, build yeşil. Yayın + makbuz `.cache/task-180/final-receipt.json`.
+- [x] `npm test`, lint, typecheck, build yeşil. Yayın + makbuz `.cache/task-180/final-receipt.json`.
 - Görsel kabul (mobil 390): Claude.
 
 ## Yapılmaması gerekenler
@@ -34,6 +34,7 @@ Telefon menüsünün koyu yeşil üst satırında logonun yanındaki görünür 
 - RED: menü testinde 1 beklenen hata / 3 başarılı; GREEN: `npm test -- --maxWorkers=2` 122 dosya / 1446 test PASS. Mevcut menü, odak ve tablet düzeni testleri dahil.
 - `npm run lint`, `npm run typecheck`, `npm run build` (Turbopack), `git diff --check` PASS. Komut kayıtları `.cache/task-180/` altında.
 - Tarayıcı çalıştırılmadı; 390 px görsel kabul kullanıcı talimatıyla Claude'a aittir.
-- Main push / CI / API yayın makbuzu henüz bekleniyor.
+- Kaynak `cc1eb30456d3ae8fe70d76f881770569c84950ff` origin/main üzerinde; CI `41628551599` SUCCESS. Vercel REST `dpl_4zycEgjdnsoyjs2hvLFWhgGumAkW` READY, afinazeytin.com bağlı; canlı HTTP 200 doğrulandı. Makbuz `.cache/task-180/final-receipt.json`.
+- Uygulama/komut/yayın kapsamında eksik yok; tarayıcı/görsel kabul bu tamamlanma kaydına dahil değildir.
 
-## Durum: BEKLİYOR
+## Durum: TAMAMLANDI
