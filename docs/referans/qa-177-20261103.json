@@ -1,0 +1,91 @@
+{
+  "task": 177,
+  "date": "2026-11-03",
+  "phase": "local acceptance before main/API release",
+  "baselineCommit": "566aa6321b4f7ea1c4ffbc882a13d682fc667f2f",
+  "changes": [
+    "Cinematic initial scene CSS matches first Motion frame",
+    "Navbar SSR root alias normalizes /index to /"
+  ],
+  "unit": {
+    "status": "pass",
+    "tests": 1431,
+    "files": 121,
+    "log": ".cache/task-177/unit-retained.log"
+  },
+  "lint": {
+    "status": "pass",
+    "log": ".cache/task-177/lint-retained.log"
+  },
+  "typecheck": {
+    "status": "pass",
+    "log": ".cache/task-177/typecheck-retained.log"
+  },
+  "build": {
+    "status": "pass",
+    "engine": "Turbopack",
+    "log": ".cache/task-177/build-final.log"
+  },
+  "browser": {
+    "status": "pass",
+    "startup": {
+      "runs": 3,
+      "cls": [
+        0,
+        0,
+        0
+      ],
+      "tones": [
+        "glass",
+        "glass",
+        "glass"
+      ]
+    },
+    "motion": {
+      "profiles": 12,
+      "checks": 64,
+      "report": ".cache/task-177/motion/local-1793685792314/report.json"
+    },
+    "navbar": {
+      "viewports": 9,
+      "scrollTracking": 4,
+      "interiorNavigation": {
+        "solidOnKvkk": true,
+        "glassOnHome": true
+      }
+    },
+    "gallery": {
+      "profiles": 7,
+      "pass": true
+    },
+    "filledCart": {
+      "checks": 6,
+      "pass": true
+    },
+    "screenshotsReviewed": [
+      "390x844-motion-hero.png",
+      "1440x900-motion-hero.png",
+      "390x844-motion-facility.png"
+    ],
+    "physicalDevice": false,
+    "realTransactions": false
+  },
+  "panelPerformance": {
+    "cpuThrottle": 4,
+    "baselineFirstCartLoafMs": [
+      70.9,
+      62.4
+    ],
+    "baselineFirstMenuLoafMs": [
+      65.6,
+      65.6
+    ],
+    "preloadExperimentFirstCartLoafMs": [
+      64,
+      64.8
+    ],
+    "decision": "No meaningful gain; experiment removed. No retained cart/panel source changes.",
+    "remainingLimit": "First modal mount may produce a roughly 60–75ms animation frame under CPU4 laboratory throttle."
+  },
+  "releaseReceipt": ".cache/task-177/final-receipt.json"
+}

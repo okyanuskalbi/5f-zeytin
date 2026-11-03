@@ -1,4 +1,20 @@
-## Aktif iş: Task175 / mobil galeri kontrol şeridini kaldırma (2 Kasım 2026)
+## Aktif iş: Task177 / ilk açılış ve panel akıcılığı (3 Kasım 2026)
+
+Kullanıcı Task176 salt okunur denetimindeki üç bulgunun düzeltilmesini istedi:
+masaüstü ilk açılış sıçraması, canlı ana sayfa menü tonu ve CPU4 koşulunda
+menü/sepet ilk açılış maliyeti. Kapsam docs/tasks/177-akicilik-ve-ilk-acilis-duzeltmeleri.md.
+Onaylı tasarım, scroll/film, native/reduced/saveData/no-JS, altı SKU ve
+ticari yetki sınırları korunur. Önce neden/RED, sonra dar düzeltme ve ölçüm.
+Main push ve Vercel REST API yayını yetkilidir; Actions yalnız doğrulama.
+Son doğrulanmış kaynak566aa63, CI41522131570 ve API
+dpl_rddJwkhx837n2uiXZJsq6k5Ccsx2 READY; Task175 makbuzu tarihsel başlangıçtır.
+Task177 nihai kabul kaynağı .cache/task-177/final-receipt.json olacaktır.
+
+Task177 yerel kabul: 1.431unit/lint/typecheck/Turbopack PASS; üç cold desktop
+CLS0,12profil64motion,9navbar/4scroll ve7galeri profili PASS. CPU4 ilkmodal
+60–75ms sınırı sürer; kazançsız sepet preload deneyi geri alındı.
+
+## Önceki iş: Task175 / mobil galeri kontrol şeridini kaldırma (2 Kasım 2026)
 
 Kullanıcının ekran görüntüsüyle istediği açıklama/sayaç/önceki-sonraki ok şeridi,
 kompakt galeride (1023px ve altı) kaldırılır. CSS, hydration öncesinde de şeridi

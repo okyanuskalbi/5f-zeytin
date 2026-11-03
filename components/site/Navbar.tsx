@@ -50,9 +50,12 @@ export function Navbar(): JSX.Element {
     const unsubscribe = subscribeLocation(notify);
     return () => { locationListener.current = null; unsubscribe(); };
   }, []);
-  // The public URL wins after hydration: a rewritten internal route must not
-  // disable the home highlight. The server snapshot preserves hydration parity.
-  const visiblePathname = useSyncExternalStore(subscribe, publicPathname, () => pathname);
+  // Vercel prerenders the root artifact with pathname /index; the browser
+  // hydrates it at /. Normalize that known root alias before hydration so its
+  // attributes match: React does not repair mismatched attributes on mount.
+  // Subsequent navigation still follows the public URL, including interior pages.
+  const prerenderPathname = pathname === "/index" ? "/" : pathname;
+  const visiblePathname = useSyncExternalStore(subscribe, publicPathname, () => prerenderPathname);
   // Next commits pushState after render without emitting popstate. Recheck the
   // address after that commit even when the pre-commit snapshot was unchanged.
   useEffect(() => { locationListener.current?.(); }, [pathname]);

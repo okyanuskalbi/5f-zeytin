@@ -1,4 +1,19 @@
-## Aktif iş: Task175 / mobil galeri kontrol şeridini kaldırma (2 Kasım 2026)
+## Aktif iş: Task177 / ilk açılış ve panel akıcılığı (3 Kasım 2026)
+
+Kullanıcının “başla” talimatı, Task176 denetiminde saptanan masaüstü açılış
+sıçraması, ilk ana sayfa menü tonu ve yavaş işlemcide panel açılışlarını
+düzeltme yetkisidir. [Görev kapsamı](tasks/177-akicilik-ve-ilk-acilis-duzeltmeleri.md).
+Önce yeniden üretim ve neden, ardından dar değişiklikler; Turbopack build,
+yerel/canlı hareket ve etkileşim kabulü, main push ve doğrudan REST yayını.
+Task175 kaynak566aa63, CI41522131570 ve API READY başlangıç kanıtıdır.
+Tasarım/katalog/ödeme/manuel mailto ve native/reduced/no-JS sınırları korunur.
+Task177 ölçüm ve nihai yayın makbuzu .cache/task-177/ altında tutulur.
+
+Task177 yerel kabul: 1.431unit/lint/typecheck/Turbopack PASS; üç cold desktop
+CLS0,12profil64motion,9navbar/4scroll ve7galeri profili PASS. CPU4 ilkmodal
+60–75ms sınırı sürer; kazançsız sepet preload deneyi geri alındı.
+
+## Önceki iş: Task175 / mobil galeri kontrol şeridini kaldırma (2 Kasım 2026)
 
 Kullanıcının ekran görüntüsüyle istediği açıklama/sayaç/önceki-sonraki ok şeridi,
 kompakt galeride (1023px ve altı) kaldırılır. CSS, hydration öncesinde de şeridi

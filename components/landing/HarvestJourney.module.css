@@ -60,8 +60,12 @@
 .journey[data-mode="cinematic"] { height:600svh; }
 .journey[data-mode="cinematic"] .stage { position:sticky; top:0; height:100svh; overflow:clip; }
 .journey[data-mode="cinematic"] .orchard,.journey[data-mode="cinematic"] .factory,.journey[data-mode="cinematic"] .table { position:absolute; inset:0; height:100%; min-height:0; }
-.journey[data-mode="cinematic"] .factory { z-index:2; }
-.journey[data-mode="cinematic"] .table { z-index:3; }
+/* The native → held layout commits before lazy Motion writes its first frame.
+   Match p=0 here so later scenes never flash over the orchard in that gap.
+   Inline timeline styles take over; native/no-JS flow stays unchanged. */
+.journey[data-mode="cinematic"] .factory { z-index:2; opacity:0; transform:translateY(100%); pointer-events:none; }
+.journey[data-mode="cinematic"] .table { z-index:3; opacity:0; transform:translateY(34%); pointer-events:none; }
+.journey[data-mode="cinematic"] .heroFoot { min-height:44px; }
 .journey[data-mode="cinematic"] .heroFoot a { display:none; }
 @media(max-width:1023px) {
  .heroCopy { bottom:25%; }
