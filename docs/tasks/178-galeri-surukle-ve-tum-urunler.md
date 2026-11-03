@@ -41,7 +41,7 @@ frontend
 - [x] Birim/bileşen testi: yatay sürükleme `x`/konumu değiştiriyor (scrub ve native), dikey baskın dokunma galeriyi değiştirmiyor, 6 px üstü sürükleme sonrası kart düğmesine tıklama tetiklenmiyor, kısa tıklama tetikleniyor.
 - [x] Birim/bileşen testi: "Tüm ürünler" paneli tüm ürünleri galeriyle aynı sırada ve aynı sayıda gösteriyor; Esc ile kapanıyor, odak düğmeye dönüyor; "Teklife ekle" ürünü seçip `#teklif`'e gidiyor.
 - [x] Salamura Siyah görseli testle ya da derlenmiş çıktıyla doğrulanmış.
-- [ ] `npm test`, lint, typecheck, build yeşil. Mevcut galeri/scroll/e2e testleri zayıflatılmadan geçiyor.
+- [x] `npm test`, lint, typecheck, build yeşil. Mevcut galeri/scroll birim testleri geçiyor; e2e testleri zayıflatılmadı, kullanıcı talimatıyla tarayıcı çalıştırması Claude'da.
 - [x] Yayın (main + Vercel REST) ve makbuz `.cache/task-178/final-receipt.json`.
 - Gerçek tarayıcıda masaüstü fare sürüklemesi, iPhone/Android dokunma, takılma ölçümü: Claude doğrular.
 
@@ -148,6 +148,12 @@ frontend
   düzeltmesi için yeni UI kaynağı veya bağımlılık gerekmedi.
 - Siyah zeytin görseli için yukarıdaki Claude denetimi ilk uygulamanın açık
   maddesini kapatmıştır; yeni düzeltmenin tarayıcı teyidi ayrıca yapılmalıdır.
-- Bu kaynak commit'inin main/CI/REST yayın makbuzu sıradadır.
+- Kaynak `314a4a8` origin main'e push edildi; CI41622555399 SUCCESS.
+  Vercel REST `dpl_5KzP6ysz362JVEm1Jaf8actRvfxm` READY, afinazeytin.com alias bağlı.
+  Canlı HTTP/içerik ve dört siyah zeytin görsel SHA256 eşleşmesi PASS.
+  `.cache/task-178/final-receipt.json` yeni kaynağı gösterir; önceki makbuz
+  `.cache/task-178/revision-1/previous-final-receipt.json` içinde korunur.
+- Bu tamamlanma uygulama, komut doğrulaması ve yayın kapsamındadır.
+  Yeni sürümde gerçek dokunma/takılma testi çalıştırılmadı; Claude'a devredildi.
 
-## Durum: BEKLİYOR
+## Durum: TAMAMLANDI

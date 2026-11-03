@@ -12,8 +12,11 @@ CI41620563438 SUCCESS, REST `dpl_8ic3NZX3HH5wQJKYCVxmXsSHpGXF` READY ve alan ad�
 HTTP/yeni içerik/dört siyah zeytin görsel hash kontrolü PASS. Makbuz
 `.cache/task-178/final-receipt.json`. İlk yayının boş-görsel maddesi Claude tarafından kapatıldı.
 Düzeltme178-1 touch capture aktarımındaki yanlış iptali giderir;
-1443 unit/lint/typecheck/Turbopack PASS. Yeni kaynak yayını sıradadır;
-tarayıcı dokunma regresyonu Claude'a bırakılmıştır.
+1443 unit/lint/typecheck/Turbopack PASS. Kaynak `314a4a8` main'e push edildi;
+CI41622555399 SUCCESS, REST `dpl_5KzP6ysz362JVEm1Jaf8actRvfxm` READY.
+Güncel nihai makbuz `.cache/task-178/final-receipt.json`. Task178 uygulama/
+komut/yayın kapsamı TAMAMLANDI; yeni sürümün tarayıcı dokunma regresyonu
+Claude'a bırakılmıştır.
 
 ## Önceki iş: Task177 / ilk açılış ve panel akıcılığı (3 Kasım 2026)
 
