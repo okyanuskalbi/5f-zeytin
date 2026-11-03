@@ -38,6 +38,17 @@ function openMenu() {
   return within(screen.getByRole("dialog", { name: "Site menüsü" }));
 }
 
+it("shows only the home logo and close control in the phone toolbar while retaining the accessible home link", () => {
+  const menu = openMenu();
+  const home = menu.getByRole("link", { name: "Ana Sayfa" });
+  expect(home.getAttribute("href")).toBe("/");
+  expect(home.querySelector("img")).not.toBeNull();
+  expect(home.textContent).toBe("");
+  expect(within(home.parentElement!).queryByText("Ana Sayfa")).toBeNull();
+  expect(within(home.parentElement!).getByRole("button", { name: "Kapat" })).toBeTruthy();
+  expect(document.activeElement).toBe(home);
+});
+
 it("groups mobile shopping destinations without losing or duplicating existing routes and focuses home first", async () => {
   const menu = openMenu();
   expect(document.activeElement).toBe(menu.getByRole("link", { name: "Ana Sayfa" }));

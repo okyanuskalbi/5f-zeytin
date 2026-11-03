@@ -67,7 +67,7 @@ export function NavbarMenu({ links, onClose, onRestoreFocus }: {
       <div className={styles.menuToolbar}>
         {phone && home && <DialogClose asChild>
           <Link ref={firstLink} href={home.href} aria-label={home.label} className={styles.menuHome}>
-            <BrandLogo tone="dark" className={styles.menuLogo} /><span>{home.label}</span>
+            <BrandLogo tone="dark" className={styles.menuLogo} />
           </Link>
         </DialogClose>}
         <DialogClose asChild><Button ref={closeButton} variant="ghost" size="icon" className={styles.menuClose} aria-label="Kapat"><X aria-hidden="true" /></Button></DialogClose>

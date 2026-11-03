@@ -1,4 +1,11 @@
-## Aktif iş: Task179 / galeri alt düğmesi ve mobil menü (3 Kasım 2026)
+## Aktif iş: Task180 / telefon menüsü logo satırı (3 Kasım 2026)
+
+[Task180](tasks/180-menu-ana-sayfa-yazisi-kaldir.md): yalnız telefon menüsünün
+üst satırındaki görünür Ana Sayfa metni kaldırıldı; logo bağlantısı ve odak
+korundu. 1446 unit, lint/typecheck/Turbopack build PASS. Main/CI/API yayın
+makbuzu bekleniyor; tarayıcı ve 390 px görsel kabul Claude'a aittir.
+
+## Önceki iş: Task179 / galeri alt düğmesi ve mobil menü (3 Kasım 2026)
 
 [Task179](tasks/179-tum-urunler-dugmesi-alta.md): Tüm ürünler düğmesi foot öncesine
 alındı; satın alma düğmesiyle ortak görünüm/hareket bileşeni kullanır. Telefon
