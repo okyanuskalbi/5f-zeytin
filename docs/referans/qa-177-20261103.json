@@ -1,7 +1,7 @@
 {
   "task": 177,
   "date": "2026-11-03",
-  "phase": "local acceptance before main/API release",
+  "phase": "published and live verified; CPU4 panel limitation remains",
   "baselineCommit": "566aa6321b4f7ea1c4ffbc882a13d682fc667f2f",
   "changes": [
     "Cinematic initial scene CSS matches first Motion frame",
@@ -85,7 +85,150 @@
       64.8
     ],
     "decision": "No meaningful gain; experiment removed. No retained cart/panel source changes.",
-    "remainingLimit": "First modal mount may produce a roughly 60–75ms animation frame under CPU4 laboratory throttle."
+    "remainingLimit": "Final live CPU4: up to87.2ms LoAF; some warm menu/picker openings exceed50ms. No zero-jank claim."
   },
-  "releaseReceipt": ".cache/task-177/final-receipt.json"
+  "releaseReceipt": ".cache/task-177/final-receipt.json",
+  "sourceCommit": "c9640b4a58cbdef8ea6d71e77300c9e6a395071c",
+  "ci": {
+    "id": 41587703416,
+    "url": "https://github.com/okyanuskalbi/5f-zeytin/actions/runs/41587703416",
+    "conclusion": "success",
+    "headSha": "c9640b4a58cbdef8ea6d71e77300c9e6a395071c"
+  },
+  "deployment": {
+    "id": "dpl_EMZxCvEJ4d93L1R7tMtWh38mcRTd",
+    "url": "afina-zeytin-1j1deojux-afina1.vercel.app",
+    "readyState": "READY",
+    "aliases": [
+      "afinazeytin.com",
+      "afina-zeytin.vercel.app",
+      "www.afinazeytin.com",
+      "afina-zeytin-afina1.vercel.app"
+    ]
+  },
+  "live": {
+    "startup": {
+      "pass": true,
+      "cls": [
+        0,
+        0,
+        0
+      ],
+      "tones": [
+        "glass",
+        "glass",
+        "glass"
+      ],
+      "report": ".cache/task-177/startup-live/report.json"
+    },
+    "ssr": {
+      "at": "2026-11-03T06:10:21.459Z",
+      "url": "https://afinazeytin.com/",
+      "status": 200,
+      "header": "<header data-site-navbar=\"\" data-21st-source=\"43059\" data-tone=\"glass\" data-over-hero=\"true\" class=\"site-bar xn8wIa_bar\">",
+      "vercelId": "fra1::k6bjh-1793686221387-8fadfe99bbbe",
+      "pass": true
+    },
+    "motion": {
+      "profiles": 12,
+      "checksPassed": 64,
+      "failed": 0,
+      "report": ".cache/task-177/motion/live-1793686212394/report.json"
+    },
+    "navbar": {
+      "viewports": 9,
+      "scrollTargets": 4,
+      "interiorNavigation": {
+        "solidOnKvkk": true,
+        "glassOnHome": true
+      },
+      "pass": true
+    },
+    "gallery": {
+      "profiles": 7,
+      "pass": true
+    },
+    "panels": {
+      "at": "2026-11-03T06:11:49.114Z",
+      "release": {
+        "commit": "c9640b4",
+        "ci": "41587703416",
+        "deployment": "dpl_EMZxCvEJ4d93L1R7tMtWh38mcRTd",
+        "canonical": "https://afinazeytin.com",
+        "authorization": "Parent confirmed READY and live functional QA before this profile"
+      },
+      "cpuThrottling": 4,
+      "viewport": "390x844",
+      "contexts": 2,
+      "openClosePairs": 24,
+      "functionalPass": true,
+      "panels": [
+        {
+          "panel": "menu",
+          "firstOpenLoAFMs": [
+            74.2,
+            79.6
+          ],
+          "warmOpenLoAFMs": [
+            56.2,
+            56.4,
+            52.4,
+            54.6,
+            52,
+            0
+          ],
+          "warmOpenLoAFMaxMs": 56.4,
+          "loafCount": 7,
+          "maxInteractionDurationMs": 104,
+          "focusInsideEveryOpen": true
+        },
+        {
+          "panel": "cart",
+          "firstOpenLoAFMs": [
+            87.2,
+            73.1
+          ],
+          "warmOpenLoAFMs": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "warmOpenLoAFMaxMs": 0,
+          "loafCount": 2,
+          "maxInteractionDurationMs": 72,
+          "focusInsideEveryOpen": true
+        },
+        {
+          "panel": "picker",
+          "firstOpenLoAFMs": [
+            61.3,
+            56.6
+          ],
+          "warmOpenLoAFMs": [
+            51.3,
+            0,
+            0,
+            50.6,
+            0,
+            0
+          ],
+          "warmOpenLoAFMaxMs": 51.3,
+          "loafCount": 4,
+          "maxInteractionDurationMs": 96,
+          "focusInsideEveryOpen": true
+        }
+      ],
+      "browserClosed": true,
+      "errors": [],
+      "blockedWrites": [],
+      "limitations": "Headless CPU throttle is not a physical phone/GPU measurement. LoAF zero only means no frame exceeded50ms. Cold modal mount and some warm menu/picker openings remain above50ms; no zero-jank guarantee. No runtime code was changed."
+    },
+    "screenshotsReviewed": [
+      "1440x900-motion-hero.png",
+      "390x844-motion-table.png"
+    ]
+  }
 }

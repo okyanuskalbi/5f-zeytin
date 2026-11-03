@@ -87,8 +87,21 @@ hedefi,7 galeri profili ve6 dolu sepet kontrolü PASS. Browser/write hatası0.
 Telefon/masaüstü başlangıç ve tesis ekranları ayrıca görsel incelendi.
 [Ölçüm kaydı](../referans/qa-177-20261103.json).
 
-Main/API yayın ve canlı kabul bu commit sonrasında yürütülür; nihai durumu
-`.cache/task-177/final-receipt.json` kaydeder. CPU4 ilk modal gecikmesi yukarıda
-belirtilen sınır olarak korunur; fiziksel telefon kabulü yapılmadı.
+## Yayın ve canlı kabul
 
-## Durum: UYGULAMA VE YEREL KABUL TAMAM — YAYIN MAKBUZU AYRI
+Kaynak `c9640b4a58cbdef8ea6d71e77300c9e6a395071c` main'e gönderildi.
+CI41587703416 SUCCESS; Vercel REST `dpl_EMZxCvEJ4d93L1R7tMtWh38mcRTd`
+READY ve afinazeytin.com alias bağlı. Canlı üç cold yüklemede CLS0 ve menü
+SSR/hydration/SPA tonu doğru.12profil64motion,9navbar/4scroll ve7galeri profili PASS.
+
+Canlı CPU4/390×844 ölçümünde24 panel aç-kapat/odak dönüşü geçti. En uzun
+kare menü79.6ms, sepet87.2ms, seçici61.3ms; bazı sıcak menü/seçici açılışları
+50ms üzerinde. Bu gecikme tamamen giderilmedi; sıfır takılma iddiası yok.
+Hata/yazım isteği0; tüm test browser ve yerel sunucular düzgün kapatıldı.
+Fiziksel cihaz testi veya gerçek hesap/ödeme/talep işlemi yapılmadı.
+Nihai makbuz `.cache/task-177/final-receipt.json`.
+
+Bu son belge güncellemesi yalnız kabul/yayın kaydıdır; dağıtılmış runtime
+kaynak kodu değişmez ve yeni dağıtım gerektirmez.
+
+## Durum: TAMAMLANDI — CPU4 PANEL GECİKMESİ SINIRIYLA

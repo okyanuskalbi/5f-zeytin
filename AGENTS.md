@@ -14,6 +14,12 @@ Task177 yerel kabul: 1.431unit/lint/typecheck/Turbopack PASS; üç cold desktop
 CLS0,12profil64motion,9navbar/4scroll ve7galeri profili PASS. CPU4 ilkmodal
 60–75ms sınırı sürer; kazançsız sepet preload deneyi geri alındı.
 
+Task177 yayımlandı: kaynakc9640b4, CI41587703416 SUCCESS ve REST
+ dpl_EMZxCvEJ4d93L1R7tMtWh38mcRTd READY; afinazeytin.com bağlı.
+Canlı3coldCLS0,12profil64motion,9navbar/4scroll,7galeri PASS. CPU4panellerde
+24aç-kapat/odak PASS, enuzunkare87.2ms; bazı sıcakmenü/seçici50msüstü.
+Nihai makbuz .cache/task-177/final-receipt.json. Fiziksel cihaz kabulü yok.
+
 ## Önceki iş: Task175 / mobil galeri kontrol şeridini kaldırma (2 Kasım 2026)
 
 Kullanıcının ekran görüntüsüyle istediği açıklama/sayaç/önceki-sonraki ok şeridi,
