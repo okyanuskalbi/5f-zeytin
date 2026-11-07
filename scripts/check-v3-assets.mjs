@@ -47,7 +47,7 @@ export async function checkV3Assets({ root = repoRoot, requireSources = false } 
       assert.equal(meta.width, output.width);
       assert.equal(meta.height, output.height);
       assert.equal(meta.format, output.format === "avif" ? "heif" : output.format);
-      if (spec.threshold) {
+      if (spec.threshold || spec.cutoutMask) {
         assert(meta.hasAlpha, `${output.file}: alpha kayboldu`);
         const stats = await sharp(bytes).stats();
         assert(stats.channels.at(-1).min < 255, `${output.file}: şeffaflık kayboldu`);

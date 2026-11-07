@@ -18,3 +18,7 @@ it("reserves the empty cart content before hydration", () => {
 it("removes the auto spacer between touch card metadata and price", () => {
   expect(source("components/landing/HorizontalProductGallery.module.css")).toMatch(/\[data-gallery-layout="touch"\][^{]*div:has\(\[aria-label="Fiyat"\]\)\s*\{[^}]*margin-top:0/);
 });
+it("keeps desktop navigation left of the moving table action throughout its entrance", () => {
+  const css = source("components/landing/HarvestJourney.module.css");
+  expect(css).toMatch(/\.journey\[data-motion-device="desktop"\] \.sceneNav\s*\{[^}]*left:var\(--pro-gutter\);[^}]*right:auto/);
+});

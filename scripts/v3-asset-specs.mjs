@@ -39,6 +39,8 @@ for (const spec of specs) {
   const sixth = /^(urun-06-|06-)/.test(spec.id);
   if (!first && !sixth) continue;
   spec.group = "teneke182";
+  spec.cutoutMask = first ? "dogal-kirma-yesil-3lt.png" : "salamura-yesil-3lt.png";
+  spec.shadowBaseline = first ? 1267 : 1258;
   spec.source = first ? "dogal-kirma-yesil-3lt-studyo-1.png" : "salamura-yesil-3lt-studyo-1.png";
   spec.alt = `${first ? "Doğal Kırma Yeşil Zeytin" : "Salamura Yeşil Zeytin"}, 3 L teneke${spec.id.startsWith("urun-") ? "" : ", stüdyo çekimi"}`;
   delete spec.threshold;

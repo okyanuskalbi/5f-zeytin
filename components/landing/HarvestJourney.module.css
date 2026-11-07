@@ -158,9 +158,11 @@
  .journey :global([style]) { transform:none!important; }
 }
 
-/* Reserve a separate bottom band for the 44px scene navigation at every desktop height. */
+/* The table translates vertically on entry; its bottom padding cannot separate
+   it from stationary navigation. Keep desktop navigation in the left column. */
 @media(min-width:1024px) {
  .journey[data-mode="cinematic"] .tableFoot { bottom:max(11%,92px); }
+ .journey[data-motion-device="desktop"] .sceneNav { left:var(--pro-gutter); right:auto; }
 }
 @media(max-height:500px) and (orientation:landscape) {
  .heroFoot { display:none; }

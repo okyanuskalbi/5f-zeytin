@@ -1,3 +1,12 @@
+## Güncel düzeltme: 181-1 → 182-1 (7 Kasım 2026)
+
+Masaüstü sahne gezinmesi hareketli düğmeden ayrıldı; beş boyutta 185 ölçümde
+kesişim 0. İki onaylı tenekenin krem zemini yerel maskelerle temizlendi;
+36 türev şeffaf ve yumuşak gölgeli. 1464 test/lint/typecheck/Turbopack PASS.
+Tek main kaydı, exact-SHA CI ve Vercel REST yayın kanıtı
+`.cache/task-181-182-fix/` altında izlenir; canlı DB değişikliği yok.
+Aşağıdaki önceki yayın engelleri tarihçedir.
+
 ## Aktif iş: Task182 / 3 L yuvarlak teneke (7 Kasım 2026)
 
 [Task182](tasks/182-teneke-3lt.md): iki yeşil zeytin ürününün metinleri ve onaylı

@@ -35,8 +35,8 @@ describe("hero purchase card LCP", () => {
         const [file, descriptor] = candidate.trim().split(/\s+/);
         const metadata = await sharp(await readFile(resolve(process.cwd(), `public${file}`))).metadata();
         expect(metadata.width).toBe(Number(descriptor.slice(0, -1)));
-        // Task182 approved studio photo is opaque; dimensions remain exact.
-        expect(metadata.hasAlpha).toBe(false);
+        // Task182-1 removes the cream background; dimensions remain exact.
+        expect(metadata.hasAlpha).toBe(true);
       }
     }
   });

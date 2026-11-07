@@ -45,7 +45,20 @@ export async function alphaBounds(bytes, threshold) {
   return { left, top, width: right - left + 1, height: bottom - top + 1 };
 }
 
+/** Reviewed masks only change alpha; the approved label/lid RGB stays untouched. */
+export async function maskedTinSource(input, spec) {
+  if (!spec.cutoutMask) return input;
+  const { width, height } = await sharp(input).metadata();
+  const mask = await sharp(resolve(repoRoot, "scripts/masks", spec.cutoutMask)).greyscale().raw().toBuffer();
+  if (mask.length !== width * height) throw new Error("Tin mask dimensions differ from approved source");
+  const rgb = await sharp(input).removeAlpha().raw().toBuffer();
+  const product = await sharp(rgb, { raw: { width, height, channels: 3 } }).joinChannel(mask, { raw: { width, height, channels: 1 } }).png().toBuffer();
+  const shadow = Buffer.from(`<svg width="${width}" height="${height}"><defs><filter id="blur" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="18"/></filter></defs><ellipse cx="${width / 2}" cy="${spec.shadowBaseline}" rx="370" ry="24" fill="#172b21" opacity=".22" filter="url(#blur)"/></svg>`);
+  return sharp({ create: { width, height, channels: 4, background: "#00000000" } }).composite([{ input: shadow }, { input: product }]).png().toBuffer();
+}
+
 export async function encodeV3Output(input, spec, crop, dimensions, format) {
+  input = await maskedTinSource(input, spec);
   const resize = dimensions.height ? dimensions : { ...dimensions, ...(spec.square ? { height: dimensions.width } : spec.aspect ? { height: Math.round(dimensions.width / spec.aspect), fit: "cover" } : {}) };
   let quality = format === "avif" ? 50 : 76;
   while (true) {
