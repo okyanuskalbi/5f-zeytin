@@ -47,12 +47,12 @@ afterEach(() => {
 });
 
 const copy = [
-  ["sample-green-olive-10kg", "Ellek, Düziçi'nde toplanan yeşil zeytinler geleneksel usulle kırılarak hazırlanır ve kendi tesisimizde tenekeye doldurulur. 10 kg teneke, kışlık kiler ve kalabalık sofralar için.", "10 kg", "teneke", "Sofralık zeytin"],
+  ["sample-green-olive-10kg", "Ellek, Düziçi'nde toplanan yeşil zeytinler geleneksel usulle kırılarak hazırlanır ve kendi tesisimizde tenekeye doldurulur. 3 L yuvarlak teneke, kışlık kiler ve kalabalık sofralar için.", "3 L", "teneke", "Sofralık zeytin"],
   ["sample-green-olive-1kg", "Aynı doğal kırma yeşil zeytin, günlük sofra için cam kavanozda. Kendi tesisimizde doldurulur.", "1 kg", "cam kavanoz", "Sofralık zeytin"],
   ["sample-black-olive-1kg", "Salamurada bekletilerek hazırlanan siyah zeytin, kahvaltı sofraları için 1 kg cam kavanozda. Kendi tesisimizde doldurulur.", "1 kg", "cam kavanoz", "Salamura zeytin"],
   ["sample-olive-oil-1l", "Natürel sızma zeytinyağı, sofra ve salata kullanımı için 1 litrelik cam şişede. Kendi tesisimizde doldurulur.", "1 L", "cam şişe", "Zeytinyağı"],
   ["sample-olive-oil-5l", "Natürel sızma zeytinyağı, mutfakta düzenli kullanım için 5 litrelik tenekede. Kendi tesisimizde doldurulur.", "5 L", "teneke", "Zeytinyağı"],
-  ["sample-brined-green-olive-5kg", "Salamurada hazırlanan yeşil zeytin, kiler stoğu için 5 kg tenekede. Kendi tesisimizde doldurulur.", "5 kg", "teneke", "Salamura zeytin"],
+  ["sample-brined-green-olive-5kg", "Salamurada hazırlanan yeşil zeytin, kiler stoğu için 3 L yuvarlak tenekede. Kendi tesisimizde doldurulur.", "3 L", "teneke", "Salamura zeytin"],
 ] as const;
 
 it.each(copy)("preserves the approved draft copy and six facts for %s", async (id, description, weight, packaging, category) => {
@@ -145,7 +145,7 @@ it.each([375, 390, 767, 768, 1440])("uses Sheet below 768 and Dialog from 768 at
 });
 
 describe.each([
-  ["sample-green-olive-1kg", "10 kg", "sample-green-olive-10kg"],
+  ["sample-green-olive-1kg", "3 L", "sample-green-olive-10kg"],
   ["sample-olive-oil-1l", "5 L", "sample-olive-oil-5l"],
 ] as const)("family selection from %s", (id, size, nextId) => {
   it("switches only within its family, updates price, resets quantity and adds the selected quantity", async () => {

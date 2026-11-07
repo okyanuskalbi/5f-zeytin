@@ -29,7 +29,7 @@ for (const width of [320, 375, 390, 430, 768, 1024, 1440]) {
 test("v4: keyboard selection moves between both size pills", async ({ page }) => {
   await page.goto("/");
   const sizes = page.locator("[data-hero-card]").getByRole("radiogroup", { name: "Boy" });
-  const large = sizes.getByRole("radio", { name: "10 kg teneke" });
+  const large = sizes.getByRole("radio", { name: "3 L teneke" });
   const small = sizes.getByRole("radio", { name: "1 kg", exact: true });
   await large.focus();
   await page.keyboard.press("ArrowLeft");

@@ -1,3 +1,13 @@
+## Aktif iş: Task182 / 3 L yuvarlak teneke (7 Kasım 2026)
+
+[Task182](tasks/182-teneke-3lt.md): iki yeşil zeytin ürününün metinleri ve onaylı
+fotoğrafları 3 L yuvarlak tenekeye geçirildi; id/fiyat/stok ve diğer dört ürün
+korundu. 1463 birim testi, lint/typecheck/Turbopack build ve görsel dosya
+kontrolleri PASS. Canlı DB güncelleme dosyası hazır, çalıştırılmadı; tarayıcı
+kabulü Claude'da. Vercel hedef erişimi yeniden HTTP 403 verdi; yayın yok.
+Kullanıcının yayın istisnasıyla kod işi TAMAMLANDI; main/CI sonucu ve makbuz
+`.cache/task-182/final-receipt.json` içinde.
+
 ## Aktif iş: Task181 / cihaz denetimi düzeltmeleri (7 Kasım 2026)
 
 [Task181](tasks/181-cihaz-denetimi-duzeltmeleri.md): görünüm, metin ve canonical düzeltmeleri uygulandı; 1460 birim testi, lint, typecheck ve Turbopack build geçti. Tarayıcı kabulü kullanıcı isteğiyle Claude'da. Üyelik 401 uygulama tarafında sessiz; tarayıcının HTTP hata kaydını tamamen kaldırmak yasaklanan sunucu değişikliğini gerektiriyor. Vercel hedef kontrolü üç mevcut oturumla 403 verdi; yayın yapılamadı. Durum BEKLİYOR; main/CI sonucu ve yayın engeli `.cache/task-181/final-receipt.json` içinde izlenir.

@@ -12,7 +12,7 @@ vi.mock("next/navigation", () => ({ usePathname: () => state.pathname }));
 vi.mock("@/components/cart/useCartViewport", () => ({ useCartViewport: () => true }));
 vi.mock("@/components/cart/CartDrawer", () => ({ CartDrawer: ({ open }: { open: boolean }) => open ? <div role="dialog" aria-modal="true">Sepet</div> : null }));
 vi.mock("@/lib/media/use-deferred-enhancement", () => ({ usePrefersReducedMotion: () => state.reduced }));
-const product: Product = { id: "sample-green-olive-10kg", name: "Doğal Kırma Yeşil Zeytin", category: "sofralik-zeytin", weight: "10 kg", priceKurus: 198765, stock: 2 };
+const product: Product = { id: "sample-green-olive-10kg", name: "Doğal Kırma Yeşil Zeytin", category: "sofralik-zeytin", weight: "3 L", priceKurus: 198765, stock: 2 };
 const frames = new Map<number, FrameRequestCallback>();
 let frameId = 0;
 function flushFrames() {
@@ -146,7 +146,7 @@ it("adds the supplied product through the shared cart pattern with inline feedba
   setup();
   scroll(1000);
   const bar = screen.getByRole("region", { name: "Hızlı satın alma" });
-  expect(bar.textContent).toContain("Doğal Kırma · 10 kg");
+  expect(bar.textContent).toContain("Doğal Kırma · 3 L");
   expect(bar.textContent).toContain("₺1.987,65");
   fireEvent.click(within(bar).getByRole("button", { name: "Sepete ekle" }));
   expect(within(bar).getByRole("button", { name: "Eklendi ✓" })).toBeDefined();

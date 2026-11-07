@@ -17,7 +17,7 @@ const money = new Intl.NumberFormat("tr-TR", {
 });
 const sizes = [
   { id: "sample-green-olive-1kg", label: "1 kg" },
-  { id: "sample-green-olive-10kg", label: "10 kg teneke" },
+  { id: "sample-green-olive-10kg", label: "3 L teneke" },
 ] as const;
 
 function LayerPicture({ image, sizes, bit, loaded, failed }: {

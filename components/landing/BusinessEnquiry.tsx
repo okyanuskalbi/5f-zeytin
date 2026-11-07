@@ -70,7 +70,7 @@ export function BusinessEnquiry({ products, submitRequest }: { products: readonl
       <div className={styles.formField}><label htmlFor={`${id}-productId`}>Ürün</label>
         <select {...field("productId")} required><option value="">Katalogdan seçiniz</option>{products.map(product => <option value={product.id} key={product.id}>{product.name} · {product.weight}</option>)}</select>{error("productId")}</div>
       {([
-        ["packaging", "Ambalaj tercihi", "Örn. 10 kg teneke"], ["consumption", "Tahmini aylık tüketim", "Miktar ve birim belirtin"], ["deliveryRegion", "Teslimat bölgesi", "İlçe / teslimat bölgesi"],
+        ["packaging", "Ambalaj tercihi", "Örn. 3 L teneke"], ["consumption", "Tahmini aylık tüketim", "Miktar ve birim belirtin"], ["deliveryRegion", "Teslimat bölgesi", "İlçe / teslimat bölgesi"],
       ] as const).map(([key, label, placeholder]) => <div key={key} className={styles.formField}>
         <label htmlFor={`${id}-${key}`}>{label}</label><Input {...field(key)} required placeholder={placeholder} />{error(key)}
       </div>)}

@@ -30,7 +30,7 @@ const texts = [
 ];
 const captions = ["Düziçi, Osmaniye", "Tesisimiz · Ellek", "Natürel sızma · 1 L"];
 const alts = [
-  "Doğal Kırma Yeşil Zeytin, 10 kg teneke, sofra sunumu",
+  "Doğal Kırma Yeşil Zeytin, 3 L teneke, stüdyo çekimi",
   "Afina Zeytin’in Ellek, Düziçi’ndeki üretim tesisi",
   "Natürel Sızma Zeytinyağı, 1 L cam şişe, sofra sunumu",
 ];
@@ -71,7 +71,7 @@ it("uses each photo's own ratio and the approved blurred-plate facility source",
         rule.walkDecls("aspect-ratio", declaration => { ratio = declaration.value; });
       }
     });
-    expect(ratio).toBe(index === 1 ? "16 / 10" : "16 / 9");
+    expect(ratio).toBe(index === 0 ? "4 / 5" : index === 1 ? "16 / 10" : "16 / 9");
     const image = photo.querySelector("img")!;
     const [width, height] = ratio.split("/").map(Number);
     expect(image.width / image.height).toBeCloseTo(width / height, 5);

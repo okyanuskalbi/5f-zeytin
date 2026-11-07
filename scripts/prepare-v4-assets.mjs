@@ -27,7 +27,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
   const source = await approvedSource(spec);
   const asset = manifest.assets[spec.id];
   assert.equal(sha256(source), asset.sourceSha256, "Hero kartı onaylı kaynaktan türetilmeli");
-  const crop = await alphaBounds(source, spec.threshold);
+  const crop = spec.threshold ? await alphaBounds(source, spec.threshold) : null;
   assert.deepEqual(crop, asset.crop, "Hero kartının kırpımı korunmalı");
   const outputs = [];
   for (const width of spec.widths) for (const format of formats) {

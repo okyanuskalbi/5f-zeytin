@@ -28,3 +28,5 @@
 @media (prefers-reduced-motion: reduce) {
   .visual, .photo, .copy { transform: none !important; opacity: 1 !important; transition: none; }
 }
+
+.studio { aspect-ratio: 4 / 5; }

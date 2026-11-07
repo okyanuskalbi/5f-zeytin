@@ -5,10 +5,10 @@ test("v4: both size pills select the real SKU and confirm inline", async ({ page
   await page.goto("/");
   const hero = page.locator("[data-hero-intro]");
   const sizes = hero.getByRole("radiogroup", { name: "Boy" });
-  await expect(sizes.getByRole("radio", { name: "10 kg teneke" })).toBeChecked();
+  await expect(sizes.getByRole("radio", { name: "3 L teneke" })).toBeChecked();
   await expect(hero.getByLabel("Seçili boyun fiyatı")).toHaveText("₺2.200");
   await hero.getByRole("button", { name: "Sepete ekle", exact: true }).click();
-  await expect(hero.getByRole("status")).toHaveText("10 kg sepete eklendi.");
+  await expect(hero.getByRole("status")).toHaveText("3 L sepete eklendi.");
   await sizes.getByRole("radio", { name: "1 kg", exact: true }).click();
   await expect(hero.getByLabel("Seçili boyun fiyatı")).toHaveText("₺220");
   await hero.getByRole("button", { name: "Sepete ekle", exact: true }).click();

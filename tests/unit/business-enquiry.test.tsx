@@ -5,14 +5,14 @@ import { buildBusinessEnquiry } from "@/lib/contracts/business-enquiry";
 import { getProducts } from "@/lib/catalog/static-products";
 
 afterEach(cleanup);
-const valid = { company: "Ellek Market", contact: "Ayşe Yılmaz", phone: "+90 555 123 45 67", email: "", city: "Osmaniye", productId: "sample-green-olive-10kg", packaging: "10 kg teneke", consumption: "Aylık 100 kg", deliveryRegion: "Düziçi", customerType: "Market" };
+const valid = { company: "Ellek Market", contact: "Ayşe Yılmaz", phone: "+90 555 123 45 67", email: "", city: "Osmaniye", productId: "sample-green-olive-10kg", packaging: "3 L teneke", consumption: "Aylık 100 kg", deliveryRegion: "Düziçi", customerType: "Market" };
 
 it("converts all B2B fields into the existing validated wholesale contract", async () => {
   const result = buildBusinessEnquiry(valid, await getProducts());
   expect(result.ok).toBe(true);
   if (!result.ok) return;
   expect(result.data.name).toBe("Ayşe Yılmaz / Ellek Market");
-  for (const value of ["Osmaniye", "Düziçi", "Aylık 100 kg", "10 kg teneke", "Market"]) expect(result.data.message).toContain(value);
+  for (const value of ["Osmaniye", "Düziçi", "Aylık 100 kg", "3 L teneke", "Market"]) expect(result.data.message).toContain(value);
   expect(result.data.message).toContain("Doğal Kırma Yeşil Zeytin");
 });
 

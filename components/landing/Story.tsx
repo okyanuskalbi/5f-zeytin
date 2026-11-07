@@ -11,7 +11,7 @@ import facility from "@/public/images/tesis-v4-manifest.json";
 import styles from "./Story.module.css";
 
 const steps = [
-  { title: "Kökü toprakta.", text: "Osmaniye'nin Düziçi ilçesi, Ellek beldesi. Zeytinin hikâyesi burada, toprakta başlar; sofrada tamamlanır.", caption: "Düziçi, Osmaniye", image: v3Image("01-dogal-kirma-yesil-zeytin-10kg-sahne"), ratio: "scene" },
+  { title: "Kökü toprakta.", text: "Osmaniye'nin Düziçi ilçesi, Ellek beldesi. Zeytinin hikâyesi burada, toprakta başlar; sofrada tamamlanır.", caption: "Düziçi, Osmaniye", image: v3Image("01-dogal-kirma-yesil-zeytin-10kg-sahne"), ratio: "studio" },
   { title: "Kendi tesisimizde.", text: "Seçim, salamura ve dolum Ellek'teki kendi tesisimizde yapılır. 2021'den bu yana perakende ve toptan alıcılara ulaşıyoruz.", caption: "Tesisimiz · Ellek", image: facility, ratio: "facility" },
   { title: "Yeri sofrada.", text: "Sofralık zeytin, salamura zeytin ve zeytinyağı. Yalın ve özenli bir sunumla, ürünün özüne saygıyla.", caption: "Natürel sızma · 1 L", image: v3Image("04-naturel-sizma-zeytinyagi-1l-sahne"), ratio: "scene" },
 ] as const;

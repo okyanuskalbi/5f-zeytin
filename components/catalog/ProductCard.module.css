@@ -3,9 +3,8 @@
 .card { --product-height: 114px; --product-height-large: 200px; --glow: 107 139 81; position: relative; isolation: isolate; display: flex; flex-direction: column; min-width: 0; width: 100%; padding: 16px 12px 14px; border: 1px solid rgba(255,255,255,.06); border-radius: 22px; background: linear-gradient(180deg,#17231A,#101810); color: var(--sut); overflow: hidden; transition: transform .35s cubic-bezier(.2,.8,.2,1); }
 .card[data-category="salamura-zeytin"] { --glow: 212 180 131; }
 .card[data-category="zeytinyagi"] { --glow: 230 203 151; }
-.card[data-size="10 kg"] { --product-height: 160px; --product-height-large: 280px; }
+.card[data-size="3 L"] { --product-height: 160px; --product-height-large: 280px; }
 .card[data-size="5 L"] { --product-height: 137px; --product-height-large: 240px; }
-.card[data-size="5 kg"] { --product-height: 131px; --product-height-large: 230px; }
 .card::before { content: ""; position: absolute; z-index: -1; inset: auto -20% -40%; height: 70%; background: radial-gradient(closest-side, rgb(var(--glow) / .18), transparent 70%); opacity: .6; pointer-events: none; transition: opacity .35s; }
 .scene { position: absolute; z-index: -2; inset: 0; opacity: 0; pointer-events: none; transition: opacity .35s; }
 .scene picture, .scene img { display: block; width: 100%; height: 100%; }

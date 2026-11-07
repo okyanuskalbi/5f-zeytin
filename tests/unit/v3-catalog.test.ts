@@ -6,10 +6,10 @@ describe("v3 aile ve varyant kataloğu", () => {
   it("dört ailede yalnız onaylı altı boyu sunar", async () => {
     const families = await getProductFamilies();
     expect(families.map(family => [family.name, family.variants.map(variant => variant.weight)])).toEqual([
-      ["Doğal Kırma Yeşil Zeytin", ["1 kg", "10 kg"]],
+      ["Doğal Kırma Yeşil Zeytin", ["1 kg", "3 L"]],
       ["Salamura Siyah Zeytin", ["1 kg"]],
       ["Natürel Sızma Zeytinyağı", ["1 L", "5 L"]],
-      ["Salamura Yeşil Zeytin", ["5 kg"]],
+      ["Salamura Yeşil Zeytin", ["3 L"]],
     ]);
     const products = await getProducts();
     expect(products).toHaveLength(6);

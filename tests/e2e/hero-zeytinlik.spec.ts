@@ -33,5 +33,5 @@ test("v4: unavailable hero photo preserves the dark background, heading and purc
   await expect(page.locator("[data-hero-intro]")).toHaveCSS("background-color", "rgb(14, 21, 16)");
   await expect(page.locator("#hero-title")).toBeVisible();
   await page.locator("[data-hero-card]").getByRole("button", { name: "Sepete ekle", exact: true }).click();
-  await expect(page.locator("[data-hero-card]").getByRole("status")).toHaveText("10 kg sepete eklendi.");
+  await expect(page.locator("[data-hero-card]").getByRole("status")).toHaveText("3 L sepete eklendi.");
 });

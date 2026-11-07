@@ -38,12 +38,12 @@ async function mount(id = "sample-green-olive-10kg") {
 }
 
 const positions = [
-  ["sample-green-olive-10kg", "90% center"],
+  ["sample-green-olive-10kg", "center"],
   ["sample-green-olive-1kg", "80% center"],
   ["sample-black-olive-1kg", "85% center"],
   ["sample-olive-oil-1l", "80% center"],
   ["sample-olive-oil-5l", "90% center"],
-  ["sample-brined-green-olive-5kg", "90% center"],
+  ["sample-brined-green-olive-5kg", "center"],
 ] as const;
 
 it.each(positions)("keeps studio centered and focuses the scene's product for %s", async (id, position) => {

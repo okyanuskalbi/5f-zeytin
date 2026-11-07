@@ -57,10 +57,10 @@ test("the hero band adds both sizes without opening the drawer and persists them
   await page.goto("/");
   const band = page.locator("[data-hero-band]");
   await band.scrollIntoViewIfNeeded();
-  await expect(band.getByLabel("10 kg teneke fiyatı")).toHaveText("₺2.200");
+  await expect(band.getByLabel("3 L teneke fiyatı")).toHaveText("₺2.200");
   await band.getByRole("button", { name: "Sepete ekle", exact: true }).click();
   await band.getByRole("button", { name: "1 kg kavanoz", exact: true }).click();
-  await expect(band.getByRole("status").first()).toContainText("10 kg sepete eklendi");
+  await expect(band.getByRole("status").first()).toContainText("3 L sepete eklendi");
   await expect(band.getByRole("status").last()).toContainText("1 kg sepete eklendi");
   await expect(page.getByRole("dialog")).toHaveCount(0);
   const expected = [{ productId: "sample-green-olive-10kg", quantity: 1 }, { productId: "sample-green-olive-1kg", quantity: 1 }];

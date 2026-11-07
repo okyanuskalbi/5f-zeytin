@@ -12,7 +12,7 @@ test("all sizes update weight and price and add their actual SKU and quantity to
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
   await page.goto("/#one-cikan");
-  await expect(stage(page).getByRole("radio", { name: "10 kg", exact: true })).toBeChecked();
+  await expect(stage(page).getByRole("radio", { name: "3 L", exact: true })).toBeChecked();
   const products = (await getProducts()).filter(p => p.name === "Doğal Kırma Yeşil Zeytin");
   for (const product of products) {
     await stage(page).getByRole("radio", { name: product.weight, exact: true }).check();
@@ -81,9 +81,9 @@ test("reduced motion and keyboard changes keep details and add-to-cart available
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/#one-cikan");
   await expect(stage(page).locator("[data-featured-image]")).toHaveCSS("transform", "none");
-  await stage(page).getByRole("radio", { name: "10 kg", exact: true }).focus();
+  await stage(page).getByRole("radio", { name: "3 L", exact: true }).focus();
   await page.keyboard.press("ArrowLeft");
-  await expect(stage(page).getByRole("radio", { name: "5 kg", exact: true })).toBeChecked();
+  await expect(stage(page).getByRole("radio", { name: "3 L", exact: true })).toBeChecked();
   await page.keyboard.press("ArrowLeft");
   await expect(stage(page).getByRole("radio", { name: "1 kg", exact: true })).toBeChecked();
   const add = stage(page).getByRole("button", { name: "Sepete ekle", exact: true });

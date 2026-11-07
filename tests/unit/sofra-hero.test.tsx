@@ -13,10 +13,10 @@ it("switches between real sizes and adds each selected SKU without opening the d
   const products = await getProducts();
   render(<CartProvider products={products}><Hero products={products} /></CartProvider>);
   const sizes = screen.getByRole("radiogroup", { name: "Boy" });
-  expect((within(sizes).getByRole("radio", { name: "10 kg teneke" }) as HTMLInputElement).checked).toBe(true);
+  expect((within(sizes).getByRole("radio", { name: "3 L teneke" }) as HTMLInputElement).checked).toBe(true);
   expect(screen.getByLabelText("Seçili boyun fiyatı").textContent).toBe("₺2.200");
   fireEvent.click(screen.getByRole("button", { name: "Sepete ekle" }));
-  expect(screen.getByRole("status").textContent).toContain("10 kg sepete eklendi");
+  expect(screen.getByRole("status").textContent).toContain("3 L sepete eklendi");
   fireEvent.click(within(sizes).getByRole("radio", { name: "1 kg" }));
   expect(screen.getByLabelText("Seçili boyun fiyatı").textContent).toBe("₺220");
   expect(screen.getByRole("status").textContent).toBe("");

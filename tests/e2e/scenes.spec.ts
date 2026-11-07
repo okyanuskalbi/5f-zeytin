@@ -34,9 +34,9 @@ test("two cards add different sizes as separate persisted cart lines", async ({ 
   const large = page.locator('[data-product-id="sample-green-olive-10kg"]');
   await small.getByRole("button", { name: "Sepete ekle", exact: true }).click();
   await expect(small.getByRole("status")).toContainText("1 kg sepete eklendi");
-  await expect(large.getByRole("img")).toHaveAttribute("alt", /10 kg teneke/);
+  await expect(large.getByRole("img")).toHaveAttribute("alt", /3 L teneke/);
   await large.getByRole("button", { name: "Sepete ekle", exact: true }).click();
-  await expect(large.getByRole("status")).toContainText("10 kg sepete eklendi");
+  await expect(large.getByRole("status")).toContainText("3 L sepete eklendi");
   const expected = [{ productId: "sample-green-olive-1kg", quantity: 1 }, { productId: "sample-green-olive-10kg", quantity: 1 }];
   expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key)!), CART_STORAGE_KEY)).toEqual(expected);
   const drawer = page.getByRole("dialog", { name: /^Sepetim \(/ });

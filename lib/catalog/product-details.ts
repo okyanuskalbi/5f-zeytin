@@ -4,7 +4,7 @@ import { getCategoryLabel } from "@/lib/catalog/category-label";
 
 const drafts: Readonly<Record<string, { description: string; packaging: string }>> = {
   "sample-green-olive-10kg": {
-    description: "Ellek, Düziçi'nde toplanan yeşil zeytinler geleneksel usulle kırılarak hazırlanır ve kendi tesisimizde tenekeye doldurulur. 10 kg teneke, kışlık kiler ve kalabalık sofralar için.",
+    description: "Ellek, Düziçi'nde toplanan yeşil zeytinler geleneksel usulle kırılarak hazırlanır ve kendi tesisimizde tenekeye doldurulur. 3 L yuvarlak teneke, kışlık kiler ve kalabalık sofralar için.",
     packaging: "teneke",
   },
   "sample-green-olive-1kg": {
@@ -24,7 +24,7 @@ const drafts: Readonly<Record<string, { description: string; packaging: string }
     packaging: "teneke",
   },
   "sample-brined-green-olive-5kg": {
-    description: "Salamurada hazırlanan yeşil zeytin, kiler stoğu için 5 kg tenekede. Kendi tesisimizde doldurulur.",
+    description: "Salamurada hazırlanan yeşil zeytin, kiler stoğu için 3 L yuvarlak tenekede. Kendi tesisimizde doldurulur.",
     packaging: "teneke",
   },
 };

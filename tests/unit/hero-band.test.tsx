@@ -20,25 +20,25 @@ vi.mock("motion/react", async importOriginal => {
 
 afterEach(() => { cleanup(); localStorage.clear(); vi.useRealTimers(); vi.unstubAllGlobals(); });
 
-it("adds the 10 kg tin and 1 kg jar as separate variants with inline feedback", async () => {
+it("adds the 3 L tin and 1 kg jar as separate variants with inline feedback", async () => {
   const products = await getProducts();
   render(<CartProvider products={products}><HeroBand products={products} /></CartProvider>);
-  expect(screen.getByRole("heading", { level: 2 }).textContent).toBe("Kışlık kiler için 10 kg teneke.");
-  expect(screen.getByLabelText("10 kg teneke fiyatı").textContent).toBe("₺2.200");
+  expect(screen.getByRole("heading", { level: 2 }).textContent).toBe("Kışlık kiler için 3 L teneke.");
+  expect(screen.getByLabelText("3 L teneke fiyatı").textContent).toBe("₺2.200");
   fireEvent.click(screen.getByRole("button", { name: "Sepete ekle" }));
   fireEvent.click(screen.getByRole("button", { name: "1 kg kavanoz" }));
   expect(JSON.parse(localStorage.getItem(CART_STORAGE_KEY)!)).toEqual([
     { productId: "sample-green-olive-10kg", quantity: 1 },
     { productId: "sample-green-olive-1kg", quantity: 1 },
   ]);
-  expect(screen.getAllByRole("status").map(node => node.textContent).join(" ")).toMatch(/10 kg sepete eklendi.*1 kg sepete eklendi/);
+  expect(screen.getAllByRole("status").map(node => node.textContent).join(" ")).toMatch(/3 L sepete eklendi.*1 kg sepete eklendi/);
   expect(screen.queryByRole("dialog")).toBeNull();
 });
 
 it("uses catalog prices and disables missing or out-of-stock variants", async () => {
-  const products = (await getProducts()).map(item => item.weight === "10 kg" ? { ...item, priceKurus: 198765, stock: 0 } : item).filter(item => item.id !== "sample-green-olive-1kg");
+  const products = (await getProducts()).map(item => item.weight === "3 L" ? { ...item, priceKurus: 198765, stock: 0 } : item).filter(item => item.id !== "sample-green-olive-1kg");
   render(<CartProvider products={products}><HeroBand products={products} /></CartProvider>);
-  expect(screen.getByLabelText("10 kg teneke fiyatı").textContent).toBe("₺1.987,65");
+  expect(screen.getByLabelText("3 L teneke fiyatı").textContent).toBe("₺1.987,65");
   expect(screen.getAllByRole("button").every(button => button.hasAttribute("disabled"))).toBe(true);
 });
 
@@ -67,7 +67,7 @@ it("keeps reduced-motion imagery fixed and content visible", async () => {
 
 it("keeps both missing-size actions disabled without inventing a price", () => {
   render(<CartProvider products={[]}><HeroBand products={[]} /></CartProvider>);
-  expect(screen.getByLabelText("10 kg teneke fiyatı").textContent).toBe("Fiyat yakında");
+  expect(screen.getByLabelText("3 L teneke fiyatı").textContent).toBe("Fiyat yakında");
   expect(screen.getAllByRole("button").every(button => button.hasAttribute("disabled"))).toBe(true);
 });
 

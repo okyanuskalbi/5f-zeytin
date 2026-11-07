@@ -2,7 +2,7 @@
 // Studio photographs stay centered. Keys refer to the existing, unchanged assets.
 export const productImageFocus: Readonly<Record<string, string>> = {
   "01-dogal-kirma-yesil-zeytin-10kg-studyo": "center",
-  "01-dogal-kirma-yesil-zeytin-10kg-sahne": "90% center",
+  "01-dogal-kirma-yesil-zeytin-10kg-sahne": "center",
   "02-dogal-kirma-yesil-zeytin-1kg-studyo": "center",
   "02-dogal-kirma-yesil-zeytin-1kg-sahne": "80% center",
   "03-salamura-siyah-zeytin-1kg-studyo": "center",
@@ -12,5 +12,5 @@ export const productImageFocus: Readonly<Record<string, string>> = {
   "05-naturel-sizma-zeytinyagi-5l-studyo": "center",
   "05-naturel-sizma-zeytinyagi-5l-sahne": "90% center",
   "06-salamura-yesil-zeytin-5kg-studyo": "center",
-  "06-salamura-yesil-zeytin-5kg-sahne": "90% center",
+  "06-salamura-yesil-zeytin-5kg-sahne": "center",
 };

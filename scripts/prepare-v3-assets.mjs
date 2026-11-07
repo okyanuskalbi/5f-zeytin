@@ -7,13 +7,18 @@ import { approvals, formats, outputDimensions, specs } from "./v3-asset-specs.mj
 
 export const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 export const sourceRoot = resolve(process.env.V3_SOURCE_ROOT ?? resolve(repoRoot, "../AFINA-KAYNAK"));
-export const sourceDirectories = { v3: "zeytin-v3-gorseller", gallery: "urun-gorselleri/onayli" };
+export const sourceDirectories = { v3: "zeytin-v3-gorseller", gallery: "urun-gorselleri/onayli", teneke182: "urun-gorselleri/teneke-3lt/adaylar" };
 export const sha256 = bytes => createHash("sha256").update(bytes).digest("hex");
 
 export async function approvedSource(spec) {
   if (spec.group === "facility") {
     const bytes = await readFile(resolve(repoRoot, "docs/referans/tesis", spec.source));
     if (sha256(bytes) !== approvals.facility.hashes[spec.source]) throw new Error("Bulanık tesis kaynağı değişti.");
+    return bytes;
+  }
+  if (spec.group === "teneke182") {
+    const bytes = await readFile(resolve(sourceRoot, sourceDirectories.teneke182, spec.source));
+    if (sha256(bytes) !== approvals.teneke182.hashes[spec.source]) throw new Error("Task182 approved source changed");
     return bytes;
   }
   const directory = resolve(sourceRoot, sourceDirectories[spec.group]);

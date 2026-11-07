@@ -59,30 +59,30 @@
       ]
     },
     "urun-01-kirma-10kg": {
-      "alt": "Doğal Kırma Yeşil Zeytin, 10 kg teneke",
+      "alt": "Doğal Kırma Yeşil Zeytin, 3 L teneke",
       "outputs": [
         {
           "file": "/images/v3/urun-01-kirma-10kg-h300.avif",
           "format": "avif",
-          "width": 226,
+          "width": 240,
           "height": 300
         },
         {
           "file": "/images/v3/urun-01-kirma-10kg-h300.webp",
           "format": "webp",
-          "width": 226,
+          "width": 240,
           "height": 300
         },
         {
           "file": "/images/v3/urun-01-kirma-10kg-h600.avif",
           "format": "avif",
-          "width": 451,
+          "width": 480,
           "height": 600
         },
         {
           "file": "/images/v3/urun-01-kirma-10kg-h600.webp",
           "format": "webp",
-          "width": 451,
+          "width": 480,
           "height": 600
         }
       ]
@@ -204,65 +204,65 @@
       ]
     },
     "urun-06-salamura-yesil-5kg": {
-      "alt": "Salamura Yeşil Zeytin, 5 kg teneke",
+      "alt": "Salamura Yeşil Zeytin, 3 L teneke",
       "outputs": [
         {
           "file": "/images/v3/urun-06-salamura-yesil-5kg-h300.avif",
           "format": "avif",
-          "width": 216,
+          "width": 240,
           "height": 300
         },
         {
           "file": "/images/v3/urun-06-salamura-yesil-5kg-h300.webp",
           "format": "webp",
-          "width": 216,
+          "width": 240,
           "height": 300
         },
         {
           "file": "/images/v3/urun-06-salamura-yesil-5kg-h600.avif",
           "format": "avif",
-          "width": 433,
+          "width": 480,
           "height": 600
         },
         {
           "file": "/images/v3/urun-06-salamura-yesil-5kg-h600.webp",
           "format": "webp",
-          "width": 433,
+          "width": 480,
           "height": 600
         }
       ]
     },
     "01-dogal-kirma-yesil-zeytin-10kg-sahne": {
-      "alt": "Doğal Kırma Yeşil Zeytin, 10 kg teneke, sofra sunumu",
+      "alt": "Doğal Kırma Yeşil Zeytin, 3 L teneke, stüdyo çekimi",
       "outputs": [
         {
           "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-sahne-w800.avif",
           "format": "avif",
           "width": 800,
-          "height": 450
+          "height": 1000
         },
         {
           "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-sahne-w800.webp",
           "format": "webp",
           "width": 800,
-          "height": 450
+          "height": 1000
         },
         {
-          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-sahne-w1600.avif",
+          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-sahne-w1122.avif",
           "format": "avif",
-          "width": 1600,
-          "height": 900
+          "width": 1122,
+          "height": 1402
         },
         {
-          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-sahne-w1600.webp",
+          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-sahne-w1122.webp",
           "format": "webp",
-          "width": 1600,
-          "height": 900
+          "width": 1122,
+          "height": 1402
         }
       ]
     },
     "01-dogal-kirma-yesil-zeytin-10kg-studyo": {
-      "alt": "Doğal Kırma Yeşil Zeytin, 10 kg teneke, stüdyo çekimi",
+      "alt": "Doğal Kırma Yeşil Zeytin, 3 L teneke, stüdyo çekimi",
       "outputs": [
         {
           "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-studyo-w800.avif",
@@ -277,16 +277,16 @@
           "height": 1000
         },
         {
-          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-studyo-w1600.avif",
+          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-studyo-w1122.avif",
           "format": "avif",
-          "width": 1600,
-          "height": 2000
+          "width": 1122,
+          "height": 1402
         },
         {
-          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-studyo-w1600.webp",
+          "file": "/images/v3/01-dogal-kirma-yesil-zeytin-10kg-studyo-w1122.webp",
           "format": "webp",
-          "width": 1600,
-          "height": 2000
+          "width": 1122,
+          "height": 1402
         }
       ]
     },
@@ -523,36 +523,36 @@
       ]
     },
     "06-salamura-yesil-zeytin-5kg-sahne": {
-      "alt": "Salamura Yeşil Zeytin, 5 kg teneke, sofra sunumu",
+      "alt": "Salamura Yeşil Zeytin, 3 L teneke, stüdyo çekimi",
       "outputs": [
         {
           "file": "/images/v3/06-salamura-yesil-zeytin-5kg-sahne-w800.avif",
           "format": "avif",
           "width": 800,
-          "height": 450
+          "height": 1000
         },
         {
           "file": "/images/v3/06-salamura-yesil-zeytin-5kg-sahne-w800.webp",
           "format": "webp",
           "width": 800,
-          "height": 450
+          "height": 1000
         },
         {
-          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-sahne-w1600.avif",
+          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-sahne-w1122.avif",
           "format": "avif",
-          "width": 1600,
-          "height": 900
+          "width": 1122,
+          "height": 1402
         },
         {
-          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-sahne-w1600.webp",
+          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-sahne-w1122.webp",
           "format": "webp",
-          "width": 1600,
-          "height": 900
+          "width": 1122,
+          "height": 1402
         }
       ]
     },
     "06-salamura-yesil-zeytin-5kg-studyo": {
-      "alt": "Salamura Yeşil Zeytin, 5 kg teneke, stüdyo çekimi",
+      "alt": "Salamura Yeşil Zeytin, 3 L teneke, stüdyo çekimi",
       "outputs": [
         {
           "file": "/images/v3/06-salamura-yesil-zeytin-5kg-studyo-w800.avif",
@@ -567,16 +567,16 @@
           "height": 1000
         },
         {
-          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-studyo-w1600.avif",
+          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-studyo-w1122.avif",
           "format": "avif",
-          "width": 1600,
-          "height": 2000
+          "width": 1122,
+          "height": 1402
         },
         {
-          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-studyo-w1600.webp",
+          "file": "/images/v3/06-salamura-yesil-zeytin-5kg-studyo-w1122.webp",
           "format": "webp",
-          "width": 1600,
-          "height": 2000
+          "width": 1122,
+          "height": 1402
         }
       ]
     }

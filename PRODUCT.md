@@ -24,12 +24,12 @@ Dört gerçek birlikte; rakip aynı cümleyi doğrulukla kuramaz:
 4. **Kendi tesisi:** Ellek/Düziçi'deki kendi fabrikasında seçim ve dolum.
 
 ## Operating Context
-- En çok satması beklenen ürün **Doğal Kırma Yeşil Zeytin**: 10 kg teneke ve 1 kg kavanoz.
+- En çok satması beklenen ürün **Doğal Kırma Yeşil Zeytin**: 3 L yuvarlak teneke ve 1 kg kavanoz.
 - Ürün aileleri (en fazla 6 SKU):
-  - Doğal Kırma Yeşil Zeytin: 10 kg teneke, 1 kg kavanoz.
+  - Doğal Kırma Yeşil Zeytin: 3 L yuvarlak teneke, 1 kg kavanoz.
   - Salamura Siyah Zeytin: 1 kg kavanoz.
   - Natürel Sızma Zeytinyağı: 1 L cam şişe, 5 L teneke.
-  - Salamura Yeşil Zeytin: 5 kg teneke.
+  - Salamura Yeşil Zeytin: 3 L yuvarlak teneke.
 - Ürünler admin'den girilir. Fiyatlar şu an örnektir, gerçek fiyatlar kullanıcıdan gelecek.
 - Alışveriş:
   - Sepet çekmecesi, upsell, kupon.

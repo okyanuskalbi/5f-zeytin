@@ -11,11 +11,11 @@ insert into public.products (
 )
 values
   ('sample-green-olive-1kg', 'Doğal Kırma Yeşil Zeytin', 'sofralik-zeytin', '1 kg', 22000, 12, true, 1, 'Doğal Kırma Yeşil Zeytin'),
-  ('sample-green-olive-10kg', 'Doğal Kırma Yeşil Zeytin', 'sofralik-zeytin', '10 kg', 220000, 6, true, 2, 'Doğal Kırma Yeşil Zeytin'),
+  ('sample-green-olive-10kg', 'Doğal Kırma Yeşil Zeytin', 'sofralik-zeytin', '3 L', 220000, 6, true, 2, 'Doğal Kırma Yeşil Zeytin'),
   ('sample-black-olive-1kg', 'Salamura Siyah Zeytin', 'salamura-zeytin', '1 kg', 22000, 0, true, 3, 'Salamura Siyah Zeytin'),
   ('sample-olive-oil-1l', 'Natürel Sızma Zeytinyağı', 'zeytinyagi', '1 L', 35000, 8, true, 4, 'Natürel Sızma Zeytinyağı'),
   ('sample-olive-oil-5l', 'Natürel Sızma Zeytinyağı', 'zeytinyagi', '5 L', 175000, 6, true, 5, 'Natürel Sızma Zeytinyağı'),
-  ('sample-brined-green-olive-5kg', 'Salamura Yeşil Zeytin', 'salamura-zeytin', '5 kg', 110000, 8, true, 6, 'Salamura Yeşil Zeytin')
+  ('sample-brined-green-olive-5kg', 'Salamura Yeşil Zeytin', 'salamura-zeytin', '3 L', 110000, 8, true, 6, 'Salamura Yeşil Zeytin')
 on conflict (id) do nothing;
 
 commit;
