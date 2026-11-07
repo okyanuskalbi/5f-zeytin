@@ -18,7 +18,7 @@
 .lightAction:hover { background:var(--pro-brand-hover); }
 .darkAction:hover { background:var(--brand-olive); }
 .subtleAction { display:inline-flex; align-items:center; gap:12px; min-height:48px; font-size:14px; color:var(--pro-paper); text-decoration:underline; text-underline-offset:6px; }
-.heroFoot { position:absolute; bottom:24px; left:var(--pro-gutter); right:var(--pro-gutter); display:flex; align-items:center; justify-content:space-between; font-size:11px; letter-spacing:.035em; }
+.heroFoot { position:absolute; bottom:24px; left:var(--pro-gutter); right:var(--pro-gutter); display:flex; align-items:center; justify-content:space-between; font-size:12px; letter-spacing:.035em; }
 .heroFoot a { display:flex; min-height:44px; align-items:center; gap:16px; }
 .branchCopy { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center; padding:var(--pro-gutter); pointer-events:none; text-shadow:0 2px 32px rgba(0,0,0,.5); }
 .branchCopy p { max-width:8ch; font-family:var(--font-display); font-size:clamp(80px,10vw,160px); font-style:italic; line-height:1.04; letter-spacing:-.025em; }
@@ -27,7 +27,7 @@
 .factoryPhoto { grid-column:2; grid-row:1; position:relative; margin:0; height:65svh; max-height:660px; overflow:clip; transform-origin:right center; }
 .factoryPhoto picture,.factoryPhoto img { width:100%; height:100%; display:block; }
 .factoryPhoto img { object-fit:cover; object-position:50% 50%; }
-.factoryPhoto figcaption { position:absolute; bottom:0; inset-inline:0; padding:40px 24px 20px; background:linear-gradient(transparent,rgba(12,24,16,.85)); color:var(--pro-paper); font-size:10px; letter-spacing:.14em; }
+.factoryPhoto figcaption { position:absolute; bottom:0; inset-inline:0; padding:40px 24px 20px; background:linear-gradient(transparent,rgba(12,24,16,.85)); color:var(--pro-paper); font-size:11px; letter-spacing:.14em; }
 .factoryCopy { grid-column:1; grid-row:1; position:relative; z-index:1; }
 .factoryCopy h2 { margin-top:24px; color:var(--pro-ink); font-family:var(--font-display); font-size:clamp(48px,5.6vw,88px); font-weight:500; line-height:1.06; letter-spacing:-.025em; }
 .factoryCopy h2 em { color:var(--pro-gold-ink); font-weight:500; }
@@ -86,13 +86,13 @@
  .film :global(img),.film :global(video) { object-position:62% center; }
  .heroShade { background:linear-gradient(180deg,rgba(12,24,16,.25),transparent 24%,rgba(12,24,16,.62) 55%,rgba(12,24,16,.9)); }
  .heroCopy { bottom:28%; }
- .heroCopy .eyebrow { font-size:10px; margin-bottom:20px; }
+ .heroCopy .eyebrow { font-size:11px; margin-bottom:20px; }
  .heroCopy h1 { font-size:clamp(45px,11.5vw,78px); line-height:1.12; }
  .heroDescription { margin-top:20px; max-width:25ch; font-size:14px; }
  .heroActions { bottom:11%; align-items:start; flex-direction:column; gap:8px; }
  .lightAction,.darkAction { min-height:48px; font-size:13px; padding:12px 18px; }
  .subtleAction { font-size:12px; }
- .heroFoot { bottom:20px; font-size:10px; }
+ .heroFoot { bottom:20px; font-size:12px; }
  .heroFoot a { display:none; }
  .factory { padding-block:64px; gap:32px; }
  .factoryCopy h2 { font-size:clamp(44px,11vw,64px); margin-top:20px; }
@@ -100,7 +100,7 @@
  .factoryPhoto { height:66vw; min-height:240px; }
  .place { bottom:0; }
  .table { min-height:820px; padding-top:48px; }
- .tableLabel { font-size:9px; }
+ .tableLabel { font-size:11px; }
  .tableTitle { top:15%; font-size:clamp(54px,13.5vw,96px); }
  .productStage { top:29%; bottom:28%; left:14%; right:14%; }
  .tableFoot { bottom:7%; display:block; }
@@ -133,13 +133,13 @@
 .journey[data-motion-device="touch"] .branchCopy span { max-width:26ch; font-size:14px; }
 .journey[data-motion-device="touch"] .factory { display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(130px,1fr) auto; gap:14px; padding:calc(var(--header-height) + 16px) var(--pro-gutter) 68px; }
 .journey[data-motion-device="touch"] .factoryPhoto { grid-column:1; grid-row:1; height:100%; min-height:0; max-height:32svh; transform-origin:center; }
-.journey[data-motion-device="touch"] .factoryPhoto figcaption { padding:24px 12px 10px; font-size:8px; }
+.journey[data-motion-device="touch"] .factoryPhoto figcaption { padding:24px 12px 10px; font-size:11px; }
 .journey[data-motion-device="touch"] .factoryCopy { grid-column:1; grid-row:2; }
-.journey[data-motion-device="touch"] .factoryCopy .eyebrow { font-size:9px; }
+.journey[data-motion-device="touch"] .factoryCopy .eyebrow { font-size:11px; }
 .journey[data-motion-device="touch"] .factoryCopy h2 { margin-top:8px; max-width:none; font-size:clamp(32px,8.5vw,48px); line-height:1.04; }
 .journey[data-motion-device="touch"] .factoryCopy h2 br { display:none; }
 .journey[data-motion-device="touch"] .factoryCopy > p:not(.eyebrow) { margin-top:12px; font-size:13px; line-height:1.5; }
-.journey[data-motion-device="touch"] .factoryCopy address { margin-top:10px; max-width:none; font-size:10px; line-height:1.5; }
+.journey[data-motion-device="touch"] .factoryCopy address { margin-top:10px; max-width:none; font-size:12px; line-height:1.5; }
 .journey[data-motion-device="touch"] .textLink { margin-top:6px; min-height:44px; font-size:11px; }
 .journey[data-motion-device="touch"] .table { padding-top:calc(var(--header-height) + 18px); }
 .journey[data-motion-device="touch"] .tableTitle { top:19%; font-size:clamp(48px,13vw,110px); }
@@ -156,4 +156,12 @@
  .orchard,.factory,.table { position:relative!important; transform:none!important; opacity:1!important; }
  .markers,.sceneNav,.branchCopy { display:none!important; }
  .journey :global([style]) { transform:none!important; }
+}
+
+/* Reserve a separate bottom band for the 44px scene navigation at every desktop height. */
+@media(min-width:1024px) {
+ .journey[data-mode="cinematic"] .tableFoot { bottom:max(11%,92px); }
+}
+@media(max-height:500px) and (orientation:landscape) {
+ .heroFoot { display:none; }
 }

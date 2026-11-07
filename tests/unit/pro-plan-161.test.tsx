@@ -72,3 +72,9 @@ it("keeps all six supplied SKU identities, prices and quote actions in the serve
   // A scripted form must never leak personal data through a default GET.
   expect(doc.getElementById("teklif")?.querySelector("form")?.getAttribute("method")).toBe("post");
 });
+
+it("keeps FAQ introduction words separated when mobile hides the breaks (181)", async () => {
+  const doc = await serverDocument();
+  const intro = [...doc.querySelectorAll("p")].find(p => p.textContent?.startsWith("İyi bir seçim,"));
+  expect(intro?.textContent).toBe("İyi bir seçim, açık bilgiyle başlar.");
+});

@@ -184,3 +184,13 @@ it("closes the overlay only after a successful real sign in", async () => {
   );
   await vi.waitFor(() => expect(close).toHaveBeenCalledOnce());
 });
+
+it("handles 401 as a guest without application console errors (181)", async () => {
+  const error = vi.spyOn(console, "error").mockImplementation(() => {});
+  try {
+    render(<AuthDialog onClose={vi.fn()} />);
+    await screen.findByRole("form", { name: "E-posta ile giriş" });
+    expect(error).not.toHaveBeenCalled();
+    expect(screen.queryByText("Oturumunuz açık.")).toBeNull();
+  } finally { error.mockRestore(); }
+});

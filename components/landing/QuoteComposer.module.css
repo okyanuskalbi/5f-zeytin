@@ -4,7 +4,7 @@
 .field { display:flex; flex-direction:column; gap:6px; min-width:0; grid-column:span 6; }
 .field label { font-size:13px; line-height:1.5; font-weight:600; }
 .field input, .field select { width:100%; min-width:0; min-height:48px; padding:10px 12px; border:1px solid var(--pro-input); border-radius:6px; color:var(--pro-ink); background:var(--pro-paper); font:inherit; font-size:16px; line-height:1.5; }
-.field select { text-overflow: ellipsis; }
+.field select { appearance:none; text-overflow:ellipsis; padding-right:40px; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231C1F1A' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; background-size:16px; }
 .field input::placeholder { color: var(--pro-muted, #565D50); }
 .product { grid-column:1 / -1; }
 .location { grid-column:span 3; }

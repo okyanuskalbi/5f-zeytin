@@ -7,7 +7,6 @@ import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
 import type { V3Image } from "@/lib/media/v3-assets";
 import { motionTokens, springs } from "@/lib/ui-motion";
 import type { ProductVariant } from "@/types/catalog";
-import { getCategoryLabel } from "@/lib/catalog/category-label";
 import { AddToCart } from "./AddToCart";
 import { useProductDetail } from "./ProductDetailProvider";
 import styles from "./ProductCard.module.css";
@@ -23,7 +22,6 @@ export function ProductCard({ product, image, scene, index = 0, featured = true,
   const id = useId();
   const reduced = usePrefersReducedMotion();
   const openDetail = useProductDetail();
-  const categoryLabel = getCategoryLabel(product, "card");
   const ready = useSyncExternalStore(subscribeReady, clientReady, serverReady);
   return <motion.div className={styles.reveal} data-product-reveal="" data-reduced-motion={reduced}
     initial={false} whileInView={reduced || typeof IntersectionObserver !== "function" ? undefined : { y: [motionTokens.entrance.distance, 0], opacity: [motionTokens.entrance.opacity, 1] }}
@@ -40,7 +38,6 @@ export function ProductCard({ product, image, scene, index = 0, featured = true,
         onClick={event => openDetail?.(product.id, event.currentTarget)}>{product.name}</button></h3>
       <div className={styles.meta}>
         <span id={`${id}-weight`} aria-label="Boy" className={styles.size}>{product.weight}</span>
-        {categoryLabel && <span className={styles.category}>{categoryLabel}</span>}
       </div>
       <div className={styles.buyRow}>
         <p aria-label="Fiyat" className={styles.price}>{money.format(product.priceKurus / 100)}</p>

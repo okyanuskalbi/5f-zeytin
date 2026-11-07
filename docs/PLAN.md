@@ -1,3 +1,7 @@
+## Aktif iş: Task181 / cihaz denetimi düzeltmeleri (7 Kasım 2026)
+
+[Task181](tasks/181-cihaz-denetimi-duzeltmeleri.md): görünüm, metin ve canonical düzeltmeleri uygulandı; 1460 birim testi, lint, typecheck ve Turbopack build geçti. Tarayıcı kabulü kullanıcı isteğiyle Claude'da. Üyelik 401 uygulama tarafında sessiz; tarayıcının HTTP hata kaydını tamamen kaldırmak yasaklanan sunucu değişikliğini gerektiriyor. Vercel hedef kontrolü üç mevcut oturumla 403 verdi; yayın yapılamadı. Durum BEKLİYOR; main/CI sonucu ve yayın engeli `.cache/task-181/final-receipt.json` içinde izlenir.
+
 ## Aktif iş: Task180 / telefon menüsü logo satırı (3 Kasım 2026)
 
 [Task180](tasks/180-menu-ana-sayfa-yazisi-kaldir.md): yalnız telefon menüsünün

@@ -91,7 +91,7 @@ export function TrustAndContact(): JSX.Element {
   return <ScrollStage id="iletisim" device="reveal" sourceId={31986} labelledBy="sss-title" className={styles.support}>
     <div className={styles.container}>
       <div className={styles.faqStage}>
-        <div className={styles.faqIntroduction}><p className={styles.sceneLabel}>Aklınızdakiler</p><p>İyi bir seçim,<br /><em>açık bilgiyle</em><br />başlar.</p></div>
+        <div className={styles.faqIntroduction}><p className={styles.sceneLabel}>Aklınızdakiler</p><p>İyi bir seçim,{" "}<br /><em>açık bilgiyle</em>{" "}<br />başlar.</p></div>
         <Faq embedded />
       </div>
       <div role="region" aria-labelledby="iletisim-title" className={styles.contactGrid}>

@@ -13,7 +13,7 @@ afterEach(() => { cleanup(); localStorage.clear(); vi.useRealTimers(); vi.unstub
 
 const money = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", minimumFractionDigits: 0, maximumFractionDigits: 2 });
 
-it("renders six variants with catalog prices, categories and a factual collection badge", async () => {
+it("renders six variants with catalog prices, package sizes and a factual collection badge", async () => {
   const products = await getProducts();
   render(<CartProvider products={products}><Products products={products} /></CartProvider>);
   const cards = screen.getAllByRole("article");
@@ -21,9 +21,6 @@ it("renders six variants with catalog prices, categories and a factual collectio
   expect(cards.map(card => card.getAttribute("data-product-id"))).toEqual([...products].sort((a, b) => a.imageKey.localeCompare(b.imageKey)).map(product => product.id));
   expect(screen.getAllByText("KOLEKSİYONDAN")).toHaveLength(1);
   expect(within(cards[0]).getByText("KOLEKSİYONDAN")).toBeDefined();
-  expect(screen.getAllByText("Sofralık")).toHaveLength(2);
-  expect(screen.getAllByText("Salamura")).toHaveLength(2);
-  expect(screen.getAllByText("Zeytinyağı")).toHaveLength(2);
   for (const product of products) {
     const card = cards.find(card => card.dataset.productId === product.id)!;
     expect(screen.getByRole("article", { name: `${product.name}, ${product.weight}` })).toBe(card);
@@ -32,6 +29,7 @@ it("renders six variants with catalog prices, categories and a factual collectio
     expect(within(card).getByRole("button", { name: `${product.name}, ${product.weight}` })).toBeDefined();
     expect(within(card).getByLabelText("Fiyat").textContent).toBe(money.format(product.priceKurus / 100));
     expect(within(card).getByLabelText("Boy").textContent).toBe(product.weight);
+    expect(within(card).getByLabelText("Boy").parentElement?.textContent).toBe(product.weight);
     expect(within(card).getAllByRole("img")).toHaveLength(1);
     expect(card.querySelector("[data-product-scene] img")?.getAttribute("alt")).toBe("");
     expect(within(card).queryByRole("radio")).toBeNull();

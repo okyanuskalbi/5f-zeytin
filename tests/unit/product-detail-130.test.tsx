@@ -91,13 +91,13 @@ it.each([
   [null, true, "Sofralık", "Sofralık zeytin"],
   ["Kahvaltılık", true, "Kahvaltılık", "Kahvaltılık"],
   ["Kahvaltılık", false, null, null],
-] as const)("renders the category consistently in card and detail (%s, %s)", async (categoryLabel, showCategoryLabel, cardLabel, detailLabel) => {
+] as const)("keeps package-only card metadata and the configured detail category (%s, %s)", async (categoryLabel, showCategoryLabel, _cardLabel, detailLabel) => {
   const catalog = (await getProducts()).map(product => ({ ...product, categoryLabel, showCategoryLabel }));
   const { card, product } = await mount(catalog);
   // Only the size span remains when the label is hidden, with no empty badge.
   const meta = card.querySelector('[aria-label="Boy"]')!.parentElement!;
   expect([...meta.querySelectorAll("span")].map(node => node.textContent))
-    .toEqual(cardLabel ? [product.weight, cardLabel] : [product.weight]);
+    .toEqual([product.weight]);
   fireEvent.click(within(card).getByRole("heading").querySelector("button")!);
   const dialog = await screen.findByRole("dialog");
   const table = within(dialog).getByRole("table", { name: "Ürün bilgileri" });
@@ -296,4 +296,9 @@ it("hides the mobile buy bar while the detail sheet is open", async () => {
   fireEvent.click(within(card).getByRole("heading").querySelector("button")!);
   await screen.findByRole("dialog");
   await waitFor(() => expect(bar.getAttribute("aria-hidden")).toBe("true"));
+});
+
+it("shows only package size below the product name (181)", async () => {
+  const { card, product } = await mount();
+  expect(card.querySelector('[aria-label="Boy"]')?.parentElement?.textContent).toBe(product.weight);
 });

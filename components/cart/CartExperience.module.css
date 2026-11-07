@@ -92,7 +92,7 @@
 .header p { max-width: 48ch; }
 .header a { color: #596435; }
 .layout { max-width: 1328px; margin-inline: auto; }
-.contents { min-width: 0; display: grid; gap: 24px; }
+.contents { min-height: 320px; align-content: start; min-width: 0; display: grid; gap: 24px; }
 .pageLines { display: grid; gap: 16px; }
 .pageLines .line { padding: 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--cart-card); }
 .summary {

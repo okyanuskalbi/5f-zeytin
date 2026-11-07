@@ -5,7 +5,7 @@ import { CartPage } from "@/components/cart/CartSummary";
 import { getProducts } from "@/lib/catalog/static-products";
 import type { Product } from "@/types/catalog";
 
-export const metadata: Metadata = { title: "Sepetim | Afina Zeytin", robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: "Sepetim | Afina Zeytin", alternates: { canonical: "/sepet" }, robots: { index: false, follow: false } };
 
 export default async function Page(): Promise<JSX.Element> {
   // Re-read the catalog on each request/refresh; never restore browser prices.

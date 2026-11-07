@@ -4,7 +4,7 @@ import { SignIn } from "@/components/account/SignIn";
 import { safeAuthRedirect } from "@/lib/auth/config";
 import { getVerifiedUser } from "@/lib/auth/server";
 
-export const metadata: Metadata = { title: "Giriş ve üyelik | Afina Zeytin", robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: "Giriş ve üyelik | Afina Zeytin", alternates: { canonical: "/giris" }, robots: { index: false, follow: false } };
 
 export const dynamic = "force-dynamic";
 

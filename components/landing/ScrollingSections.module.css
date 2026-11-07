@@ -199,7 +199,7 @@
  /* Cover the frame throughout ±20px travel and the initial .97 scale. */
  .closingImage { inset:-32px -4%; }
  .closingImage img { object-position:50% 48%; }
- .closingLocation { bottom:24px; font-size:11px; }
+ .closingLocation { bottom:24px; font-size:12px; }
 }
 @media(prefers-reduced-motion:reduce) {
  .businessStage { position:relative; top:auto; }

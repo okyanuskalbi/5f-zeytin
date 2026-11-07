@@ -4,7 +4,7 @@ import { LegalDocument } from "@/components/site/LegalDocument";
 export const metadata: Metadata = {
   title: "İade ve İptal (Taslak) | Afina Zeytin",
   description: "İade ve İptal: onaylı metin bekleniyor.",
-  robots: { index: false, follow: false },
+  alternates: { canonical: "/iade" }, robots: { index: false, follow: false },
 };
 
 export default function Page() {

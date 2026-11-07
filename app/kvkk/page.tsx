@@ -4,7 +4,7 @@ import { LegalDocument } from "@/components/site/LegalDocument";
 export const metadata: Metadata = {
   title: "KVKK (Taslak) | Afina Zeytin",
   description: "KVKK: onaylı metin bekleniyor.",
-  robots: { index: false, follow: false },
+  alternates: { canonical: "/kvkk" }, robots: { index: false, follow: false },
 };
 
 export default function Page() {

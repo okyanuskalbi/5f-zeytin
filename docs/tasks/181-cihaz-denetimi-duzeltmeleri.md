@@ -28,11 +28,11 @@ Denetim: Claude (headless Playwright, canlı afinazeytin.com, 3e8120e). Ekran g�
 10. **Alt sayfalarda canonical yok** (sepet, giris, kayit, kvkk, iade, mesafeli-satis, siparis-takip, odeme): her birine kendi URL'si ile canonical ekle. noindex ayarları ve "(Taslak)" başlıkları DEĞİŞMEZ (yasal metinler müşteri onayı bekliyor).
 
 ## Kabul kriterleri
-- [ ] Birim testi: SSS giriş metninin metin içeriği "İyi bir seçim, açık bilgiyle başlar." (tek boşluklu) olur.
-- [ ] Birim/kaynak testi: `.field select` için `appearance:none` ve diğer alanlarla aynı yükseklik kuralı var.
-- [ ] Birim testi: AuthDialog 401 yanıtında `console.error` çağırmaz, misafir görünümünü gösterir.
-- [ ] Birim testi: ProductCard ikinci satırı ürün adını tekrar etmez.
-- [ ] Birim/kaynak testi: listelenen alt sayfaların metadata'sında `alternates.canonical` var; robots noindex korunur.
+- [x] Birim testi: SSS giriş metninin metin içeriği "İyi bir seçim, açık bilgiyle başlar." (tek boşluklu) olur.
+- [x] Birim/kaynak testi: `.field select` için `appearance:none` ve diğer alanlarla aynı yükseklik kuralı var.
+- [x] Birim testi: AuthDialog 401 yanıtında `console.error` çağırmaz, misafir görünümünü gösterir.
+- [x] Birim testi: ProductCard ikinci satırı ürün adını tekrar etmez.
+- [x] Birim/kaynak testi: listelenen alt sayfaların metadata'sında `alternates.canonical` var; robots noindex korunur.
 - [ ] `npm test`, lint, typecheck, build yeşil; main push, exact-SHA CI, Vercel REST yayını READY, makbuz `.cache/task-181/final-receipt.json`.
 - Görsel kabul (adım 3, 4, 5, 7, 9; Safari select; 15 profil): Claude canlıda doğrular.
 
@@ -41,5 +41,18 @@ Denetim: Claude (headless Playwright, canlı afinazeytin.com, 3e8120e). Ekran g�
 - Sepet, fiyat, stok, ödeme, auth, DB, sunucu API'si ve teklif gönderim mantığı değişmez.
 - "%100/organik/doğal" iddiası ekleme ("Doğal Kırma" ürün adı istisna). Yeni bağımlılık ekleme.
 - Ürün görsellerini değiştirme (yeni teneke görselleri ayrı onayla gelecek).
+
+## Coder Notu
+
+7 Kasım 2026 — `frontend-patterns`, `tdd-workflow`, `better-layout`, `ui-ux-pro-max` okundu; Next.js yerel metadata rehberi kullanıldı. Yeni bileşen/bağımlılık yok; 21st görev gereği kullanılmadı.
+
+- Adım 1/2/8/10 uygulandı: SSS boşlukları, ortak 48px select ve dekoratif ok, kartta yalnız ağırlık, sekiz sayfada kendi canonical adresi. Ürün verisi, detay kategorisi, noindex ve taslak başlıklar korundu.
+- Adım 3/4: masaüstü CTA için en az 92px alt bant ayrıldı (gezinme 24+44px); 500px ve altı yatay ekranda hero alt satırı gizlendi. Adım 5: sepet içeriğine sunucu çıktısından itibaren 320px asgari alan ayrıldı; zaten sunucuda bulunan özet/kuponun yüklemeden sonra aşağı itilmesi hedeflendi. Adım 7/9: süs etiketleri en az 11px, adres/alt satır/footer/üyelik imzası en az 12px; dokunmatik galeride fiyat satırının otomatik üst boşluğu kaldırıldı.
+- RED: dört hedef dosyada 13 başarısız / 50 başarılı test. GREEN: aynı dört dosyada 63/63 başarılı. Eski kategori rozeti beklentileri yeni yalnız-ambalaj sözleşmesine uyarlandı; detay kategorisi testleri korundu. Kullanıcının talebiyle ara/RED kaydı oluşturulmadı, yalnız yeşil sonuç kaydediliyor.
+- Komutlar: `npm test` **123 dosya / 1460 test PASS**; `npm run lint`, `npm run typecheck`, `npm run build` (Turbopack) **PASS**; `git diff --check` **PASS**. Günlükler `.cache/task-181/` altında. Ayrı kapsam yüzdesi ölçümü yapılmadı.
+- **Adım 6 kısmen doğrulandı, tam çözüm yapılamadı:** AuthDialog zaten 401'i gövde okumadan misafir olarak işliyor; yeni test misafir formunu ve `console.error` çağrılmadığını doğruladı. Ancak tarayıcının HTTP 401 kaynak kaydı istemci `catch` ile susturulamaz. Mevcut oturum çerezi HttpOnly ve oturum sunucuda yönetiliyor; isteği kaldırmak oturumu açık kullanıcı davranışını bozar. Görevin sunucu/auth/çerez değişikliği yasağına uyularak bu kod değiştirilmedi. Tam çözüm için sunucunun normal misafir sonucunu hata olmayan yanıtla bildirmesi ayrı kapsam gerektirir.
+- **Yayın engeli:** mevcut proje oturumu, güncel Vercel CLI oturumu ve önceki AFINA oturumuyla üç salt okunur hedef kontrolü de `403 Not authorized` döndü. Yeni dağıtım oluşturulmadı; Vercel READY iddiası yok. Geçerli AFINA yayın erişimi gerekiyor.
+- Tarayıcılar kullanıcı isteğiyle çalıştırılmadı. Adım 3/4/5/7/9, Safari select, CLS <0.1 ve 15 profil görsel kabulü **Claude'da**; birim/kaynak testi bu kabulün yerine geçmez. Görev adım 6 ve yayın engeli nedeniyle BEKLİYOR.
+- Yeşil kaynak main'e gönderildikten sonra exact-SHA CI sonucu ve yayın engeli `.cache/task-181/final-receipt.json` içine kaydedilir; bu makbuz Git dışında yerel kanıttır.
 
 ## Durum: BEKLİYOR

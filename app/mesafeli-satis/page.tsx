@@ -4,7 +4,7 @@ import { LegalDocument } from "@/components/site/LegalDocument";
 export const metadata: Metadata = {
   title: "Mesafeli Satış Sözleşmesi (Taslak) | Afina Zeytin",
   description: "Mesafeli Satış Sözleşmesi: onaylı metin bekleniyor.",
-  robots: { index: false, follow: false },
+  alternates: { canonical: "/mesafeli-satis" }, robots: { index: false, follow: false },
 };
 
 export default function Page() {

@@ -81,7 +81,7 @@
  .stage { padding-top:20px; }
  .heading { gap:8px; margin-bottom:12px; }
  .heading h2 { max-width:none; font-size:clamp(28px,7.7vw,44px); }
- .heading .eyebrow { margin-bottom:6px; font-size:10px; }
+ .heading .eyebrow { margin-bottom:6px; font-size:11px; }
  .heading > div > p:last-child { margin-top:8px; font-size:12px; line-height:1.4; }
  .explanation { display:none; }
  .section [data-rail-controls] { display:none; }
@@ -103,7 +103,7 @@
 .section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .stage { padding-top:calc(var(--header-height) + 8px); padding-bottom:max(8px,env(safe-area-inset-bottom,0px)); }
 .section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .heading { gap:0; margin-bottom:4px; }
 .section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .heading h2 { max-width:none; font-size:clamp(28px,7.7vw,44px); line-height:1.02; }
-.section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .heading .eyebrow { margin-bottom:5px; font-size:10px; }
+.section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .heading .eyebrow { margin-bottom:5px; font-size:11px; }
 .section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .heading > div > p:last-child { margin-top:6px; font-size:12px; line-height:1.35; }
 .section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .explanation { display:none; }
 .section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .track { gap:24px; }
@@ -114,7 +114,7 @@
 .section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .item article h3 + div { margin-block:2px 4px; }
 .section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .item article > div > span { padding-block:2px; font-size:12px; }
 .section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .item article [aria-label="Fiyat"] { font-size:22px; }
-.section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .foot { flex-direction:row; gap:8px; margin-top:4px; font-size:11px; }
+.section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .foot { flex-direction:row; gap:8px; margin-top:4px; font-size:12px; }
 @media(prefers-reduced-motion:reduce) { .item,.item article > button[aria-haspopup="dialog"] picture { transform:none !important; } .spotlight,.item article > button[aria-haspopup="dialog"] picture { transition:none; } }
 
 .headingActions { display:flex; flex-direction:column; align-items:flex-start; gap:12px; }
@@ -138,3 +138,6 @@
  .gridItem article h3 { font-size:16px; }
 }
 @media(max-width:380px) { .productGrid { grid-template-columns:minmax(0,1fr); } }
+
+/* Keep package details and price together; the image absorbs spare height. */
+.section[data-gallery-mode="scrub"][data-gallery-layout="touch"] .item article > div:has([aria-label="Fiyat"]) { margin-top:0; }
