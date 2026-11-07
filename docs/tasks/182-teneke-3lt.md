@@ -37,7 +37,7 @@ fullstack (katalog verisi + görsel; canlı DB yalnız snippet)
 - [x] Kaynak taraması: repo içinde bu iki ürünle ilişkili "10 kg"/"5 kg" kalmadı (komut çıktısı Coder Notu'nda).
 - [x] Görsel dosyaları mevcut, boyutları srcset ile uyumlu, kare teneke bu iki ürünün hiçbir görsel referansında kalmadı.
 - [x] `supabase/snippets/teneke-3lt.sql` var, transaction içinde, yalnız iki id'yi etkiler.
-- [ ] `npm test`, lint, typecheck, build yeşil; main push, exact-SHA CI, Vercel REST yayını READY, makbuz `.cache/task-182/final-receipt.json`.
+- [x] `npm test`, lint, typecheck, build yeşil; main push, exact-SHA CI, Vercel REST yayını READY, makbuz `.cache/task-182/final-receipt.json`.
 - Canlı DB güncellemesi: Claude script hazırlar, kullanıcı çalıştırır. Görsel kabul: Claude canlıda doğrular.
 
 ## Yapılmaması gerekenler
@@ -55,5 +55,12 @@ fullstack (katalog verisi + görsel; canlı DB yalnız snippet)
 - `supabase/snippets/teneke-3lt.sql` kullanıcı tarafından çalıştırılmak üzere hazır; tek transaction, önce/sonra SELECT, yalnız iki id için weight UPDATE. Şemada ürün açıklaması sütunu yok; açıklamalar kodda. Seed güncellendi. Canlı katalog DB kullandığı için kullanıcı bu dosyayı çalıştırana kadar canlı ağırlık eski kalabilir.
 - Vercel REST hedef erişim kontrolü yeniden denendi: HTTP **403 forbidden / Not authorized**; dağıtım oluşturulmadı, READY iddiası yok. Kullanıcının açık istisnası gereği kod işi TAMAMLANDI. Main gönderimi ve aynı kaynak kaydına ait GitHub doğrulama sonucu `.cache/task-182/final-receipt.json` içinde takip edilir.
 - Tarayıcı çalıştırılmadı; görsel/canlı kabul Claude'da. Tarayıcı testlerindeki eski ürün metinleri güncellendi ama bu testler çalıştırılmadı. Bu devir ve canlı DB'nin kullanıcı tarafından uygulanması kod tamamlanmasını engellemez.
+
+## Yayın — 7 Kasım 2026
+
+- Task 181 + 182 içeren `bc4f16da4e025004ae3c5f6f8e8ceea6bf570d11`, aynı kayda ait [GitHub doğrulaması](https://github.com/okyanuskalbi/5f-zeytin/actions/runs/42370005956) başarılı olduktan sonra doğrudan Vercel REST ile yayımlandı. `dpl_GMnXJDmfsymRAbto7Spgkb9xGqXx` **READY**; `afinazeytin.com` bağlantısı doğrulandı. Önceki 403 yayın engeli kalktı.
+- Canlı ana sayfa ve sekiz alt sayfa HTTP 200; sayfaların canonical adresleri, SSS boşlukları ve iki yeni ürün fotoğrafının kaynakla birebir eşleşmesi doğrulandı. Tarayıcı testi yapılmadı; tarayıcı/görsel kabul Claude'da. Kod ve canlı veritabanı değiştirilmedi.
+- Canlı veritabanındaki ağırlık güncellemesi kullanıcıya ait ayrı adımdır; bu yayın onu uygulamaz.
+- Güncel makbuz: `.cache/task-182/final-receipt.json` (Git dışında yerel kayıt).
 
 ## Durum: TAMAMLANDI

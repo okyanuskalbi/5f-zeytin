@@ -33,7 +33,7 @@ Denetim: Claude (headless Playwright, canlı afinazeytin.com, 3e8120e). Ekran g�
 - [x] Birim testi: AuthDialog 401 yanıtında `console.error` çağırmaz, misafir görünümünü gösterir.
 - [x] Birim testi: ProductCard ikinci satırı ürün adını tekrar etmez.
 - [x] Birim/kaynak testi: listelenen alt sayfaların metadata'sında `alternates.canonical` var; robots noindex korunur.
-- [ ] `npm test`, lint, typecheck, build yeşil; main push, exact-SHA CI, Vercel REST yayını READY, makbuz `.cache/task-181/final-receipt.json`.
+- [x] `npm test`, lint, typecheck, build yeşil; main push, exact-SHA CI, Vercel REST yayını READY, makbuz `.cache/task-181/final-receipt.json`.
 - Görsel kabul (adım 3, 4, 5, 7, 9; Safari select; 15 profil): Claude canlıda doğrular.
 
 ## Yapılmaması gerekenler
@@ -55,4 +55,11 @@ Denetim: Claude (headless Playwright, canlı afinazeytin.com, 3e8120e). Ekran g�
 - Tarayıcılar kullanıcı isteğiyle çalıştırılmadı. Adım 3/4/5/7/9, Safari select, CLS <0.1 ve 15 profil görsel kabulü **Claude'da**; birim/kaynak testi bu kabulün yerine geçmez. Görev adım 6 ve yayın engeli nedeniyle BEKLİYOR.
 - Yeşil kaynak main'e gönderildikten sonra exact-SHA CI sonucu ve yayın engeli `.cache/task-181/final-receipt.json` içine kaydedilir; bu makbuz Git dışında yerel kanıttır.
 
-## Durum: BEKLİYOR
+## Yayın — 7 Kasım 2026
+
+- Task 181 + 182 içeren `bc4f16da4e025004ae3c5f6f8e8ceea6bf570d11`, aynı kayda ait [GitHub doğrulaması](https://github.com/okyanuskalbi/5f-zeytin/actions/runs/42370005956) başarılı olduktan sonra doğrudan Vercel REST ile yayımlandı. `dpl_GMnXJDmfsymRAbto7Spgkb9xGqXx` **READY**; `afinazeytin.com` bağlantısı doğrulandı. Önceki 403 yayın engeli kalktı.
+- Canlı ana sayfa ve sekiz alt sayfa HTTP 200; sayfaların canonical adresleri, SSS boşlukları ve iki yeni ürün fotoğrafının kaynakla birebir eşleşmesi doğrulandı. Tarayıcı testi yapılmadı; tarayıcı/görsel kabul Claude'da. Kod ve canlı veritabanı değiştirilmedi.
+- Adım 6: tarayıcının 401 ağ kaydı Claude tarafından kabul edildi (7 Kasım kullanıcı bildirimi); önceki kısmi kabul notu bu kararla kapanmıştır.
+- Güncel makbuz: `.cache/task-181/final-receipt.json` (Git dışında yerel kayıt).
+
+## Durum: TAMAMLANDI
