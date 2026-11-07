@@ -63,3 +63,8 @@ Denetim: Claude (headless Playwright, canlı afinazeytin.com, 3e8120e). Ekran g�
 - Güncel makbuz: `.cache/task-181/final-receipt.json` (Git dışında yerel kayıt).
 
 ## Durum: TAMAMLANDI
+
+## Düzeltme 181-1 (Claude canlı denetimi, 7 Kas, 8468a47 sonrası)
+- Adım 3 hâlâ başarısız: 3. sahnede ("Yeri sofrada") scrollY=3000 konumunda "Sofranız için keşfedin" düğmesi (1366×768'de kutu x1074 y696 238×52) sahne gezinmesinin (Zeytinlik/Üretim/Sofra, y700, x1146–1281) tam üstünde. Çakışma: 1366×768 5153 px², 1440×900 1489 px², 1920×1080 4222 px²; 1280×720 temiz. Ekran: `/private/tmp/claude-501/-Users-emre/862bcbce-6e8d-4a73-a71a-971f141b67f4/scratchpad/kontrol/cta-1366.png`. Eklenen 92px alt bant bu sahnede düğmeyi gezinmeden ayırmıyor.
+- Düzelt: bu sahnede düğme ile gezinme hiçbir masaüstü yükseklikte çakışmasın. Öneri: gezinmeyi düğmenin üstüne (ya da sola, metin sütunu hizasına) al veya düğmeyi gezinmenin üstünde ayrı satıra koy. Kabul (Claude ölçer): 1280×720, 1366×768, 1440×900, 1920×1080, 2560×1440'ta sahne boyunca her 150px kaydırmada kesişim 0.
+- Ölçüm betiği: `/private/tmp/claude-501/-Users-emre/862bcbce-6e8d-4a73-a71a-971f141b67f4/scratchpad/kontrol/k181b.cjs` (PW=<repo>/node_modules/playwright). Yerelde production build ile kendin de çalıştırabilirsin (yalnız headless Chromium, en fazla 2 tarayıcı).

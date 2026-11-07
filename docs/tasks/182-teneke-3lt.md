@@ -64,3 +64,9 @@ fullstack (katalog verisi + görsel; canlı DB yalnız snippet)
 - Güncel makbuz: `.cache/task-182/final-receipt.json` (Git dışında yerel kayıt).
 
 ## Durum: TAMAMLANDI
+
+## Düzeltme 182-1 (Claude canlı denetimi, 7 Kas)
+- Yeni iki teneke görseli kartlarda/“Tüm ürünler” ızgarasında krem dikdörtgen bir kutu içinde görünüyor (fotoğrafın kendi düz krem zemini). Diğer 4 ürün arka planı temizlenmiş dekupe görsel + yumuşak gölge. Ekran: `/private/tmp/claude-501/-Users-emre/862bcbce-6e8d-4a73-a71a-971f141b67f4/scratchpad/kontrol/grid-1440.png`.
+- Düzelt: iki görseli diğer ürünlerle aynı biçime getir — arka planı şeffaf, kenarları temiz dekupe (altın ağız/kapak ve etiket kenarları bozulmadan), diğer ürünlerdeki gibi yumuşak zemin gölgesi; boyut/oran ve kadraj diğer kartlarla uyumlu (teneke kartta diğer ürünler kadar büyük görünsün). Önce diğer ürün görsellerinin nasıl hazırlandığına bak (`~/PROJELER/AFINA-KAYNAK/urun-gorselleri/hazirla.py`, `public/images/v3` boru hattı) ve aynı yolu izle. Yeni görsel ÜRETME; mevcut onaylı iki PNG'den dekupe çıkar. Ücretli API kullanma; yerel araç (Python/Pillow, var olan kurulu araçlar) kullan. Etiket yazıları ve renkler değişmesin.
+- Canlı veritabanında weight hâlâ "10 kg"/"5 kg" (API). Arayüz "3 L" gösteriyor; arayüzün bu değeri nereden aldığını Coder Notu'na kısaca yaz (sepet/sipariş satırına DB değeri mi yazılıyor?). DB'ye dokunma.
+- Bitince yine Vercel REST ile yayınla (token: Keychain `-a afina -s vercel-afina-token`, değeri asla yazdırma), READY + alias doğrula.
