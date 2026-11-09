@@ -5,7 +5,7 @@ import Page, { metadata } from "@/app/giris/page";
 
 const magicLinkConfirmation = "İsteğiniz alındı. Hesabınız uygunsa e-posta adresinize bir giriş bağlantısı gönderilir. Bağlantıyı isteği başlattığınız tarayıcıda açın.";
 
-const mocks = vi.hoisted(() => ({ replace: vi.fn(), refresh: vi.fn(), getUser: vi.fn(), cookies: vi.fn() }));
+const mocks = vi.hoisted(() => ({ replace: vi.fn(), documentReplace: vi.fn(), refresh: vi.fn(), getUser: vi.fn(), cookies: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: mocks.replace, refresh: mocks.refresh }) }));
 vi.mock("next/headers", () => ({ cookies: mocks.cookies }));
 vi.mock("@/lib/auth/server", () => ({ getVerifiedUser: mocks.getUser }));
@@ -18,10 +18,11 @@ function fill() {
   fireEvent.change(field("Şifre"), { target: { value: " Sofrada123! " } });
 }
 beforeEach(() => {
-  mocks.replace.mockReset(); mocks.refresh.mockReset(); mocks.getUser.mockReset();
+  mocks.replace.mockReset(); mocks.documentReplace.mockReset(); mocks.refresh.mockReset(); mocks.getUser.mockReset();
   mocks.cookies.mockResolvedValue({ getAll: () => [] });
   fetchMock.mockReset().mockResolvedValue(Response.json({ data: { status: "signed_in", redirectTo: "/sepet" } }));
   vi.stubGlobal("fetch", fetchMock);
+  vi.stubGlobal("location", { replace: mocks.documentReplace });
   localStorage.clear(); sessionStorage.clear();
 });
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.unstubAllEnvs(); });
@@ -62,7 +63,7 @@ it("validates and focuses invalid fields without sending", async () => {
   expect(document.getElementById(field("E-posta").getAttribute("aria-describedby")!)?.textContent).toContain("Geçerli");
   expect(fetchMock).not.toHaveBeenCalled();
 });
-it("submits once, clears the password and refreshes the authenticated destination", async () => {
+it("submits once, clears the password and opens a fresh authenticated document", async () => {
   let finish!: (response: Response) => void;
   fetchMock.mockImplementationOnce(() => new Promise(resolve => { finish = resolve; }));
   render(<SignIn next="/sepet" />); fill();
@@ -72,8 +73,9 @@ it("submits once, clears the password and refreshes the authenticated destinatio
   expect((screen.getByRole("button", { name: "İşleniyor…" }) as HTMLButtonElement).disabled).toBe(true);
   await act(async () => finish(Response.json({ data: { status: "signed_in", redirectTo: "/sepet" } })));
   expect(field("Şifre").value).toBe("");
-  expect(mocks.replace).toHaveBeenCalledWith("/sepet");
-  expect(mocks.refresh).toHaveBeenCalledOnce();
+  expect(mocks.documentReplace).toHaveBeenCalledExactlyOnceWith("/sepet");
+  expect(mocks.replace).not.toHaveBeenCalled();
+  expect(mocks.refresh).not.toHaveBeenCalled();
   expect(localStorage.length + sessionStorage.length).toBe(0);
 });
 it.each([401, 429, 503, "network", "malformed"])("handles %s without exposing arbitrary provider text and allows retry", async status => {
@@ -85,14 +87,29 @@ it.each([401, 429, 503, "network", "malformed"])("handles %s without exposing ar
   await waitFor(() => expect(document.activeElement).toBe(screen.getByRole("alert")));
   expect(field("Şifre").value).toBe(" Sofrada123! ");
   expect(mocks.replace).not.toHaveBeenCalled();
+  expect(mocks.documentReplace).not.toHaveBeenCalled();
+  expect(mocks.refresh).not.toHaveBeenCalled();
   fireEvent.submit(form());
-  await waitFor(() => expect(mocks.replace).toHaveBeenCalled());
+  await waitFor(() => expect(mocks.documentReplace).toHaveBeenCalledWith("/sepet"));
 });
-it("defensively sanitizes a tampered successful redirect", async () => {
-  fetchMock.mockResolvedValueOnce(Response.json({ data: { status: "signed_in", redirectTo: "https://evil.example" } }));
+it.each(["https://evil.example", "//evil.example", "javascript:alert(1)", "/hesabim?next=//evil.example"])("defensively sanitizes a tampered fresh-document redirect (%s)", async redirectTo => {
+  fetchMock.mockResolvedValueOnce(Response.json({ data: { status: "signed_in", redirectTo } }));
   render(<SignIn next="//evil.example" />); fill(); fireEvent.submit(form());
-  await waitFor(() => expect(mocks.replace).toHaveBeenCalledWith("/hesabim"));
+  await waitFor(() => expect(mocks.documentReplace).toHaveBeenCalledExactlyOnceWith("/hesabim"));
+  expect(mocks.replace).not.toHaveBeenCalled();
+  expect(mocks.refresh).not.toHaveBeenCalled();
   expect(JSON.parse(String(fetchMock.mock.calls[0][1]?.body)).next).toBe("/hesabim");
+});
+it("preserves embedded authentication completion before opening the fresh allowed destination", async () => {
+  const onAuthenticated = vi.fn();
+  fetchMock.mockResolvedValueOnce(Response.json({ data: { status: "signed_in", redirectTo: "/hesabim/adresler" } }));
+  render(<SignIn embedded next="/hesabim/adresler" onAuthenticated={onAuthenticated} />);
+  fill(); fireEvent.submit(form());
+  await waitFor(() => expect(mocks.documentReplace).toHaveBeenCalledExactlyOnceWith("/hesabim/adresler"));
+  expect(onAuthenticated).toHaveBeenCalledOnce();
+  expect(onAuthenticated.mock.invocationCallOrder[0]).toBeLessThan(mocks.documentReplace.mock.invocationCallOrder[0]);
+  expect(mocks.replace).not.toHaveBeenCalled();
+  expect(mocks.refresh).not.toHaveBeenCalled();
 });
 it("requests a magic link without a password, stays on the page and focuses neutral confirmation", async () => {
   fetchMock.mockResolvedValueOnce(Response.json({ data: { status: "link_requested" } }, { status: 202 }));
@@ -105,6 +122,7 @@ it("requests a magic link without a password, stays on the page and focuses neut
   await waitFor(() => expect(document.activeElement).toBe(screen.getByRole("status")));
   expect(JSON.parse(String(fetchMock.mock.calls[0][1]?.body))).toEqual({ method: "magic_link", email: "deniz@example.test", next: "/odeme" });
   expect(mocks.replace).not.toHaveBeenCalled();
+  expect(mocks.documentReplace).not.toHaveBeenCalled();
 });
 it("supports password visibility without losing focus or submitting", () => {
   render(<SignIn />);

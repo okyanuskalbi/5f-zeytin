@@ -47,8 +47,8 @@ export function SignIn({ next = "/hesabim", signedIn = false, unavailable = fals
       if (method !== "password" || response.status !== 200 || !result || !("data" in result) || result.data?.status !== "signed_in") throw new MembershipError("Üyelik hizmeti şu anda kullanılamıyor. Lütfen yeniden deneyin.");
       setPassword("");
       onAuthenticated?.();
-      router.replace(safeAuthRedirect(result.data.redirectTo));
-      router.refresh();
+      // A fresh document uses the new session instead of a cached guest redirect.
+      globalThis.location.replace(safeAuthRedirect(result.data.redirectTo));
     });
   }
 

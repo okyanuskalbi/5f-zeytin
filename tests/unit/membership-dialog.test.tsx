@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen, within } from "@testing-library/rea
 import { useState } from "react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { AuthDialog } from "@/components/account/AuthDialog";
-const navigation = vi.hoisted(() => ({ replace: vi.fn(), refresh: vi.fn() }));
+const navigation = vi.hoisted(() => ({ replace: vi.fn(), documentReplace: vi.fn(), refresh: vi.fn() }));
 vi.mock("next/navigation", () => ({
   useRouter: () => navigation,
 }));
@@ -10,7 +10,8 @@ const preventDocumentNavigation = (event: MouseEvent) => {
   if (event.target instanceof Element && event.target.closest("a[href]")) event.preventDefault();
 };
 beforeEach(() => {
-  navigation.replace.mockReset(); navigation.refresh.mockReset();
+  navigation.replace.mockReset(); navigation.documentReplace.mockReset(); navigation.refresh.mockReset();
+  vi.stubGlobal("location", { replace: navigation.documentReplace });
   vi.stubGlobal(
     "fetch",
     vi.fn<typeof fetch>().mockImplementation(async input => {
@@ -189,6 +190,10 @@ it("closes the overlay only after a successful real sign in", async () => {
     screen.getByRole("button", { name: "E-posta ile giriş yap" }),
   );
   await vi.waitFor(() => expect(close).toHaveBeenCalledOnce());
+  expect(navigation.documentReplace).toHaveBeenCalledExactlyOnceWith("/hesabim");
+  expect(close.mock.invocationCallOrder[0]).toBeLessThan(navigation.documentReplace.mock.invocationCallOrder[0]);
+  expect(navigation.replace).not.toHaveBeenCalled();
+  expect(navigation.refresh).not.toHaveBeenCalled();
 });
 
 it("handles 401 as a guest without application console errors (181)", async () => {
