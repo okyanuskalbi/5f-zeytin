@@ -29,6 +29,7 @@
 .menuLinks { display:grid; }
 .menuLink { display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:48px; padding:12px 4px; border-bottom:1px solid #172b1c26; font-size:15px; line-height:1.5; }
 .menuLink svg { width:16px; height:16px; flex:none; }
+.menuLink[aria-current="page"] { font-weight:700; text-decoration:underline; text-decoration-color:var(--altin,#88630B); text-underline-offset:6px; text-decoration-thickness:2px; }
 .menuActions { display:grid; margin-top:20px; }
 .menuShop { display:flex; justify-content:center; align-items:center; min-height:48px; padding:12px; margin-bottom:8px; border:1px solid #a47922; border-radius:5px; background:#e3bf65; color:#172b1c; font-weight:600; }
 .menuTagline { margin-top:24px; color:#435242; font-family:var(--font-display,var(--font-display-fallback)); font-size:16px; line-height:1.5; }

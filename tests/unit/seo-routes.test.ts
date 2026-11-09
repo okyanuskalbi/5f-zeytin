@@ -31,7 +31,7 @@ describe("SEO metadata routes", () => {
     });
   });
 
-  it("lists only the homepage, excluding noindex and product query URLs, with the actual content update date", () => {
+  it("lists public home and dealership pages, excluding noindex and product query URLs, with actual content update dates", () => {
     const buildDate = new Date("2026-10-22T12:00:00.000Z");
     vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(buildDate);
@@ -42,6 +42,12 @@ describe("SEO metadata routes", () => {
         changeFrequency: "weekly",
         priority: 1,
         lastModified: "2026-11-01",
+      },
+      {
+        url: "https://afinazeytin.com/bayilik",
+        changeFrequency: "monthly",
+        priority: 0.7,
+        lastModified: "2026-11-09",
       },
     ]);
   });

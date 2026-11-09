@@ -15,6 +15,7 @@ export async function GET(): Promise<Response> {
     `- [Üretim tesisi](${origin}/#tesisimiz): ${siteIdentity.facility.locality}, ${siteIdentity.facility.region} konumu ve tesis görseli.`,
     `- [Ürün koleksiyonu](${origin}/#urunler): Zeytin ve zeytinyağı çeşitlerini inceleyin.`,
     `- [Toptan satış için iletişim](${origin}/#toptan-iletisim): İşletmeler için ürün, ambalaj ve miktar odaklı teklif hazırlığı.`,
+    `- [Bayilik](${origin}/bayilik): İşletmeler için bayilik bilgileri ve başvuru e-posta taslağı hazırlayan form. Gönderimi başvuru sahibi e-posta uygulamasında tamamlar.`,
     `- [Sık sorulanlar](${origin}/#sik-sorulanlar): Marka, ürün alanları, tesis ve kurumsal alım hakkında kısa cevaplar.`,
     `- [İletişim](${origin}/#iletisim): Ellek / Düziçi / Osmaniye ve mevcut iletişim kanalları.`,
     `- [AFİNA Şirketler Topluluğu](${siteIdentity.communityUrl}): Markanın bağlı olduğu şirketler topluluğu.`, "",

@@ -178,7 +178,7 @@ export function Navbar(): JSX.Element {
             aria-haspopup="dialog" aria-expanded={isOpen} onClick={() => setIsOpen(true)}>
             <Menu className={styles.menuIcon} strokeWidth={1.75} aria-hidden="true" /><span className={styles.menuLabel}>Menü</span>
           </Button>
-          {isOpen && <NavbarMenu links={links} onClose={() => setIsOpen(false)}
+          {isOpen && <NavbarMenu links={links} activeHref={landing ? undefined : visiblePathname} onClose={() => setIsOpen(false)}
             onRestoreFocus={() => (window.matchMedia("(min-width: 1361px)").matches ? homeRef : triggerRef).current?.focus()} />}
 
         </div>

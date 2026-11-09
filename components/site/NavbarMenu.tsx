@@ -9,8 +9,8 @@ import { BrandLogo } from "./BrandLogo";
 import styles from "./Navbar.module.css";
 
 /** Existing Radix dialog keeps focus, Escape and restored opener behavior. */
-export function NavbarMenu({ links, onClose, onRestoreFocus }: {
-  links: readonly { label: string; href: string }[]; onClose: () => void; onRestoreFocus: () => void;
+export function NavbarMenu({ links, activeHref, onClose, onRestoreFocus }: {
+  links: readonly { label: string; href: string }[]; activeHref?: string; onClose: () => void; onRestoreFocus: () => void;
 }): JSX.Element {
   const firstLink = useRef<HTMLAnchorElement>(null);
   return <Dialog open onOpenChange={open => { if (!open) onClose(); }}>
@@ -30,7 +30,8 @@ export function NavbarMenu({ links, onClose, onRestoreFocus }: {
       <div className={styles.menuBody}>
         <nav aria-label="Site navigasyonu" className={styles.menuLinks}>
           {links.map((link, index) => <DialogClose key={link.href} asChild>
-            <Link ref={index === 0 ? firstLink : undefined} href={link.href} className={styles.menuLink}>{link.label}<ArrowUpRight aria-hidden="true" /></Link>
+            <Link ref={index === 0 ? firstLink : undefined} href={link.href} className={styles.menuLink}
+              aria-current={activeHref === link.href ? "page" : undefined}>{link.label}<ArrowUpRight aria-hidden="true" /></Link>
           </DialogClose>)}
         </nav>
         <div className={styles.menuActions}>
