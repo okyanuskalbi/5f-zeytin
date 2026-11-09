@@ -104,4 +104,13 @@ Kabul:
 - [ ] Yerelde `npm run lint`, `npm run typecheck`, `npm run test`, `npm run check:assets`, `npm run build` yeşil.
 - [ ] Push sonrası GitHub CI (`gh run watch` ya da `gh run list`) yeşil.
 
+### Coder Notu (184-2)
+
+- Önceki klasik ana sayfa kaydında kaynak fotoğrafların zorla Git'e eklenmesi, bağımsız checkout'ta `AFINA-KAYNAK` varmış gibi algılanmasına yol açmıştı. Hata, GitHub run `42675568023` kaydındaki eksik `zeytin-v3-gorseller/ONAY.md` ile doğrulandı. `git rm -r --cached AFINA-KAYNAK` uygulandı; izlenen 10 kaynak/kayıt dosyası çıkarıldı. Yereldeki 9 özgün fotoğraf ve üretim kaydı korundu; fotoğraf hashleri tekrar doğrulandı. `.gitignore` değiştirilmedi ve `git add -f` kullanılmadı. `git ls-files AFINA-KAYNAK` artık boş.
+- `check-classic-assets.mjs`, asıl fotoğraf klasörünün varlığını kontrol eder. Yalnız klasör yoksa kaynak okumadan devam eder; ilgisiz bir `AFINA-KAYNAK` alt klasörü kaynak varlığı sayılmaz. Var olan klasörde eksik/bozuk özgün dosya, erişim hatası veya boyut uyuşmazlığı hatayı durdurur. `--require-sources` ile özgün kaynak kabulü ayrıca zorlanabilir.
+- Her iki durumda da 9 görselin kayıtları, 42 AVIF/WebP türevin hash/boyut/biçimleri, çiftleri, büyütme yasağı, hafif kayıt eşleşmesi ve fazladan dosya yokluğu denetlenir. Özgün hashler ve boyutlar depodaki `lib/media/classic-home.json` içinde korunur; fotoğraflar ve ekranda kullanılan dosyalar değiştirilmedi.
+- RED: Kaynak bulunmayan bağımsız kopyayı temsil eden testler eski kodda kaynak okuma hatasını yakaladı. GREEN: 12 yeni olumlu/olumsuz test, kaynaklı/kaynaksız kabulü ve eksik/bozuk kaynak/çıktının reddini doğruladı. Yerel `npm run test -- --maxWorkers=2 --testTimeout=30000` **120 dosya / 1421 test PASS**; lint, typecheck, `check:assets` ve Turbopack build **PASS**. Gerçek 9 kaynak/42 türev `--require-sources` ile de geçti.
+- Temiz kopya, gönderilecek aday Git ağacından proje içindeki `output/tmp/` altında oluşturuldu; `AFINA-KAYNAK`, eski bağımlılıklar ve `.env.local` bulunmadığı doğrulandı. Ayrı `npm ci` ardından `npm run check:assets` ve CI ile aynı `ASSET_SKIP_REENCODE=1 npm run build` **PASS**; kaynak kullanılabilirliği false olarak görüldü. Kopya, kendi bağımlılıkları ve derleme çıktısıyla birlikte kaldırıldı. Yerel ve temiz kopya komut kayıtları `output/task184-2-*.log` altında korunur.
+- Bir alt ajan kontrol script'i ve testlerini, ana ajan kaynak takibi, temiz kopya, bütünleştirme ve son kontrolleri yürüttü. Görsel tasarım/diğer bölümler ve çalışma zamanı değiştirilmedi; tarayıcı açılmadı, production yayını ve Vercel REST çağrısı yapılmadı. GitHub CI doğrulaması tamamlanana kadar Durum BEKLİYOR tutulur.
+
 ## Durum: BEKLİYOR (Düzeltme 184-2)
