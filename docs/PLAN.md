@@ -1,3 +1,22 @@
+## Aktif plan: klasik ana sayfa, bayilik, siyah teneke, Neon (9 Kasım 2026)
+
+Kullanıcı kararları (9 Kasım 2026):
+- **Kaydırmaya bağlı sinematik sahne sistemi bırakılıyor.** Ana sayfa, kullanıcının
+  gönderdiği örneğin birebir, geliştirilmiş hali olan **C tasarımıyla** klasik, sabit
+  bölümlü sayfaya dönüşür (`AFINA-KAYNAK/tasarim/klasik-anasayfa-c/`). Kullanıcı:
+  "en iyi tasarımı sen seç devam et" → C seçildi.
+- **Bayilik sayfası** (`/bayilik`) C tasarım diliyle eklenir.
+- **3 L tenekeler siyah olur:** siyah + altın A yönü (`AFINA-KAYNAK/urun-gorselleri/teneke-3lt/siyah/A-*`).
+- **Veritabanı Supabase'den Neon'a (Vercel Marketplace) taşınır**; üyelik Supabase Auth
+  yerine Better Auth. Kod hazırlığı ayrı çalışma kopyasında yapılır, canlı geçiş
+  (veri aktarımı + ortam değişkenleri + yayın) kullanıcı adımlarından sonra ayrı görevdir.
+  Bu bölümdeki "Supabase PostgreSQL / Supabase Auth" teknoloji satırları 187 ile geçersizleşir.
+
+Görevler: 183 siyah teneke → 184 klasik ana sayfa (C) → 185 bayilik (aynı ağaçta sırayla);
+186 Neon kod hazırlığı (ayrı çalışma kopyası, main'e alınmaz); 187 Neon canlı geçiş (ONAY GEREKLİ).
+Production yayını bu görevlerde YAPILMAZ; Claude yerel derlemede görsel kabul yapar,
+yayın kararı sonra verilir.
+
 ## Güncel düzeltme: 181-1 → 182-1 (7 Kasım 2026)
 
 Masaüstü sahne gezinmesi hareketli düğmeden ayrıldı; beş boyutta 185 ölçümde
