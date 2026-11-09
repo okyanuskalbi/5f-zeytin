@@ -90,4 +90,18 @@ Kapsam dışı (dokunma): `/bayilik` sayfası Task185'te yapılacak (şu an 404 
 - Son komut kabulü: `npm run test -- --maxWorkers=2 --testTimeout=30000` **114 dosya / 1369 test PASS**; `npm run lint`, `npm run typecheck`, `npm run build` (Turbopack) ve `npm run check:assets` **PASS**. Derlenmiş çıktıda 11 bölüm/eskiden gelen çapa için sıfır pay kuralının korunduğu ayrıca komutla doğrulandı. Çıktılar `output/task184-1-*.log` altında tutulur.
 - Görseller, diğer bölüm içerikleri, alışveriş işleyişi ve `/bayilik` değiştirilmedi. Tarayıcı açılmadı; düzeltmenin tarayıcı kabulü Claude'a aittir. Production yayını veya Vercel REST çağrısı yapılmadı. Yalnız nihai yeşil kayıt `origin main` hedefine gönderilir; Durum satırı dosyanın en sonunda korunur.
 
-## Durum: TAMAMLANDI
+## Düzeltme 184-2
+
+GitHub CI 7b66704'ten beri kırmızı (run 42675568023): `AFINA-KAYNAK/tasarim/klasik-anasayfa-c/fotograflar/*` (10 dosya, 23 MB) `git add -f` ile depoya girdiği için CI checkout'ında `AFINA-KAYNAK/` klasörü var sayılıyor; `scripts/check-v3-assets.mjs` kaynakları erişilebilir sanıp `AFINA-KAYNAK/zeytin-v3-gorseller/ONAY.md` okumaya çalışıyor → ENOENT.
+
+1. `AFINA-KAYNAK/` depoda izlenmez: `git rm -r --cached AFINA-KAYNAK` (yerel dosyalar kalır). `.gitignore` kuralı korunur; hiçbir dosya `git add -f` ile eklenmez.
+2. `scripts/check-classic-assets.mjs`, `check-v3-assets.mjs`'deki `sourcesAvailable` desenini izler: kaynak klasörü yokken (bağımsız CI checkout, Vercel) yalnız `public/images/klasik` çıktılarını ve depodaki manifest/hash kayıtlarını doğrular; kaynak varsa kaynak hash'lerini de doğrular. Kaynak hash'leri depodaki manifestte kalır (`lib/media/classic-photos.json` ya da ayrı dosya).
+3. İsteğe bağlı küçük tasarım düzeltmesi: tesis bölümündeki silik süs, Lucide yaprak simgesi yerine C tasarımındaki gibi ince çizgisel zeytin dalı (SVG, dekoratif, `aria-hidden`); telefonda başlığın altında kalmasın.
+
+Kabul:
+- [ ] `git ls-files AFINA-KAYNAK` boş.
+- [ ] `AFINA-KAYNAK` içermeyen temiz kopyada (ör. `git worktree add --detach /tmp/zeytin-ci-<n> HEAD` + `npm ci`) `npm run check:assets` ve `npm run build` yeşil; sonra o kopyayı kaldır.
+- [ ] Yerelde `npm run lint`, `npm run typecheck`, `npm run test`, `npm run check:assets`, `npm run build` yeşil.
+- [ ] Push sonrası GitHub CI (`gh run watch` ya da `gh run list`) yeşil.
+
+## Durum: BEKLİYOR (Düzeltme 184-2)
