@@ -52,4 +52,83 @@ backend (yayın hazırlığı)
 - Arayüz tasarımını değiştirme.
 - `docs/` altında yalnız bu dosyanın Coder Notu/Durum'u ve `docs/yayin/neon-gecis.md`.
 
-## Durum: BEKLİYOR
+## Coder Notu
+
+9 Kasım 2026 — A–D aşamaları tamamlandı. Production yayını yapılmadı.
+Kod birleştirme ve bağımsız güvenlik incelemesi iki Codex alt ajanıyla yürütüldü;
+gizli değerler ve uzak veritabanı işlemleri tek elden yapıldı.
+
+- **Kesin önizleme kaynağı:** `977dc9d872c5f99e668e05009ae067eaf475170a`.
+- **Önizleme:** https://afina-zeytin-5324gem0v-afina1.vercel.app
+- **READY dağıtım:** `dpl_AS4i7wsp5zUw6VynPB3MjsY7ASfn`; REST isteğinde
+  target/alias yok; dağıtımın target değeri null, bölgesi fra1.
+- **Kaynağa ait GitHub doğrulaması:** [42692971572 SUCCESS](https://github.com/okyanuskalbi/5f-zeytin/actions/runs/42692971572).
+  Main gönderildi. Son görev belgesi kaydı yalnız iki belgeyi değiştirir;
+  uygulama kodu bu doğrulanmış kaynakla aynıdır.
+
+### A — Kod ve yerel kabul
+
+`cf62d06` ve `6732cf3` yamaları main'e alındı. C ana sayfa, menü/hesap simgesi,
+bayilik, telefon/il bileşenleri ve altı ürün korundu. Runtime Supabase taraması
+boş; ortam örneğindeki 17 değişkenin tamamı boş değerli. Linux kurulumu için
+iki eksik isteğe bağlı paket kaydı özgün kilit dosyasından geri kondu.
+
+Önizleme kökeni yalnız Vercel'in verdiği kesin adresten seçilir; kötü/eksik
+adreslerde üyelik kapalı kalır. Önce 16 testte 11 hata, düzeltme sonrası hedefli
+124 PASS görüldü. İlk önizlemede giriş 200 ve oturum geçerli olmasına rağmen
+hesaba otomatik geçiş eski anonim yönlendirmede kaldı. Aynı oturumla yeni hesap
+sayfası açılışı çalıştı. Başarılı girişin izinli hedefi yeni sayfa olarak açmasıyla
+çözüldü: önce 11 başarısız test, ardından gömülü pencere dahil 40/40 PASS;
+son önizlemede otomatik hesap geçişi de PASS. Tasarım değişmedi.
+
+| Kontrol | Sonuç | Kanıt (.cache/task-187 altında) |
+|---|---|---|
+| Yerel PostgreSQL 54330, tam test ve kapsam | 138 dosya / 1.363 PASS | coverage.txt, local-verification.json |
+| Veritabanı olmadan tam test | 1.337 PASS / 26 beklenen skip | without-db.txt |
+| Lint / tür kontrolü / Turbopack derleme / görsel dosyalar | PASS | lint.txt, typecheck.txt, build.txt, assets.txt |
+| Kapsam (ifade / dal / fonksiyon / satır) | %85,52 / %85,98 / %82,50 / %87,98 | coverage.txt |
+| Uygulama paketleri güvenlik denetimi | 0 açık | dependency-audit.json |
+
+### B–C — Ayarlar ve Neon
+
+Güçlü rastgele BETTER_AUTH_SECRET Vercel'de encrypted olarak production+preview
+ortamlarına eklendi. Production BETTER_AUTH_URL resmi alan adı; önizleme kendi
+VERCEL_URL kökenini kullanır. AUTH_REQUIRE_EMAIL_VERIFICATION iki ortamda false.
+Proje ve gerçek önizleme fonksiyon bölgesi fra1 olarak geri okundu. Supabase
+ortam değişkenleri korundu; SMTP eklenmedi.
+
+Üç migration uygulandı; tekrarında bekleyen değişiklik yok. Altı ürün eklendi;
+ikinci seed ürün/öneri değişiklik sayısı 0/0. Preview ile production aynı Neon
+veritabanını kullanır; ayrı preview branch'i yoktur. Hem ortak ortam kaydıyla
+hem önizlemede açılan hesabın aynı doğrudan bağlantıda okunup silinmesiyle
+paylaşım doğrulandı. Kanıt: settings.json, database.json, cleanup.json.
+
+### D — Önizleme kabulü
+
+Son önizlemede 16/16 PASS: ana sayfa; source=database ile altı ürün; ürün detayı;
+sepete ekleme ve /sepet; teklif özeti; bayilik alanları; kayıt → şifreyle giriş →
+otomatik hesabım → adres ekle/sil → çıkış; oturumsuz hesap reddi; yanlış şifre
+401; admin olmayanın sayfa ve hizmet erişiminin reddi; şifremi unuttum/e-posta
+bağlantısı ve sıfırlama isteğinde SMTP eksikliğinin açık 503 hatası.
+
+Bir deneme hesabı silindi. Kullanıcı, oturum, kimlik hesabı, adres, hesaba ait
+sınır sayacı ve doğrulama kayıtlarının kalan sayıları 0; ürün sayısı 6.
+Gerçek sipariş/ödeme veya e-posta gönderimi yapılmadı.
+
+23 gerçek önizleme JavaScript dosyası ve sayfa bellekte sırlarla karşılaştırıldı;
+eşleşme yok. Kaynaklar, çıktılar ve yerel tarayıcıya gönderilen dosyalar da
+tarandı. Anahtar, bağlantı ve bypass değerleri dosyaya ya da çıktıya yazılmadı.
+Göreve ait geçici otomasyon erişim anahtarı da iptal edildi. Tarayıcı iz/oturum kaydı
+kapalı tutuldu; şifre alanları temizlenip gizlenerek dokuz görüntü kaydedildi.
+Tarayıcı ve yerel PostgreSQL düzgün kapatıldı; geçici kurulum/derleme dosyaları
+iş sonunda kaldırıldı.
+
+Nihai kanıtlar: preview-checks.json, cleanup.json, final-targets.json,
+secret-scan.json, final-receipt.json ve screenshots/01–09. İlk önizlemenin
+bulguları ayrı deneme kayıtlarında korunur; son kabul bunlarla karıştırılmaz.
+
+**Production geri dönüş noktası değişmedi:** afinazeytin.com hâlâ
+`dpl_HckKC2sMZ6CVuXEMED25fLufsR8w` dağıtımına bağlı. Production dağıtımı veya
+alan adı ataması yapılmadı. Bu görevin açık kabul maddesi kalmadı.
+
+## Durum: TAMAMLANDI
