@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import type { JSX } from "react";
-import styles from "@/components/landing/ScrollingSections.module.css";
-import { HarvestJourney } from "@/components/landing/HarvestJourney";
-import { RenewalProducts, BusinessSection, QuoteSection, TrustAndContact } from "@/components/landing/RenewalLanding";
+import styles from "@/components/landing/ClassicHome.module.css";
+import { ClassicHero, TrustStrip, ClassicFacility, ClassicBusiness, ClassicAbout } from "@/components/landing/ClassicHome";
+import { ProductGroups } from "@/components/landing/ProductGroups";
+import { QuoteSection, TrustAndContact } from "@/components/landing/RenewalLanding";
 import { QuoteJourneyProvider } from "@/components/landing/QuoteJourneyProvider";
 import { BusinessJsonLd } from "@/components/site/BusinessJsonLd";
 import { ProductDetailProvider } from "@/components/catalog/ProductDetailProvider";
@@ -26,12 +27,15 @@ export const metadata: Metadata = {
 export default async function Home(): Promise<JSX.Element> {
   const families = await readProductFamilies();
   const products = families.flatMap(family => family.variants);
-  return <ProductDetailProvider products={products}><QuoteJourneyProvider><main className={styles.root}>
+  return <QuoteJourneyProvider><ProductDetailProvider products={products} quoteEnabled><main className={styles.root}>
     <BusinessJsonLd />
-    <HarvestJourney />
-    <RenewalProducts products={products} />
-    <BusinessSection />
+    <ClassicHero />
+    <TrustStrip />
+    <ClassicFacility />
+    <ProductGroups products={products} />
+    <ClassicBusiness />
+    <ClassicAbout />
     <QuoteSection products={products} />
     <TrustAndContact />
-  </main></QuoteJourneyProvider></ProductDetailProvider>;
+  </main></ProductDetailProvider></QuoteJourneyProvider>;
 }

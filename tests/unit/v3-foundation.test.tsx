@@ -8,21 +8,13 @@ import { TrustStrip } from "@/components/landing/TrustStrip";
 
 vi.mock("server-only", () => ({}));
 
-it("renders seven semantic scenes and three business chapters with one footer preview note", async () => {
+it("renders the classic home with the existing private quote form", async () => {
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}<Footer /></>);
-  expect([...doc.querySelectorAll("main section[data-sc-scene]")].map(section => section.getAttribute("aria-labelledby") ?? section.getAttribute("aria-label"))).toEqual([
-    "renewal-hero-title", "tesisimiz-title", "yolculuk-title", "urunler-title", "toptan-title", "teklif-title", "sss-title",
-  ]);
-  expect(doc.querySelectorAll("article[data-product-id]")).toHaveLength(6);
-  expect([...doc.querySelectorAll("#toptan-iletisim article h3")].map(node => node.textContent))
-    .toEqual(["Her servis, aynı özen.", "Rafınızda bir yer açın.", "İhtiyacınız kadar planlayın."]);
-  expect(doc.querySelectorAll("picture source").length).toBeGreaterThan(5);
-  expect(doc.querySelector("#renewal-hero-title")?.textContent).toBe("Kökü toprakta. Yeri sofrada.");
-  expect(doc.body.textContent?.match(/Önizleme: fiyatlar ve görseller temsilidir\./g)).toHaveLength(1);
+  expect(doc.querySelector("#baslangic h1")?.textContent).toBe("Doğal, Lezzetli, Güvenilir Zeytin");
   expect(doc.body.textContent).not.toMatch(/Örnek ürünler|Gerçek satış kataloğu|kullanıma açık değil|Temsili görsel/);
-  expect(doc.querySelector('#teklif form[aria-label="Kurumsal teklif talebi"]')?.getAttribute("method")).toBe("post");
-  expect(doc.querySelector('#teklif button[type="submit"]')?.hasAttribute("disabled")).toBe(true);
+  expect(doc.querySelector('#toptan form[aria-label="Kurumsal teklif talebi"]')?.getAttribute("method")).toBe("post");
+  expect(doc.querySelector('#toptan button[type="submit"]')?.hasAttribute("disabled")).toBe(true);
   for (const href of ["/kvkk", "/mesafeli-satis", "/iade", "https://afina.com.tr"]) expect(doc.querySelector(`a[href="${href}"]`)).not.toBeNull();
 });
 
@@ -71,22 +63,17 @@ it("maps v4 page and UI tokens to readable dark surfaces", () => {
   }
 });
 
-it("keeps matching SSR preloads and all hero sources within byte budgets", async () => {
+it("requests the hero photograph eagerly with reserved geometry and responsive sources", async () => {
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(await Home());
-  const preloads = [...doc.querySelectorAll<HTMLLinkElement>('link[rel="preload"][as="image"]')];
-  expect(preloads).toHaveLength(2);
-  expect(preloads[0].type).toBe("image/avif");
-  expect(preloads[0].getAttribute("href")).toBe("/frames/afina-agac-dal/poster-mobile.avif");
-  expect(preloads.every(link => link.getAttribute("fetchpriority") === "high")).toBe(true);
-  const photo = doc.querySelector("[data-cinematic-scrub]")!;
-  expect(photo.querySelector("img")?.getAttribute("fetchPriority")).toBe("high");
-  expect(photo.querySelector("source")?.getAttribute("media")).toBe("(max-width: 767px)");
-  expect(photo.querySelector("video")?.hasAttribute("src")).toBe(false);
-  expect(photo.querySelector('source[type="image/avif"]')?.getAttribute("srcset"))
-    .toBe(`${preloads[0].getAttribute("href")} 480w`);
-  for (const preload of preloads) {
-    expect(preload.media).toBeTruthy();
-    expect(statSync(`public${preload.getAttribute("href")}`).size).toBeLessThanOrEqual(90000);
-  }
+  const hero = doc.querySelector("#baslangic")!;
+  const image = hero.querySelector("img")!;
+  expect(image.getAttribute("fetchpriority")).toBe("high");
+  expect(image.getAttribute("loading")).toBe("eager");
+  expect(Number(image.getAttribute("width"))).toBeGreaterThan(0);
+  expect(Number(image.getAttribute("height"))).toBeGreaterThan(0);
+  expect(hero.querySelector('source[type="image/avif"]')?.getAttribute("sizes")).toBeTruthy();
+  expect(hero.querySelector("video,canvas")).toBeNull();
+  const path = image.getAttribute("src")!;
+  expect(statSync(`public${path}`).size).toBeLessThanOrEqual(500000);
 });

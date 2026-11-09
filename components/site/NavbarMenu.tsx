@@ -1,101 +1,51 @@
 "use client";
 
-import { useLayoutEffect, useRef, useSyncExternalStore, type JSX } from "react";
+import { useRef, type JSX } from "react";
 import Link from "next/link";
-import { ArrowUpRight, MessageSquare, Package, ShoppingCart, UserRound, X } from "lucide-react";
+import { ArrowUpRight, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { BrandLogo } from "./BrandLogo";
 import styles from "./Navbar.module.css";
 
-const phoneQuery = "(max-width: 767px), (max-width: 900px) and (max-height: 500px) and (orientation: landscape)";
-function subscribePhone(notify: () => void): () => void {
-  const media = window.matchMedia(phoneQuery);
-  media.addEventListener("change", notify);
-  return () => media.removeEventListener("change", notify);
-}
-const isPhone = () => window.matchMedia(phoneQuery).matches;
-
-// 21st 31360 Drawer + 8343 Bottom Nav Bar: a scroll body and four clear
-// destinations, adapted to our Radix focus contract without a persistent dock.
-// Provenance: docs/referans/mobile-174-source.json. No upstream runtime added.
+/** Existing Radix dialog keeps focus, Escape and restored opener behavior. */
 export function NavbarMenu({ links, onClose, onRestoreFocus }: {
   links: readonly { label: string; href: string }[]; onClose: () => void; onRestoreFocus: () => void;
 }): JSX.Element {
   const firstLink = useRef<HTMLAnchorElement>(null);
-  const closeButton = useRef<HTMLButtonElement>(null);
-  const panel = useRef<HTMLDivElement>(null);
-  const phone = useSyncExternalStore(subscribePhone, isPhone, () => false);
-  const previousPhone = useRef(phone);
-  const focusedDestination = useRef<string | null>("/");
-  const home = links.find(link => link.href === "/");
-  const shopping = [
-    ...links.filter(link => link.href === "/#urunler").map(link => ({ ...link, Icon: Package })),
-    ...links.filter(link => link.href === "/#toptan-iletisim").map(link => ({ ...link, Icon: MessageSquare })),
-    { label: "Hesabım", href: "/hesabim", Icon: UserRound },
-    { label: "Sepetim", href: "/sepet", Icon: ShoppingCart },
-  ];
-  const corporate = links.filter(link => link !== home && !shopping.some(item => item.href === link.href));
-
-  useLayoutEffect(() => {
-    if (previousPhone.current === phone) return;
-    previousPhone.current = phone;
-    // Rotation replaces the responsive layout, but keeps the visitor's focus
-    // on the same destination (or close control), never behind the modal.
-    if (focusedDestination.current === null) closeButton.current?.focus();
-    else {
-      const matching = [...(panel.current?.querySelectorAll<HTMLAnchorElement>("a[href]") ?? [])]
-        .find(link => link.getAttribute("href") === focusedDestination.current);
-      (matching ?? firstLink.current)?.focus();
-    }
-  }, [phone]);
-
   return <Dialog open onOpenChange={open => { if (!open) onClose(); }}>
-    <DialogContent ref={panel} placement="fullscreen" className={styles.menu} showCloseButton={false}
-      data-mobile-menu={phone}
-      onFocusCapture={event => {
-        const link = event.target.closest<HTMLAnchorElement>("a[href]");
-        if (link) focusedDestination.current = link.getAttribute("href");
-        else if (closeButton.current?.contains(event.target)) focusedDestination.current = null;
-      }}
+    <DialogContent placement="fullscreen" className={styles.menu} showCloseButton={false}
       onOpenAutoFocus={event => { event.preventDefault(); firstLink.current?.focus(); }}
       onCloseAutoFocus={event => { event.preventDefault(); onRestoreFocus(); }}>
       <DialogHeader className="sr-only">
         <DialogTitle>Site menüsü</DialogTitle>
-        <DialogDescription>Kurumsal, üretim tesisimiz, ürünlerimiz, toptan satış ve iletişim.</DialogDescription>
+        <DialogDescription>Ana sayfa, hakkımızda, üretim tesisimiz, ürünler, toptan satış, bayilik ve iletişim.</DialogDescription>
       </DialogHeader>
       <div className={styles.menuToolbar}>
-        {phone && home && <DialogClose asChild>
-          <Link ref={firstLink} href={home.href} aria-label={home.label} className={styles.menuHome}>
-            <BrandLogo tone="dark" className={styles.menuLogo} />
-          </Link>
-        </DialogClose>}
-        <DialogClose asChild><Button ref={closeButton} variant="ghost" size="icon" className={styles.menuClose} aria-label="Kapat"><X aria-hidden="true" /></Button></DialogClose>
+        <DialogClose asChild><Link href="/" aria-label="Afina Zeytin ana sayfa" className={styles.menuHome}>
+          <BrandLogo tone="dark" className={styles.menuLogo} />
+        </Link></DialogClose>
+        <DialogClose asChild><Button variant="ghost" size="icon" className={styles.menuClose} aria-label="Kapat"><X aria-hidden="true" /></Button></DialogClose>
       </div>
-      {phone ? <div className={styles.menuBody}>
-        <nav aria-label="Site navigasyonu" className={styles.phoneLinks}>
-          <div role="group" aria-label="Hızlı erişim" className={styles.quickLinks}>
-            {shopping.map(({ label, href, Icon }) => <DialogClose key={href} asChild>
-              <Link href={href} className={styles.quickLink}><Icon strokeWidth={1.65} aria-hidden="true" /><span>{label}</span></Link>
-            </DialogClose>)}
-          </div>
-          <div className={styles.corporateLinks}>
-            {corporate.map(link => <DialogClose key={link.href} asChild>
-              <Link href={link.href} className={styles.corporateLink}><span>{link.label}</span><ArrowUpRight aria-hidden="true" /></Link>
-            </DialogClose>)}
-          </div>
+      <div className={styles.menuBody}>
+        <nav aria-label="Site navigasyonu" className={styles.menuLinks}>
+          {links.map((link, index) => <DialogClose key={link.href} asChild>
+            <Link ref={index === 0 ? firstLink : undefined} href={link.href} className={styles.menuLink}>{link.label}<ArrowUpRight aria-hidden="true" /></Link>
+          </DialogClose>)}
         </nav>
+        <div className={styles.menuActions}>
+          <DialogClose asChild><Link href="/?magaza=ac#urunler" className={styles.menuShop} onClick={event => {
+            if (location.pathname === "/" && event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+              event.preventDefault(); onClose();
+              // Open after the menu unmounts so its focus restoration cannot steal focus.
+              window.setTimeout(() => window.dispatchEvent(new Event("afina:open-shop")), 0);
+            }
+          }}>Online Mağaza</Link></DialogClose>
+          <DialogClose asChild><Link href="/hesabim" className={styles.menuLink}>Hesabım</Link></DialogClose>
+          <DialogClose asChild><Link href="/sepet" className={styles.menuLink}>Sepetim</Link></DialogClose>
+        </div>
         <p className={styles.menuTagline}>Kökü toprakta. Yeri sofrada.</p>
-      </div> : <>
-      <nav aria-label="Site navigasyonu" className={styles.menuLinks}>
-        {links.map((link, index) => <DialogClose key={link.href} asChild>
-          <Link ref={index === 0 ? firstLink : undefined} href={link.href} className={styles.link}>{link.label}</Link>
-        </DialogClose>)}
-        <DialogClose asChild><Link href="/hesabim" className={styles.link}>Hesabım</Link></DialogClose>
-        <DialogClose asChild><Link href="/sepet" className={styles.link}>Sepetim</Link></DialogClose>
-      </nav>
-      <p>Kökü toprakta. Yeri sofrada.</p>
-      </>}
+      </div>
     </DialogContent>
   </Dialog>;
 }

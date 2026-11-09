@@ -1,8 +1,6 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import { QuoteJourneyProvider, useQuoteJourney } from "@/components/landing/QuoteJourneyProvider";
-import { HorizontalProductGallery } from "@/components/landing/HorizontalProductGallery";
-import { getProducts } from "@/lib/catalog/static-products";
 import { buildQuoteMailto, corporateContact, type QuoteEmailDraft } from "@/lib/site/corporate-contact";
 import { QUOTE_QUANTITY_MAX, validateQuoteQuantity } from "@/lib/site/quote-lines";
 
@@ -66,16 +64,6 @@ it("treats selected IDs as own keys rather than inherited object members", () =>
   expect(Object.hasOwn(quantities(), "toString")).toBe(true);
 });
 
-it("keeps every chosen gallery product visually selected after another product is added", async () => {
-  vi.stubGlobal("matchMedia", () => ({ matches: true, addEventListener() {}, removeEventListener() {} }));
-  render(<QuoteJourneyProvider><HorizontalProductGallery products={await getProducts()} /></QuoteJourneyProvider>);
-  const buttons = screen.getAllByRole("button", { name: /^Teklife ekle:/ });
-  fireEvent.click(buttons[0]);
-  fireEvent.click(buttons[1]);
-  expect(buttons[0].getAttribute("data-selected")).toBe("true");
-  expect(buttons[1].getAttribute("data-selected")).toBe("true");
-  expect(buttons[2].getAttribute("data-selected")).toBe("false");
-});
 
 const draft: QuoteEmailDraft = {
   name: "AFİNA deneme firması", business: "Market & bayi", product: "Legacy ürün", quantity: "10 kg",

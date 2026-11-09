@@ -4,16 +4,11 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type JS
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
-import * as motion from "motion/react-m";
-import { AnimatePresence } from "motion/react";
-import { Menu, ShoppingCart } from "lucide-react";
-import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
-import { springs, motionTokens } from "@/lib/ui-motion";
+import { Menu, ShoppingCart, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/cart/CartProvider";
 import { useMembershipDialog } from "@/components/account/MembershipDialogProvider";
 import { BrandLogo } from "./BrandLogo";
-import { LiquidNavbar, NimbusIcons } from "@/components/ui/liquid-glass-navbar";
 import styles from "./Navbar.module.css";
 
 let navbarMenuPromise: Promise<typeof import("./NavbarMenu")["NavbarMenu"]> | undefined;
@@ -28,10 +23,11 @@ function preloadNavbarMenu(): void {
 
 const links = [
   { label: "Ana Sayfa", href: "/" },
-  { label: "Kurumsal", href: "/#kurumsal" },
+  { label: "Hakkımızda", href: "/#hakkimizda" },
   { label: "Üretim Tesisimiz", href: "/#tesisimiz" },
-  { label: "Ürünlerimiz", href: "/#urunler" },
-  { label: "Toptan Satış", href: "/#toptan-iletisim" },
+  { label: "Ürünler", href: "/#urunler" },
+  { label: "Toptan Satış", href: "/#toptan" },
+  { label: "Bayilik", href: "/bayilik" },
   { label: "İletişim", href: "/#iletisim" },
 ];
 
@@ -66,7 +62,6 @@ export function Navbar(): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const homeRef = useRef<HTMLAnchorElement>(null);
-  const reduced = usePrefersReducedMotion();
   const [activeSection, setActiveSection] = useState(0);
 
   useEffect(() => {
@@ -82,8 +77,7 @@ export function Navbar(): JSX.Element {
         return element ? [{ index, top: element.getBoundingClientRect().top }] : [];
       }).filter(point => point.top <= readingLine).sort((a, b) => a.top - b.top || a.index - b.index);
       const latest = points.at(-1);
-      // Kurumsal and Tesisimiz intentionally share a cinematic marker. Keep a
-      // visitor's explicit choice while both still identify the visible scene.
+      // Preserve an explicitly selected destination when anchors share a line.
       const requested = links.findIndex(link => link.href === `/${window.location.hash}`);
       const sameScene = latest && points.find(point => point.index === requested && Math.abs(point.top - latest.top) < 2);
       setActiveSection(sameScene?.index ?? latest?.index ?? 0);
@@ -140,35 +134,36 @@ export function Navbar(): JSX.Element {
   }, [isOpen]);
 
   return (
-    <header data-site-navbar="" data-21st-source="43059" data-tone={landing ? "glass" : "solid"}
-      data-over-hero={landing} className={`site-bar ${styles.bar}`}>
+    <header data-site-navbar="" data-tone="solid"
+      data-over-hero="false" className={`site-bar ${styles.bar}`}>
       <div className={styles.row}>
         <Link ref={homeRef} href="/" onClick={event => { if (landing && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && event.button === 0) window.scrollTo({ top: 0, behavior: "instant" }); }} aria-label="Afina Zeytin ana sayfa" className={styles.home}>
           <BrandLogo tone="dark" className={styles.logo} />
         </Link>
-        <LiquidNavbar ariaLabel="Ana navigasyon" className={styles.desktop} tone="dark" sound={false}
-          active={landing ? activeSection : -1} onChange={index => setActiveSection(index)} items={links.map((link, index) => ({
-            ...link, icon: index === 0 ? NimbusIcons.home : index === 2 ? NimbusIcons.globe : index === 3 ? NimbusIcons.drop : undefined,
-            fx: index === 3 ? "drop" : index === 0 ? "glow" : "pop",
-          }))} />
+        <nav aria-label="Ana navigasyon" className={styles.desktop}>
+          {links.map((link, index) => <Link key={link.href} href={link.href} className={styles.link}
+            aria-current={landing ? index === activeSection ? "location" : undefined : visiblePathname === link.href ? "page" : undefined}
+            onClick={event => {
+              if (event.button === 0 && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey) setActiveSection(index);
+            }}>{link.label}</Link>)}
+        </nav>
         <div className={styles.actions}>
-          <Link href="/#urunler" className={styles.shop}>Online Mağaza</Link>
+          <Link href="/?magaza=ac#urunler" className={styles.shop} onClick={event => {
+            if (landing && event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+              event.preventDefault(); window.dispatchEvent(new Event("afina:open-shop"));
+            }
+          }}>Online Mağaza</Link>
           <Button variant="ghost" size="icon" className={`${styles.control} ${styles.cart}`}
             aria-label={`Sepetim, ${itemCount} adet`} aria-haspopup="dialog" aria-expanded={cart?.open ?? false}
             disabled={!cart?.state.hydrated || cart.products === null}
             onClick={event => cart?.openCart(event.currentTarget)}>
             <ShoppingCart className={styles.cartIcon} strokeWidth={1.75} aria-hidden="true" />
-            <AnimatePresence initial={false} mode="wait">
-              {itemCount > 0 && <motion.span key={itemCount} data-slot="count-badge" aria-hidden="true"
-                className={styles.badge}
-                initial={reduced ? false : { y: -motionTokens.distance.xs }} animate={{ y: 0 }}
-                exit={{ opacity: 0 }} transition={reduced ? { duration: 0 } : springs.badge}>
-                {itemCount > 99 ? "99+" : itemCount}
-              </motion.span>}
-            </AnimatePresence>
+            {itemCount > 0 && <span data-slot="count-badge" aria-hidden="true" className={styles.badge}>
+              {itemCount > 99 ? "99+" : itemCount}
+            </span>}
           </Button>
           <Button asChild variant="ghost" className={`${styles.control} ${styles.account}`}>
-            <Link href="/hesabim" onClick={event => { if(openMembership && pathname !== "/giris" && pathname !== "/kayit" && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey){event.preventDefault();openMembership(event.currentTarget);} }}>Hesabım</Link>
+            <Link href="/hesabim" onClick={event => { if(openMembership && pathname !== "/giris" && pathname !== "/kayit" && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey){event.preventDefault();openMembership(event.currentTarget);} }} aria-label="Hesabım"><UserRound className={styles.accountIcon} strokeWidth={1.75} aria-hidden="true" /></Link>
           </Button>
           <Button ref={triggerRef} variant="ghost" className={`${styles.control} ${styles.trigger}`} aria-label="Menüyü aç"
             onPointerEnter={preloadNavbarMenu} onFocus={preloadNavbarMenu} onTouchStart={preloadNavbarMenu}

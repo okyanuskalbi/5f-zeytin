@@ -16,15 +16,15 @@ const subscribeReady = () => () => {};
 const clientReady = () => true;
 const serverReady = () => false;
 
-export function ProductCard({ product, image, scene, index = 0, featured = true, quoteAction, imageLoading, imageSizes = "(max-width: 767px) 40vw, (max-width: 1023px) 25vw, 320px" }: {
-  product: ProductVariant; image: V3Image; scene?: V3Image; index?: number; featured?: boolean; quoteAction?: ReactNode; imageLoading?: "eager" | "lazy"; imageSizes?: string;
+export function ProductCard({ product, image, scene, index = 0, featured = true, quoteAction, imageLoading, staticPresentation = false, imageSizes = "(max-width: 767px) 40vw, (max-width: 1023px) 25vw, 320px" }: {
+  product: ProductVariant; image: V3Image; scene?: V3Image; index?: number; featured?: boolean; quoteAction?: ReactNode; imageLoading?: "eager" | "lazy"; imageSizes?: string; staticPresentation?: boolean;
 }): JSX.Element {
   const id = useId();
   const reduced = usePrefersReducedMotion();
   const openDetail = useProductDetail();
   const ready = useSyncExternalStore(subscribeReady, clientReady, serverReady);
-  return <motion.div className={styles.reveal} data-product-reveal="" data-reduced-motion={reduced}
-    initial={false} whileInView={reduced || typeof IntersectionObserver !== "function" ? undefined : { y: [motionTokens.entrance.distance, 0], opacity: [motionTokens.entrance.opacity, 1] }}
+  return <motion.div className={styles.reveal} data-product-reveal="" data-reduced-motion={reduced} data-static-presentation={staticPresentation || undefined}
+    initial={false} whileInView={staticPresentation || reduced || typeof IntersectionObserver !== "function" ? undefined : { y: [motionTokens.entrance.distance, 0], opacity: [motionTokens.entrance.opacity, 1] }}
     viewport={{ once: true, amount: 0.15 }}
     transition={reduced ? { duration: 0 } : { ...springs.editorial, delay: Math.min(index, 2) * motionTokens.entrance.stagger }}>
     <article className={styles.card} aria-labelledby={`${id}-name`} data-product-id={product.id} data-category={product.category} data-size={product.weight}>

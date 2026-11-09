@@ -12,12 +12,7 @@ vi.mock("next/dynamic", () => ({ default: () => () => null }));
 vi.mock("@/components/cart/CartProvider", () => ({ useCart: () => null }));
 vi.mock("@/components/account/MembershipDialogProvider", () => ({ useMembershipDialog: () => null }));
 vi.mock("@/lib/media/use-deferred-enhancement", () => ({ usePrefersReducedMotion: () => true }));
-vi.mock("@/components/ui/liquid-glass-navbar", () => ({
-  NimbusIcons: {},
-  LiquidNavbar: ({ active, items }: { active: number; items: { label: string; href: string }[] }) => <nav aria-label="Ana navigasyon">
-    {items.map((item, index) => <a key={item.href} href={item.href} aria-current={index === active ? "location" : undefined}>{item.label}</a>)}
-  </nav>,
-}));
+
 
 let root: Root | undefined;
 let container: HTMLDivElement;
@@ -38,8 +33,8 @@ afterEach(async () => {
 });
 
 it.each([
-  ["/index", "/", "glass"],
-  ["/", "/", "glass"],
+  ["/index", "/", "solid"],
+  ["/", "/", "solid"],
   ["/kvkk", "/kvkk", "solid"],
   ["/hesabim", "/hesabim", "solid"],
 ] as const)("hydrates the %s prerender at %s without leaving stale header attributes", async (serverPath, browserPath, tone) => {
@@ -58,9 +53,9 @@ it.each([
 
   expect(container.querySelector("header")).toBe(serverHeader);
   expect(serverHeader.getAttribute("data-tone")).toBe(tone);
-  expect(serverHeader.getAttribute("data-over-hero")).toBe(String(tone === "glass"));
+  expect(serverHeader.getAttribute("data-over-hero")).toBe("false");
   expect(serverTone).toBe(tone); // The no-JS/SSR result must also be correct.
-  expect(container.querySelector('[aria-current="location"]')?.textContent).toBe(tone === "glass" ? "Ana Sayfa" : undefined);
+  expect(container.querySelector('[aria-current="location"]')?.textContent).toBe(browserPath === "/" ? "Ana Sayfa" : undefined);
   expect(recoverable).not.toHaveBeenCalled();
   expect(consoleError).not.toHaveBeenCalled();
 

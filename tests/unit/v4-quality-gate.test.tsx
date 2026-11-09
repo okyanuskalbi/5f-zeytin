@@ -9,7 +9,6 @@ import { WholesaleFaq } from "@/components/landing/WholesaleFaq";
 import { getProducts } from "@/lib/catalog/static-products";
 import { BusinessJsonLd } from "@/components/site/BusinessJsonLd";
 vi.mock("server-only", () => ({}));
-import { Footer } from "@/components/site/Footer";
 import { verifiedFaqs } from "@/components/landing/Faq";
 // @ts-expect-error The gate is a standalone Node ESM script.
 import { verifyV4Html, verifyV4Assets, verifyV4Runtime } from "../../scripts/verify-v4-page.mjs";
@@ -19,8 +18,9 @@ import { summarizeBundle } from "../../scripts/report-bundle.mjs";
 async function pageHtml(): Promise<string> {
   // Keep the historical v4 gate against the retained v4 components. Task 151
   // has its own current-page contracts; it intentionally replaces this layout.
+  // Freeze the v4 preview notice here: the current C footer no longer renders it.
   const products = await getProducts();
-  return renderToStaticMarkup(<><main><BusinessJsonLd /><Hero products={products} /><TrustStrip /><Products products={products} /><Story /><HeroBand products={products} /><WholesaleFaq /></main><Footer /></>);
+  return renderToStaticMarkup(<><main><BusinessJsonLd /><Hero products={products} /><TrustStrip /><Products products={products} /><Story /><HeroBand products={products} /><WholesaleFaq /></main><footer><p>Önizleme: fiyatlar ve görseller temsilidir.</p></footer></>);
 }
 
 describe("v4 offline quality gate", () => {

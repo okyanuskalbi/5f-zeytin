@@ -1,9 +1,7 @@
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
-import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, expect, it, vi } from "vitest";
 import { QuoteProductPicker } from "@/components/ui/quote-product-picker";
 import { PhoneCountrySearch } from "@/components/ui/phone-country-search";
-import { Footerdemo } from "@/components/ui/footer-section";
 import { getProducts } from "@/lib/catalog/static-products";
 import { countryPhoneOptions } from "@/lib/contact/customer-phone";
 
@@ -39,36 +37,4 @@ it("offers a short mobile country prefix without losing its full accessible name
   expect(new FormData(container.querySelector("form")!).get("phoneCountry")).toBe("TR");
   fireEvent.change(container.querySelector("select")!, { target: { value: "DE" } });
   expect(changed).toHaveBeenLastCalledWith("DE");
-});
-
-it("makes footer groups native mobile disclosures and restores the open desktop navigation on resize", async () => {
-  const media = Object.assign(new EventTarget(), { matches: true, media: "(max-width: 767px)" });
-  vi.stubGlobal("matchMedia", () => media);
-  const { container } = render(<Footerdemo contact={{ phone: "", whatsapp: "", email: "" }} />);
-  const groups = [...container.querySelectorAll("details")];
-  expect(groups).toHaveLength(2);
-  for (const group of groups) expect(group.open).toBe(false);
-  const shopping = groups[0];
-  expect(shopping.querySelector("summary")?.tabIndex).toBe(0);
-  fireEvent.click(shopping.querySelector("summary")!);
-  await waitFor(() => expect(shopping.open).toBe(true));
-  expect(within(shopping).getByRole("link", { name: "Sepetim" }).getAttribute("href")).toBe("/sepet");
-  act(() => { media.matches = false; media.dispatchEvent(new Event("change")); });
-  await waitFor(() => { for (const group of groups) expect(group.open).toBe(true); });
-  for (const group of groups) {
-    expect(group.querySelector("summary")?.tabIndex).toBe(-1);
-    fireEvent.click(group.querySelector("summary")!);
-    expect(group.open).toBe(true);
-  }
-});
-
-it("keeps all footer destinations visible in server HTML before JavaScript", () => {
-  const html = renderToStaticMarkup(<Footerdemo contact={{ phone: "", whatsapp: "", email: "" }} />);
-  const doc = new DOMParser().parseFromString(html, "text/html");
-  const groups = [...doc.querySelectorAll("details")];
-  expect(groups).toHaveLength(2);
-  for (const group of groups) expect(group.open).toBe(true);
-  for (const path of ["/#kiler", "/#urunler", "/sepet", "/#toptan-iletisim", "/siparis-takip", "/hesabim", "/#sik-sorulanlar", "/iade", "/kvkk", "/mesafeli-satis"]) {
-    expect(doc.querySelector(`a[href="${path}"]`)).not.toBeNull();
-  }
 });

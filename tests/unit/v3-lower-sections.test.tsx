@@ -35,7 +35,7 @@ it("omits the whole wholesale row and footer destination when contact details ar
   expect(document.querySelector("#toptan-iletisim")?.textContent).toBe("");
   expect(screen.queryByText("Toptan alım için bize yazın")).toBeNull();
   expect(screen.queryByText("İletişim bilgileri yakında")).toBeNull();
-  expect(screen.getByRole("link", { name: "Toptan Satış İçin İletişime Geçin" }).getAttribute("href")).toBe("/#toptan-iletisim");
+  expect(screen.getByRole("link", { name: "Toptan Satış" }).getAttribute("href")).toBe("/#toptan");
 });
 
 it("omits wholesale markup when all contact values contain only whitespace", () => {
@@ -94,10 +94,9 @@ it("keeps FAQ answers in the server HTML for native JavaScript-free disclosure",
   expect(doc.querySelector("summary[aria-expanded]")).toBeNull();
 });
 
-it("publishes one preview note and a connected entity graph with only the public district address", async () => {
+it("publishes a connected entity graph with only the public district address", async () => {
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}<Footer /></>);
-  expect(doc.body.textContent?.match(/Önizleme: fiyatlar ve görseller temsilidir\./g)).toHaveLength(1);
   expect(doc.body.textContent).not.toMatch(/henüz kullanıma açık değil|Gerçek satış kataloğu/);
   const scripts = [...doc.querySelectorAll('script[type="application/ld+json"]')];
   expect(scripts).toHaveLength(2);

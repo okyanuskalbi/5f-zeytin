@@ -90,10 +90,10 @@ describe("server-only catalog read and products GET", () => {
     const original = families.flatMap(family => family.variants);
     fetchMock.mockResolvedValue(Response.json([{ ...row, id: original[0].id, category_label: "Kahvaltılık", show_category_label: false }]));
     const home = await Home();
-    expect(home.props.products).toEqual(original.map((item, index) => index === 0
+    expect(home.props.children.props.products).toEqual(original.map((item, index) => index === 0
       ? { ...item, categoryLabel: "Kahvaltılık", showCategoryLabel: false } : item));
     fetchMock.mockResolvedValue(Response.json([]));
-    expect((await Home()).props.products).toEqual(original);
+    expect((await Home()).props.children.props.products).toEqual(original);
   });
   it("reads published products in slot order with a server-enforced six-product limit", async () => {
     const response = await GET();

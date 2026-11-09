@@ -1,0 +1,301 @@
+{
+  "assets": {
+    "hero": {
+      "alt": "Ahşap kasede siyah zeytinler, zeytinyağı ve zeytin dalı",
+      "outputs": [
+        {
+          "file": "/images/klasik/hero-640.avif",
+          "format": "avif",
+          "width": 640,
+          "height": 284
+        },
+        {
+          "file": "/images/klasik/hero-640.webp",
+          "format": "webp",
+          "width": 640,
+          "height": 284
+        },
+        {
+          "file": "/images/klasik/hero-960.avif",
+          "format": "avif",
+          "width": 960,
+          "height": 427
+        },
+        {
+          "file": "/images/klasik/hero-960.webp",
+          "format": "webp",
+          "width": 960,
+          "height": 427
+        },
+        {
+          "file": "/images/klasik/hero-1440.avif",
+          "format": "avif",
+          "width": 1440,
+          "height": 640
+        },
+        {
+          "file": "/images/klasik/hero-1440.webp",
+          "format": "webp",
+          "width": 1440,
+          "height": 640
+        },
+        {
+          "file": "/images/klasik/hero-1880.avif",
+          "format": "avif",
+          "width": 1880,
+          "height": 836
+        },
+        {
+          "file": "/images/klasik/hero-1880.webp",
+          "format": "webp",
+          "width": 1880,
+          "height": 836
+        }
+      ]
+    },
+    "hero-mobile": {
+      "alt": "Zeytinlik önünde siyah zeytin kasesi ve zeytinyağı",
+      "outputs": [
+        {
+          "file": "/images/klasik/hero-mobile-640.avif",
+          "format": "avif",
+          "width": 640,
+          "height": 960
+        },
+        {
+          "file": "/images/klasik/hero-mobile-640.webp",
+          "format": "webp",
+          "width": 640,
+          "height": 960
+        },
+        {
+          "file": "/images/klasik/hero-mobile-960.avif",
+          "format": "avif",
+          "width": 960,
+          "height": 1440
+        },
+        {
+          "file": "/images/klasik/hero-mobile-960.webp",
+          "format": "webp",
+          "width": 960,
+          "height": 1440
+        }
+      ]
+    },
+    "siyah-zeytin": {
+      "alt": "Ahşap kasede siyah zeytin",
+      "outputs": [
+        {
+          "file": "/images/klasik/siyah-zeytin-400.avif",
+          "format": "avif",
+          "width": 400,
+          "height": 400
+        },
+        {
+          "file": "/images/klasik/siyah-zeytin-400.webp",
+          "format": "webp",
+          "width": 400,
+          "height": 400
+        },
+        {
+          "file": "/images/klasik/siyah-zeytin-800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 800
+        },
+        {
+          "file": "/images/klasik/siyah-zeytin-800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 800
+        }
+      ]
+    },
+    "yesil-zeytin": {
+      "alt": "Ahşap kasede yeşil zeytin",
+      "outputs": [
+        {
+          "file": "/images/klasik/yesil-zeytin-400.avif",
+          "format": "avif",
+          "width": 400,
+          "height": 400
+        },
+        {
+          "file": "/images/klasik/yesil-zeytin-400.webp",
+          "format": "webp",
+          "width": 400,
+          "height": 400
+        },
+        {
+          "file": "/images/klasik/yesil-zeytin-800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 800
+        },
+        {
+          "file": "/images/klasik/yesil-zeytin-800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 800
+        }
+      ]
+    },
+    "kirma-zeytin": {
+      "alt": "Ahşap kasede doğal kırma yeşil zeytin",
+      "outputs": [
+        {
+          "file": "/images/klasik/kirma-zeytin-400.avif",
+          "format": "avif",
+          "width": 400,
+          "height": 400
+        },
+        {
+          "file": "/images/klasik/kirma-zeytin-400.webp",
+          "format": "webp",
+          "width": 400,
+          "height": 400
+        },
+        {
+          "file": "/images/klasik/kirma-zeytin-800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 800
+        },
+        {
+          "file": "/images/klasik/kirma-zeytin-800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 800
+        }
+      ]
+    },
+    "zeytinyagi": {
+      "alt": "Cam şişede zeytinyağı ve zeytin dalı",
+      "outputs": [
+        {
+          "file": "/images/klasik/zeytinyagi-400.avif",
+          "format": "avif",
+          "width": 400,
+          "height": 400
+        },
+        {
+          "file": "/images/klasik/zeytinyagi-400.webp",
+          "format": "webp",
+          "width": 400,
+          "height": 400
+        },
+        {
+          "file": "/images/klasik/zeytinyagi-800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 800
+        },
+        {
+          "file": "/images/klasik/zeytinyagi-800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 800
+        }
+      ]
+    },
+    "depo": {
+      "alt": "Koliler ve forklift ile temsili toptan sevkiyat görünümü",
+      "outputs": [
+        {
+          "file": "/images/klasik/depo-400.avif",
+          "format": "avif",
+          "width": 400,
+          "height": 225
+        },
+        {
+          "file": "/images/klasik/depo-400.webp",
+          "format": "webp",
+          "width": 400,
+          "height": 225
+        },
+        {
+          "file": "/images/klasik/depo-800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 450
+        },
+        {
+          "file": "/images/klasik/depo-800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 450
+        }
+      ]
+    },
+    "zeytin-dali": {
+      "alt": "Güneş ışığında yeşil zeytin dalı",
+      "outputs": [
+        {
+          "file": "/images/klasik/zeytin-dali-400.avif",
+          "format": "avif",
+          "width": 400,
+          "height": 225
+        },
+        {
+          "file": "/images/klasik/zeytin-dali-400.webp",
+          "format": "webp",
+          "width": 400,
+          "height": 225
+        },
+        {
+          "file": "/images/klasik/zeytin-dali-800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 450
+        },
+        {
+          "file": "/images/klasik/zeytin-dali-800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 450
+        }
+      ]
+    },
+    "zeytinlik": {
+      "alt": "Güneş ışığında zeytinlik",
+      "outputs": [
+        {
+          "file": "/images/klasik/zeytinlik-960.avif",
+          "format": "avif",
+          "width": 960,
+          "height": 427
+        },
+        {
+          "file": "/images/klasik/zeytinlik-960.webp",
+          "format": "webp",
+          "width": 960,
+          "height": 427
+        },
+        {
+          "file": "/images/klasik/zeytinlik-1440.avif",
+          "format": "avif",
+          "width": 1440,
+          "height": 640
+        },
+        {
+          "file": "/images/klasik/zeytinlik-1440.webp",
+          "format": "webp",
+          "width": 1440,
+          "height": 640
+        },
+        {
+          "file": "/images/klasik/zeytinlik-1880.avif",
+          "format": "avif",
+          "width": 1880,
+          "height": 836
+        },
+        {
+          "file": "/images/klasik/zeytinlik-1880.webp",
+          "format": "webp",
+          "width": 1880,
+          "height": 836
+        }
+      ]
+    }
+  }
+}

@@ -24,9 +24,9 @@ const money = new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY
 // 21st shadcn / Calendar picker in a drawer (demo 2808, component 2679):
 // adapt its controlled drawer and labelled content to our shared Dialog/Sheet,
 // keeping catalog choices open after selection and all styling in brand tokens.
-export function ProductDetail({ product, products, onSelect, onClose, onRestoreFocus }: {
+export function ProductDetail({ product, products, onSelect, onClose, onRestoreFocus, onQuote }: {
   product: ProductVariant; products: readonly ProductVariant[]; onSelect: (id: string) => void;
-  onClose: () => void; onRestoreFocus: () => void;
+  onClose: () => void; onRestoreFocus: () => void; onQuote?: () => void;
 }): JSX.Element {
   const mobile = useCartViewport();
   const reduced = usePrefersReducedMotion();
@@ -67,7 +67,7 @@ export function ProductDetail({ product, products, onSelect, onClose, onRestoreF
       onOpenAutoFocus={event => { event.preventDefault(); content?.querySelector<HTMLElement>("h2")?.focus({ preventScroll: true }); }}
       onCloseAutoFocus={event => { event.preventDefault(); onRestoreFocus(); }}>
       <div ref={panel} className={styles.panel}>
-        <DetailBody product={product} products={products} mobile={mobile} onSelect={onSelect} />
+        <DetailBody product={product} products={products} mobile={mobile} onSelect={onSelect} onQuote={onQuote ? () => { onQuote(); close(); } : undefined} />
         <DialogClose asChild><Button variant="ghost" size="icon" className={styles.close}>
           <XIcon aria-hidden="true" /><span className="sr-only">Kapat</span>
         </Button></DialogClose>
@@ -76,8 +76,8 @@ export function ProductDetail({ product, products, onSelect, onClose, onRestoreF
   </Root>;
 }
 
-function DetailBody({ product, products, mobile, onSelect }: {
-  product: ProductVariant; products: readonly ProductVariant[]; mobile: boolean; onSelect: (id: string) => void;
+function DetailBody({ product, products, mobile, onSelect, onQuote }: {
+  product: ProductVariant; products: readonly ProductVariant[]; mobile: boolean; onSelect: (id: string) => void; onQuote?: () => void;
 }): JSX.Element {
   const cart = useCart();
   const reduced = usePrefersReducedMotion();
@@ -120,6 +120,7 @@ function DetailBody({ product, products, mobile, onSelect }: {
       </div>
     </div>}
     <AddToCart key={product.id} product={product} quantity={quantity} disabled={remaining === 0} />
+    {onQuote && <Button type="button" variant="outline" onClick={onQuote}>Teklife ekle</Button>}
     {product.stock > 0 && remaining === 0 && <p className={styles.stock} role="status">Stok sınırına ulaştınız. Ürünün tamamı sepetinizde.</p>}
   </div>;
 

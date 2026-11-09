@@ -1,21 +1,19 @@
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { motionValue } from "framer-motion";
-import { HorizontalProductGallery } from "@/components/landing/HorizontalProductGallery";
+import { ProductGroups } from "@/components/landing/ProductGroups";
 import { PendantLampRail } from "@/components/ui/pendant-lamp-rail";
 import { QuoteJourneyProvider, useQuoteJourney } from "@/components/landing/QuoteJourneyProvider";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { getProducts } from "@/lib/catalog/static-products";
 import { v3Image } from "@/lib/media/v3-assets";
 import sharp from "sharp";
-import { readFileSync } from "node:fs";
 
 vi.mock("@/components/cart/MiniCart", () => ({ MiniCart: () => null }));
-vi.mock("@/lib/media/use-gallery-motion", () => ({ useGalleryMotion: () => "native" }));
 beforeEach(() => {
   vi.stubGlobal("matchMedia", () => ({ matches: true, addEventListener() {}, removeEventListener() {} }));
 });
-afterEach(() => { cleanup(); localStorage.clear(); window.location.hash = ""; vi.unstubAllGlobals(); vi.restoreAllMocks(); });
+afterEach(() => { cleanup(); localStorage.clear(); history.replaceState(null, "", "/"); vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 function pointer(element: HTMLElement, type: string, x: number, y: number, pointerType = "mouse") {
   const event = new MouseEvent(type, { bubbles: true, cancelable: true, button: 0, clientX: x, clientY: y });
   Object.defineProperties(event, { pointerId: { value: 1 }, pointerType: { value: pointerType } });
@@ -88,46 +86,50 @@ function QuoteState() { return <output data-testid="quote-state">{useQuoteJourne
 async function gallery() {
   const products = await getProducts();
   const result = render(<CartProvider products={products}><QuoteJourneyProvider>
-    <HorizontalProductGallery products={[...products].reverse()} /><QuoteState /><section id="teklif" tabIndex={-1}>Teklif formu</section>
+    <ProductGroups products={[...products].reverse()} /><QuoteState /><section id="toptan" tabIndex={-1}><label>Firma adı<input name="firma" /></label></section>
   </QuoteJourneyProvider></CartProvider>);
   return { ...result, products };
 }
-it("opens every SKU in gallery order, locks the background, closes with Escape and restores focus and rail position", async () => {
-  const { container } = await gallery();
-  const rail = screen.getByRole("region", { name: "Ürün galerisi" });
-  rail.scrollLeft = 320;
-  const ids = [...container.querySelectorAll("[data-gallery-item]")].map(n => n.getAttribute("data-gallery-item"));
-  const trigger = screen.getByRole("button", { name: "Tüm ürünler" });
+it("opens all six SKUs in the shop, locks the background, closes with Escape and restores focus", async () => {
+  const { products } = await gallery();
+  const trigger = screen.getByRole("button", { name: "Tüm ürünleri gör" });
   act(() => trigger.focus()); fireEvent.click(trigger);
   const dialog = screen.getByRole("dialog", { name: "Tüm ürünler" });
-  expect([...dialog.querySelectorAll("[data-product-id]")].map(n => n.getAttribute("data-product-id"))).toEqual(ids);
+  expect([...dialog.querySelectorAll("[data-product-id]")].map(n => n.getAttribute("data-product-id")).sort()).toEqual(products.map(product => product.id).sort());
   expect(dialog.contains(document.activeElement)).toBe(true);
   expect(document.body.getAttribute("data-scroll-locked")).toBe("1");
   fireEvent.keyDown(dialog, { key: "Escape" });
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
   await waitFor(() => expect(document.activeElement).toBe(trigger));
-  expect(rail.scrollLeft).toBe(320);
   expect(document.body.hasAttribute("data-scroll-locked")).toBe(false);
+});
+it("opens the existing shop from the navigation's shared request", async () => {
+  await gallery();
+  act(() => window.dispatchEvent(new CustomEvent("afina:open-shop")));
+  expect(screen.getByRole("dialog", { name: "Tüm ürünler" })).toBeDefined();
+});
+it("honours a shop destination arriving from another page", async () => {
+  history.replaceState(null, "", "/?magaza=ac");
+  await gallery();
+  expect(await screen.findByRole("dialog", { name: "Tüm ürünler" })).toBeDefined();
 });
 it("selects the real quote product then closes and navigates to the quote without returning to the gallery", async () => {
   const { products } = await gallery();
-  fireEvent.click(screen.getByRole("button", { name: "Tüm ürünler" }));
+  fireEvent.click(screen.getByRole("button", { name: "Tüm ürünleri gör" }));
   const dialog = screen.getByRole("dialog");
   const product = products[0];
   fireEvent.click(within(dialog).getByRole("button", { name: `Teklife ekle: ${product.name}, ${product.weight}` }));
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
-  await waitFor(() => expect(window.location.hash).toBe("#teklif"));
+  await waitFor(() => expect(window.location.hash).toBe("#toptan"));
   expect(screen.getByTestId("quote-state").textContent).toBe(product.id);
-  expect(document.activeElement).toBe(document.getElementById("teklif"));
+  expect(document.activeElement).toBe(screen.getByRole("textbox", { name: "Firma adı" }));
 });
-it("keeps the sold-out black olive image requested in the rail and present in the grid", async () => {
-  const { container } = await gallery();
-  const card = container.querySelector('[data-product-id="sample-black-olive-1kg"]')!;
-  expect(card.querySelector("img")!.getAttribute("loading")).toBe("eager");
-  expect((within(card as HTMLElement).getByRole("button", { name: "Mevcut değil" }) as HTMLButtonElement).disabled).toBe(true);
-  fireEvent.click(screen.getByRole("button", { name: "Tüm ürünler" }));
+it("keeps the sold-out black olive visible in the shop without enabling purchase", async () => {
+  await gallery();
+  fireEvent.click(screen.getByRole("button", { name: "Tüm ürünleri gör" }));
   const gridCard = screen.getByRole("dialog").querySelector('[data-product-id="sample-black-olive-1kg"]')!;
-  expect(gridCard.querySelector("img")!.getAttribute("src")).toBe(card.querySelector("img")!.getAttribute("src"));
+  expect(gridCard.querySelector("img")!.getAttribute("src")).toContain("urun-03-siyah-1kg");
+  expect((within(gridCard as HTMLElement).getByRole("button", { name: "Mevcut değil" }) as HTMLButtonElement).disabled).toBe(true);
   for (const output of v3Image("urun-03-siyah-1kg").outputs) {
     const stats = await sharp(`public${output.file}`).stats();
     expect(stats.channels[3].mean).toBeGreaterThan(200);
@@ -136,7 +138,7 @@ it("keeps the sold-out black olive image requested in the rail and present in th
 });
 it("keeps cart actions working inside the grid and traps Tab at the last control", async () => {
   await gallery();
-  fireEvent.click(screen.getByRole("button", { name: "Tüm ürünler" }));
+  fireEvent.click(screen.getByRole("button", { name: "Tüm ürünleri gör" }));
   const dialog = screen.getByRole("dialog");
   const controls = [...dialog.querySelectorAll<HTMLButtonElement>('button:not([disabled])')];
   act(() => controls.at(-1)!.focus());
@@ -145,26 +147,4 @@ it("keeps cart actions working inside the grid and traps Tab at the last control
   const card = dialog.querySelector<HTMLElement>('[data-product-id="sample-green-olive-10kg"]')!;
   fireEvent.click(within(card).getByRole("button", { name: "Sepete ekle" }));
   expect(within(card).getByRole("status").textContent).toContain("sepete eklendi.");
-});
-
-it("places one shared purchase-style products trigger below the rail and before the footer", async () => {
-  const { container } = await gallery();
-  const triggers = screen.getAllByRole("button", { name: "Tüm ürünler" });
-  expect(triggers).toHaveLength(1);
-  const trigger = triggers[0];
-  expect(container.querySelector("#kiler")!.contains(trigger)).toBe(false);
-  const rail = screen.getByRole("region", { name: "Ürün galerisi" });
-  const foot = screen.getByText("6 ambalaj. Aynı üretici.");
-  expect(rail.compareDocumentPosition(trigger) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-  expect(trigger.compareDocumentPosition(foot) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-  const purchase = screen.getAllByRole("button", { name: "Sepete ekle" })[0];
-  expect(trigger.className).toBe(purchase.className);
-});
-it("gives the phone toolbar a dark surface and light text, logo and focus", () => {
-  const css = readFileSync("components/site/Navbar.module.css", "utf8").split("@media(max-width:767px)")[1];
-  expect(css.match(/\.menuToolbar \{([^}]+)\}/)?.[1]).toContain("background:var(--pro-ink)");
-  expect(css.match(/\.menuHome \{([^}]+)\}/)?.[1]).toContain("color:var(--pro-paper)");
-  expect(css.match(/\.menuClose \{([^}]+)\}/)?.[1]).toContain("color:var(--pro-paper)");
-  expect(css).toContain(".menuToolbar :is(a,button):focus-visible");
-  expect(readFileSync("components/site/NavbarMenu.tsx", "utf8")).toContain('<BrandLogo tone="dark" className={styles.menuLogo}');
 });

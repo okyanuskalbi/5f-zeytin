@@ -7,15 +7,12 @@ const route = vi.hoisted(() => ({ pathname: "/" }));
 vi.mock("next/navigation", () => ({ usePathname: () => route.pathname }));
 vi.mock("next/link", () => ({ default: (props: ComponentProps<"a">) => <a {...props} /> }));
 vi.mock("next/dynamic", () => ({ default: () => () => null }));
-vi.mock("@/components/ui/liquid-glass-navbar", () => ({
-  NimbusIcons: {},
-  LiquidNavbar: ({ active, items }: { active: number; items: { label: string; href: string }[] }) => <nav aria-label="Ana navigasyon">{items.map((item, i) => <a key={item.href} href={item.href} aria-current={i === active ? "location" : undefined}>{item.label}</a>)}</nav>,
-}));
+
 vi.mock("@/lib/media/use-deferred-enhancement", () => ({ usePrefersReducedMotion: () => true }));
 
 let frames: FrameRequestCallback[];
 let scrollPosition: number;
-const top = { kurumsal: 1000, tesisimiz: 1000, urunler: 2000, "toptan-iletisim": 3000, iletisim: 4000 };
+const top = { hakkimizda: 1000, tesisimiz: 1000, urunler: 2000, toptan: 3000, iletisim: 4000 };
 beforeEach(() => {
   route.pathname = "/"; frames = []; scrollPosition = 0;
   history.replaceState(null, "", "/");
@@ -38,13 +35,13 @@ function scroll(y: number) { scrollPosition = y; fireEvent.scroll(window); flush
 it("keeps the public homepage active when the internal route pathname differs", () => {
   route.pathname = "/index";
   mount(); flush();
-  expect(screen.getByRole("banner").getAttribute("data-tone")).toBe("glass");
+  expect(screen.getByRole("banner").getAttribute("data-tone")).toBe("solid");
   expect(current()).toBe("Ana Sayfa");
 });
 
 it("follows ordinary scrolling and returns to home without changing the URL", () => {
   mount(); flush();
-  scroll(2100); expect(current()).toBe("Ürünlerimiz");
+  scroll(2100); expect(current()).toBe("Ürünler");
   scroll(3100); expect(current()).toBe("Toptan Satış");
   scroll(4100); expect(current()).toBe("İletişim");
   scroll(0); expect(current()).toBe("Ana Sayfa");
@@ -53,10 +50,10 @@ it("follows ordinary scrolling and returns to home without changing the URL", ()
 
 it("retains an explicitly selected co-located corporate anchor, then follows the next section", () => {
   mount(); flush();
-  history.replaceState(null, "", "/#kurumsal"); scrollPosition = 1000;
+  history.replaceState(null, "", "/#hakkimizda"); scrollPosition = 1000;
   fireEvent(window, new HashChangeEvent("hashchange")); flush();
-  expect(current()).toBe("Kurumsal");
-  scroll(2100); expect(current()).toBe("Ürünlerimiz");
+  expect(current()).toBe("Hakkımızda");
+  scroll(2100); expect(current()).toBe("Ürünler");
   scroll(0); expect(current()).toBe("Ana Sayfa");
 });
 
@@ -65,6 +62,19 @@ it("does not mark a homepage destination current on an interior page", () => {
   mount(); flush();
   expect(screen.getByRole("banner").getAttribute("data-tone")).toBe("solid");
   expect(current()).toBeUndefined();
+});
+
+it("marks the dealership link as the current page on its own route", () => {
+  route.pathname = "/bayilik"; history.replaceState(null, "", "/bayilik");
+  mount(); flush();
+  expect(current()).toBe("Bayilik");
+  expect(screen.getByRole("link", { name: "Bayilik" }).getAttribute("aria-current")).toBe("page");
+});
+
+it("keeps the current destination when a link is opened in another tab", () => {
+  mount(); flush();
+  fireEvent.click(screen.getByRole("link", { name: "Hakkımızda" }), { ctrlKey: true });
+  expect(current()).toBe("Ana Sayfa");
 });
 
 it("reads the committed public URL after Next writes history without a popstate event", () => {
@@ -82,7 +92,7 @@ it("reads the committed public URL after Next writes history without a popstate 
   route.pathname = "/";
   view.rerender(<RouterCommit url="/" />); flush();
   expect(location.pathname).toBe("/");
-  expect(screen.getByRole("banner").getAttribute("data-tone")).toBe("glass");
+  expect(screen.getByRole("banner").getAttribute("data-tone")).toBe("solid");
   expect(current()).toBe("Ana Sayfa");
 
   route.pathname = "/kvkk";

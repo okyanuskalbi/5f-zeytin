@@ -1,0 +1,43 @@
+.section { position:relative; width:calc(100% - 64px); max-width:1240px; margin-inline:auto; padding-block:0 32px; }
+.anchor { position:absolute; inset-block-start:0; scroll-margin-top:calc(var(--header-height) + 24px); }
+.heading { display:flex; align-items:center; justify-content:center; gap:24px; margin:0 0 24px; font-size:clamp(1.5rem,2.5vw,2rem); line-height:1.3; font-weight:600; text-align:center; }
+.heading::before,.heading::after { content:""; width:200px; max-width:20%; height:1px; background:#B58933; }
+.groups { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; }
+.group { position:relative; display:block; width:100%; aspect-ratio:1.65; overflow:hidden; border:1px solid #B9AD88; border-radius:12px; background:#E4D9C3; cursor:pointer; }
+.group picture,.group img { display:block; width:100%; height:100%; object-fit:cover; }
+.group > span { position:absolute; inset:auto 8px 8px; display:flex; align-items:center; justify-content:space-between; gap:8px; min-height:44px; padding:8px 12px; border-radius:6px; background:rgba(247,244,237,.96); color:#172B21; font-size:1rem; font-weight:650; line-height:1.4; text-align:start; }
+.group svg { flex:none; padding:2px; border:1px solid #88630B; border-radius:50%; color:#88630B; }
+.group:hover > span { background:#fff; }
+.group:disabled { cursor:default; }
+.allActions { display:flex; justify-content:center; margin-top:24px; }
+.allButton,.quoteButton { display:inline-flex; align-items:center; justify-content:center; gap:12px; min-height:48px; padding:12px 20px; border:1px solid #88630B; border-radius:6px; background:#88630B; color:#fff; font-size:.9375rem; font-weight:600; line-height:1.5; cursor:pointer; }
+.allButton:disabled,.quoteButton:disabled { opacity:.65; cursor:default; }
+.allButton:hover,.quoteButton:hover { background:#6C4E08; }
+.panel { display:flex; flex-direction:column; width:min(1140px,calc(100% - 48px)); max-width:none; max-height:calc(100dvh - 48px); padding:24px; border:1px solid #697660; border-radius:12px; overflow:hidden; background:#F7F4ED; color:#172B21; }
+.panelHeading { display:flex; align-items:start; justify-content:space-between; gap:24px; flex:none; }
+.panelHeading p { color:#4F594B; }
+.panelHeading button { color:#172B21; border-color:#697660; }
+.productGrid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; overflow-y:auto; overscroll-behavior:contain; min-height:0; padding:16px 8px 8px; }
+.productGrid > div { min-width:0; padding:12px; background:#F0EBDD; border:1px solid #D6D0C3; border-radius:8px; }
+.productGrid :global(article[data-product-id]) { border:0; border-radius:6px; background:#F0EBDD; color:#172B21; }
+.productGrid :global(p[aria-label="Fiyat"]) { color:#735519; }
+.productGrid :global(h3) { line-height:1.4; }
+.quoteButton { width:100%; margin-top:8px; }
+.panel :focus-visible { outline:3px solid #88630B; outline-offset:3px; }
+.panel :global([data-product-reveal]) { transform:none!important; opacity:1!important; }
+@media(max-width:900px) { .group > span { font-size:.875rem; padding-inline:8px; } }
+@media(max-width:767px) {
+ .section { width:calc(100% - 40px); }
+ .heading { gap:12px; font-size:clamp(1.125rem,4.5vw,1.5rem); }
+ .heading::before,.heading::after { max-width:12%; }
+ .groups { grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+ .group { aspect-ratio:1.05; border-radius:10px; }
+ .group > span { inset-inline:5px; inset-block-end:5px; padding:8px; font-size:.875rem; }
+ .group svg { width:20px; height:20px; }
+ .panel { width:calc(100% - 16px); max-height:calc(100dvh - 16px); padding:16px 12px; }
+ .panelHeading { gap:12px; }
+ .productGrid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; padding-inline:0; }
+ .productGrid > div { padding:8px; }
+ .quoteButton { padding-inline:8px; font-size:.8125rem; }
+}
+@media(max-width:380px) { .productGrid { grid-template-columns:1fr; } .group > span { font-size:.8125rem; gap:4px; } }

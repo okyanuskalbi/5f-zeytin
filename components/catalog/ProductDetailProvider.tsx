@@ -3,6 +3,7 @@
 import { createContext, useContext, useRef, useSyncExternalStore, type JSX, type ReactNode } from "react";
 import dynamic from "next/dynamic";
 import type { ProductVariant } from "@/types/catalog";
+import { useQuoteJourney } from "@/components/landing/QuoteJourneyProvider";
 
 const changeEvent = "afina:product-detail-change";
 const ProductDetail = dynamic(() => import("./ProductDetail").then(module => module.ProductDetail));
@@ -28,12 +29,14 @@ function replaceProduct(id: string | null): void {
 }
 
 /** Only the small URL/trigger owner loads initially; the entire detail UI is on demand. */
-export function ProductDetailProvider({ products, children }: {
-  products: readonly ProductVariant[]; children: ReactNode;
+export function ProductDetailProvider({ products, children, quoteEnabled = false }: {
+  products: readonly ProductVariant[]; children: ReactNode; quoteEnabled?: boolean;
 }): JSX.Element {
   const selectedId = useSyncExternalStore(subscribe, snapshot, serverSnapshot);
   const product = products.find(item => item.id === selectedId);
   const returnFocus = useRef<HTMLElement | null>(null);
+  const quoteAfterClose = useRef(false);
+  const journey = useQuoteJourney();
 
   function open(id: string, opener: HTMLElement): void {
     if (!products.some(item => item.id === id)) return;
@@ -45,7 +48,18 @@ export function ProductDetailProvider({ products, children }: {
     {children}
     {product && <ProductDetail product={product} products={products}
       onSelect={replaceProduct} onClose={() => replaceProduct(null)}
+      onQuote={quoteEnabled ? () => {
+        journey.chooseProduct(product.id);
+        quoteAfterClose.current = true;
+        window.dispatchEvent(new Event("afina:quote-selected"));
+      } : undefined}
       onRestoreFocus={() => {
+        if (quoteAfterClose.current) {
+          quoteAfterClose.current = false;
+          window.location.hash = "toptan";
+          document.querySelector<HTMLElement>('#toptan input, #toptan button, #toptan select')?.focus({ preventScroll: true });
+          return;
+        }
         const target = returnFocus.current?.isConnected ? returnFocus.current : document.getElementById("ana-icerik");
         target?.focus({ preventScroll: true });
       }} />}

@@ -1,0 +1,435 @@
+{
+  "version": 1,
+  "authorization": "task-184-classic-home-original-photography",
+  "provider": "built-in image_gen",
+  "paidApi": false,
+  "note": "Original generated editorial food photography; not documentary facility imagery. The real facility uses its existing approved asset separately.",
+  "assets": {
+    "hero": {
+      "source": "AFINA-KAYNAK/tasarim/klasik-anasayfa-c/fotograflar/hero.png",
+      "sourceSha256": "9674a5d3196cb933b62540967c904e4e62fc360dce9b2018539f744d292e8f8f",
+      "sourceWidth": 1881,
+      "sourceHeight": 836,
+      "prompt": "Use case: photorealistic-natural. Asset type: final photographic wide website hero background, 16:7 panoramic landscape, at least 2304 pixels wide if possible. Primary request: exquisite natural food photography, a plain warm wooden bowl generously filled with glossy black table olives on a rustic weathered wood table at the right of frame, olive leaves rising from the bowl, a clear glass cruet of golden olive oil behind at far right, a small green olive branch on the tabletop at lower right. Background is a sunlit olive grove with rows of mature trees, softly blurred, warm late afternoon light. Composition: right half contains bowl and oil; left 45% is naturally dark out-of-focus olive foliage with lots of negative space for website heading to be added in HTML. Camera eye level slightly above the bowl; warm earthy forest green and gold; photorealistic appetizing real skin texture and highlights, no illustration. Absolutely no typography, no letters, no labels, no inscriptions on bowl, no logo, no watermark, no border, no collage, no people. This photo will be used on a Turkish olive producer website, but do not invent any facility, packaging or brand.",
+      "alt": "Ahşap kasede siyah zeytinler, zeytinyağı ve zeytin dalı",
+      "outputs": [
+        {
+          "file": "/images/klasik/hero-640.avif",
+          "format": "avif",
+          "width": 640,
+          "height": 284,
+          "bytes": 17431,
+          "sha256": "cf0a86702450de1a879f2b379a9aad9aa92102a10e050197f09b3180e9d4aef9"
+        },
+        {
+          "file": "/images/klasik/hero-640.webp",
+          "format": "webp",
+          "width": 640,
+          "height": 284,
+          "bytes": 28900,
+          "sha256": "cfa0fb7c8bc81635f0fcde6418d7c613b78ffad36a966b143c63ba3b0dbc5a3c"
+        },
+        {
+          "file": "/images/klasik/hero-960.avif",
+          "format": "avif",
+          "width": 960,
+          "height": 427,
+          "bytes": 31658,
+          "sha256": "39aee53e59fd93552b0f691d9d6e686ca0e5aa645d888b0ca071896d54c0206f"
+        },
+        {
+          "file": "/images/klasik/hero-960.webp",
+          "format": "webp",
+          "width": 960,
+          "height": 427,
+          "bytes": 51696,
+          "sha256": "c595becb39a235589615d0422d99009ba8757287b6027f200546abc41cdbe913"
+        },
+        {
+          "file": "/images/klasik/hero-1440.avif",
+          "format": "avif",
+          "width": 1440,
+          "height": 640,
+          "bytes": 56194,
+          "sha256": "a0a0e79f2db3819770094e07551167e322c3e820c2bfd9b05ea15b49b1faef30"
+        },
+        {
+          "file": "/images/klasik/hero-1440.webp",
+          "format": "webp",
+          "width": 1440,
+          "height": 640,
+          "bytes": 92124,
+          "sha256": "24bf682f17da1627e22b671b37511c4c691b1235467ec66ea6438118f5fd8dd2"
+        },
+        {
+          "file": "/images/klasik/hero-1880.avif",
+          "format": "avif",
+          "width": 1880,
+          "height": 836,
+          "bytes": 81090,
+          "sha256": "08a4c9c05fe1b36d22b0a9d64a5c6d9de633cfd22ced577d1fce5dc4ce9008af"
+        },
+        {
+          "file": "/images/klasik/hero-1880.webp",
+          "format": "webp",
+          "width": 1880,
+          "height": 836,
+          "bytes": 131292,
+          "sha256": "0dd3f889dc9a2344ab1c1ca91f63433d68091ba75c70aabf1aaeb20e83a08d61"
+        }
+      ]
+    },
+    "hero-mobile": {
+      "source": "AFINA-KAYNAK/tasarim/klasik-anasayfa-c/fotograflar/hero-mobile.png",
+      "sourceSha256": "e5549f1a4d25fbc754926278fc5e818ab18512a569392a50f221942c8e114023",
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "prompt": "Use case: photorealistic-natural. Asset type: vertical 2:3 mobile website food hero photo. A plain warm wooden bowl full of glossy jet black table olives on a rustic weathered wood table, a clear glass cruet filled with golden olive oil behind to the right, a little sprig of green olives and olive leaves at front. Softly blurred sunlit olive grove in background. Center bowl in lower middle of portrait frame; whole bowl visible, whole bottle largely visible; warm late afternoon natural light; deep forest green and gold palette. Real food photography, true olive skin highlights, weathered wood texture, no illustration. Absolutely no typography, no words, no logo, no labels, no inscriptions on the plain bowl, no watermark, no borders, no collage. Portrait photograph, not square.",
+      "alt": "Zeytinlik önünde siyah zeytin kasesi ve zeytinyağı",
+      "outputs": [
+        {
+          "file": "/images/klasik/hero-mobile-640.avif",
+          "format": "avif",
+          "width": 640,
+          "height": 960,
+          "bytes": 53614,
+          "sha256": "d7e092e6f46e159f3dca76a15708e42b97c40e652e4e3e1e979ce885a9d58960"
+        },
+        {
+          "file": "/images/klasik/hero-mobile-640.webp",
+          "format": "webp",
+          "width": 640,
+          "height": 960,
+          "bytes": 86536,
+          "sha256": "38e19ce308898fc53920e040391ab3beaf7d69045ae2af71b775f50190256510"
+        },
+        {
+          "file": "/images/klasik/hero-mobile-960.avif",
+          "format": "avif",
+          "width": 960,
+          "height": 1440,
+          "bytes": 95090,
+          "sha256": "a97ec4cbe49044f57ce918111db81a247d2ba7d2a6fd44ae449688e07111a30c"
+        },
+        {
+          "file": "/images/klasik/hero-mobile-960.webp",
+          "format": "webp",
+          "width": 960,
+          "height": 1440,
+          "bytes": 151520,
+          "sha256": "6c5bfb6106d02ff8fb7d5e873f78a8a9568d0f7027182dcacee7b42d1dd5fb63"
+        }
+      ]
+    },
+    "siyah-zeytin": {
+      "source": "AFINA-KAYNAK/tasarim/klasik-anasayfa-c/fotograflar/siyah-zeytin.png",
+      "sourceSha256": "76fa7d95be0ee61343902abf45c9311258b2883f1380cde660ce1031603b3f2a",
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "prompt": "Use case: photorealistic-natural. Asset type: final square category photography for a natural Turkish olive producer website. Subject: a shallow plain warm wooden bowl full of glossy jet black table olives, single olive leaf sprig tucked behind. Scene: rustic weathered wood table and softly blurred warm sunlit olive grove. Tight centered still life, generous subject, view slightly from above, subject entire in frame. Warm natural late afternoon light, appetizing actual food photography, true skin and glass texture, forest green and warm gold palette. Leave the bottom 15% mostly simple table so an HTML category label may overlap. Absolutely no text, no letters, no brands, no logos, no packaging, no watermark, no border, no collage. Square photo at highest detail.",
+      "alt": "Ahşap kasede siyah zeytin",
+      "outputs": [
+        {
+          "file": "/images/klasik/siyah-zeytin-400.avif",
+          "format": "avif",
+          "width": 400,
+          "height": 400,
+          "bytes": 19844,
+          "sha256": "dde870c13ca844682cf741673b76efd18acc9b1b077c50f225d7c99458a0841f"
+        },
+        {
+          "file": "/images/klasik/siyah-zeytin-400.webp",
+          "format": "webp",
+          "width": 400,
+          "height": 400,
+          "bytes": 34090,
+          "sha256": "d8fc99d3a9d4c924f848bd651386c7d3f8db36ec53621071685762c1572a76c3"
+        },
+        {
+          "file": "/images/klasik/siyah-zeytin-800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 800,
+          "bytes": 64347,
+          "sha256": "dd98344564a122c7ef9d1035148ad930b432512b833330f50b0cc726e515dc59"
+        },
+        {
+          "file": "/images/klasik/siyah-zeytin-800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 104986,
+          "sha256": "555334ec9c5cc698d8befd67a3b41f5a2d2ce0b383a3b0e54595fb7602688c3e"
+        }
+      ]
+    },
+    "yesil-zeytin": {
+      "source": "AFINA-KAYNAK/tasarim/klasik-anasayfa-c/fotograflar/yesil-zeytin.png",
+      "sourceSha256": "dad989875b68107b06da9813ba5ed14a7beac4c67d8253b398ec926d355be9d2",
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "prompt": "Use case: photorealistic-natural. Asset type: final square category photography for a natural Turkish olive producer website. Subject: a shallow plain warm wooden bowl full of plump smooth yellow green whole table olives, single olive leaf sprig tucked behind. Scene: rustic weathered wood table and softly blurred warm sunlit olive grove. Tight centered still life, generous subject, view slightly from above, subject entire in frame. Warm natural late afternoon light, appetizing actual food photography, true skin and glass texture, forest green and warm gold palette. Leave the bottom 15% mostly simple table so an HTML category label may overlap. Absolutely no text, no letters, no brands, no logos, no packaging, no watermark, no border, no collage. Square photo at highest detail.",
+      "alt": "Ahşap kasede yeşil zeytin",
+      "outputs": [
+        {
+          "file": "/images/klasik/yesil-zeytin-400.avif",
+          "format": "avif",
+          "width": 400,
+          "height": 400,
+          "bytes": 17233,
+          "sha256": "29579e1e87ea3714b075692d3374fd2c90305c684d0095534a6124f7186690a9"
+        },
+        {
+          "file": "/images/klasik/yesil-zeytin-400.webp",
+          "format": "webp",
+          "width": 400,
+          "height": 400,
+          "bytes": 27926,
+          "sha256": "1f1e20897ed82fb8e4463ab8b204a02199bbb4359e1f4a7a4d477e7fc0c3baf2"
+        },
+        {
+          "file": "/images/klasik/yesil-zeytin-800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 800,
+          "bytes": 54129,
+          "sha256": "77e88dcf091295d461b29e07f400a9ca07206289d79f8b796df95a4f6fe44249"
+        },
+        {
+          "file": "/images/klasik/yesil-zeytin-800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 83366,
+          "sha256": "7d3486e94ef40348496078aacb7ace1ca09a5b0f66487dde3ed86545fb7d3fbb"
+        }
+      ]
+    },
+    "kirma-zeytin": {
+      "source": "AFINA-KAYNAK/tasarim/klasik-anasayfa-c/fotograflar/kirma-zeytin.png",
+      "sourceSha256": "b0e18aae0a07d8abfcac75fcf907d667807e60e4c4fa2cf0de8a595c85ccca1d",
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "prompt": "Use case: photorealistic-natural. Asset type: final square category photography for a natural Turkish olive producer website. Subject: a shallow plain warm wooden bowl full of green naturally cracked table olives with visible fine split lines in their skins, single olive leaf sprig tucked behind. Scene: rustic weathered wood table and softly blurred warm sunlit olive grove. Tight centered still life, generous subject, view slightly from above, subject entire in frame. Warm natural late afternoon light, appetizing actual food photography, true skin and glass texture, forest green and warm gold palette. Leave the bottom 15% mostly simple table so an HTML category label may overlap. Absolutely no text, no letters, no brands, no logos, no packaging, no watermark, no border, no collage. Square photo at highest detail.",
+      "alt": "Ahşap kasede doğal kırma yeşil zeytin",
+      "outputs": [
+        {
+          "file": "/images/klasik/kirma-zeytin-400.avif",
+          "format": "avif",
+          "width": 400,
+          "height": 400,
+          "bytes": 19018,
+          "sha256": "b7ab63ff7dce4a8ea29b31b362596092d8ae206e0fc76b4e85b72702ddafebcf"
+        },
+        {
+          "file": "/images/klasik/kirma-zeytin-400.webp",
+          "format": "webp",
+          "width": 400,
+          "height": 400,
+          "bytes": 30664,
+          "sha256": "7bcc4793fc7c1adf154767cff9ff83dcfe27fe49d8d98fa0721331c61ccde8b3"
+        },
+        {
+          "file": "/images/klasik/kirma-zeytin-800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 800,
+          "bytes": 62838,
+          "sha256": "7e0b0ea67ee222c7ea31cd51f0a35b2bc046253ce6ae6a18b7db4a1fd4249420"
+        },
+        {
+          "file": "/images/klasik/kirma-zeytin-800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 95820,
+          "sha256": "f50d388fc054884bd8422a7d5b2c1890db53dea240b28cce3e5408fe2b60e8ff"
+        }
+      ]
+    },
+    "zeytinyagi": {
+      "source": "AFINA-KAYNAK/tasarim/klasik-anasayfa-c/fotograflar/zeytinyagi.png",
+      "sourceSha256": "640cadef474d0f67c0709032ca760f9a4a70bce108e3cbe72508627e01eaed9a",
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "prompt": "Use case: photorealistic-natural. Asset type: final square category photography for a natural Turkish olive producer website. Subject: a clear glass cruet filled with rich golden olive oil, with natural green olives and an olive leaf sprig on the table beside it. Scene: rustic weathered wood table and softly blurred warm sunlit olive grove. Tight centered still life, generous subject, view slightly from above, subject entire in frame. Warm natural late afternoon light, appetizing actual food photography, true skin and glass texture, forest green and warm gold palette. Leave the bottom 15% mostly simple table so an HTML category label may overlap. Absolutely no text, no letters, no brands, no logos, no packaging, no watermark, no border, no collage. Square photo at highest detail.",
+      "alt": "Cam şişede zeytinyağı ve zeytin dalı",
+      "outputs": [
+        {
+          "file": "/images/klasik/zeytinyagi-400.avif",
+          "format": "avif",
+          "width": 400,
+          "height": 400,
+          "bytes": 19338,
+          "sha256": "f8a369b64778f2166dff966f65693588174d7534b3d5e733438ce9597ef642bf"
+        },
+        {
+          "file": "/images/klasik/zeytinyagi-400.webp",
+          "format": "webp",
+          "width": 400,
+          "height": 400,
+          "bytes": 34788,
+          "sha256": "359f64167d6bb5f77427fab9841e8f4256b52bcc0d594d678155ceebe608d407"
+        },
+        {
+          "file": "/images/klasik/zeytinyagi-800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 800,
+          "bytes": 56390,
+          "sha256": "57fbaae0a544343552c6fa2f9cea08564412e70d86b7aa890fab1ab35344f14c"
+        },
+        {
+          "file": "/images/klasik/zeytinyagi-800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 800,
+          "bytes": 99048,
+          "sha256": "19d12960fd807e7872f8fa62ea5142a148de38f7073317f28f560591b03df8fb"
+        }
+      ]
+    },
+    "depo": {
+      "source": "AFINA-KAYNAK/tasarim/klasik-anasayfa-c/fotograflar/depo.png",
+      "sourceSha256": "0c4dee093ba96283b7f583dceb90a824c5d7bdb8c63eecf96c05f47165c033f2",
+      "sourceWidth": 1672,
+      "sourceHeight": 941,
+      "prompt": "Use case: photorealistic-natural. Asset type: final website business section background photo. Scene: A clean warehouse interior at an agricultural food producer, neatly stacked unmarked plain brown cardboard cartons on wooden pallets, one compact dark yellow forklift at the side, warm side light. Completely no people, no brand text, no shipping labels or numerals. Generic conceptual business photography, not a documented real facility.. landscape framing, at least 2304 pixels wide. Photorealistic natural textures, editorial photography, warm forest green and gold palette. Absolutely no typography, no letters, no labels, no invented logo, no watermark, no border, no collage.",
+      "alt": "Koliler ve forklift ile temsili toptan sevkiyat görünümü",
+      "outputs": [
+        {
+          "file": "/images/klasik/depo-400.avif",
+          "format": "avif",
+          "width": 400,
+          "height": 225,
+          "bytes": 9515,
+          "sha256": "baf0ca2ad08b792d8d3efad32a7c4fb90fed762175b59f3adc4ecbf7619f9694"
+        },
+        {
+          "file": "/images/klasik/depo-400.webp",
+          "format": "webp",
+          "width": 400,
+          "height": 225,
+          "bytes": 14426,
+          "sha256": "6db532a0b18261bfce30db1f6a4ee2631a101870d55c5b4b5e08724bfb94c3cb"
+        },
+        {
+          "file": "/images/klasik/depo-800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 450,
+          "bytes": 29513,
+          "sha256": "6655edada50e678a93fc24b071fbb351206f115b88012ef59167518024a88722"
+        },
+        {
+          "file": "/images/klasik/depo-800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 450,
+          "bytes": 46518,
+          "sha256": "fc5daba9bd02ea6381b6054a9c06b9a50122ea1cfef97bb6c7cb65dbdfdc2fa8"
+        }
+      ]
+    },
+    "zeytin-dali": {
+      "source": "AFINA-KAYNAK/tasarim/klasik-anasayfa-c/fotograflar/zeytin-dali.png",
+      "sourceSha256": "3a43fa0bcab5d25cea987632e0cd78d6ce272afd7a3202b5e0a65aaf1ab0f30c",
+      "sourceWidth": 1672,
+      "sourceHeight": 941,
+      "prompt": "Use case: photorealistic-natural. Asset type: final website business section background photo. Scene: A beautiful close-up of a slender olive tree branch, natural green olives hanging among silvery narrow green leaves, warm golden afternoon sun passing through leaves, olive grove blurred dark green in background. Subject on left half, some calm dark green background at right, authentic botanical food photography.. landscape framing, at least 2304 pixels wide. Photorealistic natural textures, editorial photography, warm forest green and gold palette. Absolutely no typography, no letters, no labels, no invented logo, no watermark, no border, no collage.",
+      "alt": "Güneş ışığında yeşil zeytin dalı",
+      "outputs": [
+        {
+          "file": "/images/klasik/zeytin-dali-400.avif",
+          "format": "avif",
+          "width": 400,
+          "height": 225,
+          "bytes": 7510,
+          "sha256": "2cd42f61f454da85eeb899e2308f22a759a60990564abb630be6ed2d3a954e1f"
+        },
+        {
+          "file": "/images/klasik/zeytin-dali-400.webp",
+          "format": "webp",
+          "width": 400,
+          "height": 225,
+          "bytes": 11728,
+          "sha256": "024d54b8f6894e4973c7a1e029066c5448669f93b57ce6a2e637e81e757ca080"
+        },
+        {
+          "file": "/images/klasik/zeytin-dali-800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 450,
+          "bytes": 18994,
+          "sha256": "df272323b88d41963d758c2f0ec668356cec11d6ac2cf2a854b006e296f46526"
+        },
+        {
+          "file": "/images/klasik/zeytin-dali-800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 450,
+          "bytes": 29526,
+          "sha256": "16d3d37a587a5d1e8eb919f38786d47a8590fcd863fdad9fb87f4f39ab666673"
+        }
+      ]
+    },
+    "zeytinlik": {
+      "source": "AFINA-KAYNAK/tasarim/klasik-anasayfa-c/fotograflar/zeytinlik.png",
+      "sourceSha256": "f33bd149e497e070656d691150138657d89fc5fd0a55c2d86a32276a5ae4dc0e",
+      "sourceWidth": 1881,
+      "sourceHeight": 836,
+      "prompt": "Use case: photorealistic-natural. Asset type: final website business section background photo. Scene: A wide beautiful olive grove in warm late afternoon sunlight, layered rows of mature olive trees on a gentle hill in southern Turkey, natural warm sun glows along the foliage, lush dense dark green and golden olive tree canopies filling frame, no buildings, no people, no text, no road. Fine art natural landscape photography, mild atmospheric depth. Low horizon, mostly trees.. wide 16:7 landscape framing, at least 2304 pixels wide. Photorealistic natural textures, editorial photography, warm forest green and gold palette. Absolutely no typography, no letters, no labels, no invented logo, no watermark, no border, no collage.",
+      "alt": "Güneş ışığında zeytinlik",
+      "outputs": [
+        {
+          "file": "/images/klasik/zeytinlik-960.avif",
+          "format": "avif",
+          "width": 960,
+          "height": 427,
+          "bytes": 70458,
+          "sha256": "ebce55d14360ccb900477ad3aec86e694684294394d3f45237117ff5aa56f8e8"
+        },
+        {
+          "file": "/images/klasik/zeytinlik-960.webp",
+          "format": "webp",
+          "width": 960,
+          "height": 427,
+          "bytes": 118586,
+          "sha256": "34a0215ae79d8c794fbb0027c5c836124f83c4725d089c235899dbdf97aee810"
+        },
+        {
+          "file": "/images/klasik/zeytinlik-1440.avif",
+          "format": "avif",
+          "width": 1440,
+          "height": 640,
+          "bytes": 141768,
+          "sha256": "c10498028dc673ae1acbf36b0baef3cc025e58ffbd6df4ac27f529ec1eb35c00"
+        },
+        {
+          "file": "/images/klasik/zeytinlik-1440.webp",
+          "format": "webp",
+          "width": 1440,
+          "height": 640,
+          "bytes": 243934,
+          "sha256": "0d32891e1346f20bf7ea24e31bc5913ac78ab65c8d7f02d108b242de6ba88d0b"
+        },
+        {
+          "file": "/images/klasik/zeytinlik-1880.avif",
+          "format": "avif",
+          "width": 1880,
+          "height": 836,
+          "bytes": 210999,
+          "sha256": "bfd873db35fa1c207a6f3becd3170f0bbf5620e0b0f2bb8f36abc45375be4001"
+        },
+        {
+          "file": "/images/klasik/zeytinlik-1880.webp",
+          "format": "webp",
+          "width": 1880,
+          "height": 836,
+          "bytes": 367458,
+          "sha256": "858c82b32fbf297271db541e54ff379af06e839f7ef5a501e336fb955b0f2472"
+        }
+      ]
+    }
+  }
+}
