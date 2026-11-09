@@ -11,6 +11,7 @@ import { MembershipError } from "@/lib/auth/adapter";
 import { safeAuthRedirect } from "@/lib/auth/config";
 import { loginInvalidCredentials, magicLinkConfirmation, validateLoginRequest, type LoginResponse } from "@/lib/contracts/login";
 import { Field, useMembershipAction } from "./FormControls";
+import { ConfiguredGoogleButton } from "./ConfiguredGoogleButton";
 import styles from "./Membership.module.css";
 
 // 21st diarmuradi/sign-in-3 (39096): preserve the split/password composition.
@@ -40,6 +41,7 @@ export function SignIn({ next = "/hesabim", signedIn = false, unavailable = fals
       const response = await fetch("/api/auth/login", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: JSON.stringify(parsed.data) });
       const result: LoginResponse | null = await response.json().catch(() => null);
       if (response.status === 429) throw new MembershipError("Çok fazla deneme. Daha sonra yeniden deneyin.");
+      if (result && "error" in result && result.error.code === "email_not_configured") throw new MembershipError(result.error.message);
       if (method === "password" && response.status === 401) throw new MembershipError(loginInvalidCredentials);
       if (method === "magic_link" && response.status === 202 && result && "data" in result && result.data?.status === "link_requested") return magicLinkConfirmation;
       if (method !== "password" || response.status !== 200 || !result || !("data" in result) || result.data?.status !== "signed_in") throw new MembershipError("Üyelik hizmeti şu anda kullanılamıyor. Lütfen yeniden deneyin.");
@@ -68,6 +70,7 @@ export function SignIn({ next = "/hesabim", signedIn = false, unavailable = fals
   const Heading = embedded ? "h2" : "h1";
   const content = <>
         <header className={styles.intro}><Heading>Soframıza hoş geldiniz.</Heading><p>Siparişlerinizi ve size ait bilgileri tek yerden takip edin.</p></header>
+        {!sessionOpen && <ConfiguredGoogleButton next={destination} />}
         {sessionOpen ? <div className={styles.form}>
           <p>Oturumunuz açık.</p>
           <Button asChild><Link href={destination}>Alışverişe devam et</Link></Button>

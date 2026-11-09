@@ -2,11 +2,12 @@ import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { requireAdmin, requireAdminMutation } from "@/lib/auth/admin";
 import { AuthCoreError, authErrorResponse, authResponseHeaders } from "@/lib/auth/server";
-import { createSupabaseServiceClient } from "@/lib/supabase/server";
+import { query as dbQuery } from "@/lib/db";
 import { adminProductPageSize, parseAdminProduct, parseProductInput, validProductId, type ProductSort } from "@/lib/contracts/admin-products";
 
 export const dynamic = "force-dynamic";
-const columns = "id,name,category,category_label,show_category_label,weight,price_kurus,currency,stock,is_active,product_upsells!product_upsells_product_id_fkey(upsell_id)";
+const columns = `p.id,p.name,p.category,p.category_label,p.show_category_label,p.weight,p.price_kurus,p.currency,p.stock,p.is_active,
+  coalesce((select json_agg(json_build_object('upsell_id', u.upsell_id)) from product_upsells u where u.product_id = p.id), '[]'::json) as product_upsells`;
 const sorts: Record<ProductSort, string> = { name: "name", priceKurus: "price_kurus", stock: "stock", isActive: "is_active" };
 const failure = (status: number, code: string, message: string) => Response.json({ error: { code, message } }, {
   status, headers: { ...authResponseHeaders, ...(status === 503 ? { "Retry-After": "5" } : {}) },
@@ -15,7 +16,7 @@ function handleError(error: unknown) {
   return error instanceof AuthCoreError ? authErrorResponse(error)
     : failure(503, "products_unavailable", "Ürün işlemi tamamlanamadı. Lütfen yeniden deneyin.");
 }
-const timeout = () => AbortSignal.timeout(5000);
+
 
 export async function GET(request: Request) {
   try {
@@ -28,19 +29,20 @@ export async function GET(request: Request) {
     if ((id !== null && !validProductId(id)) || !Object.hasOwn(sorts, sort) || !["asc", "desc"].includes(direction) || !Number.isSafeInteger(page) || page < 1 || page > 1000000) {
       return failure(400, "invalid_query", "Liste sıralaması veya sayfası geçersiz.");
     }
-    const client = createSupabaseServiceClient({ noStore: true });
-    const rowsQuery = client.from("products").select(columns, { count: "exact" });
-    if (id !== null) rowsQuery.eq("id", id);
-    const results = await Promise.all([
-      rowsQuery
-        .order(sorts[sort as ProductSort], { ascending: direction === "asc" }).order("id", { ascending: true })
-        .range((page - 1) * adminProductPageSize, page * adminProductPageSize - 1).retry(false).abortSignal(timeout()),
-      client.from("products").select("id", { count: "exact", head: true }).eq("is_active", true).retry(false).abortSignal(timeout()),
-      client.from("products").select("id,name").eq("is_active", true).order("name").limit(6).retry(false).abortSignal(timeout()),
+    // SQL identifiers are selected exclusively from this fixed allowlist.
+    const [rowsResult, totalResult, countResult, choicesResult] = await Promise.all([
+      dbQuery(`select ${columns} from products p where ($1::text is null or p.id = $1)
+        order by p.${sorts[sort as ProductSort]} ${direction === "asc" ? "ASC" : "DESC"}, p.id ASC limit $2 offset $3`,
+        [id, adminProductPageSize, (page - 1) * adminProductPageSize]),
+      dbQuery<{count:number}>("select count(*)::int as count from products where ($1::text is null or id = $1)", [id]),
+      dbQuery<{count:number}>("select count(*)::int as count from products where is_active = true"),
+      dbQuery<{id:string;name:string}>("select id,name from products where is_active = true order by name limit 6"),
     ]);
-    const [rows, count, choices] = results;
-    if (results.some(result => result.error) || !Array.isArray(rows.data) || !Array.isArray(choices.data) ||
-      !Number.isSafeInteger(rows.count) || rows.count! < 0 || !Number.isInteger(count.count) || count.count! < 0 || count.count! > 6) throw new Error();
+    const rows = {data: rowsResult.rows, count: totalResult.rows[0]?.count};
+    const count = {count: countResult.rows[0]?.count};
+    const choices = {data: choicesResult.rows};
+    if (!Array.isArray(rows.data) || !Array.isArray(choices.data) || !Number.isSafeInteger(rows.count) || rows.count! < 0 ||
+      !Number.isInteger(count.count) || count.count! < 0 || count.count! > 6) throw new Error();
     const data = rows.data.map(parseAdminProduct);
     if (data.some(product => !product) || choices.data.some(option => !validProductId(option.id) || typeof option.name !== "string" || !option.name.trim())) throw new Error();
     return Response.json({ data, total: rows.count, activeCount: count.count, page,
@@ -82,15 +84,17 @@ async function mutate(request: Request, operation: "create" | "update" | "unpubl
       return failure(400, "validation_error", "Ürün alanlarını ve upsell seçimini kontrol edin.");
     }
     const productId = operation === "create" ? randomUUID() : id;
-    const args = operation === "unpublish" ? { p_id: productId }
-      : { p_id: productId, p_product: product, p_create: operation === "create" };
-    const { data, error } = await createSupabaseServiceClient({ noStore: true })
-      .rpc(operation === "unpublish" ? "admin_unpublish_product" : "admin_save_product", args)
-      .retry(false).abortSignal(timeout());
-    if (error) {
-      if (error.code === "P0002") return failure(404, "product_not_found", "Ürün bulunamadı. Listeyi yenileyin.");
-      if (["23514", "23505", "23503"].includes(error.code)) return failure(409, "product_conflict", "En fazla 6 aktif ürün olabilir. Listeyi ve upsell seçimini kontrol edin.");
-      throw new Error();
+    let data: unknown;
+    try {
+      const result = operation === "unpublish"
+        ? await dbQuery("select admin_unpublish_product($1) as id", [productId])
+        : await dbQuery("select admin_save_product($1, $2::jsonb, $3) as id", [productId, JSON.stringify(product), operation === "create"]);
+      data = result.rows[0]?.id;
+    } catch (error) {
+      const code = error && typeof error === "object" && "code" in error ? error.code : null;
+      if (code === "P0002") return failure(404, "product_not_found", "Ürün bulunamadı. Listeyi yenileyin.");
+      if (typeof code === "string" && ["23514", "23505", "23503"].includes(code)) return failure(409, "product_conflict", "En fazla 6 aktif ürün olabilir. Listeyi ve upsell seçimini kontrol edin.");
+      throw new Error("Product operation unavailable");
     }
     if (!validProductId(data)) throw new Error();
     revalidatePath("/");

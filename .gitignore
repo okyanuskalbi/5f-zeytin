@@ -25,3 +25,6 @@ output/flow-keyframes/
 # Yerel proje grubu; kurumsal site kendi Git deposunu korur.
 /AFINA-KAYNAK/
 /AFINA-KURUMSAL/
+
+# Local command receipts and temporary files
+output/

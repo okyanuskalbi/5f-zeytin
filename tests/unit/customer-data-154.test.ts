@@ -1,111 +1,67 @@
 // @vitest-environment node
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
-import {
-  listCustomerAddresses,
-  listCustomerOrders,
-  saveCustomerAddress,
-} from "@/lib/account/customer-server";
-import { PATCH as updateProfile } from "@/app/api/account/profile/route";
-
+import { beforeEach, expect, it, vi } from "vitest";
+import { deleteCustomerAddress, listCustomerAddresses, listCustomerOrders, readCustomerOrder, saveCustomerAddress } from "@/lib/account/customer-server";
 vi.mock("server-only", () => ({}));
-const mocks = vi.hoisted(() => ({
-  user: vi.fn(),
-  service: vi.fn(),
-  authClient: vi.fn(),
-  origin: vi.fn(),
+const mocks = vi.hoisted(() => ({ user: vi.fn(), query: vi.fn(), transaction: vi.fn(), tx: vi.fn() }));
+vi.mock("@/lib/auth/server", async original => ({
+  ...(await original<typeof import("@/lib/auth/server")>()), getVerifiedUser: mocks.user,
 }));
-vi.mock("@/lib/auth/server", async (original) => ({
-  ...(await original<typeof import("@/lib/auth/server")>()),
-  getVerifiedUser: mocks.user,
-  createAuthServerClient: mocks.authClient,
-  assertRequestOrigin: mocks.origin,
-}));
-vi.mock("@/lib/supabase/server", () => ({
-  createSupabaseServiceClient: mocks.service,
-}));
-let query: ReturnType<typeof vi.fn> & Record<string, ReturnType<typeof vi.fn>>;
+vi.mock("@/lib/db", () => ({ query: mocks.query, transaction: mocks.transaction }));
+const owner = "11111111-1111-4111-8111-111111111111";
+const id = "22222222-2222-4222-8222-222222222222";
+const address = { title: "Ev", recipient: "Deniz Test", phone: "05321234567", city: "Osmaniye", district: "Düziçi", line: "Örnek sokak no 1", postalCode: "80000", isDefault: true };
+const row = { ...address, id, postal_code: address.postalCode, is_default: true };
 beforeEach(() => {
   vi.clearAllMocks();
-  mocks.user.mockResolvedValue({
-    id: "11111111-1111-4111-8111-111111111111",
-    email: "owner@example.test",
-  });
-  const chain = { data: [], error: null, count: 0 } as Record<string, unknown>;
-  for (const key of [
-    "select",
-    "eq",
-    "order",
-    "range",
-    "limit",
-    "retry",
-    "abortSignal",
-    "maybeSingle",
-  ])
-    chain[key] = vi.fn(() => chain);
-  query = chain as typeof query;
-  mocks.service.mockReturnValue({
-    from: vi.fn(() => chain),
-    rpc: vi.fn(() => chain),
-  });
-  mocks.authClient.mockResolvedValue({
-    auth: {
-      updateUser: vi
-        .fn()
-        .mockResolvedValue({
-          data: { user: { id: "11111111-1111-4111-8111-111111111111" } },
-          error: null,
-        }),
-    },
-  });
+  mocks.user.mockResolvedValue({ id: owner, email: "owner@example.test" });
+  mocks.query.mockResolvedValue({ rows: [] });
+  mocks.tx.mockResolvedValue({ rows: [], rowCount: 0 });
+  mocks.transaction.mockImplementation(fn => fn({ query: mocks.tx }));
 });
-afterEach(() => vi.restoreAllMocks());
-
 it("never reads customer tables for an anonymous session", async () => {
   mocks.user.mockResolvedValue(null);
   await expect(listCustomerAddresses()).rejects.toMatchObject({ status: 401 });
-  expect(mocks.service).not.toHaveBeenCalled();
+  expect(mocks.query).not.toHaveBeenCalled();
+  expect(mocks.transaction).not.toHaveBeenCalled();
 });
-it("scopes both lists to the verified identity and bounds the order page", async () => {
+it("scopes lists to the verified identity and bounds the order page", async () => {
   await expect(listCustomerAddresses()).resolves.toEqual([]);
-  expect(query.eq).toHaveBeenCalledWith(
-    "user_id",
-    "11111111-1111-4111-8111-111111111111",
-  );
-  await expect(listCustomerOrders(2)).resolves.toMatchObject({
-    orders: [],
-    page: 2,
-    total: 0,
-  });
-  expect(query.range).toHaveBeenCalledWith(20, 39);
+  expect(mocks.query).toHaveBeenCalledWith(expect.stringContaining("user_id = $1"), [owner]);
+  mocks.query.mockResolvedValueOnce({ rows: [{ total: 0 }] }).mockResolvedValueOnce({ rows: [] });
+  await expect(listCustomerOrders(2)).resolves.toEqual({ orders: [], page: 2, total: 0 });
+  expect(mocks.query).toHaveBeenLastCalledWith(expect.stringContaining("o.user_id = $1"), [owner, 20, 20]);
 });
-it("does not turn an unavailable relation into an empty successful list", async () => {
-  Object.assign(query, {
-    data: null,
-    error: { message: "private upstream error" },
-  });
-  await expect(listCustomerAddresses()).rejects.toMatchObject({ status: 503 });
+it("does not turn a failed relation into an empty successful list", async () => {
+  mocks.query.mockRejectedValue(new Error("private upstream error"));
+  await expect(listCustomerAddresses()).rejects.toMatchObject({ status: 503, code: "customer_data_unavailable" });
 });
-it("rejects forged ownership and malformed address data before calling privileged storage", async () => {
-  await expect(
-    saveCustomerAddress({ user_id: "another-user", title: "X" }),
-  ).rejects.toMatchObject({ status: 400 });
-  expect(mocks.service).not.toHaveBeenCalled();
+it("rejects forged ownership and malformed inputs before accessing storage", async () => {
+  await expect(saveCustomerAddress({ ...address, user_id: "another-user" })).rejects.toMatchObject({ status: 400 });
+  await expect(listCustomerOrders(0)).rejects.toMatchObject({ status: 400 });
+  await expect(deleteCustomerAddress("bad")).rejects.toMatchObject({ status: 400 });
+  expect(mocks.query).not.toHaveBeenCalled(); expect(mocks.transaction).not.toHaveBeenCalled();
 });
-it("rejects a cross-site profile update before provider access", async () => {
-  const { AuthCoreError } = await import("@/lib/auth/server");
-  mocks.origin.mockImplementationOnce(() => {
-    throw new AuthCoreError(403, "csrf_rejected");
+it("filters an order detail by both verified owner and public order number", async () => {
+  await expect(readCustomerOrder("AF-001")).rejects.toMatchObject({ status: 404 });
+  expect(mocks.query).toHaveBeenCalledWith(expect.stringContaining("o.user_id = $1 AND o.order_no = $2"), [owner, "AF-001"]);
+});
+it("hides foreign address existence before making any mutation", async () => {
+  await expect(saveCustomerAddress({ ...address, id })).rejects.toMatchObject({ status: 404 });
+  expect(mocks.tx.mock.calls[1]).toEqual([expect.stringContaining("id = $2 AND user_id = $1"), [owner, id]]);
+  expect(mocks.tx.mock.calls.some(([sql]) => /UPDATE|INSERT|DELETE/.test(sql))).toBe(false);
+});
+it("keeps address changes within one transaction and locks by verified owner", async () => {
+  mocks.tx.mockImplementation(async sql => {
+    if (sql.includes("count(*)")) return { rows: [{ count: 0 }] };
+    if (sql.includes("RETURNING")) return { rows: [row], rowCount: 1 };
+    return { rows: [], rowCount: 0 };
   });
-  const response = await updateProfile(
-    new Request("https://afinazeytin.com/api/account/profile", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        origin: "https://evil.example",
-      },
-      body: JSON.stringify({ name: "Deniz", phone: "" }),
-    }),
-  );
-  expect(response.status).toBe(403);
-  expect(mocks.authClient).not.toHaveBeenCalled();
+  await expect(saveCustomerAddress(address)).resolves.toMatchObject({ id, isDefault: true });
+  expect(mocks.transaction).toHaveBeenCalledOnce();
+  expect(mocks.tx).toHaveBeenCalledWith("SELECT pg_advisory_xact_lock(hashtext($1))", [owner]);
+  expect(mocks.tx).toHaveBeenCalledWith(expect.stringContaining("INSERT INTO public.customer_addresses"), expect.arrayContaining([owner, address.recipient]));
+});
+it("does not delete another customer's address", async () => {
+  await expect(deleteCustomerAddress(id)).rejects.toMatchObject({ status: 404 });
+  expect(mocks.tx).toHaveBeenCalledWith(expect.stringContaining("DELETE FROM public.customer_addresses WHERE user_id = $1 AND id = $2"), [owner, id]);
 });

@@ -3,9 +3,8 @@ import { spawnSync } from "node:child_process";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import type { PGlite } from "@electric-sql/pglite";
-import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { createLocalSupabase } from "../helpers/supabase-local";
-import { createSupabaseServiceClient } from "../../lib/supabase/server";
 
 vi.mock("server-only", () => ({}));
 
@@ -17,8 +16,8 @@ describe("in-memory Supabase database", () => {
   let migrationDirectory: string;
 
   beforeAll(async () => {
-    await mkdir(resolve(".cache"), { recursive: true });
-    migrationDirectory = await mkdtemp(resolve(".cache/supabase-local-"));
+    await mkdir(resolve("output/tmp"), { recursive: true });
+    migrationDirectory = await mkdtemp(resolve("output/tmp/supabase-local-"));
     // Write out of order: the loader must use Supabase timestamp order.
     await writeFile(resolve(migrationDirectory, "20261022000002_seed.sql"), `
       insert into public.test_owned_rows (id, owner_id) values
@@ -141,62 +140,11 @@ describe("in-memory Supabase database", () => {
   }, 30_000);
 });
 
-describe("Supabase service client boundary", () => {
-  const fetchMock = vi.fn<typeof fetch>();
-  const fixtureKey = "test-only-service-credential";
-
-  beforeEach(() => {
-    vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "http://127.0.0.1:54321");
-    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", fixtureKey);
-    vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", "test-only-publishable-credential");
-    vi.stubGlobal("fetch", fetchMock);
-    fetchMock.mockReset().mockResolvedValue(Response.json([]));
-  });
-
-  afterEach(() => {
-    vi.unstubAllEnvs();
-    vi.unstubAllGlobals();
-  });
-
-  it.each(["NEXT_PUBLIC_SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"])("requires %s without exposing credentials", variable => {
-    vi.stubEnv(variable, "  ");
-    expect(() => createSupabaseServiceClient()).toThrow(`Missing ${variable}`);
-    expect(fetchMock).not.toHaveBeenCalled();
-  });
-
-  it.each([
-    "invalid-url", "http://example.invalid", "ftp://example.invalid",
-    "https://user:password@example.invalid", "https://example.invalid?secret=invalid",
-    "https://example.invalid#invalid", "https://example.invalid/rest/v1",
-  ])("rejects unsafe or malformed URL %s without reflecting its value", url => {
-    vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", url);
-    expect(() => createSupabaseServiceClient()).toThrow(/^Invalid NEXT_PUBLIC_SUPABASE_URL$/);
-    expect(fetchMock).not.toHaveBeenCalled();
-  });
-
-  it("lazily reads env and sends the service credential only in the server request", async () => {
-    const client = createSupabaseServiceClient();
-    expect(fetchMock).not.toHaveBeenCalled();
-    expect((await client.auth.getSession()).data.session).toBeNull();
-    const result = await client.from("test_rows").select("id");
-    expect(result.error).toBeNull();
-    const [url, options] = fetchMock.mock.calls[0];
-    expect(String(url)).toBe("http://127.0.0.1:54321/rest/v1/test_rows?select=id");
-    expect(String(url).includes(fixtureKey)).toBe(false);
-    const headers = new Headers(options?.headers);
-    expect(headers.get("apikey") === fixtureKey).toBe(true);
-    expect(headers.get("authorization") === `Bearer ${fixtureKey}`).toBe(true);
-  });
-
-  it("accepts HTTPS and does not require the publishable key for privileged requests", () => {
-    vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", " https://example.invalid/ ");
-    vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", undefined);
-    expect(createSupabaseServiceClient()).toBeDefined();
-    expect(fetchMock).not.toHaveBeenCalled();
-  });
-
+// Pool lifecycle, parameter binding and rollback are exercised in neon-db-186.test.ts.
+// The archived Supabase/RLS fixture checks above remain historical migration coverage.
+describe("server-only Postgres import boundary", () => {
   it("enforces the real server-only package guard outside server conditions", () => {
-    const result = spawnSync(process.execPath, ["--input-type=module", "-e", "import('./lib/supabase/server.ts')"], {
+    const result = spawnSync(process.execPath, ["--input-type=module", "-e", "import('./lib/db/index.ts')"], {
       cwd: process.cwd(), encoding: "utf8", env: { NODE_ENV: "test" },
     });
     expect(result.status).not.toBe(0);

@@ -11,7 +11,7 @@ const profile = { name: "Deniz Sofra", email: "deniz@example.test", phone: "0532
 const fetchMock = vi.fn<typeof fetch>();
 beforeEach(() => {
   Object.values(mocks).forEach(mock => mock.mockReset());
-  mocks.cookies.mockResolvedValue({ getAll: () => [{ name: "sb-fixture-auth-token", value: "cookie-is-not-proof" }] });
+  mocks.cookies.mockResolvedValue({ getAll: () => [{ name: "__Secure-better-auth.session_token", value: "cookie-is-not-proof" }] });
   mocks.read.mockResolvedValue(profile);
   mocks.redirect.mockImplementation((url: string) => { throw new Error(`NEXT_REDIRECT:${url}`); });
   fetchMock.mockReset().mockResolvedValue(new Response(null, { status: 204 }));

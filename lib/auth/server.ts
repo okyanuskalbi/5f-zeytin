@@ -1,143 +1,79 @@
 import "server-only";
-import { createServerClient, type CookieMethodsServer } from "@supabase/ssr";
-import type { SupabaseClient } from "@supabase/supabase-js";
-import { cookies } from "next/headers";
+import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-import { getAuthConfig, getAuthCookieOptions } from "./config";
+import { getAuth } from "./better-auth";
+import { getAuthConfig } from "./server-config";
 
-export const authResponseHeaders = {
-  "Cache-Control": "private, no-store",
-  "Pragma": "no-cache",
-  "Expires": "0",
-  "Referrer-Policy": "no-referrer",
-};
-
+export const authResponseHeaders = { "Cache-Control": "private, no-store", Pragma: "no-cache", Expires: "0", "Referrer-Policy": "no-referrer" };
 export class AuthCoreError extends Error {
-  constructor(public status: number, public code: string, public retryAfter?: number) {
-    super(code);
-  }
+  constructor(public status: number, public code: string, public retryAfter?: number) { super(code); }
 }
-
-/** Auth's shared provider enforces rate limits, including PKCE/refresh and /user.
- * No process-local counters: those would fail open across Vercel instances.
- */
 export function authFailure(error: unknown, invalidStatus = 401): AuthCoreError {
   if (error instanceof AuthCoreError) return error;
-  const status = error && typeof error === "object" && "status" in error ? error.status : undefined;
+  const source = error && typeof error === "object" ? error as { status?: unknown; statusCode?: unknown } : {};
+  const status = typeof source.statusCode === "number" ? source.statusCode : source.status;
   if (status === 429) return new AuthCoreError(429, "auth_rate_limited", 60);
   if (typeof status !== "number" || status >= 500 || status === 0) return new AuthCoreError(503, "auth_unavailable", 5);
   return new AuthCoreError(invalidStatus, invalidStatus === 400 ? "invalid_callback" : "unauthenticated");
 }
-
+/** Preserve a bounded server-supplied progressive wait across compatibility routes. */
+export function authRateLimitError(response: Response): AuthCoreError {
+  const value = Number(response.headers.get("Retry-After"));
+  const retryAfter = Number.isSafeInteger(value) && value > 0 && value <= 900 ? value : 60;
+  return new AuthCoreError(429, "auth_rate_limited", retryAfter);
+}
 export function authErrorResponse(error: unknown) {
   const failure = authFailure(error);
   const message = failure.code === "admin_configuration_unavailable" ? "Yönetim paneli şu an yapılandırılıyor."
+    : failure.code === "email_not_configured" ? "E-posta ile giriş hizmeti henüz yapılandırılmadı. Şifreyle giriş yapabilirsiniz."
     : failure.status === 429 ? "Çok fazla deneme. Daha sonra yeniden deneyin."
-    : failure.status === 503 ? "Üyelik hizmeti şu anda kullanılamıyor."
-      : "İşlem doğrulanamadı. Yeniden deneyin.";
-  return NextResponse.json({ error: { code: failure.code, message } }, {
-    status: failure.status,
-    headers: { ...authResponseHeaders, ...(failure.retryAfter ? { "Retry-After": String(failure.retryAfter) } : {}) },
-  });
+    : failure.status === 503 ? "Üyelik hizmeti şu anda kullanılamıyor." : "İşlem doğrulanamadı. Yeniden deneyin.";
+  return NextResponse.json({ error: { code: failure.code, message } }, { status: failure.status, headers: { ...authResponseHeaders, ...(failure.retryAfter ? { "Retry-After": String(failure.retryAfter) } : {}) } });
 }
 
-/** A fresh client per request; default writes are for Route Handlers/Actions.
- * Server Components use readOnly after proxy.ts has persisted any token rotation.
- */
-export async function createAuthServerClient(options: { readOnly?: boolean; cookies?: CookieMethodsServer } = {}) {
-  const { url, key } = getAuthConfig();
-  const store = options.cookies ? null : await cookies();
-  return createServerClient(url, key, {
-    cookieOptions: getAuthCookieOptions(),
-    cookies: options.cookies ?? {
-      getAll: () => store!.getAll(),
-      setAll: values => {
-        if (options.readOnly) return;
-        for (const { name, value, options: cookieOptions } of values) store!.set(name, value, cookieOptions);
-      },
-    },
-    global: {
-      fetch: async (input, init) => {
-        try {
-          const response = await fetch(input, {
-            ...init, cache: "no-store",
-            signal: init?.signal ? AbortSignal.any([init.signal, AbortSignal.timeout(5000)]) : AbortSignal.timeout(5000),
-          });
-          // The SDK can log refresh failures internally. Keep upstream details
-          // out of those logs as well as our HTTP responses, preserving status.
-          if (response.ok) return response;
-          // Signup needs these safe codes for neutral duplicate responses and
-          // password guidance. Preserve no provider messages or other payloads.
-          let code: string | undefined;
-          if ([400, 422].includes(response.status)) {
-            const body: unknown = await response.json().catch(() => null);
-            if (body && typeof body === "object" && "code" in body &&
-              typeof body.code === "string" && ["user_already_exists", "email_exists", "weak_password"].includes(body.code)) code = body.code;
-          }
-          return Response.json({ msg: "Auth request failed", ...(code ? { code, error_code: code } : {}) }, { status: response.status });
-        } catch {
-          throw new Error("Auth request unavailable");
-        }
-      },
-    },
-  });
-}
-
-/** Validates with Auth, never getSession() or client-supplied role metadata.
- * Membership confers no admin permission; task 062 owns that separate gate.
- */
-export async function getVerifiedUser(client?: SupabaseClient): Promise<{ id: string; email: string | null } | null> {
+/** Always checks the database session; cookie cache is explicitly disabled. */
+export async function getVerifiedSession(requestHeaders?: Headers) {
   try {
-    const supabase = client ?? await createAuthServerClient({ readOnly: true });
-    const { data, error } = await supabase.auth.getUser();
-    if (error) {
-      if (error.name === "AuthSessionMissingError" ||
-        (error.status !== undefined && error.status >= 400 && error.status < 500 && error.status !== 429)) return null;
-      throw authFailure(error);
-    }
-    const user = data.user;
-    if (!user || typeof user.id !== "string" || !user.id.trim() ||
-      (user.email != null && typeof user.email !== "string")) throw new AuthCoreError(503, "auth_unavailable", 5);
-    return { id: user.id, email: user.email ?? null };
-  } catch (error) {
-    throw authFailure(error);
-  }
+    const incoming = requestHeaders ?? await headers();
+    if (!incoming.get("cookie")) return null;
+    return await getAuth().api.getSession({ headers: incoming, query: { disableCookieCache: true } });
+  } catch (error) { throw authFailure(error); }
 }
-
-/** Production never derives security decisions or email URLs from request hosts. */
+export async function getVerifiedUser() {
+  const session = await getVerifiedSession();
+  return session ? { id: session.user.id, email: session.user.email } : null;
+}
 export function getAuthSiteOrigin(request: Request): string {
-  try {
-    return getAuthConfig().siteOrigin ?? new URL(request.url).origin;
-  } catch {
-    throw new AuthCoreError(503, "auth_unavailable", 5);
-  }
+  void request;
+  try { return getAuthConfig().siteOrigin; } catch { throw new AuthCoreError(503, "auth_unavailable", 5); }
 }
-
-/** Shared by Auth and admin writes; never trust forwarded headers. */
 export function assertRequestOrigin(request: Request) {
-  const origin = getAuthSiteOrigin(request);
   const site = request.headers.get("sec-fetch-site");
-  if (request.headers.get("origin") !== origin || (site !== null && site !== "same-origin")) {
-    throw new AuthCoreError(403, "csrf_rejected");
-  }
+  if (request.headers.get("origin") !== getAuthSiteOrigin(request) || (site !== null && site !== "same-origin")) throw new AuthCoreError(403, "csrf_rejected");
 }
-
-/** Reject login/logout CSRF before any Auth call. */
 export function assertAuthMutation(request: Request) {
   if (request.method !== "POST") throw new AuthCoreError(405, "method_not_allowed");
   assertRequestOrigin(request);
 }
 
+/** Invoke the HTTP handler so database-backed rate limits are enforced. Server
+ * auth.api mutations bypass Better Auth's HTTP limiter. */
+export async function authRequest(request: Request, path: string, body?: unknown): Promise<Response> {
+  const url = new URL(`/api/auth${path}`, getAuthSiteOrigin(request));
+  const incoming = new Headers(request.headers);
+  incoming.delete("content-length");
+  if (body !== undefined) incoming.set("content-type", "application/json");
+  return getAuth().handler(new Request(url, { method: body === undefined ? "GET" : "POST", headers: incoming, ...(body === undefined ? {} : { body: JSON.stringify(body) }) }));
+}
+export function copyAuthCookies(source: Response, target: Response) {
+  for (const cookie of source.headers.getSetCookie()) target.headers.append("set-cookie", cookie);
+  return target;
+}
 export async function logout(request: Request) {
   try {
     assertAuthMutation(request);
-    const client = await createAuthServerClient();
-    // /user is provider-rate-limited. Validate before allowing the mutation.
-    await getVerifiedUser(client);
-    const { error } = await client.auth.signOut({ scope: "local" });
-    if (error) throw authFailure(error);
-    return new NextResponse(null, { status: 204, headers: authResponseHeaders });
-  } catch (error) {
-    return authErrorResponse(error);
-  }
+    const result = await authRequest(request, "/sign-out", {});
+    if (!result.ok) throw new AuthCoreError(result.status === 429 ? 429 : 503, result.status === 429 ? "auth_rate_limited" : "auth_unavailable");
+    return copyAuthCookies(result, new Response(null, { status: 204, headers: authResponseHeaders }));
+  } catch (error) { return authErrorResponse(error); }
 }

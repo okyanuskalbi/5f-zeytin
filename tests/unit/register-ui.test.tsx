@@ -3,6 +3,7 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import Page, { metadata } from "@/app/kayit/page";
 import { registrationConfirmation } from "@/lib/contracts/register";
 
+vi.mock("@/components/account/ConfiguredGoogleButton", () => ({ ConfiguredGoogleButton: () => null }));
 const fetchMock = vi.fn<typeof fetch>();
 const passwordRule = "Şifre en az 10 karakter olmalı; en az bir büyük harf (A-Z), bir küçük harf (a-z) ve bir rakam içermeli.";
 const form = () => screen.getByRole("form", { name: "E-posta ile üyelik" });

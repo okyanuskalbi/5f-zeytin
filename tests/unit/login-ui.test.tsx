@@ -9,6 +9,7 @@ const mocks = vi.hoisted(() => ({ replace: vi.fn(), refresh: vi.fn(), getUser: v
 vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: mocks.replace, refresh: mocks.refresh }) }));
 vi.mock("next/headers", () => ({ cookies: mocks.cookies }));
 vi.mock("@/lib/auth/server", () => ({ getVerifiedUser: mocks.getUser }));
+vi.mock("@/components/account/ConfiguredGoogleButton", () => ({ ConfiguredGoogleButton: () => null }));
 const fetchMock = vi.fn<typeof fetch>();
 const form = () => screen.getByRole("form", { name: "E-posta ile giriş" });
 const field = (label: string) => screen.getByLabelText(label, { exact: true }) as HTMLInputElement;
@@ -116,7 +117,7 @@ it("supports password visibility without losing focus or submitting", () => {
   expect(fetchMock).not.toHaveBeenCalled();
 });
 it("offers logout only after server verification and clears local UI after success", async () => {
-  mocks.cookies.mockResolvedValue({ getAll: () => [{ name: "sb-fixture-auth-token", value: "cookie-is-not-proof" }] });
+  mocks.cookies.mockResolvedValue({ getAll: () => [{ name: "better-auth.session_token", value: "cookie-is-not-proof" }] });
   mocks.getUser.mockResolvedValue({ id: "verified-member", email: "deniz@example.test" });
   render(await Page({ searchParams: Promise.resolve({ next: ["/sepet", "//evil.example"] }) }));
   expect(screen.queryByRole("form")).toBeNull();
@@ -168,7 +169,7 @@ it("returns from magic link to password login with the password cleared", async 
   expect(fetchMock).not.toHaveBeenCalled();
 });
 it("treats a forged/expired session as anonymous and handles service failures safely", async () => {
-  mocks.cookies.mockResolvedValue({ getAll: () => [{ name: "sb-fixture-auth-token", value: "forged" }] });
+  mocks.cookies.mockResolvedValue({ getAll: () => [{ name: "better-auth.session_token", value: "forged" }] });
   mocks.getUser.mockResolvedValueOnce(null);
   const rendered = render(await Page({}));
   expect(form()).toBeTruthy(); rendered.unmount();

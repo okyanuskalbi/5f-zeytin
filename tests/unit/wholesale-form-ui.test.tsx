@@ -80,6 +80,8 @@ it("clears the previous success when the reset form is submitted empty", async (
   fill();
   fireEvent.submit(form());
   await waitFor(() => expect(screen.getByRole("status").textContent).toBe("Talebiniz gönderildi."));
+  // Wait for the successful submission's focus effect before the next user action.
+  await waitFor(() => expect(document.activeElement).toBe(screen.getByRole("status")));
   fireEvent.submit(form());
   expect(screen.getByRole("status").textContent).toBe("");
   expect(document.activeElement).toBe(input("İsim / firma"));

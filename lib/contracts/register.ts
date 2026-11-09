@@ -2,10 +2,11 @@ import { validateCredentials, type Registration } from "@/lib/auth/adapter";
 
 export type RegisterRequest = Registration;
 export type RegisterErrors = Partial<Record<keyof RegisterRequest, string>>;
-export type RegisterResponse = { data: { status: "confirmation_required"; message: string } }
+export type RegisterResponse = { data: { status: "confirmation_required" | "registered"; message: string } }
   | { error: { code: string; message: string; fields?: RegisterErrors } };
 
 export const registrationConfirmation = "İsteğiniz alındı. Kayıt uygunsa e-posta adresinize bir doğrulama bağlantısı gönderilir. Bağlantıyı kaydı başlattığınız tarayıcıda açın. Zaten hesabınız varsa giriş yapabilirsiniz.";
+export const registrationReady = "Hesabınız hazır. Şifrenizle giriş yapabilirsiniz.";
 export { registrationPasswordError } from "@/lib/auth/adapter";
 const fieldNames = ["name", "email", "password", "privacy", "consent", "marketing"] as const;
 

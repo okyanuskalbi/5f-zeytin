@@ -3,9 +3,9 @@ import { requireCustomer } from "@/lib/account/customer-server";
 import {
   assertRequestOrigin,
   AuthCoreError,
-  authFailure,
   authResponseHeaders,
-  createAuthServerClient,
+  authRequest,
+  copyAuthCookies,
 } from "@/lib/auth/server";
 import { validateCredentials } from "@/lib/auth/adapter";
 export const dynamic = "force-dynamic";
@@ -37,19 +37,9 @@ export async function POST(request: Request) {
       });
     const user = await requireCustomer();
     if (!user.email) throw new AuthCoreError(400, "email_required");
-    const client = await createAuthServerClient();
-    const verified = await client.auth.signInWithPassword({
-      email: user.email,
-      password: currentPassword,
-    });
-    if (verified.error) throw authFailure(verified.error);
-    if (verified.data.user?.id !== user.id)
-      throw new AuthCoreError(401, "unauthenticated");
-    const result = await client.auth.updateUser({ password });
-    if (result.error) throw authFailure(result.error);
-    if (result.data.user?.id !== user.id)
-      throw new AuthCoreError(503, "auth_unavailable");
-    return new Response(null, { status: 204, headers: authResponseHeaders });
+    const result = await authRequest(request, "/change-password", { currentPassword, newPassword: password, revokeOtherSessions: true });
+    if (!result.ok) throw new AuthCoreError(result.status === 429 ? 429 : result.status >= 500 ? 503 : 401, result.status === 429 ? "auth_rate_limited" : result.status >= 500 ? "auth_unavailable" : "unauthenticated");
+    return copyAuthCookies(result,new Response(null, { status: 204, headers: authResponseHeaders }));
   } catch (error) {
     return customerError(error);
   }

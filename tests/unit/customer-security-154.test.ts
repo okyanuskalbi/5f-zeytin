@@ -13,7 +13,9 @@ vi.mock("server-only", () => ({}));
 const mocks = vi.hoisted(() => ({
   user: vi.fn(),
   client: vi.fn(),
-  service: vi.fn(),
+  query: vi.fn(),
+  transaction: vi.fn(),
+  tx: vi.fn(),
   origin: vi.fn(),
   signIn: vi.fn(),
   update: vi.fn(),
@@ -21,12 +23,10 @@ const mocks = vi.hoisted(() => ({
 vi.mock("@/lib/auth/server", async (original) => ({
   ...(await original<typeof import("@/lib/auth/server")>()),
   getVerifiedUser: mocks.user,
-  createAuthServerClient: mocks.client,
+  authRequest: mocks.client,
   assertRequestOrigin: mocks.origin,
 }));
-vi.mock("@/lib/supabase/server", () => ({
-  createSupabaseServiceClient: mocks.service,
-}));
+vi.mock("@/lib/db", () => ({ query: mocks.query, transaction: mocks.transaction }));
 const owner = "11111111-1111-4111-8111-111111111111";
 const id = "22222222-2222-4222-8222-222222222222";
 const address = {
@@ -45,80 +45,29 @@ const request = (body: unknown) =>
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
-let chain: Record<string, unknown>;
 beforeEach(() => {
   vi.clearAllMocks();
   mocks.user.mockResolvedValue({ id: owner, email: "owner@example.test" });
-  mocks.signIn.mockResolvedValue({
-    data: { user: { id: owner } },
-    error: null,
-  });
-  mocks.update.mockResolvedValue({
-    data: { user: { id: owner } },
-    error: null,
-  });
-  mocks.client.mockResolvedValue({
-    auth: { signInWithPassword: mocks.signIn, updateUser: mocks.update },
-  });
-  chain = { data: null, error: null };
-  for (const key of ["select", "eq", "retry", "abortSignal", "maybeSingle"])
-    chain[key] = vi.fn(() => chain);
-  mocks.service.mockReturnValue({
-    from: vi.fn(() => chain),
-    rpc: vi.fn(() => chain),
-  });
+  mocks.client.mockResolvedValue(Response.json({success:true}));
+  mocks.query.mockResolvedValue({ rows: [] });
+  mocks.tx.mockResolvedValue({ rows: [], rowCount: 0 });
+  mocks.transaction.mockImplementation(fn => fn({ query: mocks.tx }));
 });
-it("checks the existing password against the verified email before any password mutation", async () => {
-  const response = await passwordChange(
-    request({ currentPassword: "OldSecure123", password: "NewSecure456" }),
-  );
-  expect(response.status).toBe(204);
-  expect(response.headers.get("cache-control")).toContain("no-store");
-  expect(mocks.signIn).toHaveBeenCalledWith({
-    email: "owner@example.test",
-    password: "OldSecure123",
-  });
-  expect(mocks.update).toHaveBeenCalledWith({ password: "NewSecure456" });
-  expect(mocks.signIn.mock.invocationCallOrder[0]).toBeLessThan(
-    mocks.update.mock.invocationCallOrder[0],
-  );
+it("uses Better Auth change-password with current password and revokes other sessions", async () => {
+ const response=await passwordChange(request({currentPassword:"OldSecure123",password:"NewSecure456"}));
+ expect(response.status).toBe(204);expect(response.headers.get("cache-control")).toContain("no-store");
+ expect(mocks.client).toHaveBeenCalledWith(expect.any(Request),"/change-password",{currentPassword:"OldSecure123",newPassword:"NewSecure456",revokeOtherSessions:true});
 });
-it("never changes a password after incorrect credentials or a different returned identity", async () => {
-  mocks.signIn.mockResolvedValueOnce({
-    data: { user: null },
-    error: { status: 400, message: "provider secret" },
-  });
-  const response = await passwordChange(
-    request({ currentPassword: "Wrong123", password: "NewSecure456" }),
-  );
-  expect(response.status).toBe(401);
-  expect(await response.text()).not.toContain("provider secret");
-  expect(mocks.update).not.toHaveBeenCalled();
-  mocks.signIn.mockResolvedValueOnce({ data: { user: { id } }, error: null });
-  expect(
-    (
-      await passwordChange(
-        request({ currentPassword: "Wrong123", password: "NewSecure456" }),
-      )
-    ).status,
-  ).toBe(401);
-  expect(mocks.update).not.toHaveBeenCalled();
+it("does not report password success after incorrect credentials", async()=>{
+ mocks.client.mockResolvedValueOnce(Response.json({message:"private password"},{status:400}));
+ const response=await passwordChange(request({currentPassword:"Wrong123",password:"NewSecure456"}));
+ expect(response.status).toBe(401);expect(await response.text()).not.toContain("private password");
 });
-it("rejects profile role/email injection and wrong field types before accessing auth", async () => {
-  for (const body of [
-    { name: "Deniz", phone: "", role: "admin" },
-    { name: "Deniz", phone: "", email: "other@example.test" },
-    { name: "Deniz", phone: 5321234567 },
-  ])
-    expect((await profileChange(request(body))).status).toBe(400);
-  expect(mocks.client).not.toHaveBeenCalled();
-  const response = await profileChange(
-    request({ name: " Deniz Test ", phone: "05321234567" }),
-  );
-  expect(response.status).toBe(200);
-  expect(mocks.update).toHaveBeenCalledWith({
-    data: { name: "Deniz Test", phone: "05321234567" },
-  });
+it("rejects profile role/email injection and wrong field types before accessing auth",async()=>{
+ for(const body of [{name:"Deniz",phone:"",role:"admin"},{name:"Deniz",phone:"",email:"other@example.test"},{name:"Deniz",phone:5321234567}]) expect((await profileChange(request(body))).status).toBe(400);
+ expect(mocks.client).not.toHaveBeenCalled();
+ const response=await profileChange(request({name:" Deniz Test ",phone:"05321234567"}));
+ expect(response.status).toBe(200);expect(mocks.client).toHaveBeenCalledWith(expect.any(Request),"/update-user",{name:"Deniz Test",phone:"05321234567"});
 });
 it("bounds streamed JSON by actual bytes and rejects malformed or non-JSON input", async () => {
   await expect(
@@ -142,36 +91,22 @@ it("bounds streamed JSON by actual bytes and rejects malformed or non-JSON input
     ),
   ).rejects.toMatchObject({ status: 415 });
 });
-it("uses the verified owner in atomic address RPCs and hides foreign resource existence", async () => {
-  const rpc = vi.fn(() => chain);
-  mocks.service.mockReturnValue({ rpc });
-  chain.data = {
-    id,
-    ...address,
-    postal_code: address.postalCode,
-    is_default: true,
-  };
+it("uses the verified owner for atomic address changes and hides foreign resource existence", async () => {
+  mocks.tx.mockImplementation(async sql => {
+    if (sql.includes("count(*)")) return { rows: [{ count: 0 }] };
+    if (sql.includes("INSERT")) return { rows: [{ id, ...address, postal_code: address.postalCode, is_default: true }] };
+    return { rows: [], rowCount: 0 };
+  });
   await expect(saveCustomerAddress(address)).resolves.toMatchObject({ id });
-  expect(rpc).toHaveBeenCalledWith("customer_save_address", {
-    p_user_id: owner,
-    p_id: null,
-    p_address: address,
-  });
-  chain.error = { code: "P0002", message: "private foreign address" };
-  await expect(deleteCustomerAddress(id)).rejects.toMatchObject({
-    status: 404,
-  });
-  expect(rpc).toHaveBeenLastCalledWith("customer_delete_address", {
-    p_user_id: owner,
-    p_id: id,
-  });
+  expect(mocks.tx).toHaveBeenCalledWith("SELECT pg_advisory_xact_lock(hashtext($1))", [owner]);
+  await expect(deleteCustomerAddress(id)).rejects.toMatchObject({ status: 404 });
+  expect(mocks.tx).toHaveBeenLastCalledWith(expect.stringContaining("DELETE FROM public.customer_addresses WHERE user_id = $1 AND id = $2"), [owner, id]);
 });
 it("filters the order detail by both verified owner and public number", async () => {
   await expect(readCustomerOrder("AF-001")).rejects.toMatchObject({
     status: 404,
   });
-  expect(chain.eq).toHaveBeenCalledWith("user_id", owner);
-  expect(chain.eq).toHaveBeenCalledWith("order_no", "AF-001");
+  expect(mocks.query).toHaveBeenCalledWith(expect.stringContaining("o.user_id = $1 AND o.order_no = $2"), [owner, "AF-001"]);
 });
 it("never exposes private address fields or unsafe tracking links in an order DTO", () => {
   const order = parseCustomerOrder({
@@ -196,5 +131,5 @@ it("does not create an address through PATCH or overwrite an address through POS
   const { POST, PATCH } = await import("@/app/api/account/addresses/route");
   expect((await PATCH(request(address))).status).toBe(400);
   expect((await POST(request({ ...address, id }))).status).toBe(400);
-  expect(mocks.service).not.toHaveBeenCalled();
+  expect(mocks.transaction).not.toHaveBeenCalled();
 });

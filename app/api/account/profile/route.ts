@@ -3,9 +3,9 @@ import { requireCustomer } from "@/lib/account/customer-server";
 import {
   assertRequestOrigin,
   AuthCoreError,
-  authFailure,
   authResponseHeaders,
-  createAuthServerClient,
+  authRequest,
+  copyAuthCookies,
 } from "@/lib/auth/server";
 export const dynamic = "force-dynamic";
 export async function PATCH(request: Request) {
@@ -33,17 +33,12 @@ export async function PATCH(request: Request) {
         fields,
       });
     const user = await requireCustomer();
-    const client = await createAuthServerClient();
-    const { data, error } = await client.auth.updateUser({
-      data: { name, phone },
-    });
-    if (error) throw authFailure(error);
-    if (data.user?.id !== user.id)
-      throw new AuthCoreError(503, "auth_unavailable");
-    return Response.json(
+    const result = await authRequest(request, "/update-user", { name, phone });
+    if (!result.ok) throw new AuthCoreError(result.status === 429 ? 429 : 503, result.status === 429 ? "auth_rate_limited" : "auth_unavailable");
+    return copyAuthCookies(result, Response.json(
       { data: { name, phone: phone || null, email: user.email } },
       { headers: authResponseHeaders },
-    );
+    ));
   } catch (error) {
     return customerError(error);
   }

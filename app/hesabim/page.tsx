@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: "Hesabım | Afina Zeytin", robots: { 
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
-  if (!(await cookies()).getAll().some(cookie => /^sb-.+-auth-token(?:\.\d+)?$/.test(cookie.name))) redirect("/giris?next=/hesabim");
+  if (!(await cookies()).getAll().some(cookie => /^(?:__Secure-)?better-auth\.session_token$/.test(cookie.name))) redirect("/giris?next=/hesabim");
   let profile;
   try { profile = await readOwnAccount(); }
   catch { return <AccountSummary profile={null} />; }

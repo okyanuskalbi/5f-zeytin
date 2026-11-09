@@ -7,15 +7,17 @@ import { Eye, EyeOff, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MembershipError, passwordStrength } from "@/lib/auth/adapter";
-import { registrationConfirmation, registrationPasswordError, validateRegisterRequest, type RegisterResponse } from "@/lib/contracts/register";
+import { registrationConfirmation, registrationReady, registrationPasswordError, validateRegisterRequest, type RegisterResponse } from "@/lib/contracts/register";
 import { Field, useMembershipAction } from "./FormControls";
+import { ConfiguredGoogleButton } from "./ConfiguredGoogleButton";
 import styles from "./Membership.module.css";
 
 // Reuses the existing 21st-derived split composition in SignIn and AFİNA tokens.
 export function Register({ embedded = false, onSignIn }: { embedded?: boolean; onSignIn?: () => void } = {}) {
   const Heading = embedded ? "h2" : "h1";
   const content = <>
-    <header className={styles.intro}><Heading>Soframıza katılın.</Heading><p>E-posta adresinizle hesabınızı oluşturun. Üyeliğinizi e-posta bağlantısıyla doğrulayın.</p></header>
+    <header className={styles.intro}><Heading>Soframıza katılın.</Heading><p>E-posta adresinizle hesabınızı oluşturun. </p></header>
+    <ConfiguredGoogleButton />
     <RegisterForm />
     <div className={styles.authFooter}>
       <p>Zaten hesabınız var mı? <Link href="/giris" className={styles.textLink} onClick={onSignIn ? (event) => {
@@ -46,15 +48,16 @@ function RegisterForm() {
       if (!parsed.ok) throw new MembershipError("Lütfen alanları kontrol edin.", parsed.fields);
       const response = await fetch("/api/auth/register", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: JSON.stringify(parsed.data) });
       const result: RegisterResponse | null = await response.json().catch(() => null);
+      if (result && "error" in result && result.error.code === "email_not_configured") throw new MembershipError(result.error.message);
       if (response.status === 429) throw new MembershipError("Çok fazla deneme. Daha sonra yeniden deneyin.");
       if (response.status === 422 && result && "error" in result && result.error?.code === "validation_error") {
         throw new MembershipError("Lütfen alanları kontrol edin.", { password: registrationPasswordError });
       }
-      if (response.status !== 202 || !result || !("data" in result) || result.data?.status !== "confirmation_required") {
+      if (response.status !== 202 || !result || !("data" in result) || !["confirmation_required", "registered"].includes(result.data?.status)) {
         throw new MembershipError("Üyelik hizmeti şu anda kullanılamıyor. Lütfen yeniden deneyin.");
       }
       setPassword("");
-      return registrationConfirmation;
+      return result.data.status === "registered" ? registrationReady : registrationConfirmation;
     });
   }
 

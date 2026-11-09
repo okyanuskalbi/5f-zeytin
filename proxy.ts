@@ -1,8 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { authErrorResponse, authResponseHeaders, createAuthServerClient, getVerifiedUser } from "@/lib/auth/server";
+import { authErrorResponse, authResponseHeaders } from "@/lib/auth/server";
 import { adminConfigurationMessage, assertAdminConfiguration } from "@/lib/auth/admin-config";
 
-/** Persists rotation before Server Components render; this is not an auth gate. */
+/** Configuration and optimistic redirects only; protected server code verifies sessions. */
 export async function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const adminApi = path === "/api/admin" || path.startsWith("/api/admin/");
@@ -15,30 +15,18 @@ export async function proxy(request: NextRequest) {
         headers: { ...authResponseHeaders, "Content-Type": "text/html; charset=utf-8", "Retry-After": "5" },
       });
     }
-    // API handlers verify identity themselves; they persist any refreshed cookies.
+    // Every API handler independently verifies the current database session.
     if (adminApi) return NextResponse.next({ headers: authResponseHeaders });
   }
-  let response = NextResponse.next({ request });
+  const response = NextResponse.next({ request });
   Object.entries(authResponseHeaders).forEach(([key, value]) => response.headers.set(key, value));
-  if (!request.cookies.getAll().some(cookie => /^sb-.+-auth-token(?:\.\d+)?$/.test(cookie.name))) return response;
-  try {
-    const client = await createAuthServerClient({ cookies: {
-      getAll: () => request.cookies.getAll(),
-      setAll: (values, headers) => {
-        // Forward the new session to both the current render and next request.
-        values.forEach(({ name, value }) => request.cookies.set(name, value));
-        response = NextResponse.next({ request });
-        values.forEach(({ name, value, options }) => response.cookies.set(name, value, options));
-        Object.entries({ ...authResponseHeaders, ...headers }).forEach(([key, value]) => response.headers.set(key, value));
-      },
-    } });
-    await getVerifiedUser(client);
-    return response;
-  } catch (error) {
-    const failure = authErrorResponse(error);
-    response.cookies.getAll().forEach(cookie => failure.cookies.set(cookie));
-    return failure;
+  // This is only an optimistic redirect. Every protected loader/route verifies
+  // the signed token against database sessions; cookie presence grants no access.
+  if (path === "/hesabim" || path.startsWith("/hesabim/")) {
+    const present = request.cookies.getAll().some(cookie => ["better-auth.session_token", "__Secure-better-auth.session_token"].includes(cookie.name));
+    if (!present) return NextResponse.redirect(new URL(`/giris?next=${encodeURIComponent(path)}`, request.url));
   }
+  return response;
 }
 
 export const config = { matcher: ["/hesabim/:path*", "/api/account/:path*", "/admin/:path*", "/api/admin/:path*", "/sepet", "/odeme", "/giris"] };

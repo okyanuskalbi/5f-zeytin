@@ -13,7 +13,7 @@ export default async function Page({ searchParams }: { searchParams?: Promise<Re
   const next = safeAuthRedirect(typeof query?.next === "string" ? query.next : null);
   let signedIn = false;
   let unavailable = false;
-  if ((await cookies()).getAll().some(cookie => /^sb-.+-auth-token(?:\.\d+)?$/.test(cookie.name))) {
+  if ((await cookies()).getAll().some(cookie => ["better-auth.session_token", "__Secure-better-auth.session_token"].includes(cookie.name))) {
     try { signedIn = !!(await getVerifiedUser()); }
     catch { unavailable = true; }
   }

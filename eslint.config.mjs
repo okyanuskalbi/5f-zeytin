@@ -14,6 +14,7 @@ export default defineConfig([
     "docs/scrollcraft/builds/**/scrollcraft.js",
     ".claude/**",
     ".cache/**",
+    "output/**",
     "AFINA-KAYNAK/**",
     "AFINA-KURUMSAL/**",
     "coverage/**",

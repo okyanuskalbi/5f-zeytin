@@ -1,5 +1,5 @@
 import "server-only";
-import { getAuthConfig } from "./config";
+import { getAuthConfig } from "./server-config";
 import { AuthCoreError } from "./server";
 
 export const adminConfigurationMessage = "Yönetim paneli şu an yapılandırılıyor.";
@@ -11,12 +11,8 @@ export const adminConfigurationMessage = "Yönetim paneli şu an yapılandırıl
 export function assertAdminConfiguration(): void {
   try {
     getAuthConfig();
-    const key = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
-    if (!key) throw new Error();
-    if (!/^sb_secret_[A-Za-z0-9_-]+$/.test(key)) {
-      const parts = key.split(".");
-      if (parts.length !== 3 || JSON.parse(atob(parts[1].replace(/-/g, "+").replace(/_/g, "/"))).role !== "service_role") throw new Error();
-    }
+    const url = new URL(process.env.DATABASE_URL ?? "");
+    if (!["postgres:", "postgresql:"].includes(url.protocol) || !url.hostname) throw new Error();
   } catch {
     throw new AuthCoreError(503, "admin_configuration_unavailable", 5);
   }

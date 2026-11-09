@@ -26,7 +26,7 @@ export async function CustomerPage({
   if (
     !(await cookies())
       .getAll()
-      .some((cookie) => /^sb-.+-auth-token(?:\.\d+)?$/.test(cookie.name))
+      .some((cookie) => /^(?:__Secure-)?better-auth\.session_token$/.test(cookie.name))
   )
     redirect(login);
   let profile;

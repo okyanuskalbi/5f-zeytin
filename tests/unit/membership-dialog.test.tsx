@@ -13,7 +13,11 @@ beforeEach(() => {
   navigation.replace.mockReset(); navigation.refresh.mockReset();
   vi.stubGlobal(
     "fetch",
-    vi.fn().mockResolvedValue(Response.json({}, { status: 401 })),
+    vi.fn<typeof fetch>().mockImplementation(async input => {
+      if (input === "/api/auth/providers") return Response.json({ google: false });
+      if (input === "/api/account") return Response.json({}, { status: 401 });
+      throw new Error("Unexpected membership request");
+    }),
   );
   // Runs after the portal's React click handler; jsdom must not navigate away.
   document.addEventListener("click", preventDocumentNavigation);
@@ -66,7 +70,9 @@ it("switches the embedded registration and sign-in forms without navigating or r
     fireEvent.click(signIn);
     expect(screen.getByRole("form", { name: "E-posta ile giriş" })).toBeDefined();
     expect(screen.getByRole("dialog", { name: "AFİNA üyelik" })).toBeDefined();
-    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(vi.mocked(fetch).mock.calls.filter(([url]) => url === "/api/account")).toHaveLength(1);
+    expect(vi.mocked(fetch).mock.calls.filter(([url]) => url === "/api/auth/providers")).toHaveLength(3);
+    expect(vi.mocked(fetch).mock.calls.every(([url]) => ["/api/account", "/api/auth/providers"].includes(String(url)))).toBe(true);
     expect(fetch).toHaveBeenCalledWith("/api/account", expect.objectContaining({ credentials: "same-origin", cache: "no-store" }));
     expect(navigation.replace).not.toHaveBeenCalled(); expect(navigation.refresh).not.toHaveBeenCalled();
 });
@@ -132,13 +138,13 @@ it("opens one accessible membership dialog and switches to the real registration
 it("offers the existing account only after the server confirms the session", async () => {
   vi.stubGlobal(
     "fetch",
-    vi
-      .fn()
-      .mockResolvedValue(
-        Response.json({
-          data: { name: "Deniz", email: "deniz@example.test", phone: null },
-        }),
-      ),
+    vi.fn<typeof fetch>().mockImplementation(async input => {
+      if (input === "/api/auth/providers") return Response.json({ google: false });
+      if (input === "/api/account") return Response.json({
+        data: { name: "Deniz", email: "deniz@example.test", phone: null },
+      });
+      throw new Error("Unexpected membership request");
+    }),
   );
   render(<AuthDialog onClose={vi.fn()} />);
   expect(await screen.findByText("Oturumunuz açık.")).toBeDefined();
@@ -162,14 +168,14 @@ it("closes the overlay only after a successful real sign in", async () => {
   const close = vi.fn();
   vi.stubGlobal(
     "fetch",
-    vi
-      .fn()
-      .mockResolvedValueOnce(Response.json({}, { status: 401 }))
-      .mockResolvedValueOnce(
-        Response.json({
-          data: { status: "signed_in", redirectTo: "/hesabim" },
-        }),
-      ),
+    vi.fn<typeof fetch>().mockImplementation(async input => {
+      if (input === "/api/auth/providers") return Response.json({ google: false });
+      if (input === "/api/account") return Response.json({}, { status: 401 });
+      if (input === "/api/auth/login") return Response.json({
+        data: { status: "signed_in", redirectTo: "/hesabim" },
+      });
+      throw new Error("Unexpected membership request");
+    }),
   );
   render(<AuthDialog onClose={close} />);
   await screen.findByRole("form", { name: "E-posta ile giriş" });
