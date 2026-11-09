@@ -8,7 +8,9 @@ export {phoneForm};
 export function CustomerPhoneField({name,initial='',initialParts,defaultCountry='TR',lang,required=true,autoComplete='shipping',onValueChange,invalid=false,errorId}:{name:string;initial?:string;initialParts?:Partial<PhoneParts>;defaultCountry?:string;lang:Lang;required?:boolean;autoComplete?:string;onValueChange?:(value:string)=>void;invalid?:boolean;errorId?:string}){
  const fallback=phoneCountry(defaultCountry)||'TR',start=splitPhone(initial,phoneCountry(initialParts?.phoneCountry)||fallback),[country,setCountry]=useState(phoneCountry(initialParts?.phoneCountry)||start.country),[national,setNational]=useState(groupedNational(initialParts?.phoneNational||start.national,phoneCountry(initialParts?.phoneCountry)||start.country)),[touched,setTouched]=useState(false);
  const selected=useRef(false),input=useRef<HTMLInputElement>(null),caret=useRef<number|null>(null),id=useId(),c=phoneCopy[lang],options=useMemo(()=>countryPhoneOptions(lang),[lang]);
- const valid=!national&&!required||!!validPhoneParts(country,phoneDigits(national)),error=touched&&!valid;
+ // An owning form's errorId already describes its inline message. Keep one
+ // error source; standalone fields still provide their own blur feedback.
+ const valid=!national&&!required||!!validPhoneParts(country,phoneDigits(national)),error=touched&&!valid&&!errorId;
  useEffect(()=>{onValueChange?.(national ? options.find(option=>option.country===country)!.code+' '+national : '')},[country,national,options,onValueChange]);
  useEffect(()=>{input.current?.setCustomValidity(valid?'':c.invalid)},[valid,c.invalid]);
  useEffect(()=>{if(!selected.current&&!national)setCountry(fallback)},[fallback,national]);

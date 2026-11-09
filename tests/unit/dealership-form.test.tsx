@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DealershipForm } from "@/components/dealership/DealershipForm";
 
@@ -45,6 +45,25 @@ describe("Bayilik başvuru formu", () => {
     expect(screen.getByLabelText(/^Telefon$/).getAttribute("aria-invalid")).toBe("true");
     expect(screen.getByRole("checkbox").getAttribute("aria-invalid")).toBe("true");
     expect(openDraft).not.toHaveBeenCalled();
+  });
+  it.each(["123", ""])("shows and describes only one phone error after blur and submission of %j", value => {
+    const openDraft = vi.fn(); render(<DealershipForm openDraft={openDraft} />);
+    const phone = screen.getByRole("textbox", { name: "Telefon" });
+    fireEvent.change(phone, { target: { value } });
+    fireEvent.blur(phone);
+    submit();
+    const field = phone.closest<HTMLElement>("[data-dealership-field]")!;
+    const message = "Seçili ülkeye uygun geçerli bir telefon numarası girin.";
+    expect(within(field).getAllByText(message)).toHaveLength(1);
+    const descriptions = phone.getAttribute("aria-describedby")!.split(/\s+/).map(id => document.getElementById(id)!);
+    expect(descriptions.every(Boolean)).toBe(true);
+    expect(descriptions.filter(node => node.textContent === message)).toHaveLength(1);
+    expect(descriptions.filter(node => node.id.endsWith("-error"))).toHaveLength(1);
+    expect(phone.getAttribute("aria-invalid")).toBe("true");
+    expect(openDraft).not.toHaveBeenCalled();
+    change(/^Telefon$/, "5321234567"); fireEvent.blur(phone);
+    expect(within(field).queryByText(message)).toBeNull();
+    expect(phone.hasAttribute("aria-invalid")).toBe(false);
   });
   it("clears district when the city changes", () => {
     render(<DealershipForm />); change(/^İl \*/, "Osmaniye"); change(/^İlçe/, "Düziçi"); change(/^İl \*/, "Adana");

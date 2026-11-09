@@ -23,6 +23,21 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
+it("retains one built-in phone error on blur when no form error owns the message", () => {
+  render(<CustomerPhoneField name="phone" lang="tr" />);
+  const input = screen.getByRole("textbox", { name: "Telefon" });
+  fireEvent.change(input, { target: { value: "123" } });
+  fireEvent.blur(input);
+  const alert = screen.getByRole("alert");
+  expect(alert.textContent).toBe("Seçili ülkeye uygun geçerli bir telefon numarası girin.");
+  expect(input.getAttribute("aria-describedby")!.split(/\s+/)).toContain(alert.id);
+  expect(input.getAttribute("aria-invalid")).toBe("true");
+  fireEvent.change(input, { target: { value: "5321234567" } });
+  fireEvent.blur(input);
+  expect(screen.queryByRole("alert")).toBeNull();
+  expect(input.hasAttribute("aria-invalid")).toBe(false);
+});
+
 it("supports searching country codes, keyboard selection and Escape without submitting the form", async () => {
   const submit = vi.fn();
   const fetch = vi.fn().mockResolvedValue(Response.json({ items: [{ country: "GB", name: "Birleşik Krallık", code: "+44" }] }));
