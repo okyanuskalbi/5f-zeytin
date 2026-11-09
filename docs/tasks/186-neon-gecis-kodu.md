@@ -42,4 +42,11 @@ Kullanıcı kararı (9 Kas 2026: "Neon (Vercel üzerinden) ile devam et"): Supab
 - Arayüz tasarımını değiştirme (yalnız üyelik akışının çalışması için gereken en küçük değişiklik).
 - `docs/` altında yalnız `docs/yayin/neon-gecis.md`, Coder Notu ve Durum.
 
-## Durum: BEKLİYOR
+## Claude notu (9 Kasım 2026)
+
+- Kod ayrı çalışma kopyasında tamamlandı (`AFINA-KAYNAK/wt/neon`, yerel kayıtlar `cf62d06` + `6732cf3`, main'e alınmadı; yamalar `AFINA-KAYNAK/neon-gecis/v2/`). Ayrıntılı Coder Notu ve Düzeltme 186-2 o kopyadaki görev dosyasında.
+- Kullanıcı kararıyla Supabase'ten veri aktarımı yok; aktarım aracı ve eski bcrypt yolu kaldırıldı; `db:seed`, `admin:grant`, `AUTH_REQUIRE_EMAIL_VERIFICATION`, hesap bazlı hız sınırı eklendi.
+- İki bağımsız denetim (doğruluk + güvenlik): CRITICAL/HIGH yok. Claude yerel doğrulaması: boş veritabanında 3 migration + ikinci çalıştırmada değişiklik yok; `db:seed --apply` iki kez → 6 ürün; `admin:grant` kayıtsız e-postada açık hata; 141 dosya / 1373 test (DB'li), 1347 + 26 atlanan (DB'siz); lint, typecheck, build yeşil; `.next/static` içinde sır yok.
+- Açık: `.env.example` değişikliği kayda alınmadı (izin kuralı okumayı engelliyor); 187'de yalnız değişken adları içerdiği doğrulanıp kaydedilecek. Kopyada `npm ci` yarım kalmıştı, yeniden kuruldu.
+
+## Durum: TAMAMLANDI (ayrı kopyada; main'e 187 ile alınacak)
