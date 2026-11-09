@@ -131,4 +131,13 @@ bulguları ayrı deneme kayıtlarında korunur; son kabul bunlarla karıştırı
 `dpl_HckKC2sMZ6CVuXEMED25fLufsR8w` dağıtımına bağlı. Production dağıtımı veya
 alan adı ataması yapılmadı. Bu görevin açık kabul maddesi kalmadı.
 
+## Claude notu — production yayını (9 Kasım 2026)
+
+- Kullanıcı onayı: "ok gönder". Kesin kayıt `047d772` (kod `977dc9d` ile aynı), GitHub CI `42694544292` SUCCESS (workflow_dispatch).
+- Production: `dpl_BJGY73vHRttFkHLW18qMcZgQ4w3k`, READY, `afinazeytin.com` bu dağıtıma bağlı. Yayın betiği `.cache/task-187-yayin/deploy.py` (küçük dosya gömme sınırı 8192 → 1024; istek boyutu güvenlik sınırı aşılıyordu).
+- Canlı doğrulama: `/api/products` 6 ürün, kaynak `database`; kayıt 202 ("Hesabınız hazır"); yanlış şifre 401; şifreyle giriş 200; `/api/account` 200 ve e-posta eşleşti; `/hesabim` e-postayı gösteriyor; e-posta bağlantısı isteği 503 `email_not_configured` (açık mesaj); çıkış 200, sonrası `/api/account` 401; oturumsuz `/admin` 401 "Giriş gerekli"; sayfa hatası yok.
+- Deneme hesabı ve kayıtları silindi (bağlantı bilgisi yalnız bellekte): kalan kullanıcı 0, oturum 0, ürün 6.
+- **Geri dönüş:** önceki production `dpl_HckKC2sMZ6CVuXEMED25fLufsR8w` (Supabase'li C sürümü) Vercel'de yeniden atanabilir. Supabase değişkenleri ve projesi duruyor; kapatma kullanıcı onayıyla.
+- Açık: ilk yönetici (`admin:grant`, kullanıcı kayıt olduktan sonra), SMTP (gelince `AUTH_REQUIRE_EMAIL_VERIFICATION=true`), Supabase'in kapatılması.
+
 ## Durum: TAMAMLANDI
