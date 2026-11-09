@@ -286,9 +286,9 @@
       ]
     },
     "urun-01-kirma-10kg": {
-      "source": "urun-gorselleri/teneke-3lt/adaylar/dogal-kirma-yesil-3lt-studyo-1.png",
-      "sourceSha256": "a9e0245c6385685c4e63b6cf161bba7c14f72d83c97c2a52c07af8e07a281194",
-      "approval": "docs/tasks/182-teneke-3lt.md",
+      "source": "urun-gorselleri/teneke-3lt/siyah/dekupe/A-dogal-kirma-yesil-3lt.png",
+      "sourceSha256": "b45f6920098388804673c0eba7f0666f65e9b5731e8673b6c31a4630f51e1b23",
+      "approval": "docs/tasks/183-siyah-teneke.md",
       "alt": "Doğal Kırma Yeşil Zeytin, 3 L teneke",
       "sourceWidth": 1122,
       "sourceHeight": 1402,
@@ -300,8 +300,8 @@
           "format": "avif",
           "width": 240,
           "height": 300,
-          "bytes": 9008,
-          "sha256": "96afa5a079f74109a447690ac4878ab3389487a03964dd02a8431049c838fc37",
+          "bytes": 6873,
+          "sha256": "d54be21d963b5f33622191b1f95fe82f47ffd34ef4af1f7e4ad0701296c3b312",
           "quality": 50
         },
         {
@@ -309,8 +309,8 @@
           "format": "webp",
           "width": 240,
           "height": 300,
-          "bytes": 13862,
-          "sha256": "2b22aa756c322b8d6d88c60853d1ca0f0a10092fb52da5c3a70c09b88caf4f9d",
+          "bytes": 11342,
+          "sha256": "8107e8477c68f63e9e5c2a4ef64a60755831e5e2850f2807d4b1475ca84dd4e4",
           "quality": 76
         },
         {
@@ -318,8 +318,8 @@
           "format": "avif",
           "width": 480,
           "height": 600,
-          "bytes": 20848,
-          "sha256": "0784ce68bb84358475e8d22e0e7df38f749ae71ff52ab1afaa9894bc6f256c75",
+          "bytes": 14460,
+          "sha256": "7f89c0a22c8f9c353a14a5d555ea0e8f7124ce8371334a0e6cff917836641991",
           "quality": 50
         },
         {
@@ -327,8 +327,8 @@
           "format": "webp",
           "width": 480,
           "height": 600,
-          "bytes": 35438,
-          "sha256": "c81be1d7d004f2fe2037e5208a3561e18a11b93243e2491de1fdc63e49f00d56",
+          "bytes": 26644,
+          "sha256": "cd6e4672c607afb8695005f5434ad303ac50cf3d01657c263527e52e894ed87b",
           "quality": 76
         },
         {
@@ -336,8 +336,8 @@
           "format": "avif",
           "width": 72,
           "height": 90,
-          "bytes": 2124,
-          "sha256": "b67e5b27a9c4e95977d7acf53f11c93b40a19c8031b796dd5044d7f8176396fe",
+          "bytes": 1791,
+          "sha256": "818734a156040f89260c8e24d764feaaa97dd9efb7182c3b28f5aa2e5fc45566",
           "quality": 50
         },
         {
@@ -345,8 +345,8 @@
           "format": "webp",
           "width": 72,
           "height": 90,
-          "bytes": 3104,
-          "sha256": "d0fa9c177cafb67cad98156ddb0be4fd6784daca73f156c9cd97f7c40621e218",
+          "bytes": 2656,
+          "sha256": "0917e5ab66f641b1695f89b06bf802c4e79fb0d02f9660afda3295c5d917f7c9",
           "quality": 76
         },
         {
@@ -354,8 +354,8 @@
           "format": "avif",
           "width": 96,
           "height": 120,
-          "bytes": 2931,
-          "sha256": "b7f33887b0b6e7d4986da30910e77b7ffa8fd033663a35d83acc92ff9154ea74",
+          "bytes": 2496,
+          "sha256": "f9f4272c809c829d47497517eec516b0c74a398c3fb5a3268bcd14bba072b5d1",
           "quality": 50
         },
         {
@@ -363,8 +363,8 @@
           "format": "webp",
           "width": 96,
           "height": 120,
-          "bytes": 4290,
-          "sha256": "fdf353776e39f0b1437e61fdac05535326343f6666930580ddfbd2b0449c89be",
+          "bytes": 3710,
+          "sha256": "840ba5ae3587ec78da9043e5492f075a77948099e874dde82f67b2c65c850f91",
           "quality": 76
         },
         {
@@ -372,8 +372,8 @@
           "format": "avif",
           "width": 144,
           "height": 180,
-          "bytes": 4212,
-          "sha256": "792594dea9fd8b151b2e6c41c19b617887af0dc582c2638aee779a891f96cf44",
+          "bytes": 3489,
+          "sha256": "3c4aa05048da6677cd2b36f1c07d4edcc50175bae826431ae4d35016cf68d8ac",
           "quality": 50
         },
         {
@@ -381,8 +381,8 @@
           "format": "webp",
           "width": 144,
           "height": 180,
-          "bytes": 6994,
-          "sha256": "90368c9943d00b20ad25b53f4dd4a788acfef81d2481aaaa49dca4f28d88bb8e",
+          "bytes": 5994,
+          "sha256": "55c606879b003e6bb80191c641a4d86176f137f790a9616c5834cf3d0adea9bf",
           "quality": 76
         },
         {
@@ -390,8 +390,8 @@
           "format": "avif",
           "width": 192,
           "height": 240,
-          "bytes": 6509,
-          "sha256": "3a17bd88e665064f0be1f6238fab1a038d60fc53555b85553d1fb3a4d005e4e4",
+          "bytes": 5088,
+          "sha256": "42d0fc0390c567da4b8bb94ff2e754a0d89aa1b287854f7823e602dffa2423e4",
           "quality": 50
         },
         {
@@ -399,8 +399,8 @@
           "format": "webp",
           "width": 192,
           "height": 240,
-          "bytes": 10324,
-          "sha256": "a43280d4ee9594d50e02195499ef3db70eae03a7e71a4489ce2b5c77d63b3d28",
+          "bytes": 8602,
+          "sha256": "102224ff980814e0db77935bfdca6cf29cc2d537f264079314a9aa23f39b9661",
           "quality": 76
         },
         {
@@ -408,8 +408,8 @@
           "format": "avif",
           "width": 216,
           "height": 270,
-          "bytes": 7306,
-          "sha256": "0f653431e6610a597f95b178a436f6f8d67b08e3ac0670f53ba5f4576b2d9bbd",
+          "bytes": 5848,
+          "sha256": "bcec6f224378d1d0f6e534f01c421e15b914f2d26dd7bbcff3e4d00be10b1dfa",
           "quality": 50
         },
         {
@@ -417,8 +417,8 @@
           "format": "webp",
           "width": 216,
           "height": 270,
-          "bytes": 12106,
-          "sha256": "b8c1598aec5d742b232e75c528856f1ac0983322271f994eafe1b59c34cb9eb6",
+          "bytes": 10064,
+          "sha256": "31ba46e77ebd7dbe3ef0aca7950da6f0dec6f05eca665b4586ecd266b3f27998",
           "quality": 76
         },
         {
@@ -426,8 +426,8 @@
           "format": "avif",
           "width": 288,
           "height": 360,
-          "bytes": 10983,
-          "sha256": "f65f36cca0044385d2178c8484a25fe01209a2d3e221ad8c0a626d670d3c6da2",
+          "bytes": 7881,
+          "sha256": "97380c4d54d29f1af3ead11b7d4bce09eb798a6f4a47188ef15dd3f0ca70f10e",
           "quality": 50
         },
         {
@@ -435,8 +435,8 @@
           "format": "webp",
           "width": 288,
           "height": 360,
-          "bytes": 17648,
-          "sha256": "fd94f7d00edd9f7f7d3bb6ad870e27fb9ef2f264b7fc5c2cccf3bceb9e28569a",
+          "bytes": 13998,
+          "sha256": "ac836b2c77e144a9be8f98e658519441293a72e9f99ef49afb44e8fbc40b3666",
           "quality": 76
         }
       ]
@@ -654,9 +654,9 @@
       ]
     },
     "urun-06-salamura-yesil-5kg": {
-      "source": "urun-gorselleri/teneke-3lt/adaylar/salamura-yesil-3lt-studyo-1.png",
-      "sourceSha256": "74c9085190bd6d7677a2cebd53eccc24b7ec22bb87cb9b9a6b2d1491ae5724e3",
-      "approval": "docs/tasks/182-teneke-3lt.md",
+      "source": "urun-gorselleri/teneke-3lt/siyah/dekupe/A-salamura-yesil-3lt.png",
+      "sourceSha256": "a6bb69da95cb0e6c4c01d1405c30413c841180b2ab99ffe6718e1a175cafe515",
+      "approval": "docs/tasks/183-siyah-teneke.md",
       "alt": "Salamura Yeşil Zeytin, 3 L teneke",
       "sourceWidth": 1122,
       "sourceHeight": 1402,
@@ -668,8 +668,8 @@
           "format": "avif",
           "width": 240,
           "height": 300,
-          "bytes": 8623,
-          "sha256": "374b1dac05b561018f6d505f0f12a16c4c2eddd129a900ebd3623d0180485b2a",
+          "bytes": 6818,
+          "sha256": "19f74ebaacf87cc05851e6ec8f7af74a91e5309610d0a124d33dda2a2d09a982",
           "quality": 50
         },
         {
@@ -677,8 +677,8 @@
           "format": "webp",
           "width": 240,
           "height": 300,
-          "bytes": 13558,
-          "sha256": "b33c144a69f0d25b5ad83c50d437b21579ecd2505eddf0849db81a14b555fdbb",
+          "bytes": 11262,
+          "sha256": "be14d5a80aaa1b50c15d9b9cbb18254cc1d75efa10c08724e6a04190fb41912f",
           "quality": 76
         },
         {
@@ -686,8 +686,8 @@
           "format": "avif",
           "width": 480,
           "height": 600,
-          "bytes": 20119,
-          "sha256": "9310a74b9e3e846c666c339b2240db93b734e0069996bce7de291ec300006138",
+          "bytes": 14459,
+          "sha256": "9f4e167f65976fb7c1edbe80a2fc1f6a67742ee35c1a4ef2c7696e912c25a51a",
           "quality": 50
         },
         {
@@ -695,8 +695,8 @@
           "format": "webp",
           "width": 480,
           "height": 600,
-          "bytes": 34764,
-          "sha256": "aabc5e859e2d453ac3394d3d258940af9b9b1e090e62210cf12ab7001d99b18a",
+          "bytes": 26518,
+          "sha256": "c97346258caf32deefb9c48bf55acff0dc4f80d8be84f5ad4dff4107b47431b7",
           "quality": 76
         }
       ]
@@ -750,9 +750,9 @@
       ]
     },
     "01-dogal-kirma-yesil-zeytin-10kg-sahne": {
-      "source": "urun-gorselleri/teneke-3lt/adaylar/dogal-kirma-yesil-3lt-studyo-1.png",
-      "sourceSha256": "a9e0245c6385685c4e63b6cf161bba7c14f72d83c97c2a52c07af8e07a281194",
-      "approval": "docs/tasks/182-teneke-3lt.md",
+      "source": "urun-gorselleri/teneke-3lt/siyah/dekupe/A-dogal-kirma-yesil-3lt.png",
+      "sourceSha256": "b45f6920098388804673c0eba7f0666f65e9b5731e8673b6c31a4630f51e1b23",
+      "approval": "docs/tasks/183-siyah-teneke.md",
       "alt": "Doğal Kırma Yeşil Zeytin, 3 L teneke, stüdyo çekimi",
       "sourceWidth": 1122,
       "sourceHeight": 1402,
@@ -764,8 +764,8 @@
           "format": "avif",
           "width": 800,
           "height": 1000,
-          "bytes": 40442,
-          "sha256": "d0197e9b1034a31cabf10f10f18229ae61d8506203d17a63ced839215c3e0931",
+          "bytes": 26615,
+          "sha256": "b3034018df315cfc32f358f83ed40e5344801a45aa5436cd00a912e58acb7e6b",
           "quality": 50
         },
         {
@@ -773,8 +773,8 @@
           "format": "webp",
           "width": 800,
           "height": 1000,
-          "bytes": 70458,
-          "sha256": "7d05003ad97fec5d8f2794f7cc1a2ba8238039e23dd398ef9d23bbb1e6b60203",
+          "bytes": 49916,
+          "sha256": "64710e8f0d2290bc396d743d7e03b3f878b0a8c47289ac84e3d0b66be51310fa",
           "quality": 76
         },
         {
@@ -782,8 +782,8 @@
           "format": "avif",
           "width": 1122,
           "height": 1402,
-          "bytes": 57862,
-          "sha256": "0f8e8c05d538931df2d54db76ac074c950f331118e7004feba86d53895d34a6d",
+          "bytes": 35315,
+          "sha256": "17c7d3a7f61dcf26bf8bb9afe9f150e95af2ba014d7c5af3fb17c8084a2bd125",
           "quality": 50
         },
         {
@@ -791,16 +791,16 @@
           "format": "webp",
           "width": 1122,
           "height": 1402,
-          "bytes": 94136,
-          "sha256": "b43dde24ff345f876926df089533c35eaee0d497a0e6e230266f8533ccf53327",
+          "bytes": 63272,
+          "sha256": "63569075b8c9362f080cb4247d0bd2a0be969ba33fd9d06753f1fcfb97b3f6b7",
           "quality": 76
         }
       ]
     },
     "01-dogal-kirma-yesil-zeytin-10kg-studyo": {
-      "source": "urun-gorselleri/teneke-3lt/adaylar/dogal-kirma-yesil-3lt-studyo-1.png",
-      "sourceSha256": "a9e0245c6385685c4e63b6cf161bba7c14f72d83c97c2a52c07af8e07a281194",
-      "approval": "docs/tasks/182-teneke-3lt.md",
+      "source": "urun-gorselleri/teneke-3lt/siyah/dekupe/A-dogal-kirma-yesil-3lt.png",
+      "sourceSha256": "b45f6920098388804673c0eba7f0666f65e9b5731e8673b6c31a4630f51e1b23",
+      "approval": "docs/tasks/183-siyah-teneke.md",
       "alt": "Doğal Kırma Yeşil Zeytin, 3 L teneke, stüdyo çekimi",
       "sourceWidth": 1122,
       "sourceHeight": 1402,
@@ -812,8 +812,8 @@
           "format": "avif",
           "width": 800,
           "height": 1000,
-          "bytes": 40442,
-          "sha256": "d0197e9b1034a31cabf10f10f18229ae61d8506203d17a63ced839215c3e0931",
+          "bytes": 26615,
+          "sha256": "b3034018df315cfc32f358f83ed40e5344801a45aa5436cd00a912e58acb7e6b",
           "quality": 50
         },
         {
@@ -821,8 +821,8 @@
           "format": "webp",
           "width": 800,
           "height": 1000,
-          "bytes": 70458,
-          "sha256": "7d05003ad97fec5d8f2794f7cc1a2ba8238039e23dd398ef9d23bbb1e6b60203",
+          "bytes": 49916,
+          "sha256": "64710e8f0d2290bc396d743d7e03b3f878b0a8c47289ac84e3d0b66be51310fa",
           "quality": 76
         },
         {
@@ -830,8 +830,8 @@
           "format": "avif",
           "width": 1122,
           "height": 1402,
-          "bytes": 57862,
-          "sha256": "0f8e8c05d538931df2d54db76ac074c950f331118e7004feba86d53895d34a6d",
+          "bytes": 35315,
+          "sha256": "17c7d3a7f61dcf26bf8bb9afe9f150e95af2ba014d7c5af3fb17c8084a2bd125",
           "quality": 50
         },
         {
@@ -839,8 +839,8 @@
           "format": "webp",
           "width": 1122,
           "height": 1402,
-          "bytes": 94136,
-          "sha256": "b43dde24ff345f876926df089533c35eaee0d497a0e6e230266f8533ccf53327",
+          "bytes": 63272,
+          "sha256": "63569075b8c9362f080cb4247d0bd2a0be969ba33fd9d06753f1fcfb97b3f6b7",
           "quality": 76
         }
       ]
@@ -1230,9 +1230,9 @@
       ]
     },
     "06-salamura-yesil-zeytin-5kg-sahne": {
-      "source": "urun-gorselleri/teneke-3lt/adaylar/salamura-yesil-3lt-studyo-1.png",
-      "sourceSha256": "74c9085190bd6d7677a2cebd53eccc24b7ec22bb87cb9b9a6b2d1491ae5724e3",
-      "approval": "docs/tasks/182-teneke-3lt.md",
+      "source": "urun-gorselleri/teneke-3lt/siyah/dekupe/A-salamura-yesil-3lt.png",
+      "sourceSha256": "a6bb69da95cb0e6c4c01d1405c30413c841180b2ab99ffe6718e1a175cafe515",
+      "approval": "docs/tasks/183-siyah-teneke.md",
       "alt": "Salamura Yeşil Zeytin, 3 L teneke, stüdyo çekimi",
       "sourceWidth": 1122,
       "sourceHeight": 1402,
@@ -1244,8 +1244,8 @@
           "format": "avif",
           "width": 800,
           "height": 1000,
-          "bytes": 40118,
-          "sha256": "be7bf95492f82f6140f6a807b5044acab53acc393d731ce27944951dc201bbe7",
+          "bytes": 26474,
+          "sha256": "f7e3bce03c82e1b0676e51058804c5e11db4e2a259c39dc1e1ab20ef799fbe85",
           "quality": 50
         },
         {
@@ -1253,8 +1253,8 @@
           "format": "webp",
           "width": 800,
           "height": 1000,
-          "bytes": 69148,
-          "sha256": "c35a5d256fa59075c182bacdeb2338bd411a0b2a3567c1f157a754d655160074",
+          "bytes": 48966,
+          "sha256": "fc0ebe0a3d205f6a556f444c09e7f97bdd365943705a713bf4fcf04dc0874517",
           "quality": 76
         },
         {
@@ -1262,8 +1262,8 @@
           "format": "avif",
           "width": 1122,
           "height": 1402,
-          "bytes": 58173,
-          "sha256": "7f53aaf5a0a7cde1e0440884c731707d22799d17ee4d47ebd4891ebdc6d44e0c",
+          "bytes": 33535,
+          "sha256": "a4445a5fcb6bf21d6a2a7b54f4ca4787096d2d4df81e16bc3c7648660b249630",
           "quality": 50
         },
         {
@@ -1271,16 +1271,16 @@
           "format": "webp",
           "width": 1122,
           "height": 1402,
-          "bytes": 93890,
-          "sha256": "c01bbe979ef517f684ab001a71a3d494cd609091b9626bb8cc024f4e89771ed1",
+          "bytes": 60476,
+          "sha256": "50b1606060edcc602e03522c063bf88ceb1bd12be103f55a01e61b7f4496f483",
           "quality": 76
         }
       ]
     },
     "06-salamura-yesil-zeytin-5kg-studyo": {
-      "source": "urun-gorselleri/teneke-3lt/adaylar/salamura-yesil-3lt-studyo-1.png",
-      "sourceSha256": "74c9085190bd6d7677a2cebd53eccc24b7ec22bb87cb9b9a6b2d1491ae5724e3",
-      "approval": "docs/tasks/182-teneke-3lt.md",
+      "source": "urun-gorselleri/teneke-3lt/siyah/dekupe/A-salamura-yesil-3lt.png",
+      "sourceSha256": "a6bb69da95cb0e6c4c01d1405c30413c841180b2ab99ffe6718e1a175cafe515",
+      "approval": "docs/tasks/183-siyah-teneke.md",
       "alt": "Salamura Yeşil Zeytin, 3 L teneke, stüdyo çekimi",
       "sourceWidth": 1122,
       "sourceHeight": 1402,
@@ -1292,8 +1292,8 @@
           "format": "avif",
           "width": 800,
           "height": 1000,
-          "bytes": 40118,
-          "sha256": "be7bf95492f82f6140f6a807b5044acab53acc393d731ce27944951dc201bbe7",
+          "bytes": 26474,
+          "sha256": "f7e3bce03c82e1b0676e51058804c5e11db4e2a259c39dc1e1ab20ef799fbe85",
           "quality": 50
         },
         {
@@ -1301,8 +1301,8 @@
           "format": "webp",
           "width": 800,
           "height": 1000,
-          "bytes": 69148,
-          "sha256": "c35a5d256fa59075c182bacdeb2338bd411a0b2a3567c1f157a754d655160074",
+          "bytes": 48966,
+          "sha256": "fc0ebe0a3d205f6a556f444c09e7f97bdd365943705a713bf4fcf04dc0874517",
           "quality": 76
         },
         {
@@ -1310,8 +1310,8 @@
           "format": "avif",
           "width": 1122,
           "height": 1402,
-          "bytes": 58173,
-          "sha256": "7f53aaf5a0a7cde1e0440884c731707d22799d17ee4d47ebd4891ebdc6d44e0c",
+          "bytes": 33535,
+          "sha256": "a4445a5fcb6bf21d6a2a7b54f4ca4787096d2d4df81e16bc3c7648660b249630",
           "quality": 50
         },
         {
@@ -1319,8 +1319,8 @@
           "format": "webp",
           "width": 1122,
           "height": 1402,
-          "bytes": 93890,
-          "sha256": "c01bbe979ef517f684ab001a71a3d494cd609091b9626bb8cc024f4e89771ed1",
+          "bytes": 60476,
+          "sha256": "50b1606060edcc602e03522c063bf88ceb1bd12be103f55a01e61b7f4496f483",
           "quality": 76
         }
       ]

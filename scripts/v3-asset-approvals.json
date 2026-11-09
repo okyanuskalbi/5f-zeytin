@@ -63,6 +63,18 @@
       "taslak/on-dal-temiz.png": "a6776396753f9287bf1e78b76c79a17e5fc7b89e4a33673c8208a381ef3b0c45"
     }
   },
+  "teneke183": {
+    "file": "docs/tasks/183-siyah-teneke.md",
+    "date": "2026-11-09",
+    "originalHashes": {
+      "A-dogal-kirma-yesil-3lt.png": "362ae3fd817bdc4419742aed398cd7107be5b8fd414a72514a4bd9fd38a14b6f",
+      "A-salamura-yesil-3lt.png": "f423f86b1b046ac6ef345dfe70c38f000a0bee7325df095f9a71648f8745a94c"
+    },
+    "hashes": {
+      "A-dogal-kirma-yesil-3lt.png": "b45f6920098388804673c0eba7f0666f65e9b5731e8673b6c31a4630f51e1b23",
+      "A-salamura-yesil-3lt.png": "a6bb69da95cb0e6c4c01d1405c30413c841180b2ab99ffe6718e1a175cafe515"
+    }
+  },
   "teneke182": {
     "file": "docs/tasks/182-teneke-3lt.md",
     "date": "2026-11-07",

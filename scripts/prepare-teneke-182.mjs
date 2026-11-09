@@ -1,4 +1,5 @@
-// Only the six Task182 asset keys are rebuilt; other products stay byte-identical.
+// Historical command name: rebuild only the six active tin keys (Task182/183).
+// Other products stay byte-identical.
 import { readFile, writeFile, unlink } from "node:fs/promises";
 import { resolve } from "node:path";
 import sharp from "sharp";
@@ -7,7 +8,7 @@ import { approvals, formats, outputDimensions, specs } from "./v3-asset-specs.mj
 import { runtimeAssets, heroCardAsset } from "./prepare-v4-assets.mjs";
 const path = resolve(repoRoot, "public/images/v3/manifest.json");
 const manifest = JSON.parse(await readFile(path, "utf8"));
-for (const spec of specs.filter(spec => spec.group === "teneke182")) {
+for (const spec of specs.filter(spec => spec.group === "teneke182" || spec.group === "teneke183")) {
   const source = await approvedSource(spec);
   const meta = await sharp(source).metadata();
   const previous = manifest.assets[spec.id];
@@ -25,4 +26,4 @@ for (const spec of specs.filter(spec => spec.group === "teneke182")) {
 await writeFile(path, JSON.stringify(manifest, null, 2) + "\n");
 await writeFile(resolve(repoRoot, "lib/media/v4-assets.json"), JSON.stringify(runtimeAssets(manifest), null, 2) + "\n");
 await writeFile(resolve(repoRoot, "lib/media/hero-card-asset.json"), JSON.stringify(heroCardAsset(manifest), null, 2) + "\n");
-console.log("PASS: Task182 approved studio sources rebuilt without enlargement");
+console.log("PASS: Active approved tin sources rebuilt without enlargement");

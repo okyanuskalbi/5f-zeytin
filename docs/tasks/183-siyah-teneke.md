@@ -36,4 +36,14 @@ Kullanıcı kararı (9 Kas 2026: "teneke siyah olabilir"): Doğal Kırma Yeşil 
 - Production yayını yapma (Vercel REST dahil). Yalnız commit + testler yeşilse `origin main` push (CI çalışır, yayın yapmaz).
 - `docs/` değiştirme (yalnız Coder Notu/Durum).
 
-## Durum: BEKLİYOR
+## Coder Notu
+
+- 9 Kasım 2026: Maske/dekupe ve test işleri iki bağımsız Codex alt ajanıyla paralel yürütüldü; birleştirme, son görsel inceleme ve komut kabulü ana ajan tarafından yapıldı.
+- Yerel OpenCV denemesi koyu gövdeden parçalar çıkardığı için dolu, düzgün dış hat maskesi kullanıldı. `scripts/prepare-black-tin-cutouts.mjs` iki maskeyi ve istenen `AFINA-KAYNAK/urun-gorselleri/teneke-3lt/siyah/dekupe/A-*.png` kaynaklarını tekrar üretir. Görsel üretimi veya dış servis kullanılmadı. Her iki kaynakta da saydam olmayan 827.590 pikselin RGB değerleri özgün onaylı görselle birebir aynı; yazı ve tasarım değişmedi.
+- Özgün ve şeffaf kaynakların SHA-256 kayıtları ayrı doğrulanır. Mevcut `node scripts/prepare-teneke-182.mjs` komutu artık etkin siyah teneke kaynaklarını kullanır; aynı yumuşak gölgeyle yalnız altı mevcut görsel anahtarının 36 AVIF/WebP türevini yeniler. Diğer dört ürünün 48 türevi ve toplam 74 kapsam dışı görsel bayt bayt aynı. Ürün kimliği, adı, ağırlığı, fiyatı ve stoku değişmedi; açıklamalarda çelişkili teneke rengi bulunmadığı için metinlere dokunulmadı.
+- RED: `node --test scripts/teneke-cutout.test.mjs` eski açık renkli görsellerde 12 beklenen hata verdi; diğer dört ürünün 4 koruma testi geçti. Kanıt `.cache/task-183/red-tests.log`.
+- GREEN: `node --test scripts/teneke-cutout.test.mjs scripts/check-v3-assets.test.mjs` **23/23 PASS**; kaynak eşleşmesi, tüm boyutlarda opak siyah gövde, şeffaf dış kenarlar, yumuşak gölge ve diğer dört ürünün bayt koruması doğrulandı. `npm run check:assets`, `npm run test -- --maxWorkers=2` (**125 dosya / 1464 test**), `npm run lint`, `npm run typecheck`, `npm run build` (Turbopack) **PASS**. Kaynak klasörü bulunmayan CI koşulu da `V3_SOURCE_ROOT` ile ayrıca doğrulandı.
+- Beyaz/krem kaynak ve 2× kenar görüntüleri ile son WebP türevlerinden hazırlanmış `product-cards-cream.png` / `product-cards-white.png`, `.cache/task-183/` altında incelendi; koyu zemin kalıntısı görülmedi. Bunlar yerel görsel kontrol çıktılarıdır; tarayıcı kabulü kullanıcı talimatıyla Claude'dadır.
+- Komut çıktıları ve kaynak/diğer ürün karşılaştırmaları `.cache/task-183/` altında korunur. Production yayını, Vercel REST çağrısı veya canlı veritabanı işlemi yapılmadı. Tek nihai yeşil kayıt hazırlanır; RED/ara kayıt gönderilmez. Kod ve komut kabulü tamamlandı; bu görevin yayın veya tarayıcı kabulü iddiası yoktur.
+
+## Durum: TAMAMLANDI

@@ -32,16 +32,16 @@ for (const source of Object.keys(approvals.gallery.hashes).filter(file => file.e
   specs.push({ id: source.replace(".webp", ""), group: "gallery", source, alt: `${product.alt}, ${studio ? "stüdyo çekimi" : "sofra sunumu"}`, widths: [800, 1600], aspect: studio ? 4 / 5 : 16 / 9 });
 }
 
-// Task182: approved round tins replace both studio and old scene derivatives.
+// Task183: approved black/gold tins replace both studio and old scene derivatives.
 // Keep stable keys; 1122w is the original source width, never enlarge to 1600w.
 for (const spec of specs) {
   const first = /^(urun-01-|01-)/.test(spec.id);
   const sixth = /^(urun-06-|06-)/.test(spec.id);
   if (!first && !sixth) continue;
-  spec.group = "teneke182";
-  spec.cutoutMask = first ? "dogal-kirma-yesil-3lt.png" : "salamura-yesil-3lt.png";
-  spec.shadowBaseline = first ? 1267 : 1258;
-  spec.source = first ? "dogal-kirma-yesil-3lt-studyo-1.png" : "salamura-yesil-3lt-studyo-1.png";
+  spec.group = "teneke183";
+  spec.cutoutMask = first ? "task183-dogal-kirma-yesil-3lt.png" : "task183-salamura-yesil-3lt.png";
+  spec.shadowBaseline = 1238;
+  spec.source = first ? "A-dogal-kirma-yesil-3lt.png" : "A-salamura-yesil-3lt.png";
   spec.alt = `${first ? "Doğal Kırma Yeşil Zeytin" : "Salamura Yeşil Zeytin"}, 3 L teneke${spec.id.startsWith("urun-") ? "" : ", stüdyo çekimi"}`;
   delete spec.threshold;
   delete spec.aspect;
