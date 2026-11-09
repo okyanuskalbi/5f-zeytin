@@ -6,7 +6,7 @@ import sharp from "sharp";
 import { approvals, formats, outputDimensions, specs } from "./v3-asset-specs.mjs";
 
 export const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-export const sourceRoot = resolve(process.env.V3_SOURCE_ROOT ?? resolve(repoRoot, "../AFINA-KAYNAK"));
+export const sourceRoot = resolve(process.env.V3_SOURCE_ROOT ?? resolve(repoRoot, "AFINA-KAYNAK"));
 export const sourceDirectories = { v3: "zeytin-v3-gorseller", gallery: "urun-gorselleri/onayli", teneke182: "urun-gorselleri/teneke-3lt/adaylar" };
 export const sha256 = bytes => createHash("sha256").update(bytes).digest("hex");
 

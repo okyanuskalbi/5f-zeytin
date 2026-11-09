@@ -21,3 +21,7 @@ __pycache__/
 
 # Local Google Flow reference candidates; approval is separate from runtime.
 output/flow-keyframes/
+
+# Yerel proje grubu; kurumsal site kendi Git deposunu korur.
+/AFINA-KAYNAK/
+/AFINA-KURUMSAL/

@@ -5,7 +5,7 @@ import sharp from "sharp";
 import approvals from "./v3-asset-approvals.json" with { type: "json" };
 import { alphaBounds, repoRoot, sha256 } from "./prepare-v3-assets.mjs";
 
-export const sourceRoot = resolve(repoRoot, "../AFINA-KAYNAK");
+export const sourceRoot = resolve(repoRoot, "AFINA-KAYNAK");
 export const formats = ["avif", "webp"];
 export const specs = [
   { id: "arka-masaustu", group: "heroLayers", source: "taslak/arka-masaustu.png", widths: [1200, 2048], budget: 120_000 },
