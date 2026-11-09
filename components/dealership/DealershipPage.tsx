@@ -21,9 +21,9 @@ const steps = [
 ];
 
 const packaging = [
-  { image: "urun-01-kirma-10kg", name: "Doğal Kırma Yeşil Zeytin", size: "3 L teneke" },
-  { image: "urun-02-kirma-1kg", name: "Doğal Kırma Yeşil Zeytin", size: "1 kg kavanoz" },
-  { image: "urun-04-yag-1l", name: "Natürel Sızma Zeytinyağı", size: "1 L şişe" },
+  { image: "urun-01-kirma-10kg", name: "Doğal Kırma Yeşil Zeytin", size: "3 L teneke", sizes: "(max-width: 767px) 45vw, (max-width: 1100px) 25vw, 260px" },
+  { image: "urun-02-kirma-1kg", name: "Doğal Kırma Yeşil Zeytin", size: "1 kg kavanoz", sizes: "(max-width: 767px) 28vw, (max-width: 1280px) 15vw, 180px" },
+  { image: "urun-04-yag-1l", name: "Natürel Sızma Zeytinyağı", size: "1 L şişe", sizes: "(max-width: 767px) 28vw, (max-width: 1280px) 15vw, 180px" },
 ];
 
 export function DealershipPage(): JSX.Element {
@@ -70,8 +70,8 @@ export function DealershipPage(): JSX.Element {
           </ul>
         </div>
         <div className={styles.packaging}>
-          {packaging.map(({ image, name, size }) => <figure key={image}>
-            <V3Picture image={v3Image(image)} sizes="(max-width: 767px) 28vw, (max-width: 1280px) 15vw, 180px" />
+          {packaging.map(({ image, name, size, sizes }) => <figure key={image}>
+            <V3Picture image={v3Image(image)} sizes={sizes} />
             <figcaption><span>{name}</span><strong>{size}</strong></figcaption>
           </figure>)}
         </div>

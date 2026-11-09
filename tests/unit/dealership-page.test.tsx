@@ -11,25 +11,6 @@ vi.mock("@/components/dealership/DealershipForm", () => ({
 afterEach(cleanup);
 
 const pageCss = parse(readFileSync("components/dealership/DealershipPage.module.css", "utf8"));
-const classicCss = parse(readFileSync("components/landing/ClassicHome.module.css", "utf8"));
-
-function declarations(css: ReturnType<typeof parse>, selector: string, viewport: number): Record<string, string> {
-  const values: Record<string, string> = {};
-  css.walkRules(selector, rule => {
-    const parent = rule.parent;
-    if (parent?.type === "atrule" && parent.name === "media") {
-      const maximum = parent.params.match(/max-width:\s*(\d+)px/);
-      if (!maximum || viewport > Number(maximum[1])) return;
-    }
-    rule.walkDecls(declaration => { values[declaration.prop] = declaration.value; });
-  });
-  return values;
-}
-
-function trackRatios(template: string): number[] {
-  const expanded = template.replace(/repeat\((\d+),minmax\(0,([\d.]+)fr\)\)/g, (_, count, weight) => Array(Number(count)).fill(`minmax(0,${weight}fr)`).join(" "));
-  return [...expanded.matchAll(/([\d.]+)fr/g)].map(match => Number(match[1]));
-}
 
 it("introduces dealership with one H1 and working application and product anchors", () => {
   const { container } = render(<DealershipPage />);
@@ -51,25 +32,30 @@ it("offers a sharp orchard hero at tablet and desktop widths and keeps the branc
   expect(picture.querySelector("img")?.getAttribute("src")).toContain("/images/klasik/zeytinlik-");
 });
 
-it.each([1440, 768, 390])("keeps the 3 L tin at least ninety percent of the jar height without overflowing at %ipx", viewport => {
+it("gives the wider tin its own responsive source slots while preserving the jar and oil sources", () => {
   render(<DealershipPage />);
   const section = within(screen.getByRole("region", { name: "Neden AFİNA ZEYTİN?" }));
   const images = section.getAllByRole("img");
-  const container = declarations(classicCss, ".container", viewport);
-  const outerWidth = Math.min(viewport - Number(container.width.match(/-\s*(\d+)px/)![1]), parseFloat(container["max-width"]));
-  const facts = declarations(pageCss, ".factsGrid", viewport);
-  const columns = trackRatios(facts["grid-template-columns"]);
-  const packageWidth = (outerWidth - (columns.length - 1) * parseFloat(facts.gap)) / columns.length;
-  const packaging = declarations(pageCss, ".packaging", viewport);
-  const tracks = trackRatios(packaging["grid-template-columns"]);
-  const availableWidth = packageWidth - (tracks.length - 1) * parseFloat(packaging.gap);
-  const widths = tracks.map(ratio => availableWidth * ratio / tracks.reduce((sum, value) => sum + value, 0));
-  const height = declarations(pageCss, ".packaging picture", viewport).height;
-  const clamp = height.match(/clamp\((\d+)px,([\d.]+)vw,(\d+)px\)/);
-  const maximumHeight = clamp ? Math.max(Number(clamp[1]), Math.min(viewport * Number(clamp[2]) / 100, Number(clamp[3]))) : parseFloat(height);
-  const heights = images.map((image, index) => Math.min(maximumHeight, widths[index] * Number(image.getAttribute("height")) / Number(image.getAttribute("width"))));
-  expect(heights[0] / heights[1]).toBeGreaterThanOrEqual(.9);
-  expect(widths.reduce((sum, value) => sum + value, 0) + (tracks.length - 1) * parseFloat(packaging.gap)).toBeLessThanOrEqual(packageWidth + .01);
+  const expectedSizes = [
+    "(max-width: 767px) 45vw, (max-width: 1100px) 25vw, 260px",
+    "(max-width: 767px) 28vw, (max-width: 1280px) 15vw, 180px",
+    "(max-width: 767px) 28vw, (max-width: 1280px) 15vw, 180px",
+  ];
+  images.forEach((image, index) => {
+    expect(image.getAttribute("sizes")).toBe(expectedSizes[index]);
+    expect(image.getAttribute("srcset")).toContain("h600.webp");
+    const source = image.closest("picture")?.querySelector('source[type="image/avif"]');
+    expect(source?.getAttribute("sizes")).toBe(expectedSizes[index]);
+    expect(source?.getAttribute("srcset")).toContain("h600.avif");
+  });
+});
+
+it("fills each packaging frame and aligns contained artwork to its bottom instead of relying on source intrinsic size", () => {
+  const styles: Record<string, string> = {};
+  pageCss.walkRules(".packaging img", rule => {
+    rule.walkDecls(declaration => { styles[declaration.prop] = declaration.value; });
+  });
+  expect(styles).toMatchObject({ width: "100%", height: "100%", "object-fit": "contain", "object-position": "bottom" });
 });
 
 it("shows the three specified business profiles with their descriptions", () => {
