@@ -1,5 +1,7 @@
 .root { background:var(--pro-paper); color:var(--pro-ink); padding-top:var(--header-height); --classic-forest:#142817; --classic-gold:#EDBF58; --classic-dark-gold:#88630B; }
-.root section,.anchor { scroll-margin-top:calc(var(--header-height) + 24px); }
+/* The document already reserves header + 16px. Reset nested section and legacy
+   alias margins here, including FAQ/product modules, to avoid counting twice. */
+.root section,.root span[id][aria-hidden="true"] { scroll-margin-top:0; }
 .container { width:calc(100% - 64px); max-width:1240px; margin-inline:auto; min-width:0; }
 .anchor { position:absolute; inset-block-start:0; inset-inline-start:0; width:1px; height:1px; pointer-events:none; }
 .eyebrow { margin:0 0 16px; font-size:.8125rem; font-weight:700; line-height:1.5; letter-spacing:.2em; color:var(--classic-dark-gold); }

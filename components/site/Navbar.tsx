@@ -71,6 +71,14 @@ export function Navbar(): JSX.Element {
       frame = 0;
       const header = document.querySelector<HTMLElement>("[data-site-navbar]");
       const readingLine = (header?.getBoundingClientRect().bottom ?? 0) + 32;
+      const scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+      // The last section can be too short to reach the reading line before the
+      // document ends. Still identify it when the user reaches the page bottom.
+      if (scrollHeight > window.innerHeight && window.scrollY + window.innerHeight >= scrollHeight - 2
+        && document.getElementById("iletisim")) {
+        setActiveSection(links.findIndex(link => link.href === "/#iletisim"));
+        return;
+      }
       const points = links.flatMap((link, index) => {
         const id = link.href.split("#")[1];
         const element = id ? document.getElementById(id) : null;
