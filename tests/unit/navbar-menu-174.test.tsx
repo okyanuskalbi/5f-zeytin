@@ -26,7 +26,7 @@ it("keeps the original light logo, all seven navigation destinations and shoppin
   expect(home.querySelector("img")?.getAttribute("src")).toContain("yatay-dark");
   const nav = menu.getByRole("navigation", { name: "Site navigasyonu" });
   expect(within(nav).getAllByRole("link").map(link => link.getAttribute("href"))).toEqual(links.map(link => link.href));
-  expect(menu.getByRole("link", { name: "Online Mağaza" }).getAttribute("href")).toBe("/?magaza=ac#urunler");
+  expect(menu.getByRole("link", { name: "Online Mağaza" }).getAttribute("href")).toBe("/urunler");
   expect(menu.getByRole("link", { name: "Hesabım" }).getAttribute("href")).toBe("/hesabim");
   expect(menu.getByRole("link", { name: "Sepetim" }).getAttribute("href")).toBe("/sepet");
   expect(document.activeElement).toBe(menu.getByRole("link", { name: "Ana Sayfa" }));
@@ -50,4 +50,10 @@ it("keeps keyboard Tab within the open menu", () => {
   last.focus();
   fireEvent.keyDown(last, { key: "Tab" });
   expect(document.activeElement).toBe(menu.getByRole("link", { name: "Afina Zeytin ana sayfa" }));
+});
+
+it("closes after selecting the shop page", () => {
+  const menu = openMenu();
+  fireEvent.click(menu.getByRole("link", { name: "Online Mağaza" }));
+  expect(screen.queryByRole("dialog")).toBeNull();
 });

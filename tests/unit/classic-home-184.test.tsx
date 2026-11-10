@@ -90,5 +90,6 @@ it("opens each category's existing family detail instead of treating it as a new
     fireEvent.click(button);
     expect(openProduct).toHaveBeenLastCalledWith(families.find(family => family.id === familyId)!.variants[0].id, button);
   }
-  expect(screen.getByRole("button", { name: /Tüm ürünleri gör/i })).toBeDefined();
+  expect(screen.getByRole("link", { name: /Tüm ürünleri gör/i }).getAttribute("href")).toBe("/urunler");
+  expect(screen.queryByRole("dialog", { name: "Tüm ürünler" })).toBeNull();
 });

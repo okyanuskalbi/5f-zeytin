@@ -47,14 +47,14 @@ Kullanıcı isteği (10 Kasım 2026, ekran görüntüsüyle: "tek sayfada açıl
 6. Kullanılmayan kod/stiller temizlenir. `afina:open-shop` hiçbir yerde kalmaz. `afina:quote-selected` için dinleyici kalmazsa gönderimi de kaldır; kalırsa dokunma.
 
 ## Kabul kriterleri
-- [ ] Unit: `/urunler` render: H1 "Tüm ürünler", breadcrumb, ürün sayısı kadar kart, her kartta `href="/?teklif=<id>#toptan"` olan "Teklife ekle" bağlantısı, boş liste iletisi. Metadata: başlık, canonical, `robots` noindex/follow, BreadcrumbList.
-- [ ] Unit: "Tüm ürünleri gör" ve iki "Online Mağaza" bağlantısı `href="/urunler"`; ana sayfada "Tüm ürünler" başlıklı `role="dialog"` yok.
-- [ ] `rg -n "afina:open-shop|magaza=ac" app components lib` yalnız yönlendirme tanımını bulur (başka sonuç yok).
-- [ ] Unit: `?teklif=` geçerli id → ürün seçili ve parametre silinmiş; bilinmeyen id → seçim yok, hata yok.
-- [ ] Yönlendirme testte doğrulanır. `npm run build && npm run start` sonrasında `curl -sI 'http://localhost:3004/?magaza=ac'` → 308 ve `location` `/urunler` ile başlar; `curl -s http://localhost:3004/urunler` → 200 ve `noindex` içerir; `curl -s http://localhost:3004/sitemap.xml` `/urunler` içermez.
-- [ ] Mevcut testler silinmez, yeni davranışa dönüştürülür: `gallery-interactions-178`, `classic-home-184`, `classic-navigation-184`, `classic-commerce-184`, `navbar-menu-174`.
-- [ ] `app/sitemap.ts` ve `llms.txt` değişmemiş.
-- [ ] `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, `git diff --check` yeşil.
+- [x] Unit: `/urunler` render: H1 "Tüm ürünler", breadcrumb, ürün sayısı kadar kart, her kartta `href="/?teklif=<id>#toptan"` olan "Teklife ekle" bağlantısı, boş liste iletisi. Metadata: başlık, canonical, `robots` noindex/follow, BreadcrumbList.
+- [x] Unit: "Tüm ürünleri gör" ve iki "Online Mağaza" bağlantısı `href="/urunler"`; ana sayfada "Tüm ürünler" başlıklı `role="dialog"` yok.
+- [x] `rg -n "afina:open-shop|magaza=ac" app components lib` yalnız yönlendirme tanımını bulur (başka sonuç yok).
+- [x] Unit: `?teklif=` geçerli id → ürün seçili ve parametre silinmiş; bilinmeyen id → seçim yok, hata yok.
+- [x] Yönlendirme testte doğrulanır. `npm run build && npm run start` sonrasında `curl -sI 'http://localhost:3004/?magaza=ac'` → 308 ve `location` `/urunler` ile başlar; `curl -s http://localhost:3004/urunler` → 200 ve `noindex` içerir; `curl -s http://localhost:3004/sitemap.xml` `/urunler` içermez.
+- [x] Mevcut testler silinmez, yeni davranışa dönüştürülür: `gallery-interactions-178`, `classic-home-184`, `classic-navigation-184`, `classic-commerce-184`, `navbar-menu-174`.
+- [x] `app/sitemap.ts` ve `llms.txt` değişmemiş.
+- [x] `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, `git diff --check` yeşil.
 - [ ] Tarayıcı doğrulaması Claude'da (360 / 390 / 768 / 1024 / 1440): yatay taşma yok, ikinci kaydırma alanı yok, düğmeler ≥ 44 px, yazı kesilmez.
 
 ## Yapılmaması gerekenler
@@ -65,4 +65,13 @@ Kullanıcı isteği (10 Kasım 2026, ekran görüntüsüyle: "tek sayfada açıl
 - **Push yok, production yayını yok.** Testler yeşilse tek kayıt (commit) at; `origin main` gönderimini Claude kullanıcı onayıyla yapar.
 - `docs/` altında yalnız bu dosyaya Coder Notu ve Durum.
 
-## Durum: BEKLİYOR
+## Coder Notu
+- 10 Kasım 2026: üç Codex alt ajanı sayfa/stil, menü/yönlendirme/teklif ve test işleri için kullanıldı; birleştirme ve son kontroller ana ajanda yapıldı. İstenen UI/UX, frontend-design, better-layout, better-accessibility, responsiveness-check, frontend-patterns ve tdd-workflow rehberleri okundu. Yeni bileşen/dependency ve 21st kullanımı yok.
+- RED: sayfa henüz yokken sayfa testi; eski menü adresi ve düğme davranışlarında beklenen hatalar görüldü. GREEN: ilgili 39 test ve yeni yönlendirme/teklif kontrolleri geçti. Beş eski test dosyası dönüştürüldü; ürün detayından teklif/sepet ve odak dönüşü kapsamı korundu.
+- Yerel kontroller: lint, typecheck, `npm run test -- --maxWorkers=2` (135 dosya / 1349 PASS; önceden mevcut yerel Postgres gerektiren 6 dosya / 26 test atlandı), varlık kontrolü ve Next 16.4.2 Turbopack production derlemesi PASS; `git diff --check` PASS. Testlerin ilk toplu koşusundaki bellek içi veritabanı zaman aşımı, iki işçiyle tam yeniden koşuda geçmiştir.
+- Derleme ve yerel sunucu, ortam ayarlarına dokunmadan geçici Node bağlantı engeliyle çalıştırıldı: yalnız yerel bağlantı serbest, uzak veritabanına bağlantı açılamaz. Derlemede `npm run check:assets` ve npm build ile aynı Next komutu (`node --import ./output/tmp/local-only.mjs node_modules/next/dist/bin/next build`) kullanıldı. Katalog mevcut onaylı statik yedeğiyle doğrulandı; canlı Neon okunmadı.
+- Yerel başsız Chromium: 320/360/390/768/1024/1440 genişliklerde 6 kart, yatay taşma 0, iç kaydırma alanı 0 ve 44px altı ürün sayfası kontrolü 0; gerçek teklif bağlantısı → ana sayfada 1 ürün/1 adet seçimi PASS. HTTP: eski adres 308, location `/urunler?magaza=ac`; `/urunler` 200 ve noindex; sitemap'te `/urunler` yok. `app/sitemap.ts` ve `llms.txt` değiştirilmedi. Kanıt: git dışındaki `output/task188/report.json` ve ekran görüntüleri.
+- Karşılanmayan ayrı kabul: görevde Claude'a bırakılan tarayıcı doğrulaması bu Codex çalışmasında yapılmış sayılmadı; ilgili kutu açık bırakıldı. Yukarıdaki Chromium sonucu yerel uygulama kontrolüdür. Durum, yerel uygulama/test tesliminin tamamlandığını belirtir; Claude incelemesi veya fiziksel cihaz/yayın onayı değildir.
+- Push, production/Vercel yayını, ortam değişikliği ve canlı veritabanı işlemi yapılmadı. AFINA-KAYNAK ve output kayda alınmadı.
+
+## Durum: TAMAMLANDI

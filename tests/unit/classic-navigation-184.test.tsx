@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { cleanup, render, screen, within } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, expect, it, vi } from "vitest";
 import { Navbar } from "@/components/site/Navbar";
@@ -7,7 +7,7 @@ import { Footer } from "@/components/site/Footer";
 vi.mock("next/navigation", () => ({ usePathname: () => "/" }));
 afterEach(() => { cleanup(); vi.restoreAllMocks(); history.replaceState(null, "", "/"); });
 
-it("renders the seven C destinations on a solid forest header with a shop opener and existing cart/account", () => {
+it("renders the seven C destinations on a solid forest header with a shop page link and existing cart/account", () => {
   render(<Navbar />);
   const header = screen.getByRole("banner");
   expect(header.getAttribute("data-tone")).toBe("solid");
@@ -17,11 +17,7 @@ it("renders the seven C destinations on a solid forest header with a shop opener
   ]);
   expect(screen.getByRole("link", { name: "Hesabım" }).getAttribute("href")).toBe("/hesabim");
   expect(screen.getByRole("button", { name: "Sepetim, 0 adet" })).toBeTruthy();
-  const opened = vi.fn();
-  window.addEventListener("afina:open-shop", opened);
-  fireEvent.click(screen.getByRole("link", { name: "Online Mağaza" }));
-  expect(opened).toHaveBeenCalledOnce();
-  window.removeEventListener("afina:open-shop", opened);
+  expect(screen.getByRole("link", { name: "Online Mağaza" }).getAttribute("href")).toBe("/urunler");
 });
 
 it("serves a dark compact footer with the original light logo, locality, all destinations, legal links and payment logos", () => {

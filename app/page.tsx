@@ -4,6 +4,7 @@ import styles from "@/components/landing/ClassicHome.module.css";
 import { ClassicHero, TrustStrip, ClassicFacility, ClassicBusiness, ClassicAbout } from "@/components/landing/ClassicHome";
 import { ProductGroups } from "@/components/landing/ProductGroups";
 import { QuoteSection, TrustAndContact } from "@/components/landing/RenewalLanding";
+import { QuoteQuerySelection } from "@/components/landing/QuoteQuerySelection";
 import { QuoteJourneyProvider } from "@/components/landing/QuoteJourneyProvider";
 import { BusinessJsonLd } from "@/components/site/BusinessJsonLd";
 import { ProductDetailProvider } from "@/components/catalog/ProductDetailProvider";
@@ -28,6 +29,7 @@ export default async function Home(): Promise<JSX.Element> {
   const families = await readProductFamilies();
   const products = families.flatMap(family => family.variants);
   return <QuoteJourneyProvider><ProductDetailProvider products={products} quoteEnabled><main className={styles.root}>
+    <QuoteQuerySelection products={products} />
     <BusinessJsonLd />
     <ClassicHero />
     <TrustStrip />

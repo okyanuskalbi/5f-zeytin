@@ -1,4 +1,4 @@
-import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { motionValue } from "framer-motion";
 import { ProductGroups } from "@/components/landing/ProductGroups";
@@ -6,9 +6,12 @@ import { PendantLampRail } from "@/components/ui/pendant-lamp-rail";
 import { QuoteJourneyProvider, useQuoteJourney } from "@/components/landing/QuoteJourneyProvider";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { getProducts } from "@/lib/catalog/static-products";
+import ProductsPage from "@/app/urunler/page";
+import { getProductFamilies } from "@/lib/catalog/static-products";
 import { v3Image } from "@/lib/media/v3-assets";
 import sharp from "sharp";
 
+vi.mock("@/lib/catalog/read", () => ({ readProductFamilies: () => getProductFamilies() }));
 vi.mock("@/components/cart/MiniCart", () => ({ MiniCart: () => null }));
 beforeEach(() => {
   vi.stubGlobal("matchMedia", () => ({ matches: true, addEventListener() {}, removeEventListener() {} }));
@@ -90,44 +93,39 @@ async function gallery() {
   </QuoteJourneyProvider></CartProvider>);
   return { ...result, products };
 }
-it("opens all six SKUs in the shop, locks the background, closes with Escape and restores focus", async () => {
-  const { products } = await gallery();
-  const trigger = screen.getByRole("button", { name: "Tüm ürünleri gör" });
-  act(() => trigger.focus()); fireEvent.click(trigger);
-  const dialog = screen.getByRole("dialog", { name: "Tüm ürünler" });
-  expect([...dialog.querySelectorAll("[data-product-id]")].map(n => n.getAttribute("data-product-id")).sort()).toEqual(products.map(product => product.id).sort());
-  expect(dialog.contains(document.activeElement)).toBe(true);
-  expect(document.body.getAttribute("data-scroll-locked")).toBe("1");
-  fireEvent.keyDown(dialog, { key: "Escape" });
-  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
-  await waitFor(() => expect(document.activeElement).toBe(trigger));
+it("leaves home scrolling unlocked and sends all products to their standalone page", async () => {
+  await gallery();
+  const trigger = screen.getByRole("link", { name: "Tüm ürünleri gör" });
+  act(() => trigger.focus());
+  expect(trigger.getAttribute("href")).toBe("/urunler");
+  expect(screen.queryByRole("dialog", { name: "Tüm ürünler" })).toBeNull();
+  expect(document.body.hasAttribute("data-scroll-locked")).toBe(false);
+  expect(document.activeElement).toBe(trigger);
+});
+it("keeps the shop destination available to navigation without a shared window event", async () => {
+  await gallery();
+  expect(screen.getByRole("link", { name: "Tüm ürünleri gör" }).getAttribute("href")).toBe("/urunler");
+  expect(document.querySelector('[aria-haspopup="dialog"][href="/urunler"]')).toBeNull();
+});
+it("renders every SKU in the page in image order without a background scroll lock", async () => {
+  const products = await getProducts();
+  render(<CartProvider products={products}>{await ProductsPage()}</CartProvider>);
+  expect([...document.querySelectorAll("[data-product-id]")].map(n => n.getAttribute("data-product-id"))).toEqual(
+    [...products].sort((a, b) => a.imageKey.localeCompare(b.imageKey)).map(product => product.id));
+  expect(screen.queryByRole("dialog")).toBeNull();
   expect(document.body.hasAttribute("data-scroll-locked")).toBe(false);
 });
-it("opens the existing shop from the navigation's shared request", async () => {
-  await gallery();
-  act(() => window.dispatchEvent(new CustomEvent("afina:open-shop")));
-  expect(screen.getByRole("dialog", { name: "Tüm ürünler" })).toBeDefined();
+it("offers real product destinations for quote handoff without changing the home selection", async () => {
+  const products = await getProducts();
+  render(<CartProvider products={products}>{await ProductsPage()}</CartProvider>);
+  for (const product of products) {
+    expect(screen.getByRole("link", { name: `Teklife ekle: ${product.name}, ${product.weight}` }).getAttribute("href")).toBe(`/?teklif=${product.id}#toptan`);
+  }
 });
-it("honours a shop destination arriving from another page", async () => {
-  history.replaceState(null, "", "/?magaza=ac");
-  await gallery();
-  expect(await screen.findByRole("dialog", { name: "Tüm ürünler" })).toBeDefined();
-});
-it("selects the real quote product then closes and navigates to the quote without returning to the gallery", async () => {
-  const { products } = await gallery();
-  fireEvent.click(screen.getByRole("button", { name: "Tüm ürünleri gör" }));
-  const dialog = screen.getByRole("dialog");
-  const product = products[0];
-  fireEvent.click(within(dialog).getByRole("button", { name: `Teklife ekle: ${product.name}, ${product.weight}` }));
-  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
-  await waitFor(() => expect(window.location.hash).toBe("#toptan"));
-  expect(screen.getByTestId("quote-state").textContent).toBe(product.id);
-  expect(document.activeElement).toBe(screen.getByRole("textbox", { name: "Firma adı" }));
-});
-it("keeps the sold-out black olive visible in the shop without enabling purchase", async () => {
-  await gallery();
-  fireEvent.click(screen.getByRole("button", { name: "Tüm ürünleri gör" }));
-  const gridCard = screen.getByRole("dialog").querySelector('[data-product-id="sample-black-olive-1kg"]')!;
+it("keeps the sold-out black olive visible on the page without enabling purchase", async () => {
+  const products = await getProducts();
+  render(<CartProvider products={products}>{await ProductsPage()}</CartProvider>);
+  const gridCard = document.querySelector('[data-product-id="sample-black-olive-1kg"]')!;
   expect(gridCard.querySelector("img")!.getAttribute("src")).toContain("urun-03-siyah-1kg");
   expect((within(gridCard as HTMLElement).getByRole("button", { name: "Mevcut değil" }) as HTMLButtonElement).disabled).toBe(true);
   for (const output of v3Image("urun-03-siyah-1kg").outputs) {
@@ -136,15 +134,14 @@ it("keeps the sold-out black olive visible in the shop without enabling purchase
     expect(stats.channels[0].max - stats.channels[0].min).toBeGreaterThan(100);
   }
 });
-it("keeps cart actions working inside the grid and traps Tab at the last control", async () => {
-  await gallery();
-  fireEvent.click(screen.getByRole("button", { name: "Tüm ürünleri gör" }));
-  const dialog = screen.getByRole("dialog");
-  const controls = [...dialog.querySelectorAll<HTMLButtonElement>('button:not([disabled])')];
-  act(() => controls.at(-1)!.focus());
-  fireEvent.keyDown(controls.at(-1)!, { key: "Tab" });
-  expect(document.activeElement).toBe(controls[0]);
-  const card = dialog.querySelector<HTMLElement>('[data-product-id="sample-green-olive-10kg"]')!;
+it("keeps cart actions and last quote destination working in the normal page grid", async () => {
+  const products = await getProducts();
+  render(<CartProvider products={products}>{await ProductsPage()}</CartProvider>);
+  const last = screen.getAllByRole("link", { name: /^Teklife ekle:/ }).at(-1)!;
+  act(() => last.focus());
+  expect(document.activeElement).toBe(last);
+  expect(document.body.hasAttribute("data-scroll-locked")).toBe(false);
+  const card = document.querySelector<HTMLElement>('[data-product-id="sample-green-olive-10kg"]')!;
   fireEvent.click(within(card).getByRole("button", { name: "Sepete ekle" }));
   expect(within(card).getByRole("status").textContent).toContain("sepete eklendi.");
 });

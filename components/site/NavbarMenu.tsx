@@ -35,13 +35,7 @@ export function NavbarMenu({ links, activeHref, onClose, onRestoreFocus }: {
           </DialogClose>)}
         </nav>
         <div className={styles.menuActions}>
-          <DialogClose asChild><Link href="/?magaza=ac#urunler" className={styles.menuShop} onClick={event => {
-            if (location.pathname === "/" && event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-              event.preventDefault(); onClose();
-              // Open after the menu unmounts so its focus restoration cannot steal focus.
-              window.setTimeout(() => window.dispatchEvent(new Event("afina:open-shop")), 0);
-            }
-          }}>Online Mağaza</Link></DialogClose>
+          <DialogClose asChild><Link href="/urunler" className={styles.menuShop}>Online Mağaza</Link></DialogClose>
           <DialogClose asChild><Link href="/hesabim" className={styles.menuLink}>Hesabım</Link></DialogClose>
           <DialogClose asChild><Link href="/sepet" className={styles.menuLink}>Sepetim</Link></DialogClose>
         </div>

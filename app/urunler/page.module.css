@@ -1,0 +1,30 @@
+.root { background:#F7F4ED; color:#172B21; padding-block:calc(var(--header-height) + 24px) 64px; overflow-wrap:anywhere; }
+.container { width:calc(100% - 64px); max-width:1240px; margin-inline:auto; min-width:0; }
+.breadcrumb ol { display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin:0; padding:0; list-style:none; font-size:.875rem; line-height:1.5; }
+.breadcrumb li { display:flex; align-items:center; gap:12px; }
+.breadcrumb a { display:inline-flex; align-items:center; min-height:44px; text-decoration:underline; text-underline-offset:4px; }
+.heading { margin-block:24px 32px; }
+.heading h1 { margin:0 0 16px; font-size:clamp(2rem,4vw,3rem); font-weight:500; line-height:1.2; }
+.heading p { margin:0; color:#4F594B; font-size:1rem; line-height:1.6; }
+.productGrid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; }
+.productGrid > div { min-width:0; padding:12px; background:#F0EBDD; border:1px solid #D6D0C3; border-radius:8px; }
+.productGrid :global(article[data-product-id]) { border:0; border-radius:6px; background:#F0EBDD; color:#172B21; }
+.productGrid :global(p[aria-label="Fiyat"]) { color:#735519; }
+.productGrid :global(h3) { line-height:1.4; }
+.quoteButton { display:inline-flex; align-items:center; justify-content:center; gap:12px; width:100%; min-height:48px; margin-top:8px; padding:12px 20px; border:1px solid #88630B; border-radius:6px; background:#88630B; color:#fff; font-size:.9375rem; font-weight:600; line-height:1.5; text-align:center; text-decoration:none; }
+.quoteButton svg { flex:none; }
+.quoteButton:hover { background:#6C4E08; }
+.root :focus-visible { outline:3px solid #88630B; outline-offset:3px; }
+@media(max-width:1023px) { .productGrid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:767px) {
+ .root { padding-block-end:40px; }
+ .container { width:calc(100% - 40px); }
+ .productGrid { gap:12px; }
+ .productGrid > div { padding:8px; }
+ .quoteButton { gap:8px; padding-inline:8px; font-size:.8125rem; }
+}
+@media(max-width:639px) {
+ .productGrid :global(article[data-product-id] > div:last-of-type) { flex-direction:column; align-items:stretch; }
+ .productGrid :global(article[data-product-id] > div:last-of-type > div) { width:100%; }
+}
+@media(max-width:359px) { .productGrid { grid-template-columns:minmax(0,1fr); } }

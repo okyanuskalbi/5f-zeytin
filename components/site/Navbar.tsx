@@ -156,11 +156,7 @@ export function Navbar(): JSX.Element {
             }}>{link.label}</Link>)}
         </nav>
         <div className={styles.actions}>
-          <Link href="/?magaza=ac#urunler" className={styles.shop} onClick={event => {
-            if (landing && event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-              event.preventDefault(); window.dispatchEvent(new Event("afina:open-shop"));
-            }
-          }}>Online Mağaza</Link>
+          <Link href="/urunler" className={styles.shop} aria-current={visiblePathname === "/urunler" ? "page" : undefined}>Online Mağaza</Link>
           <Button variant="ghost" size="icon" className={`${styles.control} ${styles.cart}`}
             aria-label={`Sepetim, ${itemCount} adet`} aria-haspopup="dialog" aria-expanded={cart?.open ?? false}
             disabled={!cart?.state.hydrated || cart.products === null}

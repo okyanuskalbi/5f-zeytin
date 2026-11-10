@@ -7,6 +7,9 @@ if (process.env.VERCEL_ENV === "production" && process.env.NEXT_PUBLIC_DEMO === 
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  async redirects() {
+    return [{ source: "/", has: [{ type: "query", key: "magaza", value: "ac" }], destination: "/urunler", permanent: true }];
+  },
   async headers() {
     // Static/RSC pages emit inline hydration scripts and JSON-LD; inlineCss and
     // Motion also need inline styles. Nonces would require dynamic rendering

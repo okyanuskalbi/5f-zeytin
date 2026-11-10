@@ -51,7 +51,6 @@ export function ProductDetailProvider({ products, children, quoteEnabled = false
       onQuote={quoteEnabled ? () => {
         journey.chooseProduct(product.id);
         quoteAfterClose.current = true;
-        window.dispatchEvent(new Event("afina:quote-selected"));
       } : undefined}
       onRestoreFocus={() => {
         if (quoteAfterClose.current) {
