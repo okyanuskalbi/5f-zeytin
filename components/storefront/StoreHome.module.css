@@ -8,6 +8,8 @@
 .hero h1 { max-width:10ch; font-size:clamp(3rem,5.3vw,5rem); line-height:1.08; letter-spacing:-.025em; margin:0 0 32px; }
 .primary { display:inline-flex; justify-content:center; align-items:center; min-height:48px; padding:12px 24px; border-radius:8px; font-size:1rem; font-weight:600; background:var(--sf-green); color:var(--sf-paper); text-decoration:none; white-space:nowrap; }
 .primary:hover { background:var(--sf-ink); }
+.secondary { border:1px solid var(--sf-green); background:var(--sf-paper); color:var(--sf-green); }
+.secondary:hover { background:var(--sf-ivory); }
 .hero .primary { background:var(--sf-ivory); color:var(--sf-green); }
 .hero .primary:hover { background:var(--sf-gold); }
 .origin { position:absolute; top:24px; inset-inline-start:max(32px,calc((100% - 1312px)/2)); background:var(--sf-ivory); color:var(--sf-green); padding:8px 16px; font-size:1rem; }
@@ -105,8 +107,8 @@
   .shelf { display:flex; overflow-x:auto; gap:16px; padding:4px 4px 16px; margin-inline:-4px; }
   .shelf > article { flex:0 0 calc(100% - 32px); min-width:0; }
   .featured .shelf { display:grid; grid-template-columns:minmax(0,1fr); overflow:visible; gap:32px; }
-  .featured .shelf > article { display:grid; grid-template-columns:minmax(0,.7fr) minmax(0,1fr); gap:16px; }
-  .featured .shelf > article > a { min-height:200px; }
+  .featured .shelf > article { display:block; }
+  .featured .shelf > article > a { width:100%; height:auto; min-height:0; }
   .story { padding-block:48px; }
   .storyIntro { grid-template-columns:1fr; gap:24px; }
   .story h2,.harvest h2,.blog h2,.productIntro h2 { font-size:2.25rem; }
@@ -126,7 +128,6 @@
   .post picture { aspect-ratio:1.8; margin-bottom:16px; }
 }
 @media(max-width:359px) {
-  .featured .shelf > article { display:block; }
   .category > div { display:block; }
   .category span { display:inline-block; margin-top:8px; }
 }

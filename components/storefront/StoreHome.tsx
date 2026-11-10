@@ -48,7 +48,7 @@ export function StoreHome({ products }: { products: readonly ProductVariant[] })
     <section id="hakkimizda" data-home-section="story" className={styles.story} aria-labelledby="story-title">
       <span id="kurumsal" className={styles.anchor} />
       <QuietMotion className={styles.container}>
-        <div className={styles.storyIntro}><div><h2 id="story-title">Nesillerin Emeği,<br />Toprağın Bereketi</h2></div><div><p>AFİNA ZEYTİN, Osmaniye Düziçi&apos;nin Ellek zeytinliklerinden gelen zeytinleri kendi tesisinde hazırlayıp sofralara ulaştırır.</p><Link href="/hakkimizda" className={styles.textLink}>Hakkımızda</Link></div></div>
+        <div className={styles.storyIntro}><div><h2 id="story-title">Nesillerin Emeği,<br />Toprağın Bereketi</h2></div><div><p>AFİNA ZEYTİN, Osmaniye Düziçi&apos;nin Ellek zeytinliklerinden gelen zeytinleri kendi tesisinde hazırlayıp sofralara ulaştırır.</p><Link href="/hakkimizda" className={`${styles.primary} ${styles.secondary}`}>Hakkımızda</Link></div></div>
         <V3Picture image={homeMedia.story} sizes="(max-width: 1439px) 94vw, 1312px" className={styles.storyPhoto} />
         <ul className={styles.values} data-story-values>{[{icon:Sprout,label:'Geleneksel Üretim'},{icon:Leaf,label:'%100 Doğal'},{icon:Factory,label:'Kendi Tesisimizde'}].map(({icon:Icon,label})=><li key={label}><Icon aria-hidden="true" strokeWidth={1.4}/><strong>{label}</strong></li>)}</ul>
       </QuietMotion>

@@ -20,6 +20,11 @@ ana sayfa ve ürün sayfası; kanıt `output/task198-codex/KANIT.md`. 1.483 biri
 kod denetimleri ve derleme geçti; 15 ölçü × 2 sayfa tarayıcı kontrolü temiz.
 K1 A/B tasarım seçimi bekliyor. GitHub'a gönderim, yayın ve canlı veri işlemi yapılmadı.
 
+Task198-2 Codex düzeltmesi: önceki denetimin kaçırdığı telefon kart içi
+metin/görsel çakışması, kalıcı testte87 RED kesişmesiyle doğrulandı. Fotoğraf
+üstte/bilgi altta düzeltmesi sonrası30/30 profil GREEN; Hakkımızda ikincil
+düğme yapıldı. Güncel kanıt `output/task198-codex/duzeltme-198-2/KANIT.md`.
+
 ## Önceki plan: açık tonlu yeni kurgu, Köklü Zeytincilik referanslı (10 Kasım 2026, öğleden sonra)
 
 Müşteri revizesi (birebir metin: `AFINA-KAYNAK/musteri-2026-11-10/BRIEF.md`; kullanıcı: "revizlerini

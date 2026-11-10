@@ -108,11 +108,11 @@ Stüdyo fotoğrafı 4:5 oranlı görüntü alanında, ambalaj kırpılmadan; mas
 
 ### Hikâyemiz
 
-Başlık ve kısa açıklama iki sütunlu giriş; altında geniş onaylı zeytinlik fotoğrafı ve üç değer. Telefon sırası başlık, açıklama, fotoğraf, değerlerdir. Müşteri metni/görseli henüz gelmediği için yer tutucu kaydı korunur; yeni tarihçe uydurulmaz.
+Başlık ve kısa açıklama iki sütunlu giriş; altında geniş onaylı zeytinlik fotoğrafı ve üç değer. Telefon sırası başlık, açıklama, fotoğraf, değerlerdir. Hakkımızda bağlantısı ikincil düğmedir:48px asgari yükseklik,12×24px iç boşluk,8px köşe, yeşil1px çerçeve, kâğıt zemin ve yeşil metin; üzerine gelince fildişi zemin. Müşteri metni/görseli henüz gelmediği için yer tutucu kaydı korunur; yeni tarihçe uydurulmaz.
 
 ### Öne çıkan ürünler
 
-İlk rafın kopyası olmayan iki sütunlu yatay ürün anlatımı; ürün sırası ters çevrilir. 1100 px ve altında iki sütundaki kartların fotoğraf/bilgisi alt alta gelir. 767 px ve altında tek sütun raf vardır: 360 px ve üstünde fotoğraf/bilgi yan yana, 359 px ve altında alt alta. İndirim etiketi, üzeri çizili fiyat veya popülerlik iddiası yoktur.
+İlk rafın kopyası olmayan iki sütunlu yatay ürün anlatımı; ürün sırası ters çevrilir. 1100 px ve altında iki sütundaki kartların fotoğraf/bilgisi alt alta gelir. 767 px ve altında tek sütun raf vardır; tüm telefon boylarında fotoğraf üstte, bilgi alttadır. Fotoğraf bağlantısının yüksekliği kendi oranından hesaplanır, kartın bütün yüksekliğinden alınmaz; bu, görüntünün yazı sütununa taşmasını önler. İndirim etiketi, üzeri çizili fiyat veya popülerlik iddiası yoktur.
 
 ### Üçlü banner
 
