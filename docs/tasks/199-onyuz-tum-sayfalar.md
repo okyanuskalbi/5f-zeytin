@@ -1,5 +1,7 @@
 # Task 199: Ön yüz baştan — tüm sayfalar + eski kodun temizliği
 
+> `docs/MASTER-PROMPT.md` **A3** aşaması. Sayfa şartnamesi §11.2, test matrisi §13, bitiş şartı §14. Çelişkide MASTER-PROMPT geçerli.
+
 ## Tür
 frontend
 

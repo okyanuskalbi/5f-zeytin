@@ -7,9 +7,12 @@ Neon DB, yönetim paneli mantığı, sepet/ödeme mantığı ve yayın düzeni a
 geçmişi (v1/v2/v11 ret, sinematik kaydırma vazgeçildi, 196 "kopya olmasın"), Kimi 197 canlı cihaz
 analizi, `~/Desktop/WB AI PROJELER ICIN` kitleri (profesyonel-web-sitesi yasak listesi + Motion kuralları
 + 21st politikası, DESIGN.md biçimi, Karar→Üret→Denetle→Sun boru hattı, admin paneli referansı).
-Sıra: **198** tasarım sistemi + ana sayfa + ürün sayfası (Codex ve Kimi ayrı kopyada, A/B, kullanıcı
-seçer) → **199** tüm sayfalar + eski kodun/testlerin temizliği → **200** yönetim paneli görünümü →
-Kimi tüm cihaz QA (197 düzeni) → Codex düzeltme → kullanıcı onayıyla yayın. Açık iş (ayrı, DB'ye
+**Bağlayıcı talimat: `docs/MASTER-PROMPT.md`** (kullanıcı: "burdan skiller ve tüm aşamalarını düşün
+baştan master prompt oluştur"); aşama görevleri ona atıf yapar. Sıra: **198** (A1+A2) tasarım sistemi
++ ana sayfa + ürün sayfası (Codex `gpt-6-astra` ve Kimi `k3.1-pro` ayrı kopyada, A/B, kullanıcı seçer)
+→ **199** (A3) tüm sayfalar + eski kodun/testlerin temizliği → **200** (A4) yönetim paneli → **201**
+(A5+A6) SEO/AEO/GEO + denetim → **202** (A7) Kimi tüm cihaz QA + Codex düzeltme → **203** (A8)
+önizleme paketi + kullanıcı onayıyla yayın. Açık iş (ayrı, DB'ye
 dokunduğu için onaylı): vitrin fiyat/stokunun koddan DB'ye alınması.
 
 ## Önceki plan: açık tonlu yeni kurgu, Köklü Zeytincilik referanslı (10 Kasım 2026, öğleden sonra)

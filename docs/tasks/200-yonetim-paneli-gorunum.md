@@ -1,5 +1,7 @@
 # Task 200: Yönetim paneli görünümü
 
+> `docs/MASTER-PROMPT.md` **A4** aşaması (§11.3). Çelişkide MASTER-PROMPT geçerli.
+
 ## Tür
 frontend
 

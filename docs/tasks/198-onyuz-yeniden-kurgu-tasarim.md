@@ -1,5 +1,7 @@
 # Task 198: Ön yüz baştan — tasarım sistemi + ana sayfa + ürün sayfası (A/B)
 
+> **Önce `docs/MASTER-PROMPT.md` dosyasını baştan sona oku.** Bu görev onun **A1 Karar + A2 Temel** aşamasıdır. Konfigürasyon (§2), varlıklar (§3), değişmeyenler (§4), yasak liste (§6), DESIGN.md biçimi (§7), hareket (§8), bileşen (§9), içerik (§10), ana sayfa şartnamesi (§11.1), test matrisi (§13) ve bitiş şartı (§14) oradan uygulanır. Bu dosyayla çelişirse MASTER-PROMPT geçerlidir (müşteri BRIEF'i her ikisinin üstündedir).
+
 ## Tür
 frontend (tasarım + uygulama)
 
