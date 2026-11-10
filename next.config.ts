@@ -1,5 +1,3 @@
-import { realpathSync } from "node:fs";
-import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { NextConfig } from "next";
 import { legacyProductRoutes } from "./lib/catalog/product-pages";
@@ -7,11 +5,6 @@ import { legacyProductRoutes } from "./lib/catalog/product-pages";
 if (process.env.VERCEL_ENV === "production" && process.env.NEXT_PUBLIC_DEMO === "1") {
   throw new Error("Vercel production ortamında demo modu açılamaz. NEXT_PUBLIC_DEMO=1 ayarını kaldırın.");
 }
-
-const projectRoot = fileURLToPath(new URL(".", import.meta.url));
-const localModules = fileURLToPath(new URL("node_modules", import.meta.url));
-const resolvedModules = realpathSync(localModules);
-const turbopackRoot = resolvedModules === localModules ? projectRoot : dirname(resolvedModules);
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
@@ -58,7 +51,7 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
   },
   turbopack: {
-    root: turbopackRoot,
+    root: fileURLToPath(new URL(".", import.meta.url)),
   },
 };
 
