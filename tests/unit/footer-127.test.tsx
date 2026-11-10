@@ -15,12 +15,12 @@ it("keeps every C destination and legal/payment content usable before JavaScript
   expect(doc.querySelector('input, button, canvas')).toBeNull();
 });
 
-it("uses named local payment vectors with safe markup and reserved dimensions on the light surface", () => {
+it("uses named local payment vectors with safe markup and reserved dimensions on the dark surface", () => {
   const doc = new DOMParser().parseFromString(renderToStaticMarkup(<Footer />), "text/html");
   const payment = doc.querySelector('[aria-label="Güvenli ödeme"]')!;
   expect([...payment.querySelectorAll("img")].map(image => image.alt)).toEqual(["PayTR", "Visa", "Mastercard", "Troy"]);
   for (const image of payment.querySelectorAll("img")) {
-    expect(image.getAttribute("src")).toBe(`/images/payment/${image.alt.toLowerCase()}${image.alt === "Mastercard" ? "" : "-dark"}.svg`);
+    expect(image.getAttribute("src")).toBe(`/images/payment/${image.alt.toLowerCase()}.svg`);
     expect(Number(image.getAttribute("width"))).toBeGreaterThan(0);
     expect(Number(image.getAttribute("height"))).toBeGreaterThan(0);
     const svg = new DOMParser().parseFromString(readFileSync(`public${image.getAttribute("src")}`, "utf8"), "image/svg+xml");

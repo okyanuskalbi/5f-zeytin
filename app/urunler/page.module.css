@@ -1,50 +1,39 @@
-.root { background:#F7F4ED; color:#172B21; padding-block:calc(var(--header-height) + 24px) 64px; overflow-wrap:anywhere; }
-.container { width:calc(100% - 64px); max-width:1240px; margin-inline:auto; min-width:0; }
+.root { background:#F5F1E7; color:#243A29; padding-block:calc(var(--header-height) + 24px) 80px; overflow-wrap:anywhere; }
+.container { width:calc(100% - 80px); max-width:1280px; margin-inline:auto; min-width:0; }
 .breadcrumb ol { display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin:0; padding:0; list-style:none; font-size:.875rem; line-height:1.5; }
 .breadcrumb li { display:flex; align-items:center; gap:12px; }
 .breadcrumb a { display:inline-flex; align-items:center; min-height:44px; text-decoration:underline; text-underline-offset:4px; }
-.heading { margin-block:24px 32px; }
-.heading h1 { margin:0 0 16px; font-size:clamp(2rem,4vw,3rem); font-weight:500; line-height:1.2; }
-.heading p { margin:0; color:#4F594B; font-size:1rem; line-height:1.6; }
-.productGrid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; }
-.productGrid > div { min-width:0; padding:12px; background:#F0EBDD; border:1px solid #D6D0C3; border-radius:8px; }
-.productGrid :global(article[data-product-id]) { border:0; border-radius:6px; background:#F0EBDD; color:#172B21; }
+.heading { margin-block:24px 48px; padding-left:24px; border-left:3px solid #D4B483; max-width:840px; }
+.heading h1 { margin:0 0 16px; font-size:clamp(2.5rem,5vw,4.5rem); font-weight:500; line-height:1.05; letter-spacing:-.035em; }
+.heading p { margin:0; color:#4F594B; font-size:1rem; line-height:1.65; }
+.catalogLayout { display:grid; grid-template-columns:220px minmax(0,1fr); gap:40px; align-items:start; }
+.sidebar { min-width:0; }
+.sidebar h2 { margin:0 0 16px; font-family:var(--font-body,var(--font-body-fallback)); font-size:1rem; font-weight:700; }
+.results { min-width:0; }
+.listingTools { display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; min-height:48px; margin-bottom:24px; padding-bottom:16px; border-bottom:1px solid #D6D0C3; font-size:.9375rem; }
+.sortLabel { display:flex; align-items:center; gap:12px; }
+.sortLabel select { min-height:44px; padding:8px 32px 8px 12px; border:1px solid #717C69; border-radius:0; background:#FAF8F2; color:#243A29; font:inherit; font-size:16px; }
+.productGrid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; }
+.productGrid > div { min-width:0; }
+.productGrid :global(article[data-product-id]) { color:#243A29; }
 .productGrid :global(p[aria-label="Fiyat"]) { color:#735519; }
-.productGrid :global(h3) { line-height:1.4; }
-.quoteButton { display:inline-flex; align-items:center; justify-content:center; gap:12px; width:100%; min-height:48px; margin-top:8px; padding:12px 20px; border:1px solid #88630B; border-radius:6px; background:#88630B; color:#fff; font-size:.9375rem; font-weight:600; line-height:1.5; text-align:center; text-decoration:none; }
+.productGrid :global(h3) { line-height:1.3; }
+.quoteButton { display:inline-flex; align-items:center; justify-content:space-between; gap:12px; width:100%; min-height:48px; margin-top:16px; padding:12px 0; border:0; border-top:1px solid #D6D0C3; background:transparent; color:#614707; font-size:.9375rem; font-weight:650; line-height:1.5; text-align:start; text-decoration:none; }
 .quoteButton svg { flex:none; }
-.quoteButton:hover { background:#6C4E08; }
+.quoteButton:hover { color:#243A29; }
 .root :focus-visible { outline:3px solid #88630B; outline-offset:3px; }
-@media(max-width:1023px) { .productGrid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:1100px) { .catalogLayout { grid-template-columns:200px minmax(0,1fr); gap:24px; } }
+@media(max-width:1023px) { .catalogLayout { grid-template-columns:minmax(0,1fr); gap:8px; } .sidebar h2 { margin-bottom:8px; } }
 @media(max-width:767px) {
- .root { padding-block-end:40px; }
+ .root { padding-block-end:48px; }
  .container { width:calc(100% - 40px); }
+ .heading { padding-left:16px; margin-bottom:32px; }
  .productGrid { gap:12px; }
- .productGrid > div { padding:8px; }
- .quoteButton { gap:8px; padding-inline:8px; font-size:.8125rem; }
+ .quoteButton { gap:8px; font-size:.8125rem; }
 }
 @media(max-width:639px) {
  .productGrid :global(article[data-product-id] > div:last-of-type) { flex-direction:column; align-items:stretch; }
  .productGrid :global(article[data-product-id] > div:last-of-type > div) { width:100%; }
 }
 @media(max-width:359px) { .productGrid { grid-template-columns:minmax(0,1fr); } }
-@media(prefers-reduced-motion:no-preference) {
- .quoteButton svg { transition:transform var(--motion-feedback) var(--motion-ease); }
- @media(hover:hover) { .quoteButton:hover svg { transform:translateX(var(--motion-arrow-x)); } }
-}
-
-@media (prefers-reduced-motion: no-preference) {
- .quoteButton svg { transition:transform var(--motion-move) var(--motion-ease); }
- @media (hover:hover) { .quoteButton:hover svg { transform:translateX(var(--motion-arrow-x)); } }
-}
-
-.catalogLayout { display:grid; grid-template-columns:230px minmax(0,1fr); gap:32px; align-items:start; }
-.sidebar { min-width:0; }
-.sidebar h2 { margin:0 0 16px; font-family:var(--font-body,var(--font-body-fallback)); font-size:1rem; font-weight:700; }
-.results { min-width:0; }
-.listingTools { display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; min-height:48px; margin-bottom:24px; font-size:.9375rem; }
-.sortLabel { display:flex; align-items:center; gap:12px; }
-.sortLabel select { min-height:44px; padding:8px 32px 8px 12px; border:1px solid #717C69; border-radius:4px; background:#FFFFFF; color:#172B21; font:inherit; font-size:16px; }
-@media(max-width:1100px) { .catalogLayout { grid-template-columns:205px minmax(0,1fr); gap:24px; } .productGrid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-@media(max-width:1023px) { .catalogLayout { grid-template-columns:minmax(0,1fr); gap:8px; } .sidebar h2 { margin-bottom:8px; } }
-@media(max-width:359px) { .productGrid { grid-template-columns:minmax(0,1fr); } }
+@media(prefers-reduced-motion:no-preference) { .quoteButton svg { transition:transform var(--motion-feedback) var(--motion-ease); } @media(hover:hover) { .quoteButton:hover svg { transform:translateX(var(--motion-arrow-x)); } } }

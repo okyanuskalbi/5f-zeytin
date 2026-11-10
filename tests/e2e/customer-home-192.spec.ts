@@ -46,8 +46,8 @@ test.describe("Task192 customer homepage", () => {
       await Promise.all([...document.images].map(image => image.decode().catch(() => undefined)));
     });
     await expect.poll(() => page.evaluate(() => (window as unknown as { task192Metrics: { lcpTag: string } }).task192Metrics.lcpTag)).toBe("IMG");
-    await page.screenshot({ path: `output/task192/home-${width}.png`, fullPage: true, animations: "disabled" });
     const metrics = await page.evaluate(() => (window as unknown as { task192Metrics: { cls: number; lcp: string; lcpTag: string; lcpUrl: string } }).task192Metrics);
+    await page.screenshot({ path: `output/task192/home-${width}.png`, fullPage: true, animations: "disabled" });
     expect(metrics.cls).toBeLessThan(.05);
     expect(metrics.lcpTag).toBe("IMG");
     expect(metrics.lcpUrl).toContain("hero-poster");

@@ -1,6 +1,5 @@
 import { expect, test } from "@playwright/test";
 
-// Task129 artwork regression, adapted to the light Task192 header and footer.
 test("horizontal artwork keeps its dimensions, links and navigation fit at every breakpoint", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
@@ -12,8 +11,8 @@ test("horizontal artwork keeps its dimensions, links and navigation fit at every
 
   for (const width of [320, 360, 390, 768, 900, 901, 1024, 1440, 1920]) {
     await page.setViewportSize({ width, height: 900 });
-    await expect(headerLogo).toHaveCSS("height", width <= 400 ? "32px" : width <= 1440 ? "36px" : "40px");
-    await expect(footerLogo).toHaveCSS("height", "44px");
+    await expect(headerLogo).toHaveCSS("height", width <= 400 ? "32px" : width <= 1440 ? "36px" : "44px");
+    await expect(footerLogo).toHaveCSS("height", "52px");
     for (const root of [header, footer]) {
       await expect(root.getByRole("link", { name: "Afina Zeytin ana sayfa" })).toHaveAttribute("href", "/");
     }
@@ -33,12 +32,12 @@ test("horizontal artwork keeps its dimensions, links and navigation fit at every
   }
   await expect(header.getByRole("link", { name: "Afina Zeytin ana sayfa" })).toHaveText("");
   await expect(footer.getByText("AFİNA Şirketler Topluluğu markasıdır.", { exact: true })).toHaveCount(1);
-  for (const logo of [headerLogo, footerLogo]) {
+  for (const [logo, tone] of [[headerLogo, ""], [footerLogo, "-dark"]] as const) {
     await logo.scrollIntoViewIfNeeded();
     await expect(logo).toHaveAttribute("width", "180");
     await expect(logo).toHaveAttribute("height", "48");
     expect(await logo.getAttribute("fetchpriority")).toBeNull();
     await expect.poll(() => logo.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
-    expect(await logo.evaluate((image: HTMLImageElement) => image.currentSrc)).toMatch(/afina-zeytin-yatay@(?:2|3)x\.webp$/);
+    expect(await logo.evaluate((image: HTMLImageElement) => image.currentSrc)).toMatch(new RegExp(`afina-zeytin-yatay${tone}@(?:2|3)x\\.webp$`));
   }
 });

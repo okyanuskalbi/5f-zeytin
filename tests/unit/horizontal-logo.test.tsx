@@ -32,13 +32,13 @@ it("identifies the light landing header with the original dark-lettered logo and
   expect(within(header).getByRole("button", { name: "Menüyü aç" })).toBeTruthy();
 });
 
-it("uses the original horizontal footer artwork and retains the community identity on a light surface", () => {
+it("uses the original horizontal footer artwork and retains the community identity on a dark surface", () => {
   const doc = new DOMParser().parseFromString(renderToStaticMarkup(<Footer />), "text/html");
   const home = doc.querySelector<HTMLAnchorElement>('a[aria-label="Afina Zeytin ana sayfa"]')!;
   const logo = home.querySelector("img")!;
   expect(home.getAttribute("href")).toBe("/");
   expect(logo.alt).toBe("AFİNA ZEYTİN");
-  expect(logo.getAttribute("src")).toBe("/brand/afina-zeytin-yatay@2x.webp");
+  expect(logo.getAttribute("src")).toBe("/brand/afina-zeytin-yatay-dark@2x.webp");
   expect([logo.width, logo.height]).toEqual([180, 48]);
   expect(logo.getAttribute("loading")).toBe("lazy");
   const community = doc.querySelector('a[href="https://afina.com.tr"]')!;
@@ -46,10 +46,10 @@ it("uses the original horizontal footer artwork and retains the community identi
   expect(community.getAttribute("rel")!.split(/\s+/)).toContain("noopener");
 });
 
-it("offers original 2x/3x WebP candidates matched to the light header and footer", () => {
+it("offers original 2x/3x WebP candidates matched to the light header and dark footer", () => {
   render(<Navbar />);
   const footer = new DOMParser().parseFromString(renderToStaticMarkup(<Footer />), "text/html");
-  for (const [root, tone] of [[screen.getByRole("banner"), ""], [footer.querySelector("footer")!, ""]] as const) {
+  for (const [root, tone] of [[screen.getByRole("banner"), ""], [footer.querySelector("footer")!, "-dark"]] as const) {
     const picture = root.querySelector("picture")!;
     expect(picture).not.toBeNull();
     expect(picture.querySelector("source")?.getAttribute("type")).toBe("image/webp");

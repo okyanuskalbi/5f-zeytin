@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import manifest from "../../public/images/v3/manifest.json";
+import manifest from "../../public/images/v3/manifest.json" with { type: "json" };
 
 for (const width of [390, 768, 900, 901, 1440]) {
   test(`v4: matching SSR art direction and budget at ${width}px`, async ({ page, request }) => {

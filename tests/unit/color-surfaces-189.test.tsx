@@ -64,10 +64,10 @@ it("compiles dark helpers against explicit surface ancestry rather than the oper
   expect(output).not.toContain("prefers-color-scheme");
 });
 
-it("keeps navigation and footer light while isolating the brand panel and photo cards", () => {
+it("keeps navigation light and gives the AFİNA footer its own dark surface", () => {
   const doc = new DOMParser().parseFromString(renderToStaticMarkup(<><Navbar /><Footer /><MembershipFrame mode="login"><p>Form</p></MembershipFrame><ClassicHero /><TrustStrip /><ClassicBusiness /></>), "text/html");
   expect(doc.querySelector('[data-site-navbar]')?.getAttribute("data-surface")).not.toBe("dark");
-  expect(doc.querySelector("footer")?.getAttribute("data-surface")).not.toBe("dark");
+  expect(doc.querySelector("footer")?.getAttribute("data-surface")).toBe("dark");
   expect(doc.querySelector('aside[aria-label="AFİNA ZEYTİN"]')?.getAttribute("data-surface")).toBe("dark");
   expect(doc.querySelector("#baslangic")?.getAttribute("data-surface")).toBe("dark");
   expect(doc.querySelector("main[data-surface=dark]")).toBeNull();

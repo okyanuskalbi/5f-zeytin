@@ -40,7 +40,7 @@ body:has([data-admin-shell]) footer { display:none; }
   --pro-input: #717C69;
   --pro-error: #9D2822;
   --pro-gutter: clamp(20px,4vw,64px);
-  --shell-background: #F5F1E7;
+  --shell-background: #243A29;
   color-scheme: light;
   --ink: #0E1510;
   --zeytin: #1F3324;

@@ -18,7 +18,7 @@ export async function loadStaticCatalog() {
   const sourceUrl = new URL("../lib/catalog/static-products.ts", import.meta.url);
   const manifestUrl = new URL("../lib/media/v4-assets.json", import.meta.url);
   const source = await readFile(sourceUrl, "utf8");
-  const dependency = 'import manifest from "@/lib/media/v4-assets.json";';
+  const dependency = 'import manifest from "@/lib/media/v4-assets.json" with { type: "json" };';
   if (!source.includes(dependency)) throw new Error("Catalog module dependency changed; review seed loader");
   const javascript = stripTypeScriptTypes(source.replace(dependency, `import manifest from ${JSON.stringify(manifestUrl.href)} with { type: "json" };`), { mode: "strip" });
   const catalog = await import(`data:text/javascript;base64,${Buffer.from(javascript).toString("base64")}`);

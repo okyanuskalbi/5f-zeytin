@@ -20,10 +20,10 @@ it("renders the seven page destinations on a solid light header with a shop page
   expect(screen.getByRole("link", { name: "Online Mağaza" }).getAttribute("href")).toBe("/urunler");
 });
 
-it("serves a light column footer with the original dark logo, locality, all destinations, legal links and payment logos", () => {
+it("serves the AFİNA signature footer with the light logo, locality, all destinations, legal links and payment logos", () => {
   const doc = new DOMParser().parseFromString(renderToStaticMarkup(<Footer />), "text/html");
-  expect(doc.querySelector("footer")?.getAttribute("data-surface")).not.toBe("dark");
-  expect(doc.querySelector('img[alt="AFİNA ZEYTİN"]')?.getAttribute("src")).toContain("yatay@");
+  expect(doc.querySelector("footer")?.getAttribute("data-surface")).toBe("dark");
+  expect(doc.querySelector('img[alt="AFİNA ZEYTİN"]')?.getAttribute("src")).toContain("yatay-dark@");
   expect(doc.body.textContent).toContain("Ellek, Düziçi / Osmaniye");
   expect(doc.body.textContent).toContain("AFİNA Şirketler Topluluğu markasıdır.");
   expect(doc.querySelectorAll('nav[aria-label="Alt menü"] a')).toHaveLength(5);

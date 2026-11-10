@@ -94,7 +94,7 @@ it("does not request a video when reduced motion is selected", async () => {
 
 it("allows the explicitly requested time based strip to be paused and reads its words once", () => {
   const { container } = render(<CustomerMarquee />);
-  expect(container.querySelector('[aria-hidden="true"]')?.textContent).toContain("Geleneksel Salamura");
+  expect(container.querySelector('[data-marquee-copy]')?.textContent).toContain("Geleneksel Salamura");
   const button = screen.getByRole("button", { name: "Şeridi duraklat" });
   fireEvent.click(button);
   expect(container.querySelector("section")?.getAttribute("data-paused")).toBe("true");

@@ -45,10 +45,10 @@ Kullanıcı (10 Kasım 2026): "kopyalamış gibi olmasın site ona göre düzenl
 4. Metin taraması: referanstaki ifadeler sitede geçmez: "TOPRAKTAN SOFRAYA", "TARLADAN SOFRAYA", "Doğallığın", "Keşfedin" (numaralı banner), "Sizden Gelen", "Rehberi" yerine AFİNA'ya özgü blog başlığı (ör. "Zeytin Defteri"), "Daha Fazlasını Keşfet", "En Beğenilen". Müşterinin kendi yazdığı ifadeler hariç.
 
 ## Kabul kriterleri
-- [ ] Unit: BRIEF içerik ve sıra testleri geçmeye devam eder; yasaklı referans ifadeleri testi (yukarıdaki liste) eklenir ve geçer.
-- [ ] `output/task196/karsilastirma/` yan yana görüntüler + Coder Notu'nda bölüm bölüm fark listesi.
-- [ ] e2e: mevcut 154 tarayıcı testi yeni tasarıma göre güncellenip geçer (renk karşıtlığı 0 ihlal, CLS < 0.05, taşma yok, video oynar, azaltılmış hareket, kaydırmaya bağlı hareket yok — kayan şerit hariç).
-- [ ] `npm run lint`, `typecheck`, `test`, `build`, `git diff --check` yeşil.
+- [x] Unit: BRIEF içerik ve sıra testleri geçmeye devam eder; yasaklı referans ifadeleri testi (yukarıdaki liste) eklenir ve geçer.
+- [x] `output/task196-kimi/karsilastirma/` yan yana görüntüler + Coder Notu'nda bölüm bölüm fark listesi.
+- [x] e2e: mevcut 154 tarayıcı testi yeni tasarıma göre güncellenip geçer (renk karşıtlığı 0 ihlal, CLS < 0.05, taşma yok, video oynar, azaltılmış hareket, kaydırmaya bağlı hareket yok — kayan şerit hariç).
+- [x] `npm run lint`, `typecheck`, `test`, `build`, `git diff --check` yeşil.
 
 ## Yapılmaması gerekenler
 - Müşterinin istediği bölümleri/metinleri silmek ya da sırasını değiştirmek; yeni iddia (rakam, ödül, sertifika).
@@ -56,4 +56,26 @@ Kullanıcı (10 Kasım 2026): "kopyalamış gibi olmasın site ona göre düzenl
 - Push/yayın yok; `node_modules`/`.next` SİLME; AFINA-KAYNAK git'e eklenmez. Tek kayıt.
 - `docs/` altında yalnız bu dosyaya Coder Notu ve Durum.
 
-## Durum: BEKLİYOR
+## Coder Notu (Kimi)
+
+- Önce `output/task196-kimi/PLAN.md` yazıldı. “Dal ve Etiket” yönü; #243A29/#F5F1E7/#D4B483, Fraunces/Inter ve logodaki ince dal çizgisi kullanıldı. Öz denetimde kemerli maskeler, her bölümde eyebrow, 3+1 ürün rafı ve fotoğraf üstünde yüzen hikâye kartı genel/kalıp bulunarak plandan çıkarıldı. Bu oturumda 21st MCP aracı yok; mevcut bileşenler ve Lucide kullanıldı, yeni paket/medya üretilmedi.
+- Bölüm farkları:
+  1. **Menü:** Ortalanmış referans menüsü yerine fildişi zemin, geniş AFİNA logosu, sağa yaslı bağlantılar, altın aktif işaret ve metin tipinde mağaza bağlantısı.
+  2. **Hero:** Aynı video ve metinler; genel koyu kaplama yerine sol altta fildişi, kesik köşeli etiket paneli. Mobilde video ve içerik ayrı doğal akışta.
+  3. **Dört kategori:** Yuvarlak/ortalanmış kartlar yerine iki sütunlu, kesik köşeli küçük fotoğraflı editoryal indeks; mobilde tek sütun. Dört başlık ve bağlantı metinleri aynı.
+  4. **Ürünler ve öne çıkanlar:** Dört eşit kart yerine değişen genişlikli 2×2 katalog, açık etiket kartları ve mobil doğal yatay raf. “Tüm Ürünler” sağ üst kalıbından çıkarıldı; ürün sırası/verisi/sepet/teklif korundu.
+  5. **Hikayemiz:** Sol fotoğraf + sağ metin/ikon sütunu yerine 5/7 metin-fotoğraf oranı ve üç değerin alt satırda yatay şeridi. “Hikayemizi Keşfet” `/hakkimizda`ya gidiyor.
+  6. **Üçlü banner:** Eşit dikey kartlar, 01–03 ve “Keşfedin” kalktı; bir büyük tesis + iki küçük görsel mozaiği ve yeşil başlık etiketleri geldi.
+  7. **Bereketin Hasat Vakti:** Numaralı liste yerine dört çizgisel simgeli 2×2 üretim defteri; koyu referans bloğu yerine açık zeytin yüzeyi. Fotoğraf sağda, bütün müşteri metinleri aynı.
+  8. **Kayan şerit:** Büyük serif düz bant yerine ince yeşil bant ve yaprak ayraçları; kelimeler, duraklatma ve reduced-motion davranışı korundu.
+  9. **Toptan/Bayilik:** Görselsiz iki kutu; ortak çerçeve ve bölücüyle düz zemin, gerçek sayfa bağlantıları korundu. Referansta bu ayrı bölüm yok; karşılaştırma dosyasında açıklandı.
+  10. **Blog:** “Zeytin Rehberi” yerine “Zeytin Defteri”; eşit kartlar yerine küçük kapaklı editoryal yazı satırları. Liste/yazı sayfaları, llms.txt ve dört çalışan bağlantı aynı veriyle sürüyor.
+  11. **İmza/footer:** Güven ikonu şeridi yerine logo + slogan + yöre imzası. Footer’da büyük slogan, gruplanmış bağlantılar, gerçek adres ve yüzeye uygun açık ödeme logoları var; kısa bağlantılar en az 44×48 px.
+  12. **İç sayfalar:** `/urunler`, `/urun`, `/hakkimizda`, `/toptan-satis` ve `/blog` aynı kesik köşe, açık etiket, dal/altın çizgi ve tipografi diline uyarlandı; form ve ticari mantık değişmedi.
+- TDD: Yeni özgünlük testleri başlangıçta 2/2 RED; uygulama sonrası GREEN. Blog adı, mozaik ana parçası ve llms metni ayrı RED→GREEN çalıştırıldı. Render incelemesinde mozaik seçici hatası ve mobil ok daralması bulunup düzeltildi; footer 44 px bulgusu da RED sonrası düzeltildi. Ayrıntı `output/task196-kimi/VERIFICATION.md`.
+- Son komutlar: `npm run lint`, `npm run typecheck`, `npm run test` (**162 dosya/1473 PASS; 26 mevcut yerel-DB skip**), `npm run build` ve `git diff --check` PASS. Build için sembolik `node_modules` kullanan worktree'de Turbopack kökü ortak proje köküne çözülüyor; Node 24 JSON importları ve seed yükleyicisi uyumlu.
+- Paketli headless Chromium, iki worker ve yalnız 3006: 189–195 kamu paketi **107/107 PASS**, ek renk paketi **48/48 PASS**, footer/logo/iç sayfa/bootstrap paketi **9 PASS / 3 mevcut proje-koşulu skip**; toplam **164 ilgili PASS**. Video gerçek decode/ilerleme/pause/resume, saveData, 404 poster, CLS < .05, taşma 0, kontrast 0, reduced-motion ve scroll-hareketsizlik PASS. Firefox/WebKit kurulu olmadığı için ayrı cross-browser kabulü yapılmadı; fiziksel cihaz yok.
+- Kanıtlar: `output/task196-kimi/PLAN.md`, `evidence.json`, `render-report.json`, `VERIFICATION.md`, `afina/` ve 24 dosyalık `karsilastirma/`. 1440/390 full-page görüntüler gerçek production sunucusundan alındı ve incelendi. Masaüstü yakalamasında mevcut `/hesabim` prefetch'inin HTTPS-localhost SSL kaydı bulunuyor; sayfa renderını etkilemedi ve auth kodu değiştirilmedi.
+- Genişletilmiş eski-suite denemesinde Task123 öncesi seçiciler güncel footer testlerine uyarlandı. İlişkisiz `legal.spec.ts` içindeki eski taslak metadata/ana-H1 beklentileri bu tasarım paketinin parçası değil; hukuk içeriği değiştirilmedi. Push, yayın, Vercel, canlı DB, ortam dosyası, dış klasör değişikliği veya yeni bağımlılık yok; `node_modules`/`.next` korundu.
+
+## Durum: TAMAMLANDI

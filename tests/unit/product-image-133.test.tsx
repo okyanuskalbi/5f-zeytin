@@ -98,15 +98,16 @@ function declarations(selector: string, media?: string): Record<string, string> 
 }
 
 it("fills the padding-free gallery with an absolute cover image and overlays a 64px strip", () => {
-  expect(declarations(".gallery")).toMatchObject({ position: "relative", padding: "0", overflow: "hidden", "border-radius": "8px" });
+  expect(declarations(".gallery")).toMatchObject({ position: "relative", padding: "0", overflow: "hidden" });
+  expect(declarations(".gallery")["clip-path"]).toContain("polygon");
   expect(declarations(".image")).toMatchObject({ position: "absolute", inset: "0", padding: "0" });
   for (const selector of [".image picture", ".image img"]) {
     expect(declarations(selector)).toMatchObject({ position: "absolute", inset: "0", width: "100%", height: "100%" });
   }
-  expect(declarations(".image img")).toMatchObject({ "object-fit": "cover", "object-position": "var(--product-image-position, center)" });
+  expect(declarations(".image img")).toMatchObject({ "object-fit": "cover", "object-position": "var(--product-image-position,center)" });
   expect(declarations(".thumbnails")).toMatchObject({ position: "absolute", bottom: "16px", "z-index": "2" });
   expect(declarations(".thumbnails button")).toMatchObject({ width: "64px", height: "64px" });
-  expect(declarations('.thumbnails button[aria-pressed="true"]')["border"]).toBe("2px solid var(--ring)");
+  expect(declarations('.thumbnails button[aria-pressed="true"]')["border"]).toBe("2px solid #243A29");
   expect(declarations(".gallery::after")).toMatchObject({ position: "absolute", bottom: "0", "pointer-events": "none" });
   expect(declarations(".gallery::after")["background"]).toContain("linear-gradient");
 });
@@ -114,12 +115,12 @@ it("fills the padding-free gallery with an absolute cover image and overlays a 6
 it("reserves mobile height before image loading with a stable gap before the content", () => {
   expect(declarations(".gallery", "(max-width:767px)")["height"]).toBe("min(62svh,125vw)");
   expect(declarations(".product", "(max-width:767px)")).toMatchObject({"grid-template-columns":"minmax(0,1fr)",gap:"32px"});
-  expect(declarations(".info", "(max-width:767px)")["padding"]).toBe("0");
+  expect(declarations(".info", "(max-width:767px)")["padding-top"]).toBe("20px");
 });
 
 it("keeps desktop gallery dimensions reserved and both columns in the normal document flow", () => {
-  expect(declarations(".product")).toMatchObject({"grid-template-columns":"minmax(0,1fr) minmax(0,1fr)","align-items":"start",gap:"56px"});
-  expect(declarations(".gallery")["height"]).toBe("640px");
+  expect(declarations(".product")).toMatchObject({"grid-template-columns":"minmax(0,7fr) minmax(0,5fr)","align-items":"start",gap:"64px"});
+  expect(declarations(".gallery")["height"]).toBe("680px");
   expect(declarations(".info")["overflow-y"]).toBeUndefined();
   expect(declarations(".image","(prefers-reduced-motion:reduce)")["opacity"]).toBe("1 !important");
 });

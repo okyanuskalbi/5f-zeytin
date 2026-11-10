@@ -34,5 +34,5 @@ it("makes the hero poster the eager server image and keeps autoplay video out of
   expect(poster.getAttribute("loading")).toBe("eager");
   expect(poster.getAttribute("fetchPriority")).toBe("high");
   expect(doc.querySelector("#baslangic video")).toBeNull();
-  expect(doc.querySelectorAll('[data-home-section="marquee"] [aria-hidden="true"]')).toHaveLength(1);
+  expect(doc.querySelectorAll('[data-home-section="marquee"] > div > div > span[aria-hidden="true"]')).toHaveLength(1);
 });

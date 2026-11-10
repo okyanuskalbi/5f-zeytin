@@ -1,5 +1,6 @@
 // @vitest-environment node
-import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { cp, mkdir, mkdtemp, readFile, rm, symlink, writeFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { afterEach, expect, it } from "vitest";
 // @ts-expect-error Standalone Node ESM verifier.
@@ -18,7 +19,12 @@ async function independentCheckout(): Promise<string> {
   return root;
 }
 it("verifies supplied source provenance and all reviewed silent fast-start derivatives", async () => {
-  await expect(checkCustomerHomeAssets({ requireSources: true })).resolves.toEqual({ sourcesAvailable: true, images: 24, videos: 3 });
+  const root = await independentCheckout();
+  const local = resolve("AFINA-KAYNAK/musteri-2026-11-10");
+  const source = existsSync(local) ? local : resolve("../../musteri-2026-11-10");
+  await mkdir(resolve(root, "AFINA-KAYNAK"), { recursive: true });
+  await symlink(source, resolve(root, "AFINA-KAYNAK/musteri-2026-11-10"), "dir");
+  await expect(checkCustomerHomeAssets({ root, requireSources: true })).resolves.toEqual({ sourcesAvailable: true, images: 24, videos: 3 });
 });
 it("checks pinned public derivatives in CI without private original files", async () => {
   await expect(checkCustomerHomeAssets({ root: await independentCheckout() })).resolves.toEqual({ sourcesAvailable: false, images: 24, videos: 3 });

@@ -1,4 +1,4 @@
-import manifest from "./v4-assets.json";
+import manifest from "./v4-assets.json" with { type: "json" };
 
 export type V3Image = Readonly<{
   alt: string;

@@ -91,7 +91,7 @@ test.describe("Task191 action-only motion", () => {
     await record(page, { grid: "[data-category-transition] [data-product-reveal]" });
     await page.getByRole("navigation", { name: "Ürün grupları" }).getByRole("link", { name: "Zeytinyağı", exact: true }).click();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Zeytinyağı");
-    await expect(page.getByRole("navigation", { name: "Ürün grupları" }).getByRole("link", { name: "Zeytinyağı", exact: true })).toHaveCSS("background-color", "rgb(239, 229, 207)");
+    await expect(page.getByRole("navigation", { name: "Ürün grupları" }).getByRole("link", { name: "Zeytinyağı", exact: true })).toHaveCSS("background-color", "rgb(228, 232, 220)");
     const samples = await recorded(page);
     await info.attach("reduced-category-samples", { body: JSON.stringify(samples), contentType: "application/json" });
     expect(samples.grid.length).toBeGreaterThan(0);
