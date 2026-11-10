@@ -79,4 +79,21 @@ Kullanıcı isteği (10 Kasım 2026, "Tüm ürünler" penceresindeki "Kapat" dü
 - Ayrı karşılanmayan kabul: Claude'da tarayıcı doğrulaması yapılmadı; ilgili kutu açık tutuldu. TAMAMLANDI yerel kod/test teslimini belirtir; Claude incelemesi, fiziksel cihaz, gerçek oturum/veritabanı ya da yayın kabulü değildir.
 - Push, production/Vercel yayını ve ortam değişikliği yapılmadı. AFINA-KAYNAK ve output git'e eklenmedi.
 
-## Durum: TAMAMLANDI
+## Claude denetimi (10 Kasım 2026)
+
+Yerel test veritabanıyla (Postgres, 6 ürün) derlenmiş sitede doğrulandı:
+- **Geçenler:** `/urunler` 360/390/768/1024/1440 (taşma, iç kaydırma, kesik yazı, 44 px altı düğme yok; sayfa hatası yok); `/?magaza=ac` 308; "Teklife ekle" → `/#toptan`, "1 ürün · 1 adet", ilk alana odak; ürün detayı ve `/siparis-takip` açık, açık/koyu modda aynı; "Mevcut değil" ayrı. Codex'in renk testi 38/39 geçti (kalan 1 aşağıda). **Giriş yapılmış müşteri** (`/hesabim`, siparişler, adresler + boş form hataları, bilgilerim, güvenlik) ve **yönetici** (`/admin`, `/admin/urunler`, ürün düzenleme) sayfalarında 390/1440 × açık/koyu modda axe `color-contrast` **0 ihlal** (36 tarama).
+- Aşağıdaki iki madde düzeltilecek.
+
+## Düzeltme 189-1
+
+1. **Koyu alt bilginin altında açık renkli boşluk kalıyor (189 ile geldi).** Sayfa zemini artık fildişi olduğu için:
+   - Kısa sayfalarda (ör. 404, `/odeme-onizleme`, `/siparis-takip`) 1440×900 ve 1440×1000 pencerede alt bilgi sayfanın dibine inmiyor; altında ekranın yaklaşık üçte biri kadar fildişi alan görünüyor (eskiden zemin koyu olduğu için görünmüyordu). Kanıt: `output/task189-sonra/1440-bulunamayan-light.png`, `1440-odeme-onizleme-kapali-light.png`.
+   - Telefonda sepette ürün varken mini sepet için ayrılan boşluk (`components/cart/MiniCart.tsx` → `[data-mini-cart-reserve]`, 88 px) alt bilgiye inildiğinde çubuk gizlenince alt bilginin altında fildişi şerit olarak görünüyor. Kanıt: `output/task189-sonra/390-siparis-takip-dark.png` (alt 80 px).
+   - **Beklenen:** hiçbir sayfada, hiçbir pencere boyunda (en az 390×844, 768×1024, 1440×900, 1440×1000, 1920×1080) koyu alt bilginin altında açık renkli alan görünmez. Alt bilgi kısa sayfalarda ekranın dibine oturur (ana içerik esner) ya da alt bilginin altındaki her alan alt bilgiyle aynı koyu renktedir. Mini sepet boşluğu alt bilgiyle aynı koyu renkte olur. iOS/macOS'ta sayfayı en alta/üste esnetince görünen renk alt bilgi/üst menüyle uyumlu koyu olur (`html` zemini), sayfa içerik zemini fildişi kalır. Uzun sayfaların görünümü değişmez.
+   - **Test (kalıcı, e2e):** belirtilen pencerelerde kısa sayfalar + `/urunler` + `/siparis-takip` (1 ürünlü sepetle 390'da en alta kaydırılmış) için alt bilginin alt kenarı ile belge sonu arasında açık renkli piksel kalmadığını doğrula.
+2. **Renk testi kararsız:** `color-contrast-189.spec.ts` "390 siparis-takip" açık/koyu görüntü karşılaştırması %7,76 farkla düştü. Neden renk değil: açık mod görüntüsünde mini sepet çubuğu var, koyu modda yok (çubuğun animasyonu/alt bilgi gözlemcisi zamanlaması). Her iki görüntüden önce mini sepetin durumunu belirgin bir koşulla bekle (ya da karşılaştırmayı aynı kaydırma ve görünürlük durumunda yap). Kabul: spec art arda **3 kez** tam geçer.
+
+Kurallar: `npm run lint`, `typecheck`, `test`, `build`, `git diff --check` yeşil. Tek kayıt (commit), **push yok, yayın yok**. İş bitince `node_modules` ve `.next` klasörlerini **silme** (Claude doğrulaması bunları kullanır). Coder Notu (189-1) ekle, durum satırını en sona yaz.
+
+## Durum: DÜZELTME BEKLİYOR (189-1)
