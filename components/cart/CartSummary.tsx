@@ -132,7 +132,7 @@ export function CartSummary({ store, products, onRefresh, refreshing = false, up
           <p aria-label="Sepet bildirimi" role={feedback.error ? "alert" : "status"} aria-atomic="true" className={`text-base ${feedback.error ? "text-destructive" : "text-muted-foreground"}`}>{feedback.message}</p>
         </section>
 
-        <aside aria-labelledby={`${id}-summary`} className={styles.summary}>
+        <aside aria-labelledby={`${id}-summary`} className={styles.summary} data-surface="dark">
           <h2 id={`${id}-summary`}>Sepet özeti</h2>
           <CartTotals subtotal={knownSubtotal ? subtotal : null} itemCount={itemCount} />
           <p className={styles.estimate}>İndirimler: <span>Henüz hesaplanmadı</span></p>
@@ -156,7 +156,7 @@ export function CartSummary({ store, products, onRefresh, refreshing = false, up
           <CartTrust />
         </aside>
       </InteractiveCheckout>
-      {products !== null && state.hydrated && lines.length > 0 && <section aria-label="Mobil ödeme" className={styles.mobileCheckout}>
+      {products !== null && state.hydrated && lines.length > 0 && <section aria-label="Mobil ödeme" className={styles.mobileCheckout} data-surface="dark">
         <p>Toplam (tahmini)<strong><CartAmount amount={knownSubtotal ? subtotal : null} label="Mobil toplam (tahmini)" /></strong></p>
         {checkout()}
       </section>}

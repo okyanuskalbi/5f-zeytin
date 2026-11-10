@@ -36,30 +36,40 @@ it("renders four trust facts with a wholesale destination and decorative gold do
   expect(doc.querySelectorAll('[data-trust-dot][aria-hidden="true"]')).toHaveLength(4);
 });
 
-it("maps v4 page and UI tokens to readable dark surfaces", () => {
-  const root = readFileSync("app/globals.css", "utf8").match(/:root\s*\{([^}]+)\}/)![1];
-  const tokens = Object.fromEntries([...root.matchAll(/(--[\w-]+):\s*([^;]+);/g)].map(([, key, value]) => [key, value.trim()]));
+it("maps page and UI tokens to readable C light defaults and preserved local dark surfaces", () => {
+  const css = readFileSync("app/globals.css", "utf8");
+  const root = css.match(/:root\s*\{([^}]+)\}/)![1];
+  const dark = css.match(/:where\(\[data-surface="dark"\]\)\s*\{([^}]+)\}/)![1];
+  const declarations = (source: string) => Object.fromEntries([...source.matchAll(/(--[\w-]+):\s*([^;]+);/g)].map(([, key, value]) => [key, value.trim()]));
+  const tokens = declarations(root);
+  const darkTokens = { ...tokens, ...declarations(dark) };
+  expect(root).toContain("color-scheme: light;");
+  expect(dark).toContain("color-scheme: dark;");
   expect(tokens).toMatchObject({
     "--ink": "#0E1510", "--zeytin": "#1F3324", "--zeytin-2": "#2A4532",
     "--altin": "#D4B483", "--altin-2": "#E6CB97", "--sut": "#F7F3EA", "--gri": "#B9C0B6",
+    "--background": "#F7F4ED", "--foreground": "#172B21",
+    "--primary": "#88630B", "--primary-foreground": "#FFFFFF",
+  });
+  expect(darkTokens).toMatchObject({
     "--background": "var(--ink)", "--foreground": "var(--sut)",
     "--primary": "var(--altin)", "--primary-foreground": "var(--ink)",
   });
-  function resolve(token: string): string {
-    const value = tokens[token];
-    return value.startsWith("var(") ? resolve(value.slice(4, -1)) : value;
+  function resolve(token: string, palette: Record<string, string>): string {
+    const value = palette[token];
+    return value.startsWith("var(") ? resolve(value.slice(4, -1), palette) : value;
   }
   function luminance(color: string): number {
     const channels = color.slice(1).match(/../g)!.map(hex => parseInt(hex, 16) / 255).map(value => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
     return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
   }
-  for (const [background, foreground] of [
+  for (const [surface, palette] of [["light", tokens], ["dark", darkTokens]] as const) for (const [background, foreground] of [
     ["--background", "--foreground"], ["--card", "--card-foreground"], ["--popover", "--popover-foreground"],
     ["--primary", "--primary-foreground"], ["--secondary", "--secondary-foreground"],
     ["--muted", "--muted-foreground"], ["--accent", "--accent-foreground"], ["--destructive", "--destructive-foreground"],
   ]) {
-    const values = [luminance(resolve(background)), luminance(resolve(foreground))].sort((a, b) => b - a);
-    expect((values[0] + 0.05) / (values[1] + 0.05), `${foreground} on ${background}`).toBeGreaterThanOrEqual(4.5);
+    const values = [luminance(resolve(background, palette)), luminance(resolve(foreground, palette))].sort((a, b) => b - a);
+    expect((values[0] + 0.05) / (values[1] + 0.05), `${surface}: ${foreground} on ${background}`).toBeGreaterThanOrEqual(4.5);
   }
 });
 

@@ -27,7 +27,7 @@ export function AddToCart({ product, quantity = 1, label = "Sepete ekle", varian
   }
 
   return <div className={styles.addArea}>
-    <PurchaseButton data-variant={variant} onClick={add} disabled={unavailable}>
+    <PurchaseButton className={soldOut ? styles.unavailable : undefined} data-variant={variant} onClick={add} disabled={unavailable}>
       {soldOut ? "Mevcut değil" : state === "added" ? "Eklendi ✓" : label}
     </PurchaseButton>
     <p className={styles.notice} role="status" aria-atomic="true">{state === "added" ? `${product.name}, ${product.weight} sepete eklendi.` : ""}</p>

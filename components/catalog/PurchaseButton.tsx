@@ -8,10 +8,10 @@ import { motionTokens, springs } from "@/lib/ui-motion";
 import styles from "./AddToCart.module.css";
 
 /** Shared purchase appearance and interaction, without cart behavior. */
-export function PurchaseButton({ disabled, ref, ...props }: HTMLMotionProps<"button"> & { ref?: Ref<HTMLButtonElement> }) {
+export function PurchaseButton({ disabled, ref, className, ...props }: HTMLMotionProps<"button"> & { ref?: Ref<HTMLButtonElement> }) {
   const reduced = usePrefersReducedMotion();
   const motionEnabled = !reduced && !disabled;
-  return <motion.button {...props} ref={ref} type="button" className={styles.add}
+  return <motion.button {...props} ref={ref} type="button" className={[styles.add, className].filter(Boolean).join(" ")}
     initial={false} disabled={disabled}
     whileHover={motionEnabled ? { y: motionTokens.interaction.hoverY } : undefined}
     whileTap={motionEnabled ? { scale: motionTokens.interaction.tapScale } : undefined}

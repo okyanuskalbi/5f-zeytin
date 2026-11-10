@@ -110,6 +110,7 @@ it.each([
 it.each(["name", "image"] as const)("opens from the card %s and focuses the title", async kind => {
   const { dialog, trigger } = await openCard(kind);
   expect(dialog.getAttribute("aria-modal")).toBe("true");
+  expect(dialog.getAttribute("data-surface")).toBe("light");
   expect(within(dialog).getByRole("heading").textContent).toBe("Doğal Kırma Yeşil Zeytin");
   expect(within(dialog).getByText(copy[0][1])).toBeDefined();
   expect(within(dialog).getByRole("table", { name: "Ürün bilgileri" }).querySelectorAll("tr")).toHaveLength(6);
@@ -208,7 +209,7 @@ it("loads only studio and scene gallery images lazily and switches the large ima
   expect(within(dialog).getByRole("img", { name: "Visa" })).toBeDefined();
   expect(within(dialog).getByRole("img", { name: "Mastercard" })).toBeDefined();
   for (const brand of ["Visa", "Mastercard", "Troy"]) {
-    expect(within(dialog).getByRole("img", { name: brand }).getAttribute("src")).toBe(`/images/payment/${brand.toLowerCase()}.svg`);
+    expect(within(dialog).getByRole("img", { name: brand }).getAttribute("src")).toBe(`/images/payment/${brand.toLowerCase()}${brand === "Mastercard" ? "" : "-dark"}.svg`);
   }
 });
 

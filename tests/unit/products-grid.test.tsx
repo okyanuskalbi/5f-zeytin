@@ -51,11 +51,14 @@ it("adds every available variant to the real store and keeps the landing free of
   }
 });
 
-it("disables stock-zero variants without fading or changing the saved cart", async () => {
+it("disables stock-zero variants with a distinct unavailable style without changing the saved cart", async () => {
   const products = await getProducts();
   render(<CartProvider products={products}><Products products={products} /></CartProvider>);
   const button = screen.getByRole("button", { name: "Mevcut değil" }) as HTMLButtonElement;
   expect(button.disabled).toBe(true);
+  const available = screen.getAllByRole("button", { name: "Sepete ekle" })[0];
+  expect(button.className).not.toBe(available.className);
+  expect(button.className).toContain("unavailable");
   fireEvent.click(button);
   expect(JSON.parse(localStorage.getItem(CART_STORAGE_KEY) ?? "[]")).toEqual([]);
 });

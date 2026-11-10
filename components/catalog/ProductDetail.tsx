@@ -60,7 +60,7 @@ export function ProductDetail({ product, products, onSelect, onClose, onRestoreF
   }
 
   return <Root open onOpenChange={open => { if (!open) close(); }}>
-    <Content ref={attachContent} data-product-detail="" aria-modal="true"
+    <Content ref={attachContent} data-product-detail="" data-surface="light" aria-modal="true"
       data-slot={mobile ? "sheet-content" : "dialog-content"} data-reduced-motion={reduced}
       placement={mobile ? "fullscreen" : "center"} showCloseButton={false}
       className={mobile ? styles.sheet : styles.dialog}
@@ -155,7 +155,7 @@ function DetailBody({ product, products, mobile, onSelect, onQuote }: {
         </tbody></table>}
         <div className={styles.payment}>
           <span>Güvenli Ödeme</span>
-          <PaymentLogos tone="light" brands={["visa", "mastercard", "troy"]} />
+          <PaymentLogos tone="dark" brands={["visa", "mastercard", "troy"]} />
         </div>
       </div>
     </div>

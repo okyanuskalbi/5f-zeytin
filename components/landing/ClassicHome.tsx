@@ -5,7 +5,7 @@ import photos from "@/lib/media/classic-photos.json";
 import styles from "./ClassicHome.module.css";
 
 export function ClassicHero(): JSX.Element {
-  return <section id="baslangic" aria-labelledby="baslangic-title" className={styles.hero}>
+  return <section id="baslangic" aria-labelledby="baslangic-title" className={styles.hero} data-surface="dark">
     <V3Picture image={photos.assets.hero} mobile={photos.assets["hero-mobile"]} sizes="100vw" eager className={styles.heroPhoto} />
     <div className={`${styles.container} ${styles.heroContent}`}><div className={styles.heroCopy}>
       <p className={styles.eyebrow}>KENDİ ÜRETİMİMİZ</p>
@@ -26,7 +26,7 @@ export function TrustStrip(): JSX.Element {
     { icon: Truck, text: "Online Sipariş ve Toptan Satış" },
     { icon: Handshake, text: "Otel, Restoran, Market ve Bayilik İş Birlikleri" },
   ];
-  return <div className={styles.trust}><ul className={styles.container} aria-label="Üretim ve iş birliklerimiz">
+  return <div className={styles.trust} data-surface="dark"><ul className={styles.container} aria-label="Üretim ve iş birliklerimiz">
     {items.map(({ icon: Icon, text }) => <li key={text}><Icon aria-hidden="true" strokeWidth={1.25} /><span>{text}</span></li>)}
   </ul></div>;
 }
@@ -51,11 +51,11 @@ export function ClassicBusiness(): JSX.Element {
   return <section aria-label="Toptan satış ve bayilik" className={styles.business}>
     <V3Picture image={photos.assets.zeytinlik} sizes="100vw" decorative className={styles.businessBackground} />
     <div className={`${styles.container} ${styles.businessGrid}`}>
-      <article className={styles.businessCard}>
+      <article className={styles.businessCard} data-surface="dark">
         <V3Picture image={photos.assets.depo} sizes="(max-width: 767px) calc(100vw - 40px), 260px" className={styles.businessPhoto} />
         <div><h2>Toptan Satış</h2><p>Otel, restoran, market ve toplu tüketim için koli bazında teklif.</p><a href="#toptan" className={styles.goldButton}>Toptan Teklif Al<ArrowRight size={18} aria-hidden="true" /></a></div>
       </article>
-      <article className={styles.businessCard}>
+      <article className={styles.businessCard} data-surface="dark">
         <V3Picture image={photos.assets["zeytin-dali"]} sizes="(max-width: 767px) calc(100vw - 40px), 260px" className={styles.businessPhoto} />
         <div><h2>Bayimiz Olun</h2><p>AFİNA ZEYTİN&apos;i bölgenizde birlikte büyütelim; bayilik için bize yazın.</p><a href="/bayilik" className={styles.goldButton}>Bayilik Başvurusu<ArrowRight size={18} aria-hidden="true" /></a></div>
       </article>

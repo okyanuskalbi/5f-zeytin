@@ -1,5 +1,8 @@
 @import "tailwindcss" source(none);
 
+/* Appearance follows the surface, never the visitor's operating-system theme. */
+@custom-variant dark (&:where([data-surface="dark"], [data-surface="dark"] *));
+
 @source "../app";
 @source "../components";
 
@@ -37,7 +40,7 @@ body:has([data-admin-shell]) footer { display:none; }
   --pro-input: #717C69;
   --pro-error: #9D2822;
   --pro-gutter: clamp(20px,4vw,64px);
-  color-scheme: dark;
+  color-scheme: light;
   --ink: #0E1510;
   --zeytin: #1F3324;
   --zeytin-2: #2A4532;
@@ -66,28 +69,28 @@ body:has([data-admin-shell]) footer { display:none; }
   --step-head: clamp(40px, 5vw, 68px);
   --step-display: clamp(52px, 6.4vw, 96px);
 
-  --background: var(--ink);
-  --foreground: var(--sut);
-  --card: var(--zeytin);
+  --background: #F7F4ED;
+  --foreground: #172B21;
+  --card: #F5F1E7;
   --card-foreground: var(--foreground);
-  --popover: var(--card);
+  --popover: #F7F4ED;
   --popover-foreground: var(--foreground);
-  --primary: var(--altin);
-  --primary-foreground: var(--ink);
-  --primary-hover: var(--altin-2);
-  --secondary: var(--zeytin);
-  --secondary-foreground: var(--sut);
-  --secondary-hover: var(--zeytin-2);
-  --muted: var(--zeytin-2);
-  --muted-foreground: var(--gri);
-  --accent: var(--zeytin-2);
-  --accent-foreground: var(--sut);
-  --destructive: #F5B4A8;
-  --destructive-foreground: var(--ink);
-  --destructive-hover: #F9CCBF;
-  --border: #536451;
-  --input: #81927D;
-  --ring: var(--altin);
+  --primary: #88630B;
+  --primary-foreground: #FFFFFF;
+  --primary-hover: #6C4E08;
+  --secondary: #E8E3D7;
+  --secondary-foreground: #172B21;
+  --secondary-hover: #DDD6C6;
+  --muted: #E8E3D7;
+  --muted-foreground: #4F594B;
+  --accent: #E8E3D7;
+  --accent-foreground: #172B21;
+  --destructive: #9D2822;
+  --destructive-foreground: #FFFFFF;
+  --destructive-hover: #80201C;
+  --border: #D6D0C3;
+  --input: #717C69;
+  --ring: #88630B;
   --overlay: var(--ink);
 
   /* Also used by isolated component fixtures without the next/font layout. */
@@ -163,8 +166,8 @@ body:has([data-admin-shell]) footer { display:none; }
     font-size: var(--step-body);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
-    caret-color: var(--altin);
-    scrollbar-color: var(--altin) var(--ink);
+    caret-color: var(--ring);
+    scrollbar-color: var(--muted-foreground) var(--background);
   }
 
   h1, h2, h3, .font-serif {
@@ -193,7 +196,7 @@ body:has([data-admin-shell]) footer { display:none; }
   a:active { text-decoration: underline; }
 
   :focus-visible {
-    outline: 2px solid var(--altin);
+    outline: 2px solid var(--ring);
     outline-offset: 4px;
   }
 
@@ -236,11 +239,32 @@ body:has([data-admin-shell]) footer { display:none; }
 
 
 /* Contextual actions inherit accessible colours from their flat surface. */
-[data-surface="dark"] {
+:where([data-surface="dark"]) {
+  color-scheme: dark;
+  --background: var(--ink);
+  --foreground: var(--sut);
+  --card: var(--zeytin);
+  --card-foreground: var(--foreground);
+  --popover: var(--card);
+  --popover-foreground: var(--foreground);
   --primary: var(--altin);
   --primary-foreground: var(--ink);
   --primary-hover: var(--altin-2);
+  --secondary: var(--zeytin);
+  --secondary-foreground: var(--sut);
+  --secondary-hover: var(--zeytin-2);
+  --muted: var(--zeytin-2);
+  --muted-foreground: var(--gri);
+  --accent: var(--zeytin-2);
+  --accent-foreground: var(--sut);
+  --destructive: #F5B4A8;
+  --destructive-foreground: var(--ink);
+  --destructive-hover: #F9CCBF;
+  --border: #536451;
+  --input: #81927D;
   --ring: var(--altin);
+  caret-color: var(--ring);
+  scrollbar-color: var(--altin) var(--ink);
 }
 
 @media (min-width: 901px) {

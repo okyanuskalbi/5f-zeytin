@@ -109,7 +109,7 @@ it("fills the padding-free gallery with an absolute cover image and overlays a 6
   expect(declarations(".image img")).toMatchObject({ "object-fit": "cover", "object-position": "var(--product-image-position, center)" });
   expect(declarations(".thumbnails")).toMatchObject({ position: "absolute", bottom: "16px", "z-index": "2" });
   expect(declarations(".thumbnails button")).toMatchObject({ width: "64px", height: "64px" });
-  expect(declarations('.thumbnails button[aria-pressed="true"]')["border"]).toBe("2px solid var(--altin)");
+  expect(declarations('.thumbnails button[aria-pressed="true"]')["border"]).toBe("2px solid var(--ring)");
   expect(declarations(".gallery::after")).toMatchObject({ position: "absolute", bottom: "0", "pointer-events": "none" });
   expect(declarations(".gallery::after")["background"]).toContain("linear-gradient");
 });

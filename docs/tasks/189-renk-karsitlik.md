@@ -47,11 +47,11 @@ Kullanıcı isteği (10 Kasım 2026, "Tüm ürünler" penceresindeki "Kapat" dü
 7. Önce/sonra görüntüleri: `output/task189-sonra/` (390 ve 1440; ana sayfa, `/urunler`, ürün detayı, sepet çekmecesi, `/sepet`, `/giris`, `/siparis-takip`, `/bayilik` form hatası, telefon menüsü).
 
 ## Kabul kriterleri
-- [ ] e2e: axe `color-contrast` 0 ihlal (yukarıdaki tüm sayfa/durum × 390/1440 × açık/koyu mod). `npm run test:e2e -- <dosya>` ile çalışır.
-- [ ] Unit: "Mevcut değil" düğmesi devre dışı ve "Sepete ekle"den farklı sınıf/stil alır. Ürün detay penceresi açık yüzey sınıfını taşır. Koyu kapsam yalnız listelenen yüzeylerde var.
-- [ ] `app/globals.css` içinde `color-scheme: dark` yalnız koyu kapsamda. Genel `--background` açık renk. `dark:` işletim sistemi moduna bağlı değil.
-- [ ] Üst menü, alt bilgi, giriş paneli, "Sepet özeti" ve admin panelinin görünümü değişmedi (önce/sonra görüntüleri; admin için bileşen testi ya da yerel görüntü).
-- [ ] `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, `git diff --check` yeşil.
+- [x] e2e: axe `color-contrast` 0 ihlal (yukarıdaki tüm sayfa/durum × 390/1440 × açık/koyu mod). `npm run test:e2e -- <dosya>` ile çalışır.
+- [x] Unit: "Mevcut değil" düğmesi devre dışı ve "Sepete ekle"den farklı sınıf/stil alır. Ürün detay penceresi açık yüzey sınıfını taşır. Koyu kapsam yalnız listelenen yüzeylerde var.
+- [x] `app/globals.css` içinde `color-scheme: dark` yalnız koyu kapsamda. Genel `--background` açık renk. `dark:` işletim sistemi moduna bağlı değil.
+- [x] Üst menü, alt bilgi, giriş paneli, "Sepet özeti" ve admin panelinin görünümü değişmedi (önce/sonra görüntüleri; admin için bileşen testi ya da yerel görüntü).
+- [x] `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, `git diff --check` yeşil.
 - [ ] Tarayıcı doğrulaması Claude'da.
 
 ## Yapılmaması gerekenler
@@ -63,4 +63,20 @@ Kullanıcı isteği (10 Kasım 2026, "Tüm ürünler" penceresindeki "Kapat" dü
 - **Push yok, production yayını yok.** Testler yeşilse tek kayıt (commit); gönderimi Claude kullanıcı onayıyla yapar.
 - `docs/` altında yalnız bu dosyaya Coder Notu ve Durum.
 
-## Durum: BEKLİYOR
+## Coder Notu
+- 10 Kasım 2026: Task188 `0009275` kaydından sonra aynı ağaçta yürütüldü. Üç Codex alt ajanı genel tema/koyu yüzeyler, ürün detayı/stok dışı durum ve envanter/test işlerini paylaştı; son birleştirme ve yerel doğrulama ana ajanda yapıldı.
+- İstenen ui-ux-pro-max, better-colors, better-accessibility, frontend-design, responsiveness-check, frontend-patterns, tdd-workflow ve e2e-testing rehberleri fiilen okundu. Kurulu Tailwind 4.3.3 kaynağındaki custom-variant/default dark davranışı ile resmi Tailwind dark-mode ve shadcn theming belgeleri incelendi. Yeni UI bileşeni veya 21st kullanımı yok.
+- RED: açık varsayılanlar/koyu kapsam için 6, ürün yüzeyi/stok dışı görünüm için 4 beklenen başarısız kontrol; müşteri hesap özetindeki beyaz üstüne beyaz hızlı bağlantıda ölçülen 1:1 karşıtlık görüldü. GREEN: açık semantik çiftler, yerel koyu kapsam, gerçek kurulu Tailwind derleyicisiyle işletim sistemi medyası içermeyen dark yardımcıları, ürün detayı/stok dışı durum ve müşteri bileşenleri geçti. Eski ürün görseli/tema testlerinin renk beklentileri güncellendi; geometri ve mevcut kontroller korunuyor.
+- Genel varsayılan C açık tema oldu. Ürün detayı açık yüzey/altın vurgu kullanır; stokta olmayan düğme ayrı soluk sınıf ve kenarlık alır, native disabled kalır, hover ve Motion tepkisi yoktur. Gerçek Chromium ölçümünde 390/1440 genişlikte yazı `rgb(79,89,75)` / zemin `rgb(232,227,215)` = 5,728:1; cursor default, opacity 1.
+- Görev metnindeki admin varsayımı kaynakla uyuşmuyor: panel zaten kendi AÇIK temasını kullanıyor. "Görünümü değiştirme" şartı öncelendi; panel koyuya zorlanmadı. `data-surface="admin"` ile mevcut açık yerel renkler ve önceden genel temadan devraldığı ikincil/hata renkleri korundu. Ana kabuk ve portal için bileşen testi var.
+- Yerel kapılar: lint, typecheck, `npm run test -- --maxWorkers=2 --testTimeout=15000` = 137 dosya / 1359 PASS; mevcut 6 dosya / 26 yerel Postgres testi atlandı. Varlık kontrolü ve Next 16.4.2 Turbopack production derlemesi PASS; `git diff --check` PASS. Eski 5 saniyelik varlık testi sınırının yoğun koşuda aşılması nedeniyle son tam koşuda 15 saniyelik test süresi kullanıldı; kalıcı genel süre/test ayarı değiştirilmedi.
+- `@axe-core/playwright` geliştirme bağımlılığı tam `4.14.0` sürümüne sabitlendi. `npm ci --ignore-scripts --no-audit --no-fund` 591 paketle başarılı; kilit dosyasındaki mevcut platformlar arası optional kayıtlar korundu. Yeni üretim bağımlılığı yok.
+- Kalıcı yerel tarayıcı testi: `npm run test:e2e -- color-contrast-189.spec.ts --config output/tmp/playwright189.config.ts --project=chromium-390 --workers=1` = 39/39 PASS; 390/1440 genişlikte 78 açık/koyu mod taraması, axe color-contrast ihlali 0. Tüm 39 görüntü çiftinde değişen piksel oranı TAM 0. Yerel HTTP durumları, gerçek ürün pencereleri, 1 ürünlü sepet/çekmece, telefon menüsü, teklif ve bayilik hata durumları dahildir. Aynı kalıcı dosya standart `playwright.config.ts` ile de `npm run test:e2e -- color-contrast-189.spec.ts --project=chromium-390 --workers=1` olarak çalışır. Bu koşuda uzak bağlantıları engellenmiş mevcut yerel sunucuyu kullanmak için geçici ayar dosyası kullanıldı; geçici dosyalar teslim sonrasında temizlendi.
+- Otomatik ölçümün sınırı gizlenmedi: axe'nin kesin karar veremediği öğeler 34 ölçümün ayrıntılı `incomplete` kayıtlarında hedef/sebep bilgisiyle tutuldu. Özellikle görüntü arkasındaki renklerin tümü için elle WCAG kabulü yapıldığı iddia edilmez; Claude görsel incelemesi ayrı bekler. Toplu sonuç `output/task189/contrast-summary.json`, görüntüler ve tekil ölçüm raporları `output/task189-sonra/` içindedir.
+- Envanter: git dışı `output/task189-envanter.md`. Önce/sonra ve koyu yüzey karşılaştırmaları `output/task189-once/`, `output/task189-preservation/`, `output/task189-sonra/`; komut kayıtları `output/task189/` altındadır. Menü iki genişlikte, masaüstü footer, giriş marka bölgesi ve masaüstü sepet özeti piksel olarak aynı. Mobil footer farkı tek alt sınır piksel satırında; içerik rengi değişmedi. Mobil sepet özetinin kendi alanı aynı; yalnız sabit ödeme çubuğunun önceden silik düğme yazısı okunur hale geldi (923–971. satırlar, özetin kalanında değişen piksel 0).
+- Canlı bağlantılar engellenerek yerel sunucu/derleme çalıştırıldı. Ortam dosyaları veya ayarları değiştirilmedi; canlı Neon/Supabase, ödeme veya müşteri verisi kullanılmadı. `TEST_DATABASE_URL` tanımlı değil; ortam değiştirme yasağı altında yerel müşteri/veritabanı oluşturulmadı. Bu nedenle giriş yapılmış müşteri için VERİTABANLI tarayıcı taraması yapılmadı. Görevin izin verdiği yedek kontrol olarak gerçek orders/addresses/profile/summary bileşenleri yerel veriyle ve kaynak CSS renk çiftlerinden hesaplanan karşıtlıkla 4 testte doğrulandı. Bu, gerçek oturum/veritabanı kabulü değildir.
+- Ödeme önizlemesi mevcut ayarlar değiştirilmeden kapalı durumuyla kontrol edilir; gerçek ödeme akışı açılmadı. Yetki hata bileşenleri ve diğer sayfalar ortak açık EmptyState/semantik renkleri kullanır. Ürün bilgileri/fiyat/stok, auth/sepet/ödeme davranışı, ölçüler/font/logo düzeni değiştirilmedi.
+- Ayrı karşılanmayan kabul: Claude'da tarayıcı doğrulaması yapılmadı; ilgili kutu açık tutuldu. TAMAMLANDI yerel kod/test teslimini belirtir; Claude incelemesi, fiziksel cihaz, gerçek oturum/veritabanı ya da yayın kabulü değildir.
+- Push, production/Vercel yayını ve ortam değişikliği yapılmadı. AFINA-KAYNAK ve output git'e eklenmedi.
+
+## Durum: TAMAMLANDI

@@ -29,7 +29,7 @@ export function MembershipFrame({
         if (!event.currentTarget.contains(event.relatedTarget)) setSecureFocus(false);
       }}
     >
-      <aside className={styles.brandPanel} aria-label="AFİNA ZEYTİN">
+      <aside className={styles.brandPanel} aria-label="AFİNA ZEYTİN" data-surface="dark">
         <div className={styles.brandArt} aria-hidden="true">
           <V3Picture
             image={v3Image("hero-masaustu")}

@@ -436,6 +436,7 @@
   border: 1px solid var(--customer-rule);
   border-radius: 5px;
   background: #fff;
+  color: var(--customer-olive);
 }
 .quickLinks strong {
   font-size: 15px;

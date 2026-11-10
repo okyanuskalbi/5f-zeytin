@@ -28,7 +28,7 @@ const packaging = [
 
 export function DealershipPage(): JSX.Element {
   return <main className={`${classic.root} ${styles.root}`}>
-    <section aria-labelledby="bayilik-title" className={`${classic.hero} ${styles.hero}`}>
+    <section aria-labelledby="bayilik-title" className={`${classic.hero} ${styles.hero}`} data-surface="dark">
       <V3Picture image={photos.assets.zeytinlik} mobile={photos.assets["zeytin-dali"]} sizes="(max-width: 767px) 100vw, (max-width: 1100px) 1280px, 100vw" eager className={classic.heroPhoto} />
       <div className={`${classic.container} ${styles.heroContent}`}>
         <div className={classic.heroCopy}>

@@ -10,9 +10,17 @@
   --primary: #243a29;
   --primary-foreground: #fff;
   --primary-hover: #304b36;
+  /* Keep formerly inherited controls unchanged when storefront defaults change. */
+  --secondary: var(--zeytin);
+  --secondary-foreground: var(--sut);
+  --secondary-hover: var(--zeytin-2);
   --muted: #eef1ef;
   --muted-foreground: #526057;
   --accent: #eef1ef;
+  --accent-foreground: var(--sut);
+  --destructive: #F5B4A8;
+  --destructive-foreground: var(--ink);
+  --destructive-hover: #F9CCBF;
   --border: #d9dfdb;
   --input: #7b887f;
   --ring: #243a29;

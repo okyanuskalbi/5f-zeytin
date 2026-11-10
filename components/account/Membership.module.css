@@ -17,7 +17,7 @@
 .error { color: var(--destructive); }
 .password { position: relative; display: block; }
 .password input { width: 100%; padding-right: 48px; }
-.password button { position: absolute; top: 50%; right: 4px; transform: translateY(-50%); min-height: 44px; min-width: 44px; width: 44px; height: 44px; color: var(--sut); }
+.password button { position: absolute; top: 50%; right: 4px; transform: translateY(-50%); min-height: 44px; min-width: 44px; width: 44px; height: 44px; color: var(--foreground); }
 .password button, .password button:hover, .password button:active, .password button:focus, .password button:focus-visible { background: transparent; }
 .labelRow { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; column-gap: 12px; margin-bottom: -6px; }
 .forgotPassword { min-height: 44px; padding: 8px 0 8px 8px; font-size: 12px; font-weight: 500; color: var(--muted-foreground); text-underline-offset: 3px; }

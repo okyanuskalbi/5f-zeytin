@@ -109,7 +109,7 @@ export function AdminShell({ overview = fixture, children, area }: { overview?: 
     { title: "Kargoya hazır sipariş", value: sample ? String(sample.readyToShip) : "—" },
   ];
 
-  return <div data-admin-shell="" className={`${styles.theme} ${styles.shell}`}>
+  return <div data-admin-shell="" data-surface="admin" className={`${styles.theme} ${styles.shell}`}>
     <Sidebar className={styles.desktopSidebar}>
       <div className={styles.brand}>AFİNA ZEYTİN<span>Yönetim paneli</span></div>
       <SidebarContent><nav aria-label="Yönetim navigasyonu">{navigation()}</nav></SidebarContent>
@@ -120,7 +120,7 @@ export function AdminShell({ overview = fixture, children, area }: { overview?: 
         <div className={styles.location}>
           <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
             <SheetTrigger asChild><Button variant="outline" size="icon" className={styles.menuTrigger} aria-label="Yönetim menüsünü aç"><Menu aria-hidden="true" /></Button></SheetTrigger>
-            <SheetContent placement="fullscreen" className={`${styles.theme} ${styles.mobilePanel}`} onCloseAutoFocus={event => {
+            <SheetContent placement="fullscreen" data-surface="admin" className={`${styles.theme} ${styles.mobilePanel}`} onCloseAutoFocus={event => {
               if (pendingFocus.current) {
                 event.preventDefault();
                 document.getElementById(pendingFocus.current)?.focus();

@@ -155,7 +155,7 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
           {mobile && state.hydrated && lines.length > 0 && <div className={styles.drawerBodyTrust}><CartTrust /></div>}
         </motion.div>
 
-        <div className={styles.drawerFooter}>
+        <div className={styles.drawerFooter} data-surface="dark">
           <CartTotals subtotal={state.hydrated && (lines.length === 0 || validCart) ? subtotal : null} itemCount={itemCount} />
           <p className={styles.estimate}>Kargo ve indirimler dahil değildir.</p>
           {validCart && checkoutHref ? (

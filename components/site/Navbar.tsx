@@ -142,7 +142,7 @@ export function Navbar(): JSX.Element {
   }, [isOpen]);
 
   return (
-    <header data-site-navbar="" data-tone="solid"
+    <header data-site-navbar="" data-tone="solid" data-surface="dark"
       data-over-hero="false" className={`site-bar ${styles.bar}`}>
       <div className={styles.row}>
         <Link ref={homeRef} href="/" onClick={event => { if (landing && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && event.button === 0) window.scrollTo({ top: 0, behavior: "instant" }); }} aria-label="Afina Zeytin ana sayfa" className={styles.home}>

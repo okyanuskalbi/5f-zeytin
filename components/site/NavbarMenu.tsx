@@ -21,7 +21,7 @@ export function NavbarMenu({ links, activeHref, onClose, onRestoreFocus }: {
         <DialogTitle>Site menüsü</DialogTitle>
         <DialogDescription>Ana sayfa, hakkımızda, üretim tesisimiz, ürünler, toptan satış, bayilik ve iletişim.</DialogDescription>
       </DialogHeader>
-      <div className={styles.menuToolbar}>
+      <div className={styles.menuToolbar} data-surface="dark">
         <DialogClose asChild><Link href="/" aria-label="Afina Zeytin ana sayfa" className={styles.menuHome}>
           <BrandLogo tone="dark" className={styles.menuLogo} />
         </Link></DialogClose>
