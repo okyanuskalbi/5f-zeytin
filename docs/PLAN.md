@@ -1,4 +1,20 @@
-## Aktif iş: Task188 / Tüm ürünler ayrı sayfa (10 Kasım 2026)
+## Aktif plan: açık tonlu yeni kurgu, Köklü Zeytincilik referanslı (10 Kasım 2026, öğleden sonra)
+
+Müşteri revizesi (birebir metin: `AFINA-KAYNAK/musteri-2026-11-10/BRIEF.md`; kullanıcı: "revizlerini
+baştan kurgula yap", "codex'e yaptır"). C ana sayfası yerini kokluzeytincilik.com.tr yapısındaki
+açık tonlu kurguya bırakır: hero video → 4 kutu (Zeytinyağı, Zeytin, Tesisimiz, Bayilik) → ürünler
+ızgarası → Hikayemiz + 3 ikon → öne çıkan ürünler → 3'lü banner (tesis, her tanede aynı özen,
+zeytinyağı) → Bereketin Hasat Vakti + 4 madde → kayan şerit → Toptan/Bayilik ikili kutu → blog →
+açık alt bilgi. Yorumlar, rakamlı istatistikler, YouTube bölümü, 2'li banner yok; sahte indirim yok
+("İndirimdeki" yerine "Öne Çıkan"). Ürünler ayrı sayfalarda (`/urun/<slug>`), kategoriler Zeytinyağı
+ve Zeytin (Siyah/Yeşil/Kırma). Hakkımızda ve Toptan Satış ayrı sayfa; teklif formu `/toptan-satis`.
+Blog: 4 demo yazı, çalışan sayfalar. Bekleyen müşteri malzemesi: "Nesillerin Emeği Toprağın
+Bereketi" görseli (yazısız) + metni, zeytinyağı paylaşım görseli (şimdilik onaylı fotoğraflar).
+Görevler (aynı ağaçta sırayla): 192 açık tema + yeni ana sayfa → 193 ürün sayfaları + kategori
+yapısı → 194 Hakkımızda + Toptan Satış → 195 blog. 188–191 yayında değil; hepsi birlikte, kullanıcı
+onayıyla yayınlanır.
+
+## Önceki iş: Task188 / Tüm ürünler ayrı sayfa (10 Kasım 2026)
 
 Kullanıcı (10 Kasım 2026, "Tüm ürünler" penceresinin ekran görüntüsüyle): "tek sayfada açılsın
 bu bölüm". Karar: ana sayfadaki "Tüm ürünler" açılır penceresi kalkar, yerine `/urunler`
