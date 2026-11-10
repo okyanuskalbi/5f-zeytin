@@ -30,18 +30,17 @@ it("uses the requested light footer without overriding site tokens", () => {
   });
   function resolve(value: string): string {
     const variable = /^var\((--[\w-]+)\)$/.exec(value);
-    return variable ? resolve(colors.get(variable[1]) ?? siteTokens.get(variable[1])!) : value;
+    return variable ? resolve(siteTokens.get(variable[1])!) : value;
   }
   const background = resolve(colors.get("background")!);
   expect(background).toBe("#F5F1E7");
-  const foreground = resolve(colors.get("color")!);
-  expect(foreground).toBe("#243A29");
+  expect(colors.get("color")).toBe("#172B21");
   function luminance(value: string): number {
     const channels = value.slice(1).match(/../g)!.map(channel => parseInt(channel, 16) / 255)
       .map(channel => channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4);
     return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
   }
-  expect((luminance(background) + 0.05) / (luminance(foreground) + 0.05)).toBeGreaterThanOrEqual(4.5);
+  expect((luminance(background) + 0.05) / (luminance(colors.get("color")!) + 0.05)).toBeGreaterThanOrEqual(4.5);
   const community = doc.querySelector<HTMLAnchorElement>('a[href="https://afina.com.tr"]')!;
   expect(community.textContent).toBe("AFİNA Şirketler Topluluğu markasıdır.");
   expect(community.target).toBe("_blank");

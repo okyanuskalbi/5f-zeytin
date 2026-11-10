@@ -1,62 +1,54 @@
-.root { --journal-paper:#FFFEFA; --journal-ink:#243A29; --journal-muted:#4F594B; --journal-accent:#735519; padding-block:calc(var(--header-height) + 24px) 80px; background:var(--journal-paper); color:var(--journal-ink); overflow-wrap:break-word; }
+.root { padding-block:calc(var(--header-height) + 24px) 64px; background:#FAF8F2; color:#172B21; overflow-wrap:break-word; }
 .container { width:calc(100% - 64px); max-width:1240px; margin-inline:auto; min-width:0; }
 .breadcrumb ol { display:flex; align-items:center; flex-wrap:wrap; gap:8px 12px; margin:0; padding:0; list-style:none; font-size:.875rem; line-height:1.5; }
 .breadcrumb li { display:flex; align-items:center; gap:12px; min-width:0; }
 .breadcrumb a { display:inline-flex; align-items:center; min-height:44px; text-decoration:underline; text-underline-offset:4px; }
-.intro { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); gap:32px 80px; align-items:end; padding-block:40px 48px; margin-bottom:48px; border-bottom:1px solid #D4B483; }
-.intro h1,.articleHeader h1 { margin:0; font-size:clamp(2.25rem,4.4vw,4rem); line-height:1.16; font-weight:500; letter-spacing:-.02em; text-wrap:balance; }
-.intro > p { max-width:48ch; margin:0; color:var(--journal-muted); font-size:1.0625rem; line-height:1.65; }
-.cardGrid { display:grid; grid-template-columns:minmax(0,1fr); gap:40px; }
-.card { min-width:0; margin:0; background:var(--journal-paper); }
-.cardLink { display:grid; grid-template-columns:minmax(0,.6fr) minmax(0,1fr); gap:32px; height:100%; }
-.cardImage { display:block; aspect-ratio:16/10; overflow:hidden; background:#F5F1E7; }
+.intro { padding-block:32px 48px; max-width:68ch; }
+.eyebrow { margin:0 0 16px; color:#88630B; font-family:var(--font-body,var(--font-body-fallback)); font-size:.8125rem; line-height:1.5; font-weight:700; letter-spacing:.16em; }
+.intro h1,.articleHeader h1 { margin:0 0 24px; font-size:clamp(2.25rem,4.4vw,4rem); line-height:1.16; letter-spacing:-.02em; text-wrap:balance; }
+.intro > p:last-child { color:#4F594B; font-size:1.0625rem; line-height:1.65; }
+.cardGrid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:32px; }
+.card { min-width:0; margin:0; border:1px solid #D6D0C3; border-radius:10px; background:#FFFFFF; overflow:hidden; }
+.cardLink { display:flex; flex-direction:column; height:100%; }
+.cardImage { display:block; aspect-ratio:16/9; overflow:hidden; }
 .cardImage img { display:block; width:100%; height:100%; object-fit:cover; }
-.cardContent { display:flex; flex:1; flex-direction:column; align-items:flex-start; justify-content:center; gap:16px; padding:8px 0; }
-.cardContent time,.articleMeta { color:var(--journal-muted); font-size:.875rem; line-height:1.5; }
-.cardContent h2,.cardContent h3 { margin:0; max-width:28ch; font-size:clamp(1.5rem,2.3vw,2rem); line-height:1.3; font-weight:500; letter-spacing:-.01em; }
-.cardContent p { max-width:64ch; margin:0; color:var(--journal-muted); font-size:1rem; line-height:1.65; text-wrap:pretty; }
-.cardGrid:not(.otherGrid) > .card:first-child .cardLink { grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); gap:48px; padding-bottom:40px; border-bottom:1px solid #D6D0C3; }
-.cardGrid:not(.otherGrid) > .card:first-child .cardContent h2 { font-size:clamp(1.75rem,3vw,2.75rem); }
-.textLink,.collection { display:inline-flex; align-items:center; gap:12px; min-height:44px; color:var(--journal-accent); font-size:.9375rem; font-weight:600; text-decoration:underline; text-underline-offset:5px; }
-.cardLink:hover .textLink { color:var(--journal-ink); }
-.root :is(a,button):focus-visible { outline:3px solid var(--journal-accent); outline-offset:4px; }
-.cardLink:focus-visible { outline-offset:6px; }
+.cardContent { display:flex; flex:1; flex-direction:column; align-items:flex-start; gap:16px; padding:24px; }
+.cardContent time,.articleMeta { color:#4F594B; font-size:.875rem; line-height:1.5; }
+.cardContent h2,.cardContent h3 { margin:0; font-size:clamp(1.5rem,2.3vw,2rem); line-height:1.3; letter-spacing:-.01em; }
+.cardContent p { flex:1; margin:0; color:#4F594B; font-size:1rem; line-height:1.65; text-wrap:pretty; }
+.textLink { display:inline-flex; align-items:center; gap:12px; min-height:44px; color:#88630B; font-size:.9375rem; font-weight:600; text-decoration:underline; text-underline-offset:5px; }
+.cardLink:hover .textLink { color:#6C4E08; }
+.root :is(a,button):focus-visible { outline:3px solid #88630B; outline-offset:4px; }
+.cardLink:focus-visible { outline-offset:-4px; }
 .article { max-width:960px; margin-inline:auto; }
 .articleHeader { max-width:68ch; margin:40px auto 32px; }
-.collection { margin-bottom:20px; }
-.articleHeader h1 { margin-bottom:24px; }
 .articleMeta { display:flex; flex-wrap:wrap; align-items:center; gap:12px; }
-.excerpt { margin:24px 0 0; font-size:1.125rem; line-height:1.65; color:var(--journal-muted); text-wrap:pretty; }
-.cover { display:block; width:100%; aspect-ratio:2/1; margin-block:32px 48px; overflow:hidden; }
+.excerpt { margin:24px 0 0; font-size:1.125rem; line-height:1.65; color:#4F594B; text-wrap:pretty; }
+.cover { display:block; width:100%; aspect-ratio:2/1; margin-block:32px 40px; border-radius:12px; overflow:hidden; }
 .cover img { display:block; width:100%; height:100%; object-fit:cover; }
 .prose { width:100%; max-width:68ch; margin-inline:auto; font-size:1.0625rem; line-height:1.7; }
 .prose section + section { margin-top:40px; }
-.prose h2 { margin:0 0 20px; font-size:clamp(1.5rem,2.6vw,2rem); line-height:1.3; font-weight:500; letter-spacing:-.01em; }
+.prose h2 { margin:0 0 20px; font-size:clamp(1.5rem,2.6vw,2rem); line-height:1.3; letter-spacing:-.01em; }
 .prose p { margin:0 0 20px; text-wrap:pretty; }
-.prose ul { padding-inline-start:24px; margin:0 0 24px; }
+.prose ul { padding-left:24px; margin:0 0 24px; }
 .prose li + li { margin-top:12px; }
-.prose a { text-decoration:underline; text-underline-offset:5px; color:var(--journal-accent); }
+.prose a { text-decoration:underline; text-underline-offset:5px; color:#88630B; }
 .categoryLink { padding-top:16px; }
-.related { margin-top:64px; padding-top:40px; border-top:1px solid #D4B483; }
-.related > h2 { margin:0 0 32px; font-size:clamp(1.875rem,3vw,2.5rem); line-height:1.25; font-weight:500; }
+.related { margin-top:64px; padding-top:40px; border-top:1px solid #D6D0C3; }
+.related > h2 { margin:0 0 32px; font-size:clamp(1.875rem,3vw,2.5rem); line-height:1.25; }
 .productGrid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; }
-.productGrid > div { min-width:0; padding:16px; background:#F5F1E7; border-radius:2px; }
-.productGrid :global(article[data-product-id]) { border:0; border-radius:0; background:#F5F1E7; color:var(--journal-ink); }
-.productGrid :global([aria-label="Fiyat"]) { color:var(--journal-accent); }
-.otherGrid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:32px; }
-.otherGrid .cardLink { display:flex; flex-direction:column; gap:16px; }
-.otherGrid .cardContent { justify-content:flex-start; }
+.productGrid > div { min-width:0; padding:16px; background:#F5F1E7; border:1px solid #D6D0C3; border-radius:8px; }
+.productGrid :global(article[data-product-id]) { border:0; border-radius:0; background:#F5F1E7; color:#172B21; }
+.productGrid :global([aria-label="Fiyat"]) { color:#735519; }
+.otherGrid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; }
 .otherGrid .cardContent h3 { font-size:1.5rem; }
-.otherGrid .cardContent p { flex:1; }
-@media(max-width:1023px) { .productGrid,.otherGrid { grid-template-columns:repeat(2,minmax(0,1fr)); } .intro { gap:32px; } .cardLink { gap:24px; } }
+@media(max-width:1023px) { .productGrid,.otherGrid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:767px) {
- .root { padding-bottom:48px; }
+ .root { padding-bottom:40px; }
  .container { width:calc(100% - 40px); }
- .intro { grid-template-columns:minmax(0,1fr); gap:24px; padding-block:24px 32px; margin-bottom:32px; }
- .cardGrid,.otherGrid { grid-template-columns:minmax(0,1fr); gap:32px; }
- .cardLink,.cardGrid:not(.otherGrid) > .card:first-child .cardLink { grid-template-columns:minmax(0,1fr); gap:16px; }
- .cardGrid:not(.otherGrid) > .card:first-child .cardLink { padding-bottom:32px; }
- .cardContent { padding:0; }
+ .intro { padding-block:24px 32px; }
+ .cardGrid,.otherGrid { grid-template-columns:minmax(0,1fr); gap:24px; }
+ .cardContent { padding:20px; }
  .articleHeader { margin-top:24px; }
  .cover { aspect-ratio:4/3; margin-block:24px 32px; }
  .related { margin-top:40px; padding-top:32px; }

@@ -35,20 +35,14 @@ it("provides visible keyboard focus, full touch targets and a narrow-screen grid
   const sheet = postcss.parse(readFileSync("components/site/ClassicFooter.module.css", "utf8"));
   let minimum = "";
   let focus = "";
-  let narrowColumns = "", narrowIdentity = "", smallestColumns = "";
+  let narrowColumns = "";
   sheet.walkRules(rule => {
     if (rule.selector === ".link") rule.walkDecls("min-height", decl => { minimum = decl.value; });
     if (rule.selector.includes(":focus-visible")) rule.walkDecls("outline", decl => { focus = decl.value; });
-    if (rule.selector === ".top" && rule.parent?.type === "atrule" && rule.parent.params === "(max-width:767px)")
+    if (rule.selector === ".links" && rule.parent?.type === "atrule" && rule.parent.params === "(max-width:767px)")
       rule.walkDecls("grid-template-columns", decl => { narrowColumns = decl.value; });
-    if (rule.selector === ".identity" && rule.parent?.type === "atrule" && rule.parent.params === "(max-width:767px)")
-      rule.walkDecls("grid-column", decl => { narrowIdentity = decl.value; });
-    if (rule.selector === ".top" && rule.parent?.type === "atrule" && rule.parent.params === "(max-width:359px)")
-      rule.walkDecls("grid-template-columns", decl => { smallestColumns = decl.value; });
   });
   expect(Number.parseFloat(minimum)).toBeGreaterThanOrEqual(48);
   expect(focus).toContain("2px solid");
   expect(narrowColumns).toBe("repeat(2,minmax(0,1fr))");
-  expect(narrowIdentity).toBe("1/-1");
-  expect(smallestColumns).toBe("minmax(0,1fr)");
 });

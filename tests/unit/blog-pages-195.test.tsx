@@ -13,7 +13,7 @@ const params = (slug: string) => ({ params: Promise.resolve({ slug }) });
 
 it("serves all four shared articles with dates and ordinary working links in an indexable list", () => {
   const doc = parse(renderToStaticMarkup(<Blog />));
-  expect(doc.querySelector("h1")?.textContent).toBe("Zeytin Defteri");
+  expect(doc.querySelector("h1")?.textContent).toBe("Zeytin Rehberi");
   expect(doc.querySelectorAll("[data-blog-card]")).toHaveLength(4);
   for (const post of blogPosts) {
     const card = doc.querySelector(`[data-blog-card="${post.slug}"]`)!;

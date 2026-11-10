@@ -20,7 +20,7 @@ export async function GET(): Promise<Response> {
     `- [Sık sorulanlar](${origin}/hakkimizda#sik-sorulanlar): Marka, ürün alanları, tesis ve kurumsal alım hakkında kısa cevaplar.`,
     `- [İletişim](${origin}/hakkimizda#iletisim): Ellek / Düziçi / Osmaniye ve mevcut iletişim kanalları.`,
     `- [AFİNA Şirketler Topluluğu](${siteIdentity.communityUrl}): Markanın bağlı olduğu şirketler topluluğu.`, "",
-    "## Zeytin Defteri", "",
+    "## Zeytin Rehberi", "",
     `- [Blog](${origin}/blog): Zeytin ve zeytinyağı hakkında genel bilgiler.`,
     ...blogPosts.map(post => `- [${post.title}](${origin}/blog/${post.slug}): ${post.excerpt}`), "",
     "## Ek kaynaklar", "",

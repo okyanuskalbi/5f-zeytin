@@ -24,7 +24,7 @@ export function AboutPage(): JSX.Element {
       <h1>Hakkımızda</h1><p>Kökü toprakta. Yeri sofrada.</p>
     </div></header>
     <section data-about-story className={`${styles.container} ${styles.story}`} aria-labelledby="hikayemiz-title">
-      <div><p className={styles.locality}>Ellek, Düziçi · Osmaniye</p><h2 id="hikayemiz-title">Ellek&apos;ten sofranıza</h2>
+      <div><p className={styles.eyebrow}>ELLEK, DÜZİÇİ · OSMANİYE</p><h2 id="hikayemiz-title">Ellek&apos;ten sofranıza</h2>
         <p>AFİNA ZEYTİN, AFİNA Şirketler Topluluğu&apos;nun zeytin ve zeytinyağı markasıdır. Osmaniye&apos;nin Düziçi ilçesindeki Ellek&apos;te, kendi tesisimizde hazırladığımız ürünleri bireysel ve toptan alıcılarla buluşturuyoruz.</p>
         <p>Doğal kırma zeytinlerimizi geleneksel usulle hazırlıyoruz. Kendi tesisimizde ayıklamadan paketlemeye uzanan üretim sürecini takip ediyoruz.</p>
         <div className={styles.actions}><Link href="/urunler" className={styles.goldButton}>Ürünleri İnceleyin<ArrowRight size={18} aria-hidden="true" /></Link><a href="https://afina.com.tr" target="_blank" rel="noopener noreferrer" className={styles.textLink}>AFİNA Şirketler Topluluğu<ArrowRight size={18} aria-hidden="true" /></a></div>
@@ -32,7 +32,7 @@ export function AboutPage(): JSX.Element {
       <V3Picture image={media.assets.fabrika} sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1312px) 44vw, 580px" eager className={styles.factoryPhoto} />
     </section>
     <section id="tesisimiz" data-about-facility className={styles.facility} aria-labelledby="tesisimiz-title"><div className={styles.container}>
-      <h2 id="tesisimiz-title">Modern Üretim Tesisimiz</h2>
+      <p className={styles.eyebrow}>ÜRETİCİ GÜCÜMÜZ</p><h2 id="tesisimiz-title">Modern Üretim Tesisimiz</h2>
       <p className={styles.facilityIntro}>Zeytin ayıklama, salamura, paketleme ve depolama süreçlerini Osmaniye Düziçi&apos;ndeki kendi tesisimizde gerçekleştiriyoruz.</p>
       <ul className={styles.processes}>{[
         ["Ayıklama", "Zeytinler kendi tesisimizde ayıklanır."],
@@ -44,7 +44,7 @@ export function AboutPage(): JSX.Element {
     <section aria-label="Üretim anlayışımız" data-about-values className={`${styles.container} ${styles.values}`}><ul>{values.map(({ icon: Icon, title, text }) => <li key={title}><Icon size={36} strokeWidth={1.3} aria-hidden="true" /><div><strong>{title}</strong><p>{text}</p></div></li>)}</ul></section>
     <div className={`${styles.container} ${styles.faq}`}><Faq canonicalPath="/hakkimizda" /></div>
     <section id="iletisim" aria-labelledby="iletisim-title" className={styles.contact}><div className={`${styles.container} ${styles.contactGrid}`}>
-      <div><h2 id="iletisim-title">Sofrada görüşürüz.</h2><p>Kökü toprakta. Yeri sofrada.</p><Link href="/urunler" className={styles.textLink}>Ürünlere dön<ArrowRight size={18} aria-hidden="true" /></Link></div>
+      <div><p className={styles.eyebrow}>İLETİŞİM</p><h2 id="iletisim-title">Sofrada görüşürüz.</h2><p>Kökü toprakta. Yeri sofrada.</p><Link href="/urunler" className={styles.textLink}>Ürünlere dön<ArrowRight size={18} aria-hidden="true" /></Link></div>
       <div><h3>AFİNA ZEYTİN</h3><div className={styles.address}><MapPin size={22} aria-hidden="true" /><address>{seller.address}</address></div>
         {phone && <a href={`tel:${phone.replace(/\s/g, "")}`}>{phone}</a>}
         {email && <a href={`mailto:${email}`}>{email}</a>}

@@ -29,12 +29,11 @@ export function Footer(): JSX.Element {
         <p className={styles.locality}>Ellek, Düziçi / Osmaniye</p>
         <a href="https://afina.com.tr" target="_blank" rel="noopener noreferrer" className={styles.community}>AFİNA Şirketler Topluluğu markasıdır.</a>
       </div>
-      <div className={styles.shopping}><h2>Sofranız için</h2><nav aria-label="Kategoriler" className={styles.links}>{productGroups.map(group => <Link key={group.id} href={`/urunler/${group.id}`} className={styles.link}>{group.name}</Link>)}</nav>
-      <h2>Müşteri Hizmetleri</h2><nav aria-label="Müşteri hizmetleri" className={styles.links}>
+      <div><h2>Kurumsal</h2><nav aria-label="Alt menü" className={styles.links}>{corporate.map(link => <Link key={link.href} href={link.href} className={styles.link}>{link.label}</Link>)}</nav></div>
+      <div><h2>Kategoriler</h2><nav aria-label="Kategoriler" className={styles.links}>{productGroups.map(group => <Link key={group.id} href={`/urunler/${group.id}`} className={styles.link}>{group.name}</Link>)}</nav></div>
+      <div><h2>Müşteri Hizmetleri</h2><nav aria-label="Müşteri hizmetleri" className={styles.links}>
         <Link href="/hesabim" className={styles.link}>Hesabım</Link><Link href="/siparis-takip" className={styles.link}>Sipariş Takip</Link><Link href="/sepet" className={styles.link}>Sepetim</Link>
-      </nav></div>
-      <div className={styles.company}><h2>AFİNA ile</h2><nav aria-label="Alt menü" className={styles.links}>{corporate.map(link => <Link key={link.href} href={link.href} className={styles.link}>{link.label}</Link>)}</nav>
-      <h2>Yasal</h2><nav aria-label="Yasal bilgiler" className={styles.legal}>
+      </nav><h2>Yasal</h2><nav aria-label="Yasal bilgiler" className={styles.legal}>
         <Link href="/kvkk" className={styles.link}>KVKK</Link><Link href="/mesafeli-satis" className={styles.link}>Mesafeli Satış Sözleşmesi</Link><Link href="/iade" className={styles.link}>İade ve İptal</Link>
       </nav></div>
     </div>

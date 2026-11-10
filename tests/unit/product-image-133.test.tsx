@@ -98,7 +98,7 @@ function declarations(selector: string, media?: string): Record<string, string> 
 }
 
 it("fills the padding-free gallery with an absolute cover image and overlays a 64px strip", () => {
-  expect(declarations(".gallery")).toMatchObject({ position: "relative", padding: "0", overflow: "hidden", "border-radius": "2px" });
+  expect(declarations(".gallery")).toMatchObject({ position: "relative", padding: "0", overflow: "hidden", "border-radius": "8px" });
   expect(declarations(".image")).toMatchObject({ position: "absolute", inset: "0", padding: "0" });
   for (const selector of [".image picture", ".image img"]) {
     expect(declarations(selector)).toMatchObject({ position: "absolute", inset: "0", width: "100%", height: "100%" });
@@ -114,11 +114,11 @@ it("fills the padding-free gallery with an absolute cover image and overlays a 6
 it("reserves mobile height before image loading with a stable gap before the content", () => {
   expect(declarations(".gallery", "(max-width:767px)")["height"]).toBe("min(62svh,125vw)");
   expect(declarations(".product", "(max-width:767px)")).toMatchObject({"grid-template-columns":"minmax(0,1fr)",gap:"32px"});
-  expect(declarations(".info", "(max-width:767px)")["padding"]).toBe("24px 20px");
+  expect(declarations(".info", "(max-width:767px)")["padding"]).toBe("0");
 });
 
 it("keeps desktop gallery dimensions reserved and both columns in the normal document flow", () => {
-  expect(declarations(".product")).toMatchObject({"grid-template-columns":"minmax(0,1.1fr) minmax(0,.9fr)","align-items":"start",gap:"48px"});
+  expect(declarations(".product")).toMatchObject({"grid-template-columns":"minmax(0,1fr) minmax(0,1fr)","align-items":"start",gap:"56px"});
   expect(declarations(".gallery")["height"]).toBe("640px");
   expect(declarations(".info")["overflow-y"]).toBeUndefined();
   expect(declarations(".image","(prefers-reduced-motion:reduce)")["opacity"]).toBe("1 !important");

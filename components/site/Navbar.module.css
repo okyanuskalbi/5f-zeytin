@@ -1,15 +1,15 @@
 /* Light public navigation: stable geometry and native disclosure links. */
-.bar { --altin:#735519; --sut:#243A29; position:fixed; display:flex; align-items:center; height:var(--header-height); inset:0 0 auto; z-index:30; padding:14px max(24px,env(safe-area-inset-right,0px)) 14px max(24px,env(safe-area-inset-left,0px)); padding-top:calc(14px + env(safe-area-inset-top,0px)); color:var(--sut); background:#FFFEFA; border-bottom:3px solid #243A29; }
-.row { width:100%; display:flex; min-height:48px; max-width:1280px; margin-inline:auto; align-items:center; justify-content:space-between; gap:24px; }
+.bar { --altin:#88630B; --sut:#172B21; position:fixed; display:flex; align-items:center; height:var(--header-height); inset:0 0 auto; z-index:30; padding:14px max(24px,env(safe-area-inset-right,0px)) 14px max(24px,env(safe-area-inset-left,0px)); padding-top:calc(14px + env(safe-area-inset-top,0px)); color:var(--sut); background:#FFFFFF; border-bottom:1px solid #D6D0C3; }
+.row { width:100%; display:flex; min-height:48px; max-width:1440px; margin-inline:auto; align-items:center; justify-content:space-between; gap:24px; }
 .home { display:inline-flex; flex:none; align-items:center; min-height:48px; }
-.logo { display:block; width:172px; height:46px; object-fit:contain; }
+.logo { display:block; width:148px; height:40px; object-fit:contain; }
 .desktop { display:flex; align-items:center; justify-content:center; gap:18px; min-width:0; }
 .link { display:inline-flex; position:relative; align-items:center; min-height:48px; padding-block:10px; color:inherit; font-size:13px; font-weight:500; white-space:nowrap; }
 .link[aria-current]::after { content:""; position:absolute; bottom:5px; inset-inline:0; height:2px; background:var(--altin); }
 .link:hover { color:var(--altin); }
 .actions { display:flex; flex:none; align-items:center; gap:8px; }
-.shop { display:inline-flex; align-items:center; min-height:48px; padding:8px 14px; border:1px solid var(--sut); border-radius:2px; background:var(--sut); color:#FFFEFA; font-size:13px; font-weight:600; line-height:1.5; white-space:nowrap; }
-.shop:hover { background:#172B21; color:#FFFEFA; }
+.shop { display:inline-flex; align-items:center; min-height:48px; padding:8px 14px; border:1px solid var(--altin); border-radius:5px; color:var(--sut); font-size:13px; font-weight:600; line-height:1.5; white-space:nowrap; }
+.shop:hover { background:var(--altin); color:#FFFFFF; }
 .control { position:relative; background:transparent; color:inherit; outline-color:var(--altin); border:0; border-radius:0; padding:8px; font-size:13px; }
 .control:hover,.control:active { background:#F5F1E7; color:inherit; }
 .control:disabled { background:transparent; color:inherit; opacity:1; }
@@ -19,19 +19,19 @@
 .trigger { display:none; }
 .menuIcon { width:22px; height:22px; }
 .home:focus-visible,.link:focus-visible,.shop:focus-visible,.control:focus-visible { outline:2px solid var(--altin); outline-offset:4px; }
-.menu { --pro-ink:#243A29; --pro-paper:#FFFEFA; inset:0 0 0 auto; width:min(100%,460px); max-width:none; height:100dvh; max-height:none; display:flex; flex-direction:column; gap:0; padding:0; background:var(--pro-paper); color:var(--pro-ink); }
-.menuToolbar { display:flex; flex:none; align-items:center; justify-content:space-between; gap:12px; min-height:80px; padding:16px max(20px,env(safe-area-inset-right,0px)) 16px max(20px,env(safe-area-inset-left,0px)); border-bottom:3px solid #243A29; background:var(--pro-paper); color:var(--pro-ink); }
+.menu { --pro-ink:#172B21; --pro-paper:#FAF8F2; inset:0 0 0 auto; width:min(100%,460px); max-width:none; height:100dvh; max-height:none; display:flex; flex-direction:column; gap:0; padding:0; background:var(--pro-paper); color:var(--pro-ink); }
+.menuToolbar { display:flex; flex:none; align-items:center; justify-content:space-between; gap:12px; min-height:80px; padding:16px max(20px,env(safe-area-inset-right,0px)) 16px max(20px,env(safe-area-inset-left,0px)); border-bottom:1px solid #d5b36a40; background:var(--pro-paper); color:var(--pro-ink); }
 .menuHome { display:flex; align-items:center; min-height:48px; min-width:0; color:var(--pro-ink); }
-.menuLogo { display:block; width:148px; height:40px; object-fit:contain; }
+.menuLogo { display:block; width:132px; height:36px; object-fit:contain; }
 .menuClose { width:48px; height:48px; flex:none; background:transparent; color:var(--pro-ink); border:1px solid #D6D0C3; border-radius:50%; }
 .menuClose:hover { background:#F5F1E7; }
 .menuBody { min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:16px max(20px,env(safe-area-inset-right,0px)) max(24px,env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px)); scroll-padding-block:12px; }
 .menuLinks { display:grid; }
-.menuLink { display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:48px; padding:12px 4px; border-bottom:1px solid #172b1c26; font-size:1.125rem; line-height:1.5; }
+.menuLink { display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:48px; padding:12px 4px; border-bottom:1px solid #172b1c26; font-size:15px; line-height:1.5; }
 .menuLink svg { width:16px; height:16px; flex:none; }
 .menuLink[aria-current="page"] { font-weight:700; text-decoration:underline; text-decoration-color:var(--altin,#88630B); text-underline-offset:6px; text-decoration-thickness:2px; }
 .menuActions { display:grid; margin-top:20px; }
-.menuShop { display:flex; justify-content:center; align-items:center; min-height:48px; padding:12px; margin-bottom:8px; border:1px solid #243A29; border-radius:2px; background:#243A29; color:#FFFFFF; font-weight:600; }
+.menuShop { display:flex; justify-content:center; align-items:center; min-height:48px; padding:12px; margin-bottom:8px; border:1px solid #a47922; border-radius:5px; background:#88630B; color:#FFFFFF; font-weight:600; }
 .menuTagline { margin-top:24px; color:#435242; font-family:var(--font-display,var(--font-display-fallback)); font-size:16px; line-height:1.5; }
 .menu :is(a,button):focus-visible { outline:2px solid #866019; outline-offset:2px; }
 .menuToolbar :is(a,button):focus-visible { outline-color:var(--pro-ink); }
