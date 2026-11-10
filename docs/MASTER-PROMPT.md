@@ -1,4 +1,4 @@
-# AFİNA ZEYTİN — Ön Yüz Master Prompt (v1.1 · 10 Kasım 2026 — ui-ux-pro-max akışı, Motion değerleri, 21st erişimi eklendi)
+# AFİNA ZEYTİN — Ön Yüz Master Prompt (v1.2 · 10 Kasım 2026 — ui-ux-pro-max akışı, Motion değerleri, 21st erişimi, §14.1 kalite listesi)
 
 > Bu dosya afinazeytin.com ön yüzünü **baştan** kurmanın tek ve bağlayıcı talimatıdır. Her aşama görevi (`docs/tasks/198+`) bu dosyaya atıf yapar; çelişkide **bu dosya geçerlidir** (müşteri BRIEF'i hariç — o her şeyin üstündedir).
 > Kaynak kitler: `~/Desktop/WB AI PROJELER ICIN/` → profesyonel-web-sitesi-skill-yeni-nesil.md (rol + yasak liste + bitiş şartı), ui-ux-pro-max.md (Motion + 21st), BEST MY PROJECT .md (Karar → Üret → Denetle → Sun → Büyüt), DESIGN.md (tasarım dosyası BİÇİMİ), One-Shot Luxury Watch prompt (konfigürasyon + varlık tablosu + bölüm şartnamesi biçimi), AEO_GEO_Rehberi (bulunabilirlik), 9-mayis-10-kiti + web-site-yetenegi-kiti (marka kimliği → hiyerarşi → mikro-detay → kanıt), claude-codex-workflow.md (roller), Admin paneli .JPG (panel referansı).
@@ -228,6 +228,22 @@ Tarayıcılar repo içindeki Playwright (`node_modules/playwright`, chromium + w
 - BRIEF sıra/metin kontrolü (birim testi adı).
 - `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, `git diff --check` çıktıları; test matrisi özeti.
 - Görev dosyasına `## Coder Notu (<ajan>)` + `## Durum: TAMAMLANDI (<ajan>)`; **tek kayıt** (commit).
+- §14.1 kalite listesi: her madde PASS/FAIL + kanıt (komut çıktısı ya da ekran görüntüsü yolu).
+
+### 14.1 · Son kalite listesi (taste-skill uyarlaması, 10 Kas — her ön yüz aşaması)
+Marka seçimleri (§2 renkleri, Fraunces + Figtree) kullanıcı kararıdır; taste-skill'in "Fraunces / bej-altın palet yasağı" bu projede **uygulanmaz**. Kaydırmaya bağlı hareket yasağı (§6, §8) aynen geçerli.
+1. **Uzun tire yok:** ziyaretçinin gördüğü hiçbir metinde (başlık, düğme, alt metin, `alt`, SEO title/description) `—` ya da ayraç olarak `–` yok; tarih/aralıkta `-`. Kanıt: `rg -n "—|–" app components lib/content` görünen metinde 0.
+2. **Üst etiket sınırı:** büyük harfli, harf aralığı açık küçük üst etiket (eyebrow) en çok her 3 bölümde 1; hero dahil sayılır.
+3. **Bir amaç = bir düğme metni:** aynı işi yapan düğmeler sayfa boyunca aynı adı taşır (ör. teklif için yalnız "Teklif İste"); iki farklı ad yok.
+4. **Düğme tek satır:** masaüstünde hiçbir düğme yazısı iki satıra kırılmaz; telefonda da 320 px'te kırılmaz ya da düğme tam genişliğe geçer.
+5. **Metin denetimi:** tüm görünen metinler baştan okunur; yapay/şişkin dil yok ("eşsiz deneyim", "lezzet yolculuğu", "keşfetmeye hazır mısınız", "benzersiz", "en kaliteli"). Anlamı belirsiz cümle düz bir cümleyle değiştirilir. Liste `DENETIM.md`'ye.
+6. **Yerleşim tekrarı:** aynı yerleşim ailesi (ör. görsel solda + metin sağda) art arda en çok 2 bölüm; ana sayfada en az 4 farklı yerleşim ailesi.
+7. **Görsel üstüne etiket yok:** fotoğrafın üstüne rozet/etiket/numara yazısı konmaz (bilerek üstte duran `data-overlay-ok` başlıkları hariç).
+8. **Süs işaretleri yok:** bölüm numarası ("01 /"), "Kaydır" işareti, her satırın önünde renkli nokta, `·` ile dizilmiş meta satırı yok.
+9. **Kayan şerit tek:** sayfada en çok bir kayan yazı şeridi (Hakkımızda şeridi).
+10. **Tek köşe kuralı:** düğme, kart, alan ve görsel köşe yuvarlaklıkları `docs/DESIGN.md`'de tek tabloda yazılı ve her yerde aynı.
+11. **Kontrast:** her düğme, form alanı, yer tutucu, yardımcı ve hata metni WCAG AA (4,5:1; büyük metin 3:1); fotoğraf üstündeki yazıda koyulaştırma katmanı.
+12. **Hareketin nedeni:** her animasyon tek cümleyle gerekçelendirilir (dikkat, geri bildirim, durum değişimi); gerekçesi olmayan kaldırılır.
 
 ---
 

@@ -39,6 +39,7 @@ Rapor: `AFINA-KAYNAK/tasarim/uygulama-kontrol/197/RAPOR.md`.
 - [ ] lint, typecheck, test, build, `git diff --check` PASS.
 - [ ] Tüm sayfalar 320/390/768/1024/1440/1920'de taşma 0, konsol hatası 0, kırık görsel 0; telefonda dokunma hedefi ≥ 44 px.
 - [ ] Kaldırılan dosyaların listesi + "başvuru yok" kanıtı Coder Notu'nda.
+- [ ] MASTER-PROMPT §14.1 son kalite listesi (12 madde) tüm sayfalarda PASS; kanıt `output/task199/DENETIM.md`.
 - [ ] Sepete ekle → sepet → ödeme sayfası, teklife ekle → toptan formu, giriş/kayıt formları yerel test DB'si ile çalışır (gönderim testleri yalnız yerelde).
 
 ## Yapılmaması gerekenler

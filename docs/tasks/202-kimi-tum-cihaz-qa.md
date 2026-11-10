@@ -12,7 +12,7 @@ QA (Kimi)
 Yerel production sunucusu (`npm run build` + `next start -p 3004`, yerel test DB'si `afina_kontrol189`; ortamı Claude verir). Girişli sayfalar için `next dev -p 3005` + `BETTER_AUTH_URL=http://localhost:3005` (yalnız yerel test hesabı).
 
 ## Kapsam
-MASTER-PROMPT §11 tüm sayfalar + §13 test matrisi (15 cihaz, Chromium + WebKit) + akışlar (197 listesi) + her ekran görüntüsünün gözle incelenmesi. Yerelde formlar gönderilebilir (yalnız yerel DB); canlıya hiçbir istek atılmaz.
+MASTER-PROMPT §11 tüm sayfalar + §13 test matrisi (15 cihaz, Chromium + WebKit) + akışlar (197 listesi) + her ekran görüntüsünün gözle incelenmesi + MASTER-PROMPT §14.1 son kalite listesi (12 madde, her sayfa için PASS/FAIL; FAIL'ler sorun tablosuna). Yerelde formlar gönderilebilir (yalnız yerel DB); canlıya hiçbir istek atılmaz.
 
 ## Teslim
 `output/task202/RAPOR.md` + `rapor.json` + ekran görüntüleri (197 rapor biçimi: özet, sorun tablosu — önem, sayfa, cihaz, ne oluyor, görüntü, olası dosya, önerilen düzeltme — sorunsuzlar, ölçülemeyenler). Son satır: `KIMI-202 BİTTİ`.

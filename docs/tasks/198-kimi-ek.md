@@ -27,5 +27,8 @@ Ortamda `API_KEY_21ST` var (değerini yazdırma). Kurulum: `npx shadcn@latest ad
 
 Kaydırmayla tetiklenen hazır animasyonları (ör. content-09'daki) MASTER-PROMPT §8'e göre kaldır ya da yalnız izinli iki bölümde `once: true` bırak.
 
+## 2.1 Son kalite listesi (10 Kas eki)
+`docs/MASTER-PROMPT.md` §14.1'deki 12 maddeyi uygula; her madde PASS/FAIL + kanıt `output/task198-kimi/KANIT.md` içinde. Fraunces + Figtree ve marka renkleri değişmez.
+
 ## 3. Çalışma kopyası notu
 Bu kopyada `node_modules` ana projeye bağlantıdır. Derleme için gerekirse `next.config.ts` turbopack kökü yalnız bu kopyada değiştirilebilir ama **kayda girmez** (`git restore next.config.ts` sonra kaydet). Port: 3006.
