@@ -8,6 +8,10 @@ type State = { name: string; url: string; prepare?: (page: Page) => Promise<void
 const states: State[] = [
   { name: "ana-sayfa", url: "/" },
   { name: "urunler", url: "/urunler" },
+  { name: "kategori-siyah", url: "/urunler/siyah-zeytin" },
+  { name: "kategori-yesil", url: "/urunler/yesil-zeytin" },
+  { name: "kategori-kirma", url: "/urunler/kirma-zeytin" },
+  { name: "kategori-yag", url: "/urunler/zeytinyagi" },
   { name: "bayilik", url: "/bayilik" },
   { name: "bayilik-hata", url: "/bayilik", prepare: async page => {
     await page.getByRole("button", { name: "Başvuru E-postasını Hazırla" }).click();
@@ -67,7 +71,7 @@ async function pixelDifference(light: Buffer, dark: Buffer) {
 /** Compare the real cart/observer state, never a timer, hidden overlay or mask. */
 async function settleCaptureState(page: Page, width: number, state: State) {
   const cartRoutes = new Set(["urunler", "bayilik", "bayilik-hata", "siparis-takip", "bulunamayan", "urun-detayi-mevcut", "urun-detayi-mevcut-degil"]);
-  const hasMiniCart = width < 768 && cartRoutes.has(state.name);
+  const hasMiniCart = width < 768 && (cartRoutes.has(state.name) || state.url.startsWith("/urunler/"));
   if (hasMiniCart) await expect(page.locator("[data-mini-cart-reserve]")).toBeVisible();
   else await expect(page.locator("[data-mini-cart-reserve]")).toHaveCount(0);
 

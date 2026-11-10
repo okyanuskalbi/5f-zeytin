@@ -1,0 +1,8 @@
+.navigation { min-width:0; margin-block:0 32px; }
+.list { display:flex; gap:12px; overflow-x:auto; margin:0; padding:4px 4px 12px; list-style:none; scroll-padding-inline:4px; }
+.list > li { flex:none; }
+.link { position:relative; display:flex; align-items:center; gap:10px; min-height:52px; padding:6px 14px 6px 8px; border:1px solid #B9AD88; border-radius:999px; background:#F7F4ED; color:#172B21; font-size:.9375rem; font-weight:600; line-height:1.4; text-decoration:none; white-space:nowrap; }
+.link[aria-current="page"] { border-color:#88630B; background:#EFE5CF; }
+.link picture,.link img { display:block; width:36px; height:36px; border-radius:50%; object-fit:cover; flex:none; }
+.link:focus-visible { outline:3px solid #88630B; outline-offset:3px; }
+@media(hover:hover) { .link:hover { border-color:#88630B; } }

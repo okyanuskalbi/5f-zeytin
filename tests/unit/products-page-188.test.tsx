@@ -1,11 +1,13 @@
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import Layout from "@/app/urunler/layout";
 import Page, { dynamic, metadata, revalidate } from "@/app/urunler/page";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { getProductFamilies, getProducts } from "@/lib/catalog/static-products";
 
 const { readFamilies } = vi.hoisted(() => ({ readFamilies: vi.fn() }));
+vi.mock("next/navigation", () => ({ usePathname: () => "/urunler" }));
 vi.mock("@/lib/catalog/read", () => ({ readProductFamilies: readFamilies }));
 vi.mock("@/components/cart/MiniCart", () => ({ MiniCart: () => null }));
 beforeEach(async () => {
@@ -16,7 +18,7 @@ afterEach(() => { cleanup(); vi.clearAllMocks(); vi.unstubAllGlobals(); localSto
 
 it("serves the full static catalogue with breadcrumb, unchanged cards and quote links before JavaScript", async () => {
   const products = await getProducts();
-  const doc = new DOMParser().parseFromString(renderToStaticMarkup(await Page()), "text/html");
+  const doc = new DOMParser().parseFromString(renderToStaticMarkup(<Layout>{await Page()}</Layout>), "text/html");
   expect(dynamic).toBe("force-static");
   expect(revalidate).toBe(300);
   expect(doc.querySelector("h1")?.textContent).toBe("Tüm ürünler");
@@ -42,7 +44,7 @@ it("keeps unapproved prices out of search indexing and supplies only a breadcrum
   expect(metadata.alternates?.canonical).toBe("/urunler");
   expect(metadata.robots).toEqual({ index: false, follow: true });
   expect(metadata.openGraph).toMatchObject({ url: "/urunler", title: "Ürünler | AFİNA ZEYTİN" });
-  const doc = new DOMParser().parseFromString(renderToStaticMarkup(await Page()), "text/html");
+  const doc = new DOMParser().parseFromString(renderToStaticMarkup(<Layout>{await Page()}</Layout>), "text/html");
   const schemas = [...doc.querySelectorAll('script[type="application/ld+json"]')].map(script => JSON.parse(script.textContent!));
   expect(schemas).toEqual([expect.objectContaining({ "@type": "BreadcrumbList", itemListElement: [
     expect.objectContaining({ position: 1, name: "Ana Sayfa", item: "https://afinazeytin.com/" }),
@@ -52,7 +54,7 @@ it("keeps unapproved prices out of search indexing and supplies only a breadcrum
 
 it("announces an empty catalogue without a second scrolling dialog", async () => {
   readFamilies.mockResolvedValue([]);
-  render(await Page());
+  render(<Layout>{await Page()}</Layout>);
   expect(screen.getByRole("status").textContent).toBe("Görüntülenecek ürün bulunmuyor.");
   expect(screen.queryAllByRole("article")).toHaveLength(0);
   expect(screen.queryByRole("dialog")).toBeNull();
@@ -60,7 +62,7 @@ it("announces an empty catalogue without a second scrolling dialog", async () =>
 
 it("opens the existing product detail from the page and disables its in-memory quote action", async () => {
   const products = await getProducts();
-  render(<CartProvider products={products}>{await Page()}</CartProvider>);
+  render(<CartProvider products={products}><Layout>{await Page()}</Layout></CartProvider>);
   expect(screen.getAllByRole("link", { name: /^Teklife ekle:/ })).toHaveLength(products.length);
   fireEvent.click(screen.getByRole("button", { name: "Natürel Sızma Zeytinyağı, 1 L detayını aç" }));
   const dialog = await screen.findByRole("dialog", { name: "Natürel Sızma Zeytinyağı" });

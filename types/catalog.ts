@@ -1,3 +1,5 @@
+import type { ProductGroupId } from "@/lib/catalog/groups";
+
 /** Public catalog fields only. Prices are integer kuruş in TRY, not checkout quotes. */
 export type Product = Readonly<{
   id: string;
@@ -18,6 +20,7 @@ export type ProductVariant = Product & Readonly<{
 }>;
 export type ProductFamily = Readonly<{
   id: string;
+  groupId: ProductGroupId;
   name: string;
   category: Product["category"];
   variants: readonly ProductVariant[];

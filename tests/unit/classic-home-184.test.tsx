@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { cleanup, render, screen, within } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
 import type { ReactNode } from "react";
 import { afterEach, expect, it, vi } from "vitest";
@@ -80,16 +80,13 @@ it("preserves all five answers and their FAQPage data, and the existing private 
   expect(doc.querySelector("#toptan form")?.getAttribute("method")).toBe("post");
 });
 
-it("opens each category's existing family detail instead of treating it as a new SKU", async () => {
-  vi.stubGlobal("matchMedia", () => ({ matches: false, addEventListener() {}, removeEventListener() {} }));
-  const families = await getProductFamilies();
+it("links each category to its product group without treating it as a new SKU", async () => {
   const { container } = render(await Home());
   const group = within(container.querySelector<HTMLElement>("#urunler")!);
-  for (const [label, familyId] of [["Siyah Zeytin", "salamura-siyah"], ["Yeşil Zeytin", "salamura-yesil"], ["Kırma Zeytin", "dogal-kirma"], ["Zeytinyağı", "naturel-sizma"]]) {
-    const button = group.getByRole("button", { name: new RegExp(`^${label}`) });
-    fireEvent.click(button);
-    expect(openProduct).toHaveBeenLastCalledWith(families.find(family => family.id === familyId)!.variants[0].id, button);
+  for (const [label, slug] of [["Siyah Zeytin", "siyah-zeytin"], ["Yeşil Zeytin", "yesil-zeytin"], ["Kırma Zeytin", "kirma-zeytin"], ["Zeytinyağı", "zeytinyagi"]]) {
+    expect(group.getByRole("link", { name: label }).getAttribute("href")).toBe(`/urunler/${slug}`);
   }
+  expect(openProduct).not.toHaveBeenCalled();
   expect(screen.getByRole("link", { name: /Tüm ürünleri gör/i }).getAttribute("href")).toBe("/urunler");
   expect(screen.queryByRole("dialog", { name: "Tüm ürünler" })).toBeNull();
 });

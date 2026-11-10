@@ -15,6 +15,10 @@ const routes = [
   { name: "odeme-onizleme", url: "/odeme-onizleme", status: 404 },
   { name: "siparis-takip", url: "/siparis-takip", status: 200 },
   { name: "urunler", url: "/urunler", status: 200 },
+  { name: "kategori-siyah", url: "/urunler/siyah-zeytin", status: 200 },
+  { name: "kategori-yesil", url: "/urunler/yesil-zeytin", status: 200 },
+  { name: "kategori-kirma", url: "/urunler/kirma-zeytin", status: 200 },
+  { name: "kategori-yag", url: "/urunler/zeytinyagi", status: 200 },
 ];
 
 function rgb(value: string): number[] {

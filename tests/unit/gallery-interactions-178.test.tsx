@@ -89,7 +89,7 @@ function QuoteState() { return <output data-testid="quote-state">{useQuoteJourne
 async function gallery() {
   const products = await getProducts();
   const result = render(<CartProvider products={products}><QuoteJourneyProvider>
-    <ProductGroups products={[...products].reverse()} /><QuoteState /><section id="toptan" tabIndex={-1}><label>Firma adı<input name="firma" /></label></section>
+    <ProductGroups /><QuoteState /><section id="toptan" tabIndex={-1}><label>Firma adı<input name="firma" /></label></section>
   </QuoteJourneyProvider></CartProvider>);
   return { ...result, products };
 }

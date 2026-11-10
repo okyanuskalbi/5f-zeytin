@@ -2,6 +2,8 @@ import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testi
 import { useRef } from "react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { QuoteQuerySelection } from "@/components/landing/QuoteQuerySelection";
+import { ProductCard } from "@/components/catalog/ProductCard";
+import { v3Image } from "@/lib/media/v3-assets";
 import { ProductGroups } from "@/components/landing/ProductGroups";
 import { ProductDetailProvider } from "@/components/catalog/ProductDetailProvider";
 import { QuoteJourneyProvider, useQuoteJourney } from "@/components/landing/QuoteJourneyProvider";
@@ -27,7 +29,7 @@ function CurrentChoices() {
 async function mount() {
   const products = await getProducts();
   render(<CartProvider products={products}><QuoteJourneyProvider><ProductDetailProvider products={products} quoteEnabled>
-    <ProductGroups products={products} /><QuoteQuerySelection products={products} /><CurrentChoices /><section id="toptan" tabIndex={-1}><label>Firma adı<input name="firma" /></label></section>
+    <ProductGroups />{products.map(product => <ProductCard key={product.id} product={product} image={v3Image(product.imageKey)} staticPresentation />)}<QuoteQuerySelection products={products} /><CurrentChoices /><section id="toptan" tabIndex={-1}><label>Firma adı<input name="firma" /></label></section>
   </ProductDetailProvider></QuoteJourneyProvider></CartProvider>);
   return products;
 }
@@ -37,9 +39,10 @@ it.each([
   ["Yeşil Zeytin", "Salamura Yeşil Zeytin", "sample-brined-green-olive-5kg"],
   ["Kırma Zeytin", "Doğal Kırma Yeşil Zeytin", "sample-green-olive-1kg"],
   ["Zeytinyağı", "Natürel Sızma Zeytinyağı", "sample-olive-oil-1l"],
-])("opens %s in its existing family detail and restores the category trigger on Escape", async (label, title, id) => {
-  await mount();
-  const trigger = screen.getByRole("button", { name: label });
+])("opens %s from its listed product and restores the product trigger on Escape", async (label, title, id) => {
+  const products = await mount();
+  const product = products.find(product => product.id === id)!;
+  const trigger = screen.getByRole("button", { name: `${product.name}, ${product.weight} detayını aç` });
   act(() => trigger.focus()); fireEvent.click(trigger);
   const dialog = await screen.findByRole("dialog");
   expect(within(dialog).getByRole("heading").textContent).toBe(title);
@@ -51,7 +54,7 @@ it.each([
 
 it("adds the chosen family's real product to the existing cart from its detail", async () => {
   await mount();
-  fireEvent.click(screen.getByRole("button", { name: "Zeytinyağı" }));
+  fireEvent.click(screen.getByRole("button", { name: "Natürel Sızma Zeytinyağı, 1 L detayını aç" }));
   const dialog = await screen.findByRole("dialog");
   fireEvent.click(within(dialog).getByRole("button", { name: "Sepete ekle" }));
   expect(JSON.parse(screen.getByLabelText("Sepetteki ürünler").textContent!)).toEqual([
@@ -61,7 +64,7 @@ it("adds the chosen family's real product to the existing cart from its detail",
 
 it("hands the actual family product to the existing quote and returns focus to the new section", async () => {
   await mount();
-  fireEvent.click(screen.getByRole("button", { name: "Yeşil Zeytin" }));
+  fireEvent.click(screen.getByRole("button", { name: "Salamura Yeşil Zeytin, 3 L detayını aç" }));
   const dialog = await screen.findByRole("dialog");
   fireEvent.click(within(dialog).getByRole("button", { name: /^Teklife ekle/ }));
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
@@ -85,7 +88,7 @@ it("hands off a catalogue quote URL to home without opening nested dialogs", asy
 it("quotes the newly selected detail size and preserves unrelated query parameters", async () => {
   history.replaceState(null, "", "/?kaynak=klasik");
   await mount();
-  fireEvent.click(screen.getByRole("button", { name: "Zeytinyağı" }));
+  fireEvent.click(screen.getByRole("button", { name: "Natürel Sızma Zeytinyağı, 1 L detayını aç" }));
   const detail = await screen.findByRole("dialog", { name: "Natürel Sızma Zeytinyağı" });
   fireEvent.click(within(detail).getByRole("radio", { name: "5 L" }));
   expect(new URL(location.href).searchParams.get("urun")).toBe("sample-olive-oil-5l");

@@ -34,7 +34,7 @@ export default async function Home(): Promise<JSX.Element> {
     <ClassicHero />
     <TrustStrip />
     <ClassicFacility />
-    <ProductGroups products={products} />
+    <ProductGroups />
     <ClassicBusiness />
     <ClassicAbout />
     <QuoteSection products={products} />
