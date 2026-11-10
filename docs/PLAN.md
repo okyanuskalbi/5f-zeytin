@@ -1,3 +1,20 @@
+## Aktif iş: Task188 / Tüm ürünler ayrı sayfa (10 Kasım 2026)
+
+Kullanıcı (10 Kasım 2026, "Tüm ürünler" penceresinin ekran görüntüsüyle): "tek sayfada açılsın
+bu bölüm". Karar: ana sayfadaki "Tüm ürünler" açılır penceresi kalkar, yerine `/urunler`
+sayfası gelir. "Tüm ürünleri gör" ve menüdeki "Online Mağaza" bu sayfaya gider; eski
+`/?magaza=ac` bağlantısı `/urunler`'e yönlenir. Karttaki "Teklife ekle", ürün seçili olarak ana
+sayfadaki teklif formuna gider (`/?teklif=<id>#toptan`). Gerçek fiyatlar onaylanana kadar sayfa
+arama motorlarına kapalıdır (noindex, sitemap'te yok). Production yayını kullanıcı onayıyla.
+
+Task189 / renk düzeni (aynı gün, "Kapat" düğmesini okla gösteren görüntüyle: "renk sorunlarını
+çöz codex'e yaptır"): genel renk ayarları eski koyu temada kalmıştı (`color-scheme: dark`, koyu
+`--background`), C açık yüzeylerle çakışıyordu ve işletim sisteminin koyu modu renkleri
+değiştiriyordu. Karar: genel varsayılan C açık tema; üst menü, alt bilgi, giriş marka paneli,
+fotoğraf katmanları, "Sepet özeti" ve admin paneli yerel koyu kapsamda aynen kalır; ürün detay
+penceresi ve `/siparis-takip` açığa geçer; "Mevcut değil" ayrı görünür; axe karşıtlık testi kalıcı.
+Sıra: 188 → 189 (aynı ağaçta, ayrı kayıtlar).
+
 ## Aktif plan: klasik ana sayfa, bayilik, siyah teneke, Neon (9 Kasım 2026)
 
 Kullanıcı kararları (9 Kasım 2026):
