@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { JSX } from "react";
 import { notFound } from "next/navigation";
-import { ProductPage } from "@/components/catalog/ProductPage";
+import { ProductDetail } from "@/components/storefront/ProductDetail";
 import { readProductFamilies } from "@/lib/catalog/read";
 import { getFamilyBySlug, getFamilySlug } from "@/lib/catalog/product-pages";
 import { getGroupTrail } from "@/lib/catalog/groups";
@@ -43,5 +43,5 @@ export default async function Page({ params }: Props): Promise<JSX.Element> {
     { name: family.name, item: `${siteIdentity.origin}/urun/${slug}` },
   ];
   const breadcrumb = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: trail.map((item, index) => ({ "@type": "ListItem", position: index + 1, ...item })) };
-  return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb).replace(/</g, "\\u003c") }} /><ProductPage family={family} related={related} /></>;
+  return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb).replace(/</g, "\\u003c") }} /><ProductDetail family={family} related={related} /></>;
 }

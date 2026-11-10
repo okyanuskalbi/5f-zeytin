@@ -26,7 +26,7 @@ it("paints the document canvas and mini-cart reserve in the footer colour while 
   expect(resolve(declarations(global, "body").background)).toBe(footerBackground);
   expect(resolve(declarations(cart, ".miniReserve").background)).toBe(footerBackground);
   expect(resolve(declarations(global, "#ana-icerik").background)).toBe(resolve(tokens["--background"]));
-  expect(resolve(tokens["--background"])).toBe("#faf8f2");
+  expect(resolve(tokens["--background"])).toBe("#f5f1e7");
 });
 
 it("lets short content fill the screen without adding a fixed height to long content or removing cart clearance", () => {

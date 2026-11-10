@@ -9,17 +9,18 @@ vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }) }));
 it("serves the customer's ordered light storefront with honest product grids and working destination links", async () => {
   const doc = new DOMParser().parseFromString(renderToStaticMarkup(await Home()), "text/html");
   expect([...doc.querySelectorAll("[data-home-section]")].map(node => node.getAttribute("data-home-section"))).toEqual([
-    "hero", "categories", "products", "story", "featured", "banners", "harvest", "marquee", "business", "blog", "trust",
+    "hero", "categories", "products", "story", "featured", "banners", "harvest", "business", "blog",
   ]);
   expect(doc.querySelectorAll("h1")).toHaveLength(1);
   expect(doc.querySelector('#baslangic a[href="/urunler"]')?.textContent).toContain("Ürünleri İnceleyin");
-  expect(doc.querySelector('#baslangic a[href="/toptan-satis"]')).not.toBeNull();
+  expect(doc.querySelectorAll("#baslangic a")).toHaveLength(1);
+  expect(doc.querySelector('#baslangic a[href="/toptan-satis"]')).toBeNull();
   expect(doc.querySelectorAll('[data-home-section="products"] [data-product-id]')).toHaveLength(4);
   expect(doc.querySelectorAll('[data-home-section="featured"] [data-product-id]')).toHaveLength(4);
   const products = [...doc.querySelectorAll('[data-home-section="products"] [data-product-id]')].map(item => item.getAttribute("data-product-id"));
   const featured = [...doc.querySelectorAll('[data-home-section="featured"] [data-product-id]')].map(item => item.getAttribute("data-product-id"));
   expect(featured).not.toEqual(products);
-  expect(doc.querySelectorAll('[data-home-section="blog"] a[href^="/blog/"]')).toHaveLength(3);
+  expect(doc.querySelectorAll('[data-home-section="blog"] a[href^="/blog/"]')).toHaveLength(4);
   expect(doc.querySelector('[data-home-section="harvest"]')?.textContent).toContain("Afina Zeytin, her hasatta aynı özenle doğanın bereketini seçkin bir lezzete dönüştürür.");
   expect(doc.querySelectorAll('[data-home-section="harvest"] li')).toHaveLength(4);
   expect(doc.querySelector("main")?.textContent).not.toMatch(/Ayvalık|Köklü|Doğallığın En Güzel Halleri|kişi inceliyor|İndirimdeki|aynı gün kargo|Müşteri Yorumları|500.000/);
@@ -34,5 +35,5 @@ it("makes the hero poster the eager server image and keeps autoplay video out of
   expect(poster.getAttribute("loading")).toBe("eager");
   expect(poster.getAttribute("fetchPriority")).toBe("high");
   expect(doc.querySelector("#baslangic video")).toBeNull();
-  expect(doc.querySelectorAll('[data-home-section="marquee"] > div > div > span[aria-hidden="true"]')).toHaveLength(1);
+  expect(doc.querySelector('[data-home-section="marquee"], [data-home-section="trust"]')).toBeNull();
 });

@@ -15,6 +15,11 @@ baştan master prompt oluştur"); aşama görevleri ona atıf yapar. Sıra: **19
 önizleme paketi + kullanıcı onayıyla yayın. Açık iş (ayrı, DB'ye
 dokunduğu için onaylı): vitrin fiyat/stokunun koddan DB'ye alınması.
 
+Task198 Codex A1+A2 yerel uygulaması tamamlandı: yeni tasarım sistemi, üst/alt menü,
+ana sayfa ve ürün sayfası; kanıt `output/task198-codex/KANIT.md`. 1.483 birim testi,
+kod denetimleri ve derleme geçti; 15 ölçü × 2 sayfa tarayıcı kontrolü temiz.
+K1 A/B tasarım seçimi bekliyor. GitHub'a gönderim, yayın ve canlı veri işlemi yapılmadı.
+
 ## Önceki plan: açık tonlu yeni kurgu, Köklü Zeytincilik referanslı (10 Kasım 2026, öğleden sonra)
 
 Müşteri revizesi (birebir metin: `AFINA-KAYNAK/musteri-2026-11-10/BRIEF.md`; kullanıcı: "revizlerini

@@ -13,7 +13,7 @@ async function renderHome(): Promise<Document> {
 it("keeps the brief content and order without the reference site's wording", async () => {
   const doc = await renderHome();
   expect([...doc.querySelectorAll("[data-home-section]")].map(node => node.getAttribute("data-home-section"))).toEqual([
-    "hero", "categories", "products", "story", "featured", "banners", "harvest", "marquee", "business", "blog", "trust",
+    "hero", "categories", "products", "story", "featured", "banners", "harvest", "business", "blog",
   ]);
   const text = doc.querySelector("main")?.textContent ?? "";
   for (const phrase of ["TOPRAKTAN SOFRAYA", "TARLADAN SOFRAYA", "Doğallığın", "Sizden Gelen", "Rehberi", "Daha Fazlasını Keşfet", "En Beğenilen"]) {
@@ -27,20 +27,22 @@ it("keeps the brief content and order without the reference site's wording", asy
   }
 });
 
-it("uses the AFİNA index, mosaic, harvest ledger and signature instead of reference compositions", async () => {
+it("uses distinct AFİNA portals, product shelves and triptych without reference numbering", async () => {
   const doc = await renderHome();
-  expect(doc.querySelector('[data-home-section="categories"]')?.getAttribute("data-category-layout")).toBe("index");
-  expect(doc.querySelector('[data-home-section="products"]')?.getAttribute("data-product-layout")).toBe("asymmetric");
-  expect(doc.querySelector('[data-home-section="featured"]')?.getAttribute("data-product-layout")).toBe("asymmetric");
+  expect(doc.querySelector('[data-home-section="categories"]')?.getAttribute("data-category-layout")).toBe("portals");
+  expect(doc.querySelector('[data-home-section="products"]')?.getAttribute("data-product-layout")).toBe("shelf");
+  expect(doc.querySelector('[data-home-section="featured"]')?.getAttribute("data-product-layout")).toBe("paired");
   expect(doc.querySelector('[data-home-section="story"] [data-story-values]')).not.toBeNull();
-  expect(doc.querySelector('[data-home-section="banners"]')?.getAttribute("data-banner-layout")).toBe("mosaic");
-  expect(doc.querySelector('[data-home-section="banners"] a[data-banner-lead]')?.textContent).toContain("Tesisimiz");
+  expect(doc.querySelector('[data-home-section="banners"]')?.getAttribute("data-banner-layout")).toBe("triptych");
+  expect([...doc.querySelectorAll('[data-home-section="banners"] a')].map(link => [link.textContent, link.getAttribute("href")])).toEqual([
+    ["Tesisimiz", "/hakkimizda"], ["Her Tanede Aynı Özen", "/urunler/zeytin"], ["Zeytinyağı", "/urunler/zeytinyagi"],
+  ]);
   expect(doc.querySelector('[data-home-section="banners"]')?.textContent).not.toContain("Keşfedin");
   expect(doc.querySelectorAll('[data-home-section="banners"] [data-banner-number]')).toHaveLength(0);
   expect(doc.querySelector('[data-home-section="harvest"] [data-harvest-ledger]')).not.toBeNull();
   expect(doc.querySelector('[data-home-section="harvest"] ol')).toBeNull();
   expect(doc.querySelectorAll('[data-home-section="harvest"] [data-harvest-ledger] li')).toHaveLength(4);
-  expect(doc.querySelector('[data-home-section="trust"]')?.getAttribute("data-signature")).toBe("dal-ve-etiket");
+  expect(doc.querySelector('[data-home-section="trust"], [data-home-section="marquee"]')).toBeNull();
 });
 
 it("keeps reference wording out of the public text resource", async () => {

@@ -57,11 +57,11 @@ Seçilen yön Task 199 ile tüm sitelere yayılır.
 7. Bitiş şartı kanıtı (`output/task198-<ajan>/KANIT.md`): renk + font + 8px sistemi + her hareket kararı (neye, neden, hangi değer) + 21st'ten alınan bileşenler + yasak liste kontrolü + BRIEF sıra kontrolü.
 
 ## Kabul kriterleri
-- [ ] `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, `git diff --check` PASS (eski ana sayfaya bağlı birim testleri yeni yapıya göre güncellenir; BRIEF sıra/metin testleri korunur ve geçer).
-- [ ] Ana sayfa ve ürün sayfası 320, 390, 768, 1024, 1440, 1920 genişlikte yatay taşma 0, konsol hatası 0, kırık görsel 0 (Playwright, repo içi tarayıcılar).
-- [ ] Hero video masaüstünde 1920, telefonda 720 sürümüyle oynar; azaltılmış harekette poster.
-- [ ] Yasaklı referans ifadeleri yok (196 listesi), yeni iddia yok.
-- [ ] `docs/DESIGN.md` referans biçiminde, `output/task198-<ajan>/{PLAN,DENETIM,KANIT}.md` ve ekran görüntüleri var.
+- [x] `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, `git diff --check` PASS (eski ana sayfaya bağlı birim testleri yeni yapıya göre güncellenir; BRIEF sıra/metin testleri korunur ve geçer).
+- [x] Ana sayfa ve ürün sayfası 320, 390, 768, 1024, 1440, 1920 genişlikte yatay taşma 0, konsol hatası 0, kırık görsel 0 (Playwright, repo içi tarayıcılar).
+- [x] Hero video masaüstünde 1920, telefonda 720 sürümüyle oynar; azaltılmış harekette poster.
+- [x] Yasaklı referans ifadeleri yok (196 listesi), yeni iddia yok.
+- [x] `docs/DESIGN.md` referans biçiminde, `output/task198-<ajan>/{PLAN,DENETIM,KANIT}.md` ve ekran görüntüleri var.
 
 ## Yapılmaması gerekenler
 - Push, yayın, Vercel, canlı DB, ortam değişkeni, `.env*` dosyaları yok. `node_modules` ve `.next` SİLME. `AFINA-KAYNAK` ve `output/` git'e eklenmez (`git add -f` yasak).
@@ -69,4 +69,37 @@ Seçilen yön Task 199 ile tüm sitelere yayılır.
 - Görev dışı sayfaları (blog, hakkımızda, toptan, hesap, sepet, ödeme, admin) bu görevde yeniden yapma — 199'a ait.
 - Tek kayıt (commit), mesaj: `feat: 198 yeni ön yüz temeli (<ajan>)`.
 
-## Durum: BEKLİYOR
+## Coder Notu (Codex)
+
+A1 Karar + A2 Temel tamamlandı. Yeni açık renk sistemi, yerel Fraunces/Figtree,
+üst menü/alt bilgi, müşteri sırasındaki ana sayfa ve ürün ayrıntısı
+`components/storefront/` altında kuruldu. Eski tasarım byte-identical
+`docs/DESIGN-v12-hasat.md` olarak saklandı; eski bileşenler silinmedi.
+21st2046/7264/28200 incelendi ve marka kurallarına uyarlandı. Genel UIUX
+scriptinin6/3/4 akışı ve bağımsız impeccable A/B incelemesi uygulandı.
+
+Kanıtlar `output/task198-codex/{PLAN,DENETIM,KANIT}.md`;18 ekran görüntüsü
+`ekran/` altında.1483 birim testi, lint, typecheck, production Turbopack build
+ve diff kontrolü PASS. Yerel Neon test DB sağlanmadığından26 ilgili test
+atlandı; çalışmış sayılmadı.15 ekran ×2 sayfa: taşma/konsol/kaynak/kırık
+görsel/axe/küçük hedef0. Chromium+WebKit menü odağı, boy/adet/sepet, teklif
+ürün ön seçimi ve azaltılmış hareket PASS. Chromium CLS üst sınır0.01480;
+WebKit bu ölçümü desteklemediği için ölçülmedi.
+
+Gerçek1.6Mbps/150ms/CPU×4 telefon ölçümü üç koşuda1.916sn LCP; masaüstü
+.044–.092sn. İlk JavaScript toplamı ön yüklemeler dahil telefon232924,
+masaüstü396077bayt. Safari kart taşması, seçili boy işareti, küçük bağlantı
+hedefleri ve ilk poster yükleme önceliği düzeltildi. Menü yalnız açılınca yüklenir.
+
+Yeni paket, yeni üretilmiş medya, backend/auth/sepet/ödeme mantığı değişikliği
+ve ortam dosyası değişikliği yok. GitHub'a gönderim/yayın/Vercel/canlı DB
+işlemi yapılmadı; node_modules ve .next korundu. AFINA-KAYNAK ve output
+kayda eklenmedi. Tek yerel kayıt mesajı: `feat: 198 yeni ön yüz temeli (codex)`.
+
+Eksik müşteri görselleri/metni onaylı yer tutucularla bekliyor;197 raporu
+belirtilen yolda yoktu. Fiziksel cihaz, gerçek hesap/ödeme/e-posta teslimi
+kabulü yok. K1 A/B tasarım seçimi kullanıcıda; bu sonuç Task199 veya yayın
+onayı değildir. Ayrıntılı ölçüm sınırları ve düşük öncelikli tablet boşluğu
+önerisi DENETIM/KANIT'ta kayıtlıdır.
+
+## Durum: TAMAMLANDI (codex)

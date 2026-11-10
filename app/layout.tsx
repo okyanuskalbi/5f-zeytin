@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import type { JSX, ReactNode } from "react";
-import { Navbar } from "@/components/site/Navbar";
-import { Footer } from "@/components/site/Footer";
+import { StoreHeader } from "@/components/storefront/StoreHeader";
+import { StoreFooter } from "@/components/storefront/StoreFooter";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { MotionProvider } from "@/components/site/MotionProvider";
 import { MembershipDialogProvider } from "@/components/account/MembershipDialogProvider";
@@ -19,15 +19,15 @@ const Fraunces = localFont({
     { path: "./fonts/Fraunces-italic.woff2", weight: "100 900", style: "italic" },
   ],
   display: "swap",
-  // The harvest journey uses the original italic for its editorial emphasis.
-  preload: true,
+  // Self-host the approved display face; no runtime font requests.
+  preload: false,
   adjustFontFallback: "Times New Roman",
   variable: "--font-display",
   fallback: ["Georgia", "Times New Roman", "serif"],
 });
 
 const bodyFont = localFont({
-  src: [{ path: "./fonts/Inter-tr.woff2", weight: "400 800", style: "normal" }],
+  src: [{ path: "./fonts/Figtree-variable.ttf", weight: "300 900", style: "normal" }],
   display: "swap",
   preload: true,
   variable: "--font-body",
@@ -76,11 +76,11 @@ export default async function RootLayout({
           Ana içeriğe geç
         </a>
         <MotionProvider><CartProvider products={products} checkoutHref={isCheckoutDemoEnabled() ? "/odeme" : null}>
-          <MembershipDialogProvider><Navbar />
+          <MembershipDialogProvider><StoreHeader />
           <div id="ana-icerik" tabIndex={-1} className="scroll-mt-28 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring">
             {children}
           </div>
-          <Footer /></MembershipDialogProvider>
+          <StoreFooter /></MembershipDialogProvider>
         </CartProvider></MotionProvider>
       </body>
     </html>

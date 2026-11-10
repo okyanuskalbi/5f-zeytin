@@ -42,7 +42,7 @@ function contrast(foreground: string, background: string): number {
 it("uses readable light semantic surface pairs by default and keeps dark tokens local", () => {
   const light = declarations(":root");
   expect(light["color-scheme"]).toBe("light");
-  expect(color(light["--background"], light).toLowerCase()).toBe("#faf8f2");
+  expect(color(light["--background"], light).toLowerCase()).toBe("#f5f1e7");
   for (const surface of ["background", "card", "popover", "primary", "secondary", "muted", "accent", "destructive"]) {
     const text = surface === "background" ? "foreground" : `${surface}-foreground`;
     expect(contrast(color(light[`--${text}`], light), color(light[`--${surface}`], light)), surface).toBeGreaterThanOrEqual(4.5);

@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import type { JSX } from "react";
-import styles from "@/components/landing/ClassicHome.module.css";
-import { ClassicHero } from "@/components/landing/ClassicHome";
-import { HomeCategories, HomeProductGrid, HomeStory, HomeBanners, HomeHarvest, HomeBusiness, HomeBlog, HomeTrust } from "@/components/landing/CustomerHome";
-import { CustomerMarquee } from "@/components/landing/CustomerMarquee";
+import { StoreHome } from "@/components/storefront/StoreHome";
 import { LegacyHomeNavigation } from "@/components/site/LegacyHomeNavigation";
 import { BusinessJsonLd } from "@/components/site/BusinessJsonLd";
 import { readProductFamilies } from "@/lib/catalog/read";
@@ -26,19 +23,9 @@ export const metadata: Metadata = {
 export default async function Home(): Promise<JSX.Element> {
   const families = await readProductFamilies();
   const products = families.flatMap(family => family.variants);
-  return <main className={styles.root}>
+  return <main>
     <LegacyHomeNavigation />
     <BusinessJsonLd />
-    <ClassicHero />
-    <HomeCategories />
-    <HomeProductGrid products={products} />
-    <HomeStory />
-    <HomeProductGrid products={products} featured />
-    <HomeBanners />
-    <HomeHarvest />
-    <CustomerMarquee />
-    <HomeBusiness />
-    <HomeBlog />
-    <HomeTrust />
+    <StoreHome products={products} />
   </main>;
 }

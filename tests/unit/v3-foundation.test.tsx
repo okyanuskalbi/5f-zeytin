@@ -13,7 +13,7 @@ vi.mock("server-only", () => ({}));
 it("keeps the home storefront separate from the existing private wholesale form", async () => {
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}<Footer /></>);
-  expect(doc.querySelector("#baslangic h1")?.textContent).toBe("Doğal, Lezzetli, Güvenilir Zeytin");
+  expect(doc.querySelector("#baslangic h1")?.textContent).toBe("Kökü toprakta. Yeri sofrada.");
   expect(doc.body.textContent).not.toMatch(/Örnek ürünler|Gerçek satış kataloğu|kullanıma açık değil|Temsili görsel/);
   expect(doc.querySelector("#toptan, form")).toBeNull();
   const wholesale = new DOMParser().parseFromString(renderToStaticMarkup(await WholesalePage()), "text/html");
@@ -51,9 +51,9 @@ it("maps page and UI tokens to readable C light defaults and preserved local dar
   expect(dark).toContain("color-scheme: dark;");
   expect(tokens).toMatchObject({
     "--ink": "#0E1510", "--zeytin": "#1F3324", "--zeytin-2": "#2A4532",
-    "--altin": "#D4B483", "--altin-2": "#E6CB97", "--sut": "#F7F3EA", "--gri": "#B9C0B6",
-    "--background": "#FAF8F2", "--foreground": "#172B21",
-    "--primary": "#88630B", "--primary-foreground": "#FFFFFF",
+    "--altin": "#D4B483", "--altin-2": "#E6CB97", "--sut": "var(--sf-ivory)", "--gri": "#B9C0B6",
+    "--background": "var(--sf-ivory)", "--foreground": "var(--sf-ink)",
+    "--primary": "var(--sf-green)", "--primary-foreground": "#FFFFFF",
   });
   expect(darkTokens).toMatchObject({
     "--background": "var(--ink)", "--foreground": "var(--sut)",

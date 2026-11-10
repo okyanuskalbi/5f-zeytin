@@ -27,9 +27,9 @@ describe("ZEYTİN bootstrap", () => {
 
     render(await Home());
 
-    const heading = screen.getByRole("heading", { level: 1, name: "Doğal, Lezzetli, Güvenilir Zeytin" });
+    const heading = screen.getByRole("heading", { level: 1, name: "Kökü toprakta. Yeri sofrada." });
     expect(screen.getByRole("main").contains(heading)).toBe(true);
-    expect(screen.getByRole("region", { name: "Doğal, Lezzetli, Güvenilir Zeytin" }).contains(heading)).toBe(true);
+    expect(screen.getByRole("region", { name: "Kökü toprakta. Yeri sofrada." }).contains(heading)).toBe(true);
   });
 
   it("identifies the application as ZEYTİN in page metadata", async () => {

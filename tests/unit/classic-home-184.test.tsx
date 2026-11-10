@@ -23,14 +23,15 @@ it("serves the classic home in reading order with one descriptive H1 before Java
   const sections = [...doc.querySelectorAll("main section[id]")].filter(section => sectionIds.includes(section.id));
   expect(sections.map(section => section.id)).toEqual(sectionIds);
   expect(doc.querySelectorAll("h1")).toHaveLength(1);
-  expect(doc.querySelector("h1")?.textContent).toBe("Doğal, Lezzetli, Güvenilir Zeytin");
+  expect(doc.querySelector("h1")?.textContent).toBe("Kökü toprakta. Yeri sofrada.");
   for (const id of sectionIds) expect(doc.getElementById(id)?.textContent?.trim(), id).toBeTruthy();
   const hero = doc.getElementById("baslangic")!;
   expect(hero.querySelector('a[href="/urunler"]')?.textContent).toContain("Ürünleri İnceleyin");
-  expect(hero.querySelector('a[href="/toptan-satis"]')?.textContent).toContain("Toptan Teklif Al");
+  expect(hero.querySelectorAll("a")).toHaveLength(1);
+  expect(hero.querySelector('a[href="/toptan-satis"]')).toBeNull();
 });
 
-it("renders still photographs without the retired film, pinned scene or horizontal product rail", async () => {
+it("serves the customer poster before hydration without retired cinematic scenes", async () => {
   const doc = await serverDocument();
   expect(doc.querySelector("video, canvas, [data-harvest-journey], [data-gallery-layout], [data-story-mode], [data-sc-scene]")).toBeNull();
   expect(doc.querySelector("#baslangic img")).not.toBeNull();
@@ -42,7 +43,6 @@ it("uses the corrected origin and business copy without unsupported claims", asy
   const text = doc.querySelector("main")?.textContent ?? "";
   for (const copy of [
     "Ellek, Düziçi / Osmaniye",
-    "Osmaniye Düziçi'nin Ellek zeytinliklerinden gelen zeytinleri kendi tesisimizde hazırlayıp sofranıza ulaştırıyoruz.",
     "AFİNA ZEYTİN, Osmaniye Düziçi'nin Ellek zeytinliklerinden gelen zeytinleri kendi tesisinde hazırlayıp sofralara ulaştırır.",
     "Geleneksel Üretim",
     "%100 Doğal",

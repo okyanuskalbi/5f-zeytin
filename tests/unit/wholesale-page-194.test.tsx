@@ -30,9 +30,14 @@ it("serves an indexable wholesale page with a truthful email draft form and orde
 it("moves the form off the home page and directs every home quote card to the wholesale page", async () => {
   const doc = new DOMParser().parseFromString(renderToStaticMarkup(await Home()), "text/html");
   expect(doc.querySelector("#toptan, #teklif, form")).toBeNull();
-  const links = [...doc.querySelectorAll<HTMLAnchorElement>('a[aria-label^="Teklife ekle:"]')];
-  expect(links.length).toBeGreaterThan(0);
-  for (const link of links) expect(link.getAttribute("href")).toMatch(/^\/toptan-satis\?teklif=sample-/);
+  const cards = [...doc.querySelectorAll('[data-product-id]')];
+  expect(cards).toHaveLength(8);
+  for (const card of cards) {
+    const links = [...card.querySelectorAll<HTMLAnchorElement>('a[href^="/toptan-satis?teklif="]')];
+    expect(links).toHaveLength(1);
+    expect(links[0].textContent).toBe("Teklife ekle");
+    expect(links[0].getAttribute("href")).toBe(`/toptan-satis?teklif=${card.getAttribute("data-product-id")}`);
+  }
 });
 
 it("selects a known product query and keeps the existing incomplete-form errors without sending anything", async () => {
