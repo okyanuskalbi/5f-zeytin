@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import robots from "@/app/robots";
 import sitemap from "@/app/sitemap";
+import { blogPosts } from "@/lib/blog/posts";
 import { metadata as kvkkMetadata } from "@/app/kvkk/page";
 import { metadata as refundMetadata } from "@/app/iade/page";
 import { metadata as salesMetadata } from "@/app/mesafeli-satis/page";
@@ -50,6 +51,8 @@ describe("SEO metadata routes", () => {
         lastModified: "2026-11-09",
       },
       ...["hakkimizda", "toptan-satis"].map(path => ({ url: `https://afinazeytin.com/${path}`, changeFrequency: "monthly", priority: 0.7, lastModified: "2026-11-10" })),
+      { url: "https://afinazeytin.com/blog", changeFrequency: "monthly", priority: 0.6, lastModified: "2026-11-10" },
+      ...blogPosts.map(post => ({ url: `https://afinazeytin.com/blog/${post.slug}`, changeFrequency: "monthly", priority: 0.5, lastModified: "2026-11-10" })),
     ]);
   });
 
