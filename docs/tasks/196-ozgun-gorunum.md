@@ -79,3 +79,11 @@ Kullanıcı (10 Kasım 2026): "kopyalamış gibi olmasın site ona göre düzenl
 - Genişletilmiş eski-suite denemesinde Task123 öncesi seçiciler güncel footer testlerine uyarlandı. İlişkisiz `legal.spec.ts` içindeki eski taslak metadata/ana-H1 beklentileri bu tasarım paketinin parçası değil; hukuk içeriği değiştirilmedi. Push, yayın, Vercel, canlı DB, ortam dosyası, dış klasör değişikliği veya yeni bağımlılık yok; `node_modules`/`.next` korundu.
 
 ## Durum: TAMAMLANDI
+
+## Claude denetimi (10 Kasım 2026)
+
+- Codex (3be6e3c) ve Kimi (96d2eaf) aynı görevi ayrı kopyalarda yaptı; yan yana karşılaştırma (`AFINA-KAYNAK/tasarim/uygulama-kontrol/AFINA-196-iki-tasarim-A-B.pdf`) sonrası kullanıcı **Kimi**yi seçti. Codex kaydı `dbf0aea` ile geri alındı, Kimi kaydı `e2f81c6` olarak alındı; Kimi'nin yalnız kendi kopyasına özel `next.config.ts` turbopack kökü değişikliği `139e072` ile çıkarıldı.
+- Claude düzeltmesi `fab1fb6`: masaüstünde ana sayfa ürün kartı görsel alanı 320→236 px (kart 583→499 px); ana sayfa imza bandındaki slogan alt bilgide tekrarlandığı için marka cümlesi "Toprağın sunduğu lezzet, Afina’nın özeniyle." ile değiştirildi.
+- Kapılar: lint, typecheck, `git diff --check` PASS; birim 1.473 PASS; yerel DB ile build + start 3004; 189–195/196 ilgili tarayıcı paketi chromium-390 + chromium-1440 **165 PASS**. BRIEF taraması: tek fark blog bölüm başlığının "Zeytin Defteri" olması (bölüm ve /blog bağlantıları yerinde, kabul edildi). Hero video gerçek Chrome/Chromium 1440 ve 390'da oynuyor; azaltılmış harekette video yok.
+- Bilinen eski test: `tests/e2e/hero-performance.spec.ts` (Task125–149 v4 hero kartı) 192'de kaldırılan eski kahramanı arıyor ve 22 senaryoda kırmızı; 196 ile ilgisiz. Ayrı görevde kaldırılmalı/yeni videolu kahramana uyarlanmalı.
+- Önizleme: `AFINA-KAYNAK/tasarim/uygulama-kontrol/AFINA-yeni-site-onizleme-3.pdf` + `AFINA-yeni-anasayfa-gezinti-3.mp4`. Yayın kullanıcı onayı bekliyor.
