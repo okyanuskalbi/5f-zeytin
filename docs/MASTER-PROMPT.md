@@ -211,7 +211,7 @@ Her aşamada fiilen yüklenecek skill'ler: `ui-ux-pro-max`, `frontend-design`, `
 ## 13 · Test matrisi (A2, A3, A7)
 
 Cihazlar: 320×568 · 360×800 · 375×667 · 390×844 (WebKit) · 414×896 · 430×932 (WebKit) · 768×1024 · 820×1180 (WebKit) · 1024×768 · 1024×1366 · 1280×800 · 1366×768 · 1440×900 · 1920×1080 · 2560×1440; telefon/tablette `hasTouch` + `isMobile`.
-Her sayfa × cihaz: yatay taşma 0 · konsol hatası 0 · 4xx/5xx kaynak 0 · kırık görsel 0 · kesilen/üst üste binen yazı 0 · dokunma hedefi ≥ 44 · yazı ≥ 12 px (gövde ≥ 16) · axe karşıtlık 0 · klavyeyle gezinme + görünür odak · CLS < 0.05.
+Her sayfa × cihaz: yatay taşma 0 · konsol hatası 0 · 4xx/5xx kaynak 0 · kırık görsel 0 · kesilen/üst üste binen yazı 0 — **otomatik çakışma testiyle** (kart/satır/kutu içinde metin kutusu ile görsel kutusu kesişmez; bilerek üstte duran başlıklar `data-overlay-ok`) + gözle; "yatay taşma 0" çakışma yok demek DEĞİLDİR (198'de telefonda öne çıkan ürünlerde yazı görselin üstüne bindi, taşma ölçümü yakalamadı) · dokunma hedefi ≥ 44 · yazı ≥ 12 px (gövde ≥ 16) · axe karşıtlık 0 · klavyeyle gezinme + görünür odak · CLS < 0.05.
 Hız (gerçek Chromium + CDP kısıtlama; Lighthouse simülasyonuna güvenme): telefon (4G ~1,6 Mbps, 150 ms, CPU ×4) LCP ≤ 2,5 sn; masaüstü LCP ≤ 1,5 sn; ilk JS ≤ mevcut değer (masaüstü 412 KB / telefon 244 KB) ya da altı.
 Ek: azaltılmış hareket · video 1920/720 doğru boy · 390 yavaş ağda video posterle başlar · sepete ekle → sepet → ödeme · teklife ekle → form ön seçimi · menü çekmecesi Esc/odak · formlar yerel test DB'si ile (canlıya gönderim YOK).
 Tarayıcılar repo içindeki Playwright (`node_modules/playwright`, chromium + webkit). Firefox kurulamıyorsa yaz.

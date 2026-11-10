@@ -15,4 +15,4 @@
 ## Kabul
 lint, typecheck, test, build, `git diff --check` PASS; taşma/konsol/kırık görsel 0 (390 WebKit, 768, 1440, 1920). Tek ek kayıt: `fix: 198-1 ui-ux-pro-max akışı tamamlandı`. MASTER-PROMPT §15 kuralları geçerli.
 
-## Durum: BEKLİYOR (Codex 198 bitince)
+## Durum: GEREK KALMADI — Codex 198 çalışırken MASTER-PROMPT v1.1'i okuyup bu adımların hepsini uyguladı (`output/task198-codex/sources/`, PLAN.md A0 tablosu, KANIT.md "UIUX öncelik sırası").
