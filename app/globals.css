@@ -40,6 +40,7 @@ body:has([data-admin-shell]) footer { display:none; }
   --pro-input: #717C69;
   --pro-error: #9D2822;
   --pro-gutter: clamp(20px,4vw,64px);
+  --shell-background: #172b1c;
   color-scheme: light;
   --ink: #0E1510;
   --zeytin: #1F3324;
@@ -155,12 +156,15 @@ body:has([data-admin-shell]) footer { display:none; }
     border-color: var(--border);
   }
 
-  html { scroll-padding-top: calc(var(--header-height) + 16px); }
+  html { scroll-padding-top: calc(var(--header-height) + 16px); background: var(--shell-background); }
   html,body { overflow-x:hidden; overflow-x:clip; }
 
   body {
     margin: 0;
-    background: var(--background);
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+    background: var(--shell-background);
     color: var(--foreground);
     font-family: var(--font-body, var(--font-body-fallback));
     font-size: var(--step-body);
@@ -169,6 +173,10 @@ body:has([data-admin-shell]) footer { display:none; }
     caret-color: var(--ring);
     scrollbar-color: var(--muted-foreground) var(--background);
   }
+
+  /* Fill only unused viewport space; long pages keep their natural height. */
+  #ana-icerik { flex: 1 0 auto; background: var(--background); }
+  body > footer, [data-mini-cart-reserve] { flex-shrink: 0; }
 
   h1, h2, h3, .font-serif {
     font-family: var(--font-display, var(--font-display-fallback));

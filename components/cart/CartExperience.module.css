@@ -139,7 +139,7 @@
 .suggestionAdd { width: 100%; margin-top: auto; min-height: 44px; border: 1px solid var(--brand-olive); border-radius: 999px; background: var(--sut); color: var(--ink); padding: 8px; font-size: 14px; }
 .suggestionAdd:hover { background: var(--gri); }
 .error { color: var(--destructive); font-size: 14px; }
-.miniReserve { display: none; }
+.miniReserve { display: none; background: var(--shell-background); }
 .mini { display: none; }
 @media (min-width: 768px) {
   .drawer { width: 560px; }

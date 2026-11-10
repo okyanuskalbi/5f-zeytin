@@ -24,14 +24,23 @@ it("uses the requested dark forest C footer without overriding site tokens", () 
   const sheet = postcss.parse(readFileSync("components/site/ClassicFooter.module.css", "utf8"));
   const colors = new Map<string, string>();
   sheet.walkRules(".footer", rule => rule.walkDecls(decl => { colors.set(decl.prop, decl.value); }));
-  expect(colors.get("background")).toBe("#172b1c");
+  const siteTokens = new Map<string, string>();
+  postcss.parse(readFileSync("app/globals.css", "utf8")).walkRules(":root", rule => {
+    rule.walkDecls(decl => { if (decl.prop.startsWith("--")) siteTokens.set(decl.prop, decl.value); });
+  });
+  function resolve(value: string): string {
+    const variable = /^var\((--[\w-]+)\)$/.exec(value);
+    return variable ? resolve(siteTokens.get(variable[1])!) : value;
+  }
+  const background = resolve(colors.get("background")!);
+  expect(background).toBe("#172b1c");
   expect(colors.get("color")).toBe("#faf6ec");
   function luminance(value: string): number {
     const channels = value.slice(1).match(/../g)!.map(channel => parseInt(channel, 16) / 255)
       .map(channel => channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4);
     return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
   }
-  expect((luminance(colors.get("color")!) + 0.05) / (luminance(colors.get("background")!) + 0.05)).toBeGreaterThanOrEqual(4.5);
+  expect((luminance(colors.get("color")!) + 0.05) / (luminance(background) + 0.05)).toBeGreaterThanOrEqual(4.5);
   const community = doc.querySelector<HTMLAnchorElement>('a[href="https://afina.com.tr"]')!;
   expect(community.textContent).toBe("AFİNA Şirketler Topluluğu markasıdır.");
   expect(community.target).toBe("_blank");

@@ -1,4 +1,4 @@
-.footer { padding:28px var(--pro-gutter) max(16px,env(safe-area-inset-bottom,0px)); background:#172b1c; color:#faf6ec; font-size:13px; line-height:1.5; }
+.footer { padding:28px var(--pro-gutter) max(16px,env(safe-area-inset-bottom,0px)); background:var(--shell-background); color:#faf6ec; font-size:13px; line-height:1.5; }
 .top,.bottom { display:flex; align-items:center; gap:24px; max-width:1440px; margin-inline:auto; }
 .home { display:inline-flex; align-items:center; min-height:48px; flex:none; }
 .logo { display:block; width:148px; height:40px; object-fit:contain; }

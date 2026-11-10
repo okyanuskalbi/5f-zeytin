@@ -64,6 +64,37 @@ async function pixelDifference(light: Buffer, dark: Buffer) {
   return { changedRatio: changed / (a.info.width * a.info.height), maxDelta, dimensionsEqual: true };
 }
 
+/** Compare the real cart/observer state, never a timer, hidden overlay or mask. */
+async function settleCaptureState(page: Page, width: number, state: State) {
+  const cartRoutes = new Set(["urunler", "bayilik", "bayilik-hata", "siparis-takip", "bulunamayan", "urun-detayi-mevcut", "urun-detayi-mevcut-degil"]);
+  const hasMiniCart = width < 768 && cartRoutes.has(state.name);
+  if (hasMiniCart) await expect(page.locator("[data-mini-cart-reserve]")).toBeVisible();
+  else await expect(page.locator("[data-mini-cart-reserve]")).toHaveCount(0);
+
+  if (await page.locator('[role="dialog"]').count() === 0) {
+    // At the bottom the footer observer has an unambiguous intersecting state.
+    // This also exercises the mobile reserve after the fixed cart disappears.
+    await page.evaluate(bottom => window.scrollTo({ top: bottom ? document.documentElement.scrollHeight : 0, behavior: "instant" }), hasMiniCart);
+    if (hasMiniCart) await expect(page.locator("footer")).toBeInViewport();
+  }
+
+  const footerVisible = await page.locator("footer").evaluate(footer => {
+    const box = footer.getBoundingClientRect();
+    return box.top < innerHeight && box.bottom > 0;
+  });
+  const miniCart = page.locator("[data-mini-cart]");
+  if (!hasMiniCart || footerVisible) await expect(miniCart).toHaveCount(0);
+  else {
+    await expect(miniCart).toBeVisible();
+    await expect(miniCart).toHaveCSS("opacity", "1");
+    await expect.poll(async () => {
+      const box = await miniCart.boundingBox();
+      return box ? Math.abs(box.y + box.height - (page.viewportSize()?.height ?? 0)) : Infinity;
+    }).toBeLessThanOrEqual(1);
+  }
+  return { scrollY: await page.evaluate(() => scrollY), footerVisible, miniCart: !hasMiniCart || footerVisible ? "absent" : "visible" };
+}
+
 test.describe("Task189 local colour contrast and operating-system invariance", () => {
   // This one suite supplies its own two widths; do not repeat it for all fifteen projects.
   test.beforeEach(({ browserName }, testInfo) => {
@@ -110,15 +141,9 @@ test.describe("Task189 local colour contrast and operating-system invariance", (
           });
           const results = await new AxeBuilder({ page }).withRules(["color-contrast"]).analyze();
           const violations = results.violations.map(violation => ({ id: violation.id, nodes: violation.nodes.map(node => ({ target: node.target, failureSummary: node.failureSummary })) }));
-          modes.push({ colorScheme, violations, incomplete: results.incomplete.map(rule => ({ id: rule.id, nodes: rule.nodes.map(node => ({ target: node.target, failureSummary: node.failureSummary })) })) });
           expect.soft(violations, `${state.name} ${width} ${colorScheme}`).toEqual([]);
-          // Axe can scroll focused fields while measuring them. Restore one
-          // deterministic viewport and let footer/mini-cart observers settle.
-          await page.evaluate(async () => {
-            if (!document.querySelector('[role="dialog"]')) window.scrollTo({ top: 0, behavior: "instant" });
-            await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
-          });
-          if (width === 390 && state.name === "bayilik-hata") await expect(page.getByRole("complementary", { name: "Mini sepet" })).toBeVisible();
+          const capture = await settleCaptureState(page, width, state);
+          modes.push({ colorScheme, capture, violations, incomplete: results.incomplete.map(rule => ({ id: rule.id, nodes: rule.nodes.map(node => ({ target: node.target, failureSummary: node.failureSummary })) })) });
           screenshots.push(await page.screenshot({ path: path.join(output, `${width}-${state.name}-${colorScheme}.png`), fullPage: true, animations: "disabled", caret: "hide" }));
         } finally { await context.close(); }
       }

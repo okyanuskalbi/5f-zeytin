@@ -91,5 +91,7 @@ it("preserves standalone FAQ/product margins and the document padding used by ot
   doc.body.append(faq, anchor);
   expect(scrollMargin(faq)).toBe("calc(var(--header-height) + 24px)");
   expect(scrollMargin(anchor)).toBe("calc(var(--header-height) + 24px)");
-  expect(readFileSync("app/globals.css", "utf8")).toContain("html { scroll-padding-top: calc(var(--header-height) + 16px); }");
+  const documentPadding: string[] = [];
+  globals.walkRules("html", rule => rule.walkDecls("scroll-padding-top", declaration => { documentPadding.push(declaration.value); }));
+  expect(documentPadding).toContain("calc(var(--header-height) + 16px)");
 });
