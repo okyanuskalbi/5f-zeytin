@@ -73,4 +73,14 @@ Kaldırılan eski ana sayfa bölümleri: C hero (fotoğraf), güven şeridi (yen
 - Görevler arası geçiş: `/urunler/zeytin` Task193'te, Hakkımızda/Toptan Satış Task194'te, blog sayfaları Task195'te tamamlanacak bağlantılardır; bu görev bu hedeflerin tamamlandığını iddia etmez. Teklif formu ve mevcut SSS/iletişim, adresleri kaybetmeden Task194'te birlikte taşınabilmeleri için geçici olarak yeni ana sayfanın sonunda tutuldu.
 - Bekleyen müşteri malzemesi: hikâye görseli/metni ve zeytinyağı paylaşım görseli; görevde izin verilen mevcut onaylı fotoğraflar tek noktada değiştirilebilir geçici kaynaklardır. Claude'un ayrı görsel kabulü ve fiziksel cihaz kabulü yapılmış sayılmaz. Push/yayın/ortam değişikliği yapılmadı; `node_modules` ve `.next` korundu.
 
-## Durum: TAMAMLANDI
+## Düzeltme 192-1 (Claude denetimi, 10 Kasım 2026)
+
+Claude kapıları: 188–195 e2e 151/151 geçti; BRIEF metinleri, yasak içerik, bağlantılar, sayfa durumları ve görsellerin yüklenmesi tamam. **Tek hata:**
+
+1. **Hero videosu masaüstünde ve telefonda hiç oynamıyor** (`components/landing/CustomerHeroVideo.tsx`). Sebep: `<video>` içinde `media` koşullu üç `<source>` var; tarayıcı uymayan kaynakları (1440'ta `hero-720.mp4`, `hero-1280.mp4`) atlarken `<source>` üzerinde `error` olayı üretiyor, React bu olayı `<video onError>`'a iletiyor → `setFailed(true)` → video DOM'dan kalkıyor, yalnız poster kalıyor. Kanıt (gerçek Google Chrome ve paketli Chromium, 1440×900, 5 sn): `hero-1920.mp4` isteği 206 dönüyor ama `document.querySelectorAll('video')` boş; yakalanan hatalar yalnız `SOURCE hero-720.mp4` ve `SOURCE hero-1280.mp4`, `video.error` null. Codex'in 192 testi bunu yakalamamış.
+   - **Beklenen:** tek bir kaynak, istemcide ekran genişliğine göre seçilir (ör. `matchMedia` ile 720/1280/1920 → `src`), ya da `onError` yalnız `video.error` dolu / `networkState === NETWORK_NO_SOURCE` olduğunda başarısız sayar. Gerçek oynatma hatasında poster yedeği korunur. Azaltılmış hareket ve veri tasarrufunda video yine yok.
+   - **Test (kalıcı e2e, gerçek Chrome kanalı varsa onunla, yoksa H.264 oynatabilen tarayıcıda):** 1440×900 ve 390×844'te 5 sn içinde `main video` var, `paused === false`, `currentTime > 0.5`, doğru boy dosyası (`hero-1920`/`hero-720`) yükleniyor; birim testi: uymayan `<source>` hatası videoyu kaldırmaz.
+
+Kurallar: lint, typecheck, test, build, `git diff --check` yeşil; mevcut e2e'ler geçer. Tek kayıt; **push yok, yayın yok**; `node_modules`/`.next` SİLME. Coder Notu (192-1) ekle, durum satırını en sona yaz.
+
+## Durum: DÜZELTME BEKLİYOR (192-1)
