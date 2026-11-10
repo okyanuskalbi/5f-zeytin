@@ -108,4 +108,7 @@ Kurallar: `npm run lint`, `typecheck`, `test`, `build`, `git diff --check` yeşi
 - Derleme ve yerel sunucu uzak bağlantıları engelleyen işletim sistemi ağ kısıtıyla çalıştırıldı; ortam ayarları değiştirilmedi, canlı veritabanına bağlanılmadı. Tarayıcılar yalnız paketli başsız Chromium, en fazla iki işçiyle çalıştı ve kapandı. Yerel sunucu SIGTERM ile kapatıldı; `node_modules` ve `.next` klasörleri bu isteğe göre korundu. Önceden bulunan `next-env.d.ts` değişikliği korunup kayda alınmadı. Push, yayın ve AFINA-KAYNAK/output dosyalarını Git'e ekleme yapılmadı.
 - Doğrulama sınırı: fiziksel iOS/macOS elastik kaydırma hareketi ve yeni kaynak üzerinde Claude incelemesi çalıştırılmadı; gerçek cihaz onayı yazılmadı. İstenen koyu `html` zemini ve alt bilgi rengi eşitliği tüm 40 yerel görünüm kontrolünde doğrulandı. Bu görev yeni oturum/veritabanı veya fiziksel Safari kabulü değildir.
 
+### Claude denetimi (189-1)
+- Alt bilgi altında açık alan: 9 sayfa × 5 pencere boyunda %0; telefonda sepetli 88 px boşluk koyu; `html` zemini koyu. 188 ve renk kontrolleri bu derlemede yeniden geçti. **KABUL.**
+
 ## Durum: TAMAMLANDI

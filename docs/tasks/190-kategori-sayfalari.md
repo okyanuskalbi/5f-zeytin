@@ -57,4 +57,7 @@ Müşteri isteği (10 Kasım 2026, WhatsApp, kullanıcı iletti): "Ürün Grupla
 - Kanıtlar git dışındaki output/task190, output/task189-sonra ve output/task189-1-footer altında. Derleme ve yerel sunucu işletim sistemi düzeyinde uzak ağ bağlantıları engellenerek çalıştı; ortam ayarları değişmedi, canlı veritabanına bağlanılmadı. Tarayıcılar düzgün kapandı; yerel sunucu SIGTERM ile kapatıldı. node_modules ve .next korundu.
 - Karşılanmayan ayrı kabul: Claude'da istenen tarayıcı doğrulaması yapılmadı; ilgili kutu açık tutuldu. Yukarıdaki kontroller yerel Codex uygulama/test kabulüdür; fiziksel cihaz veya Claude görsel kabulü değildir. TAMAMLANDI yerel teslimi belirtir. Push, production/Vercel yayını ve AFINA-KAYNAK/output ekleme yapılmadı. Çalışma sırasında eklenen Task191 motion-framer notları korundu ve bu görevin kaydına alınmadı.
 
+## Claude denetimi (10 Kasım 2026)
+- 4 kategori × 5 genişlik: doğru ürünler, H1, üç düzeyli içerik yolu, tek etkin gezinme bağlantısı, noindex + canonical, yatay taşma ve 44 px altı bağlantı yok, sayfa hatası yok; bilinmeyen kategori 404; sitemap'te yok; ana sayfa grup bağlantıları `/urunler/<kısa ad>`. Codex'in `category-pages-190` testi Claude sunucusunda da geçti. **KABUL.**
+
 ## Durum: TAMAMLANDI

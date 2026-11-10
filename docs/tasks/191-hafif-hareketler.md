@@ -74,4 +74,9 @@ Kurulu durum: `motion` 14.4.0; `MotionProvider` → `LazyMotion` + `lib/motion-f
 - Derleme ve yerel sunucu uzak ağ bağlantıları işletim sistemi düzeyinde engellenerek çalıştı. Canlı veritabanına bağlanılmadı, ortam ayarları değiştirilmedi. Tarayıcılar düzgün kapandı; yerel sunucu SIGTERM ile kapatıldı ve bu çalışmanın geçici dosyaları temizlendi. node_modules ve .next korundu. Push, production/Vercel yayını ve AFINA-KAYNAK/output dosyalarını Git'e ekleme yok.
 - Karşılanmayan ayrı kabul: Claude'da görüntü ve hareket kaydı incelemesi yapılmadı; ilgili kutu açık tutuldu. Fiziksel cihaz veya girişli gerçek hesap kabulü iddia edilmez. TAMAMLANDI yerel uygulama/test teslimini belirtir; Claude incelemesi ve yayın kabulü değildir.
 
+## Claude denetimi (10 Kasım 2026)
+- motion-framer notlarına uyuldu (domAnimation korunarak ölçülen gösterge, CSS üst bant girişi, `MotionConfig reducedMotion="user"`).
+- Ölçümler: grup fotoğrafı üzerine gelince ölçek 1 → 1,05; kart −4 px; "Eklendi ✓" geçişinde düğme genişliği sabit (117,9 px); kategori göstergesi 4 → 686 px kaydı; CLS 0 (`/`, `/urunler`, kategori, `/bayilik`; 390/1440; azaltılmış hareket dahil); azaltılmış harekette üst bant `transform: none`, opacity 1; ana sayfa sonuna kadar kaydırıldığında saydamlaşan içerik yok (yalnız devre dışı "İlçe" seçicisi sabit 0,6, hareket değil).
+- `light-motion-191`, `motion-interactions-191`, `category-pages-190`, `footer-canvas-189-1`: Claude sunucusunda 73/73 geçti. Hareket videosu: `AFINA-KAYNAK/tasarim/uygulama-kontrol/AFINA-hareketler.mp4`. **KABUL.**
+
 ## Durum: TAMAMLANDI

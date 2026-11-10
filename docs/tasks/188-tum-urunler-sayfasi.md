@@ -74,4 +74,7 @@ Kullanıcı isteği (10 Kasım 2026, ekran görüntüsüyle: "tek sayfada açıl
 - Karşılanmayan ayrı kabul: görevde Claude'a bırakılan tarayıcı doğrulaması bu Codex çalışmasında yapılmış sayılmadı; ilgili kutu açık bırakıldı. Yukarıdaki Chromium sonucu yerel uygulama kontrolüdür. Durum, yerel uygulama/test tesliminin tamamlandığını belirtir; Claude incelemesi veya fiziksel cihaz/yayın onayı değildir.
 - Push, production/Vercel yayını, ortam değişikliği ve canlı veritabanı işlemi yapılmadı. AFINA-KAYNAK ve output kayda alınmadı.
 
+## Claude denetimi (10 Kasım 2026)
+- Yerel test veritabanıyla (Postgres, 6 ürün) derlenmiş sitede: `/urunler` 360/390/768/1024/1440 genişlikte yatay taşma, iç kaydırma, kesik yazı, 44 px altı düğme ve sayfa hatası yok; noindex + canonical doğru; `/?magaza=ac` 308 → `/urunler`; "Teklife ekle" → `/#toptan`, formda "1 ürün · 1 adet" ve ilk alana odak. **KABUL.**
+
 ## Durum: TAMAMLANDI
