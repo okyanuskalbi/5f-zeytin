@@ -24,14 +24,14 @@ it("provides ordinary category photo links before JavaScript without opening a d
   expect(doc.querySelector('a[href="/urunler"]')?.textContent).toContain("Tüm ürünleri gör");
 });
 
-it.each([["/urunler", "Tüm ürünler"], ...groups.map(([id, name]) => [`/urunler/${id}`, name])])("marks only %s as the current category and preserves breadcrumb order", async (path, name) => {
+it.each([["/urunler", "Tüm ürünler"], ["/urunler/zeytin", "Zeytin"], ...groups.map(([id, name]) => [`/urunler/${id}`, name])])("marks only %s as the current category and preserves breadcrumb order", async (path, name) => {
   route.pathname = path;
   const { CatalogShell } = await import("@/components/catalog/CatalogShell");
   render(<CatalogShell><div data-testid="grid" /></CatalogShell>);
   expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(name);
   const navigation = screen.getByRole("navigation", { name: "Ürün grupları" });
   const links = within(navigation).getAllByRole("link");
-  expect(links).toHaveLength(5);
+  expect(links).toHaveLength(6);
   expect(links.filter(link => link.getAttribute("aria-current") === "page")).toEqual([within(navigation).getByRole("link", { name })]);
   for (const link of links) expect(link.querySelector("img")?.getAttribute("alt")).toBe("");
   const breadcrumb = screen.getByRole("navigation", { name: "İçerik yolu" });

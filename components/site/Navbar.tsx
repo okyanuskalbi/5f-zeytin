@@ -11,6 +11,7 @@ import { Menu, ShoppingCart, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/cart/CartProvider";
 import { useMembershipDialog } from "@/components/account/MembershipDialogProvider";
+import { productGroups } from "@/lib/catalog/groups";
 import { BrandLogo } from "./BrandLogo";
 import styles from "./Navbar.module.css";
 
@@ -134,11 +135,7 @@ export function Navbar(): JSX.Element {
             }}>
               <summary aria-label="Ürün kategorileri"><span aria-hidden="true">⌄</span></summary>
               <nav aria-label="Ürün kategorileri" className={styles.categoryLinks}>
-                <Link href="/urunler/zeytinyagi">Zeytinyağı</Link>
-                <Link href="/urunler/zeytin">Zeytin</Link>
-                <Link href="/urunler/siyah-zeytin" className={styles.subcategory}>Siyah Zeytin</Link>
-                <Link href="/urunler/yesil-zeytin" className={styles.subcategory}>Yeşil Zeytin</Link>
-                <Link href="/urunler/kirma-zeytin" className={styles.subcategory}>Kırma Zeytin</Link>
+                {productGroups.map(group => <Link key={group.id} href={`/urunler/${group.id}`} className={group.parentId ? styles.subcategory : undefined}>{group.name}</Link>)}
               </nav>
             </details>}
           </div>)}

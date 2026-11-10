@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { JSX } from "react";
 import { ProductListing } from "@/components/catalog/ProductListing";
-import { getProductGroup, productGroups, productsForGroup } from "@/lib/catalog/groups";
+import { getGroupTrail, getProductGroup, productGroups, productsForGroup } from "@/lib/catalog/groups";
 import { readProductFamilies } from "@/lib/catalog/read";
 import { siteIdentity } from "@/lib/site/identity";
 
@@ -38,7 +38,7 @@ export default async function Page({ params }: Props): Promise<JSX.Element> {
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Ana Sayfa", item: `${siteIdentity.origin}/` },
       { "@type": "ListItem", position: 2, name: "Ürünler", item: `${siteIdentity.origin}/urunler` },
-      { "@type": "ListItem", position: 3, name: group.name, item: `${siteIdentity.origin}/urunler/${group.id}` },
+      ...getGroupTrail(group.id).map((item, index) => ({ "@type": "ListItem", position: index + 3, name: item.name, item: `${siteIdentity.origin}/urunler/${item.id}` })),
     ],
   };
   return <>

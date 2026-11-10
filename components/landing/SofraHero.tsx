@@ -3,7 +3,8 @@
 import { useCallback, useEffect, useId, useRef, useState, type CSSProperties, type JSX, type MouseEvent, type ReactNode } from "react";
 import * as motion from "motion/react-m";
 import { useCart } from "@/components/cart/CartProvider";
-import { useProductDetail } from "@/components/catalog/ProductDetailProvider";
+import Link from "next/link";
+import { productHref } from "@/lib/catalog/product-pages";
 import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
 import { motionTokens } from "@/lib/ui-motion";
 import layers from "@/lib/media/hero-layers.json";
@@ -48,7 +49,6 @@ export function SofraHero({ products = [], productImage, children }: {
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const reduced = usePrefersReducedMotion();
   const cart = useCart();
-  const openDetail = useProductDetail();
   const [selected, setSelected] = useState<string>(sizes[1].id);
   const [feedback, setFeedback] = useState<"idle" | "added" | "error">("idle");
   const [active, setActive] = useState(false);
@@ -153,8 +153,7 @@ export function SofraHero({ products = [], productImage, children }: {
       <div data-hero-card="" className={styles.card}>
         <div className={styles.productImage}>{productImage}</div>
         <div className={styles.details}>
-          <h2><button type="button" className={styles.detailTrigger} aria-haspopup="dialog"
-            onClick={event => openDetail?.(selected, event.currentTarget)}>Doğal Kırma Yeşil Zeytin</button></h2>
+          <h2><Link className={styles.detailTrigger} href={productHref({ familyId: "dogal-kirma", weight: product?.weight ?? "3 L" })}>Doğal Kırma Yeşil Zeytin</Link></h2>
           <div role="radiogroup" aria-label="Boy" className={styles.sizes}>
             {sizes.map(size => <label key={size.id} className={styles.size} data-state={selected === size.id ? "checked" : "unchecked"}>
               <input className="sr-only" type="radio" name={sizeGroup} value={size.id} checked={selected === size.id}

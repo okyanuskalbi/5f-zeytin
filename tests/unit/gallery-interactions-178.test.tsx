@@ -119,7 +119,7 @@ it("offers real product destinations for quote handoff without changing the home
   const products = await getProducts();
   render(<CartProvider products={products}>{await ProductsPage()}</CartProvider>);
   for (const product of products) {
-    expect(screen.getByRole("link", { name: `Teklife ekle: ${product.name}, ${product.weight}` }).getAttribute("href")).toBe(`/?teklif=${product.id}#toptan`);
+    expect(screen.getByRole("link", { name: `Teklife ekle: ${product.name}, ${product.weight}` }).getAttribute("href")).toBe(`/toptan-satis?teklif=${product.id}`);
   }
 });
 it("keeps the sold-out black olive visible on the page without enabling purchase", async () => {

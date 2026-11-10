@@ -1,13 +1,13 @@
 import { readFileSync } from "node:fs";
-import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
-import { useRef, useState } from "react";
+import { cleanup, fireEvent, render, within } from "@testing-library/react";
+import { useRef } from "react";
 import postcss from "postcss";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { CartProvider } from "@/components/cart/CartProvider";
-import { ProductDetail } from "@/components/catalog/ProductDetail";
-import { getProducts } from "@/lib/catalog/static-products";
+import { ProductPage } from "@/components/catalog/ProductPage";
+import { getProductFamilies } from "@/lib/catalog/static-products";
+import { productHref } from "@/lib/catalog/product-pages";
 import { motionTokens } from "@/lib/ui-motion";
-import type { ProductVariant } from "@/types/catalog";
 
 const animation = vi.hoisted(() => ({ animate: vi.fn(), stop: vi.fn() }));
 vi.mock("motion/react-mini", () => ({ useAnimate: () => [useRef(null), animation.animate] }));
@@ -23,17 +23,14 @@ beforeEach(() => {
     media: query, matches: query.includes("767px") ? width < 768 : reduced,
   }));
 });
-afterEach(() => { cleanup(); localStorage.clear(); vi.unstubAllGlobals(); });
-
-function Detail({ products, initialId }: { products: readonly ProductVariant[]; initialId: string }) {
-  const [id, setId] = useState(initialId);
-  return <CartProvider products={products}><ProductDetail product={products.find(product => product.id === id)!}
-    products={products} onSelect={setId} onClose={() => {}} onRestoreFocus={() => {}} /></CartProvider>;
-}
+afterEach(() => { cleanup(); localStorage.clear(); history.replaceState(null,"","/"); vi.unstubAllGlobals(); });
 
 async function mount(id = "sample-green-olive-10kg") {
-  render(<Detail products={await getProducts()} initialId={id} />);
-  const dialog = screen.getByRole("dialog");
+  const families=await getProductFamilies();const products=families.flatMap(family=>family.variants);
+  const product=products.find(item=>item.id===id)!;const family=families.find(item=>item.id===product.familyId)!;
+  history.replaceState(null,"",productHref(product));
+  render(<CartProvider products={products}><ProductPage family={family} related={[]} /></CartProvider>);
+  const dialog = document.querySelector<HTMLElement>("[data-product-page]")!;
   return { dialog, image: dialog.querySelector<HTMLElement>("[data-product-detail-image]")! };
 }
 
@@ -88,7 +85,7 @@ it("resets the focus point to the studio when changing size", async () => {
   expect(image.style.getPropertyValue("--product-image-position")).toBe("center");
 });
 
-const css = postcss.parse(readFileSync("components/catalog/ProductDetail.module.css", "utf8"));
+const css = postcss.parse(readFileSync("components/catalog/ProductPage.module.css", "utf8"));
 function declarations(selector: string, media?: string): Record<string, string> {
   const result: Record<string, string> = {};
   css.walkRules(rule => {
@@ -101,7 +98,7 @@ function declarations(selector: string, media?: string): Record<string, string> 
 }
 
 it("fills the padding-free gallery with an absolute cover image and overlays a 64px strip", () => {
-  expect(declarations(".gallery")).toMatchObject({ position: "relative", padding: "0", overflow: "hidden", "border-radius": "inherit" });
+  expect(declarations(".gallery")).toMatchObject({ position: "relative", padding: "0", overflow: "hidden", "border-radius": "8px" });
   expect(declarations(".image")).toMatchObject({ position: "absolute", inset: "0", padding: "0" });
   for (const selector of [".image picture", ".image img"]) {
     expect(declarations(selector)).toMatchObject({ position: "absolute", inset: "0", width: "100%", height: "100%" });
@@ -114,18 +111,15 @@ it("fills the padding-free gallery with an absolute cover image and overlays a 6
   expect(declarations(".gallery::after")["background"]).toContain("linear-gradient");
 });
 
-it("reserves mobile height before image loading, with a 16px gap before the content", () => {
-  expect(declarations(".gallery")["height"]).toBe("min(62svh, 125vw)");
-  expect(declarations(".scroller")).toMatchObject({ padding: "0", gap: "16px" });
-  expect(declarations(".info")["padding"]).toBe("0 16px 24px");
+it("reserves mobile height before image loading with a stable gap before the content", () => {
+  expect(declarations(".gallery", "(max-width:767px)")["height"]).toBe("min(62svh,125vw)");
+  expect(declarations(".product", "(max-width:767px)")).toMatchObject({"grid-template-columns":"minmax(0,1fr)",gap:"32px"});
+  expect(declarations(".info", "(max-width:767px)")["padding"]).toBe("0");
 });
 
-it("keeps desktop columns full height and scrolls only the information column within the viewport", () => {
-  const desktop = "(min-width: 768px)";
-  expect(declarations(".dialog")["max-height"]).toBe("calc(100dvh - 48px)");
-  expect(declarations(".sheet")["max-height"]).toBe("calc(100dvh - 48px)");
-  expect(declarations(".scroller", desktop)).toMatchObject({ "align-items": "stretch", gap: "0", overflow: "hidden" });
-  expect(declarations(".gallery", desktop)["height"]).toBe("100%");
-  expect(declarations(".info", desktop)).toMatchObject({ "min-height": "0", "overflow-y": "auto" });
-  expect(declarations(".image", "(prefers-reduced-motion: reduce)")["opacity"]).toBe("1 !important");
+it("keeps desktop gallery dimensions reserved and both columns in the normal document flow", () => {
+  expect(declarations(".product")).toMatchObject({"grid-template-columns":"minmax(0,1fr) minmax(0,1fr)","align-items":"start",gap:"56px"});
+  expect(declarations(".gallery")["height"]).toBe("640px");
+  expect(declarations(".info")["overflow-y"]).toBeUndefined();
+  expect(declarations(".image","(prefers-reduced-motion:reduce)")["opacity"]).toBe("1 !important");
 });

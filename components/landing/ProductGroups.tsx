@@ -20,7 +20,7 @@ export function ProductGroups(): JSX.Element {
     <span id="kiler" className={styles.anchor} aria-hidden="true" />
     <h2 id="urunler-title" className={styles.heading}>ÜRÜN GRUPLARIMIZ</h2>
     <div className={styles.groups}>
-      {productGroups.map(group => <MotionLink key={group.id} href={`/urunler/${group.id}`} className={styles.group} data-group-photo-link
+      {productGroups.filter(group => group.id !== "zeytin").map(group => <MotionLink key={group.id} href={`/urunler/${group.id}`} className={styles.group} data-group-photo-link
         initial={false} whileTap={reduced ? undefined : { scale: motionTokens.interaction.tapScale }} transition={{ duration: reduced ? 0 : motionTokens.duration.fast }}>
         <V3Picture image={photos.assets[group.photo]} sizes="(max-width: 767px) calc((100vw - 56px) / 2), (max-width: 1304px) 24vw, 292px" decorative />
         <span>{group.name}<ArrowRight size={22} aria-hidden="true" /></span>

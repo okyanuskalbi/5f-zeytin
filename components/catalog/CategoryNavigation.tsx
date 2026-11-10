@@ -19,6 +19,7 @@ export function CategoryNavigation(): JSX.Element {
   const indicator = useRef<HTMLSpanElement>(null);
   const baseWidth = useRef(0);
   const x = useMotionValue(0);
+  const y = useMotionValue(0);
   const scaleX = useMotionValue(1);
 
   useEffect(() => {
@@ -44,14 +45,15 @@ export function CategoryNavigation(): JSX.Element {
         baseWidth.current = target.width;
         marker.style.width = `${target.width}px`;
       }
-      marker.style.top = `${target.top - bounds.top + row.scrollTop}px`;
+      const top = target.top - bounds.top + row.scrollTop;
+      marker.style.top = "0px";
       marker.style.height = `${target.height}px`;
       controls.forEach(control => control.stop());
       if (first || reduced || !move) {
-        x.set(left); scaleX.set(target.width / baseWidth.current);
+        x.set(left); y.set(top); scaleX.set(target.width / baseWidth.current);
       } else {
         const transition = { duration: motionTokens.storefront.category.duration, ease: "easeOut" as const };
-        controls = [animate(x, left, transition), animate(scaleX, target.width / baseWidth.current, transition)];
+        controls = [animate(x, left, transition), animate(y, top, transition), animate(scaleX, target.width / baseWidth.current, transition)];
       }
       navigation.current?.setAttribute("data-indicator-ready", "");
     };
@@ -61,15 +63,15 @@ export function CategoryNavigation(): JSX.Element {
     list.current?.querySelectorAll("a").forEach(link => observer?.observe(link));
     void document.fonts?.ready.then(() => { if (mounted) measure(false); });
     return () => { mounted = false; observer?.disconnect(); controls.forEach(control => control.stop()); };
-  }, [pathname, reduced, x, scaleX]);
+  }, [pathname, reduced, x, y, scaleX]);
   const links = [
-    { href: "/urunler", name: "Tüm ürünler", photo: "zeytinlik" as const },
-    ...productGroups.map(group => ({ href: `/urunler/${group.id}`, name: group.name, photo: group.photo })),
+    { href: "/urunler", name: "Tüm ürünler", photo: "zeytinlik" as const, parentId: null },
+    ...productGroups.map(group => ({ href: `/urunler/${group.id}`, name: group.name, photo: group.photo, parentId: group.parentId })),
   ];
   return <nav ref={navigation} aria-label="Ürün grupları" className={styles.navigation}>
     <ul ref={list} className={styles.list}>
-      <li aria-hidden="true" className={styles.indicatorLayer}><m.span ref={indicator} data-category-indicator="" className={styles.indicator} initial={false} style={{ x, scaleX }} /></li>
-      {links.map(link => <li key={link.href}>
+      <li aria-hidden="true" className={styles.indicatorLayer}><m.span ref={indicator} data-category-indicator="" className={styles.indicator} initial={false} style={{ x, y, scaleX }} /></li>
+      {links.map(link => <li key={link.href} data-parent={link.parentId ?? undefined}>
         <Link href={link.href} className={styles.link} aria-current={pathname === link.href ? "page" : undefined}>
           <V3Picture image={photos.assets[link.photo]} sizes="36px" decorative />
           <span>{link.name}</span>

@@ -1,5 +1,6 @@
 import { fileURLToPath } from "node:url";
 import type { NextConfig } from "next";
+import { legacyProductRoutes } from "./lib/catalog/product-pages";
 
 if (process.env.VERCEL_ENV === "production" && process.env.NEXT_PUBLIC_DEMO === "1") {
   throw new Error("Vercel production ortamında demo modu açılamaz. NEXT_PUBLIC_DEMO=1 ayarını kaldırın.");
@@ -8,7 +9,13 @@ if (process.env.VERCEL_ENV === "production" && process.env.NEXT_PUBLIC_DEMO === 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   async redirects() {
-    return [{ source: "/", has: [{ type: "query", key: "magaza", value: "ac" }], destination: "/urunler", permanent: true }];
+    return [
+      { source: "/", has: [{ type: "query" as const, key: "magaza", value: "ac" }], destination: "/urunler", permanent: true },
+      ...Object.entries(legacyProductRoutes).map(([id, destination]) => ({
+        source: "/", has: [{ type: "query" as const, key: "urun", value: id }], destination, permanent: true,
+      })),
+      { source: "/", has: [{ type: "query" as const, key: "urun" }], destination: "/urun/bulunamayan", permanent: true },
+    ];
   },
   async headers() {
     // Static/RSC pages emit inline hydration scripts and JSON-LD; inlineCss and

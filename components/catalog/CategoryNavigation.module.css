@@ -13,3 +13,13 @@
 .link picture,.link img { display:block; width:36px; height:36px; border-radius:50%; object-fit:cover; flex:none; }
 .link:focus-visible { outline:3px solid #88630B; outline-offset:3px; }
 @media(hover:hover) { .link:hover { border-color:#88630B; } }
+
+@media(min-width:1024px) {
+ .navigation { margin-bottom:0; }
+ .list { flex-direction:column; overflow:visible; padding:4px; gap:8px; }
+ .link { white-space:normal; border-radius:6px; font-size:.875rem; }
+ .list > li[data-parent] { margin-inline-start:16px; }
+ .list > li[data-parent] .link { padding-left:8px; font-size:.8125rem; }
+ .list > li[data-parent] picture,.list > li[data-parent] img { width:28px; height:28px; }
+ .indicator { border-radius:6px; }
+}

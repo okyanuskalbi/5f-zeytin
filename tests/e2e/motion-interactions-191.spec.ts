@@ -58,7 +58,7 @@ test.describe("Task191 action-only motion", () => {
     const nav = page.getByRole("navigation", { name: "Ürün grupları" });
     const persistent = await nav.elementHandle();
     const indicator = page.locator("[data-category-indicator]");
-    const before = await indicator.evaluate(element => new DOMMatrixReadOnly(getComputedStyle(element).transform).m41);
+    const before = await indicator.evaluate(element => new DOMMatrixReadOnly(getComputedStyle(element).transform).m42);
     await record(page, { grid: "[data-category-transition] [data-product-reveal]" }, 350);
     const initial = await recorded(page);
     expect(initial.grid.length).toBeGreaterThan(0);
@@ -72,14 +72,15 @@ test.describe("Task191 action-only motion", () => {
     const samples = await recorded(page);
     await info.attach("category-motion-samples", { body: JSON.stringify(samples), contentType: "application/json" });
     const last = samples.indicator.at(-1)!;
-    expect(last.x).toBeGreaterThan(before);
-    expect(samples.indicator.some(sample => sample.x > before + 1 && sample.x < last.x - 1)).toBe(true);
+    expect(last.y).toBeGreaterThan(before);
+    expect(samples.indicator.some(sample => sample.y > before + 1 && sample.y < last.y - 1)).toBe(true);
     expect(samples.grid.some(sample => sample.opacity > 0 && sample.opacity < 1)).toBe(true);
     expect(samples.grid.at(-1)).toMatchObject({ opacity: 1, y: 0, running: 0 });
     const markerBounds = await indicator.boundingBox();
     const activeBounds = await nav.getByRole("link", { name: "Siyah Zeytin", exact: true }).boundingBox();
     expect(markerBounds!.x).toBeCloseTo(activeBounds!.x, 0);
     expect(markerBounds!.width).toBeCloseTo(activeBounds!.width, 0);
+    expect(markerBounds!.y).toBeCloseTo(activeBounds!.y, 0);
   });
 
   test("reduced motion category changes show the final products without a transient entrance", async ({ page }, info) => {

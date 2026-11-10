@@ -30,14 +30,13 @@ const states: State[] = [
   { name: "bulunamayan", url: "/task189-bulunamayan-sayfa" },
   { name: "odeme", url: "/odeme" },
   { name: "odeme-onizleme-kapali", url: "/odeme-onizleme" },
-  { name: "urun-detayi-mevcut", url: "/urunler", prepare: async page => {
-    await page.locator('[data-product-id="sample-olive-oil-1l"]').getByRole("button", { name: /detayını aç/ }).click();
-    await expect(page.getByRole("dialog")).toBeVisible();
-    await expect(page.getByRole("dialog").getByRole("button", { name: "Sepete ekle" })).toBeEnabled();
+  { name: "urun-detayi-mevcut", url: "/urun/naturel-sizma-zeytinyagi?boy=1%20L", prepare: async page => {
+    await expect(page.locator("[data-product-page]").getByRole("button", { name: "Sepete ekle", exact: true })).toBeEnabled();
+    await expect(page.getByRole("dialog")).toHaveCount(0);
   } },
-  { name: "urun-detayi-mevcut-degil", url: "/urunler", prepare: async page => {
-    await page.locator('[data-product-id="sample-black-olive-1kg"]').getByRole("button", { name: /detayını aç/ }).click();
-    await expect(page.getByRole("dialog").getByRole("button", { name: "Mevcut değil" })).toBeDisabled();
+  { name: "urun-detayi-mevcut-degil", url: "/urun/salamura-siyah-zeytin", prepare: async page => {
+    await expect(page.locator("[data-product-page]").getByRole("button", { name: "Mevcut değil" })).toBeDisabled();
+    await expect(page.getByRole("dialog")).toHaveCount(0);
   } },
   { name: "sepet-cekmecesi", url: "/", prepare: async page => {
     await page.getByRole("banner").getByRole("button", { name: "Sepetim, 1 adet" }).click();

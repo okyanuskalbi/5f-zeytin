@@ -1,17 +1,11 @@
 import { cleanup, render, screen, within } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
-import type { ReactNode } from "react";
 import { afterEach, expect, it, vi } from "vitest";
 import Home from "@/app/page";
 import { getProductFamilies } from "@/lib/catalog/static-products";
 import { verifiedFaqs } from "@/lib/site/faqs";
 
-const { openProduct } = vi.hoisted(() => ({ openProduct: vi.fn() }));
 vi.mock("@/lib/catalog/read", () => ({ readProductFamilies: () => getProductFamilies() }));
-vi.mock("@/components/catalog/ProductDetailProvider", () => ({
-  ProductDetailProvider: ({ children }: { children: ReactNode }) => <>{children}</>,
-  useProductDetail: () => openProduct,
-}));
 afterEach(() => { cleanup(); vi.clearAllMocks(); vi.unstubAllGlobals(); });
 
 async function serverDocument(): Promise<Document> {
@@ -85,7 +79,7 @@ it("links each category to its product group without treating it as a new SKU", 
   for (const [label, slug] of [["Zeytin", "zeytin"], ["Zeytinyağı", "zeytinyagi"]]) {
     expect(group.getByRole("link", { name: new RegExp(`^${label} Ürünleri İnceleyin$`) }).getAttribute("href")).toBe(`/urunler/${slug}`);
   }
-  expect(openProduct).not.toHaveBeenCalled();
+  expect(container.querySelector('[role="dialog"]')).toBeNull();
   expect(screen.getAllByRole("link", { name: /^Tüm Ürünler$/i })[0].getAttribute("href")).toBe("/urunler");
   expect(screen.queryByRole("dialog", { name: "Tüm ürünler" })).toBeNull();
 });

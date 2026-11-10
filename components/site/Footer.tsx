@@ -2,6 +2,7 @@ import type { JSX } from "react";
 import Link from "next/link";
 import { BrandLogo } from "./BrandLogo";
 import { PaymentLogos } from "./PaymentLogos";
+import { productGroups } from "@/lib/catalog/groups";
 import { seller } from "@/lib/site/seller";
 import { siteContact } from "@/lib/site/contact";
 import styles from "./ClassicFooter.module.css";
@@ -13,13 +14,7 @@ const corporate = [
   { label: "Blog", href: "/blog" },
   { label: "İletişim", href: "/#iletisim" },
 ];
-const categories = [
-  { label: "Zeytinyağı", href: "/urunler/zeytinyagi" },
-  { label: "Zeytin", href: "/urunler/zeytin" },
-  { label: "Siyah Zeytin", href: "/urunler/siyah-zeytin" },
-  { label: "Yeşil Zeytin", href: "/urunler/yesil-zeytin" },
-  { label: "Kırma Zeytin", href: "/urunler/kirma-zeytin" },
-];
+
 
 /** Public contact channels remain conditional until customer-service details are approved. */
 export function Footer(): JSX.Element {
@@ -35,7 +30,7 @@ export function Footer(): JSX.Element {
         <a href="https://afina.com.tr" target="_blank" rel="noopener noreferrer" className={styles.community}>AFİNA Şirketler Topluluğu markasıdır.</a>
       </div>
       <div><h2>Kurumsal</h2><nav aria-label="Alt menü" className={styles.links}>{corporate.map(link => <Link key={link.href} href={link.href} className={styles.link}>{link.label}</Link>)}</nav></div>
-      <div><h2>Kategoriler</h2><nav aria-label="Kategoriler" className={styles.links}>{categories.map(link => <Link key={link.href} href={link.href} className={styles.link}>{link.label}</Link>)}</nav></div>
+      <div><h2>Kategoriler</h2><nav aria-label="Kategoriler" className={styles.links}>{productGroups.map(group => <Link key={group.id} href={`/urunler/${group.id}`} className={styles.link}>{group.name}</Link>)}</nav></div>
       <div><h2>Müşteri Hizmetleri</h2><nav aria-label="Müşteri hizmetleri" className={styles.links}>
         <Link href="/hesabim" className={styles.link}>Hesabım</Link><Link href="/siparis-takip" className={styles.link}>Sipariş Takip</Link><Link href="/sepet" className={styles.link}>Sepetim</Link>
       </nav><h2>Yasal</h2><nav aria-label="Yasal bilgiler" className={styles.legal}>

@@ -3,14 +3,15 @@ import { useRef } from "react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { QuoteQuerySelection } from "@/components/landing/QuoteQuerySelection";
 import { ProductCard } from "@/components/catalog/ProductCard";
+import { ProductPage } from "@/components/catalog/ProductPage";
+import { productHref } from "@/lib/catalog/product-pages";
 import { v3Image } from "@/lib/media/v3-assets";
 import { ProductGroups } from "@/components/landing/ProductGroups";
-import { ProductDetailProvider } from "@/components/catalog/ProductDetailProvider";
 import { QuoteJourneyProvider, useQuoteJourney } from "@/components/landing/QuoteJourneyProvider";
 import { CartProvider, useCart } from "@/components/cart/CartProvider";
-import { getProducts } from "@/lib/catalog/static-products";
+import { getProductFamilies } from "@/lib/catalog/static-products";
 
-vi.mock("motion/react-mini", () => ({ useAnimate: () => [useRef(null), vi.fn()] }));
+vi.mock("motion/react-mini", () => ({ useAnimate: () => [useRef(null), vi.fn(() => ({ stop() {} }))] }));
 vi.mock("@/components/cart/MiniCart", () => ({ MiniCart: () => null }));
 beforeEach(() => {
   HTMLElement.prototype.scrollIntoView = vi.fn();
@@ -26,11 +27,14 @@ function CurrentChoices() {
   return <><output aria-label="Seçilen teklif ürünleri">{JSON.stringify(quote.quantities)}</output>
     <output aria-label="Sepetteki ürünler">{JSON.stringify(cart?.state.items)}</output></>;
 }
-async function mount() {
-  const products = await getProducts();
-  render(<CartProvider products={products}><QuoteJourneyProvider><ProductDetailProvider products={products} quoteEnabled>
-    <ProductGroups />{products.map(product => <ProductCard key={product.id} product={product} image={v3Image(product.imageKey)} staticPresentation />)}<QuoteQuerySelection products={products} /><CurrentChoices /><section id="toptan" tabIndex={-1}><label>Firma adı<input name="firma" /></label></section>
-  </ProductDetailProvider></QuoteJourneyProvider></CartProvider>);
+async function mount(familyId?: string) {
+  const families = await getProductFamilies();
+  const products = families.flatMap(family => family.variants);
+  const family = families.find(item => item.id === familyId);
+  render(<CartProvider products={products}><QuoteJourneyProvider>
+    {family ? <ProductPage family={family} related={[]} /> : <><ProductGroups />{products.map(product => <ProductCard key={product.id} product={product} image={v3Image(product.imageKey)} staticPresentation />)}</>}
+    <QuoteQuerySelection products={products} /><CurrentChoices /><section id="toptan" tabIndex={-1}><label>Firma adı<input name="firma" /></label></section>
+  </QuoteJourneyProvider></CartProvider>);
   return products;
 }
 
@@ -39,41 +43,38 @@ it.each([
   ["Yeşil Zeytin", "Salamura Yeşil Zeytin", "sample-brined-green-olive-5kg"],
   ["Kırma Zeytin", "Doğal Kırma Yeşil Zeytin", "sample-green-olive-1kg"],
   ["Zeytinyağı", "Natürel Sızma Zeytinyağı", "sample-olive-oil-1l"],
-])("opens %s from its listed product and restores the product trigger on Escape", async (label, title, id) => {
+])("links %s to its real product page and keeps the keyboard trigger usable", async (_label, title, id) => {
   const products = await mount();
   const product = products.find(product => product.id === id)!;
-  const trigger = screen.getByRole("button", { name: `${product.name}, ${product.weight} detayını aç` });
-  act(() => trigger.focus()); fireEvent.click(trigger);
-  const dialog = await screen.findByRole("dialog");
-  expect(within(dialog).getByRole("heading").textContent).toBe(title);
-  expect(new URL(location.href).searchParams.get("urun")).toBe(id);
-  fireEvent.keyDown(dialog, { key: "Escape" });
-  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
-  await waitFor(() => expect(document.activeElement).toBe(trigger));
+  const trigger = screen.getByRole("link", { name: `${product.name}, ${product.weight} detayını aç` });
+  act(() => trigger.focus());
+  expect(document.activeElement).toBe(trigger);
+  expect(trigger.getAttribute("href")).toBe(productHref(product));
+  expect(within(trigger.closest("article")!).getByRole("heading").textContent).toBe(title);
+  expect(screen.queryByRole("dialog")).toBeNull();
+  expect(document.body.hasAttribute("data-scroll-locked")).toBe(false);
 });
 
-it("adds the chosen family's real product to the existing cart from its detail", async () => {
-  await mount();
-  fireEvent.click(screen.getByRole("button", { name: "Natürel Sızma Zeytinyağı, 1 L detayını aç" }));
-  const dialog = await screen.findByRole("dialog");
-  fireEvent.click(within(dialog).getByRole("button", { name: "Sepete ekle" }));
+it("adds the chosen family's real product to the existing cart from its page", async () => {
+  await mount("naturel-sizma");
+  const product = document.querySelector<HTMLElement>("[data-product-page]")!;
+  const add = within(product).getByRole("button", { name: "Sepete ekle" });
+  await waitFor(() => expect(add.hasAttribute("disabled")).toBe(false));
+  fireEvent.click(add);
   expect(JSON.parse(screen.getByLabelText("Sepetteki ürünler").textContent!)).toEqual([
     expect.objectContaining({ productId: "sample-olive-oil-1l", quantity: 1 }),
   ]);
 });
 
-it("hands the actual family product to the existing quote and returns focus to the new section", async () => {
-  await mount();
-  fireEvent.click(screen.getByRole("button", { name: "Salamura Yeşil Zeytin, 3 L detayını aç" }));
-  const dialog = await screen.findByRole("dialog");
-  fireEvent.click(within(dialog).getByRole("button", { name: /^Teklife ekle/ }));
-  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
-  expect(JSON.parse(screen.getByLabelText("Seçilen teklif ürünleri").textContent!)).toEqual({ "sample-brined-green-olive-5kg": "1" });
-  expect(location.hash).toBe("#toptan");
-  await waitFor(() => expect(document.activeElement).toBe(screen.getByRole("textbox", { name: "Firma adı" })));
+it("hands the actual family product to the dedicated wholesale quote URL without a dialog", async () => {
+  await mount("salamura-yesil");
+  const quote = screen.getByRole("link", { name: "Toptan teklif al" });
+  expect(quote.getAttribute("href")).toBe("/toptan-satis?teklif=sample-brined-green-olive-5kg");
+  expect(screen.queryByRole("dialog")).toBeNull();
+  expect(document.body.hasAttribute("data-scroll-locked")).toBe(false);
 });
 
-it("hands off a catalogue quote URL to home without opening nested dialogs", async () => {
+it("hands off a catalogue quote URL without opening nested dialogs", async () => {
   history.replaceState(null, "", "/?teklif=sample-olive-oil-1l#toptan");
   await mount();
   expect(document.querySelectorAll('[role="dialog"]')).toHaveLength(0);
@@ -85,18 +86,12 @@ it("hands off a catalogue quote URL to home without opening nested dialogs", asy
   await waitFor(() => expect(document.activeElement).toBe(screen.getByRole("textbox", { name: "Firma adı" })));
 });
 
-it("quotes the newly selected detail size and preserves unrelated query parameters", async () => {
-  history.replaceState(null, "", "/?kaynak=klasik");
-  await mount();
-  fireEvent.click(screen.getByRole("button", { name: "Natürel Sızma Zeytinyağı, 1 L detayını aç" }));
-  const detail = await screen.findByRole("dialog", { name: "Natürel Sızma Zeytinyağı" });
-  fireEvent.click(within(detail).getByRole("radio", { name: "5 L" }));
-  expect(new URL(location.href).searchParams.get("urun")).toBe("sample-olive-oil-5l");
-  fireEvent.click(within(detail).getByRole("button", { name: "Teklife ekle" }));
-  await waitFor(() => expect(document.querySelectorAll('[role="dialog"]')).toHaveLength(0));
-  expect(JSON.parse(screen.getByLabelText("Seçilen teklif ürünleri").textContent!)).toEqual({ "sample-olive-oil-5l": "1" });
-  const destination = new URL(location.href);
-  expect(destination.hash).toBe("#toptan");
-  expect([...destination.searchParams.entries()]).toEqual([["kaynak", "klasik"]]);
-  await waitFor(() => expect(document.activeElement).toBe(screen.getByRole("textbox", { name: "Firma adı" })));
+it("quotes the newly selected page size and preserves unrelated query parameters", async () => {
+  history.replaceState(null, "", "/urun/naturel-sizma-zeytinyagi?kaynak=klasik&boy=1%20L");
+  await mount("naturel-sizma");
+  fireEvent.click(screen.getByRole("radio", { name: "5 L" }));
+  expect(new URL(location.href).searchParams.get("boy")).toBe("5 L");
+  expect(new URL(location.href).searchParams.get("kaynak")).toBe("klasik");
+  expect(screen.getByRole("link", { name: "Toptan teklif al" }).getAttribute("href")).toBe("/toptan-satis?teklif=sample-olive-oil-5l");
+  expect(screen.queryByRole("dialog")).toBeNull();
 });

@@ -8,7 +8,6 @@ import { QuoteSection, TrustAndContact } from "@/components/landing/RenewalLandi
 import { QuoteQuerySelection } from "@/components/landing/QuoteQuerySelection";
 import { QuoteJourneyProvider } from "@/components/landing/QuoteJourneyProvider";
 import { BusinessJsonLd } from "@/components/site/BusinessJsonLd";
-import { ProductDetailProvider } from "@/components/catalog/ProductDetailProvider";
 import { readProductFamilies } from "@/lib/catalog/read";
 
 // This landing reads only anonymous catalog data, never session cookies.
@@ -29,7 +28,7 @@ export const metadata: Metadata = {
 export default async function Home(): Promise<JSX.Element> {
   const families = await readProductFamilies();
   const products = families.flatMap(family => family.variants);
-  return <QuoteJourneyProvider><ProductDetailProvider products={products} quoteEnabled><main className={styles.root}>
+  return <QuoteJourneyProvider><main className={styles.root}>
     <QuoteQuerySelection products={products} />
     <BusinessJsonLd />
     <ClassicHero />
@@ -45,5 +44,5 @@ export default async function Home(): Promise<JSX.Element> {
     <HomeTrust />
     <QuoteSection products={products} />
     <TrustAndContact />
-  </main></ProductDetailProvider></QuoteJourneyProvider>;
+  </main></QuoteJourneyProvider>;
 }

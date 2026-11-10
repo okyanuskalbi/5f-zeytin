@@ -126,7 +126,7 @@ test.describe("Task191 light motion", () => {
     await card.hover();
     await expect.poll(() => card.evaluate(element => new DOMMatrixReadOnly(getComputedStyle(element).transform).m42)).toBeLessThan(0);
     await page.mouse.move(0, 0);
-    await card.getByRole("button", { name: /detayını aç/ }).focus();
+    await card.getByRole("link", { name: /detayını aç/ }).focus();
     await expect.poll(() => card.evaluate(element => new DOMMatrixReadOnly(getComputedStyle(element).transform).m42)).toBeLessThan(0);
     await page.emulateMedia({ reducedMotion: "reduce" });
     await expect(card).toHaveCSS("transform", "none");

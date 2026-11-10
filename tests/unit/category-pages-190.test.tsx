@@ -2,7 +2,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, expect, it, vi } from "vitest";
 import Layout from "@/app/urunler/layout";
 import CategoryPage, { dynamic, dynamicParams, generateMetadata, generateStaticParams, revalidate } from "@/app/urunler/[kategori]/page";
-import { getProductGroup, productGroups, productsForGroup } from "@/lib/catalog/groups";
+import { getGroupTrail, getProductGroup, productGroups, productsForGroup } from "@/lib/catalog/groups";
 import { getProductFamilies } from "@/lib/catalog/static-products";
 import type { ProductFamily } from "@/types/catalog";
 
@@ -14,10 +14,10 @@ beforeEach(async () => { readFamilies.mockResolvedValue(await getProductFamilies
 const params = (kategori: string) => ({ params: Promise.resolve({ kategori }) });
 const parse = (markup: string) => new DOMParser().parseFromString(markup, "text/html");
 
-it("defines exactly four ordered groups and assigns every family to one known group", async () => {
+it("defines the two root groups and three ordered olive children and assigns every family to one known group", async () => {
   expect(productGroups.map(group => [group.id, group.name, group.photo])).toEqual([
-    ["siyah-zeytin", "Siyah Zeytin", "siyah-zeytin"], ["yesil-zeytin", "Yeşil Zeytin", "yesil-zeytin"],
-    ["kirma-zeytin", "Kırma Zeytin", "kirma-zeytin"], ["zeytinyagi", "Zeytinyağı", "zeytinyagi"],
+    ["zeytinyagi", "Zeytinyağı", "zeytinyagi"], ["zeytin", "Zeytin", "siyah-zeytin"],
+    ["siyah-zeytin", "Siyah Zeytin", "siyah-zeytin"], ["yesil-zeytin", "Yeşil Zeytin", "yesil-zeytin"], ["kirma-zeytin", "Kırma Zeytin", "kirma-zeytin"],
   ]);
   for (const family of await getProductFamilies()) expect(productGroups.filter(group => group.id === family.groupId)).toHaveLength(1);
   expect(generateStaticParams()).toEqual(productGroups.map(group => ({ kategori: group.id })));
@@ -25,26 +25,27 @@ it("defines exactly four ordered groups and assigns every family to one known gr
 });
 
 it.each([
+  ["zeytin", ["sample-green-olive-10kg", "sample-green-olive-1kg", "sample-black-olive-1kg", "sample-brined-green-olive-5kg"]],
   ["siyah-zeytin", ["sample-black-olive-1kg"]], ["yesil-zeytin", ["sample-brined-green-olive-5kg"]],
   ["kirma-zeytin", ["sample-green-olive-10kg", "sample-green-olive-1kg"]], ["zeytinyagi", ["sample-olive-oil-1l", "sample-olive-oil-5l"]],
-] as const)("renders every approved size in %s with shared cards and a three-level breadcrumb schema", async (id, ids) => {
+] as const)("renders every approved size in %s with shared cards and a hierarchical breadcrumb schema", async (id, ids) => {
   const group = getProductGroup(id)!;
   route.pathname = `/urunler/${id}`;
   const doc = parse(renderToStaticMarkup(<Layout>{await CategoryPage(params(id))}</Layout>));
   expect(doc.querySelector("h1")?.textContent).toBe(group.name);
   const trail = doc.querySelector('nav[aria-label="İçerik yolu"]')!;
-  expect(trail.textContent).toBe(`Ana Sayfa/Ürünler/${group.name}`);
+  expect(trail.textContent).toBe(`Ana Sayfa/Ürünler/${getGroupTrail(id).map(item => item.name).join("/")}`);
   expect(trail.querySelector('a[href="/urunler"]')?.textContent).toBe("Ürünler");
   expect(trail.querySelector('[aria-current="page"]')?.textContent).toBe(group.name);
   expect(doc.body.textContent).toContain("Ambalajınızı seçin, sepetinize veya teklifinize ekleyin.");
   expect([...doc.querySelectorAll("[data-product-id]")].map(card => card.getAttribute("data-product-id"))).toEqual(ids);
-  for (const productId of ids) expect(doc.querySelector(`a[href="/?teklif=${productId}#toptan"]`)).not.toBeNull();
+  for (const productId of ids) expect(doc.querySelector(`a[href="/toptan-satis?teklif=${productId}"]`)).not.toBeNull();
   const schema = JSON.parse(doc.querySelector('script[type="application/ld+json"]')!.textContent!);
   expect(schema["@type"]).toBe("BreadcrumbList");
   expect(schema.itemListElement).toEqual([
     expect.objectContaining({ position: 1, name: "Ana Sayfa", item: "https://afinazeytin.com/" }),
     expect.objectContaining({ position: 2, name: "Ürünler", item: "https://afinazeytin.com/urunler" }),
-    expect.objectContaining({ position: 3, name: group.name, item: `https://afinazeytin.com/urunler/${id}` }),
+    ...getGroupTrail(id).map((item, index) => expect.objectContaining({ position: index + 3, name: item.name, item: `https://afinazeytin.com/urunler/${item.id}` })),
   ]);
   const metadata = await generateMetadata(params(id));
   expect(metadata.title).toBe(`${group.name} | AFİNA ZEYTİN`);

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowUpRight, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { productGroups } from "@/lib/catalog/groups";
 import { BrandLogo } from "./BrandLogo";
 import styles from "./Navbar.module.css";
 
@@ -34,7 +35,7 @@ export function NavbarMenu({ links, activeHref, onClose, onRestoreFocus }: {
               aria-current={activeHref === link.href ? "page" : undefined}>{link.label}<ArrowUpRight aria-hidden="true" /></Link></DialogClose>
             {link.href === "/urunler" && <details className={styles.mobileCategories}>
               <summary>Ürün kategorileri</summary>
-              {[["Zeytinyağı", "zeytinyagi"], ["Zeytin", "zeytin"], ["Siyah Zeytin", "siyah-zeytin"], ["Yeşil Zeytin", "yesil-zeytin"], ["Kırma Zeytin", "kirma-zeytin"]].map(([label, slug]) => <DialogClose key={slug} asChild><Link href={`/urunler/${slug}`} className={styles.menuLink}>{label}</Link></DialogClose>)}
+              {productGroups.map(group => <DialogClose key={group.id} asChild><Link href={`/urunler/${group.id}`} className={styles.menuLink}>{group.name}</Link></DialogClose>)}
             </details>}
           </div>)}
         </nav>

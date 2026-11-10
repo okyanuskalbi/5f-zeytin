@@ -1,11 +1,10 @@
 // @vitest-environment node
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { GET, dynamic } from "@/app/api/products/route";
-import { readCatalog } from "@/lib/catalog/read";
+import { readCatalog, readProductFamilies } from "@/lib/catalog/read";
 import { getProducts } from "@/lib/catalog/static-products";
 import * as staticCatalog from "@/lib/catalog/static-products";
 import { parseCatalogProducts } from "@/lib/contracts/catalog";
-import Home from "@/app/page";
 import { getProductFamilies } from "@/lib/catalog/static-products";
 
 vi.mock("server-only", () => ({}));
@@ -78,10 +77,10 @@ describe("server-only catalog read and products GET", () => {
   it("applies only matching database category settings to the landing's approved static products", async () => {
     const original = (await getProductFamilies()).flatMap(family => family.variants);
     db.query.mockResolvedValueOnce({ rows: [{ ...row, id: original[0].id, category_label: "Kahvaltılık", show_category_label: false }] });
-    expect((await Home()).props.children.props.products).toEqual(original.map((item, index) => index === 0
+    expect((await readProductFamilies()).flatMap(family => family.variants)).toEqual(original.map((item, index) => index === 0
       ? { ...item, categoryLabel: "Kahvaltılık", showCategoryLabel: false } : item));
     db.query.mockResolvedValueOnce({ rows: [] });
-    expect((await Home()).props.children.props.products).toEqual(original);
+    expect((await readProductFamilies()).flatMap(family => family.variants)).toEqual(original);
   });
   it("enforces published products, slot order and six-product limit in SQL", async () => {
     const response = await GET();

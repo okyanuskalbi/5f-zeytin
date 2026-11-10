@@ -31,7 +31,7 @@ it("serves the full static catalogue with breadcrumb, unchanged cards and quote 
   for (const product of products) {
     const card = doc.querySelector(`[data-product-id="${product.id}"]`)!;
     expect(card.closest("[data-static-presentation]")).not.toBeNull();
-    const quote = card.querySelector(`a[href="/?teklif=${product.id}#toptan"]`);
+    const quote = card.querySelector(`a[href="/toptan-satis?teklif=${product.id}"]`);
     expect(quote?.textContent).toContain("Teklife ekle");
     expect(quote?.getAttribute("aria-label")).toBe(`Teklife ekle: ${product.name}, ${product.weight}`);
   }
@@ -60,11 +60,33 @@ it("announces an empty catalogue without a second scrolling dialog", async () =>
   expect(screen.queryByRole("dialog")).toBeNull();
 });
 
-it("opens the existing product detail from the page and disables its in-memory quote action", async () => {
+it("links each detail to its product page while preserving its explicit quote action", async () => {
   const products = await getProducts();
   render(<CartProvider products={products}><Layout>{await Page()}</Layout></CartProvider>);
   expect(screen.getAllByRole("link", { name: /^Teklife ekle:/ })).toHaveLength(products.length);
-  fireEvent.click(screen.getByRole("button", { name: "Natürel Sızma Zeytinyağı, 1 L detayını aç" }));
-  const dialog = await screen.findByRole("dialog", { name: "Natürel Sızma Zeytinyağı" });
-  expect(within(dialog).queryByRole("button", { name: /^Teklife ekle/ })).toBeNull();
+  const card = document.querySelector('[data-product-id="sample-olive-oil-1l"]')!;
+  expect(within(card as HTMLElement).getAllByRole("link").filter(link => link.getAttribute("href")?.startsWith("/urun/")).length).toBeGreaterThan(0);
+  expect(screen.queryByRole("dialog")).toBeNull();
+});
+
+it("sorts the visible sizes through a shareable query while preserving other parameters", async () => {
+  history.replaceState(null, "", "/urunler?kaynak=yerel");
+  render(<Layout>{await Page()}</Layout>);
+  const ids = () => [...document.querySelectorAll('[data-product-id]')].map(card => card.getAttribute("data-product-id"));
+  fireEvent.change(screen.getByRole("combobox", { name: "Sıralama" }), { target: { value: "fiyat-artan" } });
+  expect(location.search).toBe("?kaynak=yerel&sirala=fiyat-artan");
+  expect(ids()).toEqual(["sample-green-olive-1kg", "sample-black-olive-1kg", "sample-olive-oil-1l", "sample-brined-green-olive-5kg", "sample-olive-oil-5l", "sample-green-olive-10kg"]);
+  fireEvent.change(screen.getByRole("combobox", { name: "Sıralama" }), { target: { value: "fiyat-azalan" } });
+  expect(ids()[0]).toBe("sample-green-olive-10kg");
+});
+
+it("selects a direct price query and follows browser history back to the recommended order", async () => {
+  history.replaceState(null, "", "/urunler?sirala=fiyat-azalan");
+  render(<Layout>{await Page()}</Layout>);
+  expect((screen.getByRole("combobox", { name: "Sıralama" }) as HTMLSelectElement).value).toBe("fiyat-azalan");
+  expect(document.querySelectorAll('[data-product-id]')[1]?.getAttribute("data-product-id")).toBe("sample-olive-oil-5l");
+  history.replaceState(null, "", "/urunler?sirala=bilinmeyen");
+  fireEvent(window, new PopStateEvent("popstate"));
+  expect((screen.getByRole("combobox", { name: "Sıralama" }) as HTMLSelectElement).value).toBe("onerilen");
+  expect(document.querySelectorAll('[data-product-id]')[1]?.getAttribute("data-product-id")).toBe("sample-green-olive-1kg");
 });

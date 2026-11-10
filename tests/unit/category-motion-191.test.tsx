@@ -63,6 +63,6 @@ it("keeps the indicator slide running through the observer's unchanged initial n
   expect(document.querySelector<HTMLElement>('[data-category-indicator]')?.style.opacity).not.toBe("0");
   route.pathname = "/urunler/siyah-zeytin";
   view.rerender(<CategoryNavigation />);
-  expect(motionCalls.animate).toHaveBeenCalledTimes(2);
+  expect(motionCalls.animate).toHaveBeenCalledTimes(3);
   for (const result of motionCalls.animate.mock.results) expect(result.value.stop).not.toHaveBeenCalled();
 });

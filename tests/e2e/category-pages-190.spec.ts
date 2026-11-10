@@ -1,6 +1,8 @@
 import { expect, test, type BrowserContext } from "@playwright/test";
+import { getGroupTrail } from "@/lib/catalog/groups";
 
 const groups = [
+  { id: "zeytin", name: "Zeytin", products: ["sample-green-olive-10kg", "sample-green-olive-1kg", "sample-black-olive-1kg", "sample-brined-green-olive-5kg"] },
   { id: "siyah-zeytin", name: "Siyah Zeytin", products: ["sample-black-olive-1kg"] },
   { id: "yesil-zeytin", name: "Yeşil Zeytin", products: ["sample-brined-green-olive-5kg"] },
   { id: "kirma-zeytin", name: "Kırma Zeytin", products: ["sample-green-olive-10kg", "sample-green-olive-1kg"] },
@@ -22,7 +24,7 @@ test.describe("Task190 category pages", () => {
     await localOnly(context, baseURL);
   });
 
-  for (const group of groups) test(`${group.id}: static response, exact products and three-level breadcrumb`, async ({ page }) => {
+  for (const group of groups) test(`${group.id}: static response, exact products and complete category breadcrumb`, async ({ page }) => {
     const response = await page.goto(`/urunler/${group.id}`, { waitUntil: "load" });
     expect(response?.status()).toBe(200);
     await expect(page.getByRole("heading", { level: 1, name: group.name, exact: true })).toBeVisible();
@@ -39,9 +41,9 @@ test.describe("Task190 category pages", () => {
     expect(schema).toMatchObject({ "@type": "BreadcrumbList", itemListElement: [
       { position: 1, name: "Ana Sayfa", item: "https://afinazeytin.com/" },
       { position: 2, name: "Ürünler", item: "https://afinazeytin.com/urunler" },
-      { position: 3, name: group.name, item: `https://afinazeytin.com/urunler/${group.id}` },
+      ...getGroupTrail(group.id).map((item, index) => ({ position: index + 3, name: item.name, item: `https://afinazeytin.com/urunler/${item.id}` })),
     ] });
-    for (const id of group.products) await expect(page.locator(`article[data-product-id="${id}"]`).getByRole("link", { name: /^Teklife ekle:/ })).toHaveAttribute("href", `/?teklif=${id}#toptan`);
+    for (const id of group.products) await expect(page.locator(`article[data-product-id="${id}"]`).getByRole("link", { name: /^Teklife ekle:/ })).toHaveAttribute("href", `/toptan-satis?teklif=${id}`);
   });
 
   test("unknown groups are 404 and unapproved category prices stay outside the sitemap", async ({ request }) => {
@@ -76,7 +78,8 @@ test.describe("Task190 category pages", () => {
       const heading = await page.getByRole("heading", { level: 1 }).boundingBox();
       const navBounds = await navigation.boundingBox();
       expect(navBounds!.y).toBeGreaterThan(heading!.y);
-      expect(navBounds!.y + navBounds!.height).toBeLessThanOrEqual(bounds!.y + 1);
+      if (width >= 1024) expect(navBounds!.x + navBounds!.width).toBeLessThanOrEqual(bounds!.x + 1);
+      else expect(navBounds!.y + navBounds!.height).toBeLessThanOrEqual(bounds!.y + 1);
     }
   });
 
@@ -88,14 +91,16 @@ test.describe("Task190 category pages", () => {
     await groupSection.locator('a[href="/urunler/zeytinyagi"]').click();
     await expect(page).toHaveURL(/\/urunler\/zeytinyagi$/);
     const product = page.locator('article[data-product-id="sample-olive-oil-1l"]');
-    await product.getByRole("button", { name: /detayını aç/ }).click();
-    const dialog = page.getByRole("dialog", { name: "Natürel Sızma Zeytinyağı" });
-    await expect(dialog).toBeVisible();
-    await expect(dialog.getByRole("button", { name: "Sepete ekle" })).toBeEnabled();
-    await expect(dialog.getByRole("button", { name: /^Teklife ekle/ })).toHaveCount(0);
-    await page.keyboard.press("Escape");
-    await expect(dialog).toHaveCount(0);
-    await product.getByRole("link", { name: /^Teklife ekle:/ }).click();
+    await expect(product.getByRole("link", { name: /^Teklife ekle:/ })).toHaveAttribute("href", "/toptan-satis?teklif=sample-olive-oil-1l");
+    await product.getByRole("link", { name: /detayını aç/ }).click();
+    await expect(page).toHaveURL(/\/urun\/naturel-sizma-zeytinyagi\?boy=1(?:%20|\+)L$/);
+    const detail = page.locator("[data-product-page]");
+    await expect(detail.getByRole("heading", { name: "Natürel Sızma Zeytinyağı", exact: true })).toBeVisible();
+    await expect(detail.getByRole("button", { name: "Sepete ekle", exact: true })).toBeEnabled();
+    await expect(detail.getByRole("link", { name: "Toptan teklif al" })).toHaveAttribute("href", "/toptan-satis?teklif=sample-olive-oil-1l");
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    // The old quote query remains supported until the form moves in Task194.
+    await page.goto("/?teklif=sample-olive-oil-1l#toptan", { waitUntil: "load" });
     await expect(page).toHaveURL(/\/#toptan$/);
     await expect(page.getByRole("textbox", { name: "Adınız veya firma adı" })).toBeFocused();
     await expect(page.locator("#toptan")).toContainText("1 ürün · 1 adet");

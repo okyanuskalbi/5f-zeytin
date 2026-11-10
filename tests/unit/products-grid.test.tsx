@@ -4,6 +4,7 @@ import { afterEach, expect, it, vi } from "vitest";
 import { Products } from "@/components/landing/Products";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { getProducts } from "@/lib/catalog/static-products";
+import { productHref } from "@/lib/catalog/product-pages";
 import { CART_STORAGE_KEY } from "@/lib/cart/store";
 
 vi.mock("next/navigation", () => ({ usePathname: () => "/" }));
@@ -26,7 +27,8 @@ it("renders six variants with catalog prices, package sizes and a factual collec
     expect(screen.getByRole("article", { name: `${product.name}, ${product.weight}` })).toBe(card);
     expect(within(card).getByRole("heading", { level: 3 }).textContent).toBe(product.name);
     expect(within(card).getByRole("heading", { level: 3, name: `${product.name}, ${product.weight}` })).toBeDefined();
-    expect(within(card).getByRole("button", { name: `${product.name}, ${product.weight}` })).toBeDefined();
+    expect(within(card).getByRole("link", { name: `${product.name}, ${product.weight}` }).getAttribute("href")).toBe(productHref(product));
+    expect(within(card).getByRole("link", { name: `${product.name}, ${product.weight} detayını aç` }).getAttribute("href")).toBe(productHref(product));
     expect(within(card).getByLabelText("Fiyat").textContent).toBe(money.format(product.priceKurus / 100));
     expect(within(card).getByLabelText("Boy").textContent).toBe(product.weight);
     expect(within(card).getByLabelText("Boy").parentElement?.textContent).toBe(product.weight);
