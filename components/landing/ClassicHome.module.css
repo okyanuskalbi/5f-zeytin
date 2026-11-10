@@ -6,7 +6,7 @@
 .anchor { position:absolute; inset-block-start:0; inset-inline-start:0; width:1px; height:1px; pointer-events:none; }
 .eyebrow { margin:0 0 16px; font-size:.8125rem; font-weight:700; line-height:1.5; letter-spacing:.2em; color:var(--classic-dark-gold); }
 .hero { position:relative; isolation:isolate; background:var(--classic-forest); color:var(--pro-paper); }
-.heroPhoto { position:absolute; inset:0; z-index:-2; }
+.heroPhoto { position:absolute; inset:0; z-index:-2; overflow:hidden; }
 .heroPhoto img { display:block; width:100%; height:100%; object-fit:cover; object-position:60% center; }
 .hero::after { content:""; position:absolute; z-index:-1; inset:0 34% 0 0; background:linear-gradient(90deg,rgba(8,22,12,.94),rgba(8,22,12,.88) 80%,transparent); pointer-events:none; }
 .heroContent { display:flex; align-items:center; min-height:clamp(400px,35vw,540px); padding-block:48px; }
@@ -66,8 +66,19 @@
 .contactGrid > div:last-child > a,.contact nav a { display:flex; align-items:center; width:fit-content; min-height:44px; padding-block:8px; font-size:.875rem; text-decoration:underline; }
 .contact nav { display:flex; flex-wrap:wrap; gap:8px 24px; margin-top:16px; }
 @media(prefers-reduced-motion:no-preference) {
- .heroCopy { animation:heroEntrance .45s ease-out both; }
- @keyframes heroEntrance { from { transform:translateY(8px); } to { transform:translateY(0); } }
+ .heroCopy > [data-hero-enter] { animation:heroTextEntrance var(--motion-enter) var(--motion-ease) both; }
+ .heroCopy > [data-hero-enter="title"] { animation-delay:var(--motion-hero-stagger); }
+ .heroCopy > [data-hero-enter="description"] { animation-delay:calc(var(--motion-hero-stagger) * 2); }
+ .heroCopy > [data-hero-enter="actions"] { animation-delay:calc(var(--motion-hero-stagger) * 3); }
+ .heroPhoto img { animation:heroPhotoEntrance var(--motion-hero-photo-duration) var(--motion-ease) both; }
+ .goldButton,.outlineButton,.darkGoldButton { transition:transform var(--motion-fast) var(--motion-ease); }
+ .goldButton svg,.outlineButton svg,.darkGoldButton svg { transition:transform var(--motion-feedback) var(--motion-ease); }
+ .goldButton:active,.outlineButton:active,.darkGoldButton:active { transform:scale(var(--motion-tap-scale)); }
+ @media(hover:hover) {
+  .goldButton:hover svg,.outlineButton:hover svg,.darkGoldButton:hover svg { transform:translateX(var(--motion-arrow-x)); }
+ }
+ @keyframes heroTextEntrance { from { transform:translateY(var(--motion-hero-distance)); opacity:var(--motion-hero-opacity); } to { transform:translateY(0); opacity:1; } }
+ @keyframes heroPhotoEntrance { from { transform:scale(var(--motion-hero-photo-scale)); } to { transform:scale(1); } }
 }
 @media(max-width:1100px) {
  .trust li { gap:12px; padding-inline:16px; }

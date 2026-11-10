@@ -1,12 +1,10 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { m } from "framer-motion";
 import { Check, Circle, CircleDot, CircleX } from "lucide-react";
 import { cn } from "cn";
 import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
 import { recordedDate, type OrderTimelineItem } from "@/lib/orders/timeline";
-import { motionTokens } from "@/lib/ui-motion";
 import styles from "./order-history.module.css";
 
 // Task165: user's TrackingTimeline / order-history.tsx, adapted to real AFİNA
@@ -41,16 +39,9 @@ export function TrackingTimeline({ items, className }: { items: TimelineItem[]; 
         const date = recordedDate(item.date);
         return (
           <li key={item.id} className={styles.step} data-status={item.status} aria-current={current ? "step" : undefined}>
-            <m.span
-              className={styles.marker}
-              aria-hidden="true"
-              initial={false}
-              whileInView={reduced || !current ? undefined : { scale: [0.92, 1], opacity: [0.75, 1] }}
-              viewport={{ once: true }}
-              transition={{ duration: motionTokens.duration.landing }}
-            >
+            <span className={styles.marker} aria-hidden="true">
               <StatusIcon item={item} />
-            </m.span>
+            </span>
             <div className={styles.content}>
               <div className={styles.heading}>
                 <h3>{item.title}</h3>

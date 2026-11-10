@@ -5,9 +5,10 @@ import { m as motion } from "motion/react";
 import { V3Picture } from "@/components/media/V3Picture";
 import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
 import type { V3Image } from "@/lib/media/v3-assets";
-import { motionTokens, springs } from "@/lib/ui-motion";
+import { motionTokens } from "@/lib/ui-motion";
 import type { ProductVariant } from "@/types/catalog";
 import { AddToCart } from "./AddToCart";
+import { catalogCardVariants } from "./CatalogGridMotion";
 import { useProductDetail } from "./ProductDetailProvider";
 import styles from "./ProductCard.module.css";
 
@@ -24,9 +25,9 @@ export function ProductCard({ product, image, scene, index = 0, featured = true,
   const openDetail = useProductDetail();
   const ready = useSyncExternalStore(subscribeReady, clientReady, serverReady);
   return <motion.div className={styles.reveal} data-product-reveal="" data-reduced-motion={reduced} data-static-presentation={staticPresentation || undefined}
-    initial={false} whileInView={staticPresentation || reduced || typeof IntersectionObserver !== "function" ? undefined : { y: [motionTokens.entrance.distance, 0], opacity: [motionTokens.entrance.opacity, 1] }}
-    viewport={{ once: true, amount: 0.15 }}
-    transition={reduced ? { duration: 0 } : { ...springs.editorial, delay: Math.min(index, 2) * motionTokens.entrance.stagger }}>
+    initial={staticPresentation ? undefined : false} variants={staticPresentation && !reduced ? catalogCardVariants : undefined}
+    whileTap={reduced ? undefined : { scale: motionTokens.interaction.tapScale }}
+    transition={{ duration: reduced ? 0 : motionTokens.duration.fast }}>
     <article className={styles.card} aria-labelledby={`${id}-name`} data-product-id={product.id} data-category={product.category} data-size={product.weight}>
       {scene && <div data-product-scene="" aria-hidden="true" className={styles.scene}><V3Picture image={scene} sizes="(max-width: 767px) 50vw, 33vw" decorative /></div>}
       {featured && index === 0 && <span className={styles.badge}>KOLEKSİYONDAN</span>}

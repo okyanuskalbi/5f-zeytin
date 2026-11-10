@@ -43,6 +43,6 @@ export default async function Page({ params }: Props): Promise<JSX.Element> {
   };
   return <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb).replace(/</g, "\\u003c") }} />
-    <ProductListing products={products} category />
+    <ProductListing products={products} category routeKey={`/urunler/${group.id}`} />
   </>;
 }

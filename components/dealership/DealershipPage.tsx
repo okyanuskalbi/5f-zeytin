@@ -28,14 +28,14 @@ const packaging = [
 
 export function DealershipPage(): JSX.Element {
   return <main className={`${classic.root} ${styles.root}`}>
-    <section aria-labelledby="bayilik-title" className={`${classic.hero} ${styles.hero}`} data-surface="dark">
-      <V3Picture image={photos.assets.zeytinlik} mobile={photos.assets["zeytin-dali"]} sizes="(max-width: 767px) 100vw, (max-width: 1100px) 1280px, 100vw" eager className={classic.heroPhoto} />
+    <section aria-labelledby="bayilik-title" className={`${classic.hero} ${styles.hero}`} data-surface="dark" data-storefront-hero>
+      <V3Picture image={photos.assets.zeytinlik} mobile={photos.assets["zeytin-dali"]} sizes="(max-width: 767px) 100vw, (max-width: 1100px) 1280px, 100vw" eager className={classic.heroPhoto} data-hero-photo />
       <div className={`${classic.container} ${styles.heroContent}`}>
         <div className={classic.heroCopy}>
-          <p className={classic.eyebrow}>BAYİLİK</p>
-          <h1 id="bayilik-title">Bayimiz Olun</h1>
-          <p>AFİNA ZEYTİN&apos;i bölgenizde birlikte büyütelim; bayilik için bize yazın.</p>
-          <div className={classic.actions}>
+          <p className={classic.eyebrow} data-hero-enter="eyebrow">BAYİLİK</p>
+          <h1 id="bayilik-title" data-hero-enter="title">Bayimiz Olun</h1>
+          <p data-hero-enter="description">AFİNA ZEYTİN&apos;i bölgenizde birlikte büyütelim; bayilik için bize yazın.</p>
+          <div className={classic.actions} data-hero-enter="actions">
             <a href="#basvuru" className={classic.goldButton}>Başvuru Formu<ArrowRight size={18} aria-hidden="true" /></a>
             <Link href="/#urunler" className={classic.outlineButton}>Ürünleri İncele<ArrowRight size={18} aria-hidden="true" /></Link>
           </div>

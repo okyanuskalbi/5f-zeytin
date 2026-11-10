@@ -1,12 +1,12 @@
 import type { JSX } from "react";
 import type { V3Image } from "@/lib/media/v3-assets";
 
-export function V3Picture({ image, mobile, mobileMedia = "(max-width: 767px)", sizes, className, eager = false, loading, decorative = false }: {
-  image: V3Image; mobile?: V3Image; mobileMedia?: string; sizes: string; className?: string; eager?: boolean; loading?: "eager" | "lazy"; decorative?: boolean;
+export function V3Picture({ image, mobile, mobileMedia = "(max-width: 767px)", sizes, className, eager = false, loading, decorative = false, "data-hero-photo": heroPhoto }: {
+  image: V3Image; mobile?: V3Image; mobileMedia?: string; sizes: string; className?: string; eager?: boolean; loading?: "eager" | "lazy"; decorative?: boolean; "data-hero-photo"?: boolean;
 }): JSX.Element {
   const fallback = image.outputs.filter(output => output.format === "webp")[0];
   const srcSet = (asset: V3Image, format: string): string => asset.outputs.filter(output => output.format === format).map(output => `${output.file} ${output.width}w`).join(", ");
-  return <picture className={className}>
+  return <picture className={className} data-hero-photo={heroPhoto}>
     {mobile && <>
       <source media={mobileMedia} type="image/avif" srcSet={srcSet(mobile, "avif")} sizes={sizes} />
       <source media={mobileMedia} type="image/webp" srcSet={srcSet(mobile, "webp")} sizes={sizes} />

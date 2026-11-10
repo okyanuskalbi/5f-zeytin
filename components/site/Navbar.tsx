@@ -4,6 +4,9 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type JS
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
+import { m, useAnimationControls } from "motion/react";
+import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
+import { motionTokens, springs } from "@/lib/ui-motion";
 import { Menu, ShoppingCart, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/cart/CartProvider";
@@ -37,6 +40,24 @@ function subscribeLocation(notify: () => void): () => void {
   return () => { window.removeEventListener("popstate", notify); window.removeEventListener("hashchange", notify); };
 }
 const publicPathname = () => window.location.pathname;
+
+/** The initial stored quantity is static; only a later addition acknowledges input. */
+export function CartCountBadge({ count, hydrated }: { count: number; hydrated: boolean }): JSX.Element | null {
+  const reduced = usePrefersReducedMotion();
+  const controls = useAnimationControls();
+  const previous = useRef<number | null>(null);
+  useEffect(() => {
+    if (!hydrated) { previous.current = null; return; }
+    if (!reduced && previous.current !== null && count > previous.current) {
+      void controls.start({ scale: [1, motionTokens.storefront.badgeScale, 1], transition: { type: "tween", duration: springs.badge.visualDuration, ease: motionTokens.storefront.ease } });
+    } else controls.set({ scale: 1 });
+    previous.current = count;
+  }, [count, hydrated, reduced, controls]);
+  return count > 0 ? <m.span data-slot="count-badge" aria-hidden="true" className={styles.badge}
+    initial={false} animate={controls} style={reduced ? { transform: "none" } : undefined}>
+    {count > 99 ? "99+" : count}
+  </m.span> : null;
+}
 
 export function Navbar(): JSX.Element {
   const pathname = usePathname();
@@ -162,9 +183,7 @@ export function Navbar(): JSX.Element {
             disabled={!cart?.state.hydrated || cart.products === null}
             onClick={event => cart?.openCart(event.currentTarget)}>
             <ShoppingCart className={styles.cartIcon} strokeWidth={1.75} aria-hidden="true" />
-            {itemCount > 0 && <span data-slot="count-badge" aria-hidden="true" className={styles.badge}>
-              {itemCount > 99 ? "99+" : itemCount}
-            </span>}
+            <CartCountBadge count={itemCount} hydrated={cart?.state.hydrated ?? false} />
           </Button>
           <Button asChild variant="ghost" className={`${styles.control} ${styles.account}`}>
             <Link href="/hesabim" onClick={event => { if(openMembership && pathname !== "/giris" && pathname !== "/kayit" && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey){event.preventDefault();openMembership(event.currentTarget);} }} aria-label="Hesabım"><UserRound className={styles.accountIcon} strokeWidth={1.75} aria-hidden="true" /></Link>

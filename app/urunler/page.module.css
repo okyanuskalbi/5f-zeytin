@@ -28,3 +28,12 @@
  .productGrid :global(article[data-product-id] > div:last-of-type > div) { width:100%; }
 }
 @media(max-width:359px) { .productGrid { grid-template-columns:minmax(0,1fr); } }
+@media(prefers-reduced-motion:no-preference) {
+ .quoteButton svg { transition:transform var(--motion-feedback) var(--motion-ease); }
+ @media(hover:hover) { .quoteButton:hover svg { transform:translateX(var(--motion-arrow-x)); } }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+ .quoteButton svg { transition:transform var(--motion-move) var(--motion-ease); }
+ @media (hover:hover) { .quoteButton:hover svg { transform:translateX(var(--motion-arrow-x)); } }
+}

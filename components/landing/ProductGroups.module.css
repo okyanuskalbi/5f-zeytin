@@ -7,11 +7,22 @@
 .group picture,.group img { display:block; width:100%; height:100%; object-fit:cover; }
 .group > span { position:absolute; inset:auto 8px 8px; display:flex; align-items:center; justify-content:space-between; gap:8px; min-height:44px; padding:8px 12px; border-radius:6px; background:rgba(247,244,237,.96); color:#172B21; font-size:1rem; font-weight:650; line-height:1.4; text-align:start; }
 .group svg { flex:none; padding:2px; border:1px solid #88630B; border-radius:50%; color:#88630B; }
-.group:hover > span { background:#fff; }
+@media (hover: hover) {
+ .group:hover > span { background:#fff; }
+ .group:hover img { transform:scale(var(--motion-group-scale)); }
+ .group:hover svg { transform:translateX(var(--motion-group-arrow-x)); }
+ .allButton:hover { background:#6C4E08; }
+ .allButton:hover svg:last-child { transform:translateX(var(--motion-arrow-x)); }
+}
 .group:disabled { cursor:default; }
 .allActions { display:flex; justify-content:center; margin-top:24px; }
 .allButton { display:inline-flex; align-items:center; justify-content:center; gap:12px; min-height:48px; padding:12px 20px; border:1px solid #88630B; border-radius:6px; background:#88630B; color:#fff; font-size:.9375rem; font-weight:600; line-height:1.5; cursor:pointer; }
-.allButton:hover { background:#6C4E08; }
+.group img,.group svg,.allButton svg:last-child { transition:transform var(--motion-move) var(--motion-ease); }
+.group:focus-visible img { transform:scale(var(--motion-group-scale)); }
+.group:focus-visible svg { transform:translateX(var(--motion-group-arrow-x)); }
+@media(prefers-reduced-motion:reduce) {
+ .group,.group img,.group svg,.allButton svg:last-child { transform:none !important; transition:none; }
+}
 @media(max-width:900px) { .group > span { font-size:.875rem; padding-inline:8px; } }
 @media(max-width:767px) {
  .section { width:calc(100% - 40px); }

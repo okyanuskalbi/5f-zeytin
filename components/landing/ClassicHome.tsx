@@ -5,13 +5,13 @@ import photos from "@/lib/media/classic-photos.json";
 import styles from "./ClassicHome.module.css";
 
 export function ClassicHero(): JSX.Element {
-  return <section id="baslangic" aria-labelledby="baslangic-title" className={styles.hero} data-surface="dark">
-    <V3Picture image={photos.assets.hero} mobile={photos.assets["hero-mobile"]} sizes="100vw" eager className={styles.heroPhoto} />
+  return <section id="baslangic" aria-labelledby="baslangic-title" className={styles.hero} data-surface="dark" data-storefront-hero>
+    <V3Picture image={photos.assets.hero} mobile={photos.assets["hero-mobile"]} sizes="100vw" eager className={styles.heroPhoto} data-hero-photo />
     <div className={`${styles.container} ${styles.heroContent}`}><div className={styles.heroCopy}>
-      <p className={styles.eyebrow}>KENDİ ÜRETİMİMİZ</p>
-      <h1 id="baslangic-title">Doğal, Lezzetli,{" "}<br />Güvenilir Zeytin</h1>
-      <p>Osmaniye Düziçi&apos;nin Ellek zeytinliklerinden gelen zeytinleri kendi tesisimizde hazırlayıp sofranıza ulaştırıyoruz.</p>
-      <div className={styles.actions}>
+      <p className={styles.eyebrow} data-hero-enter="eyebrow">KENDİ ÜRETİMİMİZ</p>
+      <h1 id="baslangic-title" data-hero-enter="title">Doğal, Lezzetli,{" "}<br />Güvenilir Zeytin</h1>
+      <p data-hero-enter="description">Osmaniye Düziçi&apos;nin Ellek zeytinliklerinden gelen zeytinleri kendi tesisimizde hazırlayıp sofranıza ulaştırıyoruz.</p>
+      <div className={styles.actions} data-hero-enter="actions">
         <a href="#urunler" className={styles.goldButton}>Ürünlerimizi İncele<ArrowRight size={18} aria-hidden="true" /></a>
         <a href="#toptan" className={styles.outlineButton}>Toptan Teklif Al<ArrowRight size={18} aria-hidden="true" /></a>
       </div>

@@ -17,3 +17,8 @@
 @media (prefers-reduced-motion: reduce) {
   .add { transition: none; transform: none !important; }
 }
+
+.labelSlot { position:relative; display:inline-grid; align-items:center; justify-items:center; max-width:100%; }
+.labelMeasure,.labelText { grid-area:1/1; }
+.labelMeasure { visibility:hidden; pointer-events:none; }
+.labelText { display:inline-block; }

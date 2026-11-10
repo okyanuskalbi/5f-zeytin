@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { JSX, ReactNode } from "react";
+import { useState, type JSX, type ReactNode } from "react";
+import { CatalogTransitionContext } from "./CatalogGridMotion";
 import { getProductGroup } from "@/lib/catalog/groups";
 import { CategoryNavigation } from "@/components/catalog/CategoryNavigation";
 import styles from "@/app/urunler/page.module.css";
@@ -10,6 +11,8 @@ import styles from "@/app/urunler/page.module.css";
 /** Kept by the products layout while the category's product list changes. */
 export function CatalogShell({ children }: { children: ReactNode }): JSX.Element {
   const pathname = usePathname();
+  const [navigation, setNavigation] = useState({ pathname, changed: false });
+  if (navigation.pathname !== pathname) setNavigation({ pathname, changed: true });
   const group = getProductGroup(pathname?.split("/")[2] ?? "");
   return <>
     <nav aria-label="İçerik yolu" className={styles.breadcrumb}>
@@ -24,6 +27,6 @@ export function CatalogShell({ children }: { children: ReactNode }): JSX.Element
       <p>Ambalajınızı seçin, sepetinize veya teklifinize ekleyin.</p>
     </header>
     <CategoryNavigation />
-    {children}
+    <CatalogTransitionContext.Provider value={{ pathname: navigation.pathname ?? "", changed: navigation.changed }}>{children}</CatalogTransitionContext.Provider>
   </>;
 }

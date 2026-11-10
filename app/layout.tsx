@@ -8,6 +8,7 @@ import { MotionProvider } from "@/components/site/MotionProvider";
 import { MembershipDialogProvider } from "@/components/account/MembershipDialogProvider";
 import { getProducts } from "@/lib/catalog/static-products";
 import { isCheckoutDemoEnabled } from "@/lib/checkout/adapter";
+import { storefrontMotionStyles } from "@/lib/ui-motion";
 import { siteIdentity } from "@/lib/site/identity";
 import type { Product } from "@/types/catalog";
 import "./globals.css";
@@ -67,7 +68,7 @@ export default async function RootLayout({
   try { products = await getProducts(); } catch { products = null; }
   return (
     <html lang="tr" className={`${Fraunces.variable} ${bodyFont.variable}`}>
-      <body>
+      <body style={storefrontMotionStyles}>
         <a
           href="#ana-icerik"
           className="fixed top-4 left-4 z-[100] -translate-y-32 rounded-none bg-primary px-5 py-3 text-primary-foreground focus:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"

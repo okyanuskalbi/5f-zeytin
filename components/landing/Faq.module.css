@@ -19,3 +19,16 @@
   .question { gap: 16px; font-size: 16px; }
   .answer p { font-size: 16px; }
 }
+
+/* Native details retains keyboard and no-JavaScript behavior. Older engines
+   use its normal instant toggle; the supported enhancement is action-only. */
+@supports (interpolate-size: allow-keywords) {
+  @media (prefers-reduced-motion: no-preference) {
+    .answer { interpolate-size: allow-keywords; }
+    .answer::details-content {
+      height:0; overflow:hidden; opacity:0;
+      transition:height var(--motion-faq) ease-out, opacity var(--motion-faq) ease-out, content-visibility var(--motion-faq) allow-discrete;
+    }
+    .answer[open]::details-content { height:auto; opacity:1; }
+  }
+}
