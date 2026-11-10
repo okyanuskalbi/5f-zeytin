@@ -4,6 +4,7 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, expect, it, vi } from "vitest";
 import Home from "@/app/page";
+import AboutPage from "@/app/hakkimizda/page";
 import { Faq, verifiedFaqs } from "@/components/landing/Faq";
 import { Story } from "@/components/landing/Story";
 import { TrustStrip } from "@/components/landing/TrustStrip";
@@ -12,6 +13,7 @@ import { Footer } from "@/components/site/Footer";
 import { siteContact } from "@/lib/site/contact";
 import manifest from "@/public/images/v3/manifest.json";
 
+vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }) }));
 vi.mock("server-only", () => ({}));
 
 afterEach(cleanup);
@@ -96,12 +98,13 @@ it("keeps FAQ answers in the server HTML for native JavaScript-free disclosure",
 
 it("publishes a connected entity graph with only the public district address", async () => {
   const doc = document.implementation.createHTMLDocument();
-  doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}<Footer /></>);
+  doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}{await AboutPage()}<Footer /></>);
   expect(doc.body.textContent).not.toMatch(/henüz kullanıma açık değil|Gerçek satış kataloğu/);
   const scripts = [...doc.querySelectorAll('script[type="application/ld+json"]')];
-  expect(scripts).toHaveLength(2);
-  expect(JSON.parse(scripts[1].textContent!)["@type"]).toBe("FAQPage");
-  const schema = JSON.parse(scripts[0].textContent!);
+  expect(scripts).toHaveLength(3);
+  const schemas = scripts.map(script => JSON.parse(script.textContent!));
+  expect(schemas.filter(schema => schema["@type"] === "FAQPage")).toHaveLength(1);
+  const schema = schemas.find(schema => schema["@graph"]);
   expect(schema["@context"]).toBe("https://schema.org");
   const [organization, place, webpage, website] = schema["@graph"];
   expect(schema["@graph"].map((item: Record<string, unknown>) => item["@type"])).toEqual(["Organization", "Place", "WebPage", "WebSite"]);

@@ -99,9 +99,9 @@ test.describe("Task190 category pages", () => {
     await expect(detail.getByRole("button", { name: "Sepete ekle", exact: true })).toBeEnabled();
     await expect(detail.getByRole("link", { name: "Toptan teklif al" })).toHaveAttribute("href", "/toptan-satis?teklif=sample-olive-oil-1l");
     await expect(page.getByRole("dialog")).toHaveCount(0);
-    // The old quote query remains supported until the form moves in Task194.
+    // The legacy query redirects to the dedicated quote page.
     await page.goto("/?teklif=sample-olive-oil-1l#toptan", { waitUntil: "load" });
-    await expect(page).toHaveURL(/\/#toptan$/);
+    await expect(page).toHaveURL(/\/toptan-satis#toptan$/);
     await expect(page.getByRole("textbox", { name: "Adınız veya firma adı" })).toBeFocused();
     await expect(page.locator("#toptan")).toContainText("1 ürün · 1 adet");
   });

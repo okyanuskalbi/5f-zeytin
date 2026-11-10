@@ -15,5 +15,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.7,
     },
+    ...["hakkimizda", "toptan-satis"].map(path => ({ url: `${siteIdentity.origin}/${path}`, lastModified: "2026-11-10", changeFrequency: "monthly" as const, priority: 0.7 })),
   ];
 }

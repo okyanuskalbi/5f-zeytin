@@ -2,19 +2,23 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { readFileSync, statSync } from "node:fs";
 import { expect, it, vi } from "vitest";
 import Home from "@/app/page";
+import WholesalePage from "@/app/toptan-satis/page";
 import { Footer } from "@/components/site/Footer";
 import { Products } from "@/components/landing/Products";
 import { TrustStrip } from "@/components/landing/TrustStrip";
 
+vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }) }));
 vi.mock("server-only", () => ({}));
 
-it("renders the classic home with the existing private quote form", async () => {
+it("keeps the home storefront separate from the existing private wholesale form", async () => {
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}<Footer /></>);
   expect(doc.querySelector("#baslangic h1")?.textContent).toBe("Doğal, Lezzetli, Güvenilir Zeytin");
   expect(doc.body.textContent).not.toMatch(/Örnek ürünler|Gerçek satış kataloğu|kullanıma açık değil|Temsili görsel/);
-  expect(doc.querySelector('#toptan form[aria-label="Kurumsal teklif talebi"]')?.getAttribute("method")).toBe("post");
-  expect(doc.querySelector('#toptan button[type="submit"]')?.hasAttribute("disabled")).toBe(true);
+  expect(doc.querySelector("#toptan, form")).toBeNull();
+  const wholesale = new DOMParser().parseFromString(renderToStaticMarkup(await WholesalePage()), "text/html");
+  expect(wholesale.querySelector('#toptan form[aria-label="Kurumsal teklif talebi"]')?.getAttribute("method")).toBe("post");
+  expect(wholesale.querySelector('#toptan button[type="submit"]')?.hasAttribute("disabled")).toBe(true);
   for (const href of ["/kvkk", "/mesafeli-satis", "/iade", "https://afina.com.tr"]) expect(doc.querySelector(`a[href="${href}"]`)).not.toBeNull();
 });
 
@@ -32,7 +36,7 @@ it("renders four trust facts with a wholesale destination and decorative gold do
   expect([...doc.querySelectorAll("li")].map(item => item.textContent)).toEqual([
     "Kendi tesisimizde dolum", "Kargo 2–4 iş günü", "Güvenli Ödeme", "Toptan alım için teklif",
   ]);
-  expect(doc.querySelector('a[href="/#toptan-iletisim"]')).not.toBeNull();
+  expect(doc.querySelector('a[href="/toptan-satis"]')).not.toBeNull();
   expect(doc.querySelectorAll('[data-trust-dot][aria-hidden="true"]')).toHaveLength(4);
 });
 

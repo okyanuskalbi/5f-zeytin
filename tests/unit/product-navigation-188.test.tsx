@@ -45,7 +45,7 @@ async function mountQuote() {
 }
 
 it("selects a known query product once, removes only the completed parameter and focuses the quote", async () => {
-  history.replaceState({ keep: true }, "", "/?kaynak=urunler&teklif=sample-olive-oil-1l#onceki");
+  history.replaceState({ keep: true }, "", "/toptan-satis?kaynak=urunler&teklif=sample-olive-oil-1l#onceki");
   await mountQuote();
   await waitFor(() => expect(JSON.parse(screen.getByLabelText("Teklif seçimi").textContent!)).toEqual({ "sample-olive-oil-1l": "1" }));
   expect(new URL(location.href).searchParams.has("teklif")).toBe(false);
@@ -56,7 +56,7 @@ it("selects a known query product once, removes only the completed parameter and
 });
 
 it.each(["bilinmeyen", "", "__proto__"])("ignores an unknown or empty product query (%s) without selecting or stealing focus", async id => {
-  history.replaceState(null, "", `/?teklif=${id}#baslangic`);
+  history.replaceState(null, "", `/toptan-satis?teklif=${id}#baslangic`);
   await mountQuote();
   expect(JSON.parse(screen.getByLabelText("Teklif seçimi").textContent!)).toEqual({});
   expect(location.hash).toBe("#baslangic");

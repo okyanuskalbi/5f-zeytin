@@ -7,7 +7,7 @@ import { Footer } from "@/components/site/Footer";
 it("keeps every C destination and legal/payment content usable before JavaScript", () => {
   const doc = new DOMParser().parseFromString(renderToStaticMarkup(<Footer />), "text/html");
   expect([...doc.querySelectorAll('nav[aria-label="Alt menü"] a')].map(link => link.getAttribute("href"))).toEqual([
-    "/hakkimizda", "/toptan-satis", "/bayilik", "/blog", "/#iletisim",
+    "/hakkimizda", "/toptan-satis", "/bayilik", "/blog", "/hakkimizda#iletisim",
   ]);
   expect([...doc.querySelectorAll('nav[aria-label="Yasal bilgiler"] a')].map(link => link.getAttribute("href"))).toEqual(["/kvkk", "/mesafeli-satis", "/iade"]);
   expect(doc.querySelectorAll('ul[aria-label="Kabul edilen kartlar"] > li')).toHaveLength(3);

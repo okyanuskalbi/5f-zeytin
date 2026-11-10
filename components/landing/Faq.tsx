@@ -6,8 +6,8 @@ import { verifiedFaqs } from "@/lib/site/faqs";
 import { siteIdentity } from "@/lib/site/identity";
 export { verifiedFaqs } from "@/lib/site/faqs";
 
-export function Faq({ embedded = false }: { embedded?: boolean } = {}): JSX.Element {
-  const schema = { "@context": "https://schema.org", "@type": "FAQPage", "@id": `${siteIdentity.origin}/#sik-sorulanlar`, mainEntity: verifiedFaqs.map(faq => ({
+export function Faq({ embedded = false, canonicalPath = "/" }: { embedded?: boolean; canonicalPath?: string } = {}): JSX.Element {
+  const schema = { "@context": "https://schema.org", "@type": "FAQPage", "@id": `${siteIdentity.origin}${canonicalPath}#sik-sorulanlar`, mainEntity: verifiedFaqs.map(faq => ({
     "@type": "Question", name: faq.question, acceptedAnswer: { "@type": "Answer", text: faq.answer },
   })) };
   const Root = embedded ? "div" : "section";

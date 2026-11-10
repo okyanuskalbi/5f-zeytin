@@ -29,6 +29,6 @@ export function ProductGroups(): JSX.Element {
     <div className={styles.allActions}>
       <Link href="/urunler" className={styles.allButton}><Grid2X2 size={18} aria-hidden="true" />Tüm ürünleri gör<ArrowRight size={18} aria-hidden="true" /></Link>
     </div>
-    <noscript><p>Ürün seçimi ve alışveriş için JavaScript gerekir. Ürün bilgisi için <a href="#iletisim">bizimle iletişime geçin.</a></p></noscript>
+    <noscript><p>Ürün seçimi ve alışveriş için JavaScript gerekir. Ürün bilgisi için <a href="/hakkimizda#iletisim">bizimle iletişime geçin.</a></p></noscript>
   </section>;
 }

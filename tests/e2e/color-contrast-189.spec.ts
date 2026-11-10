@@ -47,7 +47,7 @@ const states: State[] = [
     await page.getByRole("button", { name: "Menüyü aç" }).click();
     await expect(page.getByRole("dialog", { name: "Site menüsü" })).toBeVisible();
   } },
-  { name: "teklif-hata", url: "/#toptan", prepare: async page => {
+  { name: "teklif-hata", url: "/toptan-satis", prepare: async page => {
     await page.getByRole("button", { name: "Talep özetini hazırla" }).click();
     await expect(page.locator('#toptan [aria-invalid="true"]').first()).toBeVisible();
   } },
@@ -70,7 +70,7 @@ async function pixelDifference(light: Buffer, dark: Buffer) {
 /** Compare the real cart/observer state, never a timer, hidden overlay or mask. */
 async function settleCaptureState(page: Page, width: number, state: State) {
   const cartRoutes = new Set(["urunler", "bayilik", "bayilik-hata", "siparis-takip", "bulunamayan", "urun-detayi-mevcut", "urun-detayi-mevcut-degil"]);
-  const hasMiniCart = width < 768 && (cartRoutes.has(state.name) || state.url.startsWith("/urunler/"));
+  const hasMiniCart = width < 768 && (cartRoutes.has(state.name) || state.url.startsWith("/urunler/") || state.url === "/toptan-satis");
   if (hasMiniCart) await expect(page.locator("[data-mini-cart-reserve]")).toBeVisible();
   else await expect(page.locator("[data-mini-cart-reserve]")).toHaveCount(0);
 

@@ -12,7 +12,7 @@ const corporate = [
   { label: "Toptan Satış", href: "/toptan-satis" },
   { label: "Bayilik", href: "/bayilik" },
   { label: "Blog", href: "/blog" },
-  { label: "İletişim", href: "/#iletisim" },
+  { label: "İletişim", href: "/hakkimizda#iletisim" },
 ];
 
 

@@ -4,9 +4,7 @@ import styles from "@/components/landing/ClassicHome.module.css";
 import { ClassicHero } from "@/components/landing/ClassicHome";
 import { HomeCategories, HomeProductGrid, HomeStory, HomeBanners, HomeHarvest, HomeBusiness, HomeBlog, HomeTrust } from "@/components/landing/CustomerHome";
 import { CustomerMarquee } from "@/components/landing/CustomerMarquee";
-import { QuoteSection, TrustAndContact } from "@/components/landing/RenewalLanding";
-import { QuoteQuerySelection } from "@/components/landing/QuoteQuerySelection";
-import { QuoteJourneyProvider } from "@/components/landing/QuoteJourneyProvider";
+import { LegacyHomeNavigation } from "@/components/site/LegacyHomeNavigation";
 import { BusinessJsonLd } from "@/components/site/BusinessJsonLd";
 import { readProductFamilies } from "@/lib/catalog/read";
 
@@ -28,8 +26,8 @@ export const metadata: Metadata = {
 export default async function Home(): Promise<JSX.Element> {
   const families = await readProductFamilies();
   const products = families.flatMap(family => family.variants);
-  return <QuoteJourneyProvider><main className={styles.root}>
-    <QuoteQuerySelection products={products} />
+  return <main className={styles.root}>
+    <LegacyHomeNavigation />
     <BusinessJsonLd />
     <ClassicHero />
     <HomeCategories />
@@ -42,7 +40,5 @@ export default async function Home(): Promise<JSX.Element> {
     <HomeBusiness />
     <HomeBlog />
     <HomeTrust />
-    <QuoteSection products={products} />
-    <TrustAndContact />
-  </main></QuoteJourneyProvider>;
+  </main>;
 }

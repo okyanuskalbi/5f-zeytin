@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   async redirects() {
     return [
+      { source: "/", has: [{ type: "query" as const, key: "teklif" }], destination: "/toptan-satis", permanent: true },
       { source: "/", has: [{ type: "query" as const, key: "magaza", value: "ac" }], destination: "/urunler", permanent: true },
       ...Object.entries(legacyProductRoutes).map(([id, destination]) => ({
         source: "/", has: [{ type: "query" as const, key: "urun", value: id }], destination, permanent: true,

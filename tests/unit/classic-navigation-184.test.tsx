@@ -13,7 +13,7 @@ it("renders the seven page destinations on a solid light header with a shop page
   expect(header.getAttribute("data-tone")).toBe("solid");
   expect(within(screen.getByRole("navigation", { name: "Ana navigasyon" })).getAllByRole("link").filter(link => !link.closest("details")).map(link => [link.textContent, link.getAttribute("href")])).toEqual([
     ["Ana Sayfa", "/"], ["Ürünler", "/urunler"], ["Hakkımızda", "/hakkimizda"],
-    ["Toptan Satış", "/toptan-satis"], ["Bayilik", "/bayilik"], ["Blog", "/blog"], ["İletişim", "/#iletisim"],
+    ["Toptan Satış", "/toptan-satis"], ["Bayilik", "/bayilik"], ["Blog", "/blog"], ["İletişim", "/hakkimizda#iletisim"],
   ]);
   expect(screen.getByRole("link", { name: "Hesabım" }).getAttribute("href")).toBe("/hesabim");
   expect(screen.getByRole("button", { name: "Sepetim, 0 adet" })).toBeTruthy();

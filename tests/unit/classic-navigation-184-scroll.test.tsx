@@ -73,11 +73,11 @@ it.each([
 ] as const)("keeps the %s page current when navigation commits and the viewport scrolls", (name, id) => {
   mount(); flush();
   const link = navigate(name, id);
-  expect(active()).toEqual(name === "İletişim" ? [screen.getByRole("link", { name: "Ana Sayfa" })] : [link]);
+  expect(active()).toEqual(name === "İletişim" ? [screen.getByRole("link", { name: "Hakkımızda" })] : [link]);
   expect(link.getAttribute("aria-current")).toBe(name === "İletişim" ? null : "page");
   if (id !== "iletisim") expect(document.getElementById(id)!.getBoundingClientRect().top).toBe(headerHeight + anchorGap);
   fireEvent.resize(window); flush();
-  expect(active()).toEqual(name === "İletişim" ? [screen.getByRole("link", { name: "Ana Sayfa" })] : [link]);
+  expect(active()).toEqual(name === "İletişim" ? [screen.getByRole("link", { name: "Hakkımızda" })] : [link]);
 });
 
 it("keeps Home current at the document bottom after Contact becomes a footer destination", () => {

@@ -2,10 +2,13 @@ import { cleanup, render, screen, within } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, expect, it, vi } from "vitest";
 import Home from "@/app/page";
+import About from "@/app/hakkimizda/page";
+import Wholesale from "@/app/toptan-satis/page";
 import { getProductFamilies } from "@/lib/catalog/static-products";
 import { verifiedFaqs } from "@/lib/site/faqs";
 
 vi.mock("@/lib/catalog/read", () => ({ readProductFamilies: () => getProductFamilies() }));
+vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }) }));
 afterEach(() => { cleanup(); vi.clearAllMocks(); vi.unstubAllGlobals(); });
 
 async function serverDocument(): Promise<Document> {
@@ -16,7 +19,7 @@ async function serverDocument(): Promise<Document> {
 
 it("serves the classic home in reading order with one descriptive H1 before JavaScript", async () => {
   const doc = await serverDocument();
-  const sectionIds = ["baslangic", "urunler", "hakkimizda", "tesisimiz", "toptan", "iletisim"];
+  const sectionIds = ["baslangic", "urunler", "hakkimizda", "tesisimiz"];
   const sections = [...doc.querySelectorAll("main section[id]")].filter(section => sectionIds.includes(section.id));
   expect(sections.map(section => section.id)).toEqual(sectionIds);
   expect(doc.querySelectorAll("h1")).toHaveLength(1);
@@ -51,26 +54,29 @@ it("uses the corrected origin and business copy without unsupported claims", asy
   expect(doc.querySelector('[data-home-section="business"] a[href="/bayilik"]')?.textContent).toContain("Bayilik Başvurusu");
 });
 
-it("keeps old deep links inside their matching new sections without duplicate IDs", async () => {
+it("keeps remaining local anchors unique and points corporate and quote destinations to their own pages", async () => {
   const doc = await serverDocument();
-  for (const [legacy, section] of [["kurumsal", "hakkimizda"], ["teklif", "toptan"], ["toptan-iletisim", "toptan"], ["uretim-yolculugu", "tesisimiz"]]) {
+  for (const [legacy, section] of [["kurumsal", "hakkimizda"], ["uretim-yolculugu", "tesisimiz"]]) {
     expect(doc.getElementById(legacy)?.closest("section")?.id, legacy).toBe(section);
     expect(doc.querySelectorAll(`[id="${legacy}"]`), legacy).toHaveLength(1);
   }
+  for (const id of ["toptan", "teklif", "toptan-iletisim", "iletisim"]) expect(doc.getElementById(id), id).toBeNull();
+  expect(doc.querySelector('a[href="/hakkimizda"]')).not.toBeNull();
+  expect(doc.querySelector('a[href="/toptan-satis"]')).not.toBeNull();
 });
 
-it("preserves all five answers and their FAQPage data, and the existing private quote form", async () => {
-  const doc = await serverDocument();
-  const faq = doc.getElementById("sik-sorulanlar")!;
+it("preserves all five answers and FAQPage on about, moves the private quote form and leaves neither on home", async () => {
+  const home = await serverDocument();
+  expect(home.querySelector("form, #sik-sorulanlar, #iletisim")).toBeNull();
+  const about = new DOMParser().parseFromString(renderToStaticMarkup(<About />), "text/html");
+  const faq = about.getElementById("sik-sorulanlar")!;
   expect(faq.querySelectorAll("details")).toHaveLength(5);
-  for (const { question, answer } of verifiedFaqs) {
-    expect(faq.textContent).toContain(question);
-    expect(faq.textContent).toContain(answer);
-  }
-  const schemas = [...doc.querySelectorAll('script[type="application/ld+json"]')].map(script => JSON.parse(script.textContent!));
+  for (const { question, answer } of verifiedFaqs) { expect(faq.textContent).toContain(question); expect(faq.textContent).toContain(answer); }
+  const schemas = [...about.querySelectorAll('script[type="application/ld+json"]')].map(script => JSON.parse(script.textContent!));
   const schema = schemas.find(item => item["@type"] === "FAQPage");
   expect(schema.mainEntity).toEqual(verifiedFaqs.map(faq => ({ "@type": "Question", name: faq.question, acceptedAnswer: { "@type": "Answer", text: faq.answer } })));
-  expect(doc.querySelector("#toptan form")?.getAttribute("method")).toBe("post");
+  const wholesale = new DOMParser().parseFromString(renderToStaticMarkup(await Wholesale()), "text/html");
+  expect(wholesale.querySelector("#toptan form")?.getAttribute("method")).toBe("post");
 });
 
 it("links each category to its product group without treating it as a new SKU", async () => {

@@ -3,18 +3,21 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { afterEach, expect, it, vi } from "vitest";
 import { WholesaleFaq } from "@/components/landing/WholesaleFaq";
 import Home from "@/app/page";
+import WholesalePage from "@/app/toptan-satis/page";
+import AboutPage from "@/app/hakkimizda/page";
 import { Footer } from "@/components/site/Footer";
 import { verifiedFaqs } from "@/components/landing/Faq";
 import { siteContact } from "@/lib/site/contact";
 import { corporateContact } from "@/lib/site/corporate-contact";
 
+vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }) }));
 vi.mock("server-only", () => ({}));
 
 afterEach(() => { cleanup(); Object.assign(siteContact, { phone: "", whatsapp: "", email: "" }); });
 
 it("uses full factual sentences and removes unanswered wholesale questions", async () => {
   const doc = document.implementation.createHTMLDocument();
-  doc.body.innerHTML = renderToStaticMarkup(await Home());
+  doc.body.innerHTML = renderToStaticMarkup(<>{await WholesalePage()}{await AboutPage()}</>);
   expect(doc.querySelectorAll("[data-faq]")).toHaveLength(5);
   for (const faq of verifiedFaqs) expect(faq.answer).toMatch(/\.$/);
   expect(doc.querySelector('[data-faq="Z05"]')).toBeNull();
@@ -43,7 +46,7 @@ it.each([
 ])("restores the wholesale row and footer link together for a configured channel: %j", async contact => {
   Object.assign(siteContact, contact);
   const doc = document.implementation.createHTMLDocument();
-  doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}<Footer /></>);
+  doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}{await WholesalePage()}{await AboutPage()}<Footer /></>);
   expect(doc.querySelector("#toptan form")).not.toBeNull();
   if (contact.phone) expect(doc.querySelector('#iletisim a[href^="tel:"]')).not.toBeNull();
   if (contact.email) expect(doc.querySelector('#iletisim a[href^="mailto:"]')).not.toBeNull();
@@ -66,8 +69,8 @@ it("opens the existing wholesale form in a labelled dialog and restores its trig
   await waitFor(() => expect(document.activeElement).toBe(trigger));
 });
 
-it("keeps the quote form and FAQ once across the full page and footer", async () => {
+it("keeps the relocated quote form and FAQ once across their pages and the footer", async () => {
   const doc = document.implementation.createHTMLDocument();
-  doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}<Footer /></>);
+  doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}{await WholesalePage()}{await AboutPage()}<Footer /></>);
   expect(doc.querySelectorAll("#toptan, #sik-sorulanlar")).toHaveLength(2);
 });

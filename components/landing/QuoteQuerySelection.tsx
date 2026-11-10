@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import type { ProductVariant } from "@/types/catalog";
 import { useQuoteJourney } from "./QuoteJourneyProvider";
 
-/** Consume only known catalogue choices after hydration, keeping home static. */
+/** Consume only known catalogue choices after hydration, keeping the wholesale page static. */
 export function QuoteQuerySelection({ products }: { products: readonly ProductVariant[] }): null {
   const { chooseProduct } = useQuoteJourney();
   useEffect(() => {

@@ -32,7 +32,7 @@ afterEach(() => {
 
 it("keeps corporate section destinations and the cart control", () => {
   render(<Navbar />);
-  for (const [name, href] of [["Hakkımızda", "/hakkimizda"], ["Ürünler", "/urunler"], ["Toptan Satış", "/toptan-satis"], ["Bayilik", "/bayilik"], ["Blog", "/blog"], ["İletişim", "/#iletisim"]]) {
+  for (const [name, href] of [["Hakkımızda", "/hakkimizda"], ["Ürünler", "/urunler"], ["Toptan Satış", "/toptan-satis"], ["Bayilik", "/bayilik"], ["Blog", "/blog"], ["İletişim", "/hakkimizda#iletisim"]]) {
     expect(screen.getByRole("link", { name }).getAttribute("href")).toBe(href);
   }
   const cart = screen.getByRole("button", { name: "Sepetim, 0 adet" });

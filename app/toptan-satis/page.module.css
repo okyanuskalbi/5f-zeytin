@@ -1,0 +1,10 @@
+.root { background:#FAF8F2; color:#172B21; overflow-wrap:anywhere; }
+.heading { padding-block:24px 40px; background:#FAF8F2; border-bottom:1px solid #D6D0C3; }
+.container { width:calc(100% - 64px); max-width:1040px; margin-inline:auto; }
+.breadcrumb { margin-bottom:32px; }
+.breadcrumb ol { display:flex; flex-wrap:wrap; gap:12px; align-items:center; list-style:none; padding:0; margin:0; font-size:.875rem; }
+.breadcrumb li { display:flex; align-items:center; gap:12px; }
+.breadcrumb a { display:inline-flex; align-items:center; min-height:44px; text-decoration:underline; text-underline-offset:4px; }
+.heading h1 { margin:0 0 20px; font-size:clamp(2.5rem,5vw,4.5rem); line-height:1.1; }
+.heading p:not(:first-child) { max-width:72ch; margin-block:12px; font-size:1rem; line-height:1.7; color:#4F594B; }
+@media(max-width:767px) { .container { width:calc(100% - 40px); } .heading { padding-bottom:24px; } .breadcrumb { margin-bottom:24px; } }

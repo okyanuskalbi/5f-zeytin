@@ -136,7 +136,7 @@ test.describe("Task191 action-only motion", () => {
   });
 
   test("FAQ remains keyboard controlled and reduced motion opens and closes immediately", async ({ page }) => {
-    await page.goto("/", { waitUntil: "load" });
+    await page.goto("/hakkimizda", { waitUntil: "load" });
     const faq = page.locator("details[data-faq]").first();
     const summary = faq.locator("summary");
     const answer = faq.locator("[data-faq-answer]");

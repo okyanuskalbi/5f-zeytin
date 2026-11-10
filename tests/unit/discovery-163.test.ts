@@ -10,7 +10,7 @@ it("publishes the same verified answers and meaningful purchase paths without of
   const body = await response.text();
   expect(response.headers.get("content-type")).toContain("text/markdown");
   for (const faq of verifiedFaqs) expect(body).toContain(faq.answer);
-  for (const anchor of ["urunler", "teklif", "tesisimiz"]) expect(body).toContain(`${siteIdentity.origin}/#${anchor}`);
+  for (const path of ["/#urunler", "/toptan-satis", "/hakkimizda#tesisimiz"]) expect(body).toContain(`${siteIdentity.origin}${path}`);
   expect(body).toContain("Gönderimi e-posta uygulamanızda siz tamamlarsınız.");
   expect(body).not.toMatch(/₺|\bTRY\b|%100|garantili|5 yıldız|<script/i);
 });

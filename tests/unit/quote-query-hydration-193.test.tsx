@@ -16,7 +16,7 @@ function LoadingQuote({ children }: { children: React.ReactNode }) {
 }
 
 it("waits until the quote fieldset is usable before focusing its first field, then releases the observer", async () => {
-  history.replaceState({ keep: true }, "", "/?teklif=sample-olive-oil-1l&kaynak=test");
+  history.replaceState({ keep: true }, "", "/toptan-satis?teklif=sample-olive-oil-1l&kaynak=test");
   render(<LoadingQuote><QuoteQuerySelection products={await getProducts()} /></LoadingQuote>);
   const field = screen.getByRole("textbox", { name: "Firma adı" });
   expect(field.matches(":disabled")).toBe(true);

@@ -44,7 +44,7 @@ export function ClassicFacility(): JSX.Element {
       <p className={styles.eyebrow}>ÜRETİCİ GÜCÜMÜZ</p>
       <h2 id="tesisimiz-title">Modern Üretim Tesisimiz</h2>
       <p>Zeytin ayıklama, salamura, paketleme ve depolama süreçlerini Osmaniye Düziçi&apos;ndeki kendi tesisimizde gerçekleştiriyoruz.</p>
-      <a href="#hakkimizda" className={styles.darkGoldButton}>Tesisimizi Keşfedin<ArrowRight size={18} aria-hidden="true" /></a>
+      <a href="/hakkimizda" className={styles.darkGoldButton}>Tesisimizi Keşfedin<ArrowRight size={18} aria-hidden="true" /></a>
     </div>
   </section>;
 }
@@ -55,7 +55,7 @@ export function ClassicBusiness(): JSX.Element {
     <div className={`${styles.container} ${styles.businessGrid}`}>
       <article className={styles.businessCard} data-surface="dark">
         <V3Picture image={photos.assets.depo} sizes="(max-width: 767px) calc(100vw - 40px), 260px" className={styles.businessPhoto} />
-        <div><h2>Toptan Satış</h2><p>Otel, restoran, market ve toplu tüketim için koli bazında teklif.</p><a href="#toptan" className={styles.goldButton}>Toptan Teklif Al<ArrowRight size={18} aria-hidden="true" /></a></div>
+        <div><h2>Toptan Satış</h2><p>Otel, restoran, market ve toplu tüketim için koli bazında teklif.</p><a href="/toptan-satis" className={styles.goldButton}>Toptan Teklif Al<ArrowRight size={18} aria-hidden="true" /></a></div>
       </article>
       <article className={styles.businessCard} data-surface="dark">
         <V3Picture image={photos.assets["zeytin-dali"]} sizes="(max-width: 767px) calc(100vw - 40px), 260px" className={styles.businessPhoto} />

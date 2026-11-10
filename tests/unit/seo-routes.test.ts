@@ -49,6 +49,7 @@ describe("SEO metadata routes", () => {
         priority: 0.7,
         lastModified: "2026-11-09",
       },
+      ...["hakkimizda", "toptan-satis"].map(path => ({ url: `https://afinazeytin.com/${path}`, changeFrequency: "monthly", priority: 0.7, lastModified: "2026-11-10" })),
     ]);
   });
 

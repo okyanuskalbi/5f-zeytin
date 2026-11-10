@@ -9,6 +9,7 @@ import groupClasses from "@/components/landing/ProductGroups.module.css";
 import faqClasses from "@/components/landing/Faq.module.css";
 
 vi.mock("@/lib/catalog/read", () => ({ readProductFamilies: () => getProductFamilies() }));
+vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }) }));
 
 const globals = postcss.parse(readFileSync("app/globals.css", "utf8"));
 const modules = [
@@ -16,8 +17,7 @@ const modules = [
   ["components/landing/ProductGroups.module.css", groupClasses],
   ["components/landing/Faq.module.css", faqClasses],
 ] as const;
-const targets = ["baslangic", "tesisimiz", "urunler", "hakkimizda", "toptan", "sik-sorulanlar", "iletisim",
-  "kurumsal", "teklif", "toptan-iletisim", "uretim-yolculugu", "kiler"];
+const targets = ["baslangic", "tesisimiz", "urunler", "hakkimizda", "kurumsal", "uretim-yolculugu", "kiler"];
 
 /** Resolve only the matching scroll-margin declarations, including module
  * class names and specificity. This checks the actual rendered target tree;

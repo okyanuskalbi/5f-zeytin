@@ -3,6 +3,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { scripts } from "../../package.json";
+vi.mock("next/navigation", async importOriginal => ({ ...(await importOriginal<typeof import("next/navigation")>()), useRouter: () => ({ replace: vi.fn() }) }));
 
 // next/font is a build-time transform; browser tests verify the real font files.
 vi.mock("next/font/google", () => ({

@@ -4,6 +4,7 @@ import Home from "@/app/page";
 import { getProductFamilies } from "@/lib/catalog/static-products";
 
 vi.mock("@/lib/catalog/read", () => ({ readProductFamilies: () => getProductFamilies() }));
+vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }) }));
 
 it("serves the customer's ordered light storefront with honest product grids and working destination links", async () => {
   const doc = new DOMParser().parseFromString(renderToStaticMarkup(await Home()), "text/html");
@@ -23,7 +24,7 @@ it("serves the customer's ordered light storefront with honest product grids and
   expect(doc.querySelectorAll('[data-home-section="harvest"] li')).toHaveLength(4);
   expect(doc.querySelector("main")?.textContent).not.toMatch(/Ayvalık|Köklü|Doğallığın En Güzel Halleri|kişi inceliyor|İndirimdeki|aynı gün kargo|Müşteri Yorumları|500.000/);
   expect(doc.querySelector('[data-home-section="business"] img')).toBeNull();
-  expect(doc.querySelector('#toptan form')).not.toBeNull();
+  expect(doc.querySelector('form, #sik-sorulanlar, #iletisim')).toBeNull();
 });
 
 it("makes the hero poster the eager server image and keeps autoplay video out of the first paint", async () => {

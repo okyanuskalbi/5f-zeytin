@@ -22,8 +22,8 @@ it("keeps at least five verified short answers equal in visible HTML, schema and
       ).acceptedAnswer.text,
     ).toBe(faq.answer);
   }
-  expect(text).toContain("https://afinazeytin.com/#tesisimiz");
-  expect(text).toContain("https://afinazeytin.com/#toptan-iletisim");
+  expect(text).toContain("https://afinazeytin.com/hakkimizda#tesisimiz");
+  expect(text).toContain("https://afinazeytin.com/toptan-satis");
   expect(text).not.toMatch(
     /\/hesabim|\/admin|\/api\/|organik|₺|aggregateRating/,
   );
