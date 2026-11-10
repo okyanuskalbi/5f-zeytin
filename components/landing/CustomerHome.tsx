@@ -93,5 +93,5 @@ export function HomeBlog(): JSX.Element {
 }
 
 export function HomeTrust(): JSX.Element {
-  return <div data-home-section="trust" data-signature="dal-ve-etiket" className={styles.signature}><div className={styles.container}><BrandLogo tone="dark" loading="lazy" className={styles.signatureLogo} /><BranchLine /><p>Kökü toprakta. Yeri sofrada.</p><span>Ellek, Düziçi / Osmaniye</span></div></div>;
+  return <div data-home-section="trust" data-signature="dal-ve-etiket" className={styles.signature}><div className={styles.container}><BrandLogo tone="dark" loading="lazy" className={styles.signatureLogo} /><BranchLine /><p>Toprağın sunduğu lezzet, Afina’nın özeniyle.</p><span>Ellek, Düziçi / Osmaniye</span></div></div>;
 }
