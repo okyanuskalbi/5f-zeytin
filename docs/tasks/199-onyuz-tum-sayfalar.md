@@ -26,6 +26,15 @@ frontend
 3. Eski tarayıcı testlerini temizle: `tests/e2e/hero-performance.spec.ts` ve kaldırılan bileşenleri arayan testler silinir ya da yeni yapıya uyarlanır; her sayfa için yeni duman testi (açılır, taşma yok, konsol hatası yok, ana eylem görünür).
 4. Ekran görüntüleri `output/task199/ekran/<sayfa>-<genişlik>.png` (390 WebKit, 768, 1440); impeccable critique + polish → `output/task199/DENETIM.md`.
 
+## Kimi 197 canlı site bulguları — yeni sayfalarda tekrar etmesin
+Rapor: `AFINA-KAYNAK/tasarim/uygulama-kontrol/197/RAPOR.md`.
+1. (Yüksek) 820×1180 WebKit'te giriş/kayıt üyelik kartının ön ve arka yüzü üst üste biniyor → yeni giriş/kayıt düzeninde 3D çevirmeli kart kullanma ya da yalnız etkin yüz görünür olsun; WebKit'te ayrıca doğrula.
+2. (Yüksek, iş kararı) "Ödemeye geç" pasif, `/odeme` yalnız hazırlık mesajı — PayTR anahtarı yok, bu beklenen durum. Yeni tasarımda düğmenin neden pasif olduğu sepet ve ödeme sayfasında sade bir cümleyle görünsün ("Online ödeme yakında açılıyor; şimdilik teklif ya da telefonla sipariş verebilirsiniz" gibi), teklif yoluna bağlantı olsun. Ödeme mantığına dokunma.
+3. (Orta) select'ler ve satır içi bağlantılar ≥ 44×44 dokunma alanı (WebKit select 25 px idi).
+4. (Düşük) Form yardımcı metinleri ≥ 12 px.
+5. (Düşük) Ürün varyant sayfalarında seçili boy title/description'a girsin; canonical/OG tutarlı.
+6. (Düşük) 320 px'de benzer ürün görselleri için doğru `sizes`/`srcset`.
+
 ## Kabul kriterleri
 - [ ] lint, typecheck, test, build, `git diff --check` PASS.
 - [ ] Tüm sayfalar 320/390/768/1024/1440/1920'de taşma 0, konsol hatası 0, kırık görsel 0; telefonda dokunma hedefi ≥ 44 px.
