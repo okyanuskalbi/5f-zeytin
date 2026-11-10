@@ -83,4 +83,13 @@ Claude kapıları: 188–195 e2e 151/151 geçti; BRIEF metinleri, yasak içerik,
 
 Kurallar: lint, typecheck, test, build, `git diff --check` yeşil; mevcut e2e'ler geçer. Tek kayıt; **push yok, yayın yok**; `node_modules`/`.next` SİLME. Coder Notu (192-1) ekle, durum satırını en sona yaz.
 
-## Durum: DÜZELTME BEKLİYOR (192-1)
+## Coder Notu (192-1)
+
+- Üç koşullu `<source>` yerine, poster yüklendikten sonra istemcide `matchMedia` ile tek `video src` seçilir: en fazla 767 px → 720; 768–1439 px → 1280; 1440 px ve üstü → 1920. Başlangıç genişliğinde seçilen dosya korunur; pencere değişince oynatma yeniden başlatılmaz. Yalnız gerçek `video.error` veya `NETWORK_NO_SOURCE` poster yedeğine geçirir; atlanan kaynak/hatasız video olayı videoyu kaldırmaz.
+- RED: yeni kaynak ve hata birim kontrolleri eski kodda başarısız oldu; gerçek oynatma testi eski masaüstü kodunda 5 saniyede zaman ilerlemesi bulamadı. Önceki normal açılış ölçümü gerçek oynatma kabulü değildi; bu eksik kalıcı testle kapatıldı.
+- Kalıcı tarayıcı testi paketli H.264 destekli Chromium'u yalnız headless çalıştırır; kullanıcının Chrome'u/Chrome kanalı kullanılmaz. 1440×900: `hero-1920.mp4`, 964 ms içinde `paused=false`, `currentTime=0.5194`, 17 kare; 390×844: `hero-720.mp4`, 949 ms içinde `paused=false`, `currentTime=0.5258`, 17 kare. Doğru tek dosya isteği, zamanın ilerlemesi, duraklamada sabit kalması ve devam etmesi doğrulandı. İki ölçümde de CLS 0, LCP poster; bunlar yerel ölçümlerdir, fiziksel telefon kabulü değildir.
+- Azaltılmış hareket (390/768/1440), veri tasarrufu ve gerçek yerel 404 durumunda poster yedeği doğrulandı. Birim testleri beş genişlik/sınır değeri, uymayan kaynak olayı ve gerçek medya/kaynak hatasını kapsar. Eski Task191 kaydırma testi silinmedi: sonradan eklenen/kaldırılan video öğe sırasını değiştirdiğinden, öğeleri sıra numarası yerine kendi kimlikleriyle izler; yeni öğeler de ilk görüldüğünde kayda alınır. Görünürlük, dönüşüm, saydamlık ve çalışan animasyon denetimleri korunur.
+- Alt ajanlar kalıcı tarayıcı testini hazırladı ve kod/test değişikliklerini bağımsız inceledi. `frontend-patterns`, `tdd-workflow`, `e2e-testing` ve kurulu Next.js video kılavuzu uygulandı; yeni bileşen/bağımlılık/medya eklenmedi.
+- Son kapılar: lint, typecheck, build ve `git diff --check` başarılı; 1.470 birim testi başarılı, yapılandırılmamış yerel veritabanı nedeniyle mevcut 26 test atlandı. Güncel 189/189-1/190/191/192/193/194/195 tarayıcı paketleri 154/154 başarılı. Kayıtlar git dışındaki `output/task192-1/`, oynatma ölçümleri `output/task192/normal-metrics-{1440,390}.json` içindedir. Canlı veritabanı/ortam değişkeni/push/yayın işlemi yapılmadı; `AFINA-KAYNAK` ve ham video eklenmedi; `node_modules` ve `.next` korundu.
+
+## Durum: TAMAMLANDI

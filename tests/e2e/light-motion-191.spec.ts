@@ -76,20 +76,28 @@ test.describe("Task191 light motion", () => {
         for (const image of document.images) image.loading = "eager";
         await Promise.all([...document.images].map(image => image.decode().catch(() => undefined)));
       });
-      const before = await page.locator("main *").evaluateAll(elements => elements.map(element => {
-        const style = getComputedStyle(element);
-        return { opacity: style.opacity, transform: style.transform };
-      }));
+      await page.locator("main *").evaluateAll(elements => {
+        // Deferred video insertion or a genuine media fallback changes DOM
+        // indexes. Follow each element itself while checking scroll styles.
+        const baseline = new WeakMap(elements.map(element => {
+          const style = getComputedStyle(element);
+          return [element, { opacity: style.opacity, transform: style.transform }] as const;
+        }));
+        Object.assign(window, { task191ScrollBaseline: baseline });
+      });
       const violations: unknown[] = [];
       const bottom = await page.evaluate(() => document.documentElement.scrollHeight - innerHeight);
       for (let y = 0; y <= bottom + 450; y += 450) {
         await page.evaluate(top => window.scrollTo({ top, behavior: "instant" }), Math.min(y, bottom));
         await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
-        const bad = await page.locator("main *").evaluateAll((elements, initial) => elements.flatMap((element, index) => {
+        const bad = await page.locator("main *").evaluateAll(elements => elements.flatMap(element => {
+          const baseline = (window as unknown as { task191ScrollBaseline: WeakMap<Element, { opacity: string; transform: string }> }).task191ScrollBaseline;
+          const initial = baseline.get(element);
           const style = getComputedStyle(element);
+          if (!initial) baseline.set(element, { opacity: style.opacity, transform: style.transform });
           const box = element.getBoundingClientRect();
           const isMarquee = Boolean(element.closest("[data-home-marquee]"));
-          const changed = !isMarquee && initial[index] && (style.opacity !== initial[index].opacity || style.transform !== initial[index].transform);
+          const changed = !isMarquee && initial && (style.opacity !== initial.opacity || style.transform !== initial.transform);
           const visible = box.width > 0 && box.height > 0 && box.bottom > 0 && box.top < innerHeight && style.display !== "none" && style.visibility !== "hidden";
           // Existing unavailable location pickers intentionally have a static
           // dimmed appearance. Still compare their styles at every scroll step;
@@ -98,7 +106,7 @@ test.describe("Task191 light motion", () => {
           return changed || (!isMarquee && visible && content && Number(style.opacity) !== 1)
             ? [{ tag: element.tagName, className: element.getAttribute("class"), changed, opacity: style.opacity, transform: style.transform }]
             : [];
-        }), before);
+        }));
         violations.push(...bad);
         expect(await page.locator("main").evaluateAll(roots => roots.flatMap(root => root.getAnimations({ subtree: true })).filter(animation => animation.playState === "running" && !(animation.effect instanceof KeyframeEffect && animation.effect.target instanceof Element && animation.effect.target.closest("[data-home-marquee]"))).length)).toBe(0);
       }

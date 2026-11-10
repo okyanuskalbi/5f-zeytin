@@ -12,7 +12,8 @@ export function CustomerHeroVideo(): JSX.Element {
   const root = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const reduced = usePrefersReducedMotion();
-  const [ready, setReady] = useState(false);
+  const [source, setSource] = useState<string>();
+  const ready = source !== undefined;
   const [playing, setPlaying] = useState(false);
   const [failed, setFailed] = useState(false);
   const userPaused = useRef(false);
@@ -22,7 +23,12 @@ export function CustomerHeroVideo(): JSX.Element {
     const poster = root.current?.querySelector("img");
     let cancelled = false;
     let timer: ReturnType<typeof setTimeout> | undefined;
-    const start = () => { timer = setTimeout(() => { if (!cancelled) setReady(true); }, 250); };
+    const start = () => { timer = setTimeout(() => {
+      if (cancelled) return;
+      const width = window.matchMedia("(max-width: 767px)").matches ? 720
+        : window.matchMedia("(max-width: 1439px)").matches ? 1280 : 1920;
+      setSource(`/videos/customer-home/hero-${width}.mp4`);
+    }, 250); };
     if (poster?.complete) start();
     else poster?.addEventListener("load", start, { once: true });
     return () => { cancelled = true; clearTimeout(timer); poster?.removeEventListener("load", start); };
@@ -45,12 +51,13 @@ export function CustomerHeroVideo(): JSX.Element {
   return <><div ref={root} className={styles.heroMedia}>
     <V3Picture image={media.hero.posters} sizes="100vw" eager decorative className={styles.poster} data-hero-photo />
     {ready && !reduced && !failed &&
-      <video ref={video} className={styles.heroVideo} autoPlay muted loop playsInline preload="none" aria-hidden="true" tabIndex={-1}
-        onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onError={() => { setFailed(true); setPlaying(false); }}>
-        <source src="/videos/customer-home/hero-720.mp4" type="video/mp4" media="(max-width: 767px)" />
-        <source src="/videos/customer-home/hero-1280.mp4" type="video/mp4" media="(max-width: 1439px)" />
-        <source src="/videos/customer-home/hero-1920.mp4" type="video/mp4" />
-      </video>}
+      <video ref={video} src={source} className={styles.heroVideo} autoPlay muted loop playsInline preload="none" aria-hidden="true" tabIndex={-1}
+        onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onError={(event) => {
+          const element = event.currentTarget;
+          // A skipped child source can emit an error without a failed video.
+          if (!element.error && element.networkState !== HTMLMediaElement.NETWORK_NO_SOURCE) return;
+          setFailed(true); setPlaying(false);
+        }} />}
     </div>
     {ready && !reduced && !failed &&
       <button className={styles.videoControl} type="button" aria-label={playing ? "Videoyu duraklat" : "Videoyu oynat"} onClick={() => {
