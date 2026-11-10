@@ -45,10 +45,10 @@ Kullanıcı (10 Kasım 2026): "kopyalamış gibi olmasın site ona göre düzenl
 4. Metin taraması: referanstaki ifadeler sitede geçmez: "TOPRAKTAN SOFRAYA", "TARLADAN SOFRAYA", "Doğallığın", "Keşfedin" (numaralı banner), "Sizden Gelen", "Rehberi" yerine AFİNA'ya özgü blog başlığı (ör. "Zeytin Defteri"), "Daha Fazlasını Keşfet", "En Beğenilen". Müşterinin kendi yazdığı ifadeler hariç.
 
 ## Kabul kriterleri
-- [ ] Unit: BRIEF içerik ve sıra testleri geçmeye devam eder; yasaklı referans ifadeleri testi (yukarıdaki liste) eklenir ve geçer.
-- [ ] `output/task196/karsilastirma/` yan yana görüntüler + Coder Notu'nda bölüm bölüm fark listesi.
-- [ ] e2e: mevcut 154 tarayıcı testi yeni tasarıma göre güncellenip geçer (renk karşıtlığı 0 ihlal, CLS < 0.05, taşma yok, video oynar, azaltılmış hareket, kaydırmaya bağlı hareket yok — kayan şerit hariç).
-- [ ] `npm run lint`, `typecheck`, `test`, `build`, `git diff --check` yeşil.
+- [x] Unit: BRIEF içerik ve sıra testleri geçmeye devam eder; yasaklı referans ifadeleri testi (yukarıdaki liste) eklenir ve geçer.
+- [x] `output/task196/karsilastirma/` yan yana görüntüler + Coder Notu'nda bölüm bölüm fark listesi.
+- [x] e2e: mevcut 154 tarayıcı testi yeni tasarıma göre güncellenip geçer (renk karşıtlığı 0 ihlal, CLS < 0.05, taşma yok, video oynar, azaltılmış hareket, kaydırmaya bağlı hareket yok — kayan şerit hariç).
+- [x] `npm run lint`, `typecheck`, `test`, `build`, `git diff --check` yeşil.
 
 ## Yapılmaması gerekenler
 - Müşterinin istediği bölümleri/metinleri silmek ya da sırasını değiştirmek; yeni iddia (rakam, ödül, sertifika).
@@ -56,4 +56,35 @@ Kullanıcı (10 Kasım 2026): "kopyalamış gibi olmasın site ona göre düzenl
 - Push/yayın yok; `node_modules`/`.next` SİLME; AFINA-KAYNAK git'e eklenmez. Tek kayıt.
 - `docs/` altında yalnız bu dosyaya Coder Notu ve Durum.
 
-## Durum: BEKLİYOR
+## Coder Notu
+
+- BRIEF.md, 192–195 Coder Notları ve 192-1 video düzeltmesi önce okundu. Referansın mevcut görüntüleri ve yeniden tamamen yüklenen 1440/390 görüntüleri incelendi; referansın metni, görseli, logosu, ikonu veya yazı tipi taşınmadı. Bekleyen hikâye ve yağ görselleri için önceki onaylı geçici kaynaklar korundu.
+- `frontend-design` ile uygulamadan önce `output/task196/PLAN.md` yazıldı; renk, yazı, yerleşim ve tek marka imzası tanımlandı. `ui-ux-pro-max`, `better-layout`, `better-typography`, `better-colors`, `avoid-ai-ui-cliches` ve tam denetim tablosu, `motion-framer`, `responsiveness-check`, `frontend-patterns`, `tdd-workflow` ve mevcut e2e düzeni kullanıldı; kurulu Next.js CSS kılavuzu okundu. Güncel görev ve kullanıcının tercihi, skill dosyalarındaki tarihsel v9 hareket/renk önerileri ile çoklu kayıt önerisinin önündedir. Yeni skill, bağımlılık veya global ayar kurulmadı.
+- Alt ajanlar tasarım planı/karşılaştırma ve ana sayfa, menü/alt bilgi/iç sayfalar, testler rollerinde çalıştı. Plan ayrıca uygulamadan önce bağımsız denetlendi; gerçek sayfa görüntüleri uygulama sonrasında yeniden eleştirildi. 21st aramasındaki 28291/35677/33290 örnekleri incelendi; eşit kolon, genel yuvarlak tepe ve ilgisiz hareket nedeniyle hazır aktarılmadı. Mevcut bileşenler yeniden düzenlendi; ücretli kaynak alınmadı.
+- Küçük kararlar: dört ürünü korurken son kartı yalnız bırakan 3+1 yerine 2×2 raf seçildi. Referansın hasadı zaten 2×2 ikon kartı olduğundan bu öneri elendi; çerçevesiz ve numarasız metin grupları kullanıldı. Kavis yalnız hikâye/kurumsal ana fotoğraflarında tutuldu. Orijinal dal/el logosu değiştirilmedi; büyük slogan imza bandında, alt bilgide aynı slogan küçük Inter yazısıyla kullanıldı. Şampanya altını dekoratif ayrıntıda, koyu altın okunabilir küçük yazıda; yeşil ana eylemlerde kullanıldı. Yerel Fraunces/Inter korundu.
+
+### Bölüm bölüm farklar
+
+- Açılış: müşterinin videosu, posterleri, metinleri ve eylemleri aynen korundu; videonun oynatma mantığı değiştirilmedi. Üst menü açık kâğıt yüzeyi, yeşil taban çizgisi ve belirgin mağaza eylemiyle yeni dile uyarlandı.
+- Dört giriş: yuvarlak madalyonlar yerine masaüstünde iki çift, telefonda dört yatay fotoğraf/metin satırı. Başlıklar, alt bağlantı metinleri ve hedefler aynı.
+- Ürünler: küçük üst yazı ve sağ üst düğme kalıbı yerine dar başlık alanı yanında 2×2 raf; Tüm Ürünler kartların sonunda. Öne çıkanlarda fotoğraf ve bilgisi yan yana duran daha yatay raf; iki bölümde de dört gerçek ürün ve önceki farklı seçim sırası korunur.
+- Hikayemiz: metin solda, karşılıklı kavisli fotoğraf sağda; müşterinin istediği üç değer/ikon ayrı alt satırda. TOPRAKTAN SOFRAYA kaldırıldı.
+- Üç banner: bir büyük tesis fotoğrafı ve iki küçük yatay fotoğraf/metin alanı; eşit dikey kartlar, 01–03 ve Keşfedin kaldırıldı. Üç başlık ve hedef aynı.
+- Bereketin Hasat Vakti: açık zemin, dört numarasız/çerçevesiz metin grubu ve sağda müşteri fotoğrafı. TARLADAN SOFRAYA kaldırıldı; müşteri başlığı, açıklaması, dört madde ve Hikayemizi Keşfet hedefi aynen korundu.
+- Şerit: küçük yaprak ayraçlı ince yeşil bant; aynı beş kelime, durdurma/devam ve azaltılmış harekette sabit içerik korunur.
+- Toptan/Bayilik: müşteri isteğine uygun düz yüzeyli iki kutu ve mevcut ayrı sayfa hedefleri korunur; fotoğraf eklenmedi.
+- Blog: Zeytin Defteri adı, büyük ilk yazı ve iki yatay yazı düzeni; dört özgün yazının metni/adresi değişmedi. Ayrı blog sayfası, yazıların koleksiyon bağlantısı ve llms başlığı tutarlı güncellendi.
+- Alt imza/alt bilgi: güven maddeleri şeridi yerine orijinal marka ve mevcut slogan; dört eşit alt sütun yerine büyük kimlik alanı ve iki bağlantı kümesi. İletişim, yasal, hesap, sipariş ve ödeme bilgileri eksiltilmedi; bağlantı hedefleri en az 48 px.
+- İç sayfalar: `/urunler`, kategori, `/urun/[slug]`, `/hakkimizda`, `/toptan-satis`, `/blog` ve yazılar aynı renk, yazı ve boşluk diline uyarlandı. Gerçek galeri, boy/adet, sepet, teklif seçimi, doğrulama ve gönderilmemiş e-posta taslağı davranışı korundu.
+
+### Doğrulama ve sınırlar
+
+- RED: yeni yasak ifade/blog kimliği testinde eski görünümde iki beklenen hata görüldü; müşteri birebir metin testi başarılıydı. Yeni görünüm sonrası yeşil. Eski ürün görseli ve alt bilgi testlerinin beş stil beklentisi yeni düzene uyarlandı; görsel için ayrılan boyutlar, kırpma, mobil boşluk, 64 px görsel seçicileri, odak ve 48 px dokunma sınırı korundu; test silinmedi veya gevşetilmedi.
+- Ek RED/GREEN: normal telefon açılışında video düğmesinin Oynat → Duraklat değişimi 14,625 px kayma ve CLS 0,000218 üretiyordu. Kaynak öğe ölçümü `output/task196/video-control-before.json` içinde. Kalıcı video testine konum/genişlik kontrolü eklendi ve iki genişlikte önce başarısız oldu. Düğmeye yazıyla orantılı 9,5 em minimum genişlik ayrıldı; etiket ve oynatma davranışı korunarak kayma giderildi. CLS eşiği gevşetilmedi.
+- Son yerel kod kapıları: `npm run lint`, `npm run typecheck`, `npm run build`, `git diff --check` başarılı. 162 dosyada 1.473 birim testi başarılı; önceden yapılandırılmamış yerel veritabanına ait 26 test/6 dosya atlandı. Canlı veritabanına bağlanılmadı.
+- Son tarayıcı paketi: önceki 154 + yeni 6 = **160/160 başarılı**, atlanan veya tekrar sayesinde başarılı sayılan senaryo yok. Yasak ifadeler, birebir müşteri metinleri/sıra, 320/390/768/1440 ve %200 metin, menü/sepet/ürün/teklif, gerçek video zamanının ilerlemesi ve durdurulması, azaltılmış hareket/veri tasarrufu/hata yedeği, kaydırmaya bağlı hareket olmaması, renk karşıtlığı ve taşma kontrolleri geçti. Son rapor `output/task196/e2e-results.json`; günlükler aynı klasörde.
+- Son görüntü/ölçüm: 320/375/768/1024/1280/1440/1920/2560 genişliklerinde yatay taşma ve yüklenmeyen görsel 0. 390/1440 normal modda üçer temiz açılışın altısında CLS 0; aynı genişliklerin renk karşıtlığı ihlali 0. Beş iç sayfanın 390/1440 görüntüleri ve ölçümleri de geçti. Son kayıt `output/task196/visual-report.json`.
+- Karşılaştırma: `output/task196/karsilastirma/index.html`, 1440 ve 390 genişlikte 13'er bölüm/üst menü/alt bilgi, toplam 26 yan yana görüntü. Referansta olmayan Toptan/Bayilik bölümü solda açıkça belirtilir. Bunlar yerel görsel incelemedir; müşterinin ayrı tasarım onayı veya fiziksel cihaz kabulü değildir.
+- Gerçek altı SKU, fiyat/stok, video dosyaları ve sunucu davranışı değişmedi. Push/yayın, canlı DB, ödeme veya ortam değişikliği yok. `AFINA-KAYNAK` Git dışında; `node_modules` ve `.next` korundu. Bu görevin dosyaları tek yerel kayıtta tutulur; yalnız bu görev belgesi `docs/` altında değiştirildi.
+
+## Durum: TAMAMLANDI

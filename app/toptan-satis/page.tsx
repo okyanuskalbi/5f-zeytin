@@ -35,7 +35,6 @@ export default async function Page(): Promise<JSX.Element> {
     <header className={styles.heading}>
       <div className={styles.container}>
         <nav aria-label="İçerik yolu" className={styles.breadcrumb}><ol><li><Link href="/">Ana Sayfa</Link></li><li><span aria-hidden="true">/</span><span aria-current="page">Toptan Satış</span></li></ol></nav>
-        <p className={classic.eyebrow}>İŞLETMENİZ İÇİN</p>
         <h1>Toptan Satış</h1>
         <p>Otel, restoran, market ve toplu tüketim için zeytin ve zeytinyağı seçeneklerimizi birlikte planlayalım.</p>
         <p>Koli bazında teklif için ürünleri ve adetleri seçin. E-posta taslağını hazırladıktan sonra gönderimi e-posta uygulamanızda tamamlayabilirsiniz.</p>

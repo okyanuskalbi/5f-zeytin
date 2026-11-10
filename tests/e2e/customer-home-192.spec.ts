@@ -105,8 +105,13 @@ test.describe("Task192 customer homepage", () => {
     if (playback.decodedFrames !== undefined) expect(playback.decodedFrames).toBeGreaterThan(0);
     expect([...new Set(requests.map(url => new URL(url).pathname))]).toEqual([`/videos/customer-home/${source}`]);
     await expect.poll(() => video.evaluate((node: HTMLVideoElement) => node.currentTime), { timeout: 1500 }).toBeGreaterThan(playback.currentTime + .2);
+    const playingControl = await page.getByRole("button", { name: "Videoyu duraklat", exact: true }).boundingBox();
     await page.getByRole("button", { name: "Videoyu duraklat", exact: true }).click();
     await expect.poll(() => video.evaluate((node: HTMLVideoElement) => node.paused)).toBe(true);
+    const pausedControl = await page.getByRole("button", { name: "Videoyu oynat", exact: true }).boundingBox();
+    // Playback labels must not move the control at startup or on user pause.
+    expect(Math.abs(pausedControl!.x - playingControl!.x)).toBeLessThan(.1);
+    expect(Math.abs(pausedControl!.width - playingControl!.width)).toBeLessThan(.1);
     const pausedAt = await video.evaluate((node: HTMLVideoElement) => node.currentTime);
     await page.waitForTimeout(350);
     expect(Math.abs(await video.evaluate((node: HTMLVideoElement) => node.currentTime) - pausedAt)).toBeLessThan(.05);
