@@ -15,6 +15,17 @@ fotoğraf katmanları, "Sepet özeti" ve admin paneli yerel koyu kapsamda aynen 
 penceresi ve `/siparis-takip` açığa geçer; "Mevcut değil" ayrı görünür; axe karşıtlık testi kalıcı.
 Sıra: 188 → 189 (aynı ağaçta, ayrı kayıtlar).
 
+Task190–191 / müşteri istekleri (aynı gün, WhatsApp, kullanıcı iletti): (1) "Ürün Gruplarının
+ek sayfası olsa olur mu kategori gibi … Siyah Zeytinin 1'den fazla çeşidi olabilir" → 4 grup için
+`/urunler/<kısa ad>` kategori sayfaları; grup tanımı tek kaynakta, bir grupta birden çok aile
+olabilir; ana sayfa grup fotoğrafları bu sayfalara gider; `/urunler` ve kategori sayfalarında ortak
+kategori gezinmesi; noindex. (2) "Az bucuk gene animasyon ekle … Scroll animasyonu olmasın … ufak
+tefek şeyler" → yalnız açılışta bir kez (üst bant) ve kullanıcı eylemine yanıt veren küçük
+hareketler; kaydırmaya bağlı efekt yok; azaltılmış hareket ve CLS 0 korunur.
+Not: vitrin ürünleri, fiyatları ve stokları hâlâ kodda (`lib/catalog/static-products.ts`);
+yönetim panelindeki fiyat/stok değişikliği vitrine yansımaz. Gerçek fiyatlardan önce ayrı görev.
+Sıra: 189-1 → 190 → 191.
+
 ## Aktif plan: klasik ana sayfa, bayilik, siyah teneke, Neon (9 Kasım 2026)
 
 Kullanıcı kararları (9 Kasım 2026):
