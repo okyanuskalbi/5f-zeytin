@@ -1,4 +1,4 @@
-# AFİNA ZEYTİN — Ön Yüz Master Prompt (v1 · 10 Kasım 2026)
+# AFİNA ZEYTİN — Ön Yüz Master Prompt (v1.1 · 10 Kasım 2026 — ui-ux-pro-max akışı, Motion değerleri, 21st erişimi eklendi)
 
 > Bu dosya afinazeytin.com ön yüzünü **baştan** kurmanın tek ve bağlayıcı talimatıdır. Her aşama görevi (`docs/tasks/198+`) bu dosyaya atıf yapar; çelişkide **bu dosya geçerlidir** (müşteri BRIEF'i hariç — o her şeyin üstündedir).
 > Kaynak kitler: `~/Desktop/WB AI PROJELER ICIN/` → profesyonel-web-sitesi-skill-yeni-nesil.md (rol + yasak liste + bitiş şartı), ui-ux-pro-max.md (Motion + 21st), BEST MY PROJECT .md (Karar → Üret → Denetle → Sun → Büyüt), DESIGN.md (tasarım dosyası BİÇİMİ), One-Shot Luxury Watch prompt (konfigürasyon + varlık tablosu + bölüm şartnamesi biçimi), AEO_GEO_Rehberi (bulunabilirlik), 9-mayis-10-kiti + web-site-yetenegi-kiti (marka kimliği → hiyerarşi → mikro-detay → kanıt), claude-codex-workflow.md (roller), Admin paneli .JPG (panel referansı).
@@ -124,6 +124,8 @@ Karar yolu: `ui-ux-pro-max --design-system` ("premium regional olive food e-comm
 - Kullanıcı eylemine yanıt: hover/tap (`whileHover`, `whileTap`), menü/çekmece/pencere açılıp kapanma (`AnimatePresence`), sepete ekleme onayı.
 - Kayan şerit (yalnız Hakkımızda): CSS transform, fareyle/odakla durur, azaltılmış harekette durağan.
 - `useReducedMotion()` → tüm hareket kapalı, içerik doğrudan görünür. CLS < 0.05.
+- Hazır değerler (ui-ux-pro-max.md): giriş `container {staggerChildren: 0.08, delayChildren: 0.2}` + `item {opacity 0→1, y 24→0, spring 120/20}` — kitteki `filter: blur(8px)` girişi **kullanılmaz** (telefonda pahalı, kuralı ihlal eder) · düğme/kart `whileHover {scale: 1.04}` (kartta en çok 1.02) `whileTap {scale: 0.96}`, spring 400/25 · `whileInView` `viewport={{ once: true, margin: "-80px" }}`, spring 100/22 · menü/çekmece/pencere/"sepete eklendi" bildirimi `AnimatePresence` (giriş y −8→0, çıkış girişten kısa) · sepet satırı silme ve kategori süzme `layout` prop ile.
+- `useScroll`/`useTransform` parallax ve video scrub bu projede **yok** (müşteri: kaydırma animasyonu olmasın).
 
 ---
 
@@ -131,6 +133,8 @@ Karar yolu: `ui-ux-pro-max --design-system` ("premium regional olive food e-comm
 
 - Standart kalıplar (menü, mobil çekmece, ürün kartı, form alanı, akordeon, sekme, tablo, alt bilgi, admin kenar menüsü) için önce **21st MCP** `search` → `get_component`; renk/boşluk/font tokenlara uyarlanır, birebir yapıştırılmaz. 21st aracı oturumda yoksa Coder Notu'na yaz ve shadcn/el yazımıyla devam et.
 - Markaya özgü bölümler (hero, Hikayemiz, 3'lü banner, Hasat) el yazımı + Motion.
+- 21st erişimi: **Codex** MCP ile (`21st/search` → `21st/get_component`). **Kimi'de 21st MCP yok** → Claude görev dosyasına bileşen listesini yazar, Kimi `npx shadcn@latest add "https://21st.dev/r/<yazar>/<ad>?api_key=$API_KEY_21ST"` ile kurar (anahtar ortamdan gelir, dosyaya/kayda yazılmaz). Erişim yoksa (401/anahtar eski) Coder Notu'na yaz, uydurma bileşen yazma.
+- Hangisi ne zaman: nav, kart, form, akordeon, tablo, alt bilgi, admin menüsü → 21st · hero, imza bölümler → el yazımı + Motion · hareket karakteri her zaman Motion ile eklenir (21st çıktısındaki hazır animasyonlar tokenlara ve §8'e uydurulur ya da çıkarılır).
 - shadcn: resmî CLI (`npx shadcn@latest add …`), varsayılan halde bırakma. İki seçenekli ayar = yan yana anahtar (toggle-group), açılır liste değil.
 - Şifre alanında göster/gizle düğmesi alanın içinde; form hataları alanın altında, Türkçe ve ne yapılacağını söyler.
 
@@ -187,6 +191,18 @@ Referans: `Admin paneli .JPG` — açık zemin, solda gruplu ikonlu menü, üstt
 | A7 Cihaz QA | 202 | Kimi | Tüm sayfa × 15 cihaz × Chromium+WebKit, akışlar, gözle inceleme → `RAPOR.md` (197 düzeni) → Codex düzeltme döngüsü | **K3** kritik/yüksek 0 |
 | A8 Sunum + yayın | 203 | Codex (önizleme PDF + ana sayfa gezinti videosu 1440 + 390); Claude (push → CI → deploy.py → canlı kontrol) | `AFINA-KAYNAK/tasarim/uygulama-kontrol/AFINA-onyuz-v2-onizleme.pdf` + `.mp4` | **K4** kullanıcı yayın onayı |
 | A9 Büyüt (ayrı onay) | sonra | Codex | `claude-seo` / `geo` denetimi, Search Console, tanıtım videosu (hyperframes / video-shotcraft), pazarlama skill'leri | — |
+
+### 12.1 · ui-ux-pro-max akışı (A1'de zorunlu, A3/A4'te sayfa bazında)
+Script: **`~/.codex/skills/ui-ux-pro-max/scripts/search.py`** (genel ve güncel kopya; projedeki `.codex/skills/ui-ux-pro-max` eskidir, `--variance/--motion/--density` tanımaz — kullanma). Ham çıktılar `output/task<NNN>-<ajan>/sources/` altına.
+1. **Gereksinim:** ürün türü (premium yöresel gıda e-ticaret + B2B teklif), kitle (telefondan gelen perakende + kurumsal alıcı), ton (açık, sıcak, editoryal), yığın (Next.js + shadcn, `package.json`'dan doğrula).
+2. **Tasarım sistemi:** `--design-system "premium regional olive food e-commerce light editorial" --variance 6 --motion 3 --density 4 --persist -p "AFINA ZEYTIN" --output-dir output/task<NNN>-<ajan>/sources`; sayfa katmanları `--page home`, `--page product`, `--page checkout`. Sonuç ham girdidir; **tek doğru kaynak `docs/DESIGN.md`**. Müşteriyle/MASTER-PROMPT ile çelişen öneriler (koyu tema, yatay kaydırma yolculuğu, cam efekti, başka font) gerekçesiyle reddedilip PLAN.md'ye yazılır.
+3. **Alan aramaları** (her biri tek niyet, 2–5 kelime; boş/konu dışı çıkarsa bir kez daralt, yine yoksa "eşleşme yok, genel kural" de): `"product card mobile commerce" --domain ux` · `"add to cart feedback" --domain ux` · `"mobile drawer navigation focus" --domain ux` · `"form error inline validation" --domain ux` · `"serif editorial food brand" --domain typography` · `"olive green ivory gold" --domain color` · `"ecommerce landing hero video" --domain landing` · `"decorative icon aria hidden" --domain icons`.
+4. **Yığın rehberi:** `--stack nextjs` ("image font loading bundle"), `--stack shadcn` ("drawer dialog form"), `--domain react` ("rerender memo list").
+5. **Teslim öncesi:** skill'in `references/quick-reference.md` öncelik sırası (1 Erişilebilirlik → 2 Dokunma → 3 Performans → 4 Stil → 5 Yerleşim → 6 Yazı/Renk → 7 Animasyon → 8 Formlar → 9 Gezinme) madde madde KANIT.md'de "geçti/neden geçmedi".
+6. **Hızlı kontrol (ui-ux-pro-max.md §06):** motion `motion/react`'ten · 21st bağlı ve anahtar güncel · tüm animasyonlar transform+opacity · azaltılmış hareket yazıldı · giriş sekansı tek, sonra sükûnet · 21st bileşenleri tokenlara uyarlandı.
+
+### 12.2 · A0 araç doğrulama (her ajan, işe başlamadan; sonucu PLAN.md'nin başına)
+`motion` sürümü (`package.json`) · 21st erişimi (Codex: `codex mcp list` → `21st enabled`; Kimi: `$API_KEY_21ST` dolu mu, değeri yazdırma) · `search.py --help` içinde `--variance` var mı · Playwright tarayıcıları (chromium, webkit) · yerel test DB'si/ortam (Claude verir).
 
 Her aşamada fiilen yüklenecek skill'ler: `ui-ux-pro-max`, `frontend-design`, `better-layout`, `better-typography`, `better-colors`, `motion-framer`, `shadcn-ui`, `responsiveness-check`, `impeccable`/`audit-ai-design-slop`, `web-design-guidelines`; A5'te `seo`/`ai-seo`/`aeo-geo-rehberi`; A6'da `security-audit`. Codex alt ajanları (multi_agent) serbest.
 
