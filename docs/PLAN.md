@@ -1,4 +1,18 @@
-## Aktif plan: açık tonlu yeni kurgu, Köklü Zeytincilik referanslı (10 Kasım 2026, öğleden sonra)
+## Aktif plan: ön yüz baştan (10 Kasım 2026, gece)
+
+Kullanıcı: "baştan yapacağız elindeki tüm bilgileri değerlendir" → kapsam **ön yüz baştan**; üyelik,
+Neon DB, yönetim paneli mantığı, sepet/ödeme mantığı ve yayın düzeni aynen kalır. Kullanıcı: "hiç bir
+üretimi sen yapma sen prompt mastersın" → Claude yalnız görev yazar ve denetler; tasarım/kod/test
+üretimi Codex ve Kimi'de. Girdiler: müşteri BRIEF'i (içerik ve sıra bağlayıcı), PRODUCT.md, ret
+geçmişi (v1/v2/v11 ret, sinematik kaydırma vazgeçildi, 196 "kopya olmasın"), Kimi 197 canlı cihaz
+analizi, `~/Desktop/WB AI PROJELER ICIN` kitleri (profesyonel-web-sitesi yasak listesi + Motion kuralları
++ 21st politikası, DESIGN.md biçimi, Karar→Üret→Denetle→Sun boru hattı, admin paneli referansı).
+Sıra: **198** tasarım sistemi + ana sayfa + ürün sayfası (Codex ve Kimi ayrı kopyada, A/B, kullanıcı
+seçer) → **199** tüm sayfalar + eski kodun/testlerin temizliği → **200** yönetim paneli görünümü →
+Kimi tüm cihaz QA (197 düzeni) → Codex düzeltme → kullanıcı onayıyla yayın. Açık iş (ayrı, DB'ye
+dokunduğu için onaylı): vitrin fiyat/stokunun koddan DB'ye alınması.
+
+## Önceki plan: açık tonlu yeni kurgu, Köklü Zeytincilik referanslı (10 Kasım 2026, öğleden sonra)
 
 Müşteri revizesi (birebir metin: `AFINA-KAYNAK/musteri-2026-11-10/BRIEF.md`; kullanıcı: "revizlerini
 baştan kurgula yap", "codex'e yaptır"). C ana sayfası yerini kokluzeytincilik.com.tr yapısındaki
