@@ -38,7 +38,7 @@ test.describe("Task191 light motion", () => {
           }
         }).observe({ type: "layout-shift", buffered: true });
       });
-      await page.goto(url, { waitUntil: "networkidle" });
+      await page.goto(url, { waitUntil: "load" });
       await settled(page);
       const shifts = await page.evaluate(() => (window as unknown as { task191Shifts: number[] }).task191Shifts);
       await info.attach("layout-shifts", { body: JSON.stringify(shifts), contentType: "application/json" });
@@ -50,7 +50,7 @@ test.describe("Task191 light motion", () => {
     test(`${width} ${url}: reduced motion shows the final hero immediately`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 });
       await page.emulateMedia({ reducedMotion: "reduce" });
-      await page.goto(url, { waitUntil: "networkidle" });
+      await page.goto(url, { waitUntil: "load" });
       const copy = page.locator("[data-hero-enter]");
       await expect(copy).toHaveCount(4);
       for (const element of await copy.all()) {
@@ -58,14 +58,18 @@ test.describe("Task191 light motion", () => {
         await expect(element).toHaveCSS("transform", "none");
         await expect(element).toHaveCSS("animation-name", "none");
       }
-      await expect(page.locator("[data-storefront-hero] picture img").first()).toHaveCSS("transform", "none");
+      if (url === "/") await expect(page.locator("[data-storefront-hero] picture img").first()).toHaveCSS("transform", "none");
+      else {
+        await expect(page.locator("[data-storefront-hero] picture img")).toHaveCount(0);
+        await expect(page.locator("[data-storefront-hero]")).not.toHaveAttribute("data-surface", "dark");
+      }
     });
   }
 
   for (const url of ["/", "/urunler", "/urunler/zeytinyagi", "/bayilik", "/sepet", "/hesabim"]) {
     test(`${url}: scrolling never animates or hides storefront content`, async ({ page }, info) => {
       await page.setViewportSize({ width: 1440, height: 900 });
-      await page.goto(url, { waitUntil: "networkidle" });
+      await page.goto(url, { waitUntil: "load" });
       await settled(page);
       await page.mouse.move(0, 0);
       await page.evaluate(async () => {
@@ -84,18 +88,19 @@ test.describe("Task191 light motion", () => {
         const bad = await page.locator("main *").evaluateAll((elements, initial) => elements.flatMap((element, index) => {
           const style = getComputedStyle(element);
           const box = element.getBoundingClientRect();
-          const changed = initial[index] && (style.opacity !== initial[index].opacity || style.transform !== initial[index].transform);
+          const isMarquee = Boolean(element.closest("[data-home-marquee]"));
+          const changed = !isMarquee && initial[index] && (style.opacity !== initial[index].opacity || style.transform !== initial[index].transform);
           const visible = box.width > 0 && box.height > 0 && box.bottom > 0 && box.top < innerHeight && style.display !== "none" && style.visibility !== "hidden";
           // Existing unavailable location pickers intentionally have a static
           // dimmed appearance. Still compare their styles at every scroll step;
           // do not turn the motion check into a change to Task189's colours.
           const content = !element.closest('[aria-hidden="true"], :disabled, [aria-disabled="true"]');
-          return changed || (visible && content && Number(style.opacity) !== 1)
+          return changed || (!isMarquee && visible && content && Number(style.opacity) !== 1)
             ? [{ tag: element.tagName, className: element.getAttribute("class"), changed, opacity: style.opacity, transform: style.transform }]
             : [];
         }), before);
         violations.push(...bad);
-        expect(await page.locator("main").evaluateAll(roots => roots.flatMap(root => root.getAnimations({ subtree: true })).filter(animation => animation.playState === "running").length)).toBe(0);
+        expect(await page.locator("main").evaluateAll(roots => roots.flatMap(root => root.getAnimations({ subtree: true })).filter(animation => animation.playState === "running" && !(animation.effect instanceof KeyframeEffect && animation.effect.target instanceof Element && animation.effect.target.closest("[data-home-marquee]"))).length)).toBe(0);
       }
       await info.attach("scroll-style-violations", { body: JSON.stringify(violations), contentType: "application/json" });
       expect(violations).toEqual([]);
@@ -104,8 +109,8 @@ test.describe("Task191 light motion", () => {
 
   test("group photos zoom and arrows move only in response to hovering", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
-    await page.goto("/", { waitUntil: "networkidle" });
-    const link = page.locator('#urunler a[href="/urunler/siyah-zeytin"]');
+    await page.goto("/", { waitUntil: "load" });
+    const link = page.locator('a[data-home-category="zeytinyagi"]');
     await link.scrollIntoViewIfNeeded();
     await page.mouse.move(0, 0);
     await expect(link.locator("img")).toHaveCSS("transform", "none");
@@ -116,7 +121,7 @@ test.describe("Task191 light motion", () => {
 
   test("product cards lift on hover and keyboard focus, and remain still with reduced motion", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
-    await page.goto("/urunler", { waitUntil: "networkidle" });
+    await page.goto("/urunler", { waitUntil: "load" });
     const card = page.locator("article[data-product-id]").first();
     await card.hover();
     await expect.poll(() => card.evaluate(element => new DOMMatrixReadOnly(getComputedStyle(element).transform).m42)).toBeLessThan(0);

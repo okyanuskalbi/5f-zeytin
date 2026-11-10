@@ -23,7 +23,7 @@ test.describe("Task190 category pages", () => {
   });
 
   for (const group of groups) test(`${group.id}: static response, exact products and three-level breadcrumb`, async ({ page }) => {
-    const response = await page.goto(`/urunler/${group.id}`, { waitUntil: "networkidle" });
+    const response = await page.goto(`/urunler/${group.id}`, { waitUntil: "load" });
     expect(response?.status()).toBe(200);
     await expect(page.getByRole("heading", { level: 1, name: group.name, exact: true })).toBeVisible();
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex.*follow/);
@@ -55,7 +55,7 @@ test.describe("Task190 category pages", () => {
 
   for (const width of [360, 390, 768, 1024, 1440]) test(`${width}: category navigation, touch targets and normal document flow`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto("/urunler", { waitUntil: "networkidle" });
+    await page.goto("/urunler", { waitUntil: "load" });
     const navigation = page.getByRole("navigation", { name: "Ürün grupları", exact: true });
     const labels = ["Tüm ürünler", ...groups.map(group => group.name)];
     for (const label of labels) {
@@ -81,10 +81,11 @@ test.describe("Task190 category pages", () => {
   });
 
   test("home photos open category pages and the existing detail and quote handoff still work", async ({ page }) => {
-    await page.goto("/", { waitUntil: "networkidle" });
-    const groupSection = page.locator("#urunler");
-    for (const group of groups) await expect(groupSection.getByRole("link", { name: group.name, exact: true })).toHaveAttribute("href", `/urunler/${group.id}`);
-    await groupSection.getByRole("link", { name: "Zeytinyağı", exact: true }).click();
+    await page.goto("/", { waitUntil: "load" });
+    const groupSection = page.locator("[data-home-categories]");
+    await expect(groupSection.locator('a[href="/urunler/zeytinyagi"]')).toBeVisible();
+    await expect(groupSection.locator('a[href="/urunler/zeytin"]')).toBeVisible();
+    await groupSection.locator('a[href="/urunler/zeytinyagi"]').click();
     await expect(page).toHaveURL(/\/urunler\/zeytinyagi$/);
     const product = page.locator('article[data-product-id="sample-olive-oil-1l"]');
     await product.getByRole("button", { name: /detayını aç/ }).click();

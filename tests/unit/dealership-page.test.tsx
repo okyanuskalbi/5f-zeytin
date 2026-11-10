@@ -17,19 +17,20 @@ it("introduces dealership with one H1 and working application and product anchor
   expect(screen.getAllByRole("heading", { level: 1 }).map(node => node.textContent)).toEqual(["Bayimiz Olun"]);
   expect(screen.getByText("AFİNA ZEYTİN'i bölgenizde birlikte büyütelim; bayilik için bize yazın.")).toBeTruthy();
   expect(screen.getByRole("link", { name: "Başvuru Formu" }).getAttribute("href")).toBe("#basvuru");
-  expect(screen.getByRole("link", { name: "Ürünleri İncele" }).getAttribute("href")).toBe("/#urunler");
+  expect(screen.getByRole("link", { name: "Ürünleri İncele" }).getAttribute("href")).toBe("/urunler");
   expect(container.querySelector("header, footer")).toBeNull();
   expect(container.querySelector("video, canvas")).toBeNull();
 });
 
-it("offers a sharp orchard hero at tablet and desktop widths and keeps the branch on phones", () => {
+it("keeps the dealership introduction on a light surface without a dark image overlay", () => {
   const { container } = render(<DealershipPage />);
-  const picture = container.querySelector('section[aria-labelledby="bayilik-title"] picture')!;
-  const mobile = picture.querySelector('source[media="(max-width: 767px)"][type="image/avif"]');
-  expect(mobile?.getAttribute("srcset")).toContain("/images/klasik/zeytin-dali-800.avif 800w");
-  const desktop = picture.querySelector('source:not([media])[type="image/avif"]');
-  expect(desktop?.getAttribute("srcset")).toContain("/images/klasik/zeytinlik-1880.avif 1880w");
-  expect(picture.querySelector("img")?.getAttribute("src")).toContain("/images/klasik/zeytinlik-");
+  const hero = container.querySelector('section[aria-labelledby="bayilik-title"]')!;
+  expect(hero.getAttribute("data-surface")).not.toBe("dark");
+  expect(hero.querySelector("picture")).toBeNull();
+  const colors: Record<string, string> = {};
+  pageCss.walkRules(".hero", rule => rule.walkDecls(decl => { colors[decl.prop] = decl.value; }));
+  expect(colors.background).toBe("#F5F1E7");
+  expect(colors.color).toBe("#172B21");
 });
 
 it("gives the wider tin its own responsive source slots while preserving the jar and oil sources", () => {

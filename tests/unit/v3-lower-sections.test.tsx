@@ -28,14 +28,14 @@ it("shows the four trust facts without a draft delivery label", () => {
   expect(strip.querySelectorAll("svg")).toHaveLength(0);
 });
 
-it("omits the whole wholesale row and footer destination when contact details are empty", () => {
+it("omits unavailable direct wholesale channels while retaining the wholesale page destination", () => {
   expect(Object.values(siteContact).every(value => value === "")).toBe(true);
   render(<><Story /><WholesaleContact preserveAnchor /><Footer /></>);
   expect(document.querySelector("#toptan")).toBeNull();
   expect(document.querySelector("#toptan-iletisim")?.textContent).toBe("");
   expect(screen.queryByText("Toptan alım için bize yazın")).toBeNull();
   expect(screen.queryByText("İletişim bilgileri yakında")).toBeNull();
-  expect(screen.getByRole("link", { name: "Toptan Satış" }).getAttribute("href")).toBe("/#toptan");
+  expect(screen.getByRole("link", { name: "Toptan Satış" }).getAttribute("href")).toBe("/toptan-satis");
 });
 
 it("omits wholesale markup when all contact values contain only whitespace", () => {

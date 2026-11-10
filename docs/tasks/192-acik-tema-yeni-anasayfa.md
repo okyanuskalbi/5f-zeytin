@@ -47,12 +47,12 @@ Müşteri revizesi (10 Kasım 2026): ana sayfa `https://www.kokluzeytincilik.com
 Kaldırılan eski ana sayfa bölümleri: C hero (fotoğraf), güven şeridi (yeni yapıyla değişir), Modern Üretim Tesisimiz bölümü (Hakkımızda'ya taşınır, 194), Ürün Gruplarımız 4 fotoğraf (yerine 2. madde), koyu fotoğraflı Toptan/Bayilik bandı, "Ellek'ten sofranıza", SSS ve iletişim bölümleri (SSS ve iletişim 194'te Hakkımızda sayfasının altına taşınır; ana sayfadaki `#iletisim`, `#toptan`, `#urunler`, `#hakkimizda`, `#tesisimiz` eski bağlantıları kırılmasın: uygun bölüme ya da sayfaya yönlensin).
 
 ## Kabul kriterleri
-- [ ] Unit: bölüm sırası ve metinler BRIEF'e uygun (yukarıdaki 1–14); yasak içerik yok (yorum, rakamlı istatistik, "kişi inceliyor", sahte indirim, "İndirimdeki", "aynı gün kargo"). Referans sitenin metinleri birebir kopyalanmamış (ör. "Ayvalık", "Köklü", "Doğallığın En Güzel Halleri" geçmez).
-- [ ] Video: türev dosyalar boyut sınırında, poster var, azaltılmış harekette video oynamaz; LCP poster.
-- [ ] e2e: renk karşıtlığı (axe) 0 ihlal (ana sayfa, `/urunler`, kategori, bayilik; 390/1440; açık/koyu işletim sistemi modu aynı), alt bilgi altında farklı renkte boşluk yok, CLS < 0.05, kaydırmaya bağlı hareket yok (kayan şerit hariç; şerit azaltılmış harekette durur).
-- [ ] Lighthouse benzeri yerel ölçüm: ana sayfa LCP (yerel, 4x CPU yavaşlatma yok) poster görseli; toplam ilk yükte video indirimi `preload="none"`/`metadata` ile sınırlı.
-- [ ] `npm run lint`, `typecheck`, `test`, `build`, `git diff --check` yeşil; mevcut e2e'ler yeni tasarıma göre güncellenip geçer.
-- [ ] Ekran görüntüleri `output/task192/` (390/768/1440, tam sayfa). Claude tarayıcı doğrulaması ayrı.
+- [x] Unit: bölüm sırası ve metinler BRIEF'e uygun (yukarıdaki 1–14); yasak içerik yok (yorum, rakamlı istatistik, "kişi inceliyor", sahte indirim, "İndirimdeki", "aynı gün kargo"). Referans sitenin metinleri birebir kopyalanmamış (ör. "Ayvalık", "Köklü", "Doğallığın En Güzel Halleri" geçmez).
+- [x] Video: türev dosyalar boyut sınırında, poster var, azaltılmış harekette video oynamaz; LCP poster.
+- [x] e2e: renk karşıtlığı (axe) 0 ihlal (ana sayfa, `/urunler`, kategori, bayilik; 390/1440; açık/koyu işletim sistemi modu aynı), alt bilgi altında farklı renkte boşluk yok, CLS < 0.05, kaydırmaya bağlı hareket yok (kayan şerit hariç; şerit azaltılmış harekette durur).
+- [x] Lighthouse benzeri yerel ölçüm: ana sayfa LCP (yerel, 4x CPU yavaşlatma yok) poster görseli; toplam ilk yükte video indirimi `preload="none"`/`metadata` ile sınırlı.
+- [x] `npm run lint`, `typecheck`, `test`, `build`, `git diff --check` yeşil; mevcut e2e'ler yeni tasarıma göre güncellenip geçer.
+- [x] Ekran görüntüleri `output/task192/` (390/768/1440, tam sayfa). Claude tarayıcı doğrulaması ayrı.
 
 ## Yapılmaması gerekenler
 - Referans sitenin içeriğini/görsellerini/logosunu kopyalamak; sahte yorum/puan/istatistik/indirim.
@@ -62,4 +62,15 @@ Kaldırılan eski ana sayfa bölümleri: C hero (fotoğraf), güven şeridi (yen
 - **Push yok, yayın yok.** Her görevde tek kayıt (commit). `node_modules` ve `.next` SİLME.
 - `docs/` altında yalnız görev dosyasına Coder Notu ve Durum.
 
-## Durum: BEKLİYOR
+## Coder Notu
+
+- Müşterinin BRIEF.md metni birebir okundu. Referans site masaüstü/telefon tarayıcısında incelendi; görüntüler ve oranlar `output/task192/referans/` içinde. Yalnız yapı uyarlandı; referansın metni, logosu, fotoğrafı veya ürünü kullanılmadı.
+- Alt ajanlar: medya hazırlığı ve bağımsız inceleme; tema/menü/alt bilgi; ana sayfa; test ve kabul incelemesi rolleriyle çalıştı. `ui-ux-pro-max`, `frontend-design`, `better-layout`, `better-colors`, `better-accessibility`, `motion-framer`, `responsiveness-check`, `web-perf`, `frontend-patterns`, `tdd-workflow`, `e2e-testing` okundu ve uygulandı. Kurulu Next.js page kılavuzu okundu. 21st MCP aramasında 29288/18131/29395/28200 incelendi; mevcut proje bileşenleri kullanıldı, ücretli kaynak alınmadı/yeni bağımlılık eklenmedi.
+- RED: eski bölüm sırası/poster ve açık yüzey beklentileri başarısız doğrulandı; GREEN: yeni kurgu, iki farklı ürün sırası, açık menü/alt bilgi, 3 banner, hasat, durdurulabilir şerit ve ortak blog önizlemesi. Video düğmesinin katman altında kalmasını gösteren koruyucu test önce başarısız, düzeltme sonrası başarılı oldu.
+- Kaynak video Git dışında kaldı. Sessiz H.264 türevleri 1920/1280/720 genişlikte 4.910.744 / 3.620.214 / 2.322.850 bayt; 17,16 sn/429 kare korunur. 24 AVIF/WebP fotoğraf/poster, manifest, tekrarlanabilir hazırlama scripti ve CI kaynak-yok desenli varlık kontrolü eklendi. Doğrulayıcıda bozulma/eksik kaynak/eksik türev kontrolleri var.
+- Yerel kabul: `npm run lint`, `npm run typecheck`, `npm test -- --maxWorkers=2`, `npm run build`, `git diff --check` başarılı. 150 dosyada 1.408 test başarılı; mevcut 26 yerel veritabanı testi yapılandırılmadığı için atlandı (canlı veritabanına bağlanılmadı). İlgili güncel 189/189-1/190/191 ve 192 tarayıcı paketlerinde 124/124 başarılı. Eski testler silinmeden yeni tasarıma uyarlandı.
+- Ölçüm: 390/768/1440 tam sayfa görüntüleri `output/task192/`; CLS 0, LCP poster, azaltılmış harekette MP4 isteği 0, renk karşıtlığı ihlali 0. Normal telefon açılışında poster LCP 72 ms; video isteği yaklaşık 403 ms (yerel, CPU yavaşlatması yok). Kaydırmaya bağlı içerik hareketi yok; yalnız açıkça istenen zaman tabanlı şerit var, azaltılmış harekette durur. Açık/koyu sistem modu karşılaştırması ve alt bilgi sonrası piksel kontrolleri geçti.
+- Görevler arası geçiş: `/urunler/zeytin` Task193'te, Hakkımızda/Toptan Satış Task194'te, blog sayfaları Task195'te tamamlanacak bağlantılardır; bu görev bu hedeflerin tamamlandığını iddia etmez. Teklif formu ve mevcut SSS/iletişim, adresleri kaybetmeden Task194'te birlikte taşınabilmeleri için geçici olarak yeni ana sayfanın sonunda tutuldu.
+- Bekleyen müşteri malzemesi: hikâye görseli/metni ve zeytinyağı paylaşım görseli; görevde izin verilen mevcut onaylı fotoğraflar tek noktada değiştirilebilir geçici kaynaklardır. Claude'un ayrı görsel kabulü ve fiziksel cihaz kabulü yapılmış sayılmaz. Push/yayın/ortam değişikliği yapılmadı; `node_modules` ve `.next` korundu.
+
+## Durum: TAMAMLANDI

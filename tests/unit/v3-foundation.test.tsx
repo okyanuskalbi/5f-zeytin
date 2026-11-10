@@ -48,7 +48,7 @@ it("maps page and UI tokens to readable C light defaults and preserved local dar
   expect(tokens).toMatchObject({
     "--ink": "#0E1510", "--zeytin": "#1F3324", "--zeytin-2": "#2A4532",
     "--altin": "#D4B483", "--altin-2": "#E6CB97", "--sut": "#F7F3EA", "--gri": "#B9C0B6",
-    "--background": "#F7F4ED", "--foreground": "#172B21",
+    "--background": "#FAF8F2", "--foreground": "#172B21",
     "--primary": "#88630B", "--primary-foreground": "#FFFFFF",
   });
   expect(darkTokens).toMatchObject({

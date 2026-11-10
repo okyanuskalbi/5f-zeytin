@@ -32,7 +32,7 @@ body:has([data-admin-shell]) footer { display:none; }
   --pro-brand-hover: #C8D6AC;
   --pro-stone: #F0EBDD;
   --pro-ink: #172B21;
-  --pro-paper: #F7F4ED;
+  --pro-paper: #FAF8F2;
   --pro-gold: #C89B3C;
   --pro-gold-ink: #735519;
   --pro-muted: #4F594B;
@@ -40,7 +40,7 @@ body:has([data-admin-shell]) footer { display:none; }
   --pro-input: #717C69;
   --pro-error: #9D2822;
   --pro-gutter: clamp(20px,4vw,64px);
-  --shell-background: #172b1c;
+  --shell-background: #F5F1E7;
   color-scheme: light;
   --ink: #0E1510;
   --zeytin: #1F3324;
@@ -70,11 +70,11 @@ body:has([data-admin-shell]) footer { display:none; }
   --step-head: clamp(40px, 5vw, 68px);
   --step-display: clamp(52px, 6.4vw, 96px);
 
-  --background: #F7F4ED;
+  --background: #FAF8F2;
   --foreground: #172B21;
   --card: #F5F1E7;
   --card-foreground: var(--foreground);
-  --popover: #F7F4ED;
+  --popover: #FFFFFF;
   --popover-foreground: var(--foreground);
   --primary: #88630B;
   --primary-foreground: #FFFFFF;

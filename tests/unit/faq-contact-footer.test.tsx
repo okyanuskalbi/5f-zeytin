@@ -48,7 +48,10 @@ it.each([
   if (contact.phone) expect(doc.querySelector('#iletisim a[href^="tel:"]')).not.toBeNull();
   if (contact.email) expect(doc.querySelector('#iletisim a[href^="mailto:"]')).not.toBeNull();
   expect(doc.querySelector('#toptan form[aria-label="Kurumsal teklif talebi"] a[href="/kvkk"]')).not.toBeNull();
-  expect(doc.querySelector('footer a[href="/#toptan"]')?.textContent).toBe("Toptan Satış");
+  expect(doc.querySelector('footer a[href="/toptan-satis"]')?.textContent).toBe("Toptan Satış");
+  if (contact.phone) expect(doc.querySelector('footer a[href^="tel:"]')).not.toBeNull();
+  if (contact.email) expect(doc.querySelector('footer a[href^="mailto:"]')?.getAttribute("href")).toBe(`mailto:${contact.email.trim()}`);
+  if (contact.whatsapp) expect(doc.querySelector('footer a[href^="https://wa.me/"]')?.getAttribute("href")).toBe("https://wa.me/905550100000");
 });
 it("opens the existing wholesale form in a labelled dialog and restores its trigger", async () => {
   render(<WholesaleFaq />);

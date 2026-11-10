@@ -56,3 +56,9 @@
  .steps li { flex-direction:row; }
  .application { padding:40px 20px; }
 }
+
+.hero { background:#F5F1E7; color:#172B21; border-bottom:1px solid #D6D0C3; }
+.heroCopy { max-width:760px; }
+.heroCopy h1 { margin:0 0 16px; font-size:clamp(2.5rem,5vw,4.5rem); line-height:1.1; }
+.outlineButton { display:inline-flex; justify-content:center; align-items:center; gap:12px; min-height:48px; padding:12px 20px; border:1px solid #88630B; border-radius:6px; color:#172B21; background:transparent; font-size:.9375rem; font-weight:600; }
+.outlineButton:hover { background:#FFFFFF; }

@@ -23,7 +23,7 @@ function openMenu() {
 it("keeps the original light logo, all seven navigation destinations and shopping actions in the C mobile panel", () => {
   const menu = openMenu();
   const home = menu.getByRole("link", { name: "Afina Zeytin ana sayfa" });
-  expect(home.querySelector("img")?.getAttribute("src")).toContain("yatay-dark");
+  expect(home.querySelector("img")?.getAttribute("src")).toContain("yatay@");
   const nav = menu.getByRole("navigation", { name: "Site navigasyonu" });
   expect(within(nav).getAllByRole("link").map(link => link.getAttribute("href"))).toEqual(links.map(link => link.href));
   expect(menu.getByRole("link", { name: "Online Mağaza" }).getAttribute("href")).toBe("/urunler");

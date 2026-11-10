@@ -39,21 +39,21 @@ it("keeps the public homepage active when the internal route pathname differs", 
   expect(current()).toBe("Ana Sayfa");
 });
 
-it("follows ordinary scrolling and returns to home without changing the URL", () => {
+it("keeps the current page stable through ordinary scrolling without changing the URL", () => {
   mount(); flush();
-  scroll(2100); expect(current()).toBe("Ürünler");
-  scroll(3100); expect(current()).toBe("Toptan Satış");
-  scroll(4100); expect(current()).toBe("İletişim");
+  scroll(2100); expect(current()).toBe("Ana Sayfa");
+  scroll(3100); expect(current()).toBe("Ana Sayfa");
+  scroll(4100); expect(current()).toBe("Ana Sayfa");
   scroll(0); expect(current()).toBe("Ana Sayfa");
   expect(location.hash).toBe("");
 });
 
-it("retains an explicitly selected co-located corporate anchor, then follows the next section", () => {
+it("does not treat a legacy corporate hash as a separate current page", () => {
   mount(); flush();
   history.replaceState(null, "", "/#hakkimizda"); scrollPosition = 1000;
   fireEvent(window, new HashChangeEvent("hashchange")); flush();
-  expect(current()).toBe("Hakkımızda");
-  scroll(2100); expect(current()).toBe("Ürünler");
+  expect(current()).toBe("Ana Sayfa");
+  scroll(2100); expect(current()).toBe("Ana Sayfa");
   scroll(0); expect(current()).toBe("Ana Sayfa");
 });
 

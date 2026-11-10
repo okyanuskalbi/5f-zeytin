@@ -75,13 +75,13 @@ describe("Task 132 payment artwork and surfaces", () => {
     },
   );
 
-  it("uses light artwork on the C dark footer while preserving the three-card list", () => {
+  it("uses dark artwork on the light footer while preserving the three-card list", () => {
     const doc = new DOMParser().parseFromString(renderToStaticMarkup(<Footer />), "text/html");
     const payment = doc.querySelector('[aria-label="Güvenli ödeme"]')!;
-    expect(payment.closest("[data-surface]")?.getAttribute("data-surface")).toBe("dark");
+    expect(payment.closest("[data-surface]")?.getAttribute("data-surface")).not.toBe("dark");
     expect([...payment.querySelectorAll("img")].map(image => ({ alt: image.alt, src: image.getAttribute("src") })))
       .toEqual(brands.map(brand => ({ alt: brand,
-        src: `/images/payment/${brand.toLowerCase()}.svg` })));
+        src: `/images/payment/${brand.toLowerCase()}${brand === "Mastercard" ? "" : "-dark"}.svg` })));
     expect(payment.querySelectorAll('ul[aria-label="Kabul edilen kartlar"] > li')).toHaveLength(3);
   });
 });

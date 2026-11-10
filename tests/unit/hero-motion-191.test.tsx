@@ -22,7 +22,8 @@ it.each([ClassicHero, DealershipPage])("keeps each hero readable on the server a
     expect(node.style.visibility).not.toBe("hidden");
     expect(node.hidden).toBe(false);
   }
-  expect(hero.querySelector("[data-hero-photo] img")).not.toBeNull();
+  if (Component === ClassicHero) expect(hero.querySelector("[data-hero-photo] img")).not.toBeNull();
+  else expect(hero.querySelector("video")).toBeNull();
 });
 
 it("uses only transform and opacity keyframes behind the no-preference media query", () => {

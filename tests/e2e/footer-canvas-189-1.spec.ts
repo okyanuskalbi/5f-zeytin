@@ -33,7 +33,7 @@ test.describe("Task189-1 footer and document canvas", () => {
   test.setTimeout(90_000);
 
   for (const viewport of viewports) for (const route of routes) {
-    test(`${viewport.width}x${viewport.height} ${route.name}: no light pixels below the footer`, async ({ browser, baseURL }, testInfo) => {
+    test(`${viewport.width}x${viewport.height} ${route.name}: no mismatched pixels below the light footer`, async ({ browser, baseURL }, testInfo) => {
       const origin = new URL(baseURL ?? "http://localhost:3004");
       expect(["localhost", "127.0.0.1", "[::1]"]).toContain(origin.hostname);
       const output = path.resolve("output/task189-1-footer");
@@ -51,7 +51,7 @@ test.describe("Task189-1 footer and document canvas", () => {
             localStorage.setItem("afina-zeytin:cart", JSON.stringify([{ productId: "sample-olive-oil-1l", quantity: 1 }]));
           });
           const page = await context.newPage();
-          const response = await page.goto(route.url, { waitUntil: "networkidle" });
+          const response = await page.goto(route.url, { waitUntil: "load" });
           expect(response?.status()).toBe(route.status);
           await page.evaluate(async () => {
             await document.fonts.ready;
@@ -99,10 +99,10 @@ test.describe("Task189-1 footer and document canvas", () => {
           const report = { colorScheme, ...geometry, screenshotHeight: pixels.info.height, sampledRowsBelowFooter: Math.max(0, pixels.info.height - startY), mismatchingPixels };
           modes.push(report);
           expect.soft(geometry.footerBottom).toBeLessThanOrEqual(geometry.documentHeight + 1);
-          expect.soft(mismatchingPixels, `${name}: every rendered pixel after the footer must match its dark background`).toBe(0);
+          expect.soft(mismatchingPixels, `${name}: every rendered pixel after the footer must match its light background`).toBe(0);
           const canvas = rgb(geometry.htmlBackground);
           expect.soft(canvas.length === 3 || canvas[3] === 1, "The root overscroll canvas must be opaque.").toBe(true);
-          expect.soft(canvas.slice(0, 3).every(channel => channel < 96), "The root overscroll canvas must remain dark.").toBe(true);
+          expect.soft(geometry.htmlBackground, "Root overscroll matches the light footer.").toBe(geometry.footerBackground);
           const content = rgb(geometry.contentBackground);
           expect.soft(content[0], "Page content must retain its light ivory surface.").toBeGreaterThanOrEqual(230);
           expect.soft(content[1]).toBeGreaterThanOrEqual(225);

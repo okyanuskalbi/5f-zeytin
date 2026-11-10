@@ -42,7 +42,7 @@ function contrast(foreground: string, background: string): number {
 it("uses readable light semantic surface pairs by default and keeps dark tokens local", () => {
   const light = declarations(":root");
   expect(light["color-scheme"]).toBe("light");
-  expect(color(light["--background"], light).toLowerCase()).toBe("#f7f4ed");
+  expect(color(light["--background"], light).toLowerCase()).toBe("#faf8f2");
   for (const surface of ["background", "card", "popover", "primary", "secondary", "muted", "accent", "destructive"]) {
     const text = surface === "background" ? "foreground" : `${surface}-foreground`;
     expect(contrast(color(light[`--${text}`], light), color(light[`--${surface}`], light)), surface).toBeGreaterThanOrEqual(4.5);
@@ -64,19 +64,19 @@ it("compiles dark helpers against explicit surface ancestry rather than the oper
   expect(output).not.toContain("prefers-color-scheme");
 });
 
-it("isolates the dark navbar, footer, brand panel, hero and photo cards", () => {
+it("keeps navigation and footer light while isolating the brand panel and photo cards", () => {
   const doc = new DOMParser().parseFromString(renderToStaticMarkup(<><Navbar /><Footer /><MembershipFrame mode="login"><p>Form</p></MembershipFrame><ClassicHero /><TrustStrip /><ClassicBusiness /></>), "text/html");
-  expect(doc.querySelector('[data-site-navbar]')?.getAttribute("data-surface")).toBe("dark");
-  expect(doc.querySelector("footer")?.getAttribute("data-surface")).toBe("dark");
+  expect(doc.querySelector('[data-site-navbar]')?.getAttribute("data-surface")).not.toBe("dark");
+  expect(doc.querySelector("footer")?.getAttribute("data-surface")).not.toBe("dark");
   expect(doc.querySelector('aside[aria-label="AFİNA ZEYTİN"]')?.getAttribute("data-surface")).toBe("dark");
   expect(doc.querySelector("#baslangic")?.getAttribute("data-surface")).toBe("dark");
   expect(doc.querySelector("main[data-surface=dark]")).toBeNull();
 });
 
-it("keeps the phone menu light except for its dark logo toolbar", () => {
+it("keeps the entire phone menu light including its logo toolbar", () => {
   render(<NavbarMenu links={[{ href: "/", label: "Ana Sayfa" }]} onClose={() => {}} onRestoreFocus={() => {}} />);
   expect(screen.getByRole("dialog").getAttribute("data-surface")).not.toBe("dark");
-  expect(screen.getByRole("button", { name: "Kapat" }).closest('[data-surface="dark"]')).not.toBeNull();
+  expect(screen.getByRole("button", { name: "Kapat" }).closest('[data-surface="dark"]')).toBeNull();
   expect(screen.getByRole("link", { name: "Online Mağaza" }).closest('[data-surface="dark"]')).toBeNull();
 });
 

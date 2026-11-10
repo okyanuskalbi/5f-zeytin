@@ -15,14 +15,14 @@ vi.mock("next/link", () => ({ default: (props: ComponentProps<"a">) => <a {...pr
 afterEach(() => { cleanup(); history.replaceState(null, "", "/"); route.pathname = "/"; scrollToQuote.mockClear(); vi.restoreAllMocks(); });
 
 
-it("marks Online Mağaza as the current page while preserving the desktop product-section anchor", () => {
+it("marks Online Mağaza as the current page while keeping the desktop products page destination", () => {
   route.pathname = "/urunler";
   history.replaceState(null, "", "/urunler");
   render(<Navbar />);
   const shop = screen.getByRole("link", { name: "Online Mağaza" });
   expect(shop.getAttribute("href")).toBe("/urunler");
   expect(shop.getAttribute("aria-current")).toBe("page");
-  expect(screen.getByRole("link", { name: "Ürünler" }).getAttribute("href")).toBe("/#urunler");
+  expect(screen.getByRole("link", { name: "Ürünler" }).getAttribute("href")).toBe("/urunler");
 });
 
 it("closes the mobile menu when its ordinary shop link is selected", () => {

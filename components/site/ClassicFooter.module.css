@@ -1,18 +1,24 @@
-.footer { padding:28px var(--pro-gutter) max(16px,env(safe-area-inset-bottom,0px)); background:var(--shell-background); color:#faf6ec; font-size:13px; line-height:1.5; }
-.top,.bottom { display:flex; align-items:center; gap:24px; max-width:1440px; margin-inline:auto; }
-.home { display:inline-flex; align-items:center; min-height:48px; flex:none; }
-.logo { display:block; width:148px; height:40px; object-fit:contain; }
-.locality { padding-left:24px; border-left:1px solid #d5b36a70; }
-.links { display:flex; flex:1; justify-content:center; align-items:center; flex-wrap:wrap; column-gap:20px; }
-.link { display:inline-flex; align-items:center; min-height:48px; font-size:13px; line-height:1.5; }
-.community { min-height:48px; display:flex; align-items:center; max-width:180px; padding-left:24px; border-left:1px solid #d5b36a70; }
-.link:hover,.community:hover { text-decoration:underline; text-decoration-color:#e3bf65; text-underline-offset:5px; }
-.home:focus-visible,.link:focus-visible,.community:focus-visible { outline:2px solid #e3bf65; outline-offset:4px; }
-.bottom { margin-top:20px; padding-top:12px; border-top:1px solid #d5b36a40; justify-content:space-between; }
-.legal { display:flex; flex-wrap:wrap; column-gap:24px; }
+.footer { padding:64px var(--pro-gutter) max(24px,env(safe-area-inset-bottom,0px)); background:var(--shell-background); color:#172B21; font-size:14px; line-height:1.6; border-top:1px solid #D6D0C3; }
+.top,.bottom,.contact { max-width:1280px; margin-inline:auto; }
+.top { display:grid; grid-template-columns:minmax(0,1.6fr) repeat(3,minmax(0,1fr)); gap:40px; }
+.top > div { min-width:0; }
+.footer h2 { font-family:var(--font-body,var(--font-body-fallback)); font-size:15px; font-weight:700; margin:0 0 12px; }
+.home { display:inline-flex; align-items:center; min-height:48px; }
+.logo { display:block; width:164px; height:44px; object-fit:contain; }
+.identity p { max-width:34ch; margin:12px 0; }
+.locality { color:#4F594B; }
+.links,.legal { display:grid; align-content:start; }
+.link { display:inline-flex; align-items:center; min-height:48px; font-size:14px; line-height:1.5; overflow-wrap:anywhere; }
+.community { min-height:48px; display:inline-flex; align-items:center; color:#4F594B; }
+.link:hover,.community:hover { text-decoration:underline; text-decoration-color:#88630B; text-underline-offset:5px; }
+.home:focus-visible,.link:focus-visible,.community:focus-visible { outline:2px solid #88630B; outline-offset:4px; }
+.contact { display:flex; align-items:center; flex-wrap:wrap; gap:8px 24px; margin-top:32px; padding-top:24px; border-top:1px solid #D6D0C3; }
+.contact address { max-width:72ch; font-style:normal; color:#4F594B; }
+.bottom { display:flex; align-items:center; gap:24px; margin-top:24px; padding-top:24px; border-top:1px solid #D6D0C3; justify-content:space-between; }
+.bottom > p { color:#4F594B; font-size:12px; }
 .payment { display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
 .payment p { font-size:12px; }
-.payment ul { display:flex; align-items:center; gap:14px; list-style:none; }
+.payment ul { display:flex; align-items:center; gap:14px; list-style:none; padding:0; }
 .paymentLogo { width:auto; max-width:74px; height:22px; object-fit:contain; }
-@media(max-width:1150px) { .top { flex-wrap:wrap; gap:16px 24px; } .links { order:4; width:100%; flex-basis:100%; justify-content:flex-start; } .community { margin-left:auto; } }
-@media(max-width:767px) { .top { display:grid; grid-template-columns:minmax(0,1fr); gap:12px; } .locality,.community { padding-left:0; border:0; } .community { margin-left:0; max-width:none; } .links { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 16px; order:0; } .bottom { align-items:flex-start; flex-direction:column; gap:16px; } .legal { column-gap:20px; } .payment { gap:12px; } }
+@media(max-width:1023px) { .top { grid-template-columns:repeat(2,minmax(0,1fr)); gap:32px; } .bottom { flex-direction:column; align-items:flex-start; } }
+@media(max-width:767px) { .footer { padding-top:40px; } .top { grid-template-columns:minmax(0,1fr); gap:24px; } .links { grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 16px; } .bottom { gap:16px; } .payment { gap:12px; } }

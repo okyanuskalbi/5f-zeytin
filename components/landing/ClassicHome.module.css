@@ -1,4 +1,4 @@
-.root { background:var(--pro-paper); color:var(--pro-ink); padding-top:var(--header-height); --classic-forest:#142817; --classic-gold:#EDBF58; --classic-dark-gold:#88630B; }
+.root { background:#FFFFFF; color:var(--pro-ink); padding-top:var(--header-height); --classic-forest:#172B21; --classic-gold:#88630B; --classic-dark-gold:#88630B; }
 /* The document already reserves header + 16px. Reset nested section and legacy
    alias margins here, including FAQ/product modules, to avoid counting twice. */
 .root section,.root span[id][aria-hidden="true"] { scroll-margin-top:0; }
@@ -9,17 +9,17 @@
 .heroPhoto { position:absolute; inset:0; z-index:-2; overflow:hidden; }
 .heroPhoto img { display:block; width:100%; height:100%; object-fit:cover; object-position:60% center; }
 .hero::after { content:""; position:absolute; z-index:-1; inset:0 34% 0 0; background:linear-gradient(90deg,rgba(8,22,12,.94),rgba(8,22,12,.88) 80%,transparent); pointer-events:none; }
-.heroContent { display:flex; align-items:center; min-height:clamp(400px,35vw,540px); padding-block:48px; }
+.heroContent { display:flex; align-items:center; min-height:clamp(440px,40vw,640px); padding-block:72px; }
 .heroCopy { width:49%; max-width:580px; }
 .heroCopy .eyebrow { color:var(--pro-paper); }
 .heroCopy h1 { margin:0 0 16px; font-size:clamp(2.25rem,4.15vw,4rem); line-height:1.1; letter-spacing:-.02em; font-weight:500; }
 .heroCopy > p:not(.eyebrow) { max-width:48ch; margin:0; font-size:1rem; line-height:1.6; text-wrap:pretty; }
 .actions { display:flex; flex-wrap:wrap; gap:16px; margin-top:24px; }
 .goldButton,.outlineButton,.darkGoldButton { display:inline-flex; align-items:center; justify-content:center; gap:12px; min-height:48px; padding:12px 20px; border:1px solid transparent; border-radius:6px; font-size:.9375rem; font-weight:650; line-height:1.5; text-decoration:none; cursor:pointer; }
-.goldButton { color:#142011; background:var(--classic-gold,#EDBF58); }
+.goldButton { color:#fff; background:var(--classic-gold,#88630B); }
 .outlineButton { color:var(--pro-paper); border-color:var(--pro-paper); background:rgba(8,22,12,.65); }
 .darkGoldButton { color:#fff; background:var(--classic-dark-gold,#88630B); }
-.goldButton:hover { background:#F4D082; }
+.goldButton:hover { background:#6C4E08; }
 .darkGoldButton:hover { background:#6C4E08; }
 .outlineButton:hover { background:var(--classic-forest); }
 .root a:focus-visible,.root button:focus-visible { outline:3px solid var(--classic-dark-gold); outline-offset:5px; }
@@ -91,8 +91,8 @@
  .container { width:calc(100% - 40px); }
  .heroPhoto { position:relative; display:block; height:clamp(250px,75vw,420px); }
  .heroPhoto img { object-position:center; }
- .hero::after { display:none; }
- .heroContent { display:block; min-height:0; padding-block:24px; }
+ .hero::after { display:block; inset:0; background:rgba(8,22,12,.68); }
+ .heroContent { display:flex; min-height:580px; padding-block:40px 96px; }
  .heroCopy { width:100%; max-width:none; }
  .heroCopy h1 { font-size:clamp(2rem,8.6vw,3rem); }
  .heroCopy > p:not(.eyebrow) { font-size:1rem; }

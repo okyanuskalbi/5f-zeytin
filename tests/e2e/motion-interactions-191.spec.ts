@@ -53,7 +53,7 @@ test.describe("Task191 action-only motion", () => {
 
   test("a category click keeps navigation and moves its indicator and product entrance only after the action", async ({ page }, info) => {
     await page.setViewportSize({ width: 1440, height: 900 });
-    await page.goto("/urunler", { waitUntil: "networkidle" });
+    await page.goto("/urunler", { waitUntil: "load" });
     await ready(page);
     const nav = page.getByRole("navigation", { name: "Ürün grupları" });
     const persistent = await nav.elementHandle();
@@ -85,7 +85,7 @@ test.describe("Task191 action-only motion", () => {
   test("reduced motion category changes show the final products without a transient entrance", async ({ page }, info) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.goto("/urunler", { waitUntil: "networkidle" });
+    await page.goto("/urunler", { waitUntil: "load" });
     await ready(page);
     await record(page, { grid: "[data-category-transition] [data-product-reveal]" });
     await page.getByRole("navigation", { name: "Ürün grupları" }).getByRole("link", { name: "Zeytinyağı", exact: true }).click();
@@ -111,7 +111,7 @@ test.describe("Task191 action-only motion", () => {
       };
       requestAnimationFrame(frame);
     });
-    await page.goto("/urunler", { waitUntil: "networkidle" });
+    await page.goto("/urunler", { waitUntil: "load" });
     const badge = page.locator('[data-slot="count-badge"]');
     await expect(badge).toHaveText("1");
     const hydration = await page.evaluate(() => (window as unknown as { task191HydrationScales: number[] }).task191HydrationScales);
@@ -135,7 +135,7 @@ test.describe("Task191 action-only motion", () => {
   });
 
   test("FAQ remains keyboard controlled and reduced motion opens and closes immediately", async ({ page }) => {
-    await page.goto("/", { waitUntil: "networkidle" });
+    await page.goto("/", { waitUntil: "load" });
     const faq = page.locator("details[data-faq]").first();
     const summary = faq.locator("summary");
     const answer = faq.locator("[data-faq-answer]");

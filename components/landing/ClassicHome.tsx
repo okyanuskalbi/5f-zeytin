@@ -1,19 +1,21 @@
 import type { JSX } from "react";
+import Link from "next/link";
 import { ArrowRight, Factory, Handshake, Leaf, Truck } from "lucide-react";
 import { V3Picture } from "@/components/media/V3Picture";
 import photos from "@/lib/media/classic-photos.json";
 import styles from "./ClassicHome.module.css";
+import { CustomerHeroVideo } from "./CustomerHeroVideo";
 
 export function ClassicHero(): JSX.Element {
-  return <section id="baslangic" aria-labelledby="baslangic-title" className={styles.hero} data-surface="dark" data-storefront-hero>
-    <V3Picture image={photos.assets.hero} mobile={photos.assets["hero-mobile"]} sizes="100vw" eager className={styles.heroPhoto} data-hero-photo />
+  return <section id="baslangic" aria-labelledby="baslangic-title" className={styles.hero} data-surface="dark" data-storefront-hero data-home-section="hero">
+    <CustomerHeroVideo />
     <div className={`${styles.container} ${styles.heroContent}`}><div className={styles.heroCopy}>
       <p className={styles.eyebrow} data-hero-enter="eyebrow">KENDİ ÜRETİMİMİZ</p>
       <h1 id="baslangic-title" data-hero-enter="title">Doğal, Lezzetli,{" "}<br />Güvenilir Zeytin</h1>
       <p data-hero-enter="description">Osmaniye Düziçi&apos;nin Ellek zeytinliklerinden gelen zeytinleri kendi tesisimizde hazırlayıp sofranıza ulaştırıyoruz.</p>
       <div className={styles.actions} data-hero-enter="actions">
-        <a href="#urunler" className={styles.goldButton}>Ürünlerimizi İncele<ArrowRight size={18} aria-hidden="true" /></a>
-        <a href="#toptan" className={styles.outlineButton}>Toptan Teklif Al<ArrowRight size={18} aria-hidden="true" /></a>
+        <Link href="/urunler" className={styles.goldButton}>Ürünleri İnceleyin<ArrowRight size={18} aria-hidden="true" /></Link>
+        <a href="/toptan-satis" className={styles.outlineButton}>Toptan Teklif Al<ArrowRight size={18} aria-hidden="true" /></a>
       </div>
     </div></div>
   </section>;

@@ -126,7 +126,7 @@ test.describe("Task189 local colour contrast and operating-system invariance", (
           });
           const page = await context.newPage();
           await page.emulateMedia({ colorScheme, reducedMotion: "reduce" });
-          const response = await page.goto(state.url, { waitUntil: "networkidle" });
+          const response = await page.goto(state.url, { waitUntil: "load" });
           expect(response?.status()).toBe(["bulunamayan", "odeme-onizleme-kapali"].includes(state.name) ? 404 : 200);
           await expect(page.locator("main")).toBeVisible();
           await page.evaluate(() => document.fonts.ready);

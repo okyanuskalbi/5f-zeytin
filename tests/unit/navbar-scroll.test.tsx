@@ -32,7 +32,7 @@ afterEach(() => {
 
 it("keeps corporate section destinations and the cart control", () => {
   render(<Navbar />);
-  for (const [name, href] of [["Hakkımızda", "/#hakkimizda"], ["Ürünler", "/#urunler"], ["Üretim Tesisimiz", "/#tesisimiz"], ["Toptan Satış", "/#toptan"], ["Bayilik", "/bayilik"], ["İletişim", "/#iletisim"]]) {
+  for (const [name, href] of [["Hakkımızda", "/hakkimizda"], ["Ürünler", "/urunler"], ["Toptan Satış", "/toptan-satis"], ["Bayilik", "/bayilik"], ["Blog", "/blog"], ["İletişim", "/#iletisim"]]) {
     expect(screen.getByRole("link", { name }).getAttribute("href")).toBe(href);
   }
   const cart = screen.getByRole("button", { name: "Sepetim, 0 adet" });
@@ -56,7 +56,7 @@ it("keeps the exact cart quantity accessible and opens the drawer from its icon 
   expect(openCart).toHaveBeenCalledWith(cart);
 });
 
-it("keeps the landing navigation on solid forest before and after every scroll threshold", () => {
+it("keeps the landing navigation on solid light before and after every scroll threshold", () => {
   render(<Navbar />);
   const header = screen.getByRole("banner");
   expect(header.getAttribute("data-tone")).toBe("solid");
@@ -67,7 +67,7 @@ it("keeps the landing navigation on solid forest before and after every scroll t
   }
 });
 
-it("retains the solid forest surface on a restored landing load and pageshow", () => {
+it("retains the solid light surface on a restored landing load and pageshow", () => {
   window.scrollY = 240;
   render(<Navbar />);
   const header = screen.getByRole("banner");
@@ -77,7 +77,7 @@ it("retains the solid forest surface on a restored landing load and pageshow", (
   expect(header.getAttribute("data-tone")).toBe("solid");
 });
 
-it("keeps interior routes on the solid dark surface while scrolling", () => {
+it("keeps interior routes on the solid light surface while scrolling", () => {
   state.pathname = "/kvkk";
   window.history.replaceState(null, "", state.pathname);
   render(<Navbar />);

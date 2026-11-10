@@ -19,20 +19,24 @@ export function NavbarMenu({ links, activeHref, onClose, onRestoreFocus }: {
       onCloseAutoFocus={event => { event.preventDefault(); onRestoreFocus(); }}>
       <DialogHeader className="sr-only">
         <DialogTitle>Site menüsü</DialogTitle>
-        <DialogDescription>Ana sayfa, hakkımızda, üretim tesisimiz, ürünler, toptan satış, bayilik ve iletişim.</DialogDescription>
+        <DialogDescription>Ana sayfa, hakkımızda, ürünler, toptan satış, bayilik, blog ve iletişim.</DialogDescription>
       </DialogHeader>
-      <div className={styles.menuToolbar} data-surface="dark">
+      <div className={styles.menuToolbar}>
         <DialogClose asChild><Link href="/" aria-label="Afina Zeytin ana sayfa" className={styles.menuHome}>
-          <BrandLogo tone="dark" className={styles.menuLogo} />
+          <BrandLogo tone="light" className={styles.menuLogo} />
         </Link></DialogClose>
         <DialogClose asChild><Button variant="ghost" size="icon" className={styles.menuClose} aria-label="Kapat"><X aria-hidden="true" /></Button></DialogClose>
       </div>
       <div className={styles.menuBody}>
         <nav aria-label="Site navigasyonu" className={styles.menuLinks}>
-          {links.map((link, index) => <DialogClose key={link.href} asChild>
-            <Link ref={index === 0 ? firstLink : undefined} href={link.href} className={styles.menuLink}
-              aria-current={activeHref === link.href ? "page" : undefined}>{link.label}<ArrowUpRight aria-hidden="true" /></Link>
-          </DialogClose>)}
+          {links.map((link, index) => <div key={link.href}>
+            <DialogClose asChild><Link ref={index === 0 ? firstLink : undefined} href={link.href} className={styles.menuLink}
+              aria-current={activeHref === link.href ? "page" : undefined}>{link.label}<ArrowUpRight aria-hidden="true" /></Link></DialogClose>
+            {link.href === "/urunler" && <details className={styles.mobileCategories}>
+              <summary>Ürün kategorileri</summary>
+              {[["Zeytinyağı", "zeytinyagi"], ["Zeytin", "zeytin"], ["Siyah Zeytin", "siyah-zeytin"], ["Yeşil Zeytin", "yesil-zeytin"], ["Kırma Zeytin", "kirma-zeytin"]].map(([label, slug]) => <DialogClose key={slug} asChild><Link href={`/urunler/${slug}`} className={styles.menuLink}>{label}</Link></DialogClose>)}
+            </details>}
+          </div>)}
         </nav>
         <div className={styles.menuActions}>
           <DialogClose asChild><Link href="/urunler" className={styles.menuShop}>Online Mağaza</Link></DialogClose>

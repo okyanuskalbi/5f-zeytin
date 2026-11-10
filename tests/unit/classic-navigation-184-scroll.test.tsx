@@ -68,54 +68,56 @@ function active() {
 function scrollTo(y: number) { position = y; fireEvent.scroll(window); flush(); }
 
 it.each([
-  ["Hakkımızda", "hakkimizda"], ["Üretim Tesisimiz", "tesisimiz"], ["Ürünler", "urunler"],
+  ["Hakkımızda", "hakkimizda"], ["Blog", "tesisimiz"], ["Ürünler", "urunler"],
   ["Toptan Satış", "toptan"], ["İletişim", "iletisim"],
-] as const)("keeps %s current after its native anchor finishes below the fixed desktop header", (name, id) => {
+] as const)("keeps the %s page current when navigation commits and the viewport scrolls", (name, id) => {
   mount(); flush();
   const link = navigate(name, id);
-  expect(active()).toEqual([link]);
-  expect(link.getAttribute("aria-current")).toBe("location");
+  expect(active()).toEqual(name === "İletişim" ? [screen.getByRole("link", { name: "Ana Sayfa" })] : [link]);
+  expect(link.getAttribute("aria-current")).toBe(name === "İletişim" ? null : "page");
   if (id !== "iletisim") expect(document.getElementById(id)!.getBoundingClientRect().top).toBe(headerHeight + anchorGap);
   fireEvent.resize(window); flush();
-  expect(active()).toEqual([link]);
+  expect(active()).toEqual(name === "İletişim" ? [screen.getByRole("link", { name: "Ana Sayfa" })] : [link]);
 });
 
-it("marks Contact at the document bottom even when the short final section cannot reach the reading line", () => {
+it("keeps Home current at the document bottom after Contact becomes a footer destination", () => {
   mount(); flush();
   scrollTo(pageHeight - viewportHeight);
   expect(document.getElementById("iletisim")!.getBoundingClientRect().top).toBe(300);
-  expect(active().map(link => link.textContent)).toEqual(["İletişim"]);
+  expect(active().map(link => link.textContent)).toEqual(["Ana Sayfa"]);
   expect(active()[0].getAttribute("aria-current")).toBe("location");
 });
 
-it("uses the two-pixel document-end tolerance and returns to the visible section when scrolling away", () => {
+it("keeps the current page stable on both sides of the old document-end tolerance", () => {
   mount(); flush();
   scrollTo(pageHeight - viewportHeight - 3);
-  expect(active().map(link => link.textContent)).toEqual(["Toptan Satış"]);
+  expect(active().map(link => link.textContent)).toEqual(["Ana Sayfa"]);
   scrollTo(pageHeight - viewportHeight - 2);
-  expect(active().map(link => link.textContent)).toEqual(["İletişim"]);
+  expect(active().map(link => link.textContent)).toEqual(["Ana Sayfa"]);
   scrollTo(pageHeight - viewportHeight - 3);
-  expect(active().map(link => link.textContent)).toEqual(["Toptan Satış"]);
-});
-
-it.each([["hakkimizda", "Hakkımızda"], ["iletisim", "İletişim"]] as const)("resolves a direct #%s arrival against its settled native scroll position", (id, name) => {
-  history.replaceState(null, "", `/#${id}`);
-  position = Math.min(pageHeight - viewportHeight, sectionTops[id] - headerHeight - anchorGap);
-  mount(); flush();
-  expect(active().map(link => link.textContent)).toEqual([name]);
-});
-
-it("follows manual scrolling after a clicked hash instead of pinning the clicked item", () => {
-  mount(); flush();
-  navigate("Hakkımızda", "hakkimizda");
-  scrollTo(sectionTops.urunler - headerHeight - anchorGap);
-  expect(active().map(link => link.textContent)).toEqual(["Ürünler"]);
-  expect(location.hash).toBe("#hakkimizda");
-  scrollTo(0);
   expect(active().map(link => link.textContent)).toEqual(["Ana Sayfa"]);
 });
 
-it("uses the phone header geometry with the same single sixteen-pixel native anchor gap", () => {
+it.each([["hakkimizda", "Hakkımızda"], ["iletisim", "İletişim"]] as const)("keeps Home current for a legacy #%s arrival before the redirect handler runs", (id, name) => {
+  history.replaceState(null, "", `/#${id}`);
+  position = Math.min(pageHeight - viewportHeight, sectionTops[id] - headerHeight - anchorGap);
+  mount(); flush();
+  expect(active().map(link => link.textContent)).toEqual(["Ana Sayfa"]);
+  expect(document.getElementById(id)).not.toBeNull();
+  expect(name).toBeTruthy();
+});
+
+it("keeps the new destination page current while scrolling after navigation", () => {
+  mount(); flush();
+  navigate("Hakkımızda", "hakkimizda");
+  scrollTo(sectionTops.urunler - headerHeight - anchorGap);
+  expect(active().map(link => link.textContent)).toEqual(["Hakkımızda"]);
+  expect(location.pathname).toBe("/hakkimizda");
+  scrollTo(0);
+  expect(active().map(link => link.textContent)).toEqual(["Hakkımızda"]);
+});
+
+it("uses page navigation on phones without changing the retained anchor spacing", () => {
   headerHeight = 72; vi.stubGlobal("innerWidth", 390);
   mount(); flush();
   const link = navigate("Ürünler", "urunler");
@@ -134,7 +136,7 @@ it("keeps Home current when a short document cannot scroll and Contact has not r
 it("does not invent a current Contact destination when the section is absent at document end", () => {
   render(<><Navbar /><main>{Object.keys(sectionTops).filter(id => id !== "iletisim").map(id => <section id={id} key={id} />)}</main></>); flush();
   scrollTo(pageHeight - viewportHeight);
-  expect(active().map(link => link.textContent)).toEqual(["Toptan Satış"]);
+  expect(active().map(link => link.textContent)).toEqual(["Ana Sayfa"]);
 });
 
 it("does not force Contact on an interior page at its document bottom", () => {

@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import type { JSX } from "react";
 import styles from "@/components/landing/ClassicHome.module.css";
-import { ClassicHero, TrustStrip, ClassicFacility, ClassicBusiness, ClassicAbout } from "@/components/landing/ClassicHome";
-import { ProductGroups } from "@/components/landing/ProductGroups";
+import { ClassicHero } from "@/components/landing/ClassicHome";
+import { HomeCategories, HomeProductGrid, HomeStory, HomeBanners, HomeHarvest, HomeBusiness, HomeBlog, HomeTrust } from "@/components/landing/CustomerHome";
+import { CustomerMarquee } from "@/components/landing/CustomerMarquee";
 import { QuoteSection, TrustAndContact } from "@/components/landing/RenewalLanding";
 import { QuoteQuerySelection } from "@/components/landing/QuoteQuerySelection";
 import { QuoteJourneyProvider } from "@/components/landing/QuoteJourneyProvider";
@@ -32,11 +33,16 @@ export default async function Home(): Promise<JSX.Element> {
     <QuoteQuerySelection products={products} />
     <BusinessJsonLd />
     <ClassicHero />
-    <TrustStrip />
-    <ClassicFacility />
-    <ProductGroups />
-    <ClassicBusiness />
-    <ClassicAbout />
+    <HomeCategories />
+    <HomeProductGrid products={products} />
+    <HomeStory />
+    <HomeProductGrid products={products} featured />
+    <HomeBanners />
+    <HomeHarvest />
+    <CustomerMarquee />
+    <HomeBusiness />
+    <HomeBlog />
+    <HomeTrust />
     <QuoteSection products={products} />
     <TrustAndContact />
   </main></ProductDetailProvider></QuoteJourneyProvider>;

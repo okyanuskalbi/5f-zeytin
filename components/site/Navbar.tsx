@@ -24,13 +24,13 @@ function preloadNavbarMenu(): void {
   void navbarMenuPromise.catch(() => { navbarMenuPromise = undefined; });
 }
 
-const links = [
+export const links = [
   { label: "Ana Sayfa", href: "/" },
-  { label: "Hakkımızda", href: "/#hakkimizda" },
-  { label: "Üretim Tesisimiz", href: "/#tesisimiz" },
-  { label: "Ürünler", href: "/#urunler" },
-  { label: "Toptan Satış", href: "/#toptan" },
+  { label: "Ürünler", href: "/urunler" },
+  { label: "Hakkımızda", href: "/hakkimizda" },
+  { label: "Toptan Satış", href: "/toptan-satis" },
   { label: "Bayilik", href: "/bayilik" },
+  { label: "Blog", href: "/blog" },
   { label: "İletişim", href: "/#iletisim" },
 ];
 
@@ -83,50 +83,6 @@ export function Navbar(): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const homeRef = useRef<HTMLAnchorElement>(null);
-  const [activeSection, setActiveSection] = useState(0);
-
-  useEffect(() => {
-    if (!landing) return;
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const header = document.querySelector<HTMLElement>("[data-site-navbar]");
-      const readingLine = (header?.getBoundingClientRect().bottom ?? 0) + 32;
-      const scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
-      // The last section can be too short to reach the reading line before the
-      // document ends. Still identify it when the user reaches the page bottom.
-      if (scrollHeight > window.innerHeight && window.scrollY + window.innerHeight >= scrollHeight - 2
-        && document.getElementById("iletisim")) {
-        setActiveSection(links.findIndex(link => link.href === "/#iletisim"));
-        return;
-      }
-      const points = links.flatMap((link, index) => {
-        const id = link.href.split("#")[1];
-        const element = id ? document.getElementById(id) : null;
-        return element ? [{ index, top: element.getBoundingClientRect().top }] : [];
-      }).filter(point => point.top <= readingLine).sort((a, b) => a.top - b.top || a.index - b.index);
-      const latest = points.at(-1);
-      // Preserve an explicitly selected destination when anchors share a line.
-      const requested = links.findIndex(link => link.href === `/${window.location.hash}`);
-      const sameScene = latest && points.find(point => point.index === requested && Math.abs(point.top - latest.top) < 2);
-      setActiveSection(sameScene?.index ?? latest?.index ?? 0);
-    };
-    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
-    schedule();
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
-    window.addEventListener("hashchange", schedule);
-    window.addEventListener("popstate", schedule);
-    const observer = typeof ResizeObserver === "function" ? new ResizeObserver(schedule) : undefined;
-    observer?.observe(document.body);
-    return () => {
-      if (frame) cancelAnimationFrame(frame);
-      observer?.disconnect();
-      window.removeEventListener("scroll", schedule); window.removeEventListener("resize", schedule);
-      window.removeEventListener("hashchange", schedule); window.removeEventListener("popstate", schedule);
-    };
-  }, [landing, pathname]);
-
   useEffect(() => {
     let idle: number | undefined;
     let fallback: ReturnType<typeof setTimeout> | undefined;
@@ -163,18 +119,29 @@ export function Navbar(): JSX.Element {
   }, [isOpen]);
 
   return (
-    <header data-site-navbar="" data-tone="solid" data-surface="dark"
+    <header data-site-navbar="" data-tone="solid"
       data-over-hero="false" className={`site-bar ${styles.bar}`}>
       <div className={styles.row}>
         <Link ref={homeRef} href="/" onClick={event => { if (landing && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && event.button === 0) window.scrollTo({ top: 0, behavior: "instant" }); }} aria-label="Afina Zeytin ana sayfa" className={styles.home}>
-          <BrandLogo tone="dark" className={styles.logo} />
+          <BrandLogo tone="light" className={styles.logo} />
         </Link>
         <nav aria-label="Ana navigasyon" className={styles.desktop}>
-          {links.map((link, index) => <Link key={link.href} href={link.href} className={styles.link}
-            aria-current={landing ? index === activeSection ? "location" : undefined : visiblePathname === link.href ? "page" : undefined}
-            onClick={event => {
-              if (event.button === 0 && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey) setActiveSection(index);
-            }}>{link.label}</Link>)}
+          {links.map(link => <div key={link.href} className={styles.navItem}>
+            <Link href={link.href} className={styles.link}
+              aria-current={link.href === "/" ? landing ? "location" : undefined : visiblePathname === link.href || (link.href === "/urunler" && visiblePathname?.startsWith("/urunler/")) ? "page" : undefined}>{link.label}</Link>
+            {link.href === "/urunler" && <details className={styles.categories} onKeyDown={event => {
+              if (event.key === "Escape") { event.currentTarget.open = false; event.currentTarget.querySelector("summary")?.focus(); }
+            }}>
+              <summary aria-label="Ürün kategorileri"><span aria-hidden="true">⌄</span></summary>
+              <nav aria-label="Ürün kategorileri" className={styles.categoryLinks}>
+                <Link href="/urunler/zeytinyagi">Zeytinyağı</Link>
+                <Link href="/urunler/zeytin">Zeytin</Link>
+                <Link href="/urunler/siyah-zeytin" className={styles.subcategory}>Siyah Zeytin</Link>
+                <Link href="/urunler/yesil-zeytin" className={styles.subcategory}>Yeşil Zeytin</Link>
+                <Link href="/urunler/kirma-zeytin" className={styles.subcategory}>Kırma Zeytin</Link>
+              </nav>
+            </details>}
+          </div>)}
         </nav>
         <div className={styles.actions}>
           <Link href="/urunler" className={styles.shop} aria-current={visiblePathname === "/urunler" ? "page" : undefined}>Online Mağaza</Link>

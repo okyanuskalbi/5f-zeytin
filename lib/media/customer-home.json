@@ -1,0 +1,310 @@
+{
+  "version": 1,
+  "provider": "customer-supplied",
+  "authorization": "user-2026-11-10-homepage-brief",
+  "sourceDirectory": "AFINA-KAYNAK/musteri-2026-11-10",
+  "paidGeneration": false,
+  "derivation": {
+    "codec": "h264",
+    "pixelFormat": "yuv420p",
+    "audio": false,
+    "fastStart": true,
+    "toneMapping": false,
+    "crop": false
+  },
+  "hero": {
+    "source": "AFINA-KAYNAK/musteri-2026-11-10/hero-video-zeytinlik.mp4",
+    "sourceSha256": "1392530a9bad17f681a714d484f5ab7b62a2e9da139a94ae90cd6c2168ab7748",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "sourceDurationSeconds": 17.16,
+    "video": {
+      "outputs": [
+        {
+          "file": "/videos/customer-home/hero-1920.mp4",
+          "width": 1920,
+          "height": 1080,
+          "codec": "h264",
+          "fps": 25,
+          "frames": 429,
+          "durationSeconds": 17.16,
+          "audio": false,
+          "bytes": 4910744,
+          "sha256": "035c870b1fc29c5a82939d1a25c674261c54992eee2a119ddddad8dba32573e7",
+          "encoding": {
+            "crf": 28,
+            "preset": "medium",
+            "maxRate": "2200k",
+            "bufferSize": "4400k",
+            "sampleAspectRatio": "1:1"
+          }
+        },
+        {
+          "file": "/videos/customer-home/hero-1280.mp4",
+          "width": 1280,
+          "height": 720,
+          "codec": "h264",
+          "fps": 25,
+          "frames": 429,
+          "durationSeconds": 17.16,
+          "audio": false,
+          "bytes": 3620214,
+          "sha256": "5ec544df8981c8fbc444eee43ebdd464f3a715490a67493340b57ecf54d059a2",
+          "encoding": {
+            "crf": 27,
+            "preset": "medium",
+            "maxRate": "1600k",
+            "bufferSize": "4400k",
+            "sampleAspectRatio": "1:1"
+          }
+        },
+        {
+          "file": "/videos/customer-home/hero-720.mp4",
+          "width": 720,
+          "height": 406,
+          "codec": "h264",
+          "fps": 25,
+          "frames": 429,
+          "durationSeconds": 17.16,
+          "audio": false,
+          "bytes": 2322850,
+          "sha256": "1bb9c73ef0e67c0400c53f1451ed1cb1ed802942833cf8060aa9337dd24e5388",
+          "encoding": {
+            "crf": 27,
+            "preset": "medium",
+            "maxRate": "1000k",
+            "bufferSize": "4400k",
+            "sampleAspectRatio": "1:1"
+          }
+        }
+      ]
+    },
+    "posters": {
+      "alt": "Ellek zeytinliklerinin gün ışığındaki görünümü",
+      "outputs": [
+        {
+          "file": "/images/customer-home/hero-poster-720.avif",
+          "format": "avif",
+          "width": 720,
+          "height": 405,
+          "bytes": 61454,
+          "sha256": "104539ebe50702a4bb2521b85f2b2493b0e34ab30ec0d2b598c106f8799ea7f8"
+        },
+        {
+          "file": "/images/customer-home/hero-poster-720.webp",
+          "format": "webp",
+          "width": 720,
+          "height": 405,
+          "bytes": 103628,
+          "sha256": "a4ea82549dd688d636cd06efc603f37e6ebc182d4eb0dd2623f1c4815728d164"
+        },
+        {
+          "file": "/images/customer-home/hero-poster-1280.avif",
+          "format": "avif",
+          "width": 1280,
+          "height": 720,
+          "bytes": 183475,
+          "sha256": "f2f88c6f5ec863eb70a3e51902c3a7e92f2c14d0dcf322e9c7478e8533355708"
+        },
+        {
+          "file": "/images/customer-home/hero-poster-1280.webp",
+          "format": "webp",
+          "width": 1280,
+          "height": 720,
+          "bytes": 315136,
+          "sha256": "a778551bb33cdaf7e684eef2e3e28829932a87d26fe83687fc13a5ec37fb63d0"
+        },
+        {
+          "file": "/images/customer-home/hero-poster-1920.avif",
+          "format": "avif",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 363847,
+          "sha256": "c1f361c63cfa7a430c1db5612ff95a6c5b6728bfee39e55dd321905564903c0b"
+        },
+        {
+          "file": "/images/customer-home/hero-poster-1920.webp",
+          "format": "webp",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 644194,
+          "sha256": "a47e30b949bca1215a4cfead0ed5ce4d31b619ff0facb15cf9e1aa83a1978670"
+        }
+      ]
+    },
+    "sourceBytes": 103308027
+  },
+  "assets": {
+    "fabrika": {
+      "source": "AFINA-KAYNAK/musteri-2026-11-10/fabrika.jpg",
+      "sourceSha256": "f488dbe532d3fb0d8ff91f72e695bde38c9482c43758624ddc12af8d5e7b5432",
+      "sourceWidth": 1086,
+      "sourceHeight": 1448,
+      "alt": "AFİNA ZEYTİN üretim tesisi",
+      "outputs": [
+        {
+          "file": "/images/customer-home/fabrika-480.avif",
+          "format": "avif",
+          "width": 480,
+          "height": 640,
+          "bytes": 11852,
+          "sha256": "73e3f694f46575179907dd5702d325dbfb76601578a6949d32d7f8d4396777de"
+        },
+        {
+          "file": "/images/customer-home/fabrika-480.webp",
+          "format": "webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 21046,
+          "sha256": "98663ce043a6b2bb0158535970895a6edeb59311997942e7399b07d23d318de5"
+        },
+        {
+          "file": "/images/customer-home/fabrika-800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 1067,
+          "bytes": 26156,
+          "sha256": "d3891a914d0bb8b6dc6f72052faf640ae533a560aba9b5fedb93c01b1c706354"
+        },
+        {
+          "file": "/images/customer-home/fabrika-800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 1067,
+          "bytes": 44592,
+          "sha256": "e77469ad08e67d409665f702cc2caa8b939f69668f89c12c65396f3d481c6d51"
+        },
+        {
+          "file": "/images/customer-home/fabrika-1086.avif",
+          "format": "avif",
+          "width": 1086,
+          "height": 1448,
+          "bytes": 43273,
+          "sha256": "1e84d6dc1faf2eb79009e1a78012d6b6fa2f572a465ec52c8c51bb91d733b78d"
+        },
+        {
+          "file": "/images/customer-home/fabrika-1086.webp",
+          "format": "webp",
+          "width": 1086,
+          "height": 1448,
+          "bytes": 70844,
+          "sha256": "51816ec1e9fbe45c12ce80e7da93af2ed579124a7606681bb904fb49b00004cb"
+        }
+      ]
+    },
+    "her-tanede-ayni-ozen-el": {
+      "source": "AFINA-KAYNAK/musteri-2026-11-10/her-tanede-ayni-ozen-el.jpg",
+      "sourceSha256": "ed5c9a25022d4a35fe00de66cde744564b012da7315db9c99b6cb88faa968aac",
+      "sourceWidth": 1086,
+      "sourceHeight": 1448,
+      "alt": "Dalından özenle seçilen zeytinler",
+      "outputs": [
+        {
+          "file": "/images/customer-home/her-tanede-ayni-ozen-el-480.avif",
+          "format": "avif",
+          "width": 480,
+          "height": 640,
+          "bytes": 19823,
+          "sha256": "6ed2bb6809d49ed63ce1ccc7d77b0bc450c2a0a0affd0864e3e1aedc05a3dd0e"
+        },
+        {
+          "file": "/images/customer-home/her-tanede-ayni-ozen-el-480.webp",
+          "format": "webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 34694,
+          "sha256": "d2755000ab53718671e6ce84b1b92b335cda12255ea04df5645ce51f10aa0097"
+        },
+        {
+          "file": "/images/customer-home/her-tanede-ayni-ozen-el-800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 1067,
+          "bytes": 42210,
+          "sha256": "59145f3be99fb7288a500fd5d24988db278347117e678df25d873e67955aadaa"
+        },
+        {
+          "file": "/images/customer-home/her-tanede-ayni-ozen-el-800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 1067,
+          "bytes": 71158,
+          "sha256": "4d7f9c86fa622b708bc729d9ba168bcc17592566d8c553d7eaa9d7ba45be72a6"
+        },
+        {
+          "file": "/images/customer-home/her-tanede-ayni-ozen-el-1086.avif",
+          "format": "avif",
+          "width": 1086,
+          "height": 1448,
+          "bytes": 66795,
+          "sha256": "06b5b8d8639efb6a8324f4f36f166746933890a84e21375d29c1a80c58cf8cfb"
+        },
+        {
+          "file": "/images/customer-home/her-tanede-ayni-ozen-el-1086.webp",
+          "format": "webp",
+          "width": 1086,
+          "height": 1448,
+          "bytes": 106880,
+          "sha256": "5e3bfd5c09c2121fc07f0dd13e9c29d571777c572633f7a4f3cbe86cbf14bc2d"
+        }
+      ]
+    },
+    "bereketin-hasat-vakti": {
+      "source": "AFINA-KAYNAK/musteri-2026-11-10/bereketin-hasat-vakti.jpg",
+      "sourceSha256": "4f4f5ec5e8b21fc3b0778c5c0403c3728adfcb34dda21ca985bf79b6eb4a833c",
+      "sourceWidth": 1086,
+      "sourceHeight": 1448,
+      "alt": "Hasat zamanı zeytinlerin toplanışı",
+      "outputs": [
+        {
+          "file": "/images/customer-home/bereketin-hasat-vakti-480.avif",
+          "format": "avif",
+          "width": 480,
+          "height": 640,
+          "bytes": 33606,
+          "sha256": "6034d0f3fc97a53d3577db5e21578c1b32437e24637a0bfd48fcd499d8f6ae99"
+        },
+        {
+          "file": "/images/customer-home/bereketin-hasat-vakti-480.webp",
+          "format": "webp",
+          "width": 480,
+          "height": 640,
+          "bytes": 61820,
+          "sha256": "d26344c5fd07b0389b4a348114f89e8d3738f936e1d5ce9c25cb06f38bc92711"
+        },
+        {
+          "file": "/images/customer-home/bereketin-hasat-vakti-800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 1067,
+          "bytes": 86695,
+          "sha256": "304085566b1e013b827b2f0babb1d4dbd1d3d1b3ee23fd3fb80f0cc9da87a645"
+        },
+        {
+          "file": "/images/customer-home/bereketin-hasat-vakti-800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 1067,
+          "bytes": 158568,
+          "sha256": "13ea13d7b03f56457bd60043d69b102b1cc90f559c663ac394adbcd5e92d8df0"
+        },
+        {
+          "file": "/images/customer-home/bereketin-hasat-vakti-1086.avif",
+          "format": "avif",
+          "width": 1086,
+          "height": 1448,
+          "bytes": 140667,
+          "sha256": "90b5eda4d4cfb5769414c8455efbc942235d86428175462864a052ec8325ac7d"
+        },
+        {
+          "file": "/images/customer-home/bereketin-hasat-vakti-1086.webp",
+          "format": "webp",
+          "width": 1086,
+          "height": 1448,
+          "bytes": 256470,
+          "sha256": "0067cb91e64d6f9c885626112a549968631c94a051c68c504a4498e99eecabd9"
+        }
+      ]
+    }
+  }
+}
