@@ -1,6 +1,6 @@
 /* Google mandates this face for its branded button; site type stays Fraunces/Figtree. */
 @font-face { font-family: "Google Sans Button"; src: url("/fonts/google-sans-button.ttf") format("truetype"); font-weight: 500; font-style: normal; font-display: swap; }
-.page { padding: calc(var(--header-height) + 48px) var(--page-margin) 96px; color: var(--foreground); }
+.page { padding: 48px var(--page-margin) 96px; color: var(--foreground); }
 .split { display: grid; gap: 48px; align-items: start; }
 .formSide { min-width: 0; width: 100%; max-width: 480px; margin-inline: auto; }
 .intro { display: grid; gap: 16px; margin-bottom: 24px; }
@@ -20,13 +20,13 @@
 .password button { position: absolute; top: 50%; right: 4px; transform: translateY(-50%); min-height: 44px; min-width: 44px; width: 44px; height: 44px; color: var(--foreground); }
 .password button, .password button:hover, .password button:active, .password button:focus, .password button:focus-visible { background: transparent; }
 .labelRow { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; column-gap: 12px; margin-bottom: -6px; }
-.forgotPassword { min-height: 44px; padding: 8px 0 8px 8px; font-size: 12px; font-weight: 500; color: var(--muted-foreground); text-underline-offset: 3px; }
-.alternateSignIn { width: 100%; min-height: 48px; padding: 12px; border: 1px solid var(--customer-rule, var(--border)); border-radius: 999px; font-size: 13px; font-weight: 500; background: transparent; }
+.forgotPassword { min-height: 44px; padding: 8px 0 8px 8px; font-size: 14px; font-weight: 500; color: var(--muted-foreground); text-underline-offset: 3px; }
+.alternateSignIn { width: 100%; min-height: 48px; padding: 12px; border: 1px solid var(--customer-rule, var(--border)); border-radius: var(--sf-radius-button); font-size: 16px; font-weight: 500; background: transparent; }
 .alternateSignIn:hover { background: var(--card); }
-.authFooter { display: grid; gap: 2px; margin-top: 4px; text-align: center; font-size: 13px; }
+.authFooter { display: grid; gap: 2px; margin-top: 4px; text-align: center; font-size: 16px; }
 .authFooter p { color: var(--muted-foreground); }
 .authFooter .textLink { color: var(--foreground); font-weight: 600; padding-inline: 4px; }
-.guestLink { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding-block: 8px; color: var(--muted-foreground); font-size: 12px; }
+.guestLink { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding-block: 8px; color: var(--muted-foreground); font-size: 14px; }
 .guestLink:hover { color: var(--foreground); text-decoration: underline; text-underline-offset: 4px; }
 .strength { display: flex; gap: 8px; align-items: center; }
 .strength meter { width: 100%; height: 16px; accent-color: var(--altin); }
@@ -74,13 +74,23 @@
   .split { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; }
   .formSide { padding-block: 16px; }
   .story { position: sticky; top: calc(var(--header-height) + 24px); }
-  .addressGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .addressGrid { grid-template-columns: minmax(0, 1fr); }
   .order { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
   .order dl { grid-column: 1; }
   .order > a { grid-column: 2; grid-row: 1 / 3; }
 }
 @media (max-width: 599px) {
-  .page { padding-block: calc(var(--header-height) + 32px) 64px; }
+  .page { padding-block: 32px 64px; }
   .story figcaption { padding: 24px; }
   .formSide { max-width: none; }
 }
+
+/* Storefront form surfaces share the A design tokens. */
+.form { font-size: 16px; line-height: 1.6; }
+.form button { min-height: 48px; border-radius: var(--sf-radius-button); white-space: nowrap; }
+.field :is(input,textarea) { min-height: 48px; font-size: 16px; border-radius: 0; color: var(--sf-ink); background: var(--sf-paper); border-color: var(--sf-muted); }
+.field small, .error { font-size: 14px; }
+.password button { min-height: 44px; border-radius: var(--sf-radius-icon); }
+.check a { display: inline-flex; align-items: center; min-height: 44px; }
+.address, .addressForm { border-radius: var(--sf-radius-panel); }
+@media (max-width: 359px) { .form button { padding-inline: 8px; } .alternateSignIn { font-size: 14px; gap: 4px; } }

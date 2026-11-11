@@ -35,7 +35,7 @@ it("renders the real production form and guest/register links without an unavail
   expect(metadata.robots).toEqual({ index: false, follow: false });
   expect(screen.queryByRole("button", { name: /Google/ })).toBeNull();
   expect(document.body.textContent).not.toMatch(/Demo|yakında/);
-  expect(screen.getByRole("link", { name: "Üye ol" }).getAttribute("href")).toBe("/kayit");
+  expect(screen.getAllByRole("link", { name: "Hesap oluştur" }).at(-1)!.getAttribute("href")).toBe("/kayit");
   expect(screen.getByRole("link", { name: "Üye olmadan alışverişe devam et" }).getAttribute("href")).toBe("/sepet");
   expect(field("Şifre").autocomplete).toBe("current-password");
   expect(mocks.getUser).not.toHaveBeenCalled();

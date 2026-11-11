@@ -11,12 +11,14 @@ test("horizontal artwork keeps its dimensions, links and navigation fit at every
 
   for (const width of [320, 360, 390, 768, 900, 901, 1024, 1440, 1920]) {
     await page.setViewportSize({ width, height: 900 });
-    await expect(headerLogo).toHaveCSS("height", width <= 400 ? "32px" : width <= 1440 ? "36px" : "44px");
-    await expect(footerLogo).toHaveCSS("height", "52px");
+    for (const logo of [headerLogo, footerLogo]) {
+      const box = (await logo.boundingBox())!;
+      expect(box.width / box.height).toBeCloseTo(180 / 48, 1);
+    }
     for (const root of [header, footer]) {
       await expect(root.getByRole("link", { name: "Afina Zeytin ana sayfa" })).toHaveAttribute("href", "/");
     }
-    const controls = width <= 1360
+    const controls = width < 1100
       ? [headerLogo, header.getByRole("button", { name: /Sepetim/ }), header.getByRole("button", { name: "Menüyü aç" })]
       : [headerLogo, header.getByRole("navigation", { name: "Ana navigasyon" }), header.getByRole("button", { name: /Sepetim/ })];
     let trailingEdge = 0;

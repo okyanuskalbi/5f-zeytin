@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { expect, it } from "vitest";
 const source = (path: string) => readFileSync(path, "utf8");
 it("gives the native select the shared 48px field sizing and a custom arrow", () => {
-  const css = source("components/landing/QuoteComposer.module.css");
+  const css = source("components/storefront/quote/QuoteComposer.module.css");
   expect(css).toMatch(/\.field input, \.field select\s*\{[^}]*min-height:48px/);
   expect(css).toMatch(/\.field select\s*\{[^}]*appearance:\s*none/);
   expect(css).toMatch(/\.field select\s*\{[^}]*background-image:/);

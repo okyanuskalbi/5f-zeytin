@@ -30,10 +30,10 @@ export function StoreMenu({ links, pathname, onClose, onRestoreFocus }: {
             <div className={styles.drawerTop}><DialogTitle className={styles.drawerTitle}>Site menüsü</DialogTitle><DialogClose asChild><button type="button" className={styles.iconButton} aria-label="Menüyü kapat"><X size={24} aria-hidden="true" /></button></DialogClose></div>
             <DialogDescription className="sr-only">Ürünlerimizi, AFİNA hakkında bilgileri ve hesabınızı açın.</DialogDescription>
             <nav aria-label="Mobil navigasyon" className={styles.mobileNav}>
-              {links.map(link => <DialogClose key={link.href} asChild><Link href={link.href} aria-current={active(link.href) ? "page" : undefined}>{link.label}</Link></DialogClose>)}
+              {links.map(link => <DialogClose key={link.href} asChild><Link prefetch={false} href={link.href} aria-current={active(link.href) ? "page" : undefined}>{link.label}</Link></DialogClose>)}
             </nav>
             <nav aria-label="Ürün kategorileri" className={styles.mobileCategories}>
-              {productGroups.map(group => <DialogClose key={group.id} asChild><Link href={`/urunler/${group.id}`}>{group.name}</Link></DialogClose>)}
+              {productGroups.map(group => <DialogClose key={group.id} asChild><Link prefetch={false} href={`/urunler/${group.id}`}>{group.name}</Link></DialogClose>)}
             </nav>
             <div className={styles.drawerAccount}>
               <DialogClose asChild><Link href="/hesabim" prefetch={false}><UserRound size={20} aria-hidden="true" />Hesabım</Link></DialogClose>

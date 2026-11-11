@@ -66,7 +66,7 @@ test.describe("Task193 product pages", () => {
     await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("afina-zeytin:cart") ?? "[]"))).toEqual([
       { productId: "sample-green-olive-10kg", quantity: 2 },
     ]);
-    await expect(product.getByRole("link", { name: "Toptan teklif al", exact: true })).toHaveAttribute("href", "/toptan-satis?teklif=sample-green-olive-10kg");
+    await expect(product.getByRole("link", { name: "Teklife ekle", exact: true })).toHaveAttribute("href", "/toptan-satis?teklif=sample-green-olive-10kg");
     await expect(page.getByRole("heading", { name: "Benzer Ürünler", exact: true })).toBeVisible();
     const related = page.locator('section[aria-labelledby="benzer-title"] article[data-product-id]');
     await expect(related).toHaveCount(4);
@@ -94,7 +94,7 @@ test.describe("Task193 product pages", () => {
     expect((await page.goto("/urun/salamura-siyah-zeytin", { waitUntil: "load" }))?.status()).toBe(200);
     const product = page.locator("[data-product-page]");
     await expect(product.getByRole("button", { name: "Mevcut değil", exact: true })).toBeDisabled();
-    await expect(product.getByRole("link", { name: "Toptan teklif al", exact: true })).toHaveAttribute("href", "/toptan-satis?teklif=sample-black-olive-1kg");
+    await expect(product.getByRole("link", { name: "Teklife ekle", exact: true })).toHaveAttribute("href", "/toptan-satis?teklif=sample-black-olive-1kg");
     const breadcrumb = page.getByRole("navigation", { name: "İçerik yolu", exact: true });
     await expect(breadcrumb.getByRole("link", { name: "Ürünler", exact: true })).toHaveAttribute("href", "/urunler");
     const image = product.locator("[data-product-detail-image] img");
@@ -105,12 +105,17 @@ test.describe("Task193 product pages", () => {
     await layout(page);
   });
 
-  test("all family and category responses are static 200/noindex; unknowns 404 and sitemap excludes prices", async ({ page, request }) => {
+  test("all family and category responses are 200/noindex; unknowns 404 and sitemap excludes prices", async ({ page, request }) => {
     for (const family of families) {
       expect((await page.goto(`/urun/${family.slug}`, { waitUntil: "load" }))?.status()).toBe(200);
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(family.name);
       await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex.*follow/);
-      await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", `https://afinazeytin.com/urun/${family.slug}`);
+      const canonical = new URL((await page.locator('link[rel="canonical"]').getAttribute("href"))!);
+      expect(canonical.origin).toBe("https://afinazeytin.com");
+      expect(canonical.pathname).toBe(`/urun/${family.slug}`);
+      expect(canonical.searchParams.get("boy")).toBeTruthy();
+      await expect(page).toHaveTitle(new RegExp(canonical.searchParams.get("boy")!));
+      await expect(page.locator('meta[property="og:url"]')).toHaveAttribute("content", canonical.href);
       const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll(scripts => scripts.map(script => JSON.parse(script.textContent ?? "{}")));
       expect(JSON.stringify(schemas)).toContain('"@type":"BreadcrumbList"');
       expect(JSON.stringify(schemas)).not.toMatch(/"@type":"(?:Product|Offer)"/);

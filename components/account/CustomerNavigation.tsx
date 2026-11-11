@@ -9,7 +9,7 @@ import {
   ShieldCheckIcon,
   ArrowUpRightIcon,
 } from "lucide-react";
-import styles from "./CustomerPanel.module.css";
+import styles from "@/components/storefront/account/AccountSurface.module.css";
 
 export const customerDestinations = [
   { href: "/hesabim", label: "Hesap özeti", icon: HouseIcon },

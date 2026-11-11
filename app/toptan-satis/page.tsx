@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import type { JSX } from "react";
 import Link from "next/link";
-import { QuoteSection } from "@/components/landing/RenewalLanding";
-import { QuoteQuerySelection } from "@/components/landing/QuoteQuerySelection";
-import { QuoteJourneyProvider } from "@/components/landing/QuoteJourneyProvider";
+import { QuoteComposer } from "@/components/storefront/quote/QuoteComposer";
+import { QuoteQuerySelection } from "@/components/storefront/quote/QuoteQuerySelection";
+import { QuoteJourneyProvider } from "@/components/storefront/quote/QuoteJourneyProvider";
 import { readProductFamilies } from "@/lib/catalog/read";
 import { siteIdentity } from "@/lib/site/identity";
-import classic from "@/components/landing/ClassicHome.module.css";
 import styles from "./page.module.css";
 
 export const dynamic = "force-static";
@@ -29,18 +28,17 @@ const breadcrumb = {
 /** The same private email draft composer now has its own public destination. */
 export default async function Page(): Promise<JSX.Element> {
   const products = (await readProductFamilies()).flatMap(family => family.variants);
-  return <QuoteJourneyProvider><main className={`${classic.root} ${styles.root}`}>
+  return <QuoteJourneyProvider><main className={styles.root}>
     <QuoteQuerySelection products={products} />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb).replace(/</g, "\\u003c") }} />
     <header className={styles.heading}>
       <div className={styles.container}>
-        <nav aria-label="İçerik yolu" className={styles.breadcrumb}><ol><li><Link href="/">Ana Sayfa</Link></li><li><span aria-hidden="true">/</span><span aria-current="page">Toptan Satış</span></li></ol></nav>
-        <p className={classic.eyebrow}>İŞLETMENİZ İÇİN</p>
+        <nav aria-label="İçerik yolu" className={styles.breadcrumb}><ol><li><Link prefetch={false} href="/">Ana Sayfa</Link></li><li><span aria-hidden="true">/</span><span aria-current="page">Toptan Satış</span></li></ol></nav>
         <h1>Toptan Satış</h1>
         <p>Otel, restoran, market ve toplu tüketim için zeytin ve zeytinyağı seçeneklerimizi birlikte planlayalım.</p>
         <p>Koli bazında teklif için ürünleri ve adetleri seçin. E-posta taslağını hazırladıktan sonra gönderimi e-posta uygulamanızda tamamlayabilirsiniz.</p>
       </div>
     </header>
-    <QuoteSection products={products} />
+    <section id="toptan" aria-label="Teklif hazırlayın" className={styles.form}><span id="teklif" aria-hidden="true" /><QuoteComposer products={products} /></section>
   </main></QuoteJourneyProvider>;
 }

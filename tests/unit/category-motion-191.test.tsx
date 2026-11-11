@@ -1,9 +1,6 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { renderToStaticMarkup } from "react-dom/server";
+import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
-import { CategoryNavigation } from "@/components/catalog/CategoryNavigation";
-import { FaqDisclosure } from "@/components/landing/FaqDisclosure";
-import { readFileSync } from "node:fs";
+import { CategoryNavigation } from "@/components/storefront/catalog/CategoryNavigation";
 
 const motionCalls = vi.hoisted(() => ({ animate: vi.fn(() => ({ stop: vi.fn() })) }));
 vi.mock("motion/react", async importOriginal => ({ ...await importOriginal<typeof import("motion/react")>(), animate: motionCalls.animate }));
@@ -18,30 +15,6 @@ it("keeps the moving indicator decorative while selection remains in native link
   expect(indicator?.closest('[aria-hidden="true"]')).not.toBeNull();
   expect(document.querySelectorAll('a[aria-current="page"]')).toHaveLength(1);
   expect(screen.getByRole("link", { name: "Tüm ürünler" }).getAttribute("aria-current")).toBe("page");
-});
-
-it("keeps native FAQ behavior and answers available before JavaScript", async () => {
-  const markup = renderToStaticMarkup(<FaqDisclosure id="test" question="Soru?" answer="Yanıt." />);
-  const doc = new DOMParser().parseFromString(markup, "text/html");
-  expect(doc.querySelector("details > summary")?.textContent).toBe("Soru?");
-  expect(doc.querySelector("details p")?.textContent).toBe("Yanıt.");
-  expect(doc.querySelector("[style]" )).toBeNull();
-  render(<FaqDisclosure id="test" question="Soru?" answer="Yanıt." />);
-  const summary = screen.getByText("Soru?");
-  const details = summary.closest("details")!;
-  details.open = true; fireEvent(details, new Event("toggle"));
-  expect(summary.getAttribute("aria-expanded")).toBe("true");
-  details.open = false; fireEvent(details, new Event("toggle"));
-  expect(summary.getAttribute("aria-expanded")).toBe("false");
-});
-
-it("limits native FAQ height/opacity transitions to supported non-reduced motion browsers", () => {
-  const css = readFileSync("components/landing/Faq.module.css", "utf8");
-  expect(css).toContain("@supports (interpolate-size: allow-keywords)");
-  expect(css).toContain("prefers-reduced-motion: no-preference");
-  expect(css).toContain("::details-content");
-  expect(css).toContain("interpolate-size: allow-keywords");
-  expect(css).toContain("content-visibility");
 });
 
 it("keeps the indicator slide running through the observer's unchanged initial notification", () => {

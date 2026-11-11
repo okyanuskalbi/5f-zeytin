@@ -73,7 +73,7 @@ describe("Playwright target selection", () => {
       reuseExistingServer: false,
     });
     expect(config.metadata).toMatchObject({ targetHost: "localhost:3004" });
-    expect(config.projects).toHaveLength(17);
+    expect(config.projects).toHaveLength(16);
     expect(config.projects).toContainEqual(expect.objectContaining({
       name: "chromium-1024",
       use: expect.objectContaining({ browserName: "chromium", viewport: { width: 1024, height: 900 } }),
@@ -81,10 +81,6 @@ describe("Playwright target selection", () => {
     expect(config.projects).toContainEqual(expect.objectContaining({
       name: "webkit-iphone14",
       use: expect.objectContaining({ defaultBrowserType: "webkit", isMobile: true, hasTouch: true }),
-    }));
-    expect(config.projects).toContainEqual(expect.objectContaining({
-      name: "chromium-pixel7-story", testMatch: "story-v4.spec.ts",
-      use: expect.objectContaining({ defaultBrowserType: "chromium", isMobile: true, hasTouch: true }),
     }));
     for (const browserName of ["chromium", "firefox", "webkit"]) {
       for (const width of [320, 390, 768, 1024, 1440]) {

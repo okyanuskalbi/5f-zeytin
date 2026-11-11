@@ -6,6 +6,7 @@ import { ArrowRight, X } from "lucide-react";
 import { Dialog as DialogPrimitive } from "radix-ui";
 import { AnimatePresence, motion, useIsPresent, useReducedMotion, type HTMLMotionProps } from "motion/react";
 import { Button } from "@/components/ui/button";
+import { PaymentUnavailable } from "@/components/storefront/cart/PaymentUnavailable";
 import { InteractiveCheckout } from "@/components/ui/interactive-checkout";
 import { CartEmpty, CartLineItem, CartTotals, CartTrust } from "./CartPresentation";
 import {
@@ -161,7 +162,7 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
           {validCart && checkoutHref ? (
             <DialogClose asChild><Button asChild className={styles.checkout}><Link href={checkoutHref} prefetch={false}>Ödemeye geç<ArrowRight aria-hidden="true" /></Link></Button></DialogClose>
           ) : <Button disabled className={styles.checkout} aria-describedby={`${id}-payment-help`}>Ödemeye geç</Button>}
-          <p id={`${id}-payment-help`} className={styles.paymentHelp}>{checkoutHref ? "Kesin tutar ödeme öncesinde doğrulanır." : "Ödeme hazırlıkları sürüyor."}</p>
+          {checkoutHref ? <p id={`${id}-payment-help`} className={styles.paymentHelp}>Kesin tutar ödeme öncesinde doğrulanır.</p> : <PaymentUnavailable id={`${id}-payment-help`} onNavigate={() => onOpenChange(false)} />}
           {!mobile && <CartTrust />}
           <DialogClose asChild><Button asChild variant="link" className={styles.secondaryLink}><Link href="/sepet" prefetch={false}>Sepeti görüntüle</Link></Button></DialogClose>
         </div>

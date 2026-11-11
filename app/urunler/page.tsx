@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { JSX } from "react";
-import { ProductListing } from "@/components/catalog/ProductListing";
+import { ProductListing } from "@/components/storefront/catalog/ProductListing";
 import { readProductFamilies } from "@/lib/catalog/read";
 import { productsForGroup } from "@/lib/catalog/groups";
 import { siteIdentity } from "@/lib/site/identity";

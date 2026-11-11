@@ -84,7 +84,7 @@ function TrackingView({ requestedNo }: { requestedNo: string }) {
   return <main className={styles.page}><div className={styles.container}>
     <header className={styles.header}><h1>Sipariş takibi</h1><p>Sofranıza giden yolculuğun her adımını takip edin.</p></header>
     <p className={styles.demo}><strong>Demo sipariş takibi.</strong> Gerçek sipariş veya kargo kaydı yok. Örnek numaralar: DEMO-10902, DEMO-10801, DEMO-10800. E-posta: demo@example.test veya telefon son 4: 4567.</p>
-    {ownOrders.length > 0 && <nav aria-label="Siparişleriniz" className={styles.ownOrders}><p>Siparişlerinizden doğrudan takip edin:</p>{ownOrders.map(item => <Button key={item.no} variant="outline" disabled={busy} onClick={() => { setNo(item.no); void run(() => getTrackingAdapter().getOwnOrder(item.no)); }}>{item.no} · {item.status}</Button>)}</nav>}
+    {ownOrders.length > 0 && <nav aria-label="Siparişleriniz" className={styles.ownOrders}><p>Siparişlerinizden doğrudan takip edin:</p>{ownOrders.map(item => <Button key={item.no} variant="outline" disabled={busy} onClick={() => { setNo(item.no); void run(() => getTrackingAdapter().getOwnOrder(item.no)); }}>{item.no}, {item.status}</Button>)}</nav>}
     <form noValidate onSubmit={submit} className={styles.form} aria-label="Sipariş sorgulama" aria-busy={busy}>
       <fieldset disabled={busy}>
         <Field id="tracking-no" name="no" label="Sipariş numarası" autoComplete="off" value={no} onChange={event => setNo(event.target.value)} maxLength={40} required error={errors.no} />

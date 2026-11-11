@@ -9,7 +9,7 @@ import type { AccountProfile } from "@/lib/contracts/account";
 import { useMembershipAction } from "./FormControls";
 import styles from "./Membership.module.css";
 import summary from "./AccountSummary.module.css";
-import panel from "./CustomerPanel.module.css";
+import panel from "@/components/storefront/account/AccountSurface.module.css";
 import { CustomerNavigation } from "./CustomerNavigation";
 
 // 21st kavikatiyar/order-history (7710), demo shell: labelled heading and
@@ -44,7 +44,7 @@ export function AccountSummary({ profile }: { profile: AccountProfile | null }) 
           <div key={label}><dt>{label}</dt><dd>{value ?? "Belirtilmedi"}</dd></div>)}</dl>
       </section>
       <nav aria-label="Hesap bağlantıları" className={panel.quickLinks}>
-        <Button asChild><Link href="/hesabim/siparisler" prefetch={false}>Sipariş geçmişim</Link></Button>
+        <Link href="/hesabim/siparisler" prefetch={false}><strong>Sipariş geçmişim</strong><span aria-hidden="true">Siparişlerinizi ve durumlarını görün.</span></Link>
         <Link href="/hesabim/adresler"><strong>Adres defterim</strong><span>Teslimat adreslerinizi yönetin.</span></Link>
         <Link href="/hesabim/bilgilerim"><strong>Hesap bilgilerim</strong><span>Adınızı ve telefonunuzu düzenleyin.</span></Link>
         <Link href="/hesabim/guvenlik"><strong>Güvenlik</strong><span>Şifrenizi güncelleyin.</span></Link>

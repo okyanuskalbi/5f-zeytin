@@ -1,10 +1,8 @@
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import type { ComponentProps } from "react";
 import { afterEach, expect, it, vi } from "vitest";
-import { Navbar } from "@/components/site/Navbar";
-import { NavbarMenu } from "@/components/site/NavbarMenu";
-import { QuoteQuerySelection } from "@/components/landing/QuoteQuerySelection";
-import { QuoteJourneyProvider, useQuoteJourney } from "@/components/landing/QuoteJourneyProvider";
+import { QuoteQuerySelection } from "@/components/storefront/quote/QuoteQuerySelection";
+import { QuoteJourneyProvider, useQuoteJourney } from "@/components/storefront/quote/QuoteJourneyProvider";
 import { getProducts } from "@/lib/catalog/static-products";
 
 const scrollToQuote = vi.fn();
@@ -14,25 +12,6 @@ vi.mock("next/dynamic", () => ({ default: () => () => null }));
 vi.mock("next/link", () => ({ default: (props: ComponentProps<"a">) => <a {...props} onClick={event => { props.onClick?.(event); event.preventDefault(); }} /> }));
 afterEach(() => { cleanup(); history.replaceState(null, "", "/"); route.pathname = "/"; scrollToQuote.mockClear(); vi.restoreAllMocks(); });
 
-
-it("marks Online Mağaza as the current page while keeping the desktop products page destination", () => {
-  route.pathname = "/urunler";
-  history.replaceState(null, "", "/urunler");
-  render(<Navbar />);
-  const shop = screen.getByRole("link", { name: "Online Mağaza" });
-  expect(shop.getAttribute("href")).toBe("/urunler");
-  expect(shop.getAttribute("aria-current")).toBe("page");
-  expect(screen.getByRole("link", { name: "Ürünler" }).getAttribute("href")).toBe("/urunler");
-});
-
-it("closes the mobile menu when its ordinary shop link is selected", () => {
-  const close = vi.fn();
-  render(<NavbarMenu links={[{ label: "Ana Sayfa", href: "/" }]} onClose={close} onRestoreFocus={() => {}} />);
-  const shop = screen.getByRole("link", { name: "Online Mağaza" });
-  expect(shop.getAttribute("href")).toBe("/urunler");
-  fireEvent.click(shop);
-  expect(close).toHaveBeenCalledOnce();
-});
 
 function Selection() {
   const { quantities } = useQuoteJourney();
@@ -51,7 +30,8 @@ it("selects a known query product once, removes only the completed parameter and
   expect(new URL(location.href).searchParams.has("teklif")).toBe(false);
   expect(new URL(location.href).searchParams.get("kaynak")).toBe("urunler");
   expect(location.hash).toBe("#toptan");
-  expect(scrollToQuote).toHaveBeenCalledOnce();
+  // Native focus reveals the first field without forcing the entire form to the top.
+  expect(scrollToQuote).not.toHaveBeenCalled();
   expect(document.activeElement).toBe(screen.getByRole("textbox", { name: "Firma adı" }));
 });
 

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useId, useState, useSyncExternalStore, type JSX } from "react";
 import { m, useReducedMotion } from "motion/react";
 import { Check, Minus, Plus } from "lucide-react";
@@ -24,11 +25,11 @@ function subscribe(notify: () => void): () => void {
   return () => { window.removeEventListener("popstate", notify); window.removeEventListener(sizeEvent, notify); };
 }
 const selectedSize = () => new URL(window.location.href).searchParams.get("boy") ?? "";
-const serverSize = () => "";
 
-export function ProductDetail({ family, related }: { family: ProductFamily; related: readonly ProductVariant[] }): JSX.Element {
-  const requestedSize = useSyncExternalStore(subscribe, selectedSize, serverSize);
+export function ProductDetail({ family, related, initialSize = "" }: { family: ProductFamily; related: readonly ProductVariant[]; initialSize?: string }): JSX.Element {
+  const requestedSize = useSyncExternalStore(subscribe, selectedSize, () => initialSize);
   const product = family.variants.find(item => item.weight === requestedSize || item.id === requestedSize) ?? family.variants[0];
+  const router = useRouter();
   const cart = useCart();
   const reduced = useReducedMotion();
   const sizeGroup = useId();
@@ -50,12 +51,13 @@ export function ProductDetail({ family, related }: { family: ProductFamily; rela
     url.searchParams.set("boy", weight);
     history.replaceState(history.state, "", url);
     window.dispatchEvent(new Event(sizeEvent));
+    router.replace(`${url.pathname}${url.search}`, { scroll: false });
   }
 
   return <main className={styles.root}><div className={styles.container}>
     <nav className={styles.breadcrumb} aria-label="İçerik yolu"><ol>
-      <li><Link href="/">Ana Sayfa</Link></li><li><span aria-hidden="true">/</span><Link href="/urunler">Ürünler</Link></li>
-      {getGroupTrail(family.groupId).map(item => <li key={item.id}><span aria-hidden="true">/</span><Link href={`/urunler/${item.id}`}>{item.name}</Link></li>)}
+      <li><Link prefetch={false} href="/">Ana Sayfa</Link></li><li><span aria-hidden="true">/</span><Link prefetch={false} href="/urunler">Ürünler</Link></li>
+      {getGroupTrail(family.groupId).map(item => <li key={item.id}><span aria-hidden="true">/</span><Link prefetch={false} href={`/urunler/${item.id}`}>{item.name}</Link></li>)}
       <li><span aria-hidden="true">/</span><span aria-current="page">{family.name}</span></li>
     </ol></nav>
     <article className={styles.product} data-product-page data-product-id={product.id} data-surface="light" data-reduced-motion={Boolean(reduced)}>
@@ -73,7 +75,7 @@ export function ProductDetail({ family, related }: { family: ProductFamily; rela
             <button type="button" aria-label="Adedi artır" disabled={quantity >= remaining} onClick={() => setSelection({ ...selection, quantity: quantity + 1 })}><Plus size={18} aria-hidden="true" /></button>
           </div></div>}
           <div className={styles.add}><AddToCart key={product.id} product={product} quantity={quantity} disabled={remaining === 0} /></div>
-          <Link href={`/toptan-satis?teklif=${encodeURIComponent(product.id)}`} className={styles.quote}>Teklife ekle</Link>
+          <Link prefetch={false} href={`/toptan-satis?teklif=${encodeURIComponent(product.id)}`} className={styles.quote}>Teklife ekle</Link>
         </div>
       </div>
       <div className={styles.gallery} data-product-detail-gallery>
@@ -94,7 +96,7 @@ export function ProductDetail({ family, related }: { family: ProductFamily; rela
       </div>
     </article>
     {relatedProducts.length > 0 && <section aria-labelledby="benzer-title" className={styles.related}>
-      <header><h2 id="benzer-title">Benzer Ürünler</h2><Link href={`/urunler/${group?.parentId ?? group?.id ?? ""}`}>Kategorideki ürünler</Link></header>
+      <header><h2 id="benzer-title">Benzer Ürünler</h2><Link prefetch={false} href={`/urunler/${group?.parentId ?? group?.id ?? ""}`}>Kategorideki ürünler</Link></header>
       <div className={styles.relatedGrid}>{relatedProducts.map(item => <ProductTile key={item.id} product={item} />)}</div>
     </section>}
   </div></main>;

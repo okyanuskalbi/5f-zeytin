@@ -59,12 +59,12 @@ it("keeps registration details when the required legal text opens in a new tab",
 it("switches the embedded registration and sign-in forms without navigating or repeating the session lookup", async () => {
     render(<DialogJourney />);
     await screen.findByRole("form", { name: "E-posta ile giriş" });
-    const signUp = screen.getByRole("link", { name: "Üye ol" });
+    const signUp = screen.getByRole("link", { name: "Hesap oluştur" });
     expect(signUp.getAttribute("href")).toBe("/kayit");
     fireEvent.click(signUp);
     expect(screen.getByRole("form", { name: "E-posta ile üyelik" })).toBeDefined();
     expect(screen.queryByRole("form", { name: "E-posta ile giriş" })).toBeNull();
-    expect(screen.queryByRole("link", { name: "Üye ol" })).toBeNull();
+    expect(screen.queryByRole("link", { name: "Hesap oluştur" })).toBeNull();
     const returnPrompt = screen.getByText(/Zaten hesabınız var mı/);
     const signIn = within(returnPrompt).getByRole("link", { name: "Giriş yap" });
     expect(signIn.getAttribute("href")).toBe("/giris");
@@ -84,7 +84,7 @@ it.each(["ctrlKey", "metaKey", "shiftKey", "altKey"] as const)(
     render(<DialogJourney />);
     await screen.findByRole("form", { name: "E-posta ile giriş" });
     fireEvent.change(screen.getByLabelText("E-posta", { exact: true }), { target: { value: "deniz@example.test" } });
-    fireEvent.click(screen.getByRole("link", { name: "Üye ol" }), { [modifier]: true });
+    fireEvent.click(screen.getByRole("link", { name: "Hesap oluştur" }), { [modifier]: true });
     expect(screen.getByRole("form", { name: "E-posta ile giriş" })).toBeDefined();
     expect((screen.getByLabelText("E-posta", { exact: true }) as HTMLInputElement).value).toBe("deniz@example.test");
     expect(navigation.replace).not.toHaveBeenCalled();

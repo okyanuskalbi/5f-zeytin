@@ -4,7 +4,7 @@ import { readFile, readdir, stat } from "node:fs/promises";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import sharp from "sharp";
-import { movieBoxes } from "./check-cinematic-film.mjs";
+import { movieBoxes } from "./mp4-boxes.mjs";
 
 const repoRoot = resolve(import.meta.dirname, "..");
 const sourceDirectory = "AFINA-KAYNAK/musteri-2026-11-10";

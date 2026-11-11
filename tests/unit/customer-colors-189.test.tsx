@@ -3,12 +3,17 @@ import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import { AccountSummary } from "@/components/account/AccountSummary";
 import { CustomerWorkspace } from "@/components/account/CustomerWorkspace";
-import panel from "@/components/account/CustomerPanel.module.css";
+import panel from "@/components/storefront/account/AccountSurface.module.css";
 
 vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn(), refresh: vi.fn() }) }));
-const css = readFileSync("components/account/CustomerPanel.module.css", "utf8");
+const css = readFileSync("components/storefront/account/AccountSurface.module.css", "utf8");
 const profile = { name: "Yerel Renk Kontrolü", email: "renk@example.test", phone: "05321234567" };
-const variables = new Map([...css.slice(0, css.indexOf(".authPage {", 1)).matchAll(/(--[\w-]+):\s*([^;]+);/g)].map(match => [match[1], match[2].trim()]));
+const globalCss = readFileSync("app/globals.css", "utf8");
+const variables = new Map<string, string>();
+for (const match of globalCss.matchAll(/(--[\w-]+):\s*(#[\da-fA-F]{3,6});/g)) {
+  if (!variables.has(match[1])) variables.set(match[1], match[2]);
+}
+for (const match of css.slice(0, css.indexOf("}")).matchAll(/(--[\w-]+):\s*([^;]+);/g)) variables.set(match[1], match[2].trim());
 function resolve(value: string): string {
   const match = /^var\((--[\w-]+)\)$/.exec(value);
   return match ? resolve(variables.get(match[1]) ?? "") : value;
@@ -34,11 +39,11 @@ afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
 
 it("keeps the actual account overview button readable on its white quick-link surface", () => {
   render(<AccountSummary profile={profile} />);
-  const link = screen.getByRole("link", { name: "Sipariş geçmişim" });
-  expect(link.getAttribute("data-slot")).toBe("button");
+  const link = screen.getByRole("link", { name: /Sipariş geçmişim/ });
+  expect(link.getAttribute("href")).toBe("/hesabim/siparisler");
   expect(link.closest(`.${panel.quickLinks}`)).not.toBeNull();
   const foreground = declaration(".quickLinks a", "color") ?? "var(--primary-foreground)";
-  const background = declaration(".quickLinks a", "background")!;
+  const background = declaration(".quickLinks a", "background") ?? "var(--sf-ivory)";
   expect(contrast(foreground, background)).toBeGreaterThanOrEqual(4.5);
   expect(contrast("var(--customer-copy)", "var(--customer-paper)")).toBeGreaterThanOrEqual(4.5);
 });

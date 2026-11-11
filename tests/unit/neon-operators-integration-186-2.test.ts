@@ -1,30 +1,42 @@
 // @vitest-environment node
 import { randomUUID } from "node:crypto";
-import { Pool } from "pg";
+import { Pool, type PoolClient } from "pg";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { localTestDatabaseUrl } from "../helpers/local-postgres";
-// @ts-expect-error Standalone migration CLI has no declaration file.
-import { migrate } from "../../scripts/db-migrate.mjs";
 // @ts-expect-error Standalone operator CLI has no declaration file.
 import { seedCatalog } from "../../scripts/db-seed.mjs";
 // @ts-expect-error Standalone operator CLI has no declaration file.
 import { grantAdmin } from "../../scripts/admin-grant.mjs";
-let control:Pool|undefined,pool:Pool|undefined;
-const name=`afina_ops_${randomUUID().replaceAll("-","")}`;
-let created=false;
+let control: Pool | undefined, client: PoolClient | undefined;
+let pool: { connect: () => Promise<{ query: (sql: string, values?: unknown[]) => ReturnType<PoolClient["query"]>; release: () => void }>; query: PoolClient["query"] };
+const owner = `operator-${randomUUID()}`;
+const email = `${owner}@example.test`;
+let originalProducts: unknown;
 describe.skipIf(!process.env.TEST_DATABASE_URL)("local Postgres seed/admin operators",()=>{
  beforeAll(async()=>{
-  const url=new URL(localTestDatabaseUrl());
-  control=new Pool({connectionString:url.href,max:1});
-  // The identifier is generated locally, never supplied by the user or SQL input.
-  if(!/^afina_ops_[a-f0-9]{32}$/.test(name))throw Error("Invalid local database name");
-  await control.query(`CREATE DATABASE "${name}"`);created=true;
-  url.pathname=`/${name}`;pool=new Pool({connectionString:url.href,max:1});
-  await migrate(pool);
+  // Stay inside TEST_DATABASE_URL; no secondary database is created or opened.
+  control = new Pool({ connectionString: localTestDatabaseUrl(), max: 1 });
+  client = await control.connect();
+  await client.query("BEGIN");
+  await client.query("SELECT pg_advisory_xact_lock($1)", [640064]);
+  // Other suites own transient rows; only the six shared catalogue rows are stable across suites.
+  originalProducts = (await client.query("SELECT * FROM public.products WHERE id LIKE $1 ORDER BY id", ["sample-%"])).rows;
+  await client.query("DELETE FROM public.product_upsells");
+  await client.query("DELETE FROM public.products");
+  const nestedQuery = (sql: string, values?: unknown[]) => {
+    const mapped = sql === "BEGIN" ? "SAVEPOINT operator_call" : sql === "COMMIT" ? "RELEASE SAVEPOINT operator_call" : sql === "ROLLBACK" ? "ROLLBACK TO SAVEPOINT operator_call" : sql;
+    return client!.query(mapped, values);
+  };
+  pool = { connect: async () => ({ query: nestedQuery, release() {} }), query: client.query.bind(client) };
  });
  afterAll(async()=>{
-  await pool?.end();
-  try{if(created)await control?.query(`DROP DATABASE "${name}"`);}finally{await control?.end();}
+  try {
+    if(client) {
+      await client.query("ROLLBACK");
+      expect((await client.query("SELECT * FROM public.products WHERE id LIKE $1 ORDER BY id", ["sample-%"])).rows).toEqual(originalProducts);
+      expect((await client.query("SELECT id FROM public.products WHERE id=$1", ["operator-extra"])).rowCount).toBe(0);
+    }
+  } finally { client?.release(); await control?.end(); }
  });
  it("keeps dry-run empty, seeds all products, and performs zero row updates on rerun",async()=>{
   const dry=await seedCatalog(pool);expect(dry.mode).toBe("dry-run");
@@ -44,14 +56,14 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)("local Postgres seed/admin opera
  });
  it("grants only an existing account and verifies its email atomically without creating credentials",async()=>{
   await expect(grantAdmin(pool,"missing@example.test")).rejects.toThrow("user_not_found");
-  expect((await pool!.query("SELECT user_id FROM admin_users")).rows).toEqual([]);
-  await pool!.query('INSERT INTO "user"(id,name,email) VALUES($1,$2,$3)',["operator-owner","Owner","OWNER@example.test"]);
-  expect(await grantAdmin(pool," owner@example.test ")).toEqual({adminAdded:1,emailVerifiedChanged:1});
-  const first=(await pool!.query('SELECT xmin::text AS version,"updatedAt" FROM "user" WHERE id=$1',["operator-owner"])).rows;
-  expect(await grantAdmin(pool,"owner@example.test")).toEqual({adminAdded:0,emailVerifiedChanged:0});
-  expect((await pool!.query('SELECT xmin::text AS version,"updatedAt" FROM "user" WHERE id=$1',["operator-owner"])).rows).toEqual(first);
-  expect((await pool!.query('SELECT "emailVerified" FROM "user" WHERE id=$1',["operator-owner"])).rows[0].emailVerified).toBe(true);
-  expect((await pool!.query('SELECT user_id FROM admin_users')).rows).toEqual([{user_id:"operator-owner"}]);
-  expect((await pool!.query('SELECT id FROM account')).rows).toEqual([]);
+  expect((await pool!.query("SELECT user_id FROM admin_users WHERE user_id=$1", [owner])).rows).toEqual([]);
+  await pool!.query('INSERT INTO "user"(id,name,email) VALUES($1,$2,$3)',[owner,"Owner",email.toUpperCase()]);
+  expect(await grantAdmin(pool,` ${email} `)).toEqual({adminAdded:1,emailVerifiedChanged:1});
+  const first=(await pool!.query('SELECT xmin::text AS version,"updatedAt" FROM "user" WHERE id=$1',[owner])).rows;
+  expect(await grantAdmin(pool,email)).toEqual({adminAdded:0,emailVerifiedChanged:0});
+  expect((await pool!.query('SELECT xmin::text AS version,"updatedAt" FROM "user" WHERE id=$1',[owner])).rows).toEqual(first);
+  expect((await pool!.query('SELECT "emailVerified" FROM "user" WHERE id=$1',[owner])).rows[0].emailVerified).toBe(true);
+  expect((await pool!.query('SELECT user_id FROM admin_users WHERE user_id=$1', [owner])).rows).toEqual([{user_id:owner}]);
+  expect((await pool!.query('SELECT id FROM account WHERE "userId"=$1', [owner])).rows).toEqual([]);
  });
 });

@@ -16,7 +16,7 @@ export function CheckoutSummary({ summary }: { summary: Summary }) {
     <ul aria-label="Sipariş ürünleri">
       {summary.lines.map(line => <li key={line.id}>
         <p>{line.name}</p>
-        <p className={styles.muted}>{line.weight} · {line.quantity} adet</p>
+        <p className={styles.muted}>{line.weight}, {line.quantity} adet</p>
         <p className="tabular-nums">{money.format(line.amountKurus / 100)}</p>
       </li>)}
     </ul>

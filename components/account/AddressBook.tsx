@@ -34,7 +34,7 @@ export function AddressBook({ initialAddresses, onChange, adapter, demo = true }
     <ul className={styles.list}>{addresses.map(address => <li key={address.id} className={styles.address}>
       <h3>{address.title}</h3>
       {address.isDefault && <span className={styles.badge}>Varsayılan adres</span>}
-      <p>{address.recipient}</p><p>{address.line}</p><p>{address.district} / {address.city} · {address.postalCode}</p><p>{address.phone}</p>
+      <p>{address.recipient}</p><p>{address.line}</p><p>{address.district} / {address.city}, {address.postalCode}</p><p>{address.phone}</p>
       <div className={styles.actions}>
         <Button variant="outline" disabled={busy} onClick={() => edit(address)}>Düzenle</Button>
         {!address.isDefault && <Button variant="outline" disabled={busy} onClick={() => void run(async () => { await getAdapter().setDefaultAddress(address.id); await refresh(); return "Varsayılan adres güncellendi."; })}>Varsayılan yap</Button>}

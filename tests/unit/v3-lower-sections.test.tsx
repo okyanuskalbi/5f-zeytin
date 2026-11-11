@@ -1,64 +1,19 @@
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, expect, it, vi } from "vitest";
 import Home from "@/app/page";
 import AboutPage from "@/app/hakkimizda/page";
-import { Faq, verifiedFaqs } from "@/components/landing/Faq";
-import { Story } from "@/components/landing/Story";
-import { TrustStrip } from "@/components/landing/TrustStrip";
-import { WholesaleContact } from "@/components/landing/WholesaleContact";
-import { Footer } from "@/components/site/Footer";
-import { siteContact } from "@/lib/site/contact";
+import { StoreFaq } from "@/components/storefront/content/StoreFaq";
+import { verifiedFaqs } from "@/lib/site/faqs";
+import { StoreFooter as Footer } from "@/components/storefront/StoreFooter";
 import manifest from "@/public/images/v3/manifest.json";
 
 vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }) }));
 vi.mock("server-only", () => ({}));
 
 afterEach(cleanup);
-
-it("shows the four trust facts without a draft delivery label", () => {
-  render(<TrustStrip />);
-  const strip = screen.getByRole("region", { name: "Alışveriş bilgileri" });
-  expect(strip.textContent).toContain("Kargo 2-4 iş günü");
-  expect(strip.textContent).toContain("Güvenli Ödeme");
-  expect(strip.textContent).toContain("Kendi tesisimizde dolum");
-  expect(strip.textContent).not.toMatch(/Örnek süre/);
-  expect(strip.textContent).toContain("Toptan alım için teklif");
-  expect(strip.querySelectorAll("li")).toHaveLength(4);
-  expect(strip.querySelectorAll("svg")).toHaveLength(0);
-});
-
-it("omits unavailable direct wholesale channels while retaining the wholesale page destination", () => {
-  expect(Object.values(siteContact).every(value => value === "")).toBe(true);
-  render(<><Story /><WholesaleContact preserveAnchor /><Footer /></>);
-  expect(document.querySelector("#toptan")).toBeNull();
-  expect(document.querySelector("#toptan-iletisim")?.textContent).toBe("");
-  expect(screen.queryByText("Toptan alım için bize yazın")).toBeNull();
-  expect(screen.queryByText("İletişim bilgileri yakında")).toBeNull();
-  expect(screen.getByRole("link", { name: "Toptan Satış" }).getAttribute("href")).toBe("/toptan-satis");
-});
-
-it("omits wholesale markup when all contact values contain only whitespace", () => {
-  render(<WholesaleContact contact={{ phone: " ", whatsapp: " ", email: " " }} />);
-  expect(screen.queryAllByRole("link")).toHaveLength(0);
-  expect(document.querySelector("#toptan, #toptan-iletisim")).toBeNull();
-  expect(screen.queryByRole("heading", { name: "Toptan alım için bize yazın" })).toBeNull();
-});
-
-it.each([
-  ["phone", "+90 555 010 00 00", "Telefon edin", "tel:+905550100000"],
-  ["whatsapp", "+90 555 010 00 00", "WhatsApp’tan yazın", "https://wa.me/905550100000"],
-  ["email", " contact@example.com ", "E-posta gönderin", "mailto:contact@example.com"],
-])("renders only the configured %s contact channel", (channel, value, label, href) => {
-  render(<WholesaleContact contact={{ phone: "", whatsapp: "", email: "", [channel]: value }} />);
-  expect(screen.getAllByRole("link")).toHaveLength(1);
-  expect(screen.getByRole("link", { name: label }).getAttribute("href")).toBe(href);
-  expect(screen.getByRole("region", { name: "Toptan alım için bize yazın" }).id).toBe("toptan");
-  expect(document.querySelector("#toptan-iletisim")?.getAttribute("tabindex")).toBe("-1");
-  expect(screen.queryByText("İletişim bilgileri yakında")).toBeNull();
-});
 
 it("keeps at most six verified answers as standalone complete sentences", () => {
   expect(verifiedFaqs.length).toBeGreaterThan(0);
@@ -70,26 +25,9 @@ it("keeps at most six verified answers as standalone complete sentences", () => 
   }
 });
 
-it("keeps native FAQ disclosures usable with synchronized expanded state", () => {
-  render(<Faq />);
-  for (const { question, answer } of verifiedFaqs) {
-    const summary = screen.getByText(question, { selector: "summary" });
-    const details = summary.closest("details")!;
-    expect(summary.getAttribute("aria-expanded")).toBe("false");
-    const content = document.getElementById(summary.getAttribute("aria-controls")!);
-    expect(content?.textContent).toBe(answer);
-    details.open = true;
-    fireEvent(details, new Event("toggle"));
-    expect(summary.getAttribute("aria-expanded")).toBe("true");
-    details.open = false;
-    fireEvent(details, new Event("toggle"));
-    expect(summary.getAttribute("aria-expanded")).toBe("false");
-  }
-});
-
 it("keeps FAQ answers in the server HTML for native JavaScript-free disclosure", () => {
   const doc = document.implementation.createHTMLDocument();
-  doc.body.innerHTML = renderToStaticMarkup(<Faq />);
+  doc.body.innerHTML = renderToStaticMarkup(<StoreFaq canonicalPath="/hakkimizda" />);
   expect(doc.querySelectorAll("details > summary")).toHaveLength(verifiedFaqs.length);
   for (const { answer } of verifiedFaqs) expect(doc.body.textContent).toContain(answer);
   // Native details owns expansion until hydration; no stale ARIA override without JS.

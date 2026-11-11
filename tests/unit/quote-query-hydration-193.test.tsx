@@ -1,11 +1,11 @@
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { useState } from "react";
 import { afterEach, expect, it, vi } from "vitest";
-import { QuoteQuerySelection } from "@/components/landing/QuoteQuerySelection";
+import { QuoteQuerySelection } from "@/components/storefront/quote/QuoteQuerySelection";
 import { getProducts } from "@/lib/catalog/static-products";
 
 const chooseProduct = vi.hoisted(() => vi.fn());
-vi.mock("@/components/landing/QuoteJourneyProvider", () => ({ useQuoteJourney: () => ({ chooseProduct }) }));
+vi.mock("@/components/storefront/quote/QuoteJourneyProvider", () => ({ useQuoteJourney: () => ({ chooseProduct }) }));
 afterEach(() => { cleanup(); history.replaceState(null, "", "/"); vi.clearAllMocks(); });
 
 function LoadingQuote({ children }: { children: React.ReactNode }) {

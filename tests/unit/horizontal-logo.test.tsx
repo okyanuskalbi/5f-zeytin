@@ -3,8 +3,8 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { cleanup, render, screen, within } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import sharp from "sharp";
-import { Navbar } from "@/components/site/Navbar";
-import { Footer } from "@/components/site/Footer";
+import { StoreHeader as Navbar } from "@/components/storefront/StoreHeader";
+import { StoreFooter as Footer } from "@/components/storefront/StoreFooter";
 
 vi.mock("next/navigation", () => ({ usePathname: () => "/" }));
 vi.mock("motion/react", async importOriginal => ({

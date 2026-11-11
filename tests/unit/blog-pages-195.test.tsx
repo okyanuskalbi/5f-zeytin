@@ -59,5 +59,5 @@ it("builds a finite static article set, rejects unknown articles, and limits the
   expect(generateStaticParams()).toEqual(blogPosts.map(post => ({ slug: post.slug })));
   await expect(Article(params("olmayan-yazi"))).rejects.toThrow("NEXT_NOT_FOUND");
   await expect(generateMetadata(params("olmayan-yazi"))).rejects.toThrow("NEXT_NOT_FOUND");
-  expect(readFileSync("components/blog/Blog.module.css", "utf8")).toMatch(/max-width:\s*(?:6\d|7[0-5])ch/);
+  expect(readFileSync("components/storefront/content/Blog.module.css", "utf8")).toMatch(/max-width:\s*(?:6\d|7[0-5])ch/);
 });

@@ -35,7 +35,7 @@ it("selects real packages including a stock-zero quote item and keeps the trigge
   fireEvent.change(within(dialog).getByRole("textbox", { name: quantity(item) }), { target: { value: "12" } });
   fireEvent.click(within(dialog).getByRole("button", { name: "Tamam" }));
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
-  expect(trigger.textContent).toContain("1 ürün · 12 adet");
+  expect(trigger.textContent).toContain("1 ürün, 12 adet");
   expect(document.activeElement).toBe(trigger);
 });
 
@@ -68,13 +68,13 @@ it("bulk-selects available products without overwriting edits, excludes missing 
   const products = await getProducts(); const changed = vi.fn();
   render(<Fixture products={products} initial={{ removed: "500", [products[0].id]: "7" }} changed={changed} />);
   const trigger = screen.getByRole("button", { name: "İlgilendiğiniz ürünler" });
-  expect(trigger.textContent).toContain("1 ürün · 7 adet");
+  expect(trigger.textContent).toContain("1 ürün, 7 adet");
   fireEvent.click(trigger);
   fireEvent.click(screen.getByRole("button", { name: "Tümünü seç" }));
   expect(changed.mock.lastCall?.[0]).toEqual(Object.fromEntries([
     ["removed", "500"], ...products.map((product, index) => [product.id, index ? "1" : "7"]),
   ]));
-  expect(screen.getByLabelText("Seçim özeti").textContent).toContain("6 ürün · 12 adet");
+  expect(screen.getByLabelText("Seçim özeti").textContent).toContain("6 ürün, 12 adet");
   fireEvent.click(screen.getByRole("button", { name: "Seçimi temizle" }));
   expect(changed).toHaveBeenLastCalledWith({});
   for (const field of screen.getAllByRole("textbox")) expect(field.hasAttribute("disabled")).toBe(true);
@@ -106,6 +106,6 @@ it("reflects external selections and exposes a supplied validation error on the 
   expect(trigger.getAttribute("aria-describedby")).toBe("product-error");
   expect(trigger.getAttribute("aria-invalid")).toBe("true");
   await act(async () => view.rerender(<QuoteProductPicker products={products} quantities={Object.fromEntries(products.map(p => [p.id, "1"]))} onChange={() => {}} />));
-  expect(trigger.textContent).toContain("6 ürün · 6 adet");
+  expect(trigger.textContent).toContain("6 ürün, 6 adet");
   expect(trigger.querySelectorAll("picture")).toHaveLength(3);
 });

@@ -49,7 +49,7 @@ it("selects a known product query and keeps the existing incomplete-form errors 
   expect(new URL(location.href).searchParams.get("kaynak")).toBe("urun");
   await waitFor(() => expect(document.activeElement).toBe(screen.getByRole("textbox", { name: "Adınız veya firma adı" })));
   fireEvent.click(screen.getByRole("button", { name: "Talep özetini hazırla" }));
-  expect(screen.getByRole("alert").textContent).toContain("kontrol");
+  await waitFor(() => expect(screen.getByRole("alert").textContent).toContain("kontrol"));
   expect(within(screen.getByRole("form", { name: "Kurumsal teklif talebi" })).getByRole("checkbox").getAttribute("aria-invalid")).toBe("true");
   expect(screen.queryByRole("link", { name: "E-postayla gönder" })).toBeNull();
 });

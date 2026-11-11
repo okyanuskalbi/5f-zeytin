@@ -21,7 +21,7 @@ export async function summarizeBundle(html, readAsset) {
     const inlineCss = [...doc.querySelectorAll("style")].map(node => Buffer.from(node.textContent));
     const inlineJs = Buffer.from([...doc.querySelectorAll('script:not([src]):not([type="application/ld+json"])')].map(node => node.textContent).join("\n"));
     const initialImages = await Promise.all([...new Set([...doc.querySelectorAll('img:not([loading="lazy"])')]
-      .filter(node => !node.closest("[data-hero-photo], [data-hero-intro] [data-frame-sequence]"))
+      .filter(node => !node.closest("[data-hero-photo]"))
       .map(node => node.getAttribute("src")))].map(async src => ({ src, bytes: (await readAsset(src)).length })));
     const total = { count: initialScripts.length, bytes: initialScripts.reduce((sum, entry) => sum + entry.bytes, 0), gzipBytes: initialScripts.reduce((sum, entry) => sum + entry.gzipBytes, 0) };
     const css = {
@@ -32,7 +32,7 @@ export async function summarizeBundle(html, readAsset) {
       inlineScripts: { bytes: inlineJs.length, gzipBytes: inlineJs.length ? gzipSync(inlineJs).length : 0 },
       initialTransferBytes: total.gzipBytes + css.gzipBytes + initialImages.reduce((sum, entry) => sum + entry.bytes, 0),
       notes: ["First-load JS is the sum of unique executable script resources in the built SSR HTML (including script preloads); legacy noModule is excluded.",
-        "Inline bootstrap/RSC data is reported separately; inline CSS is included. Initial images are eager non-hero img resources; all other media is lazy. AVIF/WebP alternatives are checked separately by verify-v4-page.",
+        "Inline bootstrap/RSC data is reported separately; inline CSS is included. Initial images are eager non-hero img resources; all other media is lazy. Media integrity is checked separately by npm run check:assets.",
         "Node gzip estimates are build evidence, not browser transfer or Lighthouse measurements."] };
   } finally { dom.window.close(); }
 }

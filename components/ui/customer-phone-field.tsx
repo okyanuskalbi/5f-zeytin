@@ -36,5 +36,5 @@ export function CustomerPhoneField({name,initial='',initialParts,defaultCountry=
  return <div className="customer-phone-field"><span className="customer-phone-label" id={id+'-label'}>{c.label}</span><div className="customer-phone-inputs">
   <PhoneCountrySearch name={name+'Country'} value={country} options={options} label={c.country} lang={lang} autoComplete={autoComplete+' tel-country-code'} onChange={next=>{selected.current=true;setCountry(next);setNational(groupedNational(national,next));caret.current=null;setTouched(false)}}/>
   <input ref={input} name={name} type="tel" inputMode="tel" value={national} onChange={change} onBlur={blur} onInvalid={()=>setTouched(true)} required={required} maxLength={30} placeholder={groupedNational(phoneExample(country),country)} aria-labelledby={id+'-label'} aria-describedby={id+'-hint'+(error?' '+id+'-error':'')+(errorId?' '+errorId:'')} aria-invalid={error||invalid||undefined} autoComplete={autoComplete+' tel-national'} dir="ltr"/>
- </div><small id={id+'-hint'}>{phoneLengthHint(country,lang)}</small>{error&&<small id={id+'-error'} className="customer-phone-error" role="alert">{c.invalid}</small>}</div>;
+ </div><small id={id+'-hint'}>{phoneLengthHint(country,lang).replaceAll("–","-")}</small>{error&&<small id={id+'-error'} className="customer-phone-error" role="alert">{c.invalid}</small>}</div>;
 }

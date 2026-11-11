@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { JSX } from "react";
-import { AboutPage } from "@/components/about/AboutPage";
+import { AboutPage } from "@/components/storefront/content/AboutPage";
 import { siteIdentity } from "@/lib/site/identity";
 
 const title = "Hakkımızda | AFİNA ZEYTİN";

@@ -71,7 +71,7 @@ export const CartLineItem = forwardRef<HTMLLIElement, CartLineItemProps>(functio
 // 21st Checkout Summary, demo 36084: semantic amount rows and explicit pending charges.
 export function CartTotals({ subtotal, itemCount }: { subtotal: number | null; itemCount: number }): JSX.Element {
   return <dl className={styles.totals}>
-    <div><dt>Ara toplam (tahmini) · {itemCount} adet</dt><dd><CartAmount amount={subtotal} label="Ara toplam" /></dd></div>
+    <div><dt>Ara toplam (tahmini), {itemCount} adet</dt><dd><CartAmount amount={subtotal} label="Ara toplam" /></dd></div>
     <div className={styles.shipping}><dt>Kargo</dt><dd>Ödeme adımında hesaplanır</dd></div>
     <div className={styles.total}><dt>Toplam <small>(tahmini)</small></dt><dd><CartAmount amount={subtotal} label="Toplam (tahmini)" /></dd></div>
   </dl>;
@@ -85,7 +85,7 @@ export function CartTrust(): JSX.Element {
         <PaymentLogos tone="dark" />
       </div>
     </div>
-    <p className={styles.delivery}><Truck aria-hidden="true" />Kargo 2-4 iş günü</p>
+    <p className={styles.delivery}><Truck aria-hidden="true" />Teslimat koşulları teklif aşamasında belirlenir.</p>
   </div>;
 }
 
@@ -94,6 +94,6 @@ export function CartEmpty({ onBrowse }: { onBrowse?: () => void }): JSX.Element 
     <Image src="/brand/favicon.svg" alt="" width={64} height={64} className={styles.emptyEmblem} />
     <h2>Sepetiniz boş</h2>
     <p>Sofranız için seçtikleriniz burada birikir.</p>
-    <Button asChild className={styles.checkout}><Link href="/#urunler" prefetch={false} onClick={onBrowse}>Ürünlere göz atın</Link></Button>
+    <Button asChild className={styles.checkout}><Link href="/urunler" prefetch={false} onClick={onBrowse}>Ürünleri İnceleyin</Link></Button>
   </div>;
 }

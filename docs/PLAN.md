@@ -1,3 +1,9 @@
+## Task199 / yerel uygulama ve son kabul (11 Kasım2026)
+
+A0: main77406e5 ve seçilen A/3ad7d0f temel alındı; motion14.4.0, güncel UIPro variance/motion/density scripti, paketli Chromium/WebKit ve yalnızlocalhost afina_kontrol189 doğrulandı. Ana oturumda21st görünmedi; alt ajan search/get_component2110ve9321 ile gerçek kaynağı inceledi. Mevcut27904form ve20055/109picker uyarlamaları korundu. Genel kit palet/font/sinematik önerileri bağlayıcı A ile çeliştiğinde alınmadı; Fraunces/Figtree ve yeşil/fildişi aynı kaldı.
+
+Task199 bütün müşteri sayfalarının sunumunu storefront diline taşıdı. Kullanılmayan174dosya ve16eski sunum yolu temizlendi; her parti rg kanıtı görev notunda. Auth/DB/ödeme/form iş kuralları ve altıSKU korunur. Yeni telefon/seçici yükleme sınırları, ambalajlı metadata, açık ödeme açıklaması, tek yüzlü üyelik ve hesap/404ilk açılış düzeltmeleri yereldir. Birim 1281, lint/typecheck/build, 540 sayfa/profil, 115 tarayıcı testi, 5 akış profili ve 75 hız ölçümü PASS. Task199 yerel kabulü tamamlandı; kayıtlar `output/task199/` altında. Push/yayın/canlıDB/env dosyası yok; node_modules/.next ve_legacy korundu. Yönetim paneliTask200 ayrı kapsamdır.
+
 ## Aktif plan: ön yüz baştan (10 Kasım 2026, gece)
 
 Kullanıcı: "baştan yapacağız elindeki tüm bilgileri değerlendir" → kapsam **ön yüz baştan**; üyelik,

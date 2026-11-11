@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { JSX } from "react";
-import { ProductListing } from "@/components/catalog/ProductListing";
+import { ProductListing } from "@/components/storefront/catalog/ProductListing";
 import { getGroupTrail, getProductGroup, productGroups, productsForGroup } from "@/lib/catalog/groups";
 import { readProductFamilies } from "@/lib/catalog/read";
 import { siteIdentity } from "@/lib/site/identity";

@@ -28,7 +28,7 @@ it("preserves the approved locality, production stages and values without invent
   expect(doc.body.textContent).toContain("Ellek");
   expect(doc.querySelector('[data-about-facility]')?.textContent).toContain("Modern Üretim Tesisimiz");
   for (const process of ["Ayıklama", "Salamura", "Paketleme", "Depolama"]) expect(doc.querySelector('[data-about-facility]')?.textContent).toContain(process);
-  expect([...doc.querySelectorAll('[data-about-values] strong')].map(item => item.textContent)).toEqual(["Geleneksel Üretim", "%100 Doğal", "Kendi Tesisimizde"]);
+  expect([...doc.querySelectorAll('[data-about-values] strong')].map(item => item.textContent)).toEqual(["Geleneksel Üretim", "Ellek zeytini", "Kendi Tesisimizde"]);
   expect(doc.querySelector('[data-about-story]')?.textContent).not.toMatch(/\b(?:19|20)\d{2}\b|ödül|sertifika|kapasite|ton\b|kurulduk|kuruldu/iu);
 });
 

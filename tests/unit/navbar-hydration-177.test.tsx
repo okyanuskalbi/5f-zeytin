@@ -3,11 +3,11 @@ import { renderToString } from "react-dom/server";
 import { hydrateRoot, type Root } from "react-dom/client";
 import type { ComponentProps } from "react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
-import { Navbar } from "@/components/site/Navbar";
+import { StoreHeader as Navbar } from "@/components/storefront/StoreHeader";
 
 const route = vi.hoisted(() => ({ pathname: "/" }));
 vi.mock("next/navigation", () => ({ usePathname: () => route.pathname }));
-vi.mock("next/link", () => ({ default: (props: ComponentProps<"a">) => <a {...props} /> }));
+vi.mock("next/link", () => ({ default: (props: ComponentProps<"a"> & { prefetch?: boolean }) => { const html = { ...props }; delete html.prefetch; return <a {...html} />; } }));
 vi.mock("next/dynamic", () => ({ default: () => () => null }));
 vi.mock("@/components/cart/CartProvider", () => ({ useCart: () => null }));
 vi.mock("@/components/account/MembershipDialogProvider", () => ({ useMembershipDialog: () => null }));
@@ -53,9 +53,8 @@ it.each([
 
   expect(container.querySelector("header")).toBe(serverHeader);
   expect(serverHeader.getAttribute("data-tone")).toBe(tone);
-  expect(serverHeader.getAttribute("data-over-hero")).toBe("false");
   expect(serverTone).toBe(tone); // The no-JS/SSR result must also be correct.
-  expect(container.querySelector('[aria-current="location"]')?.textContent).toBe(browserPath === "/" ? "Ana Sayfa" : undefined);
+  expect(container.querySelector('[aria-current="location"]')).toBeNull();
   expect(recoverable).not.toHaveBeenCalled();
   expect(consoleError).not.toHaveBeenCalled();
 

@@ -1,7 +1,7 @@
-.page { padding: calc(var(--header-height) + 48px) var(--page-margin) 96px; color: var(--foreground); }
+.page { font-size: 16px; padding: 48px 32px 96px; color: var(--foreground); }
 .container { max-width: 1200px; margin-inline: auto; }
 .header { display: grid; gap: 16px; margin-bottom: 32px; }
-.header h1 { font-size: var(--step-head); }
+.header h1 { font-size: clamp(36px, 5vw, 56px); line-height: 1.15; }
 .header p { color: var(--muted-foreground); }
 .demo { padding: 24px; margin-bottom: 32px; background: var(--card); max-width: 60ch; overflow-wrap: anywhere; }
 .demo strong { font-weight: 600; }
@@ -46,8 +46,13 @@
 .link { display: inline-flex; min-height: 44px; align-items: center; padding-block: 8px; text-decoration: underline; }
 .link:focus-visible { outline: 2px solid var(--ring); outline-offset: 4px; }
 @media (min-width: 768px) {
-  .form fieldset { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); }
+  .form fieldset { grid-template-columns: minmax(0, 1fr); }
   .form fieldset > button { grid-column: 1 / -1; justify-self: start; }
   .resultBody { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; }
 }
-@media (max-width: 599px) { .page { padding-block: calc(var(--header-height) + 32px) 64px; } .demo { padding: 16px; } }
+@media (max-width: 599px) { .page { padding-block: 32px 64px; } .demo { padding: 16px; } }
+
+.form { max-width: 576px; }
+.page button { border-radius: var(--sf-radius-button); }
+.page input { min-height: 48px; font-size: 16px; }
+@media (max-width: 599px) { .page { padding-inline: 16px; } }

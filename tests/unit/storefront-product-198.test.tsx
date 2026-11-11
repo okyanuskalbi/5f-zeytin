@@ -5,6 +5,7 @@ import { ProductTile } from "@/components/storefront/ProductTile";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { getProductFamilies, getProducts } from "@/lib/catalog/static-products";
 
+vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }) }));
 vi.mock("@/components/cart/MiniCart", () => ({ MiniCart: () => null }));
 beforeEach(() => vi.stubGlobal("matchMedia", () => ({ matches: true, addEventListener() {}, removeEventListener() {} })));
 afterEach(() => { cleanup(); localStorage.clear(); history.replaceState(null, "", "/"); vi.unstubAllGlobals(); });

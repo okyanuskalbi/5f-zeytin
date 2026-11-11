@@ -3,12 +3,12 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { getProductFamilies, getProducts } from "@/lib/catalog/static-products";
 import { familySlugs, getFamilyBySlug, legacyProductRoutes, productHref } from "@/lib/catalog/product-pages";
-import Page, { dynamic, dynamicParams, generateMetadata, generateStaticParams, revalidate } from "@/app/urun/[slug]/page";
-import { ProductPage } from "@/components/catalog/ProductPage";
+import Page, { dynamicParams, generateMetadata, generateStaticParams, revalidate } from "@/app/urun/[slug]/page";
+import { ProductDetail as ProductPage } from "@/components/storefront/ProductDetail";
 import { CartProvider } from "@/components/cart/CartProvider";
 
 vi.mock("@/lib/catalog/read", () => ({ readProductFamilies: () => getProductFamilies() }));
-vi.mock("next/navigation", () => ({ notFound: () => { throw new Error("NEXT_NOT_FOUND"); } }));
+vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }), notFound: () => { throw new Error("NEXT_NOT_FOUND"); } }));
 vi.mock("@/components/cart/MiniCart", () => ({ MiniCart: () => null }));
 beforeEach(() => vi.stubGlobal("matchMedia", () => ({ matches: true, addEventListener() {}, removeEventListener() {} })));
 afterEach(() => { cleanup(); localStorage.clear(); history.replaceState(null, "", "/"); vi.unstubAllGlobals(); });
@@ -21,7 +21,7 @@ it("maps every original SKU to a single family page and an explicit size without
 });
 
 it("generates four cached static pages with unknown slugs closed", async () => {
-  expect(dynamic).toBe("force-static"); expect(revalidate).toBe(300); expect(dynamicParams).toBe(false);
+  expect(revalidate).toBe(300); expect(dynamicParams).toBe(false);
   expect(await generateStaticParams()).toEqual(Object.values(familySlugs).map(slug => ({ slug })));
   await expect(Page({ params: Promise.resolve({ slug: "unknown" }) })).rejects.toThrow("NEXT_NOT_FOUND");
 });
@@ -32,7 +32,7 @@ it.each(Object.values(familySlugs))("serves %s with one title, canonical, noinde
   const doc = new DOMParser().parseFromString(renderToStaticMarkup(await Page({ params })), "text/html");
   expect(doc.querySelectorAll("h1")).toHaveLength(1);
   expect(doc.querySelector("h1")?.textContent).toBe(family.name);
-  expect(await generateMetadata({ params })).toMatchObject({ alternates: { canonical: `/urun/${slug}` }, robots: { index: false, follow: true } });
+  expect(await generateMetadata({ params })).toMatchObject({ alternates: { canonical: `/urun/${slug}?boy=${encodeURIComponent(family.variants[0].weight)}` }, robots: { index: false, follow: true } });
   const schemas = [...doc.querySelectorAll('script[type="application/ld+json"]')].map(node => JSON.parse(node.textContent!));
   expect(schemas.map(item => item["@type"])).toEqual(["BreadcrumbList"]);
   expect(schemas[0].itemListElement.at(-1).item).toBe(`https://afinazeytin.com/urun/${slug}`);
@@ -94,5 +94,5 @@ it("reads a directly linked size, resets quantity on size change and adds the se
   expect(new URL(location.href).searchParams.get("kaynak")).toBe("test");
   fireEvent.click(article.getByRole("button", { name: "Sepete ekle" }));
   expect(JSON.parse(localStorage.getItem("afina-zeytin:cart") ?? "null")).toEqual([{ productId: "sample-olive-oil-1l", quantity: 1 }]);
-  expect(article.getByRole("link", { name: "Toptan teklif al" }).getAttribute("href")).toBe("/toptan-satis?teklif=sample-olive-oil-1l");
+  expect(article.getByRole("link", { name: "Teklife ekle" }).getAttribute("href")).toBe("/toptan-satis?teklif=sample-olive-oil-1l");
 });

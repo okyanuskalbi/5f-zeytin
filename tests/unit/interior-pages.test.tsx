@@ -30,7 +30,8 @@ for (const [title, Page, metadata] of [["Sipariş takibi", Tracking, trackingMet
     const doc = document.implementation.createHTMLDocument();
     doc.body.innerHTML = renderToStaticMarkup(<Page />);
     expect(doc.querySelector("h1")?.textContent).toBe(title);
-    expect(doc.querySelector("main a")?.getAttribute("href")).toBe(metadata ? "/#urunler" : "/");
+    expect(doc.querySelector('main a[href="/urunler"]')?.textContent).toBe("Ürünleri İnceleyin");
+    expect(doc.querySelector('main a[href="/"]')).not.toBeNull();
     expect(doc.querySelector("form, input, iframe")).toBeNull();
     if (metadata) {
       expect(metadata.robots).toEqual({ index: false, follow: false });

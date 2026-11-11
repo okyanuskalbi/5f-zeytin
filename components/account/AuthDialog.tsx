@@ -13,7 +13,7 @@ import {
 import { MembershipFrame } from "./MembershipFrame";
 import { SignIn } from "./SignIn";
 import { Register } from "./Register";
-import styles from "./CustomerPanel.module.css";
+import styles from "@/components/storefront/account/AccountSurface.module.css";
 
 // 21st Auth Modal (20038), using installed Radix focus/escape/scroll management.
 export function AuthDialog({

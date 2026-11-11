@@ -1,14 +1,12 @@
 import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { useRef } from "react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
-import { ProductPage } from "@/components/catalog/ProductPage";
-import { ProductCard } from "@/components/catalog/ProductCard";
-import { Hero } from "@/components/landing/Hero";
+import { ProductDetail as ProductPage } from "@/components/storefront/ProductDetail";
+import { ProductTile as ProductCard } from "@/components/storefront/ProductTile";
 import { CartProvider, useCart } from "@/components/cart/CartProvider";
 import { getProductDetails } from "@/lib/catalog/product-details";
 import { getProductFamilies, getProducts } from "@/lib/catalog/static-products";
 import { productHref } from "@/lib/catalog/product-pages";
-import { v3Image } from "@/lib/media/v3-assets";
 import { CART_STORAGE_KEY } from "@/lib/cart/store";
 import type { ProductVariant } from "@/types/catalog";
 
@@ -63,19 +61,18 @@ it.each([
 ] as const)("keeps package-only card metadata and the configured product page category (%s, %s)", async (categoryLabel, showCategoryLabel, detailLabel) => {
   const catalog = (await getProducts()).map(product => ({ ...product, categoryLabel, showCategoryLabel }));
   const { page, product } = await mount("sample-green-olive-10kg", catalog);
-  const { container } = render(<ProductCard product={product} image={v3Image(product.imageKey)} staticPresentation />);
-  const meta = container.querySelector('[aria-label="Boy"]')!.parentElement!;
-  expect([...meta.querySelectorAll("span")].map(node => node.textContent)).toEqual([product.weight]);
-  const table = within(page).getByRole("table", { name: "Ürün bilgileri" });
-  const category = within(table).queryByRole("rowheader", { name: "Kategori" });
-  if (detailLabel) expect(category?.closest("tr")?.textContent).toBe(`Kategori${detailLabel}`);
-  else expect(category).toBeNull();
-  expect(table.querySelectorAll("tr")).toHaveLength(detailLabel ? 6 : 5);
+  const { container } = render(<ProductCard product={product} />);
+  expect(container.querySelector("article")?.getAttribute("data-size")).toBe(product.weight);
+  const table = within(page).getByRole("region", { name: "Ürün bilgileri" });
+  const category = [...table.querySelectorAll("dt")].find(node => node.textContent === "Kategori");
+  if (detailLabel) expect(category?.parentElement?.textContent).toBe(`Kategori${detailLabel}`);
+  else expect(category).toBeUndefined();
+  expect(table.querySelectorAll("dt")).toHaveLength(detailLabel ? 5 : 4);
 });
 
 it.each(["name", "image"] as const)("navigates from the card %s to a readable standalone page without a modal", async kind => {
   const { page, product } = await mount();
-  const { container } = render(<ProductCard product={product} image={v3Image(product.imageKey)} staticPresentation />);
+  const { container } = render(<ProductCard product={product} />);
   const link = kind === "name" ? container.querySelector("h3 a")! : container.querySelector("a:has(img)")!;
   expect(link.getAttribute("href")).toBe(productHref(product));
   expect(link.hasAttribute("aria-haspopup")).toBe(false);
@@ -83,23 +80,15 @@ it.each(["name", "image"] as const)("navigates from the card %s to a readable st
   expect(page.getAttribute("data-surface")).toBe("light");
   expect(within(page).getByRole("heading", { level: 1 }).textContent).toBe("Doğal Kırma Yeşil Zeytin");
   expect(within(page).getByText(copy[0][1])).toBeDefined();
-  expect(within(page).getByRole("table", { name: "Ürün bilgileri" }).querySelectorAll("tr")).toHaveLength(6);
+  expect(within(page).getByRole("region", { name: "Ürün bilgileri" }).querySelectorAll("dt")).toHaveLength(5);
 });
 
 it("adds from a product card without opening a detail or cart drawer", async () => {
   const catalog = await getProducts(); const product = catalog[0];
-  render(<CartProvider products={catalog}><Count /><ProductCard product={product} image={v3Image(product.imageKey)} /></CartProvider>);
+  render(<CartProvider products={catalog}><Count /><ProductCard product={product} /></CartProvider>);
   fireEvent.click(screen.getByRole("button", { name: "Sepete ekle" }));
   expect(screen.queryByRole("dialog")).toBeNull();
   expect(screen.getByLabelText("Sepetteki adet").textContent).toBe("1");
-});
-
-it("links the retained hero's currently selected size to its product page", async () => {
-  const catalog = await getProducts();
-  render(<CartProvider products={catalog}><Hero products={catalog} /></CartProvider>);
-  const hero = document.querySelector<HTMLElement>("[data-hero-card]")!;
-  fireEvent.click(within(hero).getByRole("radio", { name: "1 kg" }));
-  expect(within(hero).getByRole("heading").querySelector("a")?.getAttribute("href")).toBe("/urun/dogal-kirma-yesil-zeytin?boy=1%20kg");
 });
 
 it.each([375, 390, 767, 768, 1440])("keeps one purchase action in a normal page at %ipx", async width => {
@@ -119,7 +108,7 @@ it.each([
   fireEvent.click(within(page).getByRole("button", { name: "Adedi artır" }));
   fireEvent.click(within(page).getByRole("radio", { name: size }));
   const selected = catalog.find(item => item.id === nextId)!;
-  expect(within(page).getByLabelText("Fiyat").textContent).toBe(new Intl.NumberFormat("tr-TR", { style:"currency", currency:"TRY", minimumFractionDigits:0, maximumFractionDigits:2 }).format(selected.priceKurus / 100));
+  expect(within(page).getByLabelText("Fiyat").textContent).toBe(new Intl.NumberFormat("tr-TR", { style:"currency", currency:"TRY", maximumFractionDigits:2 }).format(selected.priceKurus / 100));
   expect(within(page).getByLabelText("Adet").textContent).toBe("1");
   fireEvent.click(within(page).getByRole("button", { name: "Adedi artır" }));
   fireEvent.click(within(page).getByRole("button", { name: "Sepete ekle" }));
@@ -157,7 +146,7 @@ it("eagerly loads the page studio image, switches its gallery and retains dark p
   expect(main.getAttribute("src")).toContain("sahne");
   expect(within(page).getByRole("button", { name:"Sofra görseli" }).getAttribute("aria-pressed")).toBe("true");
   fireEvent.click(within(page).getByRole("button", { name:"Stüdyo görseli" })); expect(main.getAttribute("src")).toContain("studyo");
-  expect(within(page).getByText("Güvenli Ödeme")).toBeDefined();
+  expect(within(page).getByText("Ödeme seçenekleri")).toBeDefined();
   for (const brand of ["Visa","Mastercard","Troy"]) expect(within(page).getByRole("img", { name:brand }).getAttribute("src")).toBe(`/images/payment/${brand.toLowerCase()}${brand === "Mastercard" ? "" : "-dark"}.svg`);
 });
 
@@ -211,6 +200,8 @@ it("keeps mobile purchasing in the page without a second sticky purchase bar", a
 });
 
 it("shows only package size below each product name (181)", async () => {
-  const product=(await getProducts())[0];const {container}=render(<ProductCard product={product} image={v3Image(product.imageKey)} />);
-  expect(container.querySelector('[aria-label="Boy"]')?.parentElement?.textContent).toBe(product.weight);
+  const product=(await getProducts())[0];const {container}=render(<ProductCard product={product} />);
+  expect(container.querySelector("article")?.getAttribute("data-size")).toBe(product.weight);
 });
+
+vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }), usePathname: () => "/urunler" }));

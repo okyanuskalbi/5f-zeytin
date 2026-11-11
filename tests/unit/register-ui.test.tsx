@@ -66,7 +66,7 @@ it("validates locally, focuses the invalid field and associates errors without s
   await waitFor(() => expect(document.activeElement).toBe(field("Ad soyad")));
   expect(field("Ad soyad").getAttribute("aria-invalid")).toBe("true");
   const description = field("Ad soyad").getAttribute("aria-describedby")!;
-  expect(document.getElementById(description)?.textContent).toContain("2–100");
+  expect(document.getElementById(description)?.textContent).toContain("2-100");
   expect(screen.getByRole("alert").textContent).toContain("alanları kontrol");
   expect(fetchMock).not.toHaveBeenCalled();
 });

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { LegalDocument } from "@/components/site/LegalDocument";
+import { LegalDocument } from "@/components/storefront/content/LegalDocument";
 
 export const metadata: Metadata = {
   title: "Mesafeli Satış Sözleşmesi (Taslak) | Afina Zeytin",

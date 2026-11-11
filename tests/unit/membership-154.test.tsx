@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, render, screen, within } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import { SignIn } from "@/components/account/SignIn";
 import { AccountSummary } from "@/components/account/AccountSummary";
@@ -8,7 +8,7 @@ afterEach(cleanup);
 it("offers login/register navigation and the guest route without an unavailable Google action", () => {
   render(<SignIn />);
   expect(screen.getByRole("navigation", { name: "Üyelik işlemleri" })).toBeDefined();
-  expect(screen.getByRole("link", { name: "Hesap oluştur" }).getAttribute("href")).toBe("/kayit");
+  expect(within(screen.getByRole("navigation", { name: "Üyelik işlemleri" })).getByRole("link", { name: "Hesap oluştur" }).getAttribute("href")).toBe("/kayit");
   expect(screen.queryByRole("button", { name: /Google/ })).toBeNull();
   expect(screen.getByRole("link", { name: "Üye olmadan alışverişe devam et" }).getAttribute("href")).toBe("/sepet");
 });

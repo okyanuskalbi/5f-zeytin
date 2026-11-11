@@ -3,7 +3,7 @@ import { expect, test, type Locator } from "@playwright/test";
 const glyphSample = "İŞĞÜÖÇ ışğüöç ₺1.250,00";
 
 async function expectFont(element: Locator, family: string, weight: string): Promise<void> {
-  await expect(element).toHaveCSS("font-family", new RegExp(family, "i"));
+  await expect(element).toHaveCSS("font-family", new RegExp(family === "Figtree" ? "Figtree|bodyFont" : family, "i"));
   await expect(element).toHaveCSS("font-weight", weight);
   expect(await element.evaluate(async (node) => {
     const style = getComputedStyle(node);
@@ -15,21 +15,12 @@ async function expectFont(element: Locator, family: string, weight: string): Pro
 test("brand typography uses Fraunces headings with Figtree copy and tabular prices", async ({ page }) => {
   await page.goto("/");
   const title = page.getByRole("heading", { level: 1 });
-  const headline = page.locator("#hero-title");
-  const subtitle = page.getByRole("contentinfo").getByText("Toprağın sunduğu lezzet, Afina’nın özeniyle.", { exact: true });
-  for (const heading of [title, headline]) {
-    await expectFont(heading, "Fraunces", "500");
-    await expect(heading).toHaveCSS("font-variation-settings", '"SOFT" 50');
-    await expect(heading).toHaveCSS("font-optical-sizing", "auto");
-  }
-  await expectFont(headline.locator("em"), "Fraunces", "400");
-  await expect(headline.locator("em")).toHaveCSS("font-style", "italic");
-  await expectFont(subtitle, "Figtree", "400");
+  await expectFont(title, "Fraunces", "500");
   await expectFont(page.locator("body"), "Figtree", "400");
-  const prices = page.locator("[data-hero-card]").getByLabel("Seçili boyun fiyatı");
-  await expect(prices).toHaveCount(1);
+  const prices = page.locator('article[data-product-id] [aria-label="Fiyat"]');
+  expect(await prices.count()).toBeGreaterThan(0);
   for (const price of await prices.all()) {
-    await expectFont(price, "Figtree", "800");
+    await expectFont(price, "Figtree", "600");
     await expect(price).toHaveCSS("font-variant-numeric", "tabular-nums");
     // Equal advance widths prove the font's tabular feature works, beyond CSS.
     const widths = await price.evaluate((node) => Array.from("0123456789", (digit) => {
@@ -124,7 +115,7 @@ test("fallback stacks keep Turkish content and actions readable when font files 
   await page.goto("/");
   await page.evaluate(() => document.fonts.ready);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-  await expect(page.getByRole("contentinfo").getByText("Toprağın sunduğu lezzet, Afina’nın özeniyle.", { exact: true })).toBeVisible();
-  await expect(page.locator("[data-hero-card]").getByRole("button", { name: "Sepete ekle", exact: true })).toBeVisible();
+  await expect(page.getByRole("contentinfo").getByRole("link", { name: "Toptan Satış" })).toBeVisible();
+  await expect(page.locator("article[data-product-id]").first().getByRole("button", { name: "Sepete ekle", exact: true })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

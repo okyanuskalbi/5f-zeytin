@@ -2,7 +2,7 @@ import { cleanup, render, screen, within } from "@testing-library/react";
 import { readFileSync } from "node:fs";
 import { parse } from "postcss";
 import { afterEach, expect, it, vi } from "vitest";
-import { DealershipPage } from "@/components/dealership/DealershipPage";
+import { DealershipPage } from "@/components/storefront/content/DealershipPage";
 
 vi.mock("@/components/dealership/DealershipForm", () => ({
   DealershipForm: () => <form aria-label="Bayilik başvurusu"><button type="submit">Başvuru E-postasını Hazırla</button></form>,
@@ -10,14 +10,14 @@ vi.mock("@/components/dealership/DealershipForm", () => ({
 
 afterEach(cleanup);
 
-const pageCss = parse(readFileSync("components/dealership/DealershipPage.module.css", "utf8"));
+const pageCss = parse(readFileSync("components/storefront/content/DealershipPage.module.css", "utf8"));
 
 it("introduces dealership with one H1 and working application and product anchors", () => {
   const { container } = render(<DealershipPage />);
   expect(screen.getAllByRole("heading", { level: 1 }).map(node => node.textContent)).toEqual(["Bayimiz Olun"]);
   expect(screen.getByText("AFİNA ZEYTİN'i bölgenizde birlikte büyütelim; bayilik için bize yazın.")).toBeTruthy();
   expect(screen.getByRole("link", { name: "Başvuru Formu" }).getAttribute("href")).toBe("#basvuru");
-  expect(screen.getByRole("link", { name: "Ürünleri İncele" }).getAttribute("href")).toBe("/urunler");
+  expect(screen.getByRole("link", { name: "Ürünleri İnceleyin" }).getAttribute("href")).toBe("/urunler");
   expect(container.querySelector("header, footer")).toBeNull();
   expect(container.querySelector("video, canvas")).toBeNull();
 });
@@ -29,8 +29,8 @@ it("keeps the dealership introduction on a light surface without a dark image ov
   expect(hero.querySelector("picture")).toBeNull();
   const colors: Record<string, string> = {};
   pageCss.walkRules(".hero", rule => rule.walkDecls(decl => { colors[decl.prop] = decl.value; }));
-  expect(colors.background).toBe("#F5F1E7");
-  expect(colors.color).toBe("#172B21");
+  expect(colors.background).toBe("var(--sf-ivory)");
+  expect(colors.color).toBe("var(--sf-ink)");
 });
 
 it("gives the wider tin its own responsive source slots while preserving the jar and oil sources", () => {

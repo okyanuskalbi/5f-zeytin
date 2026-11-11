@@ -1,6 +1,6 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
-import { QuoteJourneyProvider, useQuoteJourney } from "@/components/landing/QuoteJourneyProvider";
+import { QuoteJourneyProvider, useQuoteJourney } from "@/components/storefront/quote/QuoteJourneyProvider";
 import { buildQuoteMailto, corporateContact, type QuoteEmailDraft } from "@/lib/site/corporate-contact";
 import { QUOTE_QUANTITY_MAX, validateQuoteQuantity } from "@/lib/site/quote-lines";
 

@@ -51,7 +51,7 @@ test.describe("Task191 action-only motion", () => {
     await localOnly(context, baseURL);
   });
 
-  test("a category click keeps navigation and moves its indicator and product entrance only after the action", async ({ page }, info) => {
+  test("a category click keeps navigation, moves its indicator and leaves products visible", async ({ page }, info) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/urunler", { waitUntil: "load" });
     await ready(page);
@@ -59,12 +59,12 @@ test.describe("Task191 action-only motion", () => {
     const persistent = await nav.elementHandle();
     const indicator = page.locator("[data-category-indicator]");
     const before = await indicator.evaluate(element => new DOMMatrixReadOnly(getComputedStyle(element).transform).m42);
-    await record(page, { grid: "[data-category-transition] [data-product-reveal]" }, 350);
+    await record(page, { grid: "[data-category-transition] article[data-product-id]" }, 350);
     const initial = await recorded(page);
     expect(initial.grid.length).toBeGreaterThan(0);
     expect(initial.grid.every(sample => sample.opacity === 1 && sample.y === 0 && sample.running === 0)).toBe(true);
 
-    await record(page, { indicator: "[data-category-indicator]", grid: "[data-category-transition] [data-product-reveal]" });
+    await record(page, { indicator: "[data-category-indicator]", grid: "[data-category-transition] article[data-product-id]" });
     await nav.getByRole("link", { name: "Siyah Zeytin", exact: true }).click();
     await expect(page).toHaveURL(/\/urunler\/siyah-zeytin$/);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Siyah Zeytin");
@@ -74,7 +74,7 @@ test.describe("Task191 action-only motion", () => {
     const last = samples.indicator.at(-1)!;
     expect(last.y).toBeGreaterThan(before);
     expect(samples.indicator.some(sample => sample.y > before + 1 && sample.y < last.y - 1)).toBe(true);
-    expect(samples.grid.some(sample => sample.opacity > 0 && sample.opacity < 1)).toBe(true);
+    expect(samples.grid.every(sample => sample.opacity === 1)).toBe(true);
     expect(samples.grid.at(-1)).toMatchObject({ opacity: 1, y: 0, running: 0 });
     const markerBounds = await indicator.boundingBox();
     const activeBounds = await nav.getByRole("link", { name: "Siyah Zeytin", exact: true }).boundingBox();
@@ -88,10 +88,10 @@ test.describe("Task191 action-only motion", () => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/urunler", { waitUntil: "load" });
     await ready(page);
-    await record(page, { grid: "[data-category-transition] [data-product-reveal]" });
+    await record(page, { grid: "[data-category-transition] article[data-product-id]" });
     await page.getByRole("navigation", { name: "Ürün grupları" }).getByRole("link", { name: "Zeytinyağı", exact: true }).click();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Zeytinyağı");
-    await expect(page.getByRole("navigation", { name: "Ürün grupları" }).getByRole("link", { name: "Zeytinyağı", exact: true })).toHaveCSS("background-color", "rgb(228, 232, 220)");
+    await expect(page.getByRole("navigation", { name: "Ürün grupları" }).getByRole("link", { name: "Zeytinyağı", exact: true })).toHaveCSS("background-color", "rgb(255, 253, 248)");
     const samples = await recorded(page);
     await info.attach("reduced-category-samples", { body: JSON.stringify(samples), contentType: "application/json" });
     expect(samples.grid.length).toBeGreaterThan(0);
@@ -99,21 +99,21 @@ test.describe("Task191 action-only motion", () => {
     await expect(page.locator("article[data-product-id]")).toHaveCount(2);
   });
 
-  test("stored cart hydration stays still and a later addition pops the badge without resizing the button", async ({ page }, info) => {
+  test("stored cart hydration and later additions keep the badge stable without resizing the button", async ({ page }, info) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.addInitScript(() => {
       localStorage.setItem("afina-zeytin:cart", JSON.stringify([{ productId: "sample-olive-oil-1l", quantity: 1 }]));
       const scales: number[] = [];
       (window as unknown as { task191HydrationScales: number[] }).task191HydrationScales = scales;
       const frame = () => {
-        const badge = document.querySelector('[data-slot="count-badge"]');
+        const badge = document.querySelector('button[aria-label^="Sepetim,"] span[aria-hidden="true"]');
         if (badge) scales.push(new DOMMatrixReadOnly(getComputedStyle(badge).transform).a);
         if (performance.now() < 3000) requestAnimationFrame(frame);
       };
       requestAnimationFrame(frame);
     });
     await page.goto("/urunler", { waitUntil: "load" });
-    const badge = page.locator('[data-slot="count-badge"]');
+    const badge = page.locator('button[aria-label^="Sepetim,"] span[aria-hidden="true"]');
     await expect(badge).toHaveText("1");
     const hydration = await page.evaluate(() => (window as unknown as { task191HydrationScales: number[] }).task191HydrationScales);
     expect(hydration.length).toBeGreaterThan(0);
@@ -122,13 +122,13 @@ test.describe("Task191 action-only motion", () => {
     const button = card.getByRole("button", { name: "Sepete ekle", exact: true });
     await expect(button).toBeEnabled();
     const dimensions = await button.evaluate(element => ({ width: (element as HTMLElement).offsetWidth, height: (element as HTMLElement).offsetHeight }));
-    await record(page, { badge: '[data-slot="count-badge"]', label: '[data-product-id="sample-olive-oil-1l"] [data-add-label]', button: '[data-product-id="sample-olive-oil-1l"] button[data-variant]' });
+    await record(page, { badge: 'button[aria-label^="Sepetim,"] span[aria-hidden="true"]', label: '[data-product-id="sample-olive-oil-1l"] [data-add-label]', button: '[data-product-id="sample-olive-oil-1l"] button[data-variant]' });
     await button.click();
     await expect(badge).toHaveText("2");
     await expect(card.locator("[data-add-label]")).toHaveText("Eklendi ✓");
     const samples = await recorded(page);
     await info.attach("cart-feedback-samples", { body: JSON.stringify(samples), contentType: "application/json" });
-    expect(samples.badge.some(sample => sample.scale > 1.05)).toBe(true);
+    expect(samples.badge.every(sample => sample.scale === 1)).toBe(true);
     expect(samples.badge.at(-1)!.scale).toBeCloseTo(1, 4);
     expect(samples.label.some(sample => sample.opacity > 0 && sample.opacity < 1)).toBe(true);
     expect(samples.button.every(sample => sample.width === dimensions.width && sample.height === dimensions.height)).toBe(true);
@@ -137,17 +137,15 @@ test.describe("Task191 action-only motion", () => {
 
   test("FAQ remains keyboard controlled and reduced motion opens and closes immediately", async ({ page }) => {
     await page.goto("/hakkimizda", { waitUntil: "load" });
-    const faq = page.locator("details[data-faq]").first();
+    const faq = page.locator("#sik-sorulanlar details").first();
     const summary = faq.locator("summary");
-    const answer = faq.locator("[data-faq-answer]");
+    const answer = faq.locator("p");
     await summary.focus();
     await page.keyboard.press("Enter");
     await expect(faq).toHaveAttribute("open", "");
-    await expect(summary).toHaveAttribute("aria-expanded", "true");
     await expect(answer).toBeVisible();
     await page.keyboard.press("Space");
     await expect(faq).not.toHaveAttribute("open", "");
-    await expect(summary).toHaveAttribute("aria-expanded", "false");
     await expect(answer).toBeHidden();
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.keyboard.press("Enter");

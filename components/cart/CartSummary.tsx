@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, RefreshCw } from "lucide-react";
 import { AnimatePresence } from "motion/react";
 import { Button } from "@/components/ui/button";
+import { PaymentUnavailable } from "@/components/storefront/cart/PaymentUnavailable";
 import { InteractiveCheckout } from "@/components/ui/interactive-checkout";
 import { CartAmount, CartEmpty, CartLineItem, CartTotals, CartTrust } from "./CartPresentation";
 import { useCart } from "@/components/cart/CartProvider";
@@ -104,7 +105,7 @@ export function CartSummary({ store, products, onRefresh, refreshing = false, up
           Sepetim
         </h1>
         <p className="max-w-xl text-muted-foreground">Ürünlerinizi gözden geçirin, sofranız için adetleri düzenleyin.</p>
-        <Button asChild variant="link" className="px-0"><Link href="/#urunler" prefetch={false}><ArrowLeft aria-hidden="true" />Alışverişe devam et</Link></Button>
+        <Button asChild variant="link" className="px-0"><Link href="/urunler" prefetch={false}><ArrowLeft aria-hidden="true" />Alışverişe devam et</Link></Button>
       </header>
 
       <InteractiveCheckout className={styles.layout}>
@@ -151,7 +152,7 @@ export function CartSummary({ store, products, onRefresh, refreshing = false, up
           </div>
           <div className={styles.summaryCheckout}>
             {checkout()}
-            <p id={`${id}-payment-help`} className="text-base text-muted-foreground">{checkoutHref ? "Yerel test ödemesi sepetinizden tahsilat yapmaz." : "Fiyat ve stoklar kesinleştiğinde ödeme adımına geçebilirsiniz."}</p>
+            <div>{checkoutHref ? <p id={`${id}-payment-help`}>Yerel test ödemesi sepetinizden tahsilat yapmaz.</p> : <PaymentUnavailable showDetails id={`${id}-payment-help`} />}</div>
           </div>
           <CartTrust />
         </aside>

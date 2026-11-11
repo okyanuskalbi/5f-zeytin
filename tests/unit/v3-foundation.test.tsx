@@ -3,9 +3,7 @@ import { readFileSync, statSync } from "node:fs";
 import { expect, it, vi } from "vitest";
 import Home from "@/app/page";
 import WholesalePage from "@/app/toptan-satis/page";
-import { Footer } from "@/components/site/Footer";
-import { Products } from "@/components/landing/Products";
-import { TrustStrip } from "@/components/landing/TrustStrip";
+import { StoreFooter as Footer } from "@/components/storefront/StoreFooter";
 
 vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }) }));
 vi.mock("server-only", () => ({}));
@@ -20,24 +18,6 @@ it("keeps the home storefront separate from the existing private wholesale form"
   expect(wholesale.querySelector('#toptan form[aria-label="Kurumsal teklif talebi"]')?.getAttribute("method")).toBe("post");
   expect(wholesale.querySelector('#toptan button[type="submit"]')?.hasAttribute("disabled")).toBe(true);
   for (const href of ["/kvkk", "/mesafeli-satis", "/iade", "https://afina.com.tr"]) expect(doc.querySelector(`a[href="${href}"]`)).not.toBeNull();
-});
-
-it("retains the catalog destination and empty-state content without blank cards", () => {
-  const doc = document.implementation.createHTMLDocument();
-  doc.body.innerHTML = renderToStaticMarkup(<Products products={[]} />);
-  expect(doc.querySelector("#urunler")).not.toBeNull();
-  expect(doc.querySelector('[role="status"]')?.textContent).toBe("Görüntülenecek ürün bulunmuyor.");
-  expect(doc.querySelector("article")).toBeNull();
-});
-
-it("renders four trust facts with a wholesale destination and decorative gold dots", () => {
-  const doc = document.implementation.createHTMLDocument();
-  doc.body.innerHTML = renderToStaticMarkup(<TrustStrip />);
-  expect([...doc.querySelectorAll("li")].map(item => item.textContent)).toEqual([
-    "Kendi tesisimizde dolum", "Kargo 2-4 iş günü", "Güvenli Ödeme", "Toptan alım için teklif",
-  ]);
-  expect(doc.querySelector('a[href="/toptan-satis"]')).not.toBeNull();
-  expect(doc.querySelectorAll('[data-trust-dot][aria-hidden="true"]')).toHaveLength(4);
 });
 
 it("maps page and UI tokens to readable C light defaults and preserved local dark surfaces", () => {

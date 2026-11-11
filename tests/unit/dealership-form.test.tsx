@@ -1,6 +1,8 @@
-import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DealershipForm } from "@/components/dealership/DealershipForm";
+
+vi.mock("@/components/storefront/forms/DeferredPhoneField", async () => { const actual = await import("@/components/ui/customer-phone-field"); return { DeferredPhoneField: actual.CustomerPhoneField }; });
 
 beforeEach(() => { vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => ({ items: [] }) })); });
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
@@ -12,21 +14,22 @@ function fill() {
   change(/^Satış noktası sayısı/, "2–5"); change(/^Mesaj/, "Zeytin & zeytinyağı? #başvuru");
   fireEvent.click(screen.getByRole("checkbox"));
 }
-const submit = () => fireEvent.click(screen.getByRole("button", { name: "Başvuru E-postasını Hazırla" }));
+const submit = async () => { await act(async () => { fireEvent.click(screen.getByRole("button", { name: "Başvuru E-postasını Hazırla" })); }); };
 
-describe("Bayilik başvuru formu", () => {
-  it("renders labeled required fields, existing searchable controls and optional fields", () => {
+describe("Bayilik başvuru formu", async () => {
+  it("renders labeled required fields, existing searchable controls and optional fields", async () => {
     render(<DealershipForm />);
     for (const label of [/^Firma adı/, /^Yetkili adı soyadı/, /^Telefon$/, /^E-posta/, /^İl \*/, /^İlçe/, /^İşletme türü/]) expect((screen.getByLabelText(label) as HTMLInputElement).required).toBe(true);
     expect(screen.getByRole("button", { name: /Telefon ülke kodu/ })).toBeTruthy();
     expect(screen.getByRole("combobox", { name: /^İl \*/ })).toBeTruthy();
     expect((screen.getByLabelText(/^Satış noktası sayısı/) as HTMLSelectElement).required).toBe(false);
+    expect((screen.getByRole("option", { name: "2-5" }) as HTMLOptionElement).value).toBe("2–5");
     expect((screen.getByLabelText(/^Mesaj/) as HTMLTextAreaElement).maxLength).toBe(1000);
     expect(screen.getByRole("link", { name: "KVKK aydınlatma metni" }).getAttribute("href")).toBe("/kvkk");
     expect(screen.queryByRole("button", { name: "Metni kopyala" })).toBeNull();
   });
-  it("marks errors beside fields, associates them and focuses the first invalid control", () => {
-    const openDraft = vi.fn(); render(<DealershipForm openDraft={openDraft} />); submit();
+  it("marks errors beside fields, associates them and focuses the first invalid control", async () => {
+    const openDraft = vi.fn(); render(<DealershipForm openDraft={openDraft} />); await submit();
     for (const label of [/^Firma adı/, /^Yetkili adı soyadı/, /^Telefon$/, /^E-posta/, /^İl \*/, /^İlçe/, /^İşletme türü/]) {
       const input = screen.getByLabelText(label);
       expect(input.getAttribute("aria-invalid")).toBe("true");
@@ -38,20 +41,20 @@ describe("Bayilik başvuru formu", () => {
     expect(screen.getByRole("checkbox").getAttribute("aria-invalid")).toBe("true");
     expect(openDraft).not.toHaveBeenCalled();
   });
-  it("rejects malformed email, invalid phone and missing KVKK beside their controls", () => {
+  it("rejects malformed email, invalid phone and missing KVKK beside their controls", async () => {
     const openDraft = vi.fn(); render(<DealershipForm openDraft={openDraft} />); fill();
-    change(/^E-posta/, "wrong-address"); change(/^Telefon$/, "123"); fireEvent.click(screen.getByRole("checkbox")); submit();
+    change(/^E-posta/, "wrong-address"); change(/^Telefon$/, "123"); fireEvent.click(screen.getByRole("checkbox")); await submit();
     expect(screen.getByLabelText(/^E-posta/).getAttribute("aria-invalid")).toBe("true");
     expect(screen.getByLabelText(/^Telefon$/).getAttribute("aria-invalid")).toBe("true");
     expect(screen.getByRole("checkbox").getAttribute("aria-invalid")).toBe("true");
     expect(openDraft).not.toHaveBeenCalled();
   });
-  it.each(["123", ""])("shows and describes only one phone error after blur and submission of %j", value => {
+  it.each(["123", ""])("shows and describes only one phone error after blur and submission of %j", async value => {
     const openDraft = vi.fn(); render(<DealershipForm openDraft={openDraft} />);
     const phone = screen.getByRole("textbox", { name: "Telefon" });
     fireEvent.change(phone, { target: { value } });
     fireEvent.blur(phone);
-    submit();
+    await submit();
     const field = phone.closest<HTMLElement>("[data-dealership-field]")!;
     const message = "Seçili ülkeye uygun geçerli bir telefon numarası girin.";
     expect(within(field).getAllByText(message)).toHaveLength(1);
@@ -65,12 +68,12 @@ describe("Bayilik başvuru formu", () => {
     expect(within(field).queryByText(message)).toBeNull();
     expect(phone.hasAttribute("aria-invalid")).toBe(false);
   });
-  it("clears district when the city changes", () => {
+  it("clears district when the city changes", async () => {
     render(<DealershipForm />); change(/^İl \*/, "Osmaniye"); change(/^İlçe/, "Düziçi"); change(/^İl \*/, "Adana");
     expect((screen.getByLabelText(/^İlçe/) as HTMLInputElement).value).toBe("");
   });
   it("opens encoded mail draft after validation, explains manual sending and invalidates stale drafts", async () => {
-    const openDraft = vi.fn(); render(<DealershipForm openDraft={openDraft} />); fill(); submit();
+    const openDraft = vi.fn(); render(<DealershipForm openDraft={openDraft} />); fill(); await submit();
     expect(openDraft).toHaveBeenCalledTimes(1);
     const url = new URL(openDraft.mock.calls[0][0]);
     expect(url.pathname).toBe("info@afina.com.tr");
@@ -82,8 +85,8 @@ describe("Bayilik başvuru formu", () => {
     change(/^Firma adı/, "Yeni firma");
     await waitFor(() => expect(screen.queryByRole("button", { name: "Metni kopyala" })).toBeNull());
   });
-  it("retains a copyable draft if the email application cannot be launched", () => {
-    render(<DealershipForm openDraft={() => { throw Error("unavailable"); }} />); fill(); submit();
+  it("retains a copyable draft if the email application cannot be launched", async () => {
+    render(<DealershipForm openDraft={() => { throw Error("unavailable"); }} />); fill(); await submit();
     expect(screen.getByRole("status", { name: "Başvuru durumu" }).textContent).toContain("Başvuru taslağınız hazır");
     expect(screen.getByRole("button", { name: "Metni kopyala" })).toBeTruthy();
     expect((screen.getByRole("textbox", { name: "Hazırlanan başvuru metni" }) as HTMLTextAreaElement).value).toContain("Ellek & Sofra #1");
@@ -91,7 +94,7 @@ describe("Bayilik başvuru formu", () => {
   it("copies the subject and full prepared body", async () => {
     const writeText = vi.fn().mockResolvedValue(undefined);
     Object.defineProperty(navigator, "clipboard", { configurable: true, value: { writeText } });
-    render(<DealershipForm openDraft={vi.fn()} />); fill(); submit(); fireEvent.click(screen.getByRole("button", { name: "Metni kopyala" }));
+    render(<DealershipForm openDraft={vi.fn()} />); fill(); await submit(); fireEvent.click(screen.getByRole("button", { name: "Metni kopyala" }));
     await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
     expect(writeText.mock.calls[0][0]).toContain("Bayilik başvurusu — Ellek & Sofra #1");
     expect(writeText.mock.calls[0][0]).toContain("Yetkili adı soyadı: Çağrı Öztürk");
@@ -99,7 +102,7 @@ describe("Bayilik başvuru formu", () => {
   });
   it("keeps a selectable full draft when clipboard access is denied", async () => {
     Object.defineProperty(navigator, "clipboard", { configurable: true, value: { writeText: vi.fn().mockRejectedValue(Error("denied")) } });
-    render(<DealershipForm openDraft={vi.fn()} />); fill(); submit(); fireEvent.click(screen.getByRole("button", { name: "Metni kopyala" }));
+    render(<DealershipForm openDraft={vi.fn()} />); fill(); await submit(); fireEvent.click(screen.getByRole("button", { name: "Metni kopyala" }));
     await waitFor(() => expect(screen.getByText(/Metni aşağıdaki kutudan seçip kopyalayabilirsiniz/)).toBeTruthy());
     const preview = screen.getByRole("textbox", { name: "Hazırlanan başvuru metni" }) as HTMLTextAreaElement;
     expect(preview.readOnly).toBe(true); expect(preview.value).toContain("Ellek & Sofra #1");

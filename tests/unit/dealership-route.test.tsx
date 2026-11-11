@@ -4,11 +4,10 @@ import { afterEach, expect, it, vi } from "vitest";
 import Page, { metadata } from "@/app/bayilik/page";
 import sitemap from "@/app/sitemap";
 import { GET } from "@/app/llms.txt/route";
-import { Navbar } from "@/components/site/Navbar";
-import { NavbarMenu } from "@/components/site/NavbarMenu";
-import { ClassicBusiness } from "@/components/landing/ClassicHome";
+import { StoreHeader as Navbar } from "@/components/storefront/StoreHeader";
+import { StoreMenu as NavbarMenu } from "@/components/storefront/StoreMenu";
 
-vi.mock("@/components/dealership/DealershipPage", () => ({ DealershipPage: () => <main><h1>Bayimiz Olun</h1></main> }));
+vi.mock("@/components/storefront/content/DealershipPage", () => ({ DealershipPage: () => <main><h1>Bayimiz Olun</h1></main> }));
 vi.mock("next/navigation", () => ({ usePathname: () => "/bayilik" }));
 afterEach(() => { cleanup(); history.replaceState(null, "", "/"); });
 
@@ -45,17 +44,15 @@ it("adds the public dealership URL to the sitemap and AI discovery text", async 
 
 it("keeps the home application button and active desktop menu on the dealership route", () => {
   history.replaceState(null, "", "/bayilik");
-  render(<><Navbar /><ClassicBusiness /></>);
-  expect(screen.getByRole("link", { name: "Bayilik Başvurusu" }).getAttribute("href")).toBe("/bayilik");
+  render(<><Navbar /></>);
   const nav = within(screen.getByRole("navigation", { name: "Ana navigasyon" }));
   expect(nav.getByRole("link", { name: "Bayilik" }).getAttribute("href")).toBe("/bayilik");
   expect(nav.getByRole("link", { name: "Bayilik" }).getAttribute("aria-current")).toBe("page");
-  expect(nav.getByRole("link", { name: "Ana Sayfa" }).hasAttribute("aria-current")).toBe(false);
 });
 
 it("marks Bayilik as the active destination in the phone menu", () => {
   render(<NavbarMenu links={[{ label: "Ana Sayfa", href: "/" }, { label: "Bayilik", href: "/bayilik" }]}
-    activeHref="/bayilik" onClose={() => {}} onRestoreFocus={() => {}} />);
+    pathname="/bayilik" onClose={() => {}} onRestoreFocus={() => {}} />);
   expect(screen.getByRole("link", { name: "Bayilik" }).getAttribute("aria-current")).toBe("page");
   expect(screen.getByRole("link", { name: "Ana Sayfa" }).hasAttribute("aria-current")).toBe(false);
 });

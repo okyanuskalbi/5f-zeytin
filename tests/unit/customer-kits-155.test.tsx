@@ -1,13 +1,14 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { expect, it } from "vitest";
 import { BusinessJsonLd } from "@/components/site/BusinessJsonLd";
-import { Faq, verifiedFaqs } from "@/components/landing/Faq";
+import { StoreFaq } from "@/components/storefront/content/StoreFaq";
+import { verifiedFaqs } from "@/lib/site/faqs";
 import { GET } from "@/app/llms.txt/route";
 import sitemap from "@/app/sitemap";
 
 it("keeps at least five verified short answers equal in visible HTML, schema and machine discovery", async () => {
   expect(verifiedFaqs).toHaveLength(5);
-  const html = renderToStaticMarkup(<Faq />);
+  const html = renderToStaticMarkup(<StoreFaq canonicalPath="/hakkimizda" />);
   const text = await (await GET()).text();
   const match = html.match(/<script[^>]*>([\s\S]*?)<\/script>/);
   const schema = JSON.parse(match![1]);

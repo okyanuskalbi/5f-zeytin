@@ -78,17 +78,17 @@ Hesaplanan düz renk karşıtlıkları: yeşil/fildişi **10.87:1**, mürekkep/f
 
 ### Border Radius
 
-Tek köşe tablosu. Değerler mevcut görünümü koruyan adlandırılmış CSS değişkenleridir (`app/globals.css`). Ana sayfa, ürün ve ortak menü/sepet yüzeyi bu tabloyu kullanır; 199/200 kapsamındaki eski sayfalar bu görevde yeniden tasarlanmaz.
+Tek köşe tablosu. Değerler mevcut görünümü koruyan adlandırılmış CSS değişkenleridir (`app/globals.css`). Ana sayfa, ürün, katalog, kurumsal içerik, teklif, üyelik, hesap ve ortak menü/sepet yüzeyi bu tabloyu kullanır. Yönetim paneli Task200 kapsamındadır.
 
 | Öğe türü / kullanım | Köşe ölçüsü | Token adı |
 |---|---|---|
-| Düğme: ürün satın alma, boy seçimi, ürün teklifi | 4 px | `--sf-radius-action` |
+| Düğme: ürün satın alma, boy seçimi, ürün teklifi, kategori/hesap bağlantısı, seçici seçeneği | 4 px | `--sf-radius-action` |
 | Düğme: ana sayfa birincil/ikincil eylem, sepet kuponu | 8 px | `--sf-radius-button` |
 | Düğme: dairesel menü, hesap, sepet kontrolleri | %50 | `--sf-radius-icon` |
 | Düğme: video kontrolü | 24 px | `--sf-radius-video` |
 | Düğme: ortak sepet ödeme/öneri/mini eylemi | 999 px | `--sf-radius-pill` |
 | Kart: çerçevesiz ürün, kategori, blog | 0 px | `--sf-radius-card` |
-| Kart: düz toptan/bayilik kutusu | 8 px | `--sf-radius-panel` |
+| Kart/panel: toptan, bayilik, üyelik, hesap, talep özeti, seçici listesi | 8 px | `--sf-radius-panel` |
 | Kart: mevcut sepet satırı/öneri/özet | 12 px | `--sf-radius-cart-card` |
 | Görsel: ürün, küçük kategori, banner, blog, sepet fotoğrafı | 8 px | `--sf-radius-image` |
 | Görsel: geniş kategori; masaüstü hikâye | 16 px | `--sf-radius-image-wide` |
@@ -100,7 +100,7 @@ Tek köşe tablosu. Değerler mevcut görünümü koruyan adlandırılmış CSS 
 | Rozet/etiket: mevcut sepette boy | 999 px | `--sf-radius-pill` |
 | Form alanı: ürün adet grubu | 4 px | `--sf-radius-field` |
 | Form alanı: mevcut sepet adet grubu | 999 px | `--sf-radius-pill` |
-| Form alanı: ortak Input (kupon hariç) | 0 px | `rounded-none` |
+| Form alanı: ortak Input, select, telefon ve ülke düğmesi (kupon hariç) | 0 px | `rounded-none` veya `border-radius:0` |
 | Form alanı: mevcut sepet kuponu | 8 px | `--sf-radius-button` |
 | Çekmece/pencere: menü ve ortak Dialog/Sheet kabuğu | 0 px | `--sf-radius-drawer`; ortak `rounded-none` |
 
@@ -289,3 +289,15 @@ Telefonda 16 px metin kenarı ve doğal okuma sırası; hero eylemi kısa ekrand
 ```
 
 Bu örnek mevcut `@theme` içine birleştirilir; ikinci çelişen tema açılmaz. Eski bileşenlerin gerektirdiği adlar ortak semantik değere bağlanabilir, fakat eski ön yüzün kanıtlı temizliği Task199'a aittir. Gerçek uygulama dosyaları ve ölçüm sonuçları Task198 `KANIT.md` kaydında izlenir.
+
+
+## Task199: tüm müşteri sayfaları
+
+A tasarımının Fraunces/Figtree, fildişi/kâğıt/yeşil ve 8 px aralık sistemi katalog, içerik, teklif, üyelik ve hesaba uygulanır. Yeni sunumlar `components/storefront/{catalog,content,quote,account}` içindedir. Eski auth, sepet, fiyat/stok ve form gönderim yetkileri korunur. Gerçek online ödeme kapalıdır; sepet ve ödeme sayfası bunu açıklar, teklif bağlantısı verir.
+
+Katalog telefonda tek, tablette iki, geniş ekranda üç ürün sütunu; kategori gezinmesi ve sıralama kontrolleri 48 px'tir. Ürün boyu seçimi sayfa başlığı, açıklaması, canonical ve OG adresini birlikte günceller. Hakkımızda tesis fotoğrafı ve tek durdurulabilir şerit; blog başında doğrudan yanıt, soru başlıkları, üç SSS ve ilgili ürünler; yasal metinlerde taslak durumu, içerik bağlantıları ve en fazla 72ch okuma alanı bulunur. Üyelikte tek görünür form yüzeyi vardır; 3D dönüş yoktur. Hesapta soldaki gezinme telefonda doğal akışa geçer. Şifre göster/gizle alanın içindedir.
+
+Hareketler yalnız kullanıcı geri bildirimi içindir: menü spring'i (`stiffness:200,damping:28`) ve sepet spring'i (`visualDuration:.35,bounce:0`), kategori göstergesi (`duration:.25,ease:easeOut`,transform), talep özeti (`stiffness:160,damping:26`,8px/opacity), ürün basma (`stiffness:240,damping:28`,.98scale). Hakkımızda şeridi müşteri talebiyle 36sn doğrusal transform kullanır; üzerine gelince, odak içinde ve düğmeyle durur. Azaltılmış harekette sabittir. Formlar/sayfa gövdeleri kaydırmayla açılmaz; tüm içerik ilk HTML'de erişilir. Mevcut ana sayfa tek açılış ve ürün hover hareketleri A temelinden korunur.
+
+
+Task199 yükleme sınırları: müşteri bağlantıları başka sayfaların kodunu kendiliğinden indirmez. Kapalı ürün seçicisi ilk tıkta yüklenir; telefon alanının aynı ölçüdeki kabuğu, alanın100px yakınına gelince gerçek kontrolle değiştirilir. Odak, hata/retry ve ilk tık korunur; yeni görünme animasyonu yoktur. Doğrulama aynı lib modülünde kalır. Hesap adres/sipariş/detay gövdelerinde en az `calc(100svh - 240px)` alan ayrılır; sabit sipariş başlıkları ilk HTML'dedir, kişisel veri yanıt bekler.404telefon eylemleri tam genişlikte alt alta kalır; yazı tipi yüklenmesi düğme satırını değiştirmez.

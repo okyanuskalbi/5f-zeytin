@@ -112,7 +112,7 @@ export function Checkout({ localPreviewAvailable = false }: { localPreviewAvaila
             </div>}
             {step === 1 && <CheckoutFields details={details} errors={errors} adapter={adapter} onChange={change} />}
             {step === 2 && <>
-              <address className={styles.address}><p>{details.name}</p><p>{details.neighborhood}, {details.address}</p><p>{details.postalCode} · {details.district} / {details.city}</p></address>
+              <address className={styles.address}><p>{details.name}</p><p>{details.neighborhood}, {details.address}</p><p>{details.postalCode}, {details.district} / {details.city}</p></address>
               <fieldset>
                 <legend>Kargo seçimi</legend>
                 {adapter.shippingOptions().map(option => <label key={option.id} className={styles.choice}>

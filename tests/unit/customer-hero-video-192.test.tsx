@@ -1,7 +1,6 @@
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
-import { CustomerHeroVideo } from "@/components/landing/CustomerHeroVideo";
-import { CustomerMarquee } from "@/components/landing/CustomerMarquee";
+import { HeroVideo as CustomerHeroVideo } from "@/components/storefront/HeroVideo";
 
 let reduced = false;
 let width = 1440;
@@ -90,13 +89,4 @@ it("does not request a video when reduced motion is selected", async () => {
   await act(async () => { vi.advanceTimersByTime(2000); });
   expect(container.querySelector("video, source[type='video/mp4']")).toBeNull();
   expect(HTMLMediaElement.prototype.play).not.toHaveBeenCalled();
-});
-
-it("allows the explicitly requested time based strip to be paused and reads its words once", () => {
-  const { container } = render(<CustomerMarquee />);
-  expect(container.querySelector('[data-marquee-copy]')?.textContent).toContain("Geleneksel Salamura");
-  const button = screen.getByRole("button", { name: "Şeridi duraklat" });
-  fireEvent.click(button);
-  expect(container.querySelector("section")?.getAttribute("data-paused")).toBe("true");
-  expect(screen.getByRole("button", { name: "Şeridi oynat" }).getAttribute("aria-pressed")).toBe("true");
 });

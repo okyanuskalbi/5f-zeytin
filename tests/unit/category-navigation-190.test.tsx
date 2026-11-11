@@ -1,7 +1,7 @@
 import { cleanup, render, screen, within } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, expect, it, vi } from "vitest";
-import { ProductGroups } from "@/components/landing/ProductGroups";
+import { CategoryNavigation } from "@/components/storefront/catalog/CategoryNavigation";
 
 const route = vi.hoisted(() => ({ pathname: "/urunler" }));
 vi.mock("next/navigation", () => ({ usePathname: () => route.pathname }));
@@ -13,7 +13,7 @@ const groups = [
 ] as const;
 
 it("provides ordinary category photo links before JavaScript without opening a detail dialog", async () => {
-  const doc = new DOMParser().parseFromString(renderToStaticMarkup(<ProductGroups />), "text/html");
+  const doc = new DOMParser().parseFromString(renderToStaticMarkup(<CategoryNavigation />), "text/html");
   for (const [id, name] of groups) {
     const link = doc.querySelector(`a[href="/urunler/${id}"]`);
     expect(link?.textContent).toContain(name);
@@ -21,12 +21,12 @@ it("provides ordinary category photo links before JavaScript without opening a d
     expect(link?.hasAttribute("aria-haspopup")).toBe(false);
   }
   expect(doc.querySelector("button")).toBeNull();
-  expect(doc.querySelector('a[href="/urunler"]')?.textContent).toContain("Tüm ürünleri gör");
+  expect(doc.querySelector('a[href="/urunler"]')?.textContent).toContain("Tüm ürünler");
 });
 
 it.each([["/urunler", "Tüm ürünler"], ["/urunler/zeytin", "Zeytin"], ...groups.map(([id, name]) => [`/urunler/${id}`, name])])("marks only %s as the current category and preserves breadcrumb order", async (path, name) => {
   route.pathname = path;
-  const { CatalogShell } = await import("@/components/catalog/CatalogShell");
+  const { CatalogShell } = await import("@/components/storefront/catalog/CatalogShell");
   render(<CatalogShell><div data-testid="grid" /></CatalogShell>);
   expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(name);
   const navigation = screen.getByRole("navigation", { name: "Ürün grupları" });

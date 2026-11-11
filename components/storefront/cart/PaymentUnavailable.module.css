@@ -1,0 +1,4 @@
+.notice { display: grid; gap: 8px; min-width: 0; font-size: 14px; line-height: 1.5; }
+.notice p { color: inherit; font-size: 14px; }
+.notice a { display: inline-flex; align-items: center; justify-self: start; min-height: 44px; min-width: 44px; padding-block: 8px; font-size: 16px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+.notice a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }

@@ -32,7 +32,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       await detail.getByRole("button", { name: "Sofra görseli" }).click();
       await expect(image).toHaveAttribute("src", /sahne/);
       await detail.getByRole("radio", { name: "1 kg", exact: true }).locator("..").click();
-      await expect(detail.getByLabel("Fiyat", { exact: true })).toHaveText("₺220");
+      await expect(detail.getByLabel("Fiyat", { exact: true })).toHaveText("₺220,00");
       await expect(page).toHaveURL(/boy=1(?:%20|\+)kg/);
       await detail.getByRole("button", { name: "Adedi artır" }).click();
       await add.click();
@@ -42,10 +42,10 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       const description = detail.getByText("Aynı doğal kırma yeşil zeytin, günlük sofra için cam kavanozda. Kendi tesisimizde doldurulur.");
       await description.scrollIntoViewIfNeeded();
       await expect(description).toBeInViewport();
-      const facts = detail.getByRole("table", { name: "Ürün bilgileri" });
+      const facts = detail.getByRole("region", { name: "Ürün bilgileri" });
       await facts.scrollIntoViewIfNeeded();
-      await expect(facts.getByRole("row")).toHaveCount(6);
-      await expect(detail.getByText("Güvenli Ödeme")).toBeVisible();
+      await expect(facts.locator("dt")).toHaveCount(5);
+      await expect(detail.getByText("Ödeme seçenekleri")).toBeVisible();
       expect(await detail.evaluate(node => node.scrollWidth - node.clientWidth)).toBeLessThanOrEqual(1);
       expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
       await page.keyboard.press("Escape");

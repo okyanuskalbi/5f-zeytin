@@ -30,10 +30,9 @@ it("serves the full static catalogue with breadcrumb, unchanged cards and quote 
   expect(cards.map(card => card.getAttribute("data-product-id"))).toEqual(ordered.map(product => product.id));
   for (const product of products) {
     const card = doc.querySelector(`[data-product-id="${product.id}"]`)!;
-    expect(card.closest("[data-static-presentation]")).not.toBeNull();
+    expect(card.getAttribute("data-size")).toBe(product.weight);
     const quote = card.querySelector(`a[href="/toptan-satis?teklif=${product.id}"]`);
     expect(quote?.textContent).toContain("Teklife ekle");
-    expect(quote?.getAttribute("aria-label")).toBe(`Teklife ekle: ${product.name}, ${product.weight}`);
   }
   expect(doc.querySelector('[role="dialog"]')).toBeNull();
   expect(doc.querySelector("button")?.textContent).not.toBe("Kapat");
@@ -63,7 +62,7 @@ it("announces an empty catalogue without a second scrolling dialog", async () =>
 it("links each detail to its product page while preserving its explicit quote action", async () => {
   const products = await getProducts();
   render(<CartProvider products={products}><Layout>{await Page()}</Layout></CartProvider>);
-  expect(screen.getAllByRole("link", { name: /^Teklife ekle:/ })).toHaveLength(products.length);
+  expect(screen.getAllByRole("link", { name: "Teklife ekle" })).toHaveLength(products.length);
   const card = document.querySelector('[data-product-id="sample-olive-oil-1l"]')!;
   expect(within(card as HTMLElement).getAllByRole("link").filter(link => link.getAttribute("href")?.startsWith("/urun/")).length).toBeGreaterThan(0);
   expect(screen.queryByRole("dialog")).toBeNull();

@@ -65,7 +65,7 @@ function PaytrFrame({ session, onFailure }: { session: Session; onFailure: () =>
 }
 
 /** Shared 001b local preview, never a checkout session or payment confirmation. */
-export function PaytrPreviewControl({ keysAvailable, unavailableMessage = "Test anahtarı eksik — .env.local'e ekleyin" }: { keysAvailable: boolean; unavailableMessage?: string }) {
+export function PaytrPreviewControl({ keysAvailable, unavailableMessage = "Test ödeme bağlantısı henüz hazır değil." }: { keysAvailable: boolean; unavailableMessage?: string }) {
   const [state, setState] = useState<State>({ phase: "idle" });
   const controllerRef = useRef<AbortController | null>(null);
   const frameFailure = useCallback(() => setState({ phase: "error", message: "PayTR test ekranı yüklenemedi. Yeniden deneyin." }), []);

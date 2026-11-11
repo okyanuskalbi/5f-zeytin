@@ -3,7 +3,7 @@ import postcss from "postcss";
 import { expect, it } from "vitest";
 
 const global = postcss.parse(readFileSync("app/globals.css", "utf8"));
-const footer = postcss.parse(readFileSync("components/site/ClassicFooter.module.css", "utf8"));
+const footer = postcss.parse(readFileSync("components/storefront/Navigation.module.css", "utf8"));
 const cart = postcss.parse(readFileSync("components/cart/CartExperience.module.css", "utf8"));
 
 function declarations(sheet: postcss.Root, selector: string): Record<string, string> {

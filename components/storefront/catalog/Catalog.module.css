@@ -1,0 +1,23 @@
+.root { background:var(--sf-ivory); color:var(--sf-ink); padding-block:24px 96px; overflow-wrap:anywhere; }
+.container { width:calc(100% - 64px); max-width:1312px; margin-inline:auto; min-width:0; }
+.breadcrumb ol { display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; margin:0; padding:0; list-style:none; font-size:.875rem; line-height:1.5; }
+.breadcrumb li { display:flex; align-items:center; gap:16px; }
+.breadcrumb a { display:inline-flex; align-items:center; min-height:48px; min-width:44px; text-decoration:underline; text-underline-offset:4px; }
+.heading { margin-block:24px 48px; max-width:72ch; }
+.heading h1 { margin:0 0 24px; font:500 clamp(2.5rem,5vw,4rem)/1.1 var(--font-display),serif; letter-spacing:-.02em; text-wrap:balance; }
+.heading p { margin:0; color:var(--sf-muted); font-size:1.125rem; line-height:1.6; }
+.catalogLayout { display:grid; grid-template-columns:208px minmax(0,1fr); gap:48px; align-items:start; }
+.sidebar,.results { min-width:0; }
+.sidebar h2 { margin:0 0 16px; font-family:var(--font-body),sans-serif; font-size:1rem; font-weight:600; }
+.listingTools { display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; min-height:48px; margin-bottom:32px; font-size:1rem; }
+.sortLabel { display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+.sortLabel select { min-height:48px; padding:8px 32px 8px 16px; border:1px solid var(--sf-muted); border-radius:0; background:var(--sf-paper); color:var(--sf-ink); font:inherit; }
+.productGrid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:48px 24px; }
+.productGrid > * { min-width:0; }
+.root :focus-visible { outline:2px solid var(--sf-focus); outline-offset:4px; }
+@media(max-width:1199px) { .productGrid { grid-template-columns:repeat(2,minmax(0,1fr)); } .catalogLayout { gap:32px; } }
+@media(max-width:1023px) { .catalogLayout { grid-template-columns:minmax(0,1fr); gap:8px; } }
+@media(max-width:767px) { .root { padding-block-end:48px; } .container { width:calc(100% - 32px); } .heading { margin-bottom:32px; } }
+@media(max-width:599px) { .productGrid { grid-template-columns:minmax(0,1fr); gap:48px; } }
+/* Native iOS select ignores min-height; a styled control keeps the actual hit box. */
+.sortLabel select { appearance:none; height:48px; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23243A29' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 8px center; }

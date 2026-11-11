@@ -43,9 +43,9 @@ export function StoreHeader(): JSX.Element {
 
   return <header data-site-navbar="" data-tone="solid" className={styles.header}>
     <div className={styles.headerInner}>
-      <Link ref={home} href="/" aria-label="Afina Zeytin ana sayfa" className={styles.logoLink}><BrandLogo tone="light" className={styles.logo} /></Link>
+      <Link prefetch={false} ref={home} href="/" aria-label="Afina Zeytin ana sayfa" className={styles.logoLink}><BrandLogo tone="light" className={styles.logo} /></Link>
       <nav aria-label="Ana navigasyon" className={styles.desktopNav}>
-        {links.map(link => <Link key={link.href} href={link.href} aria-current={active(link.href) ? "page" : undefined}>{link.label}</Link>)}
+        {links.map(link => <Link prefetch={false} key={link.href} href={link.href} aria-current={active(link.href) ? "page" : undefined}>{link.label}</Link>)}
       </nav>
       <div className={styles.actions}>
         <Link href="/hesabim" prefetch={false} aria-label="Hesabım" className={`${styles.iconButton} ${styles.account}`} onClick={event => {

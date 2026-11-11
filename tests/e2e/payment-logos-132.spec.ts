@@ -1,7 +1,7 @@
 import { expect, test, type Locator } from "@playwright/test";
 import { CART_STORAGE_KEY } from "../../lib/cart/store";
 
-// Claude will run browser acceptance; Codex only writes this suite.
+// Local packaged-browser acceptance for the selected A storefront surfaces.
 async function paymentArtwork(container: Locator, tone: "light" | "dark", expectedSurface: string, brands = ["PayTR", "Visa", "Mastercard", "Troy"]): Promise<void> {
   await expect(container.getByRole("img")).toHaveCount(brands.length);
   for (const brand of brands) {
@@ -31,15 +31,14 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
     await page.goto("/");
     await page.getByRole("banner").getByRole("button", { name: /^Sepetim/ }).click();
     const drawer = page.getByRole("dialog", { name: /^Sepetim \(/ });
-    await paymentArtwork(drawer.getByRole("group", { name: "Güvenli ödeme" }), "dark", "rgb(247, 243, 234)");
+    await paymentArtwork(drawer.getByRole("group", { name: "Güvenli ödeme" }), "dark", "rgb(255, 253, 248)");
     await drawer.getByRole("button", { name: "Sepeti kapat" }).click();
     await page.goto("/sepet");
-    await paymentArtwork(page.getByRole("main").getByRole("group", { name: "Güvenli ödeme" }), "dark", "rgb(247, 243, 234)");
+    await paymentArtwork(page.getByRole("main").getByRole("group", { name: "Güvenli ödeme" }), "dark", "rgb(255, 253, 248)");
     await page.goto("/?urun=sample-green-olive-1kg");
-    const details = page.getByRole("dialog", { name: "Doğal Kırma Yeşil Zeytin" });
-    const payment = details.getByText("Güvenli Ödeme", { exact: true }).locator("..");
-    await paymentArtwork(payment, "light", "rgb(14, 21, 16)", ["Visa", "Mastercard", "Troy"]);
-    await details.getByRole("button", { name: "Kapat", exact: true }).click();
-    await paymentArtwork(page.getByRole("contentinfo").getByRole("group", { name: "Güvenli ödeme" }), "light", "rgb(10, 15, 11)");
+    const details = page.locator("[data-product-page]");
+    const payment = details.getByText("Ödeme seçenekleri", { exact: true }).locator("..");
+    await paymentArtwork(payment, "dark", "rgb(245, 241, 231)");
+    await paymentArtwork(page.getByRole("contentinfo").getByRole("group", { name: "Güvenli ödeme" }), "light", "rgb(36, 58, 41)");
   });
 }

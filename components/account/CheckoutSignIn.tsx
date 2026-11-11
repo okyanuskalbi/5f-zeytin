@@ -7,7 +7,7 @@ import styles from "./Membership.module.css";
 export function CheckoutSignIn() {
   if (!isMembershipDemoEnabled()) return null;
   return <aside className={styles.suggestion} aria-label="İsteğe bağlı üyelik">
-    <Link href="/giris" className={styles.textLink}>Google ile hızlı giriş</Link>
+    <Link href="/giris" className={styles.textLink}>Giriş yap</Link>
     <p className={styles.muted}>Giriş yapmak isteğe bağlıdır. Misafir olarak ödemeye devam edebilirsiniz.</p>
   </aside>;
 }

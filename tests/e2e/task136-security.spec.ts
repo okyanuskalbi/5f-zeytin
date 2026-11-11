@@ -48,7 +48,7 @@ test("all paths expose enforced CSP with zero policy violations or refused resou
 
 test("enforced CSP permits adding to cart, opening the menu and expanding FAQ answers", async ({ page }) => {
   await page.goto("/");
-  const hero = page.locator("[data-hero-intro]");
+  const hero = page.locator('#urunler article[data-product-id="sample-green-olive-1kg"]');
   await hero.getByRole("button", { name: "Sepete ekle", exact: true }).click();
   await expect(hero.getByRole("status")).toContainText("sepete eklendi");
   await expect(page.getByRole("banner").getByRole("button", { name: "Sepetim, 2 adet" })).toBeVisible();
@@ -60,17 +60,18 @@ test("enforced CSP permits adding to cart, opening the menu and expanding FAQ an
   await expect(page.getByRole("dialog", { name: "Site menüsü" })).toHaveCount(0);
   await expect(menu).toHaveAttribute("aria-expanded", "false");
 
+  await page.goto("/hakkimizda");
   const faq = page.locator("#sik-sorulanlar details").first();
   const question = faq.locator("summary");
   await question.click();
-  await expect(question).toHaveAttribute("aria-expanded", "true");
-  await expect(faq.locator("[data-faq-answer]")).toBeVisible();
+  await expect(faq).toHaveAttribute("open", "");
+  await expect(faq.locator("p")).toBeVisible();
 });
 
-test("sensitive and legal pages omit the mobile cart while the landing keeps its existing buy bar", async ({ page }) => {
+test("sensitive and legal pages omit the mobile cart and the homepage has no legacy buy bar", async ({ page }) => {
   await page.goto("/");
   await page.locator("#urunler").scrollIntoViewIfNeeded();
-  await expect(page.getByRole("region", { name: "Hızlı satın alma" })).toBeVisible();
+  await expect(page.locator("[data-mobile-buy-bar]")).toHaveCount(0);
   await expect(page.locator("[data-mini-cart]")).toHaveCount(0);
   for (const path of ["/giris", "/kayit", "/hesabim", "/odeme", "/kvkk", "/iade", "/mesafeli-satis", "/sepet"]) {
     await page.goto(path);

@@ -1,23 +1,25 @@
-.root { min-width:0; max-width:1040px; margin-inline:auto; border:1px solid #D6D0C3; border-radius:8px; padding:clamp(20px,4vw,40px); background:var(--pro-paper); color:var(--pro-ink); color-scheme:light; }
+.root { min-width:0; max-width:720px; margin-inline:auto; border:0; border-radius:var(--sf-radius-panel); padding:0; background:var(--sf-paper); color:var(--sf-ink); color-scheme:light; }
 .explanation { max-width:72ch; margin:0 0 24px; font-size:1rem; line-height:1.6; }
-.fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; min-width:0; margin:0; padding:0; border:0; }
+.fields { display:grid; grid-template-columns:minmax(0,1fr); gap:24px; min-width:0; margin:0; padding:0; border:0; }
 .field { display:grid; align-content:start; min-width:0; gap:8px; }
 .field > label,.fallback > label { font-size:1rem; line-height:1.5; font-weight:600; }
-.root input:not([type="checkbox"]),.root select,.root textarea { box-sizing:border-box; width:100%; min-width:0; min-height:48px; padding:11px 12px; border:1px solid #8B9583; border-radius:6px; background:#fff; color:var(--pro-ink); font:inherit; font-size:1rem; line-height:1.5; }
+.root input:not([type="checkbox"]),.root select,.root textarea { box-sizing:border-box; width:100%; min-width:0; min-height:48px; padding:11px 12px; border:1px solid #8B9583; border-radius:0; background:var(--sf-paper); color:var(--sf-ink); font:inherit; font-size:1rem; line-height:1.5; }
 .root textarea { resize:vertical; }
+.root select { appearance:none; height:48px; padding-right:40px; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23223828' stroke-width='1.5'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; background-size:16px; }
 .root :global(.customer-address-combobox) > label,.root :global(.customer-phone-label) { font-size:1rem; }
 .root :global(.customer-phone-label)::after { content:" *"; }
 .root :global(.phone-country-search) > button { font-size:1rem; }
 .root :global(.phone-country-panel) input { min-height:44px; font-size:1rem; }
 .root [aria-invalid="true"] { border-color:var(--pro-error); }
-.root input:focus-visible,.root select:focus-visible,.root textarea:focus-visible,.root button:focus-visible,.root a:focus-visible { outline:3px solid var(--classic-dark-gold,#88630B); outline-offset:3px; }
+.root input:focus-visible,.root select:focus-visible,.root textarea:focus-visible,.root button:focus-visible,.root a:focus-visible { outline:2px solid var(--sf-focus); outline-offset:3px; }
 .wide { grid-column:1 / -1; }
 .consent label { display:flex; align-items:center; min-height:44px; gap:12px; font-size:1rem; line-height:1.5; cursor:pointer; }
-.consent input { appearance:auto; width:24px; height:24px; flex:none; margin:10px; accent-color:var(--classic-forest,#142817); }
+.consent input { appearance:auto; width:24px; height:24px; flex:none; margin:10px; accent-color:var(--sf-green); }
 .consent a { display:inline-flex; align-items:center; min-height:44px; margin-inline-start:56px; text-decoration:underline; text-underline-offset:4px; font-size:1rem; }
-.submit,.fallback button { display:inline-flex; justify-content:center; align-items:center; min-height:48px; padding:12px 20px; border:1px solid transparent; border-radius:6px; background:var(--classic-dark-gold,#88630B); color:#fff; font:inherit; font-size:1rem; font-weight:650; line-height:1.5; cursor:pointer; overflow-wrap:anywhere; }
+.submit,.fallback button { display:inline-flex; justify-content:center; align-items:center; min-height:48px; padding:12px 20px; border:1px solid transparent; border-radius:0; background:var(--sf-green); color:var(--sf-paper); font:inherit; font-size:1rem; font-weight:650; line-height:1.5; cursor:pointer; white-space:nowrap; }
+.submit,.fallback button { border-radius:var(--sf-radius-button); }
 .submit:disabled { opacity:.6; cursor:not-allowed; }
-.submit:hover:not(:disabled),.fallback button:hover { background:#6C4E08; }
+.submit:hover:not(:disabled),.fallback button:hover { background:var(--sf-ink); }
 .error { color:var(--pro-error); font-size:1rem; line-height:1.5; margin:0; }
 .error:empty,.status:empty { margin:0; }
 .status { margin-top:24px; font-size:1rem; line-height:1.6; }
@@ -28,6 +30,6 @@
 .fallback textarea { max-height:480px; }
 @media(max-width:767px) {
  .fields { grid-template-columns:minmax(0,1fr); gap:20px; }
- .root { padding:20px; }
+ .root { padding:0; }
  .submit { width:100%; }
 }

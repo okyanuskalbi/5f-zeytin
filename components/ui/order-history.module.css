@@ -4,7 +4,7 @@
 .step::before { content: ""; position: absolute; top: 36px; bottom: 4px; left: 15px; width: 1px; background: var(--history-rule); }
 .step[data-status="completed"]::before { background: var(--primary); }
 .step:last-child::before { display: none; }
-.marker { position: absolute; inset: 0 auto auto 0; width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--history-rule); border-radius: 50%; color: var(--history-muted); background: var(--background); }
+.marker { position: absolute; inset: 0 auto auto 0; width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--history-rule); border-radius: var(--sf-radius-icon); color: var(--history-muted); background: var(--background); }
 .step[data-status="completed"] .marker { color: var(--primary-foreground); background: var(--primary); border-color: var(--primary); }
 .step[data-status="in-progress"] .marker { color: var(--primary); background: var(--background); border-color: var(--primary); }
 .step[data-status="stopped"] .marker { color: var(--history-ink); background: var(--background); border-color: var(--history-muted); }
@@ -12,6 +12,6 @@
 .heading { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
 .timeline .heading h3 { margin: 0; font-family: var(--font-sans); font-size: 16px; font-weight: 600; line-height: 1.6; color: var(--history-ink); overflow-wrap: anywhere; }
 .timeline .content p { margin: 7px 0 0; color: var(--history-muted); font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
-.current { display: inline-block; border: 1px solid var(--history-rule); border-radius: 999px; padding: 2px 9px; font-size: 11px; font-weight: 600; line-height: 1.7; color: var(--history-ink); background: var(--background); }
+.current { display: inline-block; border: 1px solid var(--history-rule); border-radius: var(--sf-radius-pill); padding: 2px 9px; font-size: 12px; font-weight: 600; line-height: 1.7; color: var(--history-ink); background: var(--background); }
 @media (max-width: 480px) { .timeline .step { padding-left: 44px; } .heading { align-items: flex-start; } }
 @media (prefers-reduced-motion: reduce) { .marker { animation: none !important; transform: none !important; opacity: 1 !important; } }

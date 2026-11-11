@@ -5,7 +5,7 @@ import postcss from "postcss";
 import { afterEach, describe, expect, it } from "vitest";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { CartSummary } from "@/components/cart/CartSummary";
-import { Footer } from "@/components/site/Footer";
+import { StoreFooter as Footer } from "@/components/storefront/StoreFooter";
 import { PaymentLogos } from "@/components/site/PaymentLogos";
 import { createCartStore } from "@/lib/cart/store";
 import type { Product } from "@/types/catalog";
@@ -75,13 +75,14 @@ describe("Task 132 payment artwork and surfaces", () => {
     },
   );
 
-  it("uses light artwork on the dark footer while preserving the three-card list", () => {
+  it("uses light artwork on the dark A footer with a named payment group", () => {
     const doc = new DOMParser().parseFromString(renderToStaticMarkup(<Footer />), "text/html");
     const payment = doc.querySelector('[aria-label="Güvenli ödeme"]')!;
     expect(payment.closest("[data-surface]")?.getAttribute("data-surface")).toBe("dark");
     expect([...payment.querySelectorAll("img")].map(image => ({ alt: image.alt, src: image.getAttribute("src") })))
       .toEqual(brands.map(brand => ({ alt: brand,
         src: `/images/payment/${brand.toLowerCase()}.svg` })));
-    expect(payment.querySelectorAll('ul[aria-label="Kabul edilen kartlar"] > li')).toHaveLength(3);
+    expect(payment.getAttribute("role")).toBe("group");
+    expect(payment.querySelectorAll("img")).toHaveLength(4);
   });
 });

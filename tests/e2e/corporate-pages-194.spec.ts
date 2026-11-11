@@ -76,7 +76,7 @@ test.describe("Task194 corporate pages", () => {
     page.on("request", request => { if (!["GET", "HEAD"].includes(request.method())) writes.push(`${request.method()} ${request.url()}`); });
     await page.goto("/urun/naturel-sizma-zeytinyagi?boy=5%20L", { waitUntil: "load" });
     await expect(page.locator('[data-product-page] input[value="sample-olive-oil-5l"]')).toBeChecked();
-    await page.locator("[data-product-page]").getByRole("link", { name: "Toptan teklif al", exact: true }).click();
+    await page.locator("[data-product-page]").getByRole("link", { name: "Teklife ekle", exact: true }).click();
     await expect(page).toHaveURL(/\/toptan-satis(?:\?|#|$)/);
     const form = page.getByRole("form", { name: "Kurumsal teklif talebi", exact: true });
     const picker = form.getByRole("button", { name: "İlgilendiğiniz ürünler", exact: true });
@@ -99,7 +99,7 @@ test.describe("Task194 corporate pages", () => {
     await form.getByRole("button", { name: "Talep özetini hazırla", exact: true }).click();
     const summary = page.getByRole("region", { name: "Talep özeti", exact: true });
     await expect(summary).toBeVisible();
-    await expect(summary).toContainText("Natürel Sızma Zeytinyağı · 5 L");
+    await expect(summary).toContainText("Natürel Sızma Zeytinyağı, 5 L");
     await expect(summary).toContainText("Bu sayfa e-posta göndermedi.");
     const draft = await summary.getByRole("link", { name: "E-postayla gönder", exact: true }).getAttribute("href");
     expect(draft).toMatch(/^mailto:/);

@@ -40,7 +40,7 @@ describe("Task 131 cart presentation", () => {
     expect(within(dialog).getByRole("link", { name: "Ödemeye geç" }).getAttribute("href")).toBe("/odeme");
     const trust = within(dialog).getByRole("group", { name: "Güvenli ödeme" });
     for (const brand of ["PayTR", "Visa", "Mastercard", "Troy"]) expect(within(trust).getByRole("img", { name: brand })).toBeDefined();
-    expect(within(dialog).getByText("Kargo 2-4 iş günü")).toBeDefined();
+    expect(within(dialog).getByText("Teslimat koşulları teklif aşamasında belirlenir.")).toBeDefined();
     expect(within(dialog).getByRole("link", { name: "Sepeti görüntüle" }).getAttribute("href")).toBe("/sepet");
   });
 
@@ -62,8 +62,8 @@ describe("Task 131 cart presentation", () => {
   it("offers a shared empty state and closes the drawer on browsing", async () => {
     drawer(true);
     expect(screen.getByText("Sepetiniz boş")).toBeDefined();
-    const browse = screen.getByRole("link", { name: "Ürünlere göz atın" });
-    expect(browse.getAttribute("href")).toBe("/#urunler");
+    const browse = screen.getByRole("link", { name: "Ürünleri İnceleyin" });
+    expect(browse.getAttribute("href")).toBe("/urunler");
     fireEvent.click(browse);
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
   });
@@ -106,7 +106,7 @@ describe("Task 131 cart presentation", () => {
     const store = createCartStore({ products, storage: null });
     render(<CartSummary store={store} products={products} onRefresh={() => {}} />);
     expect(screen.getByText("Sepetiniz boş")).toBeDefined();
-    expect(screen.getByRole("link", { name: "Ürünlere göz atın" }).getAttribute("href")).toBe("/#urunler");
+    expect(screen.getByRole("link", { name: "Ürünleri İnceleyin" }).getAttribute("href")).toBe("/urunler");
     expect(screen.queryByRole("region", { name: "Mobil ödeme" })).toBeNull();
   });
 

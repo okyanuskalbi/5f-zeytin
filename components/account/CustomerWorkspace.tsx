@@ -22,7 +22,7 @@ import {
 import { CustomerNavigation } from "./CustomerNavigation";
 import { AddressBook } from "./AddressBook";
 import { Feedback, Field, useMembershipAction } from "./FormControls";
-import styles from "./CustomerPanel.module.css";
+import styles from "@/components/storefront/account/AccountSurface.module.css";
 
 export type CustomerSection =
   | "orders"
@@ -162,7 +162,7 @@ export function CustomerWorkspace({
         ) : (
           <div className={styles.customerLayout}>
             <CustomerNavigation active={`/hesabim/${path}`} />
-            <div className={styles.customerContent}>
+            <div className={styles.customerContent} data-customer-section={section}>
               {section === "orders" ? (
                 <CustomerOrders />
               ) : section === "addresses" ? (
@@ -192,6 +192,7 @@ function CustomerOrders() {
   }>(`/api/account/orders?page=${page}`);
   return (
     <section className={styles.card} aria-label="Sipariş listesi">
+      <h2>Alışveriş geçmişiniz</h2>
       {state.kind === "loading" ? (
         <p role="status">Siparişleriniz yükleniyor…</p>
       ) : state.kind === "error" ? (
@@ -215,7 +216,6 @@ function CustomerOrders() {
         </div>
       ) : (
         <>
-          <h2>Alışveriş geçmişiniz</h2>
           <ul className={styles.rows}>
             {state.data.orders.map((order) => (
               <li className={styles.orderRow} key={order.no}>
@@ -262,15 +262,7 @@ function CustomerOrderDetail({ no }: { no: string }) {
   const { state, retry } = useResource<CustomerOrder>(
     `/api/account/orders/${encodeURIComponent(no)}`,
   );
-  if (state.kind === "loading")
-    return <p role="status">Siparişiniz yükleniyor…</p>;
-  if (state.kind === "error")
-    return (
-      <section className={styles.card}>
-        <ResourceFailure retry={retry} />
-      </section>
-    );
-  const order = state.data;
+  const order = state.kind === "ready" ? state.data : null;
   return (
     <div className={styles.details}>
       <Link href="/hesabim/siparisler" className={styles.back}>
@@ -278,55 +270,64 @@ function CustomerOrderDetail({ no }: { no: string }) {
         Siparişlerime dön
       </Link>
       <section className={styles.card}>
-        <h2>{order.no}</h2>
-        <p>
-          <time dateTime={order.date}>{date(order.date)}</time>
-        </p>
-        <span className={styles.status}>
-          {customerOrderStatuses[order.status]}
-        </span>
-        <ul>
-          {order.items.map((item, index) => (
-            <li key={index}>
-              <span>
-                {item.name} · {item.weight}
-                <br />
-                {item.quantity} adet × {money(item.unitPriceKurus)}
-              </span>
-              <strong>{money(item.quantity * item.unitPriceKurus)}</strong>
-            </li>
-          ))}
-        </ul>
-        <p>
-          Genel toplam <strong>{money(order.totalKurus)}</strong>
-        </p>
+        <h2>Sipariş bilgileri</h2>
+        {state.kind === "loading" ? (
+          <p role="status">Siparişiniz yükleniyor…</p>
+        ) : state.kind === "error" ? (
+          <ResourceFailure retry={retry} />
+        ) : order && <>
+          <p>{order.no}</p>
+          <p>
+            <time dateTime={order.date}>{date(order.date)}</time>
+          </p>
+          <span className={styles.status}>
+            {customerOrderStatuses[order.status]}
+          </span>
+          <ul>
+            {order.items.map((item, index) => (
+              <li key={index}>
+                <span>
+                  {item.name}, {item.weight}
+                  <br />
+                  {item.quantity} adet × {money(item.unitPriceKurus)}
+                </span>
+                <strong>{money(item.quantity * item.unitPriceKurus)}</strong>
+              </li>
+            ))}
+          </ul>
+          <p>
+            Genel toplam <strong>{money(order.totalKurus)}</strong>
+          </p>
+        </>}
       </section>
-      <section className={styles.card} aria-labelledby="customer-order-journey">
-        <h2 id="customer-order-journey">Sipariş yolculuğu</h2>
-        <TrackingTimeline items={customerOrderTimeline(order)} />
-      </section>
-      <section className={styles.card}>
-        <h2>Teslimat ve kargo</h2>
-        <p>{order.deliveryAddress || "Teslimat adresi henüz paylaşılmadı."}</p>
-        {order.shipping ? (
-          <>
-            <p>
-              {order.shipping.carrier} · {order.shipping.trackingNo}
-            </p>
-            {order.shipping.url && (
-              <a
-                href={order.shipping.url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Kargo firmasından takip et
-              </a>
-            )}
-          </>
-        ) : (
-          <p>Kargo bilgisi henüz paylaşılmadı.</p>
-        )}
-      </section>
+      {order && <>
+        <section className={styles.card} aria-labelledby="customer-order-journey">
+          <h2 id="customer-order-journey">Sipariş yolculuğu</h2>
+          <TrackingTimeline items={customerOrderTimeline(order)} />
+        </section>
+        <section className={styles.card}>
+          <h2>Teslimat ve kargo</h2>
+          <p>{order.deliveryAddress || "Teslimat adresi henüz paylaşılmadı."}</p>
+          {order.shipping ? (
+            <>
+              <p>
+                {order.shipping.carrier}, {order.shipping.trackingNo}
+              </p>
+              {order.shipping.url && (
+                <a
+                  href={order.shipping.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Kargo firmasından takip et
+                </a>
+              )}
+            </>
+          ) : (
+            <p>Kargo bilgisi henüz paylaşılmadı.</p>
+          )}
+        </section>
+      </>}
     </div>
   );
 }

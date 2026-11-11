@@ -2,16 +2,16 @@ import type { Metadata } from "next";
 import type { JSX } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { BlogCard, formatBlogDate } from "@/components/blog/BlogCard";
+import { BlogCard, formatBlogDate } from "@/components/storefront/content/BlogCard";
 import { V3Picture } from "@/components/media/V3Picture";
-import { ProductCard } from "@/components/catalog/ProductCard";
+import { ProductTile } from "@/components/storefront/ProductTile";
+import { blogEditorial } from "@/components/storefront/content/blog-editorial";
 import { blogPosts } from "@/lib/blog/posts";
 import { getProductGroup, productsForGroup } from "@/lib/catalog/groups";
 import { readProductFamilies } from "@/lib/catalog/read";
 import photos from "@/lib/media/classic-photos.json";
-import { v3Image } from "@/lib/media/v3-assets";
 import { siteIdentity } from "@/lib/site/identity";
-import styles from "@/components/blog/Blog.module.css";
+import styles from "@/components/storefront/content/Blog.module.css";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -36,6 +36,7 @@ export default async function Page({ params }: Props): Promise<JSX.Element> {
   const { slug } = await params;
   const post = blogPosts.find(item => item.slug === slug);
   if (!post) notFound();
+  const editorial = blogEditorial[post.slug];
   const related = productsForGroup(await readProductFamilies(), post.category).slice(0, 3);
   const category = getProductGroup(post.category);
   const canonical = `${siteIdentity.origin}/blog/${post.slug}`;
@@ -58,11 +59,11 @@ export default async function Page({ params }: Props): Promise<JSX.Element> {
     {[article, breadcrumb].map(schema => <script key={schema["@type"]} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />)}
     <nav aria-label="İçerik yolu" className={styles.breadcrumb}><ol><li><Link href="/">Ana Sayfa</Link></li><li><span aria-hidden="true">/</span><Link href="/blog">Blog</Link></li><li><span aria-hidden="true">/</span><span aria-current="page">{post.title}</span></li></ol></nav>
     <article className={styles.article}>
-      <header className={styles.articleHeader}><p className={styles.eyebrow}>Zeytin Defteri</p><h1>{post.title}</h1><div className={styles.articleMeta}><time dateTime={post.date}>{formatBlogDate(post.date)}</time><span aria-hidden="true">·</span><span>{post.readingMinutes} dakika okuma</span></div><p className={styles.excerpt}>{post.excerpt}</p></header>
-      <V3Picture image={image} sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) 90vw, 960px" eager className={styles.cover} />
-      <div className={styles.prose} data-blog-content>{post.sections.map(section => <section key={section.heading}><h2>{section.heading}</h2>{section.paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}{section.items && <ul>{section.items.map(item => <li key={item}>{item}</li>)}</ul>}</section>)}<p className={styles.categoryLink}><Link href={post.categoryHref}>{category?.name ?? "İlgili kategori"} ürünlerini inceleyin</Link></p></div>
+      <header className={styles.articleHeader}><h1>{post.title}</h1><div className={styles.articleMeta}><span>Güncelleme: <time dateTime={post.date}>{formatBlogDate(post.date)}</time></span><span data-article-author>AFİNA ZEYTİN</span><span>{post.readingMinutes} dakika okuma</span></div><p className={styles.excerpt} data-article-answer>{editorial.answer}</p></header>
+      <V3Picture image={image} sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1023px) 90vw, 960px" eager className={styles.cover} />
+      <div className={styles.prose} data-blog-content>{post.sections.map((section, index) => <section key={section.heading}><h2>{editorial.headings[index]}</h2>{section.paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}{section.items && <ul>{section.items.map(item => <li key={item}>{item}</li>)}</ul>}</section>)}<p className={styles.categoryLink}><Link href={post.categoryHref}>{category?.name ?? "İlgili kategori"} ürünlerini inceleyin</Link></p><section data-article-faq className={styles.faq} aria-labelledby="article-faq-title"><h2 id="article-faq-title">Bu konuda sık sorulan sorular neler?</h2>{editorial.faq.map(item => <details key={item.question}><summary>{item.question}</summary><p>{item.answer}</p></details>)}</section></div>
     </article>
-    <section aria-labelledby="related-products-title" className={styles.related}><h2 id="related-products-title">İlgili Ürünler</h2><div className={styles.productGrid}>{related.map(product => <ProductCard key={product.id} product={product} image={v3Image(product.imageKey)} featured={false} staticPresentation imageSizes="(max-width: 359px) 90vw, (max-width: 767px) 42vw, 30vw" />)}</div></section>
+    <section aria-labelledby="related-products-title" className={styles.related}><h2 id="related-products-title">İlgili Ürünler</h2><div className={styles.productGrid}>{related.map(product => <ProductTile key={product.id} product={product} />)}</div></section>
     <section aria-labelledby="other-articles-title" className={styles.related}><h2 id="other-articles-title">Diğer Yazılar</h2><div className={`${styles.cardGrid} ${styles.otherGrid}`}>{blogPosts.filter(other => other.slug !== post.slug).map(other => <BlogCard key={other.slug} post={other} headingLevel={3} other />)}</div></section>
   </div></main>;
 }

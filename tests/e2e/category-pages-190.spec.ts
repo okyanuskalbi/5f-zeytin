@@ -43,7 +43,7 @@ test.describe("Task190 category pages", () => {
       { position: 2, name: "Ürünler", item: "https://afinazeytin.com/urunler" },
       ...getGroupTrail(group.id).map((item, index) => ({ position: index + 3, name: item.name, item: `https://afinazeytin.com/urunler/${item.id}` })),
     ] });
-    for (const id of group.products) await expect(page.locator(`article[data-product-id="${id}"]`).getByRole("link", { name: /^Teklife ekle:/ })).toHaveAttribute("href", `/toptan-satis?teklif=${id}`);
+    for (const id of group.products) await expect(page.locator(`article[data-product-id="${id}"]`).getByRole("link", { name: "Teklife ekle", exact: true })).toHaveAttribute("href", `/toptan-satis?teklif=${id}`);
   });
 
   test("unknown groups are 404 and unapproved category prices stay outside the sitemap", async ({ request }) => {
@@ -91,18 +91,18 @@ test.describe("Task190 category pages", () => {
     await groupSection.locator('a[href="/urunler/zeytinyagi"]').click();
     await expect(page).toHaveURL(/\/urunler\/zeytinyagi$/);
     const product = page.locator('article[data-product-id="sample-olive-oil-1l"]');
-    await expect(product.getByRole("link", { name: /^Teklife ekle:/ })).toHaveAttribute("href", "/toptan-satis?teklif=sample-olive-oil-1l");
+    await expect(product.getByRole("link", { name: "Teklife ekle", exact: true })).toHaveAttribute("href", "/toptan-satis?teklif=sample-olive-oil-1l");
     await product.getByRole("link", { name: /detayını aç/ }).click();
     await expect(page).toHaveURL(/\/urun\/naturel-sizma-zeytinyagi\?boy=1(?:%20|\+)L$/);
     const detail = page.locator("[data-product-page]");
     await expect(detail.getByRole("heading", { name: "Natürel Sızma Zeytinyağı", exact: true })).toBeVisible();
     await expect(detail.getByRole("button", { name: "Sepete ekle", exact: true })).toBeEnabled();
-    await expect(detail.getByRole("link", { name: "Toptan teklif al" })).toHaveAttribute("href", "/toptan-satis?teklif=sample-olive-oil-1l");
+    await expect(detail.getByRole("link", { name: "Teklife ekle" })).toHaveAttribute("href", "/toptan-satis?teklif=sample-olive-oil-1l");
     await expect(page.getByRole("dialog")).toHaveCount(0);
     // The legacy query redirects to the dedicated quote page.
     await page.goto("/?teklif=sample-olive-oil-1l#toptan", { waitUntil: "load" });
     await expect(page).toHaveURL(/\/toptan-satis#toptan$/);
     await expect(page.getByRole("textbox", { name: "Adınız veya firma adı" })).toBeFocused();
-    await expect(page.locator("#toptan")).toContainText("1 ürün · 1 adet");
+    await expect(page.locator("#toptan")).toContainText("1 ürün, 1 adet");
   });
 });

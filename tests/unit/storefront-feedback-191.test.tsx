@@ -3,25 +3,23 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { AddToCart } from "@/components/catalog/AddToCart";
-import { ProductCard } from "@/components/catalog/ProductCard";
-import { ProductGroups } from "@/components/landing/ProductGroups";
+import { ProductTile as ProductCard } from "@/components/storefront/ProductTile";
 import { getProducts } from "@/lib/catalog/static-products";
-import { v3Image } from "@/lib/media/v3-assets";
 
 const cart = vi.hoisted(() => ({ addItem: vi.fn() }));
 vi.mock("@/components/cart/CartProvider", () => ({ useCart: () => ({ state: { hydrated: true }, products: [], store: { addItem: cart.addItem } }) }));
 beforeEach(() => vi.stubGlobal("matchMedia", () => ({ matches: true, addEventListener() {}, removeEventListener() {} })));
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.clearAllMocks(); });
 
-it("renders reduced-motion cards and home groups directly without scroll entrances or hidden SSR content", async () => {
+it("renders reduced-motion product cards directly without scroll entrances or hidden SSR content", async () => {
   const product = (await getProducts()).find(item => item.stock > 0)!;
-  const html = renderToStaticMarkup(<><ProductCard product={product} image={v3Image(product.imageKey)} /><ProductGroups /></>);
+  const html = renderToStaticMarkup(<><ProductCard product={product} /></>);
   expect(html).not.toMatch(/opacity:0|translateY|scale\(0/);
-  for (const file of ["components/catalog/ProductCard.tsx", "components/ui/order-history.tsx"]) {
+  for (const file of ["components/storefront/ProductTile.tsx", "components/ui/order-history.tsx"]) {
     expect(readFileSync(file, "utf8"), file).not.toMatch(/whileInView|useInView|useScroll|onViewportEnter/);
   }
-  const { container } = render(<ProductCard product={product} image={v3Image(product.imageKey)} staticPresentation />);
-  expect(container.querySelector("[data-reduced-motion]")?.getAttribute("data-reduced-motion")).toBe("true");
+  const { container } = render(<ProductCard product={product} />);
+  expect(container.querySelector("article")?.textContent).toContain(product.name);
 });
 
 it("keeps addition feedback accessible and both text widths reserved without changing the cart action", async () => {
@@ -44,3 +42,5 @@ it("keeps unavailable stock separate and motionless", async () => {
   expect(button.getAttribute("style")).toContain("transform: none");
   expect(container.querySelector("[data-add-label]")).toBeNull();
 });
+
+vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }), usePathname: () => "/urunler" }));

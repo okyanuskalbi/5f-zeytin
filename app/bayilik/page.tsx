@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { JSX } from "react";
-import { DealershipPage } from "@/components/dealership/DealershipPage";
+import { DealershipPage } from "@/components/storefront/content/DealershipPage";
 import { siteIdentity } from "@/lib/site/identity";
 
 const title = "Bayilik | AFİNA ZEYTİN";

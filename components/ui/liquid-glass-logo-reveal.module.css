@@ -1,9 +1,0 @@
-.reveal { position:relative; isolation:isolate; min-height:240px; width:100%; overflow:clip; }
-.fallback { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; transition:opacity .25s var(--ease-editorial); }
-.fallback picture { display:block; width:min(72%,340px); }
-.fallback picture img { display:block; width:100%; height:auto; }
-.fallback > img { display:block; width:min(72%,320px); height:auto; max-height:80%; object-fit:contain; }
-.canvas { position:absolute; inset:0; display:block; width:100%; height:100%; pointer-events:none; opacity:0; transition:opacity .25s var(--ease-editorial); }
-.reveal[data-enhanced="true"] .fallback { opacity:0; }
-.reveal[data-enhanced="true"] .canvas { opacity:1; }
-@media(prefers-reduced-motion:reduce) { .fallback { opacity:1!important; transition:none; } .canvas { display:none; transition:none; } }

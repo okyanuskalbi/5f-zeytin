@@ -20,11 +20,11 @@ export function Register({ embedded = false, onSignIn }: { embedded?: boolean; o
     <ConfiguredGoogleButton />
     <RegisterForm />
     <div className={styles.authFooter}>
-      <p>Zaten hesabınız var mı? <Link href="/giris" className={styles.textLink} onClick={onSignIn ? (event) => {
+      <p>Zaten hesabınız var mı? <Link prefetch={false} href="/giris" className={styles.textLink} onClick={onSignIn ? (event) => {
         if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
         event.preventDefault(); event.stopPropagation(); onSignIn();
       } : undefined}>Giriş yap</Link></p>
-      <Link href="/sepet" className={styles.guestLink}>Üye olmadan alışverişe devam et<ArrowRight aria-hidden="true" size={15} /></Link>
+      <Link prefetch={false} href="/sepet" className={styles.guestLink}>Üye olmadan alışverişe devam et<ArrowRight aria-hidden="true" size={15} /></Link>
     </div>
   </>;
   return embedded ? content : <MembershipFrame mode="register">{content}</MembershipFrame>;
@@ -76,13 +76,13 @@ function RegisterForm() {
         {errors.password && <small id="register-password-error" className={styles.error}>{errors.password}</small>}
       </div>
       <div className={styles.consents}>
-        <Consent name="privacy" error={errors.privacy}><Link href="/kvkk" target="_blank" rel="noopener noreferrer">KVKK aydınlatma metnini</Link> okudum. (Zorunlu)</Consent>
+        <Consent name="privacy" error={errors.privacy}><Link prefetch={false} href="/kvkk" target="_blank" rel="noopener noreferrer">KVKK aydınlatma metnini</Link> okudum. (Zorunlu)</Consent>
         <Consent name="consent" error={errors.consent}>Açık rıza: üyelik bilgilerimin üyelik işlemleri için işlenmesine rıza veriyorum. (Zorunlu)</Consent>
         <Consent name="marketing">Ticari ileti almak istiyorum. (İsteğe bağlı)</Consent>
       </div>
       <Button type="submit" className="w-full" disabled={busy}>{busy ? "İşleniyor…" : "Üyelik oluştur"}</Button>
     </fieldset>
-    <p ref={feedbackRef} tabIndex={-1} role={feedback.error ? "alert" : "status"} aria-live={feedback.error ? "assertive" : "polite"} aria-atomic="true" className={`${styles.feedback} ${feedback.error ? styles.error : ""}`}>{busy ? "İsteğiniz işleniyor…" : feedback.message}</p>
+    <p ref={feedbackRef} tabIndex={-1} role={feedback.error ? "alert" : "status"} aria-live={feedback.error ? "assertive" : "polite"} aria-atomic="true" className={`${styles.feedback} ${feedback.error ? styles.error : ""}`}>{busy ? "İsteğiniz işleniyor…" : feedback.message.replace(/[—–]/g, "-")}</p>
   </form>;
 }
 

@@ -25,8 +25,13 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)("shared account counters against
   expect(await consumeAccountAttempt(email,secret)).toBe(0);
  });
  it("serializes concurrent attempts and keeps different identities independent",async()=>{
+  const started=Date.now();
   const outcomes=await Promise.all(Array.from({length:10},()=>consumeAccountAttempt(email,secret)));
-  expect(outcomes.filter(value=>value===0)).toHaveLength(5);expect(outcomes.filter(value=>value===5)).toHaveLength(5);
+  expect(outcomes.filter(value=>value===0)).toHaveLength(5);expect(outcomes.filter(value=>value>0)).toHaveLength(5);
+  // Concurrent SQL statements capture CURRENT_TIMESTAMP before waiting for the row lock.
+  // An earlier start can round the first five-second block up to six or more seconds.
+  expect(Math.max(...outcomes)).toBeLessThanOrEqual(5+Math.ceil((Date.now()-started)/1000));
+  expect((await query("SELECT attempts FROM auth_account_limits WHERE key=$1",[accountLimitKey(email,secret)])).rows[0].attempts).toBe(6);
   const other=`other-${email}`;try{expect(await consumeAccountAttempt(other,secret)).toBe(0);}finally{await query("DELETE FROM auth_account_limits WHERE key=$1",[accountLimitKey(other,secret)]);}
  });
  it("limits an account even when each login comes from a different IP",async()=>{

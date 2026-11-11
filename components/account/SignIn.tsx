@@ -73,7 +73,7 @@ export function SignIn({ next = "/hesabim", signedIn = false, unavailable = fals
         {!sessionOpen && <ConfiguredGoogleButton next={destination} />}
         {sessionOpen ? <div className={styles.form}>
           <p>Oturumunuz açık.</p>
-          <Button asChild><Link href={destination}>Alışverişe devam et</Link></Button>
+          <Button asChild><Link prefetch={false} href={destination}>Alışverişe devam et</Link></Button>
           <Button variant="outline" disabled={busy} onClick={signOut}>{busy ? "İşleniyor…" : "Çıkış yap"}</Button>
         </div> : <form onSubmit={submit} noValidate className={styles.form} aria-label="E-posta ile giriş" aria-busy={busy}>
           <fieldset disabled={busy}>
@@ -93,13 +93,13 @@ export function SignIn({ next = "/hesabim", signedIn = false, unavailable = fals
             <Button variant="outline" className={styles.alternateSignIn} onClick={() => { setMethod(method === "password" ? "magic_link" : "password"); setPassword(""); setShowPassword(false); }}><Mail aria-hidden="true" />{method === "password" ? "E-posta bağlantısıyla giriş" : "Şifreyle girişe dön"}</Button>
           </fieldset>
         </form>}
-        <p ref={feedbackRef} tabIndex={-1} role={failed ? "alert" : "status"} aria-live={failed ? "assertive" : "polite"} aria-atomic="true" className={`${styles.feedback} ${failed ? styles.error : ""}`}>{busy ? "İsteğiniz işleniyor…" : message}</p>
+        <p ref={feedbackRef} tabIndex={-1} role={failed ? "alert" : "status"} aria-live={failed ? "assertive" : "polite"} aria-atomic="true" className={`${styles.feedback} ${failed ? styles.error : ""}`}>{busy ? "İsteğiniz işleniyor…" : message.replace(/[—–]/g, "-")}</p>
         {!sessionOpen && <div className={styles.authFooter}>
-          <p>Hesabınız yok mu? <Link href="/kayit" className={styles.textLink} onClick={onRegister ? (event) => {
+          <p>Hesabınız yok mu? <Link prefetch={false} href="/kayit" className={styles.textLink} onClick={onRegister ? (event) => {
             if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
             event.preventDefault(); event.stopPropagation(); onRegister();
-          } : undefined}>Üye ol</Link></p>
-          <Link href="/sepet" className={styles.guestLink}>Üye olmadan alışverişe devam et<ArrowRight aria-hidden="true" size={15} /></Link>
+          } : undefined}>Hesap oluştur</Link></p>
+          <Link prefetch={false} href="/sepet" className={styles.guestLink}>Üye olmadan alışverişe devam et<ArrowRight aria-hidden="true" size={15} /></Link>
         </div>}
   </>;
   return embedded ? content : <MembershipFrame mode="login">{content}</MembershipFrame>;

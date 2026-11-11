@@ -3,6 +3,7 @@ import { localTestDatabaseUrl } from "../helpers/local-postgres";
 import { randomUUID } from "node:crypto";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { closePool, query } from "@/lib/db";
+import * as db from "@/lib/db";
 import { deleteCustomerAddress, listCustomerAddresses, listCustomerOrders, readCustomerOrder, saveCustomerAddress } from "@/lib/account/customer-server";
 import { readCatalog } from "@/lib/catalog/read";
 vi.mock("server-only", () => ({}));
@@ -35,6 +36,14 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)("local Postgres customer/catalog
   });
 
   it("reads only published catalog entries and preserves a zero stock/price", async () => {
+    // The supplied test DB may already contain all six approved products.
+    // Keep this fixture and its temporary active slots invisible, then roll back.
+    const client = await db.getPool().connect();
+    await client.query("BEGIN");
+    await client.query("SELECT pg_advisory_xact_lock($1)", [640064]);
+    await client.query("UPDATE public.products SET is_active=false WHERE is_active");
+    const fixtureQuery = vi.spyOn(db, "query").mockImplementation(client.query.bind(client) as typeof db.query);
+    try {
     await query("INSERT INTO public.products(id,name,category,weight,price_kurus,stock) VALUES($1,$2,$3,$4,$5,$6)", [productId, "Local test olive", "sofralik-zeytin", "1 kg", 0, 0]);
     expect((await readCatalog()).data.some(item => item.id === productId)).toBe(false);
     await query("UPDATE public.products SET is_active = $1 WHERE id = $2", [true, productId]);
@@ -43,6 +52,11 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)("local Postgres customer/catalog
     expect(catalog.data.find(item => item.id === productId)).toMatchObject({ priceKurus: 0, stock: 0 });
     await query("UPDATE public.products SET is_active = $1 WHERE id = $2", [false, productId]);
     expect((await readCatalog()).data.some(item => item.id === productId)).toBe(false);
+    } finally {
+      fixtureQuery.mockRestore();
+      await client.query("ROLLBACK");
+      client.release();
+    }
   });
 
   it("keeps another customer's addresses unreadable and unchanged", async () => {

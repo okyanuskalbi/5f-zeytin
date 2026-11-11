@@ -1,6 +1,8 @@
 "use client";
 
 import { useRef, useState, type InputHTMLAttributes } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MembershipError } from "@/lib/auth/adapter";
 import styles from "./Membership.module.css";
@@ -30,16 +32,18 @@ export function useMembershipAction() {
 }
 
 export function Field({ label, error, id, hint, ...props }: InputHTMLAttributes<HTMLInputElement> & { label: string; error?: string; hint?: string; id: string }) {
+  const [visible, setVisible] = useState(false);
+  const input = <Input id={id} aria-invalid={!!error} aria-describedby={error ? `${id}-error` : hint ? `${id}-hint` : undefined} {...props} type={props.type === "password" && visible ? "text" : props.type} />;
   return <div className={styles.field}>
     <label htmlFor={id}>{label}</label>
-    <Input id={id} aria-invalid={!!error} aria-describedby={error ? `${id}-error` : hint ? `${id}-hint` : undefined} {...props} />
+    {props.type === "password" ? <div className={styles.password}>{input}<Button type="button" variant="ghost" size="icon" aria-label={`${label}: ${visible ? "gizle" : "göster"}`} aria-pressed={visible} onClick={() => setVisible(!visible)}>{visible ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}</Button></div> : input}
     {hint && <small id={`${id}-hint`} className={styles.muted}>{hint}</small>}
-    {error && <small id={`${id}-error`} className={styles.error}>{error}</small>}
+    {error && <small id={`${id}-error`} className={styles.error}>{error.replace(/[—–]/g, "-")}</small>}
   </div>;
 }
 
 export function Feedback({ error, message }: { error: boolean; message: string }) {
-  return <p role={error ? "alert" : "status"} aria-live={error ? "assertive" : "polite"} aria-atomic="true" className={`${styles.feedback} ${error ? styles.error : ""}`}>{message}</p>;
+  return <p role={error ? "alert" : "status"} aria-live={error ? "assertive" : "polite"} aria-atomic="true" className={`${styles.feedback} ${error ? styles.error : ""}`}>{message.replace(/[—–]/g, "-")}</p>;
 }
 
 export function DemoNotice() {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { ChevronDown, Minus, PackageOpen, Plus, X } from "lucide-react";
+import { Minus, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { V3Picture } from "@/components/media/V3Picture";
@@ -9,6 +9,7 @@ import { v3Image } from "@/lib/media/v3-assets";
 import { QUOTE_QUANTITY_MAX, validateQuoteQuantity } from "@/lib/site/quote-lines";
 import type { ProductVariant } from "@/types/catalog";
 import styles from "./quote-product-picker.module.css";
+import { QuoteProductTrigger, quoteSelectionSummary } from "@/components/storefront/quote/QuoteProductTrigger";
 
 export interface QuoteProductPickerProps {
   products: readonly ProductVariant[];
@@ -18,6 +19,7 @@ export interface QuoteProductPickerProps {
   errorId?: string;
   disabled?: boolean;
   id?: string;
+  initialOpen?: boolean;
 }
 
 /** 21st Quantity (20055 / youcefbnm) and Interactive Checkout (109 / kokonutd)
@@ -25,17 +27,12 @@ export interface QuoteProductPickerProps {
  * Retrieved sources: docs/referans/quote-picker-171-source.json.
  * Raw edits belong to the parent; these are package counts for a quote,
  * independent of commerce stock, prices, cart state or payment. */
-export function QuoteProductPicker({ products, quantities, onChange, invalid = false, errorId, disabled = false, id }: QuoteProductPickerProps) {
+export function QuoteProductPicker({ products, quantities, onChange, invalid = false, errorId, disabled = false, id, initialOpen = false }: QuoteProductPickerProps) {
   const instance = useId();
   const trigger = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
-  const [open, setOpen] = useState(false);
-  const selected = products.filter(product => Object.hasOwn(quantities, product.id));
-  const hasInvalid = selected.some(product => validateQuoteQuantity(quantities[product.id]) === null);
-  const total = selected.reduce((sum, product) => sum + (validateQuoteQuantity(quantities[product.id]) ?? 0), 0);
-  const summary = selected.length
-    ? `${selected.length} ürün · ${hasInvalid ? "Adetleri kontrol edin" : `${total.toLocaleString("tr-TR")} adet`}`
-    : "Ürünleri seçin";
+  const [open, setOpen] = useState(initialOpen && !disabled);
+  const { selected, hasInvalid, summary } = quoteSelectionSummary({ products, quantities });
 
   // Task174 / 21st Drawer 31360: mobile bottom panel, stationary controls and
   // an independently scrolling list. Keep Radix focus/escape/scroll locking.
@@ -89,14 +86,8 @@ export function QuoteProductPicker({ products, quantities, onChange, invalid = f
 
   return <Dialog open={open} onOpenChange={next => { if (!disabled || !next) setOpen(next); }}>
     <DialogTrigger asChild>
-      <Button ref={trigger} id={id} type="button" name="productId" variant="outline" disabled={disabled}
-        aria-label="İlgilendiğiniz ürünler" aria-description={summary}
-        aria-invalid={invalid || hasInvalid || undefined} aria-describedby={errorId} className={styles.trigger}>
-        {selected.length ? <span className={styles.thumbnails} aria-hidden="true">
-          {selected.slice(0, 3).map(product => <V3Picture key={product.id} image={v3Image(product.imageKey)} sizes="32px" decorative />)}
-        </span> : <PackageOpen size={18} aria-hidden="true" />}
-        <span className={styles.triggerText}>{summary}</span><ChevronDown size={18} aria-hidden="true" />
-      </Button>
+      <QuoteProductTrigger ref={trigger} id={id} products={products} quantities={quantities}
+        disabled={disabled} invalid={invalid} errorId={errorId} />
     </DialogTrigger>
     <DialogContent ref={panel} className={styles.panel} showCloseButton={false} data-quote-picker=""
       onCloseAutoFocus={event => { if (trigger.current && !trigger.current.disabled) { event.preventDefault(); trigger.current.focus(); } }}>
@@ -135,13 +126,13 @@ export function QuoteProductPicker({ products, quantities, onChange, invalid = f
                     disabled={disabled || !chosen || count === null || count <= 1} onClick={() => step(product.id, -1)}><Minus aria-hidden="true" /></Button>
                   <input type="text" inputMode="numeric" pattern="[0-9]*" maxLength={5} value={raw}
                     aria-label={`Adet · ${productLabel}`} aria-invalid={bad || undefined} aria-describedby={bad ? quantityError : undefined}
-                    disabled={disabled || !chosen} placeholder="—" autoComplete="off"
+                    disabled={disabled || !chosen} placeholder="Adet" autoComplete="off"
                     onChange={event => update(product.id, event.currentTarget.value)} />
                   <Button variant="ghost" size="icon" aria-label={`Adedi artır · ${productLabel}`}
                     disabled={disabled || !chosen || count === null || count >= QUOTE_QUANTITY_MAX} onClick={() => step(product.id, 1)}><Plus aria-hidden="true" /></Button>
                 </div>
               </div>
-              {bad && <p id={quantityError} className={styles.error}>1–{QUOTE_QUANTITY_MAX.toLocaleString("tr-TR")} arasında tam bir adet girin.</p>}
+              {bad && <p id={quantityError} className={styles.error}>1-{QUOTE_QUANTITY_MAX.toLocaleString("tr-TR")} arasında tam bir adet girin.</p>}
             </li>;
           })}
         </ul> : <p className={styles.empty} role="status">Şu anda seçilebilecek ürün bulunmuyor.</p>}

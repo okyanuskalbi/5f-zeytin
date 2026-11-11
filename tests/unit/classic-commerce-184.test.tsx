@@ -1,13 +1,12 @@
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { useRef } from "react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
-import { QuoteQuerySelection } from "@/components/landing/QuoteQuerySelection";
-import { ProductCard } from "@/components/catalog/ProductCard";
-import { ProductPage } from "@/components/catalog/ProductPage";
+import { QuoteQuerySelection } from "@/components/storefront/quote/QuoteQuerySelection";
+import { ProductTile as ProductCard } from "@/components/storefront/ProductTile";
+import { ProductDetail as ProductPage } from "@/components/storefront/ProductDetail";
 import { productHref } from "@/lib/catalog/product-pages";
-import { v3Image } from "@/lib/media/v3-assets";
-import { ProductGroups } from "@/components/landing/ProductGroups";
-import { QuoteJourneyProvider, useQuoteJourney } from "@/components/landing/QuoteJourneyProvider";
+import { CategoryNavigation } from "@/components/storefront/catalog/CategoryNavigation";
+import { QuoteJourneyProvider, useQuoteJourney } from "@/components/storefront/quote/QuoteJourneyProvider";
 import { CartProvider, useCart } from "@/components/cart/CartProvider";
 import { getProductFamilies } from "@/lib/catalog/static-products";
 
@@ -32,7 +31,7 @@ async function mount(familyId?: string) {
   const products = families.flatMap(family => family.variants);
   const family = families.find(item => item.id === familyId);
   render(<CartProvider products={products}><QuoteJourneyProvider>
-    {family ? <ProductPage family={family} related={[]} /> : <><ProductGroups />{products.map(product => <ProductCard key={product.id} product={product} image={v3Image(product.imageKey)} staticPresentation />)}</>}
+    {family ? <ProductPage family={family} related={[]} /> : <><CategoryNavigation />{products.map(product => <ProductCard key={product.id} product={product} />)}</>}
     <QuoteQuerySelection products={products} /><CurrentChoices /><section id="toptan" tabIndex={-1}><label>Firma adı<input name="firma" /></label></section>
   </QuoteJourneyProvider></CartProvider>);
   return products;
@@ -68,7 +67,7 @@ it("adds the chosen family's real product to the existing cart from its page", a
 
 it("hands the actual family product to the dedicated wholesale quote URL without a dialog", async () => {
   await mount("salamura-yesil");
-  const quote = screen.getByRole("link", { name: "Toptan teklif al" });
+  const quote = screen.getByRole("link", { name: "Teklife ekle" });
   expect(quote.getAttribute("href")).toBe("/toptan-satis?teklif=sample-brined-green-olive-5kg");
   expect(screen.queryByRole("dialog")).toBeNull();
   expect(document.body.hasAttribute("data-scroll-locked")).toBe(false);
@@ -82,7 +81,7 @@ it("hands off a catalogue quote URL without opening nested dialogs", async () =>
   expect(JSON.parse(screen.getByLabelText("Seçilen teklif ürünleri").textContent!)).toEqual({ "sample-olive-oil-1l": "1" });
   expect(location.hash).toBe("#toptan");
   expect(new URL(location.href).searchParams.has("teklif")).toBe(false);
-  expect(screen.getByRole("link", { name: "Tüm ürünleri gör" }).getAttribute("href")).toBe("/urunler");
+  expect(screen.getByRole("link", { name: "Tüm ürünler" }).getAttribute("href")).toBe("/urunler");
   await waitFor(() => expect(document.activeElement).toBe(screen.getByRole("textbox", { name: "Firma adı" })));
 });
 
@@ -92,6 +91,8 @@ it("quotes the newly selected page size and preserves unrelated query parameters
   fireEvent.click(screen.getByRole("radio", { name: "5 L" }));
   expect(new URL(location.href).searchParams.get("boy")).toBe("5 L");
   expect(new URL(location.href).searchParams.get("kaynak")).toBe("klasik");
-  expect(screen.getByRole("link", { name: "Toptan teklif al" }).getAttribute("href")).toBe("/toptan-satis?teklif=sample-olive-oil-5l");
+  expect(screen.getByRole("link", { name: "Teklife ekle" }).getAttribute("href")).toBe("/toptan-satis?teklif=sample-olive-oil-5l");
   expect(screen.queryByRole("dialog")).toBeNull();
 });
+
+vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }), usePathname: () => "/urunler" }));
