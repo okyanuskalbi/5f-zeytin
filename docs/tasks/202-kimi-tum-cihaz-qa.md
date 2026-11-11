@@ -6,7 +6,12 @@
 QA (Kimi)
 
 ## Bağımlılık
-201 TAMAMLANDI.
+201 TAMAMLANDI (`f389ad0`). Temel: main, A tasarımı (198/198-2/198-3) + 199 + 200 + 201.
+
+## Ortam (Claude, 11 Kasım)
+- Ortamda `TEST_DATABASE_URL` var (yerel Postgres `afina_kontrol189`). Sunucuyu Codex'in kullandığı güvenli yoldan başlat: `output/task201/run-clean.mjs` (yalnız localhost afina_kontrol189'a izin verir, `--local-auth` ile geçici oturum sırrı üretir, `no-env.cjs` ile `.env*` okumayı engeller). Kopyasını `AFINA-KAYNAK/araclar/202/` altına al, `BETTER_AUTH_URL` portunu kendi portuna göre değiştir.
+- Girişli sayfalar için yerel test hesabını yalnız bu DB'de oluştur; yönetici gerekiyorsa `npm run admin:grant` yalnız bu DB'de. İş bitince geçici hesap/sipariş/adresleri temizle, açtığın sunucuları kapat.
+- Bilinen açık iş (bulgu sayma, "bilinen" diye listele): yönetim paneli özet kartları "Veri yok" (özet yükleyicisi bağlı değil, 201 Coder Notu).
 
 ## Hedef
 Yerel production sunucusu (`npm run build` + `next start -p 3004`, yerel test DB'si `afina_kontrol189`; ortamı Claude verir). Girişli sayfalar için `next dev -p 3005` + `BETTER_AUTH_URL=http://localhost:3005` (yalnız yerel test hesabı).
