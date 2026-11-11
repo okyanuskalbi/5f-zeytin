@@ -6,7 +6,12 @@
 frontend
 
 ## Bağımlılık
-199 bitmiş olmalı.
+199 TAMAMLANDI (`607d5ec`).
+
+## Notlar (Claude, 11 Kasım)
+- 199 sırasında `tests/e2e/admin-shell*` dosyasının 6 telefon beklentisi geçmedi (`docs/tasks/199-onyuz-tum-sayfalar.md` Coder Notu). Önce 199 öncesi kayıtta (`77406e5`) aynı testi çalıştırıp eski mi yeni mi olduğunu belirle; bu görevde yeşile çevir.
+- Yerel test DB: çalıştıran `TEST_DATABASE_URL` verir (yerel Postgres `afina_kontrol189`). Yerel admin hesabını yalnız bu DB'de `npm run admin:grant` ile aç; canlı Neon'a bağlanma.
+- Yeni yönetim görünümü 199'daki ön yüz tokenlarını ve `docs/DESIGN.md` köşe tablosunu kullanır; §14.1 kalite listesi panel için de PASS/FAIL (`output/task200/KANIT.md`).
 
 ## Amaç
 `/admin` ve `/admin/urunler` görünümünü yenilemek. Referans: `~/Desktop/WB AI PROJELER ICIN/Admin paneli .JPG` (açık zemin, solda gruplu ikonlu menü, üstte arama, sade özet kartları, düzgün tablo). Referansın marka/metinlerini alma; AFİNA tokenları (`docs/DESIGN.md`) ile uyarla.
