@@ -6,7 +6,10 @@
 frontend
 
 ## Bağımlılık
-198 bitmiş ve kullanıcı A/B içinden birini seçmiş olmalı. Seçilen kayıt main'e alınır; bu görev o temelin üstünde çalışır.
+K1 = **A (Codex)** seçildi (11 Kasım). Temel: main'deki 198 + 198-2 + 198-3 (`3ad7d0f`); dil ve köşe tablosu `docs/DESIGN.md`. Kimi B kopyası (`AFINA-KAYNAK/wt/198-kimi`) kullanılmaz.
+
+## Yerel test veritabanı
+Çalıştıran tarafından `TEST_DATABASE_URL` verilir (yerel Postgres `afina_kontrol189`). Giriş/kayıt/hesabım akışları ve oturumlu ekran görüntüleri bununla; canlı Neon'a bağlanma, `.env*` okuma/yazma yok.
 
 ## Amaç
 198'deki yeni `docs/DESIGN.md` dilini sitenin kalan bütün ön yüzüne yaymak ve artık kullanılmayan eski ön yüz kodunu silmek.
