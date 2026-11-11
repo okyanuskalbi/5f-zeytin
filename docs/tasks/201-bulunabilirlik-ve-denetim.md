@@ -6,7 +6,12 @@
 frontend + denetim
 
 ## Bağımlılık
-199 ve 200 TAMAMLANDI.
+199 (`607d5ec`) ve 200 (`6a30830`) TAMAMLANDI.
+
+## Claude denetim notları (11 Kasım)
+1. **Uzun tire kökten:** 199'da form/hesap/bayilik metinlerindeki `—`/`–` ekranda `.replace(/[—–]/g, "-")` ile gizlendi (`components/account/SignIn.tsx:96`, `Register.tsx:85`, `FormControls.tsx:41,46`, `components/dealership/DealershipFormClient.tsx:51,105,119`, `components/ui/customer-phone-field.tsx:39`). Bu geçici çözüm kaldırılsın; metinler kaynağında (lib/*, app/api/* hata mesajları dahil, ziyaretçiye dönen her metin) kısa çizgi/virgül olsun. Yalnız metin değişir, doğrulama mantığı değişmez. Kanıt: `rg -n "—|–" app components lib --glob '!**/*.test.*'` → yalnız kod yorumu/admin boş hücre gibi ziyaretçiye görünmeyenler; liste KANIT.md'de.
+2. **Yönetim paneli özet kartları** yerelde "Veri yok" gösteriyor (`output/task200/panel-1440.png`); ürünler varken "Aktif ürün" kartı neden veri yok, kontrol et. Mantık değişikliği gerekiyorsa yapma, Coder Notu'na yaz.
+3. Yerel test DB: `TEST_DATABASE_URL` (yerel Postgres `afina_kontrol189`).
 
 ## Amaç
 Yeni ön yüzü arama motorları ve yapay zekâ cevap sistemleri için okunur hale getirmek; ardından tasarım, erişilebilirlik ve güvenlik denetimini yapıp bulguları kapatmak.
