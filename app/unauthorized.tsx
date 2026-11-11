@@ -3,8 +3,9 @@ import type { JSX } from "react";
 import { EmptyState } from "@/components/site/EmptyState";
 
 export const metadata: Metadata = {
-  title: "Giriş gerekli | Afina Zeytin",
-  robots: { index: false, follow: false },
+  title: "Giriş gerekli | Afina Zeytin", description: "Bu sayfayı görüntülemek için yetkili hesabınızla giriş yapın.", robots: { index: false, follow: false },
+  openGraph: { title: "Giriş gerekli | Afina Zeytin", description: "Bu sayfayı görüntülemek için yetkili hesabınızla giriş yapın.", type: "website", images: ["/brand/og-zeytinyagi.webp"] },
+  twitter: { card: "summary_large_image", title: "Giriş gerekli | Afina Zeytin", description: "Bu sayfayı görüntülemek için yetkili hesabınızla giriş yapın.", images: ["/brand/og-zeytinyagi.webp"] },
 };
 
 export default function Unauthorized(): JSX.Element {

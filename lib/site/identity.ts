@@ -4,7 +4,7 @@ export const siteIdentity = {
   origin: "https://afinazeytin.com",
   title: "Afina Zeytin | Düziçi'nden Zeytin ve Zeytinyağı",
   description: "Afina Zeytin, Osmaniye’deki fabrikasıyla zeytin, salamura zeytin ve zeytinyağını toptan ve perakende müşterileriyle buluşturuyor.",
-  contentUpdated: "2026-11-01",
+  contentUpdated: "2026-11-11",
   communityUrl: "https://afina.com.tr",
   facility: { locality: "Düziçi", region: "Osmaniye", country: "TR" },
 } as const;

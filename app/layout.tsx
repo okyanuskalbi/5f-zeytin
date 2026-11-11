@@ -53,6 +53,8 @@ export const metadata: Metadata = {
     images: ["/brand/og-zeytinyagi.webp"],
   },
   openGraph: {
+    title: siteIdentity.title,
+    description: siteIdentity.description,
     url: "/",
     type: "website",
     locale: "tr_TR",

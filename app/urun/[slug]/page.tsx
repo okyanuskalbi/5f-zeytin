@@ -1,3 +1,4 @@
+import { completeMetadata } from "@/lib/site/metadata";
 import type { Metadata } from "next";
 import type { JSX } from "react";
 import { notFound } from "next/navigation";
@@ -30,7 +31,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   const title = `${family.name}, ${selected.weight} | AFİNA ZEYTİN`;
   const description = `${selected.weight}. ${getProductDetails(selected)?.description ?? `${family.name} ürün bilgilerini inceleyin.`}`;
   const url = `/urun/${slug}?boy=${encodeURIComponent(selected.weight)}`;
-  return { title, description, alternates: { canonical: url }, robots: { index: false, follow: true }, openGraph: { title, description, url, type: "website", locale: "tr_TR", siteName: siteIdentity.name } };
+  return completeMetadata({ title, description, alternates: { canonical: url }, robots: { index: false, follow: true }, openGraph: { title, description, url, type: "website", locale: "tr_TR", siteName: siteIdentity.name } });
 }
 
 export default async function Page({ params, searchParams }: Props): Promise<JSX.Element> {

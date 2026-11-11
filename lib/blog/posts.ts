@@ -9,6 +9,7 @@ export type BlogPost = Readonly<{
   excerpt: string;
   imageKey: "siyah-zeytin" | "kirma-zeytin" | "zeytinyagi" | "zeytin-dali";
   date: string;
+  updated: string;
   readingMinutes: number;
   category: "zeytin" | "kirma-zeytin" | "zeytinyagi";
   categoryHref: string;
@@ -21,7 +22,7 @@ export const blogPosts: readonly BlogPost[] = [
     slug: "salamura-zeytin-nasil-hazirlanir",
     title: "Salamura Zeytin Nasıl Hazırlanır?",
     excerpt: "Zeytinin dalından sofraya uzanan geleneksel salamura yolculuğunu tanıyın.",
-    imageKey: "siyah-zeytin", date: "2026-11-10", readingMinutes: 4, category: "zeytin", categoryHref: "/urunler/zeytin",
+    imageKey: "siyah-zeytin", date: "2026-11-10", updated: "2026-11-11", readingMinutes: 4, category: "zeytin", categoryHref: "/urunler/zeytin",
     sections: [
       {
         heading: "Dalından sofraya uzanan hazırlık",
@@ -67,7 +68,7 @@ export const blogPosts: readonly BlogPost[] = [
     slug: "kirma-zeytin-nedir-nasil-saklanir",
     title: "Kırma Zeytin Nedir, Nasıl Saklanır?",
     excerpt: "Kırma zeytinin hazırlanışına ve sofranızdaki lezzetini korumaya dair sade bilgiler.",
-    imageKey: "kirma-zeytin", date: "2026-11-10", readingMinutes: 4, category: "kirma-zeytin", categoryHref: "/urunler/kirma-zeytin",
+    imageKey: "kirma-zeytin", date: "2026-11-10", updated: "2026-11-11", readingMinutes: 4, category: "kirma-zeytin", categoryHref: "/urunler/kirma-zeytin",
     sections: [
       {
         heading: "Kırma adının anlattığı işlem",
@@ -113,7 +114,7 @@ export const blogPosts: readonly BlogPost[] = [
     slug: "naturel-sizma-zeytinyagi-nasil-saklanmali",
     title: "Natürel Sızma Zeytinyağı Nasıl Saklanmalı?",
     excerpt: "Işık, ısı ve havayla teması azaltarak zeytinyağını uygun koşullarda saklamak.",
-    imageKey: "zeytinyagi", date: "2026-11-10", readingMinutes: 4, category: "zeytinyagi", categoryHref: "/urunler/zeytinyagi",
+    imageKey: "zeytinyagi", date: "2026-11-10", updated: "2026-11-11", readingMinutes: 4, category: "zeytinyagi", categoryHref: "/urunler/zeytinyagi",
     sections: [
       {
         heading: "Önce etiketi ve mutfağınızı tanıyın",
@@ -159,7 +160,7 @@ export const blogPosts: readonly BlogPost[] = [
     slug: "sofralik-zeytin-secerken-nelere-dikkat-edilmeli",
     title: "Sofralık Zeytin Seçerken Nelere Dikkat Edilmeli?",
     excerpt: "Çeşit, ambalaj ve kullanım alışkanlıklarını birlikte değerlendiren bir seçim rehberi.",
-    imageKey: "zeytin-dali", date: "2026-11-10", readingMinutes: 4, category: "zeytin", categoryHref: "/urunler/zeytin",
+    imageKey: "zeytin-dali", date: "2026-11-10", updated: "2026-11-11", readingMinutes: 4, category: "zeytin", categoryHref: "/urunler/zeytin",
     sections: [
       {
         heading: "Seçime sofradaki alışkanlığınızdan başlayın",

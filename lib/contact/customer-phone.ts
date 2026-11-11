@@ -87,4 +87,4 @@ export const phoneCopy={
  en:{label:'Phone',country:'Phone country code',invalid:'Enter a valid phone number for the selected country.',digits:'digits',or:'or'},
  ru:{label:'Телефон',country:'Телефонный код страны',invalid:'Введите действительный номер для выбранной страны.',digits:'цифр',or:'или'}
 };
-export function phoneLengthHint(country:CountryCode,lang:Lang){const values=phoneLengths(country),text=values.length>3&&values.every((v,i)=>i===0||v===values[i-1]+1)?values[0]+'–'+values.at(-1):values.join(' '+phoneCopy[lang].or+' ');return text+' '+phoneCopy[lang].digits}
+export function phoneLengthHint(country:CountryCode,lang:Lang){const values=phoneLengths(country),text=values.length>3&&values.every((v,i)=>i===0||v===values[i-1]+1)?values[0]+'-'+values.at(-1):values.join(' '+phoneCopy[lang].or+' ');return text+' '+phoneCopy[lang].digits}

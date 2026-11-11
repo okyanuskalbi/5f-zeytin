@@ -1,3 +1,4 @@
+import { completeMetadata } from "@/lib/site/metadata";
 import type { Metadata } from "next";
 import type { JSX } from "react";
 import Link from "next/link";
@@ -10,11 +11,11 @@ export const dynamic = "force-static";
 export const revalidate = 300;
 const title = "Zeytin Defteri | AFİNA ZEYTİN";
 const description = "Zeytin çeşitleri, geleneksel salamura ve zeytinyağını saklama üzerine sade bilgiler. AFİNA ZEYTİN defterindeki yazıları okuyun.";
-export const metadata: Metadata = {
+export const metadata: Metadata = completeMetadata({
   title, description, alternates: { canonical: "/blog" }, robots: { index: true, follow: true },
   openGraph: { title, description, url: "/blog", type: "website", locale: "tr_TR", siteName: siteIdentity.name },
   twitter: { card: "summary_large_image", title, description },
-};
+});
 const breadcrumb = {
   "@context": "https://schema.org", "@type": "BreadcrumbList",
   itemListElement: [{ "@type": "ListItem", position: 1, name: "Ana Sayfa", item: `${siteIdentity.origin}/` }, { "@type": "ListItem", position: 2, name: "Blog", item: `${siteIdentity.origin}/blog` }],

@@ -1,3 +1,4 @@
+import { completeMetadata } from "@/lib/site/metadata";
 import type { Metadata } from "next";
 import type { JSX } from "react";
 import Link from "next/link";
@@ -24,12 +25,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post) notFound();
   const title = `${post.title} | AFİNA ZEYTİN`;
   const url = `/blog/${post.slug}`;
-  const image = photos.assets[post.imageKey].outputs[0].file;
-  return {
+  const outputs = photos.assets[post.imageKey].outputs;
+  const shareImage = outputs.findLast(output => output.file.endsWith(".webp")) ?? outputs[0];
+  const image = shareImage.file;
+  return completeMetadata({
     title, description: post.excerpt, alternates: { canonical: url }, robots: { index: true, follow: true },
-    openGraph: { title, description: post.excerpt, url, type: "article", locale: "tr_TR", siteName: siteIdentity.name, publishedTime: post.date, authors: [siteIdentity.origin], images: [{ url: image, alt: post.title }] },
+    openGraph: { title, description: post.excerpt, url, type: "article", locale: "tr_TR", siteName: siteIdentity.name, publishedTime: post.date, modifiedTime: post.updated, authors: [siteIdentity.origin], images: [{ url: image, width: shareImage.width, height: shareImage.height, alt: post.title }] },
     twitter: { card: "summary_large_image", title, description: post.excerpt, images: [image] },
-  };
+  });
 }
 
 export default async function Page({ params }: Props): Promise<JSX.Element> {
@@ -41,12 +44,17 @@ export default async function Page({ params }: Props): Promise<JSX.Element> {
   const category = getProductGroup(post.category);
   const canonical = `${siteIdentity.origin}/blog/${post.slug}`;
   const image = photos.assets[post.imageKey];
+  const shareImage = image.outputs.findLast(output => output.file.endsWith(".webp")) ?? image.outputs[0];
   const article = {
     "@context": "https://schema.org", "@type": "BlogPosting", "@id": `${canonical}#article`,
-    headline: post.title, description: post.excerpt, datePublished: post.date, dateModified: post.date,
+    headline: post.title, description: post.excerpt, datePublished: post.date, dateModified: post.updated,
     author: { "@type": "Organization", name: "AFİNA ZEYTİN", url: siteIdentity.origin },
     publisher: { "@type": "Organization", name: "AFİNA ZEYTİN", url: siteIdentity.origin },
-    image: `${siteIdentity.origin}${image.outputs[0].file}`, mainEntityOfPage: canonical, inLanguage: "tr-TR",
+    image: `${siteIdentity.origin}${shareImage.file}`, mainEntityOfPage: canonical, inLanguage: "tr-TR",
+  };
+  const faq = {
+    "@context": "https://schema.org", "@type": "FAQPage", "@id": `${canonical}#article-faq-title`,
+    mainEntity: editorial.faq.map(item => ({ "@type": "Question", name: item.question, acceptedAnswer: { "@type": "Answer", text: item.answer } })),
   };
   const breadcrumb = {
     "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
@@ -56,14 +64,14 @@ export default async function Page({ params }: Props): Promise<JSX.Element> {
     ],
   };
   return <main className={styles.root}><div className={styles.container}>
-    {[article, breadcrumb].map(schema => <script key={schema["@type"]} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />)}
+    {[article, breadcrumb, faq].map(schema => <script key={schema["@type"]} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />)}
     <nav aria-label="İçerik yolu" className={styles.breadcrumb}><ol><li><Link href="/">Ana Sayfa</Link></li><li><span aria-hidden="true">/</span><Link href="/blog">Blog</Link></li><li><span aria-hidden="true">/</span><span aria-current="page">{post.title}</span></li></ol></nav>
     <article className={styles.article}>
-      <header className={styles.articleHeader}><h1>{post.title}</h1><div className={styles.articleMeta}><span>Güncelleme: <time dateTime={post.date}>{formatBlogDate(post.date)}</time></span><span data-article-author>AFİNA ZEYTİN</span><span>{post.readingMinutes} dakika okuma</span></div><p className={styles.excerpt} data-article-answer>{editorial.answer}</p></header>
+      <header className={styles.articleHeader}><h1>{post.title}</h1><div className={styles.articleMeta}><span>Güncelleme: <time dateTime={post.updated}>{formatBlogDate(post.updated)}</time></span><span data-article-author>AFİNA ZEYTİN</span><span>{post.readingMinutes} dakika okuma</span></div><p className={styles.excerpt} data-article-answer>{editorial.answer}</p></header>
       <V3Picture image={image} sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1023px) 90vw, 960px" eager className={styles.cover} />
-      <div className={styles.prose} data-blog-content>{post.sections.map((section, index) => <section key={section.heading}><h2>{editorial.headings[index]}</h2>{section.paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}{section.items && <ul>{section.items.map(item => <li key={item}>{item}</li>)}</ul>}</section>)}<p className={styles.categoryLink}><Link href={post.categoryHref}>{category?.name ?? "İlgili kategori"} ürünlerini inceleyin</Link></p><section data-article-faq className={styles.faq} aria-labelledby="article-faq-title"><h2 id="article-faq-title">Bu konuda sık sorulan sorular neler?</h2>{editorial.faq.map(item => <details key={item.question}><summary>{item.question}</summary><p>{item.answer}</p></details>)}</section></div>
+      <div className={styles.prose} data-blog-content>{post.sections.map((section, index) => <section key={section.heading}><h2>{editorial.headings[index]}</h2>{section.paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}{section.items && <ol>{section.items.map(item => <li key={item}>{item}</li>)}</ol>}</section>)}<p className={styles.categoryLink}><Link href={post.categoryHref}>{category?.name ?? "İlgili kategori"} ürünlerini inceleyin</Link></p><section data-article-faq className={styles.faq} aria-labelledby="article-faq-title"><h2 id="article-faq-title">Bu konuda sık sorulan sorular neler?</h2>{editorial.faq.map(item => <details key={item.question}><summary>{item.question}</summary><p>{item.answer}</p></details>)}</section></div>
     </article>
-    <section aria-labelledby="related-products-title" className={styles.related}><h2 id="related-products-title">İlgili Ürünler</h2><div className={styles.productGrid}>{related.map(product => <ProductTile key={product.id} product={product} />)}</div></section>
-    <section aria-labelledby="other-articles-title" className={styles.related}><h2 id="other-articles-title">Diğer Yazılar</h2><div className={`${styles.cardGrid} ${styles.otherGrid}`}>{blogPosts.filter(other => other.slug !== post.slug).map(other => <BlogCard key={other.slug} post={other} headingLevel={3} other />)}</div></section>
+    <section aria-labelledby="related-products-title" className={styles.related}><h2 id="related-products-title">Hangi ürünler bu yazıyla ilgili?</h2><div className={styles.productGrid}>{related.map(product => <ProductTile key={product.id} product={product} />)}</div></section>
+    <section aria-labelledby="other-articles-title" className={styles.related}><h2 id="other-articles-title">Başka hangi yazıları okuyabilirsiniz?</h2><div className={`${styles.cardGrid} ${styles.otherGrid}`}>{blogPosts.filter(other => other.slug !== post.slug).map(other => <BlogCard key={other.slug} post={other} headingLevel={3} other />)}</div></section>
   </div></main>;
 }

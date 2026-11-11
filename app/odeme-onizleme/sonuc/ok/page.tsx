@@ -1,8 +1,10 @@
+import { completeMetadata } from "@/lib/site/metadata";
 import type { Metadata } from "next";
 import { EmptyState } from "@/components/site/EmptyState";
 import { requirePaymentPreview } from "@/lib/payments/preview";
 
-export const metadata: Metadata = { title: "Önizleme yönlendirmesi | Afina Zeytin", robots: { index: false, follow: false } };
+export const metadata: Metadata = completeMetadata({
+  description: "Yerel ödeme denemesinin başarılı dönüşünü inceleyin.", title: "Önizleme yönlendirmesi | Afina Zeytin", alternates: { canonical: "/odeme-onizleme/sonuc/ok" }, robots: { index: false, follow: false } });
 
 export default function PreviewOkPage() {
   requirePaymentPreview();

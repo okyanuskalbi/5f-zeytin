@@ -35,7 +35,7 @@ it("includes an ordered home to dealership BreadcrumbList without commercial pro
 
 it("adds the public dealership URL to the sitemap and AI discovery text", async () => {
   expect(sitemap().filter(entry => entry.url === "https://afinazeytin.com/bayilik")).toEqual([
-    { url: "https://afinazeytin.com/bayilik", lastModified: "2026-11-09", changeFrequency: "monthly", priority: 0.7 },
+    { url: "https://afinazeytin.com/bayilik", lastModified: "2026-11-11", changeFrequency: "monthly", priority: 0.7 },
   ]);
   const text = await (await GET()).text();
   expect(text).toContain("[Bayilik](https://afinazeytin.com/bayilik)");

@@ -1,3 +1,26 @@
+## Task201 / bulunabilirlik ve denetim (11 Kasım 2026)
+
+A0: başlangıç `1c53b64`, temiz main; Motion14.4.0, Next16.4.2,
+21st arama5675 erişimi ve güncel UIPro `--variance` desteği doğrulandı.
+Mevcut A tasarımı/Fraunces-Figtree/`--sf-*` korunur; yeni görsel bileşen,
+bağımlılık veya hareket eklenmez. SEO/AI-SEO/AEO rehberi ve tasarım,
+erişilebilirlik, kaynak temelli quick güvenlik denetimi uygulanır.
+Next yerel metadata/JSON-LD kılavuzu ve AEO rehberi§5/6/7/10 okundu.
+Yalnız ortamdan gelen localhost `TEST_DATABASE_URL` kullanılır; bütün
+Node kontrollerinde `.env*` okumayı engelleyen koruma vardır.
+Kapsam ve kabul kanıtları `docs/tasks/201-bulunabilirlik-ve-denetim.md`
+ve git dışında `output/task201/{DENETIM,KANIT}.md` içindedir.
+Push/yayın/canlı DB/harici kayıt yok; `node_modules` ve `.next` korunur.
+
+Task201 yerel kabul tamamlandı:149dosya/1306test,lint,typecheck,Turbopack
+build,diff-check PASS;152sayfa/profil ve son blog25profil PASS,axe0.
+Yerel şema komutu29HTML PASS; Product/Offer yok,noindex korunur.
+Quick güvenlik kaynak incelemesi confirmed0,needs_validation0; sınırlı
+kapsam ve1deferredyol raporda. Panel "Veri yok" nedeni overview yükleyicisinin
+bağlanmaması; mantık değişikliği gerektirdiğinden ayrı iş olarak bekleniyor.
+Test hesabı/verileri temizlendi,sunucular kapandı. A7tüm cihaz/hız kabulü
+ve yayın yapılmadı; Task202ayrı talimatla başlar.
+
 ## Task200 / yönetim görünümü yerel kabul (11 Kasım2026)
 
 Panel ve ürün yönetimi seçilen A tasarımına uyarlandı. İki çalışan menü

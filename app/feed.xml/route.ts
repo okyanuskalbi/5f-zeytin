@@ -8,7 +8,7 @@ const xml = (value: string) => value.replace(/[<>&"']/g, char => ({ "<": "&lt;",
 export function GET(): Response {
   const origin = siteIdentity.origin;
   const homeUpdated = `${siteIdentity.contentUpdated}T00:00:00Z`;
-  const updated = `${[siteIdentity.contentUpdated, ...blogPosts.map(post => post.date)].sort().at(-1)}T00:00:00Z`;
+  const updated = `${[siteIdentity.contentUpdated, ...blogPosts.map(post => post.updated)].sort().at(-1)}T00:00:00Z`;
   const body = `<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="tr">
   <id>${origin}/</id><title>${xml(siteIdentity.name)} içerik güncellemeleri</title>
@@ -23,7 +23,7 @@ export function GET(): Response {
   ${blogPosts.map(post => `<entry>
     <id>${origin}/blog/${xml(post.slug)}</id><title>${xml(post.title)}</title>
     <link href="${origin}/blog/${xml(post.slug)}"/>
-    <published>${post.date}T00:00:00Z</published><updated>${post.date}T00:00:00Z</updated>
+    <published>${post.date}T00:00:00Z</published><updated>${post.updated}T00:00:00Z</updated>
     <author><name>AFİNA ZEYTİN</name></author><summary>${xml(post.excerpt)}</summary>
   </entry>`).join("\n  ")}
 </feed>`;

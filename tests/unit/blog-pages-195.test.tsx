@@ -20,7 +20,7 @@ it("serves all four shared articles with dates and ordinary working links in an 
     expect(card.querySelector("h2")?.textContent).toBe(post.title);
     expect(card.querySelector("time")?.getAttribute("datetime")).toBe(post.date);
     expect(card.querySelector("img")?.getAttribute("src")).toContain("/images/klasik/");
-    expect(card.querySelector(`a[href="/blog/${post.slug}"]`)?.textContent).toContain("Devamını oku");
+    expect(card.querySelector(`a[href="/blog/${post.slug}"]`)?.textContent).toContain("Yazıyı oku");
   }
   expect(metadata.alternates).toEqual({ canonical: "/blog" });
   expect(metadata.robots).toEqual({ index: true, follow: true });
@@ -31,7 +31,7 @@ it.each(blogPosts.map(post => post.slug))("renders %s with its full editorial se
   const doc = parse(renderToStaticMarkup(await Article(params(slug))));
   expect(doc.querySelector("h1")?.textContent).toBe(post.title);
   expect(doc.querySelectorAll("h1")).toHaveLength(1);
-  expect(doc.querySelector("article > header time")?.getAttribute("datetime")).toBe(post.date);
+  expect(doc.querySelector("article > header time")?.getAttribute("datetime")).toBe(post.updated);
   expect(doc.body.textContent).toContain(`${post.readingMinutes} dakika okuma`);
   const body = doc.querySelector("[data-blog-content]")!;
   expect(body.querySelectorAll("h2").length).toBeGreaterThanOrEqual(3);

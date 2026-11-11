@@ -42,17 +42,17 @@ describe("SEO metadata routes", () => {
         url: "https://afinazeytin.com/",
         changeFrequency: "weekly",
         priority: 1,
-        lastModified: "2026-11-01",
+        lastModified: "2026-11-11",
       },
       {
         url: "https://afinazeytin.com/bayilik",
         changeFrequency: "monthly",
         priority: 0.7,
-        lastModified: "2026-11-09",
+        lastModified: "2026-11-11",
       },
       ...["hakkimizda", "toptan-satis"].map(path => ({ url: `https://afinazeytin.com/${path}`, changeFrequency: "monthly", priority: 0.7, lastModified: "2026-11-10" })),
-      { url: "https://afinazeytin.com/blog", changeFrequency: "monthly", priority: 0.6, lastModified: "2026-11-10" },
-      ...blogPosts.map(post => ({ url: `https://afinazeytin.com/blog/${post.slug}`, changeFrequency: "monthly", priority: 0.5, lastModified: "2026-11-10" })),
+      { url: "https://afinazeytin.com/blog", changeFrequency: "monthly", priority: 0.6, lastModified: "2026-11-11" },
+      ...blogPosts.map(post => ({ url: `https://afinazeytin.com/blog/${post.slug}`, changeFrequency: "monthly", priority: 0.5, lastModified: post.updated })),
     ]);
   });
 

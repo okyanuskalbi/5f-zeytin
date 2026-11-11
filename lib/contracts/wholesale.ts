@@ -20,7 +20,7 @@ export function validateWholesaleRequest(input: WholesaleRequest):
   };
   const errors: WholesaleErrors = {};
   if (data.name.length < 2 || data.name.length > wholesaleLimits.name) {
-    errors.name = "İsim / firma 2–120 karakter olmalıdır.";
+    errors.name = "İsim / firma 2-120 karakter olmalıdır.";
   }
   if (!data.email && !data.phone) {
     errors.email = "E-posta veya telefondan en az birini girin.";
@@ -31,10 +31,10 @@ export function validateWholesaleRequest(input: WholesaleRequest):
   }
   const digits = data.phone.replace(/\D/g, "");
   if (data.phone && (data.phone.length > wholesaleLimits.phone || !/^\+?[\d\s().-]+$/.test(data.phone) || digits.length < 7 || digits.length > 15)) {
-    errors.phone = "Geçerli bir telefon girin (7–15 rakam, en fazla 30 karakter).";
+    errors.phone = "Geçerli bir telefon girin (7-15 rakam, en fazla 30 karakter).";
   }
   if (data.message.length < 10 || data.message.length > wholesaleLimits.message) {
-    errors.message = "Talep mesajı 10–2000 karakter olmalıdır.";
+    errors.message = "Talep mesajı 10-2000 karakter olmalıdır.";
   }
   return Object.keys(errors).length ? { ok: false, errors } : { ok: true, data };
 }

@@ -28,7 +28,7 @@
 .prose section + section { margin-top:48px; }
 .prose h2 { margin:0 0 24px; font-size:clamp(1.75rem,3vw,2.5rem); font-weight:500; line-height:1.2; letter-spacing:-.02em; text-wrap:balance; }
 .prose p { margin:0 0 24px; text-wrap:pretty; }
-.prose ul { padding-left:24px; margin:0 0 24px; }
+.prose :is(ul, ol) { padding-left:24px; margin:0 0 24px; }
 .prose li + li { margin-top:16px; }
 .prose a { display:inline-flex; align-items:center; min-height:44px; min-width:44px; text-decoration:underline; text-underline-offset:5px; color:var(--sf-green); }
 .categoryLink { padding-top:16px; }

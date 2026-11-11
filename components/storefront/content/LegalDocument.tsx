@@ -1,3 +1,4 @@
+import { PageBreadcrumbJsonLd } from "@/components/site/PageBreadcrumbJsonLd";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import styles from "./Content.module.css";
@@ -12,6 +13,7 @@ export function LegalDocument({ title, path, scope, children }: {
   title: string; path: string; scope: string; children: ReactNode;
 }) {
   return <main className={styles.page}>
+    <PageBreadcrumbJsonLd name={title} path={path} />
     <article className={`${styles.paper} ${styles.legal}`}>
       <h1>{title}</h1>
       <nav className={styles.contents} aria-label="İçindekiler"><h2>İçindekiler</h2><ul><li><a href="#taslak-basligi">Metnin durumu</a></li><li><a href="#kapsam-basligi">Kapsam</a></li><li><a href="#seller-title">Satıcı bilgileri</a></li></ul></nav>

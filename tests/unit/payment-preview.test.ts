@@ -132,7 +132,7 @@ describe("token route, mocked upstream", () => {
     const { POST } = await import("../../app/api/odeme-onizleme/paytr-token/route");
     const response = await POST(request());
     expect(response.status).toBe(503);
-    expect(await response.json()).toEqual({ error: { code: "missing_keys", message: "Test anahtarı eksik — .env.local'e ekleyin" } });
+    expect(await response.json()).toEqual({ error: { code: "missing_keys", message: "Ödeme önizlemesi şu anda kullanılamıyor." } });
     expect(fetchMock).not.toHaveBeenCalled();
   });
 

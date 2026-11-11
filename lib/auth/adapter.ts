@@ -64,7 +64,7 @@ export function createMockAuthAdapter(storage: DemoStorage): AuthAdapter {
     },
     async signUp(input) {
       const fields = validateCredentials(input, true);
-      if (input.name.trim().length < 2 || input.name.trim().length > 100) fields.name = "Ad soyad 2–100 karakter olmalı.";
+      if (input.name.trim().length < 2 || input.name.trim().length > 100) fields.name = "Ad soyad 2-100 karakter olmalı.";
       if (input.privacy !== true) fields.privacy = "KVKK aydınlatma metnini okuduğunuzu onaylayın.";
       if (input.consent !== true) fields.consent = "Açık rıza onayı gereklidir.";
       if (Object.keys(fields).length) throw new MembershipError("Lütfen alanları kontrol edin.", fields);

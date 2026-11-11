@@ -1,8 +1,10 @@
+import { completeMetadata } from "@/lib/site/metadata";
 import type { Metadata } from "next";
 import { EmptyState } from "@/components/site/EmptyState";
 import { requirePaymentPreview } from "@/lib/payments/preview";
 
-export const metadata: Metadata = { title: "Önizleme hata yönlendirmesi | Afina Zeytin", robots: { index: false, follow: false } };
+export const metadata: Metadata = completeMetadata({
+  description: "Yerel ödeme denemesinin başarısız dönüşünü inceleyin.", title: "Önizleme hata yönlendirmesi | Afina Zeytin", alternates: { canonical: "/odeme-onizleme/sonuc/fail" }, robots: { index: false, follow: false } });
 
 export default function PreviewFailPage() {
   requirePaymentPreview();

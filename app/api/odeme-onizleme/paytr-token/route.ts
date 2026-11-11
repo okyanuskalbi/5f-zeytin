@@ -15,7 +15,7 @@ export async function POST(request: Request): Promise<Response> {
     return failure("invalid_origin", "İstek bu siteden gönderilmeli.", 403);
   }
   const credentials = getPaytrCredentials();
-  if (!credentials) return failure("missing_keys", "Test anahtarı eksik — .env.local'e ekleyin", 503);
+  if (!credentials) return failure("missing_keys", "Ödeme önizlemesi şu anda kullanılamıyor.", 503);
   const retryAfter = consumePreviewAttempt();
   if (retryAfter) return failure("rate_limited", "Çok fazla deneme. Bir dakika sonra yeniden deneyin.", 429, { "Retry-After": String(retryAfter) });
 

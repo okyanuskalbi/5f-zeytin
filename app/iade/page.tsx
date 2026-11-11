@@ -1,11 +1,12 @@
+import { completeMetadata } from "@/lib/site/metadata";
 import type { Metadata } from "next";
 import { LegalDocument } from "@/components/storefront/content/LegalDocument";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = completeMetadata({
   title: "İade ve İptal (Taslak) | Afina Zeytin",
   description: "İade ve İptal: onaylı metin bekleniyor.",
   alternates: { canonical: "/iade" }, robots: { index: false, follow: false },
-};
+});
 
 export default function Page() {
   return <LegalDocument title="İade ve İptal" path="/iade" scope="İade ve iptal koşulları">

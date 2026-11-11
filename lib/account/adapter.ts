@@ -46,7 +46,7 @@ export function createMockAccountAdapter(auth: AuthAdapter, storage: DemoStorage
     async getProfile() { return (await read()).data.profile; },
     async updateProfile(input) {
       const fields: Record<string, string> = {};
-      if (input.name.trim().length < 2 || input.name.trim().length > 100) fields.name = "Ad soyad 2–100 karakter olmalı.";
+      if (input.name.trim().length < 2 || input.name.trim().length > 100) fields.name = "Ad soyad 2-100 karakter olmalı.";
       if (input.phone && !validPhone(input.phone)) fields.phone = "Geçerli bir telefon numarası girin.";
       if (Object.keys(fields).length) throw new MembershipError("Lütfen alanları kontrol edin.", fields);
       const { key, data } = await read();

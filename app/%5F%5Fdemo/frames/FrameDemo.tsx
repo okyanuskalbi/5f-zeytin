@@ -18,7 +18,7 @@ export function FrameDemo() {
   return (
     <main>
       <div className="flex flex-wrap gap-4 p-4">
-        <p className="text-sm">Geliştirme denemesi — sentetik test deseni, marka görseli değildir.</p>
+        <p className="text-sm">Geliştirme denemesi - sentetik test deseni, marka görseli değildir.</p>
         <label className="flex min-h-10 items-center gap-2"><input type="checkbox" checked={contain} onChange={(event) => setContain(event.target.checked)} />Contain</label>
         <label className="flex min-h-10 items-center gap-2"><input type="checkbox" checked={blurFill} onChange={(event) => setBlurFill(event.target.checked)} />Bulanık kenarlar</label>
       </div>

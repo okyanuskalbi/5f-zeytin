@@ -105,7 +105,7 @@ it("explains the application in a real three-step ordered list", () => {
     "Formu doldurun", "Size dönüş yapalım", "Koşulları birlikte belirleyelim",
   ]);
   expect(steps.map(step => step.querySelector("p")?.textContent)).toEqual([
-    "Firma ve bölge bilgilerinizi bize iletin.",
+    "Firma ve bölge bilgilerinizi girin. Hazırlanan taslağı e-posta uygulamanızdan gönderin.",
     "Başvurunuzu inceledikten sonra sizinle iletişime geçeriz.",
     "Ürün, miktar ve sevkiyat planını birlikte netleştiririz.",
   ]);

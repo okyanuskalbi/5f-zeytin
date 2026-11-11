@@ -1,3 +1,4 @@
+import { completeMetadata } from "@/lib/site/metadata";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { JSX } from "react";
@@ -22,11 +23,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = `${group.name} | AFİNA ZEYTİN`;
   const description = "AFİNA ZEYTİN zeytin ve zeytinyağı ürünlerini inceleyin. Ambalajınızı seçin, sepetinize veya teklifinize ekleyin.";
   const url = `/urunler/${group.id}`;
-  return {
+  return completeMetadata({
     title, description, alternates: { canonical: url }, robots: { index: false, follow: true },
     openGraph: { title, description, url, type: "website", locale: "tr_TR", siteName: siteIdentity.name },
     twitter: { card: "summary_large_image", title, description },
-  };
+  });
 }
 
 export default async function Page({ params }: Props): Promise<JSX.Element> {

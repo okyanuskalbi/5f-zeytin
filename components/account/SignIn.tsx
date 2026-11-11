@@ -93,7 +93,7 @@ export function SignIn({ next = "/hesabim", signedIn = false, unavailable = fals
             <Button variant="outline" className={styles.alternateSignIn} onClick={() => { setMethod(method === "password" ? "magic_link" : "password"); setPassword(""); setShowPassword(false); }}><Mail aria-hidden="true" />{method === "password" ? "E-posta bağlantısıyla giriş" : "Şifreyle girişe dön"}</Button>
           </fieldset>
         </form>}
-        <p ref={feedbackRef} tabIndex={-1} role={failed ? "alert" : "status"} aria-live={failed ? "assertive" : "polite"} aria-atomic="true" className={`${styles.feedback} ${failed ? styles.error : ""}`}>{busy ? "İsteğiniz işleniyor…" : message.replace(/[—–]/g, "-")}</p>
+        <p ref={feedbackRef} tabIndex={-1} role={failed ? "alert" : "status"} aria-live={failed ? "assertive" : "polite"} aria-atomic="true" className={`${styles.feedback} ${failed ? styles.error : ""}`}>{busy ? "İsteğiniz işleniyor…" : message}</p>
         {!sessionOpen && <div className={styles.authFooter}>
           <p>Hesabınız yok mu? <Link prefetch={false} href="/kayit" className={styles.textLink} onClick={onRegister ? (event) => {
             if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;

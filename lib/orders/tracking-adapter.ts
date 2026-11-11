@@ -24,7 +24,7 @@ export interface TrackingAttemptLimiter { consume(): { allowed: boolean; retryAf
 
 export function validateTrackingQuery({ no, contact }: TrackingQuery): Record<string, string> {
   const fields: Record<string, string> = {};
-  if (!/^[A-Z0-9][A-Z0-9-]{2,39}$/i.test(no.trim())) fields.no = "Geçerli bir sipariş numarası girin (3–40 harf, rakam veya kısa çizgi).";
+  if (!/^[A-Z0-9][A-Z0-9-]{2,39}$/i.test(no.trim())) fields.no = "Geçerli bir sipariş numarası girin (3-40 harf, rakam veya kısa çizgi).";
   if (!/^\d{4}$/.test(contact.trim()) && emailError(contact.trim())) fields.contact = "E-posta adresinizi veya telefonunuzun son 4 rakamını girin.";
   return fields;
 }

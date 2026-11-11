@@ -1,11 +1,12 @@
+import { completeMetadata } from "@/lib/site/metadata";
 import type { Metadata } from "next";
 import { LegalDocument } from "@/components/storefront/content/LegalDocument";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = completeMetadata({
   title: "KVKK (Taslak) | Afina Zeytin",
   description: "KVKK: onaylı metin bekleniyor.",
   alternates: { canonical: "/kvkk" }, robots: { index: false, follow: false },
-};
+});
 
 export default function Page() {
   return <LegalDocument title="KVKK" path="/kvkk" scope="Toptan talep, sipariş ve pazarlama izni">

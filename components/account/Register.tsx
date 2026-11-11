@@ -82,7 +82,7 @@ function RegisterForm() {
       </div>
       <Button type="submit" className="w-full" disabled={busy}>{busy ? "İşleniyor…" : "Üyelik oluştur"}</Button>
     </fieldset>
-    <p ref={feedbackRef} tabIndex={-1} role={feedback.error ? "alert" : "status"} aria-live={feedback.error ? "assertive" : "polite"} aria-atomic="true" className={`${styles.feedback} ${feedback.error ? styles.error : ""}`}>{busy ? "İsteğiniz işleniyor…" : feedback.message.replace(/[—–]/g, "-")}</p>
+    <p ref={feedbackRef} tabIndex={-1} role={feedback.error ? "alert" : "status"} aria-live={feedback.error ? "assertive" : "polite"} aria-atomic="true" className={`${styles.feedback} ${feedback.error ? styles.error : ""}`}>{busy ? "İsteğiniz işleniyor…" : feedback.message}</p>
   </form>;
 }
 

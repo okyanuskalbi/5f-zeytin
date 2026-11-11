@@ -1,3 +1,4 @@
+import { completeMetadata } from "@/lib/site/metadata";
 import type { Metadata } from "next";
 import type { JSX } from "react";
 import { ProductListing } from "@/components/storefront/catalog/ProductListing";
@@ -11,14 +12,14 @@ export const revalidate = 300;
 const title = "Ürünler | AFİNA ZEYTİN";
 const description = "AFİNA ZEYTİN zeytin ve zeytinyağı ürünlerini inceleyin. Ambalajınızı seçin, sepetinize veya teklifinize ekleyin.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = completeMetadata({
   title,
   description,
   alternates: { canonical: "/urunler" },
   robots: { index: false, follow: true },
   openGraph: { title, description, url: "/urunler", type: "website", locale: "tr_TR", siteName: siteIdentity.name },
   twitter: { card: "summary_large_image", title, description },
-};
+});
 
 const breadcrumb = {
   "@context": "https://schema.org",

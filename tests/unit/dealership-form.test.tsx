@@ -77,7 +77,7 @@ describe("Bayilik başvuru formu", async () => {
     expect(openDraft).toHaveBeenCalledTimes(1);
     const url = new URL(openDraft.mock.calls[0][0]);
     expect(url.pathname).toBe("info@afina.com.tr");
-    expect(url.searchParams.get("subject")).toBe("Bayilik başvurusu — Ellek & Sofra #1");
+    expect(url.searchParams.get("subject")).toBe("Bayilik başvurusu - Ellek & Sofra #1");
     expect(url.searchParams.get("body")).toContain("Zeytin & zeytinyağı? #başvuru");
     expect(screen.getByRole("status", { name: "Başvuru durumu" }).textContent).toBe("E-posta uygulamanızda başvuru taslağı açıldı. Gönder'e bastığınızda başvurunuz bize ulaşır.");
     expect(screen.getByRole("button", { name: "Metni kopyala" })).toBeTruthy();
@@ -96,7 +96,7 @@ describe("Bayilik başvuru formu", async () => {
     Object.defineProperty(navigator, "clipboard", { configurable: true, value: { writeText } });
     render(<DealershipForm openDraft={vi.fn()} />); fill(); await submit(); fireEvent.click(screen.getByRole("button", { name: "Metni kopyala" }));
     await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
-    expect(writeText.mock.calls[0][0]).toContain("Bayilik başvurusu — Ellek & Sofra #1");
+    expect(writeText.mock.calls[0][0]).toContain("Bayilik başvurusu - Ellek & Sofra #1");
     expect(writeText.mock.calls[0][0]).toContain("Yetkili adı soyadı: Çağrı Öztürk");
     expect(writeText.mock.calls[0][0]).toContain("KVKK");
   });

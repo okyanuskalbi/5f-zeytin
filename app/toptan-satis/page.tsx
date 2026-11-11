@@ -1,3 +1,4 @@
+import { completeMetadata } from "@/lib/site/metadata";
 import type { Metadata } from "next";
 import type { JSX } from "react";
 import Link from "next/link";
@@ -12,11 +13,11 @@ export const dynamic = "force-static";
 export const revalidate = 300;
 const title = "Toptan Satış | AFİNA ZEYTİN";
 const description = "Otel, restoran, market ve toplu tüketim için AFİNA ZEYTİN ürünlerini seçin. Koli bazında teklif için e-posta taslağınızı hazırlayın.";
-export const metadata: Metadata = {
+export const metadata: Metadata = completeMetadata({
   title, description, alternates: { canonical: "/toptan-satis" }, robots: { index: true, follow: true },
   openGraph: { title, description, url: "/toptan-satis", type: "website", locale: "tr_TR", siteName: siteIdentity.name },
   twitter: { card: "summary_large_image", title, description },
-};
+});
 const breadcrumb = {
   "@context": "https://schema.org", "@type": "BreadcrumbList",
   itemListElement: [

@@ -22,7 +22,7 @@ export function validateRegisterRequest(input: unknown):
     privacy: value.privacy === true, consent: value.consent === true, marketing: value.marketing === true,
   };
   const fields: RegisterErrors = {
-    ...(data.name.length < 2 || data.name.length > 100 ? { name: "Ad soyad 2–100 karakter olmalı." } : {}),
+    ...(data.name.length < 2 || data.name.length > 100 ? { name: "Ad soyad 2-100 karakter olmalı." } : {}),
     ...validateCredentials(data, true),
   };
   if (!data.privacy) fields.privacy = "KVKK aydınlatma metnini okuduğunuzu onaylayın.";

@@ -39,6 +39,6 @@ it("serves valid Atom with four dated articles and the existing original homepag
       expect(entry.querySelector("published")?.textContent).toBe(`${post.date}T00:00:00Z`);
       expect(entry.querySelector("summary")?.textContent).toBe(post.excerpt);
     }
-    expect(doc.documentElement.querySelector(":scope > updated")?.textContent).toBe("2026-11-10T00:00:00Z");
+    expect(doc.documentElement.querySelector(":scope > updated")?.textContent).toBe("2026-11-11T00:00:00Z");
   });
 });

@@ -16,7 +16,7 @@ export async function PATCH(request: Request) {
       phone = typeof input.phone === "string" ? input.phone.trim() : "";
     const fields: Record<string, string> = {};
     if (typeof input.name !== "string" || name.length < 2 || name.length > 100)
-      fields.name = "Ad soyad 2–100 karakter olmalı.";
+      fields.name = "Ad soyad 2-100 karakter olmalı.";
     if (
       typeof input.phone !== "string" ||
       (phone &&

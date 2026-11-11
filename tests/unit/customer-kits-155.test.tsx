@@ -50,5 +50,5 @@ it("describes the real visible facility image and keeps the group distinct from 
   expect(html).not.toMatch(/AggregateRating|Product|Offer|taxID|foundingDate/);
 });
 it("uses the actual content update date rather than a new lastmod at every build", () => {
-  expect(sitemap()[0].lastModified).toBe("2026-11-01");
+  expect(sitemap()[0].lastModified).toBe("2026-11-11");
 });

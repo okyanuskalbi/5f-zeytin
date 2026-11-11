@@ -13,7 +13,7 @@ const businessProfiles = [
 ];
 
 const steps = [
-  { title: "Formu doldurun", description: "Firma ve bölge bilgilerinizi bize iletin." },
+  { title: "Formu doldurun", description: "Firma ve bölge bilgilerinizi girin. Hazırlanan taslağı e-posta uygulamanızdan gönderin." },
   { title: "Size dönüş yapalım", description: "Başvurunuzu inceledikten sonra sizinle iletişime geçeriz." },
   { title: "Koşulları birlikte belirleyelim", description: "Ürün, miktar ve sevkiyat planını birlikte netleştiririz." },
 ];
@@ -25,7 +25,7 @@ const packaging = [
 ];
 
 export function DealershipPage(): JSX.Element {
-  return <main className={`${styles.root} ${styles.root}`}>
+  return <main className={styles.root}>
     <section aria-labelledby="bayilik-title" className={styles.hero} data-storefront-hero>
       <div className={`${styles.container} ${styles.heroContent}`}>
         <div className={styles.heroCopy}>

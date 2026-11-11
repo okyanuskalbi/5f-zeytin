@@ -47,18 +47,18 @@ describe("bayilik başvuru şeması", () => {
     const result = dealershipSchema.safeParse(valid);
     if (!result.success) throw Error("fixture invalid");
     const draft = createDealershipDraft(result.data);
-    expect(draft.subject).toBe("Bayilik başvurusu — Ellek & Sofra #1");
+    expect(draft.subject).toBe("Bayilik başvurusu - Ellek & Sofra #1");
     expect(draft.mailto).toBe(`mailto:info@afina.com.tr?subject=${encodeURIComponent(draft.subject)}&body=${encodeURIComponent(draft.body)}`);
     const url = new URL(draft.mailto);
     expect([...url.searchParams.keys()]).toEqual(["subject", "body"]);
     expect(url.searchParams.get("body")).toBe(draft.body);
-    for (const text of [valid.companyName, valid.contactName, valid.email, "Osmaniye", "Düziçi", "Market", "2–5", valid.message.replace(/\n/g, "\r\n"), "+90 532 123 45 67", "KVKK"]) expect(draft.body).toContain(text);
+    for (const text of [valid.companyName, valid.contactName, valid.email, "Osmaniye", "Düziçi", "Market", "2-5", valid.message.replace(/\n/g, "\r\n"), "+90 532 123 45 67", "KVKK"]) expect(draft.body).toContain(text);
   });
   it("keeps line breaks out of single-line fields and lists optional omissions", () => {
     const result = dealershipSchema.safeParse({ ...valid, companyName: "Ellek\r\n& Sofra", outletCount: "", message: "" });
     if (!result.success) throw Error("fixture invalid");
     const draft = createDealershipDraft(result.data);
-    expect(draft.subject).toBe("Bayilik başvurusu — Ellek & Sofra");
+    expect(draft.subject).toBe("Bayilik başvurusu - Ellek & Sofra");
     expect(draft.body).toContain("Satış noktası sayısı: Belirtilmedi");
     expect(draft.body).toContain("Mesaj: Belirtilmedi");
   });
