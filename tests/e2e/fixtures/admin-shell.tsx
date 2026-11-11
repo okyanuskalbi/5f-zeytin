@@ -12,6 +12,6 @@ const router: AppRouterInstance = {
   refresh: () => render(), push: () => {}, replace: () => {},
 };
 function render(overview?: AdminOverview) {
-  root.render(<AppRouterContext.Provider value={router}><AdminShell overview={overview} /></AppRouterContext.Provider>);
+  root.render(<AppRouterContext.Provider value={router}><AdminShell overview={overview ?? { status: "fixture", activeProducts: 3, awaitingPayment: 2, readyToShip: 1 }} /></AppRouterContext.Provider>);
 }
 render(status === "error" || status === "loading" || status === "empty" ? { status } : undefined);

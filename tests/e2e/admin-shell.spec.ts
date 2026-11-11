@@ -26,10 +26,10 @@ test.describe("admin client acceptance", () => {
         await page.setViewportSize({ width, height: 900 });
         await page.emulateMedia({ reducedMotion });
         await page.goto(adminShellFixturePath);
-        await expect(page.getByRole("heading", { name: "Genel Bakış", exact: true })).toBeVisible();
-        await expect(page.getByRole("region", { name: "Operasyon özeti" }).getByText("TEST VERİSİ", { exact: true })).toHaveCount(3);
+        await expect(page.getByRole("heading", { name: "Panel", exact: true })).toBeVisible();
+        await expect(page.getByRole("region", { name: "Operasyon özeti" }).getByText("Test verisi", { exact: true })).toHaveCount(3);
         await expect(page.getByRole("region", { name: "Aktif ürün", exact: true })).toContainText("3 / 6");
-        await expect(page.getByRole("region", { name: "Sipariş görünümü" })).toContainText("Henüz sipariş verisi yok");
+        await expect(page.getByRole("region", { name: "Sipariş görünümü" })).toContainText("henüz kullanıma açık değil");
         await expect(page.locator("table, canvas")).toHaveCount(0);
         await expect(page.getByRole("link", { name: "Ürünleri yönet" })).toHaveAttribute("href", "/admin/urunler");
         const menu = page.getByRole("button", { name: "Yönetim menüsünü aç" });
@@ -42,24 +42,24 @@ test.describe("admin client acceptance", () => {
           await page.keyboard.press("Escape");
           await expect(dialog).toHaveCount(0); await expect(menu).toBeFocused();
           await menu.click();
-          await dialog.getByRole("link", { name: "Müşteriler", exact: true }).click();
+          await dialog.getByRole("link", { name: "Panel", exact: true }).click();
           await expect(dialog).toHaveCount(0);
-          await expect(page.getByRole("heading", { name: "Müşteriler", exact: true })).toBeFocused();
+          await expect(page.getByRole("heading", { name: "Panel", exact: true })).toBeFocused();
         } else {
           await expect(menu).toBeHidden();
           const nav = page.getByRole("navigation", { name: "Yönetim navigasyonu", exact: true });
           await expect(nav).toBeVisible();
-          await nav.getByRole("link", { name: "Siparişler", exact: true }).focus();
+          await nav.getByRole("link", { name: "Panel", exact: true }).focus();
           await page.keyboard.press("Enter");
-          await expect(page.getByRole("heading", { name: "Siparişler", exact: true })).toBeFocused();
+          await expect(page.getByRole("heading", { name: "Panel", exact: true })).toBeFocused();
         }
         const search = page.getByRole("searchbox", { name: "Yönetim alanlarında ara" });
-        await search.fill("SİPARİŞ");
+        await search.fill("PANEL");
         await page.keyboard.press("Tab");
-        const result = page.getByRole("navigation", { name: "Arama sonuçları" }).getByRole("link", { name: "Siparişler" });
+        const result = page.getByRole("navigation", { name: "Arama sonuçları" }).getByRole("link", { name: "Panel" });
         await expect(result).toBeFocused();
         await page.keyboard.press("Enter");
-        await expect(page.getByRole("heading", { name: "Siparişler", exact: true })).toBeFocused();
+        await expect(page.getByRole("heading", { name: "Panel", exact: true })).toBeFocused();
         await search.fill("eşleşmeyen");
         await expect(page.getByRole("status")).toContainText("Eşleşen yönetim alanı bulunamadı");
         await page.keyboard.press("Escape"); await expect(search).toHaveValue("");
@@ -77,7 +77,7 @@ test.describe("admin client acceptance", () => {
       await expect(page.getByRole("alert")).toContainText("Özet yüklenemedi");
       await page.getByRole("button", { name: "Yeniden dene" }).focus(); await page.keyboard.press("Enter");
       await expect(page.getByRole("alert")).toHaveCount(0);
-      await expect(page.getByText("TEST VERİSİ", { exact: true })).toHaveCount(3);
+      await expect(page.getByText("Test verisi", { exact: true })).toHaveCount(3);
     });
   }
 });

@@ -78,7 +78,7 @@ Hesaplanan düz renk karşıtlıkları: yeşil/fildişi **10.87:1**, mürekkep/f
 
 ### Border Radius
 
-Tek köşe tablosu. Değerler mevcut görünümü koruyan adlandırılmış CSS değişkenleridir (`app/globals.css`). Ana sayfa, ürün, katalog, kurumsal içerik, teklif, üyelik, hesap ve ortak menü/sepet yüzeyi bu tabloyu kullanır. Yönetim paneli Task200 kapsamındadır.
+Tek köşe tablosu. Değerler mevcut görünümü koruyan adlandırılmış CSS değişkenleridir (`app/globals.css`). Ana sayfa, ürün, katalog, kurumsal içerik, teklif, üyelik, hesap ve ortak menü/sepet yüzeyi bu tabloyu kullanır. Yönetim paneli de Task200 ile aynı tabloyu kullanır.
 
 | Öğe türü / kullanım | Köşe ölçüsü | Token adı |
 |---|---|---|
@@ -301,3 +301,26 @@ Hareketler yalnız kullanıcı geri bildirimi içindir: menü spring'i (`stiffne
 
 
 Task199 yükleme sınırları: müşteri bağlantıları başka sayfaların kodunu kendiliğinden indirmez. Kapalı ürün seçicisi ilk tıkta yüklenir; telefon alanının aynı ölçüdeki kabuğu, alanın100px yakınına gelince gerçek kontrolle değiştirilir. Odak, hata/retry ve ilk tık korunur; yeni görünme animasyonu yoktur. Doğrulama aynı lib modülünde kalır. Hesap adres/sipariş/detay gövdelerinde en az `calc(100svh - 240px)` alan ayrılır; sabit sipariş başlıkları ilk HTML'dedir, kişisel veri yanıt bekler.404telefon eylemleri tam genişlikte alt alta kalır; yazı tipi yüklenmesi düğme satırını değiştirmez.
+
+## Task200: yönetim paneli
+
+Panel, seçilen A tasarımının `--sf-*` renklerini kullanır: fildişi çalışma alanı,
+kâğıt menü/pencere/kart, yeşil seçili bağlantı ve birincil eylem. Başlık ve
+pencere başlığı Fraunces, arayüz Figtree; sayılar tabular-nums. Sol menü 248 px,
+1024 px altında çekmece. İçerik aralıkları 16/24/32/48 px, kontroller en az
+48 px. Yalnız Panel ve Ürünler bağlantıdır; Siparişler/Müşteriler Planlanan
+altında düz metindir. Bağlı olmayan özetlerde sayı uydurulmaz.
+
+Yukarıdaki tek köşe tablosunun panel eşlemesi: özet ve tablo kabuğu
+`--sf-radius-panel` (8 px), menü/eylem/iki seçenekli anahtar/durum etiketi
+`--sf-radius-action` (4 px), alanlar 0 px, çekmece ve düzenleme penceresi
+`--sf-radius-drawer` (0 px). Ek köşe ölçeği yoktur. Ürün tablosu kendi alanında
+yatay kayar; kaydırma açıklaması tablonun dışında okunur. Düzenleme penceresi
+telefon ekranına sığar, kendi içinde kayar; Escape/odak kapanı/geri dönüş
+Radix ile korunur. Yanlışlıkla dışına dokunmak taslağı kapatmaz. Kaydetme
+sırasında kapatma kapalıdır; hata pencerenin içinde okunur. Mevcut sunucu
+çağrıları, doğrulama ve yetki aynıdır.
+
+Panelde giriş/scroll/süs animasyonu yoktur; ortak düğmenin kısa basış tepkisi
+(.98 transform, `--duration-fast`) geri bildirim içindir. Azaltılmış harekette
+bu tepki de kapatılır. Mevcut sayfaların hareket motoruna ekleme yapılmaz.

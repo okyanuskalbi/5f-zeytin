@@ -91,7 +91,7 @@ it("scopes only the cart summary and drawer footer while product lines remain li
   expect(screen.getByRole("dialog").getAttribute("data-surface")).not.toBe("dark");
 });
 
-it("preserves the admin's existing local light palette in the shell and its portal", () => {
+it("uses the chosen storefront light palette for admin in the shell and its portal", () => {
   vi.stubGlobal("matchMedia", () => ({ matches: false, addEventListener: () => {}, removeEventListener: () => {} }));
   render(<AdminShell />);
   expect(document.querySelector("[data-admin-shell]")?.getAttribute("data-surface")).toBe("admin");
@@ -99,7 +99,7 @@ it("preserves the admin's existing local light palette in the shell and its port
   expect(screen.getByRole("dialog").getAttribute("data-surface")).toBe("admin");
   const admin = declarations(".theme", readFileSync("components/admin/AdminShell.module.css", "utf8"));
   expect(admin["color-scheme"]).toBe("light");
-  expect(admin["--background"]).toBe("#fff");
-  expect(admin["--foreground"]).toBe("#202722");
-  expect(admin["--primary"]).toBe("#243a29");
+  expect(admin["--background"]).toBe("var(--sf-paper)");
+  expect(admin["--foreground"]).toBe("var(--sf-ink)");
+  expect(admin["--primary"]).toBe("var(--sf-green)");
 });

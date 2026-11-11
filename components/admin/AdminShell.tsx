@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode, type MouseEvent } from "react";
+import { BrandLogo } from "@/components/site/BrandLogo";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Boxes, ClipboardList, LayoutDashboard, Menu, Search, ShoppingBasket, Tags, Truck, Users } from "lucide-react";
+import { Boxes, ClipboardList, LayoutDashboard, Menu, Search, Store, Truck, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -16,16 +17,11 @@ export type AdminOverview =
   | { status: "fixture"; activeProducts: number; awaitingPayment: number; readyToShip: number }
   | { status: "loading" | "empty" | "error" };
 
-const fixture: AdminOverview = { status: "fixture", activeProducts: 3, awaitingPayment: 2, readyToShip: 1 };
-const areas = [
-  { id: "admin-urunler", label: "Ürünler", group: "Operasyon", icon: Boxes, description: "En fazla 6 aktif ürünün katalog ve stok bilgilerini yönetin." },
-  { id: "admin-siparisler", label: "Siparişler", group: "Operasyon", icon: ClipboardList, description: "Sipariş ve ödeme durumları burada görüntülenecek." },
-  { id: "admin-kargo", label: "Kargo", group: "Operasyon", icon: Truck, description: "Siparişlerin kargo ve takip bilgileri burada yönetilecek." },
-  { id: "admin-kampanyalar", label: "Kupon / Kampanya", group: "Pazarlama", icon: Tags, description: "Kupon ve kampanya koşulları burada yönetilecek." },
-  { id: "admin-sepetler", label: "Terk Edilen Sepet", group: "Pazarlama", icon: ShoppingBasket, description: "İzinli sepet kayıtları burada görüntülenecek." },
-  { id: "admin-musteriler", label: "Müşteriler", group: "Müşteriler", icon: Users, description: "Yetkili müşteri görünümü burada yer alacak." },
+const destinations = [
+  { id: "admin-genel-bakis", label: "Panel", href: "/admin", icon: LayoutDashboard },
+  { id: "admin-urunler", label: "Ürünler", href: "/admin/urunler", icon: Boxes },
 ] as const;
-const groups = ["Operasyon", "Pazarlama", "Müşteriler"] as const;
+const planned = [{ label: "Siparişler", icon: ClipboardList }, { label: "Müşteriler", icon: Users }];
 
 function isValid(overview: AdminOverview) {
   return overview.status !== "fixture" || (
@@ -34,17 +30,18 @@ function isValid(overview: AdminOverview) {
   );
 }
 
-/** Shared operation navigation and explicitly labelled overview fixtures.
- * Each operation page and API independently enforce server authorization. */
-export function AdminShell({ overview = fixture, children, area }: { overview?: AdminOverview; children?: ReactNode; area?: "admin-urunler" }) {
+/** Presentation only. Each page and API retains its independent authorization gate.
+ * Layout reference: 21st App Dashboard Layout (28770); no demo metrics or charts. */
+export function AdminShell({ overview = { status: "empty" }, children, area }: { overview?: AdminOverview; children?: ReactNode; area?: "admin-urunler" }) {
   const router = useRouter();
   const searchId = useId();
   const [query, setQuery] = useState("");
-  const [active, setActive] = useState(area ?? "admin-genel-bakis");
+  const active = area ?? "admin-genel-bakis";
   const [menuOpen, setMenuOpen] = useState(false);
   const pendingFocus = useRef<string | null>(null);
+  const pendingMenuFocus = useRef(false);
   const search = query.trim().toLocaleLowerCase("tr-TR");
-  const matches = areas.filter(area => area.label.toLocaleLowerCase("tr-TR").includes(search));
+  const matches = destinations.filter(item => item.label.toLocaleLowerCase("tr-TR").includes(search));
   const failed = overview.status === "error" || !isValid(overview);
   const sample = overview.status === "fixture" && !failed ? overview : null;
   const loading = overview.status === "loading";
@@ -57,63 +54,56 @@ export function AdminShell({ overview = fixture, children, area }: { overview?: 
     return () => desktop.removeEventListener("change", closeOnDesktop);
   }, [menuOpen]);
 
+  // Focus after search results unmount, so removing the clicked link cannot steal it.
   useEffect(() => {
-    const updateLocation = () => {
-      const id = window.location.hash.slice(1);
-      setActive(area ?? (areas.some(area => area.id === id) ? id : "admin-genel-bakis"));
-    };
-    window.addEventListener("hashchange", updateLocation);
-    return () => window.removeEventListener("hashchange", updateLocation);
-  }, [area]);
+    if (query || menuOpen || pendingMenuFocus.current || !pendingFocus.current) return;
+    document.getElementById(pendingFocus.current)?.focus();
+    pendingFocus.current = null;
+  }, [query, menuOpen]);
 
-  function href(id: string) {
-    return id === "admin-urunler" ? "/admin/urunler" : `${children ? "/admin" : ""}#${id}`;
-  }
-
-  function navigate(id: string) {
-    if (id !== "admin-urunler" && !children) setActive(id);
-    setQuery("");
-    if (menuOpen) {
+  function navigate(event: MouseEvent<HTMLAnchorElement>, id: string) {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+    if (id === active) {
+      event.preventDefault();
       pendingFocus.current = id;
-      setMenuOpen(false);
-    } else document.getElementById(id)?.focus();
+      pendingMenuFocus.current = menuOpen;
+      if (!query && !menuOpen) document.getElementById(id)?.focus();
+    }
+    setQuery("");
+    setMenuOpen(false);
   }
 
   function navigation() {
     return <>
       <SidebarGroup>
-        <SidebarMenu>
-          <SidebarMenuItem><SidebarMenuButton asChild data-active={active === "admin-genel-bakis"}>
-            <Link href={href("admin-genel-bakis")} aria-current={active === "admin-genel-bakis" ? "location" : undefined} onClick={() => navigate("admin-genel-bakis")}>
-              <LayoutDashboard aria-hidden="true" />Genel Bakış
-            </Link>
-          </SidebarMenuButton></SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarGroup>
-      {groups.map(group => <SidebarGroup key={group}>
-        <SidebarGroupLabel>{group}</SidebarGroupLabel>
-        <SidebarMenu>{areas.filter(area => area.group === group).map(area => <SidebarMenuItem key={area.id}>
-          <SidebarMenuButton asChild data-active={active === area.id}>
-            <Link href={href(area.id)} aria-current={active === area.id ? "location" : undefined} onClick={() => navigate(area.id)}>
-              <area.icon aria-hidden="true" />{area.label}
+        <SidebarGroupLabel>Yönetim</SidebarGroupLabel>
+        <SidebarMenu>{destinations.map(item => <SidebarMenuItem key={item.id}>
+          <SidebarMenuButton asChild data-active={active === item.id}>
+            <Link prefetch={false} href={item.href} aria-current={active === item.id ? "page" : undefined} onClick={event => navigate(event, item.id)}>
+              <item.icon aria-hidden="true" />{item.label}
             </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>)}</SidebarMenu>
-      </SidebarGroup>)}
+      </SidebarGroup>
+      <SidebarGroup>
+        <SidebarGroupLabel>Planlanan</SidebarGroupLabel>
+        <ul className={styles.planned}>{planned.map(item => <li key={item.label}><item.icon aria-hidden="true" /><span>{item.label}</span></li>)}</ul>
+      </SidebarGroup>
     </>;
   }
 
   const summaries = [
-    { title: "Aktif ürün", value: sample ? `${sample.activeProducts} / 6` : "—" },
-    { title: "Ödeme bekleyen sipariş", value: sample ? String(sample.awaitingPayment) : "—" },
-    { title: "Kargoya hazır sipariş", value: sample ? String(sample.readyToShip) : "—" },
+    { title: "Aktif ürün", value: sample ? `${sample.activeProducts} / 6` : "Veri yok", icon: Boxes },
+    { title: "Ödeme bekleyen sipariş", value: sample ? String(sample.awaitingPayment) : "Veri yok", icon: ClipboardList },
+    { title: "Kargoya hazır sipariş", value: sample ? String(sample.readyToShip) : "Veri yok", icon: Truck },
   ];
 
   return <div data-admin-shell="" data-surface="admin" className={`${styles.theme} ${styles.shell}`}>
+    <a href="#admin-content" className={styles.skip}>İçeriğe geç</a>
     <Sidebar className={styles.desktopSidebar}>
-      <div className={styles.brand}>AFİNA ZEYTİN<span>Yönetim paneli</span></div>
+      <div className={styles.brand}><BrandLogo tone="light" /><span>Yönetim paneli</span></div>
       <SidebarContent><nav aria-label="Yönetim navigasyonu">{navigation()}</nav></SidebarContent>
-      <Link href="/" className={styles.storeLink}>Vitrine dön</Link>
+      <Link prefetch={false} href="/" className={styles.storeLink}><Store aria-hidden="true" />Vitrine dön</Link>
     </Sidebar>
     <div className={styles.workspace}>
       <header className={styles.topbar}>
@@ -121,54 +111,51 @@ export function AdminShell({ overview = fixture, children, area }: { overview?: 
           <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
             <SheetTrigger asChild><Button variant="outline" size="icon" className={styles.menuTrigger} aria-label="Yönetim menüsünü aç"><Menu aria-hidden="true" /></Button></SheetTrigger>
             <SheetContent placement="fullscreen" data-surface="admin" className={`${styles.theme} ${styles.mobilePanel}`} onCloseAutoFocus={event => {
-              if (pendingFocus.current) {
+              // Same-page navigation owns focus; Escape keeps Radix trigger restoration.
+              if (pendingMenuFocus.current) {
                 event.preventDefault();
-                document.getElementById(pendingFocus.current)?.focus();
+                document.getElementById(active)?.focus();
                 pendingFocus.current = null;
+                pendingMenuFocus.current = false;
               }
             }}>
               <div className={styles.mobileHeading}>
                 <SheetTitle>Yönetim menüsü</SheetTitle>
-                <SheetDescription>AFİNA ZEYTİN yönetim alanları</SheetDescription>
+                <SheetDescription>AFİNA ZEYTİN</SheetDescription>
               </div>
               <nav aria-label="Mobil yönetim navigasyonu">{navigation()}</nav>
-              <Link href="/" className={styles.storeLink}>Vitrine dön</Link>
+              <Link prefetch={false} href="/" className={styles.storeLink}><Store aria-hidden="true" />Vitrine dön</Link>
             </SheetContent>
           </Sheet>
-          <span>Yönetim / <strong>{areas.find(area => area.id === active)?.label ?? "Genel Bakış"}</strong></span>
+          <span>Yönetim / <strong>{area ? "Ürünler" : "Panel"}</strong></span>
         </div>
         <div role="search" aria-label="Yönetim alanı arama" className={styles.search}>
           <label htmlFor={searchId} className="sr-only">Yönetim alanlarında ara</label>
           <Search aria-hidden="true" className={styles.searchIcon} />
-          <Input id={searchId} type="search" value={query} autoComplete="off" placeholder="Yönetim alanlarında ara…" aria-describedby={`${searchId}-hint`} aria-controls={search ? `${searchId}-results` : undefined}
+          <Input id={searchId} name="admin-search" type="search" value={query} autoComplete="off" placeholder="Panel veya ürünler ara…" aria-controls={search ? `${searchId}-results` : undefined}
             onChange={event => setQuery(event.target.value)} onKeyDown={event => { if (event.key === "Escape") setQuery(""); }} />
-          <span id={`${searchId}-hint`} className="sr-only">Yalnız bu sayfadaki yönetim alanlarında arar; müşteri verilerinde arama yapmaz.</span>
           {search && <div className={styles.searchResults}>
             <p role="status">{matches.length ? `${matches.length} yönetim alanı bulundu.` : "Eşleşen yönetim alanı bulunamadı."}</p>
-            <nav id={`${searchId}-results`} aria-label="Arama sonuçları">{matches.map(area => <Link key={area.id} href={href(area.id)} onClick={() => navigate(area.id)}>{area.label}</Link>)}</nav>
+            <nav id={`${searchId}-results`} aria-label="Arama sonuçları">{matches.map(item => <Link prefetch={false} key={item.id} href={item.href} onClick={event => navigate(event, item.id)}>{item.label}</Link>)}</nav>
           </div>}
         </div>
       </header>
-      <main className={styles.content}>
-        {children ?? <><section aria-labelledby="admin-genel-bakis" className={styles.overview}>
-          <div><p className={styles.eyebrow}>AFİNA ZEYTİN</p><h1 id="admin-genel-bakis" tabIndex={-1}>Genel Bakış</h1><p className={styles.muted}>Ürün, sipariş ve sevkiyat işlemlerinin yönetim alanı.</p></div>
-          {sample && <p className={styles.notice}>Bu özet test verisi kullanır. Canlı operasyon verisi bağlı değildir.</p>}
+      <main id="admin-content" tabIndex={-1} className={styles.content}>
+        {children ?? <section aria-labelledby="admin-genel-bakis" className={styles.overview}>
+          <div className={styles.overviewHeading}><div><h1 id="admin-genel-bakis" tabIndex={-1}>Panel</h1><p className={styles.muted}>Ürünlerinizi yönetin.</p></div><Link prefetch={false} href="/admin/urunler" className={styles.primaryLink}>Ürünleri yönet</Link></div>
+          {sample && <p className={styles.notice}>Örnek özet. Gerçek işlem verisi değildir.</p>}
           {loading && <p role="status">Özet yükleniyor…</p>}
           {failed && <div className={styles.error}><p role="alert">Özet yüklenemedi. Lütfen yeniden deneyin.</p><Button onClick={() => router.refresh()}>Yeniden dene</Button></div>}
           <section aria-label="Operasyon özeti" aria-busy={loading} className={styles.summaries}>
             {summaries.map((summary, index) => <Card key={summary.title} role="region" aria-labelledby={`admin-summary-${index}`}>
-              <CardHeader><h2 id={`admin-summary-${index}`}>{summary.title}</h2>{sample && <Badge variant="outline">TEST VERİSİ</Badge>}</CardHeader>
-              <CardContent><p className={styles.value}>{summary.value}</p>{!sample && !loading && !failed && <p className={styles.muted}>Henüz veri yok</p>}</CardContent>
+              <CardHeader><summary.icon aria-hidden="true" /><h2 id={`admin-summary-${index}`}>{summary.title}</h2>{sample && <Badge variant="outline">Test verisi</Badge>}</CardHeader>
+              <CardContent><p className={sample ? styles.value : styles.unavailable}>{loading ? "Yükleniyor…" : failed ? "Alınamadı" : summary.value}</p>{!sample && !loading && !failed && <span className="sr-only">Henüz veri yok</span>}</CardContent>
             </Card>)}
           </section>
-          <div className={styles.insights}>
-            <section aria-labelledby="admin-insights-title" className={styles.panel}><h2 id="admin-insights-title">Bekleyen işlemler</h2><p className={styles.muted}>İşlem gerektiren kayıtlar bağlandığında burada görünecek. Şu anda doğrulanmış operasyon kaydı yok.</p></section>
-            <section aria-labelledby="admin-orders-title" className={styles.panel}><h2 id="admin-orders-title">Sipariş görünümü</h2><p className={styles.muted}>Henüz sipariş verisi yok. Günlük sipariş grafiği için doğrulanmış kayıtlar ve tarih aralığı gerekir.</p></section>
-          </div>
-        </section>
-        <div className={styles.areas}>{areas.map(area => <section key={area.id} aria-labelledby={area.id} className={styles.panel}>
-          <h2 id={area.id} tabIndex={-1}>{area.label}</h2><p>{area.description}</p>{area.id === "admin-urunler" ? <Link href="/admin/urunler" className={styles.storeLink}>Ürünleri yönet</Link> : <p className={styles.muted}>Henüz operasyon verisi bağlı değil.</p>}
-        </section>)}</div></>}
+          <section aria-labelledby="admin-orders-title" className={styles.emptyState}>
+            <ClipboardList aria-hidden="true" /><div><h2 id="admin-orders-title">Sipariş görünümü</h2><p className={styles.muted}>Sipariş ve müşteri yönetimi henüz kullanıma açık değil.</p></div>
+          </section>
+        </section>}
       </main>
     </div>
   </div>;

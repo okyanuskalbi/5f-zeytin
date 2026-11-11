@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Plus, ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import shell from "./AdminShell.module.css";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -9,7 +12,7 @@ import { ProductForm } from "./ProductForm";
 import styles from "./Products.module.css";
 
 const messages: Record<string, string> = {
-  product_conflict: "En fazla 6 aktif ürün olabilir. Listeyi yenileyip upsell seçimini kontrol edin.",
+  product_conflict: "En fazla 6 aktif ürün olabilir. Listeyi yenileyip birlikte önerilen ürünleri kontrol edin.",
   product_not_found: "Ürün bulunamadı. Listeyi yenileyin.",
   validation_error: "Ürün alanlarını kontrol edin.",
   unauthenticated: "Oturumunuz sona erdi. Yeniden giriş yapın.",
@@ -33,6 +36,7 @@ export function ProductManager() {
   const [busy, setBusy] = useState(false);
   const pending = useRef(false);
   const returnFocus = useRef<HTMLButtonElement | null>(null);
+  const focusAfterClose = useRef<"trigger" | "status">("trigger");
   const status = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
@@ -59,7 +63,7 @@ export function ProductManager() {
     return () => controller.abort();
   }, [sort, direction, page, revision]);
 
-  function closeForm() { setEditing(null); setError(""); returnFocus.current?.focus(); }
+  function closeForm() { focusAfterClose.current = "trigger"; setEditing(null); setError(""); returnFocus.current?.focus(); }
   async function mutate(method: string, body: unknown) {
     if (pending.current) return;
     pending.current = true; setBusy(true); setError(""); setNotice("");
@@ -71,6 +75,7 @@ export function ProductManager() {
         setError(messages[failure?.error?.code] ?? "İşlem tamamlanamadı. Listeyi yenileyip yeniden deneyin.");
         return;
       }
+      focusAfterClose.current = "status";
       setEditing(null); setConfirm(null);
       setNotice(method === "DELETE" ? "Ürün yayından kaldırıldı." : "Ürün kaydedildi.");
       setRevision(value => value + 1);
@@ -81,28 +86,40 @@ export function ProductManager() {
   }
 
   return <div className={styles.manager}>
-    <div className={styles.heading}><div><h1>Ürünler</h1><p>En fazla 6 aktif ürün. Fiyatlar Türk lirası cinsindedir.</p></div>
-      <Button disabled={loading || busy || !!listError || !!editing} onClick={event => { returnFocus.current = event.currentTarget; setEditing("new"); setConfirm(null); setError(""); setNotice(""); }}>Ürün ekle</Button>
+    <div className={styles.heading}><div><h1 id="admin-urunler" tabIndex={-1}>Ürünler</h1><p>Fiyat, stok ve yayın durumu.</p></div>
+      <Button disabled={loading || busy || !!listError || !!editing} onClick={event => { returnFocus.current = event.currentTarget; setEditing("new"); setConfirm(null); setError(""); setNotice(""); }}><Plus aria-hidden="true" />Ürün ekle</Button>
     </div>
-    <p ref={status} tabIndex={-1} role="status">{loading ? "Ürünler yükleniyor…" : notice}</p>
+    <p ref={status} tabIndex={-1} role="status" className={notice || loading ? styles.status : styles.silentStatus}>{loading ? "Ürünler yükleniyor…" : notice}</p>
     {listError && <div className={styles.error}><p role="alert">{listError}</p><Button variant="outline" disabled={busy} onClick={() => setRevision(value => value + 1)}>Yeniden dene</Button></div>}
-    {error && <div className={styles.error}><p role="alert">{error}</p><Button variant="outline" disabled={busy} onClick={() => { closeForm(); setConfirm(null); setRevision(value => value + 1); }}>Listeyi yenile</Button></div>}
+    {error && !editing && <div className={styles.error}><p role="alert">{error}</p><Button variant="outline" disabled={busy} onClick={() => { closeForm(); setConfirm(null); setRevision(value => value + 1); }}>Listeyi yenile</Button></div>}
     {result && <>
-      <p className={styles.count}>Aktif ürün: {result.activeCount} / 6 · Toplam kayıt: {result.total}</p>
-      {editing && <ProductForm key={editing === "new" ? "new" : editing.id} product={editing === "new" ? undefined : editing}
-        options={result.options} activeCount={result.activeCount} busy={busy} onCancel={closeForm}
-        onSave={(input: ProductInput) => mutate(editing === "new" ? "POST" : "PATCH", editing === "new" ? input : { id: editing.id, ...input })} />}
+      <div className={styles.count}><p>Aktif ürün <strong>{result.activeCount} / 6</strong></p><p>Toplam kayıt <strong>{result.total}</strong></p></div>
+      <Dialog open={!!editing} onOpenChange={open => { if (!open && !busy) closeForm(); }}>
+        {editing && <DialogContent data-surface="admin" className={`${shell.theme} ${styles.editDialog}`} showCloseButton={false}
+          onPointerDownOutside={event => event.preventDefault()}
+          onEscapeKeyDown={event => { if (busy) event.preventDefault(); }}
+          onCloseAutoFocus={event => { event.preventDefault(); if (focusAfterClose.current === "status") status.current?.focus(); else returnFocus.current?.focus(); }}>
+          <div className={styles.dialogHeading}><DialogTitle>{editing === "new" ? "Yeni ürün" : "Ürünü düzenle"}</DialogTitle>
+            <Button variant="outline" disabled={busy} onClick={closeForm}>Kapat</Button></div>
+          <DialogDescription>Ürün bilgilerini girip kaydedin.</DialogDescription>
+          {error && <div className={styles.error}><p role="alert">{error}</p><Button variant="outline" disabled={busy} onClick={() => { closeForm(); setRevision(value => value + 1); }}>Listeyi yenile</Button></div>}
+          <ProductForm key={editing === "new" ? "new" : editing.id} product={editing === "new" ? undefined : editing}
+            options={result.options} activeCount={result.activeCount} busy={busy} onCancel={closeForm}
+            onSave={(input: ProductInput) => mutate(editing === "new" ? "POST" : "PATCH", editing === "new" ? input : { id: editing.id, ...input })} />
+        </DialogContent>}
+      </Dialog>
       {confirm && <div role="group" aria-label="Yayından kaldırma onayı" className={styles.panel}>
-        <p>{confirm.name} yayından kaldırılsın mı? Ürün kaydı korunur, upsell ilişkileri kaldırılır.</p>
-        <div className={styles.actions}><Button disabled={busy} onClick={() => mutate("DELETE", { id: confirm.id })}>Yayından kaldırmayı onayla</Button>
+        <p>{confirm.name} yayından kaldırılsın mı? Kaydı korunur, birlikte önerilenlerden çıkarılır.</p>
+        <div className={styles.actions}><Button disabled={busy} onClick={() => mutate("DELETE", { id: confirm.id })}>Kaldırmayı onayla</Button>
           <Button variant="outline" disabled={busy} onClick={() => { setConfirm(null); returnFocus.current?.focus(); }}>Vazgeç</Button></div>
       </div>}
       {!result.total && !loading && !listError && <p className={styles.panel}>Henüz ürün eklenmedi.</p>}
       {result.total > 0 && <section className={styles.panel} aria-label="Ürün listesi" aria-busy={loading}>
+        <p className={styles.tableHint}>Tüm sütunları görmek için tabloyu yana kaydırabilirsiniz.</p>
         <div role="region" aria-label="Yatay kaydırılabilir ürün tablosu" tabIndex={0} className={styles.scroll}>
-          <Table><TableCaption>Tüm kayıtlar sunucuda sıralanır. Sayfa {page}; sayfa başına en fazla {adminProductPageSize} kayıt.</TableCaption>
+          <Table><TableCaption>Sayfa {page}. Sayfa başına en fazla {adminProductPageSize} ürün.</TableCaption>
             <TableHeader><TableRow>{sortLabels.map(([key, label]) => <TableHead key={key} scope="col" aria-sort={sort === key ? direction === "asc" ? "ascending" : "descending" : "none"}>
-              <button type="button" disabled={loading || busy || !!editing} aria-label={`${label} ile sırala`} onClick={() => { setDirection(sort === key && direction === "asc" ? "desc" : "asc"); setSort(key); setPage(1); setConfirm(null); }}>{label} <span aria-hidden="true">{sort === key ? direction === "asc" ? "↑" : "↓" : "↕"}</span></button>
+              <button type="button" disabled={loading || busy || !!editing} aria-label={`${label} ile sırala`} onClick={() => { setDirection(sort === key && direction === "asc" ? "desc" : "asc"); setSort(key); setPage(1); setConfirm(null); }}>{label} {sort === key ? direction === "asc" ? <ArrowUp aria-hidden="true" /> : <ArrowDown aria-hidden="true" /> : <ArrowUpDown aria-hidden="true" />}</button>
             </TableHead>)}<TableHead scope="col">İşlemler</TableHead></TableRow></TableHeader>
             <TableBody>{result.data.map(product => <TableRow key={product.id}>
               <TableCell><strong>{product.name}</strong><span className={styles.weight}>{product.weight}</span></TableCell>
@@ -114,7 +131,7 @@ export function ProductManager() {
             </TableRow>)}</TableBody>
           </Table>
         </div>
-        <nav aria-label="Ürün sayfaları" className={styles.actions}><Button variant="outline" disabled={page <= 1 || loading || busy || !!editing} onClick={() => { setPage(value => value - 1); setConfirm(null); }}>Önceki</Button>
+        <nav aria-label="Ürün sayfaları" className={styles.pagination}><Button variant="outline" disabled={page <= 1 || loading || busy || !!editing} onClick={() => { setPage(value => value - 1); setConfirm(null); }}>Önceki</Button>
           <span>Sayfa {page} / {Math.max(1, Math.ceil(result.total / adminProductPageSize))}</span>
           <Button variant="outline" disabled={page * adminProductPageSize >= result.total || loading || busy || !!editing} onClick={() => { setPage(value => value + 1); setConfirm(null); }}>Sonraki</Button></nav>
       </section>}

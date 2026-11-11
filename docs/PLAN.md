@@ -1,3 +1,12 @@
+## Task200 / yönetim görünümü yerel kabul (11 Kasım2026)
+
+Panel ve ürün yönetimi seçilen A tasarımına uyarlandı. İki çalışan menü
+bağlantısı, planlanan alanlar, üst arama, sade özet ve erişilebilir düzenleme
+penceresi hazır. Auth/DB/API aynı.1284test,lint/typecheck/Turbopack build,
+26tarayıcı testi ve22girişli yerel profil PASS;kanıt output/task200/KANIT.md.
+Yerel test hesabı/ürünü temizlendi,başlatılan sunucular kapandı.
+Push/yayın/canlıDB/env dosyası işlemi yok.201ayrı talimatla başlar.
+
 ## Task199 / yerel uygulama ve son kabul (11 Kasım2026)
 
 A0: main77406e5 ve seçilen A/3ad7d0f temel alındı; motion14.4.0, güncel UIPro variance/motion/density scripti, paketli Chromium/WebKit ve yalnızlocalhost afina_kontrol189 doğrulandı. Ana oturumda21st görünmedi; alt ajan search/get_component2110ve9321 ile gerçek kaynağı inceledi. Mevcut27904form ve20055/109picker uyarlamaları korundu. Genel kit palet/font/sinematik önerileri bağlayıcı A ile çeliştiğinde alınmadı; Fraunces/Figtree ve yeşil/fildişi aynı kaldı.

@@ -18,9 +18,9 @@ export function ProductForm({ product, options, activeCount, busy, onSave, onCan
   const [showCategoryLabel, setShowCategoryLabel] = useState(product?.showCategoryLabel ?? true);
   useEffect(() => { firstInput.current?.focus(); }, []);
 
-  return <section className={styles.panel} aria-labelledby={`${id}-title`}>
-    <h2 id={`${id}-title`}>{product ? "Ürünü düzenle" : "Yeni ürün"}</h2>
-    <form onSubmit={async event => {
+  return <section className={styles.formPanel} aria-labelledby={`${id}-title`}>
+    <h2 className="sr-only" id={`${id}-title`}>{product ? "Ürünü düzenle" : "Yeni ürün"}</h2>
+    <form autoComplete="off" onSubmit={async event => {
       event.preventDefault();
       const fields = new FormData(event.currentTarget);
       const price = String(fields.get("price")).replace(",", ".");
@@ -45,7 +45,7 @@ export function ProductForm({ product, options, activeCount, busy, onSave, onCan
         <div><label htmlFor={`${id}-category-label`}>Kategori etiketi</label>
           <Input id={`${id}-category-label`} name="categoryLabel" maxLength={40} defaultValue={product?.categoryLabel ?? ""}
             aria-describedby={`${id}-category-help`} />
-          <p id={`${id}-category-help`} className={styles.help}>Boş bırakırsanız kategorinin varsayılan adı görünür. En fazla 40 karakter, düz metin.</p>
+          <p id={`${id}-category-help`} className={styles.help}>Boşsa kategori adı kullanılır. En fazla 40 karakter.</p>
         </div>
         <div><span id={`${id}-visibility-label`} className={styles.controlLabel}>Etiketi göster</span>
           <ToggleGroup id={`${id}-visibility`} type="single" variant="outline" spacing={2}
@@ -61,7 +61,7 @@ export function ProductForm({ product, options, activeCount, busy, onSave, onCan
         <div><label htmlFor={`${id}-stock`}>Stok</label><Input id={`${id}-stock`} name="stock" type="number" required min={0} max={2147483647} step={1} defaultValue={product?.stock ?? 0} /></div>
         <label className={styles.check}><input name="active" type="checkbox" defaultChecked={product?.isActive ?? false} disabled={activeCount >= 6 && !product?.isActive} />Yayında</label>
         {activeCount >= 6 && !product?.isActive && <p>6 aktif ürün sınırı dolu. Yeni bir ürünü yayınlamak için önce bir ürünü yayından kaldırın.</p>}
-        <fieldset className={styles.upsells}><legend>Birlikte önerilecek ürünler (upsell)</legend>
+        <fieldset className={styles.upsells}><legend>Birlikte önerilecek ürünler</legend>
           <p>Yalnız yayındaki ürünler seçilebilir.</p>
           {options.filter(option => option.id !== product?.id).map(option => <label key={option.id} className={styles.check}>
             <input type="checkbox" checked={upsellIds.includes(option.id)} onChange={event => setUpsellIds(values => event.target.checked ? [...values, option.id] : values.filter(value => value !== option.id))} />{option.name}
