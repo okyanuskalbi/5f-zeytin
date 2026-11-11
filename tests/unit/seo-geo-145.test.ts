@@ -18,7 +18,7 @@ it("serves a static Markdown discovery file with all six variant sizes and no pr
   expect(products).toHaveLength(6);
   expect(body.split("\n").filter(line => line.startsWith("- ") && !line.includes("]("))).toHaveLength(6);
   for (const product of products) {
-    expect(body).toContain(`${product.name} — ${product.weight}`);
+    expect(body).toContain(`${product.name}, ${product.weight}`);
     expect(body).not.toContain(String(product.priceKurus));
   }
   expect(body).toContain("Düziçi / Osmaniye");

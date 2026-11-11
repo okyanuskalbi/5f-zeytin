@@ -10,7 +10,7 @@ assert(['localhost', '127.0.0.1'].includes(origin.hostname), 'Local verification
 const output = path.resolve(process.argv[3] ?? 'output/task198-codex/duzeltme-198-2/green');
 assert(output.startsWith(path.resolve('output') + path.sep), 'Evidence belongs in project output/');
 await fs.mkdir(output, { recursive: true });
-const cards = 'article[data-product-id], a[data-home-category], [data-home-section="banners"] a, [data-home-section="blog"] a[href^="/blog/"]';
+const cards = '[data-home-section="hero"], article[data-product-id], a[data-home-category], [data-home-section="banners"] a, [data-home-section="blog"] a[href^="/blog/"]';
 const sizes = [[320,568],[360,800],[375,667],[390,844],[414,896],[430,932],[768,1024],[820,1180],[1024,768],[1024,1366],[1280,800],[1366,768],[1440,900],[1920,1080],[2560,1440]];
 
 // Text-node line boxes avoid falsely treating a whole image-bearing link as text.
@@ -42,7 +42,7 @@ function inspectCard(card) {
   const walker = document.createTreeWalker(card, NodeFilter.SHOW_TEXT);
   for (let node = walker.nextNode(); node; node = walker.nextNode()) {
     const parent = node.parentElement;
-    if (!node.textContent.trim() || parent.closest('[data-overlay-ok],svg,script,style,[aria-hidden="true"]')) continue;
+    if (!node.textContent.trim() || parent.closest('[data-overlay-ok],button[data-media-control],svg,script,style,[aria-hidden="true"]')) continue;
     const range = document.createRange(); range.selectNodeContents(node);
     for (const rect of range.getClientRects()) {
       const textBox = visibleRect(rect, parent);
@@ -83,14 +83,16 @@ try {
           await page.goto(new URL(route, origin).href, {waitUntil:'networkidle'});
           await page.evaluate(() => document.fonts.ready);
           const count = await page.locator(cards).count();
-          assert.equal(count, name === 'home' ? 19 : 5, 'Card selector coverage changed');
+          assert.equal(count, name === 'home' ? 20 : 5, 'Card selector coverage changed');
           const results = [];
           for (const card of await page.locator(cards).all()) {
             await card.scrollIntoViewIfNeeded();
             await card.locator('img').evaluateAll(images => Promise.all(images.map(img => img.decode().catch(() => {}))));
             await page.waitForTimeout(80);
             const result = await card.evaluate(inspectCard);
-            assert(result.images > 0 && result.textRuns > 0, 'Card must have measured media and visible text');
+            const hero = await card.getAttribute('data-home-section') === 'hero';
+            assert(result.images > 0 && (result.textRuns > 0 || hero), 'Card must have measured media and visible text');
+            if (hero) assert.equal(await card.locator('[data-overlay-ok] h1').count(), 1, 'Hero heading must explicitly allow overlay');
             results.push(result);
           }
           const broken = await page.locator(cards).locator('img').evaluateAll(images => images.filter(img => !img.complete || img.naturalWidth===0).map(img => img.src));

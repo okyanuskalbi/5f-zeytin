@@ -60,7 +60,7 @@ export function HeroVideo(): JSX.Element {
         }} />}
     </div>
     {ready && !reduced && !failed &&
-      <button className={styles.videoControl} type="button" aria-label={playing ? "Videoyu duraklat" : "Videoyu oynat"} onClick={() => {
+      <button className={styles.videoControl} data-media-control type="button" aria-label={playing ? "Videoyu duraklat" : "Videoyu oynat"} onClick={() => {
         const element = video.current;
         if (!element) return;
         userPaused.current = !element.paused;

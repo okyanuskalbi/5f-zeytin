@@ -40,7 +40,7 @@ describe("Task 131 cart presentation", () => {
     expect(within(dialog).getByRole("link", { name: "Ödemeye geç" }).getAttribute("href")).toBe("/odeme");
     const trust = within(dialog).getByRole("group", { name: "Güvenli ödeme" });
     for (const brand of ["PayTR", "Visa", "Mastercard", "Troy"]) expect(within(trust).getByRole("img", { name: brand })).toBeDefined();
-    expect(within(dialog).getByText("Kargo 2–4 iş günü")).toBeDefined();
+    expect(within(dialog).getByText("Kargo 2-4 iş günü")).toBeDefined();
     expect(within(dialog).getByRole("link", { name: "Sepeti görüntüle" }).getAttribute("href")).toBe("/sepet");
   });
 

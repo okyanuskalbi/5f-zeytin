@@ -19,10 +19,10 @@ frontend
 ui-ux-pro-max, frontend-design, better-layout, motion-framer (değişen hareket varsa), responsiveness-check, impeccable/audit-ai-design-slop. 21st: bu görevde yeni bileşen yok.
 
 ## Kabul kriterleri
-- [ ] lint, typecheck, test, build, `git diff --check` PASS.
-- [ ] `scripts/qa-storefront-collisions.mjs` GREEN (0); 320/390/768/1024/1440/1920 × ana sayfa + ürün sayfası taşma 0, konsol hatası 0, kırık görsel 0.
-- [ ] Kapsam 1-5 için kanıt `output/task198-3/KANIT.md` (madde başına PASS/FAIL + dosya:satır ya da ekran adı). §14.1'in 12 maddesi yeniden puanlanır; hedef 12/12.
-- [ ] Ekran görüntüleri: `output/task198-3/ekran/` (ana sayfa + ürün, 390 WebKit / 768 / 1440, ilk ekran + tam sayfa).
+- [x] lint, typecheck, test, build, `git diff --check` PASS.
+- [x] `scripts/qa-storefront-collisions.mjs` GREEN (0); 320/390/768/1024/1440/1920 × ana sayfa + ürün sayfası taşma 0, konsol hatası 0, kırık görsel 0.
+- [x] Kapsam 1-5 için kanıt `output/task198-3/KANIT.md` (madde başına PASS/FAIL + dosya:satır ya da ekran adı). §14.1'in 12 maddesi yeniden puanlanır; hedef 12/12.
+- [x] Ekran görüntüleri: `output/task198-3/ekran/` (ana sayfa + ürün, 390 WebKit / 768 / 1440, ilk ekran + tam sayfa).
 
 ## Yapılmaması gerekenler
 MASTER-PROMPT §15 aynen: push/yayın/canlı DB/env yok, `.env*` okuma yok, `node_modules`/`.next` silme yok, AFINA-KAYNAK ve output git'e eklenmez. Font (Fraunces + Figtree) ve marka renkleri değişmez. Kapsam dışı sayfaya (199 işi) dokunma.
@@ -30,4 +30,22 @@ MASTER-PROMPT §15 aynen: push/yayın/canlı DB/env yok, `.env*` okuma yok, `nod
 ## Teslim
 Tek kayıt: `fix: 198-3 A seçimi sonrası düzeltmeler`. Bu dosyaya `## Coder Notu (Codex)` + `## Durum: TAMAMLANDI`. Son satır: `CODEX-198-3 BİTTİ`.
 
-## Durum: BEKLİYOR
+## Coder Notu (Codex)
+
+K1=A yönü korundu. Telefonda ürün adı, boy, fiyat ve satın alma bilgisi fotoğraftan önce gelir; masaüstünde fotoğraf solda, bilgi sağda kalır. 320×568'de Sepete ekle alt kenarı559,36px;390×844 WebKit'te537,75px. Fotoğraf, açıklama, boy/adet ve mevcut sepet/teklif işlevleri korunur.
+
+Açılış yer rozeti kaldırıldı. Başlık/eylem grubu `data-overlay-ok`, video düğmesi işlevsel `data-media-control` taşır; kalıcı çakışma testi artık hero dahil20 ana sayfa hedefini denetler. Başlık bazı gerçek video karelerinde1,77:1 ölçüldüğü için yalnız yerel koyuluk güçlendirildi ve kenarları yumuşatıldı; fotoğraf üstündeki düğmelerin odak çizgisi açık düğme zeminine alındı. Son en kötü beyaz sınır7,157:1; hata6,745:1, pasif4,503:1, seçili12,065:1, odak5,131:1. Marka renkleri/Fraunces/Figtree değişmedi.
+
+İstenen uzun tireler kaldırıldı; ürün metadata title/description zaten uygundu. Tek köşe tablosu DESIGN.md'de; storefront ve ortak sepet CSS'inde mevcut değerler adlandırılmış değişkenlere bağlandı, ölçüler değiştirilmedi. İlgili eski testlerin beklediği kargo/llms metinleri ve yer rozeti beklentisi güncellendi.
+
+Rehberler: ui-ux-pro-max, frontend-design, better-layout, better-typography, better-colors, responsiveness-check, audit-ai-design-slop ve web-design-guidelines. Motion/shadcn rehberleri uyumluluk için okundu; yeni hareket/bileşen/paket yok,21st gerekmiyor. Eski v9 renk/scroll önerileri ve genel uzun tire tavsiyesi uygulanmadı; MASTER-PROMPT esas alındı.
+
+Kanıt `output/task 198-3/KANIT.md`; `KONTRAST.md` + `contrast.json`/`state-contrast.json`,30profil `matrix.json`, `collisions/report.json`, iki ilk ekran `first-screen/report.json`, ekranlar `ekran/`. §14.1 bu görev kapsamı12/12. 1438 yazı örneği ve9odak durumu ölçüldü. 30profil/375kart-satır-hero denetiminde çakışma, taşma, konsol, kırık görsel,4xx/5xx,axe, küçük hedef ve düğme kırılması0; Chromium CLS en çok0,013297,WebKit desteklemediği için ölçülmedi. Menü Esc/odak, boy/adet/sepet, teklif ön seçimi, ödeme hazırlık yüzeyi ve reduced-motion iki motorda PASS.
+
+Lint/typecheck/build/diff kontrolü PASS;1483 birim testi PASS, yerel PostgreSQL gerektiren26test bağlantı sağlanmadığı için SKIP. Telefon hız ölçümü1,916/1,916/1,924sn, masaüstü52/44/44ms; JavaScript232.952/396.105bayt, sınırlar altında. Yerel ölçümler fiziksel cihaz veya canlı kabul değildir.
+
+Push/yayın/Vercel/canlı DB/.env işlemi yok. Önceki run-clean/no-env koruması kullanıldı. node_modules ve .next silinmedi; output ve AFINA-KAYNAK kayda eklenmedi. Test tarayıcıları ve bu görevin3018/3019sunucuları düzgün kapatıldı, geçici sertifikalar temizlendi. Form/hesap/admin metinleri ve199/200işleri bu görev dışında; müşteri hikâye malzemesi hâlâ bekleniyor.
+
+Tek yerel kayıt: `fix: 198-3 A seçimi sonrası düzeltmeler`.
+
+## Durum: TAMAMLANDI

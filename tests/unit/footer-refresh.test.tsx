@@ -13,7 +13,7 @@ function footerDocument(): Document {
 it("names secure payment without a provider in the four unchanged trust facts", () => {
   const doc = new DOMParser().parseFromString(renderToStaticMarkup(<TrustStrip />), "text/html");
   expect([...doc.querySelectorAll("li")].map(item => item.textContent)).toEqual([
-    "Kendi tesisimizde dolum", "Kargo 2–4 iş günü", "Güvenli Ödeme", "Toptan alım için teklif",
+    "Kendi tesisimizde dolum", "Kargo 2-4 iş günü", "Güvenli Ödeme", "Toptan alım için teklif",
   ]);
   expect(doc.body.textContent).not.toContain("PayTR ile");
 });

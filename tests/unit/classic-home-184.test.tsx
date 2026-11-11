@@ -42,7 +42,6 @@ it("uses the corrected origin and business copy without unsupported claims", asy
   const doc = await serverDocument();
   const text = doc.querySelector("main")?.textContent ?? "";
   for (const copy of [
-    "Ellek, Düziçi / Osmaniye",
     "AFİNA ZEYTİN, Osmaniye Düziçi'nin Ellek zeytinliklerinden gelen zeytinleri kendi tesisinde hazırlayıp sofralara ulaştırır.",
     "Geleneksel Üretim",
     "%100 Doğal",

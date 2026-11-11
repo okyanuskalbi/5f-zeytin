@@ -59,19 +59,8 @@ export function ProductDetail({ family, related }: { family: ProductFamily; rela
       <li><span aria-hidden="true">/</span><span aria-current="page">{family.name}</span></li>
     </ol></nav>
     <article className={styles.product} data-product-page data-product-id={product.id} data-surface="light" data-reduced-motion={Boolean(reduced)}>
-      <div className={styles.gallery} data-product-detail-gallery>
-        <div className={styles.image} data-product-detail-image>
-          <V3Picture image={v3Image(activeImage)} sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1312px) 48vw, 600px" eager />
-        </div>
-        <div role="group" aria-label="Ürün görselleri" className={styles.thumbnails}>{gallery.map((image, index) => <m.button key={image.key} type="button" aria-label={image.label} aria-pressed={selection.scene === (index === 1)} onClick={() => setSelection({ ...selection, scene: index === 1 })}
-          whileTap={reduced ? undefined : { scale: .98 }} transition={{ type: "spring", stiffness: 240, damping: 28 }}>
-          <V3Picture image={v3Image(image.key)} sizes="64px" decorative />
-        </m.button>)}</div>
-        <p className={styles.caption}>Ürün görselleri temsilidir.</p>
-      </div>
       <div className={styles.info} data-product-detail-info>
         <h1 className={styles.title}>{family.name}</h1>
-        <p className={styles.description}>{details?.description}</p>
         <div className={styles.choice}>
           <span>Ambalaj boyu</span>
           {family.variants.length > 1 ? <div role="radiogroup" aria-label="Boy" className={styles.sizes}>{family.variants.map(variant => <label key={variant.id} className={styles.size} data-state={variant.id === product.id ? "checked" : "unchecked"}><input className="sr-only" type="radio" name={sizeGroup} value={variant.id} checked={variant.id === product.id} onChange={() => selectSize(variant.weight)} /><Check size={16} aria-hidden="true" />{variant.weight}</label>)}</div> : <p className={styles.weight}>{product.weight}</p>}
@@ -86,6 +75,19 @@ export function ProductDetail({ family, related }: { family: ProductFamily; rela
           <div className={styles.add}><AddToCart key={product.id} product={product} quantity={quantity} disabled={remaining === 0} /></div>
           <Link href={`/toptan-satis?teklif=${encodeURIComponent(product.id)}`} className={styles.quote}>Teklife ekle</Link>
         </div>
+      </div>
+      <div className={styles.gallery} data-product-detail-gallery>
+        <div className={styles.image} data-product-detail-image>
+          <V3Picture image={v3Image(activeImage)} sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1312px) 48vw, 600px" eager />
+        </div>
+        <div role="group" aria-label="Ürün görselleri" className={styles.thumbnails}>{gallery.map((image, index) => <m.button key={image.key} type="button" aria-label={image.label} aria-pressed={selection.scene === (index === 1)} onClick={() => setSelection({ ...selection, scene: index === 1 })}
+          whileTap={reduced ? undefined : { scale: .98 }} transition={{ type: "spring", stiffness: 240, damping: 28 }}>
+          <V3Picture image={v3Image(image.key)} sizes="64px" decorative />
+        </m.button>)}</div>
+        <p className={styles.caption}>Ürün görselleri temsilidir.</p>
+      </div>
+      <div className={styles.support}>
+        <p className={styles.description}>{details?.description}</p>
         <div className={styles.payment}><span>Ödeme seçenekleri</span><PaymentLogos tone="dark" /></div>
         {details && <section className={styles.details} aria-labelledby="bilgi-title"><h2 id="bilgi-title">Ürün bilgileri</h2><dl>{details.information.filter(row => row.label !== "Kargo").map(row => <div key={row.label}><dt>{row.label}</dt><dd>{row.value}</dd></div>)}</dl></section>}
         <section className={styles.storage} aria-labelledby="saklama-title"><h2 id="saklama-title">Saklama bilgisi</h2><p>Saklama ve son tüketim bilgileri için ürün ambalajını kontrol edin.</p></section>

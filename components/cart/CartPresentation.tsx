@@ -85,7 +85,7 @@ export function CartTrust(): JSX.Element {
         <PaymentLogos tone="dark" />
       </div>
     </div>
-    <p className={styles.delivery}><Truck aria-hidden="true" />Kargo 2–4 iş günü</p>
+    <p className={styles.delivery}><Truck aria-hidden="true" />Kargo 2-4 iş günü</p>
   </div>;
 }
 

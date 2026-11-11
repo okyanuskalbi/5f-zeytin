@@ -17,17 +17,19 @@ dokunduğu için onaylı): vitrin fiyat/stokunun koddan DB'ye alınması.
 
 **K1 kararı (11 Kasım 2026): A / Codex seçildi** (kıyas `output/task198-kiyas/KIYAS.pdf`, A 8/12, B 7/12).
 Kimi B kaydı `acc0041` yalnız `AFINA-KAYNAK/wt/198-kimi` kopyasında kalır, main'e alınmaz. Sıradaki:
-`docs/tasks/198-3-a-secim-duzeltmesi.md` (A'nın FAIL maddeleri) → 199.
+`docs/tasks/198-3-a-secim-duzeltmesi.md` tamamlandı → 199.
 
 Task198 Codex A1+A2 yerel uygulaması tamamlandı: yeni tasarım sistemi, üst/alt menü,
 ana sayfa ve ürün sayfası; kanıt `output/task198-codex/KANIT.md`. 1.483 birim testi,
 kod denetimleri ve derleme geçti; 15 ölçü × 2 sayfa tarayıcı kontrolü temiz.
-K1 A/B tasarım seçimi bekliyor. GitHub'a gönderim, yayın ve canlı veri işlemi yapılmadı.
+K1 A/B tasarım seçimi kullanıcı tarafından A olarak tamamlandı. GitHub'a gönderim, yayın ve canlı veri işlemi yapılmadı.
 
 Task198-2 Codex düzeltmesi: önceki denetimin kaçırdığı telefon kart içi
 metin/görsel çakışması, kalıcı testte87 RED kesişmesiyle doğrulandı. Fotoğraf
 üstte/bilgi altta düzeltmesi sonrası30/30 profil GREEN; Hakkımızda ikincil
 düğme yapıldı. Güncel kanıt `output/task198-codex/duzeltme-198-2/KANIT.md`.
+
+Task198-3: telefon ilk ekran satın alma, yer rozeti/başlık izni, uzun tire, köşe tablosu ve sayısal okunurluk tamamlandı. Kanıt `output/task198-3/KANIT.md`; görev kapsamı kalite listesi 12/12. 1483 test PASS,26 yerel PostgreSQL testi SKIP; lint/typecheck/build ve 30 profil çakışma/erişilebilirlik PASS. Yalnız tek yerel kayıt; gönderim/yayın/canlı DB/env yok, node_modules/.next korundu. Sıradaki iş 199 ayrı talimatla başlar.
 
 ## Önceki plan: açık tonlu yeni kurgu, Köklü Zeytincilik referanslı (10 Kasım 2026, öğleden sonra)
 

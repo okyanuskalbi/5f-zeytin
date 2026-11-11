@@ -41,6 +41,6 @@ export function getProductDetails(product: Product): {
     ...(categoryLabel ? [{ label: "Kategori", value: categoryLabel }] : []),
     { label: "Üretim yeri", value: "Ellek, Düziçi / Osmaniye" },
     { label: "Dolum", value: "Afina Zeytin tesisi" },
-    { label: "Kargo", value: "2–4 iş günü" },
+    { label: "Kargo", value: "2-4 iş günü" },
   ] };
 }

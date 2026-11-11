@@ -2,7 +2,7 @@
 
 > Ellek’teki gerçek üretim görüntüsünü, açık bir sofra zemini ve okunur ürün raflarıyla yan yana getiren sakin bir AFİNA vitrini.
 
-**Tema:** açık. **Yön:** Task198 Codex A/B adayı; K1 kullanıcı seçimi bekleniyor. Bu belge bir yayın veya tüm sayfalar kabulü değildir. Önceki v12 dosyası değiştirilmeden `DESIGN-v12-hasat.md` altında saklanır. Bağlayıcı üst kaynaklar müşteri BRIEF’i ve `MASTER-PROMPT.md` dosyasıdır.
+**Tema:** açık. **Yön:** K1, 11 Kasım 2026: kullanıcı A / Codex “Ellek sofrası” tasarımını seçti. Bu belge bir yayın veya tüm sayfalar kabulü değildir. Önceki v12 dosyası değiştirilmeden `DESIGN-v12-hasat.md` altında saklanır. Bağlayıcı üst kaynaklar müşteri BRIEF’i ve `MASTER-PROMPT.md` dosyasıdır.
 
 Bu düzen ziyaretçinin gerçek ürünü, boyu ve fiyatı okuyarak seçim yapmasını sağlar. Büyük doğal görüntü, değişen bölüm ölçüleri ve orijinal logo kimliği taşır. Sahte istatistik, yorum veya indirim anlatısı yoktur. Fraunces ile Figtree kullanıcı seçimidir; değiştirilmez.
 
@@ -78,7 +78,33 @@ Hesaplanan düz renk karşıtlıkları: yeşil/fildişi **10.87:1**, mürekkep/f
 
 ### Border Radius
 
-Düğme ve boy seçimi 4–8 px; ürün fotoğrafı ve küçük kategori görseli 8 px; geniş kategori/hikâye fotoğrafı 16 px. Hasat fotoğrafının yalnız üst-sol köşesi masaüstünde 64 px, telefonda 32 px; diğer köşeler 8 px. İkon düğmeleri dairesel, video kontrolü 24 px yarıçaplıdır. Yuvarlaklık içerik hiyerarşisine göre değişir; kategori fotoğrafları daire veya kemer olmaz.
+Tek köşe tablosu. Değerler mevcut görünümü koruyan adlandırılmış CSS değişkenleridir (`app/globals.css`). Ana sayfa, ürün ve ortak menü/sepet yüzeyi bu tabloyu kullanır; 199/200 kapsamındaki eski sayfalar bu görevde yeniden tasarlanmaz.
+
+| Öğe türü / kullanım | Köşe ölçüsü | Token adı |
+|---|---|---|
+| Düğme: ürün satın alma, boy seçimi, ürün teklifi | 4 px | `--sf-radius-action` |
+| Düğme: ana sayfa birincil/ikincil eylem, sepet kuponu | 8 px | `--sf-radius-button` |
+| Düğme: dairesel menü, hesap, sepet kontrolleri | %50 | `--sf-radius-icon` |
+| Düğme: video kontrolü | 24 px | `--sf-radius-video` |
+| Düğme: ortak sepet ödeme/öneri/mini eylemi | 999 px | `--sf-radius-pill` |
+| Kart: çerçevesiz ürün, kategori, blog | 0 px | `--sf-radius-card` |
+| Kart: düz toptan/bayilik kutusu | 8 px | `--sf-radius-panel` |
+| Kart: mevcut sepet satırı/öneri/özet | 12 px | `--sf-radius-cart-card` |
+| Görsel: ürün, küçük kategori, banner, blog, sepet fotoğrafı | 8 px | `--sf-radius-image` |
+| Görsel: geniş kategori; masaüstü hikâye | 16 px | `--sf-radius-image-wide` |
+| Görsel: telefon hikâyesi | 8 px | `--sf-radius-image` |
+| Görsel: hasat üst-sol, masaüstü / telefon | 64 / 32 px | `--sf-radius-harvest` / `--sf-radius-harvest-mobile` |
+| Görsel: hasat diğer üç köşe | 8 px | `--sf-radius-image` |
+| Görsel seçici düğmesi | 4 px | `--sf-radius-thumbnail` |
+| Rozet/etiket: menüde adet | 16 px | `--sf-radius-badge` |
+| Rozet/etiket: mevcut sepette boy | 999 px | `--sf-radius-pill` |
+| Form alanı: ürün adet grubu | 4 px | `--sf-radius-field` |
+| Form alanı: mevcut sepet adet grubu | 999 px | `--sf-radius-pill` |
+| Form alanı: ortak Input (kupon hariç) | 0 px | `rounded-none` |
+| Form alanı: mevcut sepet kuponu | 8 px | `--sf-radius-button` |
+| Çekmece/pencere: menü ve ortak Dialog/Sheet kabuğu | 0 px | `--sf-radius-drawer`; ortak `rounded-none` |
+
+Hasat köşeleri sırası üst-sol, üst-sağ, alt-sağ, alt-soldur. Fotoğrafın üzerinde yer adı rozeti yoktur. `data-overlay-ok` yalnız bilinçli başlık/eylem kapsayıcısındadır; video kontrolü işlevsel `data-media-control` düğmesidir. Çakışma testi ikisini açıkça ayırır; geri kalan yazı/görsel kesişmeleri hatadır.
 
 ### Shadows
 
@@ -96,7 +122,7 @@ Logo solda, beş gerçek sayfa bağlantısı ortada, hesap ve sepet sağda. Aç�
 
 ### Hero
 
-Müşterinin zeytinlik videosu, tek slogan ve tek `Ürünleri İnceleyin` bağlantısı. Video geniş yüzeydir; bütün video karartılmaz. Masaüstünde slogan alt-sol bölgede, yalnız metnin arkasındaki koyu radyal geçiş üzerinde; sağdaki zeytinlik serbest kalır. Düğme fildişi, yazısı yeşildir. Krem panel, kesik köşeli etiket, açılış perdesi ve ikinci düğme yok. Telefonda da slogan video üstünde, alt-sol yerel karartmada durur. Hero telefon yüksekliği en fazla 608 px ve ekran yüksekliği eksi 72 px; kontrol için alt alan ayrılır. Poster ilk kare için yer ayırır; duyarlı AVIF ön yükleme bağlantısı belge başına taşınır ve yüksek önceliklidir. Fraunces normal yüzü gerektiğinde yüklenir; kullanılmayan italik dosya açılışta ön yüklenmez. Video kontrolü en az 48×48 px.
+Müşterinin zeytinlik videosu, tek slogan ve tek `Ürünleri İnceleyin` bağlantısı. Video geniş yüzeydir; bütün video karartılmaz. Masaüstünde slogan alt-sol bölgede, yalnız metnin arkasındaki koyu radyal geçiş üzerinde; sağdaki zeytinlik serbest kalır. Koyulaştırmanın çekirdeği %80-86 opaklıktadır; üst, alt ve sağ kenarı 48 px içinde yumuşar. Fotoğraf üstündeki düğmelerin koyu altın odak halkası, karelerden etkilenmemesi için açık düğme zemininin 4 px içinde kalır. Düğme fildişi, yazısı yeşildir. Krem panel, kesik köşeli etiket, açılış perdesi ve ikinci düğme yok. Telefonda da slogan video üstünde, alt-sol yerel karartmada durur. Hero telefon yüksekliği en fazla 608 px ve ekran yüksekliği eksi 72 px; kontrol için alt alan ayrılır. Poster ilk kare için yer ayırır; duyarlı AVIF ön yükleme bağlantısı belge başına taşınır ve yüksek önceliklidir. Fraunces normal yüzü gerektiğinde yüklenir; kullanılmayan italik dosya açılışta ön yüklenmez. Video kontrolü en az 48×48 px.
 
 ### Dört geçiş
 
@@ -132,7 +158,7 @@ Dört gerçek yazı bağlantısı; küçük görseller, farklı metin uzunluğun
 
 ### Ürün ayrıntısı
 
-Masaüstünde büyük görüntü solda, seçim/satın alma sağda; telefon doğal tek sütun. Stüdyo ve sahne görünümü seçilebilir; değişim sabit kutuda olur. Boy seçimleri görünür düğmeler; seçili durum yalnız renkle belirtilmez. Adet alanı 16 px ve 48 px hedefler. `Sepete ekle` mevcut sepet işlevini çağırır; teklif doğru ürün kimliğini taşır. Açıklama, saklama bilgisi ve en fazla dört benzer ürün. Breadcrumb ve noindex korunur.
+Masaüstünde büyük görüntü solda, seçim/satın alma ve açıklama sağda; telefonda ad, boy, fiyat, adet ve satın alma önce, ardından fotoğraf, açıklama ve saklama bilgisi gelir. Kaynak okuma sırası da telefondaki bu sıradır. 320×568 ve 390×844 ilk ekranında seçili boy, fiyat ve Sepete ekle görünür. Stüdyo ve sahne görünümü seçilebilir; değişim sabit kutuda olur. Boy seçimleri görünür düğmeler; seçili durum yalnız renkle belirtilmez. Adet alanı 16 px ve 48 px hedefler. `Sepete ekle` mevcut sepet işlevini çağırır; teklif doğru ürün kimliğini taşır. Açıklama, saklama bilgisi ve en fazla dört benzer ürün. Breadcrumb ve noindex korunur.
 
 ## Do's and Don'ts
 

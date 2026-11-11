@@ -29,14 +29,15 @@
   width: 48px;
   height: 48px;
   color: inherit;
-  border-radius: 50%;
+  border-radius: var(--sf-radius-icon);
   cursor: pointer;
 }
 .iconButton:hover { background: var(--sf-ivory); }
 .iconButton:disabled { cursor: default; opacity: .5; }
 .iconButton.account { display: none; }
-.badge { position: absolute; inset-block-start: 0; inset-inline-end: 0; min-width: 20px; padding-inline: 4px; border-radius: 16px; background: var(--sf-green); color: var(--sf-paper); font-size: .75rem; line-height: 20px; font-variant-numeric: tabular-nums; }
+.badge { position: absolute; inset-block-start: 0; inset-inline-end: 0; min-width: 20px; padding-inline: 4px; border-radius: var(--sf-radius-badge); background: var(--sf-green); color: var(--sf-paper); font-size: .75rem; line-height: 20px; font-variant-numeric: tabular-nums; }
 .drawer.drawer {
+  border-radius: var(--sf-radius-drawer);
   inset-inline-start: auto;
   inset-inline-end: 0;
   width: min(100%, 400px);

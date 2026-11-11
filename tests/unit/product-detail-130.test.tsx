@@ -38,7 +38,7 @@ it.each(copy)("preserves the approved draft copy and six facts for %s", async (i
   expect(getProductDetails(product)).toEqual({ description, information: [
     { label: "Net miktar", value: weight }, { label: "Ambalaj", value: packaging },
     { label: "Kategori", value: category }, { label: "Üretim yeri", value: "Ellek, Düziçi / Osmaniye" },
-    { label: "Dolum", value: "Afina Zeytin tesisi" }, { label: "Kargo", value: "2–4 iş günü" },
+    { label: "Dolum", value: "Afina Zeytin tesisi" }, { label: "Kargo", value: "2-4 iş günü" },
   ] });
 });
 

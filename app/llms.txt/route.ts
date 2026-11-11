@@ -27,7 +27,7 @@ export async function GET(): Promise<Response> {
     `- [Tam kamuya açık metin](${origin}/llms-full.txt): Bölümler, ürünler, talep yolu ve kısa cevaplar.`,
     `- [İçerik güncellemeleri](${origin}/feed.xml): Gerçek ana sayfa güncelleme kaydı.`, "",
     "## Ürünler", "",
-    ...products.map(product => `- ${product.name} — ${product.weight}`), "",
+    ...products.map(product => `- ${product.name}, ${product.weight}`), "",
     "## Tesis", "", `${siteIdentity.facility.locality} / ${siteIdentity.facility.region}`, "",
     "## Sık sorulanlar", "",
     ...verifiedFaqs.flatMap(faq => [`### ${faq.question}`, "", faq.answer, ""]),

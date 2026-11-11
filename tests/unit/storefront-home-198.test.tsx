@@ -12,6 +12,8 @@ it('Task198 BRIEF: exact section order, one hero action, all four blog destinati
  expect(posterPreload?.getAttribute('imagesrcset')).toContain('hero-poster-1920.avif 1920w');
  expect(doc.querySelector('h1')?.textContent).toBe('Kökü toprakta. Yeri sofrada.');
  expect(doc.querySelectorAll('#baslangic a')).toHaveLength(1);
+ expect(doc.querySelector('#hero-title')?.closest('[data-overlay-ok]')).toBeTruthy();
+ expect(doc.querySelector('#baslangic')?.textContent).not.toContain('Ellek, Düziçi / Osmaniye');
  expect(doc.querySelectorAll('[data-home-section="blog"] a[href^="/blog/"]')).toHaveLength(4);
  expect(doc.querySelector('[data-home-section="story"] a')?.textContent).toBe('Hakkımızda');
  expect(doc.querySelectorAll('[data-home-section="categories"] a')).toHaveLength(4);

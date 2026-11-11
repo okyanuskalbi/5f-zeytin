@@ -34,8 +34,7 @@ export function StoreHome({ products }: { products: readonly ProductVariant[] })
     <link rel="preload" as="image" href={customerMedia.hero.posters.outputs.find(image => image.format === 'avif')?.file} type="image/avif" imageSrcSet={customerMedia.hero.posters.outputs.filter(image => image.format === 'avif').map(image => `${image.file} ${image.width}w`).join(', ')} imageSizes="100vw" fetchPriority="high" />
     <section id="baslangic" data-home-section="hero" className={styles.hero} aria-labelledby="hero-title">
       <HeroVideo />
-      <QuietMotion entrance className={styles.heroCopy}><h1 id="hero-title">Kökü toprakta. Yeri sofrada.</h1><Link className={styles.primary} href="/urunler">Ürünleri İnceleyin</Link></QuietMotion>
-      <p className={styles.origin}>Ellek, Düziçi / Osmaniye</p>
+      <QuietMotion entrance className={styles.heroCopy} overlay><h1 id="hero-title">Kökü toprakta. Yeri sofrada.</h1><Link className={styles.primary} href="/urunler">Ürünleri İnceleyin</Link></QuietMotion>
     </section>
     <section data-home-section="categories" data-home-categories data-category-layout="portals" className={`${styles.container} ${styles.categories}`} aria-label="Ürünler ve AFİNA">
       <span id="kiler" className={styles.anchor} />
