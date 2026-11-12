@@ -1,4 +1,4 @@
-/* Google mandates this face for its branded button; site type stays Fraunces/Figtree. */
+/* Google mandates this face for its branded button; site type stays Cormorant/Montserrat. */
 @font-face { font-family: "Google Sans Button"; src: url("/fonts/google-sans-button.ttf") format("truetype"); font-weight: 500; font-style: normal; font-display: swap; }
 .page { padding: 48px var(--page-margin) 96px; color: var(--foreground); }
 .split { display: grid; gap: 48px; align-items: start; }
@@ -21,7 +21,7 @@
 .password button, .password button:hover, .password button:active, .password button:focus, .password button:focus-visible { background: transparent; }
 .labelRow { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; column-gap: 12px; margin-bottom: -6px; }
 .forgotPassword { min-height: 44px; padding: 8px 0 8px 8px; font-size: 14px; font-weight: 500; color: var(--muted-foreground); text-underline-offset: 3px; }
-.alternateSignIn { width: 100%; min-height: 48px; padding: 12px; border: 1px solid var(--customer-rule, var(--border)); border-radius: var(--sf-radius-button); font-size: 16px; font-weight: 500; background: transparent; }
+.alternateSignIn { width: 100%; min-height: 48px; padding: 12px; border: 1px solid var(--customer-rule, var(--border)); border-radius: var(--sf-radius-pill); font-size: 16px; font-weight: 500; background: transparent; }
 .alternateSignIn:hover { background: var(--card); }
 .authFooter { display: grid; gap: 2px; margin-top: 4px; text-align: center; font-size: 16px; }
 .authFooter p { color: var(--muted-foreground); }
@@ -87,10 +87,10 @@
 
 /* Storefront form surfaces share the A design tokens. */
 .form { font-size: 16px; line-height: 1.6; }
-.form button { min-height: 48px; border-radius: var(--sf-radius-button); white-space: nowrap; }
+.form button { min-height: 48px; border-radius: var(--sf-radius-pill); white-space: nowrap; }
 .field :is(input,textarea) { min-height: 48px; font-size: 16px; border-radius: 0; color: var(--sf-ink); background: var(--sf-paper); border-color: var(--sf-muted); }
 .field small, .error { font-size: 14px; }
-.password button { min-height: 44px; border-radius: var(--sf-radius-icon); }
+.password button { min-height: 44px; border-radius: var(--sf-radius-round); }
 .check a { display: inline-flex; align-items: center; min-height: 44px; }
-.address, .addressForm { border-radius: var(--sf-radius-panel); }
+.address, .addressForm { border-radius: var(--sf-radius-card); }
 @media (max-width: 359px) { .form button { padding-inline: 8px; } .alternateSignIn { font-size: 14px; gap: 4px; } }

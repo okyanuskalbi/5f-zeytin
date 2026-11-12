@@ -29,7 +29,7 @@ it("keeps addition feedback accessible and both text widths reserved without cha
   const button = screen.getByRole("button", { name: "Sepete ekle" });
   fireEvent.click(button);
   expect(cart.addItem).toHaveBeenCalledWith(product.id, 1);
-  expect(await screen.findByRole("button", { name: "Eklendi ✓" })).toBeDefined();
+  expect(await screen.findByRole("button", { name: "Eklendi" })).toBeDefined();
   expect(screen.getByRole("status").textContent).toContain("sepete eklendi");
   expect(container.querySelector("[data-add-label]")?.getAttribute("style") ?? "").not.toMatch(/opacity:0|scale\(0/);
 });
@@ -39,7 +39,9 @@ it("keeps unavailable stock separate and motionless", async () => {
   const { container } = render(<AddToCart product={product} />);
   const button = screen.getByRole("button", { name: "Mevcut değil" });
   expect(button.hasAttribute("disabled")).toBe(true);
-  expect(button.getAttribute("style")).toContain("transform: none");
+  // Task204: the pill moves only through CSS; a sold-out pill has no coin to move.
+  expect(button.getAttribute("style") ?? "").not.toMatch(/transform|opacity/);
+  expect(button.querySelector("[data-coin]")).toBeNull();
   expect(container.querySelector("[data-add-label]")).toBeNull();
 });
 

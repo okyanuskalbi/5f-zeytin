@@ -185,4 +185,46 @@ Yerel production sunucusu (`output/task201/run-clean.mjs` yolu; yalnız `afina_k
 ## Yapılmaması gerekenler
 Kalan sayfaların yeniden tasarımı (205–206) · yeni metin/iddia · önizleme PDF/video hazırlamak (kullanıcı istemiyor) · push/yayın.
 
-## Durum: BEKLİYOR (kullanıcı plan onayı)
+## Coder Notu (fable)
+
+Uygulama 12 Kasım 2026'da tamamlandı. Kanıt: `output/task204/KANIT.md`, ölçüm `output/task204/qa.log` + `olcum.json`, karşıtlık `output/task204/KONTRAST.md`, ekran görüntüleri `output/task204/ekran/`.
+
+**Sonuçlar:** lint PASS · typecheck PASS · test 147 dosya / 1308 test PASS (6 dosya / 26 test başlangıçtaki gibi atlandı: yerel Postgres) · build PASS · `git diff --check` PASS · `scripts/qa-design-v3.mjs` hata listesi boş (6 görünüm) · çakışma testi 30 profil 0 çakışma · 36 rota 35×200 + 1×404 · telefon LCP 2,03 sn (DPR 1) / 2,06 sn (DPR 3), ilk JS 218,8 KB, CLS 0.
+
+**Silinenler (başvuru kalmadığı `rg` ile doğrulandı):** `app/fonts/*` (Fraunces, Figtree, Inter + lisans metinleri), `scripts/optimize-fraunces.py`, `lib/media/pro-fonts.json` (yalnız silinen font dosyalarını anlatan, hiçbir yerden okunmayan kayıt), `components/catalog/PurchaseButton.tsx` (tek kullanıcısı `AddToCart` artık `PillButton` çiziyor).
+
+**21st:** erişim vardı; `docs/DESIGN.md` listesindeki 6 bileşen `get_component` ile okundu, tokenlara uyarlandı (ayrıntı `output/task204/PLAN.md`). Yeni paket eklenmedi.
+
+**Uyarlanan eski beklentiler (davranış silinmedi):**
+- `bootstrap.test.ts`: `next/font` taklidi Cormorant + Montserrat.
+- `product-detail-130`, `storefront-feedback-191` ve 4 e2e dosyası: "Eklendi ✓" → "Eklendi" (onay işareti artık madalyonda).
+- `storefront-feedback-191`: stoksuz düğmede satır içi `transform: none` yerine "madalyon yok, satır içi hareket yok".
+- `navbar-menu-174`: çekmecedeki son odaklanabilir öğe artık "Ürünleri İnceleyin".
+- `footer-127`, `payment-logos-132`: alt bilgide ödeme logoları kâğıt hap içinde, bu yüzden koyu çizimler (`*-dark.svg`).
+- `faq-contact-footer`: "Toptan Satış" bağlantısı `footer nav` içinde aranıyor (aynı adrese giden "Teklif İste" düğmesi eklendi).
+- `tests/e2e/fonts.spec.ts`: yeni fontlar.
+- `scripts/qa-storefront-collisions.mjs`: bütün yazısı fotoğraf üstü katmanda olan kartlar (4 kutu, üçlü banner) "ölçülecek yazı yok" diye düşmüyor; bu kartların okunurluğu `qa-design-v3.mjs` içinde piksel örneklemesiyle ölçülüyor.
+
+**DESIGN.md / görev dosyasından sapmalar ve nedenleri:**
+1. Font çağrısı görevdeki tek satır değil: Cormorant dik (600/700, ön yükleme yalnız latin) + ayrı italik 700 (ön yüklemesiz); Montserrat latin + latin-ext ön yüklü. Neden: tek çağrı 6 dosya / 239 KB ön yüklüyordu ve gerçek telefon yoğunluğunda LCP 5,1 sn çıktı. Bütün Türkçe glifler yine kendi alan adımızdan geliyor.
+2. Telefon posteri her yoğunlukta 720 sürümü (`hero-poster.ts`); telefon zaten 720p video oynatıyor. Video öğesi posterden 1 px kısa: aynı kare olduğu için en büyük boyama poster olarak kalıyor (yoksa videonun ilk karesi 5–6. saniyede yeni LCP adayı oluyordu).
+3. Token testi `rg` çalıştırmak yerine aynı taramayı Node ile yapıyor (CI'da `rg` olmayabilir).
+4. `gold` düğmede odak halkası koyu altın değil fildişi: koyu zeminde koyu altın 2:1 kalıyordu.
+5. `outline` hover'da yeşile dolar (DESIGN yalnız dolgulu varyantları tarif ediyordu).
+6. Ürün kartında adaçayı alan kartın içinde 12 px köşeyle duruyor ve boy etiketi kâğıt zeminli: adaçayı etiket adaçayı zeminde görünmüyordu.
+7. 4 kutu: 1100 px altında 2×2 (tablet 4:3, telefon 3:4, madalyon sağ üstte), 360 px altında tek sütun 16:10. Neden: "Hakkında Bilgi Alın" 320'de tek satır kalmalı.
+8. Öne Çıkan: masaüstünde yatay kartlı 2×2 ızgara (mevcut `data-product-layout="paired"` sözleşmesi + ilk raftan farklı yerleşim); telefonda 2 sütun kompakt, 360 altında tek sütun.
+9. Üçlü banner: telefonda 1 geniş + 2 yarım, 360 altında tek sütun (yarım kartta 3 satıra bölünen başlık koyulaştırmanın üstüne çıkıp 1,5:1'e düşüyordu).
+10. Hasat: mühür dördüncü madde olarak üç adımın yanında; yanındaki görünen yazı `aria-hidden` (mühür aynı adı `role="img"` ile taşıyor, iki kez okunmasın).
+11. Üst menü: sepet hapında "Sepet" yazısı yok (mevcut erişilebilirlik sözleşmesi: düğmenin tek metni rozet). Çekmecede `gold` düğme yeşil bir alt bloğun üstünde: kâğıt zeminde altın dolgu 2:1 kalıyordu.
+12. Hero'ya tek satır açıklama olarak marka ikincil cümlesi eklendi ("Toprağın sunduğu lezzet, Afina'nın özeniyle."); başlığın ikinci satırı italik (DESIGN'ın izin verdiği tek italik).
+13. Blog kartlarında "Yazıyı oku" kaldırıldı (kartın tamamı bağlantı, okuma süresi gösteriliyor).
+14. Boşluklarda 12, 20 ve 40 px de kullanıldı (8 px ölçeğinin dışında, 4 px katı).
+15. `AddToCart`: sepet hazır olmadan önce düğme `disabled` yerine `aria-disabled` taşıyor (görünüm sabit kalsın diye; tıklama eskisi gibi etkisiz). "Eklendi" süresi 2,4 → 1,6 sn (DESIGN).
+16. Adım 0 başlangıcı `0dd0222` değil onun üstündeki belge kaydı `5fd5634`.
+
+**Onay bekleyen yeni metin:** Hasat üst etiketi "Ellek zeytinlikleri" (DESIGN bu bölümde üst etiket istiyor, metnini vermiyor; sitedeki mevcut "Ellek zeytinliklerinden gelen" cümlesinden alındı). İstenmezse `StoreHome.tsx` içinde tek satır.
+
+**Bekleyenler / yapılmayanlar:** Playwright e2e takımı çalıştırılmadı (yapılandırma kendi sunucusunu açıyor); WebKit'te CLS ölçülemiyor; Firefox ve gerçek cihaz 207'de. Ana sayfa dışındaki sayfalar yalnız "açılıyor, konsol hatası yok" düzeyinde doğrulandı; yeni tokenlar yüzünden görünümleri kısmen değişti (düğmeler hap, köşeler 12/24), asıl tasarımları 205–206'da.
+
+## Durum: TAMAMLANDI (fable) — K5 kullanıcı onayı bekliyor

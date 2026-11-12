@@ -91,7 +91,10 @@ try {
             await page.waitForTimeout(80);
             const result = await card.evaluate(inspectCard);
             const hero = await card.getAttribute('data-home-section') === 'hero';
-            assert(result.images > 0 && (result.textRuns > 0 || hero), 'Card must have measured media and visible text');
+            // Task204 photo cards carry all their words on the green overlay (data-overlay-ok);
+            // their legibility is sampled by scripts/qa-design-v3.mjs instead.
+            const overlayOnly = await card.locator('[data-overlay-ok]').count() > 0;
+            assert(result.images > 0 && (result.textRuns > 0 || hero || overlayOnly), 'Card must have measured media and visible text');
             if (hero) assert.equal(await card.locator('[data-overlay-ok] h1').count(), 1, 'Hero heading must explicitly allow overlay');
             results.push(result);
           }

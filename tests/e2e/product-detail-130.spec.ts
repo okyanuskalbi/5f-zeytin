@@ -36,7 +36,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       await expect(page).toHaveURL(/boy=1(?:%20|\+)kg/);
       await detail.getByRole("button", { name: "Adedi artır" }).click();
       await add.click();
-      await expect(detail.getByRole("button", { name: "Eklendi ✓" })).toBeVisible();
+      await expect(detail.getByRole("button", { name: "Eklendi" })).toBeVisible();
       expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? "[]"), CART_STORAGE_KEY))
         .toEqual([{ productId: "sample-green-olive-1kg", quantity: 2 }]);
       const description = detail.getByText("Aynı doğal kırma yeşil zeytin, günlük sofra için cam kavanozda. Kendi tesisimizde doldurulur.");

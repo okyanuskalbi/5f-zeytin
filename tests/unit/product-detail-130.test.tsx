@@ -112,7 +112,7 @@ it.each([
   expect(within(page).getByLabelText("Adet").textContent).toBe("1");
   fireEvent.click(within(page).getByRole("button", { name: "Adedi artır" }));
   fireEvent.click(within(page).getByRole("button", { name: "Sepete ekle" }));
-  expect(within(page).getByRole("button", { name: "Eklendi ✓" })).toBeDefined();
+  expect(within(page).getByRole("button", { name: "Eklendi" })).toBeDefined();
   expect(screen.getByLabelText("Sepetteki adet").textContent).toBe("2");
   expect(JSON.parse(localStorage.getItem(CART_STORAGE_KEY)!)).toEqual([{ productId: nextId, quantity:2 }]);
   expect(new URL(location.href).searchParams.get("boy")).toBe(size);
@@ -128,7 +128,7 @@ it("honors remaining stock including the cart and refuses another purchase when 
   expect(within(page).getByLabelText("Adet").textContent).toBe("2");
   fireEvent.click(within(page).getByRole("button", { name:"Sepete ekle" }));
   expect(screen.getByLabelText("Sepetteki adet").textContent).toBe("3");
-  expect(within(page).getByRole("button", { name:"Eklendi ✓" }).hasAttribute("disabled")).toBe(true);
+  expect(within(page).getByRole("button", { name:"Eklendi" }).hasAttribute("disabled")).toBe(true);
 });
 
 it("shows unavailable stock with a disabled CTA and no quantity selector", async () => {

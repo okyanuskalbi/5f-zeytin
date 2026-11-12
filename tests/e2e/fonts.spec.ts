@@ -3,7 +3,7 @@ import { expect, test, type Locator } from "@playwright/test";
 const glyphSample = "İŞĞÜÖÇ ışğüöç ₺1.250,00";
 
 async function expectFont(element: Locator, family: string, weight: string): Promise<void> {
-  await expect(element).toHaveCSS("font-family", new RegExp(family === "Figtree" ? "Figtree|bodyFont" : family, "i"));
+  await expect(element).toHaveCSS("font-family", new RegExp(family, "i"));
   await expect(element).toHaveCSS("font-weight", weight);
   expect(await element.evaluate(async (node) => {
     const style = getComputedStyle(node);
@@ -12,15 +12,16 @@ async function expectFont(element: Locator, family: string, weight: string): Pro
   })).toBe(true);
 }
 
-test("brand typography uses Fraunces headings with Figtree copy and tabular prices", async ({ page }) => {
+test("brand typography uses Cormorant headings with Montserrat copy and tabular prices", async ({ page }) => {
   await page.goto("/");
   const title = page.getByRole("heading", { level: 1 });
-  await expectFont(title, "Fraunces", "500");
-  await expectFont(page.locator("body"), "Figtree", "400");
+  await expectFont(title, "Cormorant", "700");
+  await expectFont(page.locator("body"), "Montserrat", "400");
+  expect(await page.evaluate(() => document.fonts.check("700 48px Cormorant", "İıŞşĞğÇçÖöÜü") && document.fonts.check("400 16px Montserrat", "İıŞşĞğÇçÖöÜü"))).toBe(true);
   const prices = page.locator('article[data-product-id] [aria-label="Fiyat"]');
   expect(await prices.count()).toBeGreaterThan(0);
   for (const price of await prices.all()) {
-    await expectFont(price, "Figtree", "600");
+    await expectFont(price, "Montserrat", "600");
     await expect(price).toHaveCSS("font-variant-numeric", "tabular-nums");
     // Equal advance widths prove the font's tabular feature works, beyond CSS.
     const widths = await price.evaluate((node) => Array.from("0123456789", (digit) => {
@@ -46,13 +47,13 @@ test("Turkish glyphs and lira render from self-hosted fonts in every brand style
     panel.id = "font-glyph-probes";
     panel.style.cssText = "padding:16px;overflow-wrap:anywhere";
     for (const [index, [variable, weight, fontStyle]] of [
-      ["--font-display", "500", "normal"], ["--font-display", "400", "italic"],
+      ["--font-display", "600", "normal"], ["--font-display", "700", "italic"],
       ["--font-body", "400", "normal"], ["--font-body", "600", "normal"],
       ["--font-display", "700", "normal"], ["--font-body", "800", "normal"],
     ].entries()) {
       const probe = document.createElement("p");
       probe.id = `font-glyph-${index}`;
-      probe.style.cssText = `font-family:var(${variable});font-weight:${weight};font-style:${fontStyle};font-size:24px;font-variation-settings:"SOFT" 50`;
+      probe.style.cssText = `font-family:var(${variable});font-weight:${weight};font-style:${fontStyle};font-size:24px`;
       const [letters, amount] = sample.split("₺");
       for (const [part, text] of [["letters", letters], ["currency", "₺"], ["amount", amount]]) {
         const span = document.createElement("span");
@@ -69,11 +70,11 @@ test("Turkish glyphs and lira render from self-hosted fonts in every brand style
   await expect(probes).toHaveCount(6);
   for (let index = 0; index < 6; index++) {
     await expect(probes.nth(index)).toHaveText(glyphSample);
-    await expectFont(probes.nth(index), index < 2 || index === 4 ? "Fraunces" : "Figtree", ["500", "400", "400", "600", "700", "800"][index]);
+    await expectFont(probes.nth(index), index < 2 || index === 4 ? "Cormorant" : "Montserrat", ["600", "700", "400", "600", "700", "800"][index]);
   }
   if (browserName === "chromium") {
-    // Inspect painted fonts, since CSS alone can hide missing glyphs. Figtree
-    // has no ₺ glyph; the retained fallback stack must render that symbol.
+    // Inspect painted fonts, since CSS alone can hide missing glyphs. The lira
+    // sign may come from the brand face or from the retained fallback stack.
     const session = await page.context().newCDPSession(page);
     await session.send("DOM.enable");
     await session.send("CSS.enable");
@@ -87,11 +88,11 @@ test("Turkish glyphs and lira render from self-hosted fonts in every brand style
         expect(fonts.length).toBeGreaterThan(0);
         for (const font of fonts) {
           expect(font.glyphCount).toBeGreaterThan(0);
-          if ([2, 3, 5].includes(index) && part === "currency") {
-            expect(font.familyName).toMatch(/Figtree|Helvetica Neue|Arial/i);
+          if (part === "currency") {
+            expect(font.familyName).toMatch(/Cormorant|Montserrat|Iowan Old Style|Georgia|Helvetica Neue|Arial/i);
           } else {
             expect(font.isCustomFont).toBe(true);
-            expect(font.familyName).toMatch(index < 2 || index === 4 ? /Fraunces/i : /Figtree/i);
+            expect(font.familyName).toMatch(index < 2 || index === 4 ? /Cormorant/i : /Montserrat/i);
           }
         }
       }

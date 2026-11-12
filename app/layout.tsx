@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import localFont from "next/font/local";
+import { Cormorant, Montserrat } from "next/font/google";
 import type { JSX, ReactNode } from "react";
 import { StoreHeader } from "@/components/storefront/StoreHeader";
 import { StoreFooter } from "@/components/storefront/StoreFooter";
@@ -13,26 +13,24 @@ import { siteIdentity } from "@/lib/site/identity";
 import type { Product } from "@/types/catalog";
 import "./globals.css";
 
-const Fraunces = localFont({
-  src: [
-    { path: "./fonts/Fraunces-tr.woff2", weight: "500 700", style: "normal" },
-    { path: "./fonts/Fraunces-italic.woff2", weight: "100 900", style: "italic" },
-  ],
+// Self-hosted at build time by next/font: no runtime font request, CSP unchanged.
+// Only the faces the first screen needs are preloaded; the rest arrive on demand
+// (same family name), so the hero poster is not queued behind unused font files.
+const display = Cormorant({
+  weight: ["600", "700"],
+  style: ["normal"],
+  subsets: ["latin"],
   display: "swap",
-  // Self-host the approved display face; no runtime font requests.
-  preload: false,
-  adjustFontFallback: "Times New Roman",
-  variable: "--font-display",
-  fallback: ["Georgia", "Times New Roman", "serif"],
+  variable: "--font-cormorant",
 });
 
-const bodyFont = localFont({
-  src: [{ path: "./fonts/Figtree-variable.ttf", weight: "300 900", style: "normal" }],
+// The hero's one italic phrase: same family name, so it joins --font-cormorant; never preloaded.
+const displayItalic = Cormorant({ weight: ["700"], style: ["italic"], subsets: ["latin"], display: "swap", preload: false, variable: "--font-cormorant-italic" });
+
+const body = Montserrat({
+  subsets: ["latin", "latin-ext"],
   display: "swap",
-  preload: true,
-  variable: "--font-body",
-  fallback: ["Arial", "Helvetica Neue", "sans-serif"],
-  adjustFontFallback: "Arial",
+  variable: "--font-montserrat",
 });
 
 export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#243A29" };
@@ -69,11 +67,11 @@ export default async function RootLayout({
   let products: readonly Product[] | null;
   try { products = await getProducts(); } catch { products = null; }
   return (
-    <html lang="tr" className={`${Fraunces.variable} ${bodyFont.variable}`}>
+    <html lang="tr" className={`${display.variable} ${displayItalic.variable} ${body.variable}`}>
       <body style={storefrontMotionStyles}>
         <a
           href="#ana-icerik"
-          className="fixed top-4 left-4 z-[100] -translate-y-32 rounded-none bg-primary px-5 py-3 text-primary-foreground focus:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+          className="fixed top-4 left-4 z-[100] -translate-y-32 rounded-full bg-primary px-5 py-3 text-primary-foreground focus:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
         >
           Ana içeriğe geç
         </a>

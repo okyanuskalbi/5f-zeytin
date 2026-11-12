@@ -50,7 +50,7 @@ it.each([
   if (contact.phone) expect(doc.querySelector('#iletisim a[href^="tel:"]')).not.toBeNull();
   if (contact.email) expect(doc.querySelector('#iletisim a[href^="mailto:"]')).not.toBeNull();
   expect(doc.querySelector('#toptan form[aria-label="Kurumsal teklif talebi"] a[href="/kvkk"]')).not.toBeNull();
-  expect(doc.querySelector('footer a[href="/toptan-satis"]')?.textContent).toBe("Toptan Satış");
+  expect(doc.querySelector('footer nav a[href="/toptan-satis"]')?.textContent).toBe("Toptan Satış");
   expect(doc.querySelector('footer a[href^="mailto:"]')?.getAttribute("href")).toBe(`mailto:${corporateContact.email}`);
   expect(doc.querySelector('footer a[href^="tel:"]')?.getAttribute("href")).toBe(`tel:${corporateContact.phone}`);
   expect(doc.querySelector('footer a[href*="wa.me"]')).toBeNull();

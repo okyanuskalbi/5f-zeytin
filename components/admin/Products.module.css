@@ -5,12 +5,12 @@
 .count { display: flex; flex-wrap: wrap; gap: 16px 32px; font-variant-numeric: tabular-nums; }
 .count p { display: flex; align-items: center; gap: 16px; }
 .count strong { color: var(--foreground); font-weight: 600; }
-.panel { min-width: 0; display: grid; gap: 24px; padding: 16px; background: var(--card); border: 1px solid var(--border); border-radius: var(--sf-radius-panel); }
-.manager button, .editDialog button { min-height: 48px; border-radius: var(--sf-radius-action); font-size: 1rem; white-space: nowrap; }
+.panel { min-width: 0; display: grid; gap: 24px; padding: 16px; background: var(--card); border: 1px solid var(--border); border-radius: var(--sf-radius-card); }
+.manager button, .editDialog button { min-height: 48px; border-radius: var(--sf-radius-pill); font-size: 1rem; white-space: nowrap; }
 .manager :is(a, button, input, select, [tabindex]):focus-visible { outline: 2px solid var(--ring); outline-offset: 4px; }
 .status { color: var(--primary); }
 .silentStatus { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-.editDialog { width: calc(100% - 32px); max-width: 720px; padding: 24px; gap: 16px; border: 1px solid var(--border); border-radius: var(--sf-radius-drawer); overscroll-behavior: contain; }
+.editDialog { width: calc(100% - 32px); max-width: 720px; padding: 24px; gap: 16px; border: 1px solid var(--border); border-radius: var(--sf-radius-card); overscroll-behavior: contain; }
 .dialogHeading { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
 .dialogHeading [data-slot="dialog-title"] { font-size: 1.75rem; }
 .formPanel { min-width: 0; padding-top: 8px; }
@@ -21,7 +21,7 @@
 .fields label, .controlLabel { display: block; margin-bottom: 8px; }
 .help { margin-top: 8px; color: var(--muted-foreground); overflow-wrap: anywhere; font-size: .875rem; }
 .categoryVisibility { display: flex; gap: 8px; max-width: 100%; }
-.categoryVisibility [data-slot="toggle-group-item"] { min-width: 72px; min-height: 48px; border: 1px solid var(--input); border-radius: var(--sf-radius-action); background: var(--background); color: var(--foreground); }
+.categoryVisibility [data-slot="toggle-group-item"] { min-width: 72px; min-height: 48px; border: 1px solid var(--input); border-radius: var(--sf-radius-pill); background: var(--background); color: var(--foreground); }
 .categoryVisibility [data-slot="toggle-group-item"][data-state="on"] { background: var(--primary); color: var(--primary-foreground); border-color: var(--primary); }
 .fields .check { display: flex; gap: 16px; align-items: center; min-height: 48px; margin: 0; overflow-wrap: anywhere; }
 .check input { flex-shrink: 0; min-width: 20px; width: 20px; min-height: 20px; height: 20px; padding: 0; accent-color: var(--primary); }
@@ -30,7 +30,7 @@
 .actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 16px; }
 .actions [data-variant="outline"], .pagination button { border-color: var(--border); }
 .fields > .actions { grid-column: 1 / -1; border-top: 1px solid var(--border); padding-top: 24px; }
-.error { padding: 16px; border: 1px solid var(--destructive); color: var(--destructive); background: var(--sf-paper); border-radius: var(--sf-radius-panel); display: grid; gap: 16px; }
+.error { padding: 16px; border: 1px solid var(--destructive); color: var(--destructive); background: var(--sf-paper); border-radius: var(--sf-radius-card); display: grid; gap: 16px; }
 .error button { justify-self: start; }
 .tableHint { color: var(--muted-foreground); font-size: .875rem; }
 .scroll { overflow-x: auto; min-width: 0; }

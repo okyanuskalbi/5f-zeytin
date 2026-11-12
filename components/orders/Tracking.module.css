@@ -53,6 +53,6 @@
 @media (max-width: 599px) { .page { padding-block: 32px 64px; } .demo { padding: 16px; } }
 
 .form { max-width: 576px; }
-.page button { border-radius: var(--sf-radius-button); }
+.page button { border-radius: var(--sf-radius-pill); }
 .page input { min-height: 48px; font-size: 16px; }
 @media (max-width: 599px) { .page { padding-inline: 16px; } }

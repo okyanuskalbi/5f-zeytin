@@ -7,11 +7,9 @@ vi.mock("next/navigation", async importOriginal => ({ ...(await importOriginal<t
 
 // next/font is a build-time transform; browser tests verify the real font files.
 vi.mock("next/font/google", () => ({
-  Fraunces: () => ({ variable: "font-display" }),
-  Figtree: () => ({ variable: "font-body" }),
-  Inter: () => ({ variable: "font-body" }),
+  Cormorant: () => ({ variable: "font-cormorant" }),
+  Montserrat: () => ({ variable: "font-montserrat" }),
 }));
-vi.mock("next/font/local", () => ({ default: () => ({ variable: "font-display" }) }));
 // RootLayout now reads the server-owned payment preview availability flag.
 vi.mock("server-only", () => ({}));
 

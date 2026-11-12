@@ -77,7 +77,7 @@ test.describe("Task193 product pages", () => {
     expect(relatedItems[3].category).toBe("zeytinyagi");
     // Audit the settled addition feedback; the intentional entrance crossfades
     // its text and the mobile mini-cart before reaching their final colours.
-    await expect(product.locator("[data-add-label]")).toHaveText("Eklendi ✓");
+    await expect(product.locator("[data-add-label]")).toHaveText("Eklendi");
     await expect(product.locator("[data-add-label]")).toHaveCSS("opacity", "1");
     const miniCart = page.locator("[data-mini-cart]");
     if (await miniCart.count()) await expect(miniCart).toHaveCSS("opacity", "1");

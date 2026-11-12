@@ -15,43 +15,17 @@ body:has([data-admin-shell]) footer { display:none; }
   html:has([aria-label="Mobil ödeme"]) { scroll-padding-bottom:calc(128px + env(safe-area-inset-bottom)); }
 }
 
-/* Next capsize metrics: calculateSizeAdjustValues("Figtree"), Arial fallback. */
-@font-face {
-  font-family: "Afina Figtree Fallback";
-  src: local("Arial");
-  font-display: swap;
-  ascent-override: 94.32%;
-  descent-override: 24.82%;
-  line-gap-override: 0%;
-  size-adjust: 100.72%;
-}
-
 :root {
-  /* Task198 source of truth. Legacy names below are compatibility aliases. */
-  --sf-green: #243A29;
-  --sf-ivory: #F5F1E7;
-  --sf-paper: #FFFDF8;
-  --sf-gold: #D4B483;
-  --sf-ink: #202A22;
-  --sf-muted: #586052;
-  --sf-line: #D7D7C9;
-  --sf-focus: #80602D;
-  --sf-radius-action: 4px;
-  --sf-radius-button: 8px;
-  --sf-radius-card: 0px;
-  --sf-radius-panel: 8px;
-  --sf-radius-image: 8px;
-  --sf-radius-image-wide: 16px;
-  --sf-radius-harvest: 64px;
-  --sf-radius-harvest-mobile: 32px;
-  --sf-radius-thumbnail: 4px;
-  --sf-radius-badge: 16px;
-  --sf-radius-pill: 999px;
-  --sf-radius-cart-card: 12px;
-  --sf-radius-field: 4px;
-  --sf-radius-drawer: 0px;
-  --sf-radius-icon: 50%;
-  --sf-radius-video: 24px;
+  /* Task204 "Altın Dal": docs/DESIGN.md Quick Start, one to one. Legacy names below are compatibility aliases. */
+  --sf-green: #243A29; --sf-green-deep: #1A2B1E; --sf-olive: #5C6B3A;
+  --sf-sage: #E7EBDD; --sf-ivory: #F5F1E7; --sf-paper: #FFFDF8;
+  --sf-gold: #D4B483; --sf-gold-deep: #80602D;
+  --sf-ink: #202A22; --sf-muted: #586052; --sf-line: #D7D7C9; --sf-focus: #80602D;
+  --sf-radius-pill: 999px; --sf-radius-card: 24px; --sf-radius-field: 12px;
+  --sf-radius-round: 50%; --sf-radius-hero: 32px; --sf-radius-arch: 999px 999px 24px 24px;
+  --sf-shadow-lift: 0 16px 36px -18px rgba(36, 58, 41, .32);
+  --sf-overlay: linear-gradient(to top, rgba(26, 43, 30, .86), rgba(26, 43, 30, 0) 62%);
+  --sf-button-h: 52px; --sf-coin: 36px;
   --sf-space-8: 8px;
   --sf-space-16: 16px;
   --sf-space-24: 24px;
@@ -91,7 +65,7 @@ body:has([data-admin-shell]) footer { display:none; }
   --body-ink: var(--brand-ink);
   --page-margin: clamp(1.5rem, 2.2vw, 2rem);
   --page-gutter: 1.5rem;
-  --header-height: calc(4.5rem + env(safe-area-inset-top, 0px));
+  --header-height: calc(4rem + env(safe-area-inset-top, 0px));
 
   /* v4: 8px spacing rhythm; display values follow docs/DESIGN.md. */
   --space-unit: 8px;
@@ -127,8 +101,8 @@ body:has([data-admin-shell]) footer { display:none; }
   --overlay: var(--ink);
 
   /* Also used by isolated component fixtures without the next/font layout. */
-  --font-body-fallback: "Afina Figtree Fallback", Arial, sans-serif;
-  --font-display-fallback: Georgia, "Times New Roman", serif;
+  --font-body-fallback: "Helvetica Neue", Arial, sans-serif;
+  --font-display-fallback: "Iowan Old Style", Georgia, serif;
   --radius: 8px;
   --duration-fast: 150ms;
   --ease-editorial: cubic-bezier(.22,1,.36,1);
@@ -170,8 +144,10 @@ body:has([data-admin-shell]) footer { display:none; }
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-overlay: var(--overlay);
-  --font-sans: var(--font-body, var(--font-body-fallback));
-  --font-serif: var(--font-display, var(--font-display-fallback));
+  --font-display: var(--font-cormorant), "Iowan Old Style", Georgia, serif;
+  --font-body: var(--font-montserrat), "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-montserrat), "Helvetica Neue", Arial, sans-serif;
+  --font-serif: var(--font-cormorant), "Iowan Old Style", Georgia, serif;
   --font-weight-medium: 600;
   --radius-sm: var(--radius);
   --radius-md: var(--radius);
@@ -204,9 +180,9 @@ body:has([data-admin-shell]) footer { display:none; }
     min-height: 100dvh;
     background: var(--shell-background);
     color: var(--foreground);
-    font-family: var(--font-body, var(--font-body-fallback));
+    font-family: var(--font-body);
     font-size: var(--step-body);
-    line-height: 1.6;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     caret-color: var(--ring);
     scrollbar-color: var(--muted-foreground) var(--background);
@@ -217,15 +193,14 @@ body:has([data-admin-shell]) footer { display:none; }
   body > footer, [data-mini-cart-reserve] { flex-shrink: 0; }
 
   h1, h2, h3, .font-serif {
-    font-family: var(--font-display, var(--font-display-fallback));
-    font-optical-sizing: auto;
-    font-variation-settings: "SOFT" 50;
+    font-family: var(--font-display);
     font-synthesis: none;
   }
 
   h1, h2, h3 {
-    font-weight: 500;
-    line-height: 1.2;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -.01em;
     text-wrap: balance;
   }
 
@@ -314,5 +289,9 @@ body:has([data-admin-shell]) footer { display:none; }
 }
 
 @media (min-width: 1100px) {
-  :root { --header-height: calc(5rem + env(safe-area-inset-top, 0px)); }
+  :root { --header-height: calc(4.75rem + env(safe-area-inset-top, 0px)); }
+}
+
+@media (max-width: 640px) {
+  :root { --sf-radius-card: 20px; --sf-radius-hero: 24px; --sf-button-h: 48px; }
 }

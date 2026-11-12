@@ -1,0 +1,99 @@
+/* Altın madalyonlu hap: docs/DESIGN.md → PillButton. A compact context may tune --pill-h, --pill-coin, --pill-pad, --pill-gap, --pill-font. */
+.pill {
+  --pill-height: var(--pill-h, var(--sf-button-h));
+  --pill-coin-size: var(--pill-coin, var(--sf-coin));
+  --pill-edge: 1.5px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--pill-gap, 12px);
+  box-sizing: border-box;
+  max-width: 100%;
+  height: var(--pill-height);
+  padding-inline: var(--pill-pad, 24px) calc((var(--pill-height) - var(--pill-coin-size)) / 2 - var(--pill-edge));
+  border: var(--pill-edge) solid transparent;
+  border-radius: var(--sf-radius-pill);
+  font-family: var(--font-body);
+  font-size: var(--pill-font, 15px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: .01em;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 180ms ease-out, border-color 180ms ease-out, color 180ms ease-out, transform 180ms ease-out;
+}
+.pill:not(:has(.coin)) { justify-content: center; padding-inline: var(--pill-pad, 24px); }
+.pill[data-full] { display: flex; width: 100%; }
+.pill[data-size="md"] { --pill-h: 44px; --pill-coin: 28px; --pill-pad: 20px; --pill-font: 14px; }
+.label { display: block; min-width: 0; }
+.coin {
+  display: grid;
+  place-items: center;
+  flex: 0 0 var(--pill-coin-size);
+  box-sizing: border-box;
+  width: var(--pill-coin-size);
+  height: var(--pill-coin-size);
+  border: var(--pill-edge) solid transparent;
+  border-radius: var(--sf-radius-round);
+  transition: background-color 180ms ease-out, border-color 180ms ease-out, color 180ms ease-out, transform 180ms ease-out;
+}
+.coin svg { width: 50%; height: 50%; }
+.wait {
+  width: 46%;
+  height: 46%;
+  border: 2px solid currentColor;
+  border-inline-end-color: transparent;
+  border-radius: var(--sf-radius-round);
+  animation: pill-wait .8s linear infinite;
+}
+@keyframes pill-wait { to { transform: rotate(1turn); } }
+
+.pill[data-variant="primary"] { background: var(--sf-green); color: var(--sf-ivory); }
+.pill[data-variant="primary"] .coin { background: var(--sf-gold); color: var(--sf-green); }
+.pill[data-variant="gold"] { background: var(--sf-gold); color: var(--sf-green); }
+.pill[data-variant="gold"] .coin { background: var(--sf-green); color: var(--sf-ivory); }
+.pill[data-variant="outline"] { border-color: var(--sf-green); background: transparent; color: var(--sf-green); }
+.pill[data-variant="outline"] .coin { border-color: var(--sf-green); color: var(--sf-green); }
+.pill[data-variant="quiet"] {
+  min-height: 44px;
+  height: auto;
+  padding-inline: 0;
+  border-width: 0;
+  background: transparent;
+  color: var(--sf-green);
+}
+.pill[data-variant="quiet"] .label {
+  text-decoration: underline;
+  text-decoration-color: var(--sf-gold);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.pill:focus-visible { outline: 2px solid var(--sf-gold-deep); outline-offset: 3px; }
+.pill[data-variant="gold"]:focus-visible { outline-color: var(--sf-ivory); }
+
+.pill:disabled:not([aria-busy="true"]) {
+  border-color: transparent;
+  background: var(--sf-sage);
+  color: var(--sf-muted);
+  -webkit-text-fill-color: var(--sf-muted);
+  cursor: not-allowed;
+}
+.pill[aria-busy="true"] { cursor: progress; }
+.pill[aria-disabled="true"] { cursor: default; }
+
+.pill:where(:not(:disabled, [aria-disabled="true"])):active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) {
+  .pill:where(:not(:disabled, [aria-disabled="true"])):hover .coin { transform: translateX(4px); }
+  .pill[data-variant="primary"]:where(:not(:disabled, [aria-disabled="true"])):hover { background: var(--sf-green-deep); }
+  .pill[data-variant="gold"]:where(:not(:disabled, [aria-disabled="true"])):hover { background: color-mix(in srgb, var(--sf-gold) 94%, #000); }
+  .pill[data-variant="outline"]:where(:not(:disabled, [aria-disabled="true"])):hover { background: var(--sf-green); color: var(--sf-ivory); }
+  .pill[data-variant="outline"]:where(:not(:disabled, [aria-disabled="true"])):hover .coin { border-color: var(--sf-gold); background: var(--sf-gold); color: var(--sf-green); }
+  .pill[data-variant="quiet"]:hover .label { text-decoration-color: var(--sf-gold-deep); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pill:active, .pill:hover .coin { transform: none !important; }
+}

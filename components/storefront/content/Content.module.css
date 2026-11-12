@@ -4,7 +4,7 @@
 .page h2 { margin:0 0 16px; font-size:clamp(1.75rem,3vw,2.25rem); font-weight:500; line-height:1.2; text-wrap:balance; }
 .page p { margin:0 0 24px; max-width:72ch; font-size:1rem; line-height:1.6; color:var(--sf-muted); }
 .page section { margin-block:48px; scroll-margin-top:calc(var(--header-height) + 24px); }
-.contents { padding:24px; background:var(--sf-paper); border-radius:var(--sf-radius-panel); }
+.contents { padding:24px; background:var(--sf-paper); border-radius:var(--sf-radius-card); }
 .contents h2 { font-size:1.5rem; margin-bottom:8px; }
 .page nav ul { margin:0; padding:0; list-style:none; }
 .page a { display:inline-flex; align-items:center; min-height:44px; min-width:44px; font-size:1rem; line-height:1.5; color:var(--sf-green); text-decoration:underline; text-underline-offset:4px; }
@@ -16,7 +16,7 @@
 .legalNav { border-top:1px solid var(--sf-line); padding-block:24px; }
 .legalNav a[aria-current="page"] { font-weight:700; text-decoration-thickness:2px; }
 .actions { display:flex; flex-wrap:wrap; gap:16px; margin-top:32px; }
-.actions a { justify-content:center; padding:12px 24px; min-height:48px; border:1px solid var(--sf-green); border-radius:var(--sf-radius-button); text-decoration:none; white-space:nowrap; }
+.actions a { justify-content:center; padding:12px 24px; min-height:48px; border:1px solid var(--sf-green); border-radius:var(--sf-radius-pill); text-decoration:none; white-space:nowrap; }
 .actions a:first-child { color:var(--sf-paper); background:var(--sf-green); }
 @media(max-width:767px) { .page { padding:32px 16px 48px; } .page section { margin-block:32px; } .contents { padding:24px 16px; } }
 @media(max-width:767px) { .actions { flex-direction:column; align-items:stretch; } }

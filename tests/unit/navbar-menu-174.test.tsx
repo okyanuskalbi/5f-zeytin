@@ -42,7 +42,8 @@ it("closes after selecting a destination", () => {
 
 it("keeps keyboard Tab within the open menu", () => {
   const menu = openMenu();
-  const last = menu.getByRole("link", { name: "Sipariş takibi" });
+  // Task204: the drawer now ends with its gold action.
+  const last = menu.getByRole("link", { name: "Ürünleri İnceleyin" });
   last.focus();
   fireEvent.keyDown(last, { key: "Tab" });
   expect(document.activeElement).toBe(menu.getByRole("button", { name: "Menüyü kapat" }));

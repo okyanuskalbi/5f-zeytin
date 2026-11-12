@@ -3,15 +3,19 @@ import type { JSX } from "react";
 import { BrandLogo } from "@/components/site/BrandLogo";
 import { PaymentLogos } from "@/components/site/PaymentLogos";
 import { productGroups } from "@/lib/catalog/groups";
+import { OliveBranch } from "./ui/OliveBranch";
+import { PillButton } from "./ui/PillButton";
 import styles from "./Navigation.module.css";
 
 /** 21st Minimal Footer's grouped links, rewritten around AFİNA's actual routes. */
 export function StoreFooter(): JSX.Element {
   return <footer data-surface="dark" className={styles.footer}>
+    <div className={styles.footerRule} aria-hidden="true"><span /><OliveBranch tone="gold" className={styles.footerBranch} /><span /></div>
     <div className={styles.footerInner}>
       <div className={styles.footerIdentity}>
         <Link prefetch={false} href="/" aria-label="Afina Zeytin ana sayfa" className={styles.footerLogoLink}><BrandLogo tone="dark" loading="lazy" className={styles.footerLogo} /></Link>
         <p className={styles.footerSlogan}>Kökü toprakta.<br />Yeri sofrada.</p>
+        <PillButton href="/toptan-satis" variant="gold">Teklif İste</PillButton>
         <a className={styles.community} href="https://afina.com.tr" target="_blank" rel="noopener noreferrer">AFİNA Şirketler Topluluğu markasıdır.</a>
       </div>
       <div className={styles.footerGroups} data-footer-links>
@@ -20,7 +24,7 @@ export function StoreFooter(): JSX.Element {
         <section><h2>Yardım</h2><nav aria-label="Müşteri ve yasal bilgiler"><Link href="/hesabim" prefetch={false}>Hesabım</Link><Link href="/siparis-takip" prefetch={false}>Sipariş takibi</Link><Link prefetch={false} href="/iade">İade ve iptal</Link><Link prefetch={false} href="/kvkk">KVKK</Link><Link prefetch={false} href="/mesafeli-satis">Mesafeli satış sözleşmesi</Link></nav></section>
       </div>
       <address className={styles.contact}><span>Ellek Beldesi, Düziçi / Osmaniye</span><a href="tel:+903288827708">0 328 882 77 08</a><a href="mailto:info@afina.com.tr">info@afina.com.tr</a></address>
-      <div className={styles.footerBottom}><p>© {new Date().getFullYear()} AFİNA ZEYTİN</p><div role="group" aria-label="Güvenli ödeme" className={styles.payments}><PaymentLogos tone="light" className={styles.paymentLogo} /></div></div>
+      <div className={styles.footerBottom}><p>© {new Date().getFullYear()} AFİNA ZEYTİN</p><div role="group" aria-label="Güvenli ödeme" className={styles.payments}><PaymentLogos tone="dark" className={styles.paymentLogo} /></div></div>
     </div>
   </footer>;
 }

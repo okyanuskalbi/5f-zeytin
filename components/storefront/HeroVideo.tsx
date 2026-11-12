@@ -5,6 +5,7 @@ import { Pause, Play } from "lucide-react";
 import { V3Picture } from "@/components/media/V3Picture";
 import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
 import media from "@/lib/media/customer-home.json";
+import { HERO_POSTER_SIZES } from "./hero-poster";
 import styles from "./StoreHome.module.css";
 
 /** The eager poster paints before any optional video request. */
@@ -49,7 +50,7 @@ export function HeroVideo(): JSX.Element {
     return () => { element.pause(); observer?.disconnect(); document.removeEventListener("visibilitychange", update); };
   }, [ready, reduced, failed]);
   return <><div ref={root} className={styles.heroMedia}>
-    <V3Picture image={media.hero.posters} sizes="100vw" eager decorative className={styles.poster} data-hero-photo />
+    <V3Picture image={media.hero.posters} sizes={HERO_POSTER_SIZES} eager decorative className={styles.poster} data-hero-photo />
     {ready && !reduced && !failed &&
       <video ref={video} src={source} className={styles.heroVideo} autoPlay muted loop playsInline preload="none" aria-hidden="true" tabIndex={-1}
         onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onError={(event) => {
@@ -66,7 +67,7 @@ export function HeroVideo(): JSX.Element {
         userPaused.current = !element.paused;
         if (element.paused) void element.play().catch(() => setPlaying(false));
         else element.pause();
-      }}>{playing ? <Pause size={18} aria-hidden="true" /> : <Play size={18} aria-hidden="true" />}{playing ? "Duraklat" : "Oynat"}</button>
+      }}>{playing ? <Pause size={18} aria-hidden="true" /> : <Play size={18} aria-hidden="true" />}</button>
     }
   </>;
 }

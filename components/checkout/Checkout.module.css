@@ -60,8 +60,8 @@
 }
 
 .page { background: var(--sf-ivory); color: var(--sf-ink); }
-.summary, .note, .demo { background: var(--sf-paper); border-radius: var(--sf-radius-panel); }
+.summary, .note, .demo { background: var(--sf-paper); border-radius: var(--sf-radius-card); }
 .page input { min-height: 48px; font-size: 16px; }
 .choice a { display: inline-flex; align-items: center; min-height: 44px; }
-.page button { border-radius: var(--sf-radius-button); }
+.page button { border-radius: var(--sf-radius-pill); }
 @media (max-width: 599px) { .page { padding-inline: 16px; } .steps button { font-size: 14px; padding-inline: 4px; } }

@@ -125,14 +125,14 @@ test.describe("Task191 action-only motion", () => {
     await record(page, { badge: 'button[aria-label^="Sepetim,"] span[aria-hidden="true"]', label: '[data-product-id="sample-olive-oil-1l"] [data-add-label]', button: '[data-product-id="sample-olive-oil-1l"] button[data-variant]' });
     await button.click();
     await expect(badge).toHaveText("2");
-    await expect(card.locator("[data-add-label]")).toHaveText("Eklendi ✓");
+    await expect(card.locator("[data-add-label]")).toHaveText("Eklendi");
     const samples = await recorded(page);
     await info.attach("cart-feedback-samples", { body: JSON.stringify(samples), contentType: "application/json" });
     expect(samples.badge.every(sample => sample.scale === 1)).toBe(true);
     expect(samples.badge.at(-1)!.scale).toBeCloseTo(1, 4);
     expect(samples.label.some(sample => sample.opacity > 0 && sample.opacity < 1)).toBe(true);
     expect(samples.button.every(sample => sample.width === dimensions.width && sample.height === dimensions.height)).toBe(true);
-    expect(samples.label.at(-1)).toMatchObject({ text: "Eklendi ✓", opacity: 1, scale: 1 });
+    expect(samples.label.at(-1)).toMatchObject({ text: "Eklendi", opacity: 1, scale: 1 });
   });
 
   test("FAQ remains keyboard controlled and reduced motion opens and closes immediately", async ({ page }) => {

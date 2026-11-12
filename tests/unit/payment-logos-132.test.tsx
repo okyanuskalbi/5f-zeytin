@@ -75,13 +75,13 @@ describe("Task 132 payment artwork and surfaces", () => {
     },
   );
 
-  it("uses light artwork on the dark A footer with a named payment group", () => {
+  it("uses dark artwork inside the paper pill of the dark footer with a named payment group", () => {
     const doc = new DOMParser().parseFromString(renderToStaticMarkup(<Footer />), "text/html");
     const payment = doc.querySelector('[aria-label="Güvenli ödeme"]')!;
     expect(payment.closest("[data-surface]")?.getAttribute("data-surface")).toBe("dark");
     expect([...payment.querySelectorAll("img")].map(image => ({ alt: image.alt, src: image.getAttribute("src") })))
       .toEqual(brands.map(brand => ({ alt: brand,
-        src: `/images/payment/${brand.toLowerCase()}.svg` })));
+        src: `/images/payment/${brand.toLowerCase()}${brand === "Mastercard" ? "" : "-dark"}.svg` })));
     expect(payment.getAttribute("role")).toBe("group");
     expect(payment.querySelectorAll("img")).toHaveLength(4);
   });

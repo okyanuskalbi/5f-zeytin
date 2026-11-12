@@ -4,7 +4,6 @@ import { useEffect, useRef, useState, type JSX } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
-import { m, useReducedMotion } from "motion/react";
 import { Menu, ShoppingCart, UserRound } from "lucide-react";
 import { useCart } from "@/components/cart/CartProvider";
 import { useMembershipDialog } from "@/components/account/MembershipDialogProvider";
@@ -21,10 +20,9 @@ const links = [
   { label: "Blog", href: "/blog" },
 ] as const;
 
-/** 21st Navbar 1 composition, with the existing Radix focus and commerce owners. */
+/** Shop bar after 21st.dev Shop Navigation Menu (#18131): flat destinations, account and a cart pill; Radix owns drawer focus. */
 export function StoreHeader(): JSX.Element {
   const pathname = usePathname();
-  const reduced = useReducedMotion();
   const cart = useCart();
   const openMembership = useMembershipDialog();
   const count = cart?.state.items.reduce((sum, item) => sum + item.quantity, 0) ?? 0;
@@ -53,15 +51,15 @@ export function StoreHeader(): JSX.Element {
             event.preventDefault(); openMembership(event.currentTarget);
           }
         }}><UserRound size={22} strokeWidth={1.6} aria-hidden="true" /></Link>
-        <button type="button" className={styles.iconButton} aria-label={`Sepetim, ${count} adet`} aria-haspopup="dialog" aria-expanded={cart?.open ?? false}
+        <button type="button" data-cart-pill="" className={styles.cartPill} aria-label={`Sepetim, ${count} adet`} aria-haspopup="dialog" aria-expanded={cart?.open ?? false}
           disabled={!cart?.state.hydrated || cart.products === null} onClick={event => cart?.openCart(event.currentTarget)}>
-          <ShoppingCart size={22} strokeWidth={1.6} aria-hidden="true" />
-          {count > 0 && <span aria-hidden="true" className={styles.badge}>{count > 99 ? "99+" : count}</span>}
+          <ShoppingCart size={20} strokeWidth={1.7} aria-hidden="true" />
+          {count > 0 && <span aria-hidden="true" data-cart-count="" className={styles.badge}>{count > 99 ? "99+" : count}</span>}
         </button>
-        <m.button ref={trigger} type="button" className={`${styles.iconButton} ${styles.menuTrigger}`} aria-label="Menüyü aç" aria-haspopup="dialog" aria-expanded={open}
-          whileTap={reduced ? undefined : { scale: .96 }} transition={{ type: "spring", stiffness: 200, damping: 28 }} onClick={() => setOpen(true)}>
-          <Menu size={24} strokeWidth={1.6} aria-hidden="true" />
-        </m.button>
+        <button ref={trigger} type="button" className={`${styles.iconButton} ${styles.menuTrigger}`} aria-label="Menüyü aç" aria-haspopup="dialog" aria-expanded={open}
+          onClick={() => setOpen(true)}>
+          <Menu size={22} strokeWidth={1.7} aria-hidden="true" />
+        </button>
       </div>
     </div>
     {open && <StoreMenu links={links} pathname={pathname} onClose={() => setOpen(false)}

@@ -6,6 +6,7 @@ import { AnimatePresence, m, useReducedMotion } from "motion/react";
 import { UserRound, X } from "lucide-react";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { productGroups } from "@/lib/catalog/groups";
+import { PillButton } from "./ui/PillButton";
 import styles from "./Navigation.module.css";
 
 /** Loaded only after the visitor opens the menu; Radix owns focus and Escape. */
@@ -25,9 +26,10 @@ export function StoreMenu({ links, pathname, onClose, onRestoreFocus }: {
             event.preventDefault();
             onRestoreFocus();
           }}>
+          {/* The drawer answers the visitor's tap: a short slide from its own edge, exit shorter than entry. */}
           <m.div initial={reduced ? false : { opacity: .6, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={reduced ? undefined : { opacity: 0, x: 24 }}
             transition={{ type: "spring", stiffness: 200, damping: 28 }} className={styles.drawerInner}>
-            <div className={styles.drawerTop}><DialogTitle className={styles.drawerTitle}>Site menüsü</DialogTitle><DialogClose asChild><button type="button" className={styles.iconButton} aria-label="Menüyü kapat"><X size={24} aria-hidden="true" /></button></DialogClose></div>
+            <div className={styles.drawerTop}><DialogTitle className={styles.drawerTitle}>Site menüsü</DialogTitle><DialogClose asChild><button type="button" className={styles.iconButton} aria-label="Menüyü kapat"><X size={22} aria-hidden="true" /></button></DialogClose></div>
             <DialogDescription className="sr-only">Ürünlerimizi, AFİNA hakkında bilgileri ve hesabınızı açın.</DialogDescription>
             <nav aria-label="Mobil navigasyon" className={styles.mobileNav}>
               {links.map(link => <DialogClose key={link.href} asChild><Link prefetch={false} href={link.href} aria-current={active(link.href) ? "page" : undefined}>{link.label}</Link></DialogClose>)}
@@ -39,7 +41,10 @@ export function StoreMenu({ links, pathname, onClose, onRestoreFocus }: {
               <DialogClose asChild><Link href="/hesabim" prefetch={false}><UserRound size={20} aria-hidden="true" />Hesabım</Link></DialogClose>
               <DialogClose asChild><Link href="/siparis-takip" prefetch={false}>Sipariş takibi</Link></DialogClose>
             </div>
-            <p className={styles.drawerSignoff}>Kökü toprakta. Yeri sofrada.</p>
+            <div className={styles.drawerFoot}>
+              <DialogClose asChild><PillButton href="/urunler" variant="gold" fullWidth>Ürünleri İnceleyin</PillButton></DialogClose>
+              <p className={styles.drawerSignoff}>Kökü toprakta. Yeri sofrada.</p>
+            </div>
           </m.div>
         </DialogContent>}
       </AnimatePresence>

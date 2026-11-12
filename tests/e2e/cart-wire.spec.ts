@@ -9,7 +9,7 @@ const line = (page: Page) => page.getByRole("group", { name: "Doğal Kırma Yeş
 
 async function addQuantity(page: Page, quantity: number): Promise<void> {
   for (let count = 0; count < quantity; count++) {
-    await card(page).getByRole("button", { name: /^(Sepete ekle|Eklendi ✓)$/ }).click();
+    await card(page).getByRole("button", { name: /^(Sepete ekle|Eklendi)$/ }).click();
   }
   await expect(card(page).getByRole("status")).toContainText("sepete eklendi");
   await expect(drawer(page)).toHaveCount(0);
@@ -66,7 +66,7 @@ test("cumulative stock failure keeps the cart and quantity, then permits retry",
   await expect(drawer(page).getByRole("status", { name: "Adet" })).toHaveText("12");
   await page.keyboard.press("Escape");
   await expect(cartButton(page)).toBeFocused();
-  await card(page).getByRole("button", { name: /^(Sepete ekle|Eklendi ✓)$/ }).click();
+  await card(page).getByRole("button", { name: /^(Sepete ekle|Eklendi)$/ }).click();
   await expect(card(page).getByRole("alert")).toContainText("Stok sınırını veya adedi kontrol edip tekrar deneyin");
   await expect(drawer(page)).toHaveCount(0);
   await expect(cartButton(page)).toHaveAccessibleName("Sepetim, 12 adet");
@@ -156,7 +156,7 @@ test("keyboard and reduced motion preserve opener focus and modal isolation", as
   for (const reducedMotion of ["no-preference", "reduce"] as const) {
     await page.emulateMedia({ reducedMotion });
     await page.goto("/");
-    const add = card(page).getByRole("button", { name: /^(Ekle|Eklendi ✓)$/ });
+    const add = card(page).getByRole("button", { name: /^(Ekle|Eklendi)$/ });
     await expect(add).toBeEnabled();
     await add.focus();
     await page.keyboard.press("Enter");

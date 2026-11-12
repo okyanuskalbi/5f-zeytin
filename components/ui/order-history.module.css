@@ -4,7 +4,7 @@
 .step::before { content: ""; position: absolute; top: 36px; bottom: 4px; left: 15px; width: 1px; background: var(--history-rule); }
 .step[data-status="completed"]::before { background: var(--primary); }
 .step:last-child::before { display: none; }
-.marker { position: absolute; inset: 0 auto auto 0; width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--history-rule); border-radius: var(--sf-radius-icon); color: var(--history-muted); background: var(--background); }
+.marker { position: absolute; inset: 0 auto auto 0; width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--history-rule); border-radius: var(--sf-radius-round); color: var(--history-muted); background: var(--background); }
 .step[data-status="completed"] .marker { color: var(--primary-foreground); background: var(--primary); border-color: var(--primary); }
 .step[data-status="in-progress"] .marker { color: var(--primary); background: var(--background); border-color: var(--primary); }
 .step[data-status="stopped"] .marker { color: var(--history-ink); background: var(--background); border-color: var(--history-muted); }

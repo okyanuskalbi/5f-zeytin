@@ -11,7 +11,7 @@
 .sidebar h2 { margin:0 0 16px; font-family:var(--font-body),sans-serif; font-size:1rem; font-weight:600; }
 .listingTools { display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; min-height:48px; margin-bottom:32px; font-size:1rem; }
 .sortLabel { display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
-.sortLabel select { min-height:48px; padding:8px 32px 8px 16px; border:1px solid var(--sf-muted); border-radius:0; background:var(--sf-paper); color:var(--sf-ink); font:inherit; }
+.sortLabel select { min-height:48px; padding:8px 32px 8px 16px; border:1px solid var(--sf-muted); border-radius:var(--sf-radius-field); background:var(--sf-paper); color:var(--sf-ink); font:inherit; }
 .productGrid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:48px 24px; }
 .productGrid > * { min-width:0; }
 .root :focus-visible { outline:2px solid var(--sf-focus); outline-offset:4px; }
