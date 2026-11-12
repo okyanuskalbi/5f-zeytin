@@ -1,0 +1,556 @@
+{
+  "version": 1,
+  "authorization": "user-2026-11-12-k5",
+  "provider": "Higgsfield",
+  "model": "GPT Image 2.5 Flare",
+  "quality": "Medium, 2K",
+  "sourceDirectory": "AFINA-KAYNAK/higgsfield-2026-11-12",
+  "note": "Representative editorial photographs approved by the user on 12 Nov 2026; no text, logo or face. Not documentary imagery of the facility.",
+  "style": "Photorealistic editorial food photography, natural warm Mediterranean light, soft golden-hour tones, color palette of deep olive green, warm ivory and champagne gold, shallow depth of field, shot on a full-frame camera with a 50mm lens, calm and appetizing, authentic and unstaged. No text, no letters, no logos, no labels, no watermarks, no brand names, no recognizable faces.",
+  "assets": {
+    "hikaye-ana": {
+      "source": "AFINA-KAYNAK/higgsfield-2026-11-12/hikaye-ana.png",
+      "sourceSha256": "a425e30c09348981d3e0268d5feddb71de05c9450b7f1e4ee81c3d54c5cfad8d",
+      "sourceWidth": 1744,
+      "sourceHeight": 2336,
+      "prompt": "An old gnarled olive tree in a sunlit grove in southern Turkey during harvest; in the foreground weathered hands of an elderly farmer and the smaller hands of a younger person together holding freshly picked green olives over a woven basket; rows of olive trees fading into warm haze behind.",
+      "alt": "Zeytinlikte yaşlı ve genç ellerin birlikte tuttuğu yeni toplanmış yeşil zeytinler",
+      "crop": {
+        "left": 0,
+        "top": 97,
+        "width": 1744,
+        "height": 2180
+      },
+      "focus": [
+        52,
+        64
+      ],
+      "outputs": [
+        {
+          "file": "/images/editorial/hikaye-ana-480.avif",
+          "format": "avif",
+          "width": 480,
+          "height": 600,
+          "bytes": 29376,
+          "sha256": "d95ca13016044bffcf4e7ad90ffc9470b1d5887dfb14fe944bf1965fa4e7871b"
+        },
+        {
+          "file": "/images/editorial/hikaye-ana-480.webp",
+          "format": "webp",
+          "width": 480,
+          "height": 600,
+          "bytes": 48956,
+          "sha256": "a8ac03bdd927a9afd1d54ac307eb0eb604bbae07856d44992b4ca423ea906df4"
+        },
+        {
+          "file": "/images/editorial/hikaye-ana-800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 1000,
+          "bytes": 56264,
+          "sha256": "87593caf42afe450b62532ca6324b010b9fd045c5047affee9989f83224323f3"
+        },
+        {
+          "file": "/images/editorial/hikaye-ana-800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 1000,
+          "bytes": 93846,
+          "sha256": "9d0e760a91e138135134a8f3b37f0da61d7a6ade5187a65fc58e135d4ed3fe1b"
+        },
+        {
+          "file": "/images/editorial/hikaye-ana-1200.avif",
+          "format": "avif",
+          "width": 1200,
+          "height": 1500,
+          "bytes": 95170,
+          "sha256": "edb8e4f2ecb26e005d9f577ad66f48b11008153baa5523908ec7794e55ab3889"
+        },
+        {
+          "file": "/images/editorial/hikaye-ana-1200.webp",
+          "format": "webp",
+          "width": 1200,
+          "height": 1500,
+          "bytes": 154708,
+          "sha256": "8bff8dcabdd1700f11646497f98b295715334f2b9cb60b15b25348e2b04c8f35"
+        }
+      ]
+    },
+    "hikaye-dal": {
+      "source": "AFINA-KAYNAK/higgsfield-2026-11-12/hikaye-dal.png",
+      "sourceSha256": "1f2b0b2c2b9263679b9d86aa91bb78a5ed95bc7fcc321756c71fd73d50c5a8f4",
+      "sourceWidth": 2048,
+      "sourceHeight": 2048,
+      "prompt": "Extreme close-up of an olive branch heavy with plump green and a few purple-black olives, silvery-green leaves, morning dew, soft blurred olive grove background.",
+      "alt": "Çiy damlalı zeytin dalında yeşil ve mor zeytinler",
+      "crop": {
+        "left": 0,
+        "top": 0,
+        "width": 2048,
+        "height": 2048
+      },
+      "focus": [
+        55,
+        50
+      ],
+      "outputs": [
+        {
+          "file": "/images/editorial/hikaye-dal-240.avif",
+          "format": "avif",
+          "width": 240,
+          "height": 240,
+          "bytes": 7992,
+          "sha256": "a85d1c259e6b10d3051c1222cbefadbac22acb56b78a65f2dc1dfdad5d910da8"
+        },
+        {
+          "file": "/images/editorial/hikaye-dal-240.webp",
+          "format": "webp",
+          "width": 240,
+          "height": 240,
+          "bytes": 13148,
+          "sha256": "4b1537f2665a735b41e8026e249cc0e9a6b4ff5ca40b8f5680f9f3fad46e2617"
+        },
+        {
+          "file": "/images/editorial/hikaye-dal-480.avif",
+          "format": "avif",
+          "width": 480,
+          "height": 480,
+          "bytes": 21854,
+          "sha256": "91be6c848de303a6366e989a31f7837aba0b405b3fded8d37beb2a157d405476"
+        },
+        {
+          "file": "/images/editorial/hikaye-dal-480.webp",
+          "format": "webp",
+          "width": 480,
+          "height": 480,
+          "bytes": 35336,
+          "sha256": "b4530d6aec2df4a58fa9be743f300a8634a0e388b0bf4ae22cf91ac403215955"
+        }
+      ]
+    },
+    "zeytinyagi-dikey": {
+      "source": "AFINA-KAYNAK/higgsfield-2026-11-12/zeytinyagi-dikey.png",
+      "sourceSha256": "3cb1f25729f8ffd1851f1647fe034f723955a410f71de70b7775cada5349c9be",
+      "sourceWidth": 1744,
+      "sourceHeight": 2336,
+      "prompt": "Golden extra virgin olive oil being poured in a thin glossy stream from a plain unlabeled clear glass bottle into a small ivory ceramic bowl on a rough natural stone countertop; a sprig of olive leaves and a few green olives beside it; soft out-of-focus green garden behind.",
+      "alt": "Cam şişeden fildişi kaseye dökülen zeytinyağı",
+      "crop": {
+        "left": 0,
+        "top": 0,
+        "width": 1744,
+        "height": 2336
+      },
+      "focus": [
+        62,
+        30
+      ],
+      "outputs": [
+        {
+          "file": "/images/editorial/zeytinyagi-dikey-480.avif",
+          "format": "avif",
+          "width": 480,
+          "height": 643,
+          "bytes": 27945,
+          "sha256": "9494e4463d6706db02aa4bd3de688997e45ca709e885fba2d80f950519006db0"
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-dikey-480.webp",
+          "format": "webp",
+          "width": 480,
+          "height": 643,
+          "bytes": 48536,
+          "sha256": "4971cf2ed071b96cda76204112077f30f056479e5ccba71320ba69baf543fb49"
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-dikey-720.avif",
+          "format": "avif",
+          "width": 720,
+          "height": 964,
+          "bytes": 48159,
+          "sha256": "90b46cb8ea3373a9f235afac69bb3354a03c06594560d2665ace2ee9a46c8a6f"
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-dikey-720.webp",
+          "format": "webp",
+          "width": 720,
+          "height": 964,
+          "bytes": 83160,
+          "sha256": "f10c2690452ae7e5cfadec1b5646cf31f9e90c5ebc35aab4adb78d53ac73db4d"
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-dikey-960.avif",
+          "format": "avif",
+          "width": 960,
+          "height": 1286,
+          "bytes": 69615,
+          "sha256": "599530807165aedd0aa629f781803c4be34299ffdde89f9e3ab4773b116a400a"
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-dikey-960.webp",
+          "format": "webp",
+          "width": 960,
+          "height": 1286,
+          "bytes": 121446,
+          "sha256": "0af36ef1674022d9e1026b63d27241c075db7e2e078c165391f7d9b3c89dc7c9"
+        }
+      ]
+    },
+    "zeytin-kase": {
+      "source": "AFINA-KAYNAK/higgsfield-2026-11-12/zeytin-kase.png",
+      "sourceSha256": "34d3ab8fcb35e5350c74e69220e56cebde5c14981994629c16f1cd35b6eff9c3",
+      "sourceWidth": 1744,
+      "sourceHeight": 2336,
+      "prompt": "A hand-turned olive wood bowl filled with glossy green and black table olives, a few lemon slices and a sprig of thyme, on a linen cloth over a weathered wooden table; a small olive branch in the corner.",
+      "alt": "Ahşap kasede limon dilimli yeşil ve siyah zeytinler",
+      "crop": {
+        "left": 0,
+        "top": 0,
+        "width": 1744,
+        "height": 2336
+      },
+      "focus": [
+        55,
+        46
+      ],
+      "outputs": [
+        {
+          "file": "/images/editorial/zeytin-kase-480.avif",
+          "format": "avif",
+          "width": 480,
+          "height": 643,
+          "bytes": 31060,
+          "sha256": "a4dcd2305b026eb3212a1b32ca5a0b1e3cb4c171524dbd5c2c2ce3feaef02447"
+        },
+        {
+          "file": "/images/editorial/zeytin-kase-480.webp",
+          "format": "webp",
+          "width": 480,
+          "height": 643,
+          "bytes": 51066,
+          "sha256": "1630d4b763286fdb870c600f84e33a48da9e1cd9dd1b961b7a583964eab7b95c"
+        },
+        {
+          "file": "/images/editorial/zeytin-kase-720.avif",
+          "format": "avif",
+          "width": 720,
+          "height": 964,
+          "bytes": 55651,
+          "sha256": "ff331c28d1120f6b5b743995921e75b5c7baa774b81422009ae40e7df75b4fd4"
+        },
+        {
+          "file": "/images/editorial/zeytin-kase-720.webp",
+          "format": "webp",
+          "width": 720,
+          "height": 964,
+          "bytes": 91002,
+          "sha256": "45ee9388f74abc297d478bdb532a76861d12c50c8ca976441813ebbb35104a16"
+        },
+        {
+          "file": "/images/editorial/zeytin-kase-960.avif",
+          "format": "avif",
+          "width": 960,
+          "height": 1286,
+          "bytes": 81736,
+          "sha256": "9be1b9830f533cc652f90c825caf9a2428e03fffe8c2636bdf2ed1e963d973e1"
+        },
+        {
+          "file": "/images/editorial/zeytin-kase-960.webp",
+          "format": "webp",
+          "width": 960,
+          "height": 1286,
+          "bytes": 134830,
+          "sha256": "41b768a02b097e91502f8800625fe2ebd88e45c8366e172088806722346aa367"
+        }
+      ]
+    },
+    "zeytinyagi-yatay": {
+      "source": "AFINA-KAYNAK/higgsfield-2026-11-12/zeytinyagi-yatay.png",
+      "sourceSha256": "31e90ad7f9da52035392e7b5c319bca74f6be3f5724b53ab65087a19d598a8ff",
+      "sourceWidth": 2688,
+      "sourceHeight": 1520,
+      "prompt": "A rustic wooden table by an open window overlooking an olive grove; a plain unlabeled dark green glass bottle of olive oil, a shallow dish of golden olive oil with a piece of crusty bread dipped in it, scattered olive leaves; generous empty space on the left side of the frame.",
+      "alt": "Zeytinliğe bakan pencere önünde zeytinyağı şişesi ve yağa batırılmış ekmek",
+      "crop": {
+        "left": 0,
+        "top": 4,
+        "width": 2688,
+        "height": 1512
+      },
+      "focus": [
+        85,
+        55
+      ],
+      "outputs": [
+        {
+          "file": "/images/editorial/zeytinyagi-yatay-640.avif",
+          "format": "avif",
+          "width": 640,
+          "height": 360,
+          "bytes": 18660,
+          "sha256": "cec829029adb834e1908a3073014e963e6b6501d5518f863a837641d31e577a8"
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-yatay-640.webp",
+          "format": "webp",
+          "width": 640,
+          "height": 360,
+          "bytes": 31236,
+          "sha256": "fdaa1ff6aeaf9546d9c01d7179605c2f75442d1e68ea2b21792e97eb28acdbce"
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-yatay-960.avif",
+          "format": "avif",
+          "width": 960,
+          "height": 540,
+          "bytes": 33838,
+          "sha256": "5d6abe0d08ca8e7e6d19e28fe49c9cdd7e5537d53ee0cb6973c17cc060fe837d"
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-yatay-960.webp",
+          "format": "webp",
+          "width": 960,
+          "height": 540,
+          "bytes": 55320,
+          "sha256": "9ebc061486002a4d93343a20fbb3f8fe3bb64f2948f64852be3055fc0454cbb5"
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-yatay-1440.avif",
+          "format": "avif",
+          "width": 1440,
+          "height": 810,
+          "bytes": 58944,
+          "sha256": "238688539a9061fa41be0a46acc5c1bc6fad5cbe9bea87d01eb26a4c366f09f1"
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-yatay-1440.webp",
+          "format": "webp",
+          "width": 1440,
+          "height": 810,
+          "bytes": 96614,
+          "sha256": "a27db979fee3b07764dfb72745e439f442f5024d27789dca8a294533a92fc723"
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-yatay-1920.avif",
+          "format": "avif",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 85640,
+          "sha256": "dd9ea98504fbe55a15a0d2d7f8aa9639327b911aa28b7dfac6241b02de9f7443"
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-yatay-1920.webp",
+          "format": "webp",
+          "width": 1920,
+          "height": 1080,
+          "bytes": 140728,
+          "sha256": "f1c8e35245f994c4650257fd285cde57420a937391f06092419c25d8d4e8fa0f"
+        }
+      ]
+    },
+    "blog-salamura": {
+      "source": "AFINA-KAYNAK/higgsfield-2026-11-12/blog-salamura.png",
+      "sourceSha256": "70f35bd0f969e71777568c814a6dd24053423b007d224a477bda7c93e11ac00d",
+      "sourceWidth": 2048,
+      "sourceHeight": 1360,
+      "prompt": "Hands in a home kitchen preparing brined olives: fresh green olives in a large glass jar being covered with clear brine, coarse sea salt in a small bowl, lemon wedges and bay leaves on a wooden board.",
+      "alt": "Cam kavanozdaki yeşil zeytinlerin üzerine salamura suyu dökülüyor",
+      "crop": {
+        "left": 0,
+        "top": 0,
+        "width": 2048,
+        "height": 1360
+      },
+      "focus": [
+        48,
+        15
+      ],
+      "outputs": [
+        {
+          "file": "/images/editorial/blog-salamura-480.avif",
+          "format": "avif",
+          "width": 480,
+          "height": 319,
+          "bytes": 15308,
+          "sha256": "182ffb32a465f835e00fcd0a84193efb5a2ea1a4591f0ca8046c9eaf33244829"
+        },
+        {
+          "file": "/images/editorial/blog-salamura-480.webp",
+          "format": "webp",
+          "width": 480,
+          "height": 319,
+          "bytes": 23526,
+          "sha256": "c5082eb646fa40525f20ab3bdb8d5bdc8aa06327afba8508613b04d2ab919039"
+        },
+        {
+          "file": "/images/editorial/blog-salamura-960.avif",
+          "format": "avif",
+          "width": 960,
+          "height": 638,
+          "bytes": 41715,
+          "sha256": "3880ecf9569d484af7fa276176fd38ed904aeb9b9d146ad7a20345ee134fdf70"
+        },
+        {
+          "file": "/images/editorial/blog-salamura-960.webp",
+          "format": "webp",
+          "width": 960,
+          "height": 638,
+          "bytes": 62450,
+          "sha256": "81b541e03b1170d6351efc918b44d9ca127d803785af8381bb75f46b300f85f7"
+        },
+        {
+          "file": "/images/editorial/blog-salamura-1440.avif",
+          "format": "avif",
+          "width": 1440,
+          "height": 956,
+          "bytes": 72100,
+          "sha256": "6367a6dffc5ef518b85231898dd965856667582a8d50941b74d1883dc870898a"
+        },
+        {
+          "file": "/images/editorial/blog-salamura-1440.webp",
+          "format": "webp",
+          "width": 1440,
+          "height": 956,
+          "bytes": 108344,
+          "sha256": "e32dcf0dbc81f9ed22fbe1d50b0e586165abf8fa12fed6343ca06cb4d2155bfd"
+        }
+      ]
+    },
+    "blog-kirma": {
+      "source": "AFINA-KAYNAK/higgsfield-2026-11-12/blog-kirma.png",
+      "sourceSha256": "a2d59cedae0bef2a518003b37cb907491c2c18040e28a39c836ff0d7ffa4db9f",
+      "sourceWidth": 2048,
+      "sourceHeight": 1360,
+      "prompt": "Freshly cracked green olives on a wooden board next to a smooth river stone used for cracking, a bowl of water with whole green olives, garlic cloves and lemon; rustic farmhouse table.",
+      "alt": "Ahşap tahtada kırılmış yeşil zeytinler ve kırma taşı",
+      "crop": {
+        "left": 0,
+        "top": 0,
+        "width": 2048,
+        "height": 1360
+      },
+      "focus": [
+        65,
+        60
+      ],
+      "outputs": [
+        {
+          "file": "/images/editorial/blog-kirma-480.avif",
+          "format": "avif",
+          "width": 480,
+          "height": 319,
+          "bytes": 19167,
+          "sha256": "d5538a6bbdfa106f6e44e5c6c9f9825430c8b9e68bf188d31b793693b8205525"
+        },
+        {
+          "file": "/images/editorial/blog-kirma-480.webp",
+          "format": "webp",
+          "width": 480,
+          "height": 319,
+          "bytes": 31962,
+          "sha256": "c2577314ce9838cbf303a2cc7f4a6f12486b9dc4db9271a81121569c7b1084f8"
+        },
+        {
+          "file": "/images/editorial/blog-kirma-960.avif",
+          "format": "avif",
+          "width": 960,
+          "height": 638,
+          "bytes": 53058,
+          "sha256": "d177a6d9ef7652ff663c38f5674eba195c60e1d799d4e3184a6ff7e76af65633"
+        },
+        {
+          "file": "/images/editorial/blog-kirma-960.webp",
+          "format": "webp",
+          "width": 960,
+          "height": 638,
+          "bytes": 87306,
+          "sha256": "f09af20148c35cd6bdad225130bc73e4fd9933910720b95bbb028903d9cdbca1"
+        },
+        {
+          "file": "/images/editorial/blog-kirma-1440.avif",
+          "format": "avif",
+          "width": 1440,
+          "height": 956,
+          "bytes": 94613,
+          "sha256": "934b5196d9e1b8238bc275810680286be7c2f917e7307585be0d27c0268853ed"
+        },
+        {
+          "file": "/images/editorial/blog-kirma-1440.webp",
+          "format": "webp",
+          "width": 1440,
+          "height": 956,
+          "bytes": 152804,
+          "sha256": "aa181418b46998b76a9e4752a6b4182492f5225e0771e2d1d2197b906e5aedd4"
+        }
+      ]
+    },
+    "blog-sofra": {
+      "source": "AFINA-KAYNAK/higgsfield-2026-11-12/blog-sofra.png",
+      "sourceSha256": "082c71a3fe80e78df33d6bdd451380d44a22c18ac2fc32024bcfed40488a65d6",
+      "sourceWidth": 2048,
+      "sourceHeight": 1360,
+      "prompt": "A traditional Turkish breakfast table seen from above at a slight angle: small plates of green and black olives, white cheese, tomatoes, cucumbers, a dish of olive oil, fresh simit bread and glasses of tea; warm morning light; olives are the clear focal point.",
+      "alt": "Kahvaltı sofrasında yeşil ve siyah zeytin, peynir, domates ve çay",
+      "crop": {
+        "left": 0,
+        "top": 0,
+        "width": 2048,
+        "height": 1360
+      },
+      "focus": [
+        50,
+        55
+      ],
+      "outputs": [
+        {
+          "file": "/images/editorial/blog-sofra-480.avif",
+          "format": "avif",
+          "width": 480,
+          "height": 319,
+          "bytes": 18477,
+          "sha256": "43e20534d3eec0778e46da6c51cd0ea558b6640c2e18a75f1402d48ca4a0c5b2"
+        },
+        {
+          "file": "/images/editorial/blog-sofra-480.webp",
+          "format": "webp",
+          "width": 480,
+          "height": 319,
+          "bytes": 30476,
+          "sha256": "af70061db8586397f6674a39257f13d4d303c4910dbe8f0593148fd8f2aaaa7f"
+        },
+        {
+          "file": "/images/editorial/blog-sofra-960.avif",
+          "format": "avif",
+          "width": 960,
+          "height": 638,
+          "bytes": 48088,
+          "sha256": "ab1903a3ffdac1aac857cba4215cbf9895a6b9c60b17c5795acc456983eae5dc"
+        },
+        {
+          "file": "/images/editorial/blog-sofra-960.webp",
+          "format": "webp",
+          "width": 960,
+          "height": 638,
+          "bytes": 77394,
+          "sha256": "da6e74383dcd48d9ae4df575bd69aa0a4da6df36423944ad9a08f2932901222e"
+        },
+        {
+          "file": "/images/editorial/blog-sofra-1440.avif",
+          "format": "avif",
+          "width": 1440,
+          "height": 956,
+          "bytes": 82959,
+          "sha256": "b23de918e8b23053922a0306316b1c9bf4d9b95cc57b26f2f4d1d0b94fe05f71"
+        },
+        {
+          "file": "/images/editorial/blog-sofra-1440.webp",
+          "format": "webp",
+          "width": 1440,
+          "height": 956,
+          "bytes": 134096,
+          "sha256": "1e2fc99840e581732af7130c602c139ba7511eb870b313d117407805412a6b45"
+        }
+      ]
+    }
+  }
+}

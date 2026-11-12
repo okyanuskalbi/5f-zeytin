@@ -1,13 +1,13 @@
 import { expect, it } from "vitest";
 import { blogPosts } from "@/lib/blog/posts";
-import photos from "@/lib/media/classic-photos.json";
+import { blogCover } from "@/lib/blog/cover";
 
 const expectedSlugs = ["salamura-zeytin-nasil-hazirlanir", "kirma-zeytin-nedir-nasil-saklanir", "naturel-sizma-zeytinyagi-nasil-saklanmali", "sofralik-zeytin-secerken-nelere-dikkat-edilmeli"];
-it("keeps the four approved preview addresses and existing approved cover photographs", () => {
+it("keeps the four approved preview addresses and approved cover photographs", () => {
   expect(blogPosts.map(post => post.slug)).toEqual(expectedSlugs);
   expect(new Set(blogPosts.map(post => post.slug)).size).toBe(4);
   for (const post of blogPosts) {
-    expect(photos.assets[post.imageKey]).toBeDefined();
+    expect(blogCover(post).outputs.length).toBeGreaterThan(0);
     expect(post.date).toBe("2026-11-10");
     expect(post.readingMinutes).toBeGreaterThan(0);
     expect(post.categoryHref).toBe(`/urunler/${post.category}`);

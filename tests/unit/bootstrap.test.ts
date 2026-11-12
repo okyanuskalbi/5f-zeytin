@@ -114,6 +114,17 @@ describe("Playwright target selection", () => {
     expect(config.metadata).toMatchObject({ targetHost: "preview.example.com" });
   });
 
+  it("accepts the self-signed certificate of the local evidence server only", async () => {
+    vi.stubEnv("PLAYWRIGHT_BASE_URL", "https://localhost:3024");
+    const local = (await import("../../playwright.config")).default;
+    expect(local.use?.ignoreHTTPSErrors).toBe(true);
+    expect(local.webServer).toBeUndefined();
+    vi.resetModules();
+    vi.stubEnv("PLAYWRIGHT_BASE_URL", "https://preview.example.com");
+    const remote = (await import("../../playwright.config")).default;
+    expect(remote.use?.ignoreHTTPSErrors).toBe(false);
+  });
+
   it("rejects an empty explicit target instead of falling back to localhost", async () => {
     vi.stubEnv("PLAYWRIGHT_BASE_URL", "");
 

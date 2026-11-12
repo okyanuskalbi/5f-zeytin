@@ -7,10 +7,10 @@ import { BlogCard, formatBlogDate } from "@/components/storefront/content/BlogCa
 import { V3Picture } from "@/components/media/V3Picture";
 import { ProductTile } from "@/components/storefront/ProductTile";
 import { blogEditorial } from "@/components/storefront/content/blog-editorial";
+import { blogCover } from "@/lib/blog/cover";
 import { blogPosts } from "@/lib/blog/posts";
 import { getProductGroup, productsForGroup } from "@/lib/catalog/groups";
 import { readProductFamilies } from "@/lib/catalog/read";
-import photos from "@/lib/media/classic-photos.json";
 import { siteIdentity } from "@/lib/site/identity";
 import styles from "@/components/storefront/content/Blog.module.css";
 
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post) notFound();
   const title = `${post.title} | AFİNA ZEYTİN`;
   const url = `/blog/${post.slug}`;
-  const outputs = photos.assets[post.imageKey].outputs;
+  const outputs = blogCover(post).outputs;
   const shareImage = outputs.findLast(output => output.file.endsWith(".webp")) ?? outputs[0];
   const image = shareImage.file;
   return completeMetadata({
@@ -43,7 +43,7 @@ export default async function Page({ params }: Props): Promise<JSX.Element> {
   const related = productsForGroup(await readProductFamilies(), post.category).slice(0, 3);
   const category = getProductGroup(post.category);
   const canonical = `${siteIdentity.origin}/blog/${post.slug}`;
-  const image = photos.assets[post.imageKey];
+  const image = blogCover(post);
   const shareImage = image.outputs.findLast(output => output.file.endsWith(".webp")) ?? image.outputs[0];
   const article = {
     "@context": "https://schema.org", "@type": "BlogPosting", "@id": `${canonical}#article`,

@@ -17,7 +17,7 @@
     "test:e2e": "playwright test",
     "predev": "npm run check:assets",
     "prebuild": "npm run check:assets",
-    "check:assets": "node scripts/check-assets.mjs && node scripts/check-v3-assets.mjs && node scripts/check-renewal-assets.mjs && node scripts/check-classic-assets.mjs && node scripts/check-customer-home-assets.mjs",
+    "check:assets": "node scripts/check-assets.mjs && node scripts/check-v3-assets.mjs && node scripts/check-renewal-assets.mjs && node scripts/check-classic-assets.mjs && node scripts/check-customer-home-assets.mjs && node scripts/check-editorial-assets.mjs",
     "db:migrate": "node scripts/db-migrate.mjs",
     "db:seed": "node scripts/db-seed.mjs",
     "admin:grant": "node scripts/admin-grant.mjs"

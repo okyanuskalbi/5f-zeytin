@@ -19,7 +19,7 @@ it("serves all four shared articles with dates and ordinary working links in an 
     const card = doc.querySelector(`[data-blog-card="${post.slug}"]`)!;
     expect(card.querySelector("h2")?.textContent).toBe(post.title);
     expect(card.querySelector("time")?.getAttribute("datetime")).toBe(post.date);
-    expect(card.querySelector("img")?.getAttribute("src")).toContain("/images/klasik/");
+    expect(card.querySelector("img")?.getAttribute("src")).toContain("/images/editorial/");
     expect(card.querySelector(`a[href="/blog/${post.slug}"]`)?.textContent).toContain("Yazıyı oku");
   }
   expect(metadata.alternates).toEqual({ canonical: "/blog" });

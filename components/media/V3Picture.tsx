@@ -5,6 +5,7 @@ export function V3Picture({ image, mobile, mobileMedia = "(max-width: 767px)", s
   image: V3Image; mobile?: V3Image; mobileMedia?: string; sizes: string; className?: string; eager?: boolean; loading?: "eager" | "lazy"; decorative?: boolean; "data-hero-photo"?: boolean;
 }): JSX.Element {
   const fallback = image.outputs.filter(output => output.format === "webp")[0];
+  const focus = image.focus && image.focus.length === 2 ? { objectPosition: `${image.focus[0]}% ${image.focus[1]}%` } : undefined;
   const srcSet = (asset: V3Image, format: string): string => asset.outputs.filter(output => output.format === format).map(output => `${output.file} ${output.width}w`).join(", ");
   return <picture className={className} data-hero-photo={heroPhoto}>
     {mobile && <>
@@ -15,6 +16,6 @@ export function V3Picture({ image, mobile, mobileMedia = "(max-width: 767px)", s
     {/* Pre-encoded srcsets preserve exact byte budgets and alpha. */}
     <img src={fallback.file} srcSet={srcSet(image, "webp")} sizes={sizes} alt={decorative ? "" : image.alt}
       width={fallback.width} height={fallback.height} loading={loading ?? (eager ? "eager" : "lazy")}
-      fetchPriority={eager ? "high" : "auto"} decoding="async" />
+      fetchPriority={eager ? "high" : "auto"} decoding="async" style={focus} />
   </picture>;
 }

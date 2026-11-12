@@ -29,6 +29,9 @@ export default defineConfig({
   ],
   use: {
     baseURL,
+    // The local evidence server answers over HTTPS with a self-signed certificate (the CSP upgrades
+    // insecure requests); a remote preview must still present a valid one.
+    ignoreHTTPSErrors: targetURL.protocol === "https:" && ["localhost", "127.0.0.1"].includes(targetURL.hostname),
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
   },

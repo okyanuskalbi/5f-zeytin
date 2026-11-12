@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { ArrowRight, Factory, Hand, Handshake, Leaf, Package, PackageCheck, Sprout } from 'lucide-react';
 import { V3Picture } from '@/components/media/V3Picture';
+import { blogCover } from '@/lib/blog/cover';
 import { blogPosts } from '@/lib/blog/posts';
 import customerMedia from '@/lib/media/customer-home.json';
-import photos from '@/lib/media/classic-photos.json';
 import type { ProductVariant } from '@/types/catalog';
 import { HeroVideo } from './HeroVideo';
 import { HERO_POSTER_SIZES } from './hero-poster';
@@ -19,6 +19,8 @@ import styles from './StoreHome.module.css';
 
 const SHELF_SIZE = 4;
 const HARVEST_CLAIM = '%100 Doğal ve Katkısız';
+// Square frames crop a 16:9 cover to its height: the rendition must be as wide as the picture, not the frame.
+const POST_THUMBNAIL_SIZES = '(max-width: 767px) 200px, 288px';
 
 const categories = [
   { title: 'Zeytinyağı', href: '/urunler/zeytinyagi', label: 'Ürünleri İnceleyin', image: homeMedia.oil },
@@ -70,7 +72,7 @@ export function StoreHome({ products }: { products: readonly ProductVariant[] })
     <section data-home-section="categories" data-home-categories data-category-layout="portals" className={`${styles.container} ${styles.portals}`} aria-label="Ürünler ve AFİNA">
       <span id="kiler" className={styles.anchor} />
       {categories.map(({ title, href, label, image }) => <Link prefetch={false} href={href} key={title} className={styles.portal} data-group-photo-link data-home-category={href.split('/').at(-1)}>
-        <V3Picture image={image} sizes="(max-width: 359px) 92vw, (max-width: 767px) 46vw, (max-width: 1375px) 23vw, 302px" decorative />
+        <V3Picture image={image} sizes="(max-width: 359px) 92vw, (max-width: 1099px) 46vw, (max-width: 1375px) 23vw, 302px" decorative />
         <div className={styles.portalCopy} data-overlay-ok><h2>{title}</h2><span data-card-action>{label}</span></div>
         <Coin className={styles.portalCoin} />
       </Link>)}
@@ -90,7 +92,7 @@ export function StoreHome({ products }: { products: readonly ProductVariant[] })
       <span id="kurumsal" className={styles.anchor} />
       <QuietMotion className={`${styles.container} ${styles.storyGrid}`}>
         <div className={styles.storyPhotos}>
-          <V3Picture image={homeMedia.story} sizes="(max-width: 1023px) 92vw, 640px" className={styles.storyPhoto} />
+          <V3Picture image={homeMedia.story} sizes="(max-width: 1023px) 92vw, 560px" className={styles.storyPhoto} />
           <V3Picture image={homeMedia.storyDetail} sizes="(max-width: 1023px) 40vw, 240px" className={styles.storyInset} decorative />
         </div>
         <div className={styles.storyCopy}>
@@ -159,11 +161,11 @@ export function StoreHome({ products }: { products: readonly ProductVariant[] })
         <div className={styles.blogHead}><SectionHeading title="Zeytin Defteri" /><PillButton variant="quiet" href="/blog">Tüm yazılar</PillButton></div>
         <div className={styles.posts}>
           <Link prefetch={false} href={`/blog/${leadPost.slug}`} className={styles.leadPost}>
-            <V3Picture image={photos.assets[leadPost.imageKey]} sizes="(max-width: 1023px) 92vw, 620px" decorative />
+            <V3Picture image={blogCover(leadPost)} sizes="(max-width: 1023px) 92vw, 620px" decorative />
             <div><h3>{leadPost.title}</h3><p>{leadPost.excerpt}</p><span className={styles.readTime}>{leadPost.readingMinutes} dk okuma</span></div>
           </Link>
           <div className={styles.morePosts}>{otherPosts.map(post => <Link prefetch={false} href={`/blog/${post.slug}`} key={post.slug} className={styles.post}>
-            <V3Picture image={photos.assets[post.imageKey]} sizes="(max-width: 767px) 112px, 160px" decorative />
+            <V3Picture image={blogCover(post)} sizes={POST_THUMBNAIL_SIZES} decorative />
             <div><h3>{post.title}</h3><span className={styles.readTime}>{post.readingMinutes} dk okuma</span></div>
           </Link>)}</div>
         </div>

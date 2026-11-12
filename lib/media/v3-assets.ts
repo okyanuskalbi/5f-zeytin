@@ -2,6 +2,8 @@ import manifest from "./v4-assets.json" with { type: "json" };
 
 export type V3Image = Readonly<{
   alt: string;
+  /** Percent of the picture that must stay in view when a frame crops it (x, y). */
+  focus?: readonly number[];
   outputs: readonly Readonly<{ file: string; format: string; width: number; height: number }>[];
 }>;
 

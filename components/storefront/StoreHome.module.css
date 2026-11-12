@@ -107,9 +107,10 @@
 
 /* Hikayemiz */
 .story { position: relative; padding-block: 96px; background: var(--sf-paper); }
-.storyGrid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: center; gap: 96px; }
+.storyGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; gap: 96px; }
 .storyPhotos { position: relative; padding: 0 32px 48px 0; }
-.storyPhoto { display: block; aspect-ratio: 5 / 4; overflow: hidden; border-radius: var(--sf-radius-card); }
+/* A portrait: the old tree above, the two pairs of hands and the basket below. */
+.storyPhoto { display: block; aspect-ratio: 4 / 5; overflow: hidden; border-radius: var(--sf-radius-card); }
 .storyPhoto img, .storyInset img { width: 100%; height: 100%; object-fit: cover; }
 .storyInset {
   position: absolute;
@@ -216,7 +217,8 @@
 
 @media (max-width: 1099px) {
   .portals { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .portal { aspect-ratio: 4 / 3; }
+  /* Tall enough for a portrait photograph's subject: the bottle mouth and the bowl beneath it. */
+  .portal { aspect-ratio: 6 / 5; }
   .portalCoin { inset: 16px 16px auto auto; }
   .portalCopy { inset-inline-end: 20px; }
   .shelf { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -238,6 +240,8 @@
 @media (max-width: 1023px) {
   .storyGrid, .posts { grid-template-columns: minmax(0, 1fr); }
   .storyGrid { gap: 48px; }
+  /* Full-width on a tablet: the frame turns landscape and the focus point keeps the hands in it. */
+  .storyPhoto { aspect-ratio: 5 / 4; }
 }
 
 @media (max-width: 767px) {
@@ -261,6 +265,7 @@
   .shelf > article { flex: 0 0 min(74vw, 300px); }
   .storyGrid { gap: 40px; }
   .storyPhotos { padding: 0 16px 32px 0; }
+  .storyPhoto { aspect-ratio: 4 / 5; }
   .storyInset { width: 40%; }
   .storyCopy { gap: 24px; }
   .values { gap: 12px; padding-block-start: 24px; }
@@ -296,6 +301,8 @@
   /* Half-width banners would push a three-line title above the green overlay. */
   .banner:nth-child(n) { grid-column: auto; aspect-ratio: 5 / 4; }
   .portal { aspect-ratio: 16 / 10; }
+  /* A short card puts the title halfway up the photograph: the darkening has to reach it. */
+  .portal::after { background: linear-gradient(to top, rgba(26, 43, 30, .9), rgba(26, 43, 30, .72) 44%, rgba(26, 43, 30, 0) 88%); }
   .portalCopy span { font-size: 14px; }
   .values { grid-template-columns: minmax(0, 1fr); }
   .values li { grid-template-columns: auto minmax(0, 1fr); align-items: center; }

@@ -1,0 +1,364 @@
+{
+  "assets": {
+    "hikaye-ana": {
+      "alt": "Zeytinlikte yaşlı ve genç ellerin birlikte tuttuğu yeni toplanmış yeşil zeytinler",
+      "focus": [
+        52,
+        64
+      ],
+      "outputs": [
+        {
+          "file": "/images/editorial/hikaye-ana-480.avif",
+          "format": "avif",
+          "width": 480,
+          "height": 600
+        },
+        {
+          "file": "/images/editorial/hikaye-ana-480.webp",
+          "format": "webp",
+          "width": 480,
+          "height": 600
+        },
+        {
+          "file": "/images/editorial/hikaye-ana-800.avif",
+          "format": "avif",
+          "width": 800,
+          "height": 1000
+        },
+        {
+          "file": "/images/editorial/hikaye-ana-800.webp",
+          "format": "webp",
+          "width": 800,
+          "height": 1000
+        },
+        {
+          "file": "/images/editorial/hikaye-ana-1200.avif",
+          "format": "avif",
+          "width": 1200,
+          "height": 1500
+        },
+        {
+          "file": "/images/editorial/hikaye-ana-1200.webp",
+          "format": "webp",
+          "width": 1200,
+          "height": 1500
+        }
+      ]
+    },
+    "hikaye-dal": {
+      "alt": "Çiy damlalı zeytin dalında yeşil ve mor zeytinler",
+      "focus": [
+        55,
+        50
+      ],
+      "outputs": [
+        {
+          "file": "/images/editorial/hikaye-dal-240.avif",
+          "format": "avif",
+          "width": 240,
+          "height": 240
+        },
+        {
+          "file": "/images/editorial/hikaye-dal-240.webp",
+          "format": "webp",
+          "width": 240,
+          "height": 240
+        },
+        {
+          "file": "/images/editorial/hikaye-dal-480.avif",
+          "format": "avif",
+          "width": 480,
+          "height": 480
+        },
+        {
+          "file": "/images/editorial/hikaye-dal-480.webp",
+          "format": "webp",
+          "width": 480,
+          "height": 480
+        }
+      ]
+    },
+    "zeytinyagi-dikey": {
+      "alt": "Cam şişeden fildişi kaseye dökülen zeytinyağı",
+      "focus": [
+        62,
+        30
+      ],
+      "outputs": [
+        {
+          "file": "/images/editorial/zeytinyagi-dikey-480.avif",
+          "format": "avif",
+          "width": 480,
+          "height": 643
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-dikey-480.webp",
+          "format": "webp",
+          "width": 480,
+          "height": 643
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-dikey-720.avif",
+          "format": "avif",
+          "width": 720,
+          "height": 964
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-dikey-720.webp",
+          "format": "webp",
+          "width": 720,
+          "height": 964
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-dikey-960.avif",
+          "format": "avif",
+          "width": 960,
+          "height": 1286
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-dikey-960.webp",
+          "format": "webp",
+          "width": 960,
+          "height": 1286
+        }
+      ]
+    },
+    "zeytin-kase": {
+      "alt": "Ahşap kasede limon dilimli yeşil ve siyah zeytinler",
+      "focus": [
+        55,
+        46
+      ],
+      "outputs": [
+        {
+          "file": "/images/editorial/zeytin-kase-480.avif",
+          "format": "avif",
+          "width": 480,
+          "height": 643
+        },
+        {
+          "file": "/images/editorial/zeytin-kase-480.webp",
+          "format": "webp",
+          "width": 480,
+          "height": 643
+        },
+        {
+          "file": "/images/editorial/zeytin-kase-720.avif",
+          "format": "avif",
+          "width": 720,
+          "height": 964
+        },
+        {
+          "file": "/images/editorial/zeytin-kase-720.webp",
+          "format": "webp",
+          "width": 720,
+          "height": 964
+        },
+        {
+          "file": "/images/editorial/zeytin-kase-960.avif",
+          "format": "avif",
+          "width": 960,
+          "height": 1286
+        },
+        {
+          "file": "/images/editorial/zeytin-kase-960.webp",
+          "format": "webp",
+          "width": 960,
+          "height": 1286
+        }
+      ]
+    },
+    "zeytinyagi-yatay": {
+      "alt": "Zeytinliğe bakan pencere önünde zeytinyağı şişesi ve yağa batırılmış ekmek",
+      "focus": [
+        85,
+        55
+      ],
+      "outputs": [
+        {
+          "file": "/images/editorial/zeytinyagi-yatay-640.avif",
+          "format": "avif",
+          "width": 640,
+          "height": 360
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-yatay-640.webp",
+          "format": "webp",
+          "width": 640,
+          "height": 360
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-yatay-960.avif",
+          "format": "avif",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-yatay-960.webp",
+          "format": "webp",
+          "width": 960,
+          "height": 540
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-yatay-1440.avif",
+          "format": "avif",
+          "width": 1440,
+          "height": 810
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-yatay-1440.webp",
+          "format": "webp",
+          "width": 1440,
+          "height": 810
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-yatay-1920.avif",
+          "format": "avif",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "file": "/images/editorial/zeytinyagi-yatay-1920.webp",
+          "format": "webp",
+          "width": 1920,
+          "height": 1080
+        }
+      ]
+    },
+    "blog-salamura": {
+      "alt": "Cam kavanozdaki yeşil zeytinlerin üzerine salamura suyu dökülüyor",
+      "focus": [
+        48,
+        15
+      ],
+      "outputs": [
+        {
+          "file": "/images/editorial/blog-salamura-480.avif",
+          "format": "avif",
+          "width": 480,
+          "height": 319
+        },
+        {
+          "file": "/images/editorial/blog-salamura-480.webp",
+          "format": "webp",
+          "width": 480,
+          "height": 319
+        },
+        {
+          "file": "/images/editorial/blog-salamura-960.avif",
+          "format": "avif",
+          "width": 960,
+          "height": 638
+        },
+        {
+          "file": "/images/editorial/blog-salamura-960.webp",
+          "format": "webp",
+          "width": 960,
+          "height": 638
+        },
+        {
+          "file": "/images/editorial/blog-salamura-1440.avif",
+          "format": "avif",
+          "width": 1440,
+          "height": 956
+        },
+        {
+          "file": "/images/editorial/blog-salamura-1440.webp",
+          "format": "webp",
+          "width": 1440,
+          "height": 956
+        }
+      ]
+    },
+    "blog-kirma": {
+      "alt": "Ahşap tahtada kırılmış yeşil zeytinler ve kırma taşı",
+      "focus": [
+        65,
+        60
+      ],
+      "outputs": [
+        {
+          "file": "/images/editorial/blog-kirma-480.avif",
+          "format": "avif",
+          "width": 480,
+          "height": 319
+        },
+        {
+          "file": "/images/editorial/blog-kirma-480.webp",
+          "format": "webp",
+          "width": 480,
+          "height": 319
+        },
+        {
+          "file": "/images/editorial/blog-kirma-960.avif",
+          "format": "avif",
+          "width": 960,
+          "height": 638
+        },
+        {
+          "file": "/images/editorial/blog-kirma-960.webp",
+          "format": "webp",
+          "width": 960,
+          "height": 638
+        },
+        {
+          "file": "/images/editorial/blog-kirma-1440.avif",
+          "format": "avif",
+          "width": 1440,
+          "height": 956
+        },
+        {
+          "file": "/images/editorial/blog-kirma-1440.webp",
+          "format": "webp",
+          "width": 1440,
+          "height": 956
+        }
+      ]
+    },
+    "blog-sofra": {
+      "alt": "Kahvaltı sofrasında yeşil ve siyah zeytin, peynir, domates ve çay",
+      "focus": [
+        50,
+        55
+      ],
+      "outputs": [
+        {
+          "file": "/images/editorial/blog-sofra-480.avif",
+          "format": "avif",
+          "width": 480,
+          "height": 319
+        },
+        {
+          "file": "/images/editorial/blog-sofra-480.webp",
+          "format": "webp",
+          "width": 480,
+          "height": 319
+        },
+        {
+          "file": "/images/editorial/blog-sofra-960.avif",
+          "format": "avif",
+          "width": 960,
+          "height": 638
+        },
+        {
+          "file": "/images/editorial/blog-sofra-960.webp",
+          "format": "webp",
+          "width": 960,
+          "height": 638
+        },
+        {
+          "file": "/images/editorial/blog-sofra-1440.avif",
+          "format": "avif",
+          "width": 1440,
+          "height": 956
+        },
+        {
+          "file": "/images/editorial/blog-sofra-1440.webp",
+          "format": "webp",
+          "width": 1440,
+          "height": 956
+        }
+      ]
+    }
+  }
+}

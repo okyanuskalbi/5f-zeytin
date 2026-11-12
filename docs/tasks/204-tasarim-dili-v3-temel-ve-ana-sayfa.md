@@ -249,3 +249,34 @@ Kaynak (git dışı): `AFINA-KAYNAK/higgsfield-2026-11-12/*.png` + `LISTE.md` (G
 
 Yapılacak: PNG'ler projenin mevcut görsel hattıyla (AVIF + WebP, doğru genişlikler, `lib/media/*.json` kaydı, `V3Picture`, anlamlı Türkçe `alt`) `public/images/` altına işlenir; ham 4–6 MB PNG repoya girmez. Hedef orana kırpma odak noktası korunarak yapılır (eller, kase, şişe ağzı kadraj içinde). Yerleşim sonrası: aynı fotoğrafın ana sayfada 2'den fazla tekrarı kalmaz; `npm run check:assets` (varsa) + birim testleri + `scripts/qa-design-v3.mjs` ana sayfa ölçümleri (fotoğraf üstü yazı karşıtlığı, LCP ≤ 2,5 sn, CLS) yeniden PASS. Fotoğraf üstü yazı okunmuyorsa yalnız koyulaştırma ayarlanır. Kayıt: `feat: 204-1 onaylı Higgsfield görselleri`.
 Ayrıca 204'te çalıştırılamayan Playwright e2e takımı: yerel sertifika/sunucu sorununu çöz ya da takımı `output/task201/run-clean.mjs` sunucusuna karşı çalıştır; güncellenen 5 e2e dosyası PASS olmalı (olmuyorsa nedeni Coder Notu'na).
+
+## Coder Notu 204-1 (fable)
+
+12 Kasım 2026. Kanıt: `output/task204-1/` (`qa.log`, `olcum.json`, `KONTRAST.md`, `collisions.log`, `e2e.log`, `ekran/ana-sayfa-{320,390,768,1440}-{ilk,tam}.png`).
+
+**Görsel hattı:** `scripts/prepare-editorial-204.mjs` 8 PNG'yi okuyup `public/images/editorial/` altına 48 dosya (AVIF + WebP, toplam 3,0 MB; en ağırı 155 KB) yazar. Kayıtlar: `lib/media/editorial-provenance.json` (kaynak özeti, ölçü, kırpma kutusu, odak noktası, prompt, onay `user-2026-11-12-k5`) ve sayfaların okuduğu hafif `lib/media/editorial-photos.json`. `scripts/check-editorial-assets.mjs` her dosyanın özetini, ölçüsünü ve biçimini doğrular; `npm run check:assets` zincirine eklendi (derleme öncesi çalışır). Ham PNG repoda yok (test bunu da denetler).
+
+**Yerleşim (tablodaki gibi):** Hikayemiz büyük `hikaye-ana` + bindirme `hikaye-dal` · 4 kutu Zeytinyağı ve üçlü banner Zeytinyağı `zeytinyagi-dikey` (sayfada 2 kez) · 4 kutu Zeytin `zeytin-kase` · blog kapakları `blog-salamura`, `blog-kirma`, `zeytinyagi-yatay`, `blog-sofra` (ana sayfa, `/blog` listesi, yazı sayfası, paylaşım görseli ve `BlogPosting` şeması aynı kapağı `lib/blog/cover.ts` üzerinden okur). "Nesillerin Emeği" görseli tek satırdan değişir: `components/storefront/home-media.ts` → `story`. Hiçbir fotoğraf ana sayfada 2'den fazla geçmiyor (birim testi).
+
+**Kırpma:** `hikaye-ana` 4:5 (üstten 97, alttan 59 px kırpıldı; ağaç, iki çift el ve sepet kadrajda), `zeytinyagi-yatay` 16:9 (4 + 4 px). Diğer altısı kırpılmadan küçültüldü. Her fotoğrafın bir odak noktası var (`focus`, yüzde); `V3Picture` bunu `object-position` olarak yazar, böylece kart oranı değişse de şişe ağzı, kase ve eller kadrajda kalır.
+
+**Gözle bakıldı (1440, 768, 390, 320):** eller, sepet, şişe ağzı, yağ akışı ve kaseler kadrajda; fotoğraf üstü yazılar okunuyor.
+
+**Sonuçlar:** lint PASS · typecheck PASS · test 155 dosya / 1345 test PASS · build PASS · `git diff --check` PASS · `scripts/qa-design-v3.mjs` hata listesi boş (6 görünüm): CLS 0 (WebKit'te ölçülemiyor), axe karşıtlık 0, konsol hatası 0, taşma 0; telefon LCP 2,03 sn (DPR 1) / 2,07 sn (DPR 3), ilk JS 218,9 KB · fotoğraf üstü yazı en düşük: başlık 4,27:1 (768 "Zeytin"), eylem metni 7,48:1 · çakışma testi 30 profil 0 çakışma · 36 rota 35×200 + 1×404.
+
+**E2E (204'te çalıştırılamamıştı):** takım artık yerel kanıt sunucusuna karşı çalışıyor: `PLAYWRIGHT_BASE_URL=https://localhost:3024`. `playwright.config.ts` yalnız `localhost` / `127.0.0.1` için kendi imzalı sertifikayı kabul ediyor (uzak adreste geçerli sertifika şartı sürer; birim testi var). Güncellenen 5 dosya (`cart-wire`, `fonts`, `motion-interactions-191`, `product-detail-130`, `product-pages-193`) chromium-1440, chromium-390, webkit-390 ve webkit-iphone14 profillerinde: **56 geçti, 0 kaldı, 60 atlandı** (testler kendi görünümü dışındaki profillerde kendini atlıyor). `cart-wire.spec.ts` 131'den kalma eski seçicilerle yazılmıştı; davranış beklentileri aynı kalarak güncel arayüze uyarlandı: sepet rozeti `[data-cart-count]`, düğme adı "Sepete ekle", telefon menüsünde artık "Sepetim" bağlantısı olmadığı için sepete üst menüdeki hap üzerinden gidiliyor, stoksuz kavanoz iki rafta da olduğu için ilk kart ölçülüyor, telefonda ara toplam satırı gizli olduğu için toplam satırı ölçülüyor.
+
+**Uyarlanan eski beklentiler:** `blog-content-195`, `blog-pages-195` (kapaklar `/images/editorial/`), `findability-201` (paylaşım görseli artık kapağın en geniş WebP'si: 1440 ya da 1920 px; eskiden 800), `asset-registry` (`check:assets` zinciri).
+
+**Sapmalar ve nedenleri:**
+1. Hikayemiz büyük görsel kutusu 5:4 yatay → **4:5 dikey**, sütunlar 7/5 → 6/6 (masaüstü 560×700 px). Neden: fotoğraf dikey; yatay kutuda ağaç ya da sepet kesiliyordu ve görsel zaten 4:5 için istenmişti. Tablette (tek sütun) kutu 5:4 kalır, odak noktası elleri kadrajda tutar.
+2. 4 kutu tablette (768–1099 px) 4:3 → **6:5**. Neden: dikey fotoğrafta şişe ağzı ile kase aynı karta sığsın.
+3. 360 px altındaki tek sütun 4 kutuda koyulaştırma güçlendirildi. Neden: kısa kartta başlık fotoğrafın ortasına çıkıyor, "Zeytin" başlığı limon diliminin üstünde 2,89:1'e düşüyordu; şimdi en düşük 6,70:1. Yalnız koyulaştırma değişti.
+4. Klasör adı `higgsfield` değil `editorial`: araç adı ziyaretçinin gördüğü görsel adreslerine girmesin. Kaynak ve model `editorial-provenance.json` içinde yazılı.
+5. 4 kutu `sizes` düzeltildi (tablette kart 46vw iken 23vw yazıyordu, fotoğraf bulanık seçiliyordu); blog küçük kapaklarının `sizes` değeri kırpılmış fotoğrafın gerçek genişliğine göre.
+
+**Bilinen küçük kusur:** tablet ve telefonda "Zeytinyağı" kartında sağ üstteki altın madalyon şişenin omzuna denk geliyor (şişe ağzı ve akış açıkta). Madalyonun yeri 204'te onaylandığı için değiştirilmedi.
+
+**Çalıştırılmayan:** Firefox (kurulu değil), e2e takımının kalan 33 dosyası (bu düzeltmenin kapsamı 5 dosya; çoğu 198 öncesi arayüze göre yazılmış), gerçek cihaz.
+
+## Durum 204-1: TAMAMLANDI (fable)

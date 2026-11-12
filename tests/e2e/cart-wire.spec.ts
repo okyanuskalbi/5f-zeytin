@@ -29,7 +29,7 @@ test.afterEach(() => { expect(errors).toEqual([]); });
 test("product, badge, drawer and page share quantities across navigation and reload", async ({ page }, testInfo) => {
   await page.goto("/");
   await expect(cartButton(page)).toHaveAccessibleName("Sepetim, 0 adet");
-  await expect(cartButton(page).locator('[data-slot="count-badge"]')).toHaveCount(0);
+  await expect(cartButton(page).locator('[data-cart-count]')).toHaveCount(0);
   await addQuantity(page, 2);
   await cartButton(page).click();
   await expect(drawer(page)).toBeVisible();
@@ -40,7 +40,7 @@ test("product, badge, drawer and page share quantities across navigation and rel
   await expect(drawer(page)).toHaveCount(0);
   await expect(line(page).getByRole("status", { name: "Adet" })).toHaveText("3");
   await expect(cartButton(page)).toHaveAccessibleName("Sepetim, 3 adet");
-  await expect(cartButton(page).locator('[data-slot="count-badge"]')).toHaveText("3");
+  await expect(cartButton(page).locator('[data-cart-count]')).toHaveText("3");
   await line(page).getByRole("button", { name: "Adedi artır" }).click();
   await cartButton(page).click();
   await expect(drawer(page).getByRole("status", { name: "Adet" })).toHaveText("4");
@@ -70,7 +70,7 @@ test("cumulative stock failure keeps the cart and quantity, then permits retry",
   await expect(card(page).getByRole("alert")).toContainText("Stok sınırını veya adedi kontrol edip tekrar deneyin");
   await expect(drawer(page)).toHaveCount(0);
   await expect(cartButton(page)).toHaveAccessibleName("Sepetim, 12 adet");
-  await expect(page.locator('[data-product-id="sample-black-olive-1kg"]').getByRole("button", { name: "Mevcut değil", exact: true })).toBeDisabled();
+  await expect(page.locator('[data-product-id="sample-black-olive-1kg"]').first().getByRole("button", { name: "Mevcut değil", exact: true })).toBeDisabled();
   await cartButton(page).click();
   await drawer(page).getByRole("button", { name: "Adedi azalt" }).click();
   await page.keyboard.press("Escape");
@@ -80,7 +80,7 @@ test("cumulative stock failure keeps the cart and quantity, then permits retry",
   await expect(drawer(page).getByRole("status", { name: "Adet" })).toHaveText("12");
 });
 
-test("badge counts all quantities and mobile menu reaches the same restored cart", async ({ page }) => {
+test("badge counts all quantities and the cart pill reaches the same restored cart", async ({ page }) => {
   await page.addInitScript((key) => localStorage.setItem(key, JSON.stringify([
     { productId: "sample-green-olive-1kg", quantity: 1, priceKurus: 1 },
     { productId: "sample-olive-oil-1l", quantity: 2 },
@@ -88,23 +88,24 @@ test("badge counts all quantities and mobile menu reaches the same restored cart
   ])), CART_STORAGE_KEY);
   await page.goto("/");
   await expect(cartButton(page)).toHaveAccessibleName("Sepetim, 3 adet");
-  await expect(cartButton(page).locator('[data-slot="count-badge"]')).toHaveText("3");
+  await expect(cartButton(page).locator('[data-cart-count]')).toHaveText("3");
   const expected = [{ productId: "sample-green-olive-1kg", quantity: 1 }, { productId: "sample-olive-oil-1l", quantity: 2 }];
   expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), CART_STORAGE_KEY)).toEqual(expected);
-  if (page.viewportSize()!.width < 1024) {
-    await page.getByRole("button", { name: "Menüyü aç" }).click();
-    await page.getByRole("navigation", { name: "Site navigasyonu" }).getByRole("link", { name: "Sepetim", exact: true }).click();
-  } else {
-    await cartButton(page).click();
-    await drawer(page).getByRole("link", { name: "Sepeti görüntüle" }).click();
-  }
+  // The cart pill stays in the bar on every width (Task204); the phone menu no longer repeats it.
+  await cartButton(page).click();
+  await drawer(page).getByRole("link", { name: "Sepeti görüntüle" }).click();
   await expect(page).toHaveURL(/\/sepet$/);
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(line(page).getByRole("status", { name: "Adet" })).toHaveText("1");
   await expect(page.getByRole("group", { name: "Natürel Sızma Zeytinyağı", exact: true }).getByRole("status", { name: "Adet" })).toHaveText("2");
   await cartButton(page).click();
-  await expect(drawer(page).getByText("Ara toplam (tahmini) · 3 adet")).toBeVisible();
-  await expect(drawer(page).getByLabel("Ara toplam", { exact: true }).filter({ hasText: "920,00 ₺" })).toBeVisible();
+  await expect(drawer(page)).toHaveAccessibleName("Sepetim (3)");
+  // The phone drawer keeps its footer short: the estimated total stays, the subtotal row is a desktop detail.
+  if (page.viewportSize()!.width >= 768) {
+    await expect(drawer(page).getByText("Ara toplam (tahmini), 3 adet")).toBeVisible();
+    await expect(drawer(page).getByLabel("Ara toplam", { exact: true }).filter({ hasText: "920,00 ₺" })).toBeVisible();
+  }
+  await expect(drawer(page).getByLabel("Toplam (tahmini)", { exact: true }).filter({ hasText: "920,00 ₺" })).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(cartButton(page)).toBeFocused();
 });
@@ -144,7 +145,7 @@ test("corrupt and blocked storage recover without breaking global cart controls"
     Object.defineProperty(window, "localStorage", { configurable: true, get() { throw new DOMException("Test blocked", "SecurityError"); } });
   });
   await page.reload();
-  await card(page).getByRole("button", { name: "Ekle", exact: true }).click();
+  await card(page).getByRole("button", { name: "Sepete ekle", exact: true }).click();
   await expect(card(page).getByRole("status")).toContainText("sepete eklendi");
   await cartButton(page).click();
   await expect(drawer(page).getByRole("status", { name: "Adet" })).toHaveText("1");
@@ -156,7 +157,7 @@ test("keyboard and reduced motion preserve opener focus and modal isolation", as
   for (const reducedMotion of ["no-preference", "reduce"] as const) {
     await page.emulateMedia({ reducedMotion });
     await page.goto("/");
-    const add = card(page).getByRole("button", { name: /^(Ekle|Eklendi)$/ });
+    const add = card(page).getByRole("button", { name: /^(Sepete ekle|Eklendi)$/ });
     await expect(add).toBeEnabled();
     await add.focus();
     await page.keyboard.press("Enter");

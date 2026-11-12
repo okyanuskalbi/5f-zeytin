@@ -2,6 +2,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { readFileSync } from "node:fs";
 import { expect, it, vi } from "vitest";
 import Article, { generateMetadata as articleMetadata } from "@/app/blog/[slug]/page";
+import { blogCover } from "@/lib/blog/cover";
 import { blogPosts } from "@/lib/blog/posts";
 import { getProductFamilies } from "@/lib/catalog/static-products";
 import { generateMetadata as productMetadata } from "@/app/urun/[slug]/page";
@@ -23,8 +24,11 @@ it.each(blogPosts)("keeps visible answers and schema identical for $slug", async
     acceptedAnswer: { "@type": "Answer", text: node.querySelector("p")!.textContent },
   })));
   const meta = await articleMetadata({ params: Promise.resolve({ slug: post.slug }) });
-  expect(meta.openGraph).toMatchObject({ images: [expect.objectContaining({ url: expect.stringMatching(/-800\.webp$/), width: 800 })] });
-  expect(schemas.find(schema => schema["@type"] === "BlogPosting").image).toMatch(/-800\.webp$/);
+  // The share image is the cover's widest WebP rendition, in the metadata and in the article schema alike.
+  const share = blogCover(post).outputs.findLast(output => output.format === "webp")!;
+  expect(share.width).toBeGreaterThanOrEqual(1200);
+  expect(meta.openGraph).toMatchObject({ images: [expect.objectContaining({ url: share.file, width: share.width, height: share.height })] });
+  expect(schemas.find(schema => schema["@type"] === "BlogPosting").image).toMatch(new RegExp(`${share.file.replaceAll(".", "\\.")}$`));
   expect(faq.mainEntity.length).toBeGreaterThanOrEqual(3);
   expect(doc.querySelectorAll("h1")).toHaveLength(1);
   expect(doc.querySelector("h1")!.textContent).toMatch(/\?$/);
