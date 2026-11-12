@@ -24,7 +24,7 @@ const breadcrumb = {
 export default function Page(): JSX.Element {
   return <main className={styles.root}><div className={styles.container}>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb).replace(/</g, "\\u003c") }} />
-    <nav aria-label="İçerik yolu" className={styles.breadcrumb}><ol><li><Link href="/">Ana Sayfa</Link></li><li><span aria-hidden="true">/</span><span aria-current="page">Blog</span></li></ol></nav>
+    <nav aria-label="İçerik yolu" className={styles.breadcrumb}><ol><li><Link prefetch={false} href="/">Ana Sayfa</Link></li><li><span aria-hidden="true">/</span><span aria-current="page">Blog</span></li></ol></nav>
     <header className={styles.intro}><h1>Zeytin Defteri</h1><p>Zeytini tanımak, zeytinyağını özenle saklamak ve sofranız için seçim yapmak üzerine.</p></header>
     <div className={styles.cardGrid}>{blogPosts.map(post => <BlogCard key={post.slug} post={post} />)}</div>
   </div></main>;
