@@ -70,3 +70,26 @@ Uygulama 12 Kasım 2026'da tamamlandı. Kanıt ve sayılar: `output/task206/KANI
 **Yapılmayanlar:** panel özet kartlarına veri bağlama (kapsam dışı) · gerçek cihaz ve Firefox (207) · ayrıntılar `KANIT.md` "Ölçülemeyen / çalıştırılmayan".
 
 ## Durum: TAMAMLANDI
+
+## Düzeltme 206-1 — yazı bağlantıları "altın dal" düğme düzenine (12 Kasım 2026, kullanıcı isteği)
+
+Kullanıcı ön izlemede alt çizgili tek başına duran yazı bağlantılarını (ör. "AFİNA Şirketler Topluluğu") beğenmedi: "biraz daha button tarzı, derli toplu hizalı, altın dal sistemi; mobilde çok iyi olmalı."
+
+**Karar (planlayıcı):** `PillButton` `quiet` varyantı yeniden tanımlanır. Alt çizgili "yalnız yazı" biçimi **tek başına duran** bağlantılarda kalkar. Cümle içindeki bağlantılar (yasal metin, paragraf içi) erişilebilirlik için **alt çizgili kalır**; onlara dokunma.
+
+**`quiet` yeni tanım:** hap gövde, kâğıt zemin (`--sf-paper`), 1 px `--sf-line` kenar, yazı Montserrat 600 `--sf-green`, yükseklik masaüstü 44 / telefon 44 (dokunma alanı ≥ 44 px), sol iç boşluk 20, sağda **28 px mini madalyon** (1,5 px `--sf-gold` halka, içinde 14 px ok, `--sf-green`). Hover/odak: kenar `--sf-gold`, madalyon altın dolgu, `translateX(3px)`; odak halkası DESIGN.md'deki gibi. Etiket tek satır. `primary`/`gold`/`outline` değişmez. Koyu zeminde: kenar `--sf-gold` %40, yazı `--sf-ivory`.
+
+**Yapılacaklar**
+1. Envanter: alt çizgili tek başına duran tüm bağlantıları bul (`quiet` kullanan 17 yer, `textLink` 7, `link`, `storeLink`, `guestLink`, Hakkımızda "AFİNA Şirketler Topluluğu", "AFİNA Şirketler Topluluğu iletişim bilgileri", "Yol tarifi alın", "Ürünlere dön", "Sipariş takibi / Teslimat ve iade bilgileri / Satış koşulları", "Alışverişe devam et", "Teklife ekle", "Tüm yazılar", giriş sayfası "Hesap oluştur" ve "Üye olmadan alışverişe devam et", "Sepeti görüntüle"). Hangisinin cümle içi, hangisinin tek başına olduğunu `output/task206-1/ENVANTER.md` içine yaz.
+2. Tek başına olanları yeni `quiet` hap görünümüne geçir; yeni sınıf yazma, `PillButton` kullan. Cümle içi olanlar aynen kalır.
+3. **Hizalama:** bağlantı grupları tek eylem satırında (flex, `gap` 12, aynı yükseklik, sola hizalı). Telefonda (≤ 640): grup alt alta, **tam genişlik**, aralık 12; iki kısa bağlantı yan yana sığıyorsa 2 sütun ızgara. Satır sonunda tek başına kalan yetim bağlantı olmasın.
+4. **Alt bilgi (footer):** sütun bağlantıları hap olmaz; her satır en az 44 px yükseklik, sola hizalı, aynı sol çizgi, hover'da `--sf-gold` renk. "AFİNA Şirketler Topluluğu markasıdır." satırındaki bağlantı `quiet` (koyu zemin) hap olur.
+5. **Mobil kabul (çok önemli):** 320, 360, 390, 430 genişlikte: taşma 0, etiket tek satır (sığmazsa düğme tam genişlik), dokunma alanı ≥ 44 px, komşu iki bağlantı arası ≥ 8 px, ilk ekranda ana eylem görünür, yatay kaydırma yok. Telefon ekran görüntüleri 390 ve 320: Hakkımızda, Giriş, Ürün ayrıntısı, Sepet çekmecesi, Alt bilgi, Blog, Toptan, Bayilik.
+6. Testler: v3 beklentisine göre güncelle (bağlantı adları, `data-variant="quiet"`), yeni test: tek başına bağlantılarda alt çizgi yok, cümle içi bağlantılarda alt çizgi var. Karşıtlık ≥ 4,5:1 (koyu zemin dahil).
+7. `docs/DESIGN.md` PillButton tablosundaki `quiet` satırını ve "Do's and Don'ts" ilgili maddesini bu tanıma göre güncelle.
+8. Çalıştır: lint, typecheck, build, birim testleri (tam takım), e2e (Chromium 390+1440; taban `fd8ad45`'e göre **yeni düşen 0**), `scripts/qa-design-v3.mjs` (ana sayfa + shop + pages). Kanıt: `output/task206-1/KANIT.md`, ekranlar `output/task206-1/ekran/`.
+9. Tek kayıt: `feat: 206-1 yazı bağlantıları altın dal düğme düzeni`.
+
+**Yapılmayanlar:** iş mantığı, korunan klasörler, push/yayın, yeni sayfa içeriği, kaydırma hareketi, yeni paket.
+
+## Durum: 206-1, `docs/tasks/208-tek-sayfa-landing.md` görevine KATILDI (kullanıcı tek sayfa landing istedi; bağlantı düğme düzeni orada uygulanır)

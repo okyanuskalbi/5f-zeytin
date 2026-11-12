@@ -22,3 +22,5 @@ Claude bulguları `## Düzeltme 207-x` olarak yazar → yazan ajan uygular → y
 Önizleme PDF/video hazırlanmaz (kullanıcı kararı, 12 Kas). push → CI `vercel-yayin.yml` yeşil → yeni `.cache/task-204-207-yayin/deploy.py` (`prepare / preflight / upload / create <ciRunId> / status`) → canlı kontrol (sayfalar 200, 404 doğru, `/admin` + `/api/account` 401, videolar 206) → geri dönüş notu: önceki canlı `dpl_7BNv49JbjcWeYyAU3S8qUPkNLyp8` (`0dd0222`).
 
 ## Durum: BEKLİYOR (206 sonrası)
+
+> **Not (12 Kas):** 207, `docs/tasks/208-tek-sayfa-landing.md` bittikten sonra çalışır; QA kapsamı tek sayfa yapısına, yönlendirmelere ve mobil kabule göre güncellenir.

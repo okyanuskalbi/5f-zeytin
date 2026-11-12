@@ -84,6 +84,10 @@ Eski `--sf-radius-*` tokenları (action, button, panel, image, harvest, badge, c
 ### Gölge
 Duran kart: gölgesiz, 1 px `--sf-line`. Hover/odak: `--sf-shadow-lift: 0 16px 36px -18px rgba(36,58,41,.32)`. Ürün görselinin altında yumuşak zemin gölgesi (elips, `rgba(36,58,41,.18)`). Gri/siyah gölge yok.
 
+## Sayfa yapısı (12 Kas kararı: tek sayfa landing)
+
+Site **tek sayfalık landing**: `/` sırayla Hero (`baslangic`) · Ürünler (`urunler`, kategori sekmeli) · Hikâyemiz (`hikayemiz`, hakkımızda + tesis + hasat) · Toptan & Bayilik (`toptan-bayilik`, iki sekme + form) · Zeytin Defteri (`blog`, 3 kart) · SSS + İletişim (`iletisim`) · alt bilgi. Üst menü `/#id` bağlantılarıdır. Ayrı kalan sayfalar: sepet, ödeme, giriş/kayıt/hesabım, yönetim paneli, yasal sayfalar, `/urun/[slug]`, `/blog/[slug]`. Eski adresler 308 ile bölüme yönlendirilir. Bölüm dikey boşluğu masaüstü 56–64, tablet 48, telefon 36–40 px. Tekrar kuralı: aynı hedefe ikinci düğme yok, bölüm başına en çok bir `primary`/`gold`, aynı cümle iki kez geçmez. Hareket: yalnız tek seferlik hafif belirme (opacity + 8 px, 280 ms) ve hover/odak; kaydırmaya bağlı efekt yok. Ayrıntı: `docs/tasks/208-tek-sayfa-landing.md`. Aşağıdaki "Components" bölümündeki sayfa başına tarifler bu yapıya göre okunur (bölümler tek sayfada birleşir).
+
 ## Components
 
 ### PillButton — imza öğe: "altın madalyonlu hap"
@@ -94,7 +98,7 @@ Yapı: hap gövde + sağ uçta **36 px dairesel madalyon** içinde ikon (ok / se
 | `primary` | `--sf-green` / `--sf-ivory` | `--sf-gold` zemin, yeşil ikon | Açık zeminde ana eylem (Sepete ekle, Ürünleri İnceleyin, Gönder) |
 | `gold` | `--sf-gold` / `--sf-green` | `--sf-green` zemin, fildişi ikon | Koyu bant, video/fotoğraf üstü, alt bilgi |
 | `outline` | saydam, 1,5 px `--sf-green` kenar / `--sf-green` | kenarlı, saydam | İkincil eylem (Teklife ekle, Hakkımızda, Tüm Ürünler açık zeminde) |
-| `quiet` | yalnız yazı, 2 px `--sf-gold` alt çizgi (4 px ofset) | yok | Üçüncül bağlantı; dokunma alanı ≥ 44 px |
+| `quiet` | kâğıt zemin, 1 px `--sf-line` kenar / `--sf-green` 600; yükseklik 44 | 28 px mini madalyon: 1,5 px `--sf-gold` halka, 14 px ok | Üçüncül bağlantı, **tek başına duran** her yazı bağlantısı (12 Kas kararı: alt çizgili tek başına bağlantı yok). Cümle içi bağlantılar alt çizgili kalır. Koyu zeminde kenar `--sf-gold` %40, yazı `--sf-ivory`. Telefonda tam genişlik ya da 2 sütun |
 
 Durumlar: hover → dolgu `--sf-green-deep` (gold'da %6 koyulaşma), madalyon `translateX(4px)`; basılı → `scale(.97)`; odak → 2 px `--sf-gold-deep` halka, 3 px ofset; `busy` → madalyonda dönen halka, `aria-busy`, tıklanamaz; `disabled` → `--sf-sage` dolgu, `--sf-muted` yazı, madalyon yok. Geçiş 180 ms `ease-out`; azaltılmış harekette yalnız renk değişir. Ölçek büyütme (scale > 1) kullanılmaz.
 Sepete ekle akışı: "Sepete ekle" + sepet → `busy` → **"Eklendi"** + onay (1,6 sn) → başa döner. Mantık `components/catalog/AddToCart` içinde aynen kalır; yalnız görünüm değişir. Stok yok: `disabled` "Mevcut değil".
