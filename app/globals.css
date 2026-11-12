@@ -34,6 +34,8 @@ body:has([data-admin-shell]) footer { display:none; }
   --sf-space-64: 64px;
   --sf-space-96: 96px;
   --sf-space-128: 128px;
+  /* Section rhythm of the one-page landing (docs/DESIGN.md → Spacing): 60 desktop, 48 tablet, 40 phone. */
+  --sf-section-y: 60px;
   --pro-brand: var(--sf-green);
   --pro-brand-hover: #C8D6AC;
   --pro-stone: var(--sf-ivory);
@@ -170,7 +172,8 @@ body:has([data-admin-shell]) footer { display:none; }
     border-color: var(--border);
   }
 
-  html { scroll-padding-top: calc(var(--header-height) + 16px); background: var(--shell-background); }
+  /* Anchored sections land 8 px below the sticky menu (its 1 px rule included). */
+  html { scroll-padding-top: calc(var(--header-height) + 9px); background: var(--shell-background); }
   html,body { overflow-x:hidden; overflow-x:clip; }
 
   body {
@@ -294,4 +297,11 @@ body:has([data-admin-shell]) footer { display:none; }
 
 @media (max-width: 640px) {
   :root { --sf-radius-card: 20px; --sf-radius-hero: 24px; --sf-button-h: 48px; }
+}
+
+/* Tek sayfa landing (Task208): tighter section rhythm; in-page links glide only when motion is welcome. */
+@media (max-width: 1099px) { :root { --sf-section-y: 48px; } }
+@media (max-width: 767px) { :root { --sf-section-y: 40px; } }
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
 }

@@ -76,7 +76,9 @@ it("carries the actual gallery SKU and segment into a truthful encoded corporate
   expect(uri.searchParams.get("body")).toContain("Şehir: Osmaniye");
   expect(uri.searchParams.get("body")).toContain("İlçe: Düziçi");
   expect(screen.getByRole("region", { name: "Talep özeti" }).textContent).toContain("e-posta uygulamanızda");
-  expect(screen.getByRole("link", { name: /Şirketler Topluluğu.*arayın/ }).getAttribute("href")).toBe("tel:+903288827708");
+  // Task208: the phone and e-mail row moved to the page's İletişim section; the form offers only its own draft link.
+  expect(screen.queryByRole("link", { name: /arayın/ })).toBeNull();
+  expect(document.querySelector('[data-quote-composer] a[href^="tel:"]')).toBeNull();
   expect(screen.queryByRole("link", { name: /WhatsApp/i })).toBeNull();
   expect(screen.queryByText("Talebiniz gönderildi.")).toBeNull();
   // Address lookup GETs may finish during deferred field loading; preparing a

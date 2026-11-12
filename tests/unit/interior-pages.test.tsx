@@ -30,8 +30,9 @@ for (const [title, Page, metadata] of [["Sipariş takibi", Tracking, trackingMet
     const doc = document.implementation.createHTMLDocument();
     doc.body.innerHTML = renderToStaticMarkup(<Page />);
     expect(doc.querySelector("h1")?.textContent).toBe(title);
-    // Task206 (v3): the 404 page names its two pills "Ana sayfa" and "Ürünler".
-    expect(doc.querySelector('main a[href="/urunler"]')?.textContent).toBe(metadata ? "Ürünleri İnceleyin" : "Ürünler");
+    // Task206 (v3): the 404 page names its two pills "Ana sayfa" and "Ürünler". Task208: both lead to the "#urunler" section.
+    expect(doc.querySelector('main a[href="/#urunler"]')?.textContent).toBe(metadata ? "Ürünleri İnceleyin" : "Ürünler");
+    expect(doc.querySelector('main a[href="/urunler"]')).toBeNull();
     expect(doc.querySelector('main a[href="/"]')).not.toBeNull();
     expect(doc.querySelector("form, input, iframe")).toBeNull();
     if (metadata) {

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { PackageIcon, ArrowLeftIcon } from "lucide-react";
@@ -109,9 +108,7 @@ function ResourceFailure({ retry }: { retry: () => void }) {
       <PillButton variant="outline" icon="none" onClick={retry}>
         Yeniden dene
       </PillButton>
-      <p>
-        <Link href="/giris">Giriş sayfasına dön</Link>
-      </p>
+      <PillButton variant="quiet" href="/giris">Giriş sayfasına dön</PillButton>
     </div>
   );
 }
@@ -159,7 +156,7 @@ export function CustomerWorkspace({
           )}
         </header>
         {signedOut ? (
-          <Link href="/giris">Giriş yap</Link>
+          <PillButton variant="quiet" href="/giris">Giriş yap</PillButton>
         ) : (
           <div className={styles.customerLayout}>
             <CustomerNavigation active={`/hesabim/${path}`} />
@@ -212,7 +209,7 @@ function CustomerOrders() {
               Önceki sayfaya dön
             </PillButton>
           ) : (
-            <Link href="/#urunler">Ürünlerimizi keşfedin</Link>
+            <PillButton variant="quiet" href="/#urunler">Ürünlerimizi keşfedin</PillButton>
           )}
         </div>
       ) : (
@@ -226,11 +223,9 @@ function CustomerOrders() {
                 </div>
                 <Tag>{customerOrderStatuses[order.status]}</Tag>
                 <strong>{money(order.totalKurus)}</strong>
-                <Link
-                  href={`/hesabim/siparisler/${encodeURIComponent(order.no)}`}
-                >
+                <PillButton variant="quiet" size="md" href={`/hesabim/siparisler/${encodeURIComponent(order.no)}`}>
                   Siparişi görüntüle
-                </Link>
+                </PillButton>
               </li>
             ))}
           </ul>
@@ -264,10 +259,10 @@ function CustomerOrderDetail({ no }: { no: string }) {
   const order = state.kind === "ready" ? state.data : null;
   return (
     <div className={styles.details}>
-      <Link href="/hesabim/siparisler" className={styles.back}>
+      <PillButton variant="quiet" icon="none" href="/hesabim/siparisler" className={styles.back}>
         <ArrowLeftIcon size={16} aria-hidden="true" />
         Siparişlerime dön
-      </Link>
+      </PillButton>
       <section className={styles.card}>
         <h2>Sipariş bilgileri</h2>
         {state.kind === "loading" ? (
@@ -483,9 +478,9 @@ function SecurityEditor() {
           <PillButton type="submit" icon="check" busy={busy}>
             {busy ? "Güncelleniyor…" : "Şifreyi güncelle"}
           </PillButton>
-          <Link href="/giris">
+          <PillButton variant="quiet" href="/giris">
             Şifremi unuttum / E-posta bağlantısıyla giriş
-          </Link>
+          </PillButton>
         </div>
       </form>
     </section>

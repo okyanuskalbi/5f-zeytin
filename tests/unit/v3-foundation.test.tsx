@@ -2,21 +2,20 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { readFileSync, statSync } from "node:fs";
 import { expect, it, vi } from "vitest";
 import Home from "@/app/page";
-import WholesalePage from "@/app/toptan-satis/page";
 import { StoreFooter as Footer } from "@/components/storefront/StoreFooter";
 
-vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }) }));
+vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }), usePathname: () => "/", useSearchParams: () => new URLSearchParams(window.location.search) }));
 vi.mock("server-only", () => ({}));
 
-it("keeps the home storefront separate from the existing private wholesale form", async () => {
+// Task208: the private wholesale form is a section of the home page (still a draft form, disabled before hydration).
+it("serves the storefront and the existing private wholesale form on the one home page", async () => {
   const doc = document.implementation.createHTMLDocument();
   doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}<Footer /></>);
   expect(doc.querySelector("#baslangic h1")?.textContent).toBe("Kökü toprakta. Yeri sofrada.");
   expect(doc.body.textContent).not.toMatch(/Örnek ürünler|Gerçek satış kataloğu|kullanıma açık değil|Temsili görsel/);
-  expect(doc.querySelector("#toptan, form")).toBeNull();
-  const wholesale = new DOMParser().parseFromString(renderToStaticMarkup(await WholesalePage()), "text/html");
-  expect(wholesale.querySelector('#toptan form[aria-label="Kurumsal teklif talebi"]')?.getAttribute("method")).toBe("post");
-  expect(wholesale.querySelector('#toptan button[type="submit"]')?.hasAttribute("disabled")).toBe(true);
+  expect(doc.querySelectorAll("form")).toHaveLength(1);
+  expect(doc.querySelector('#toptan-bayilik #toptan form[aria-label="Kurumsal teklif talebi"]')?.getAttribute("method")).toBe("post");
+  expect(doc.querySelector('#toptan button[type="submit"]')?.hasAttribute("disabled")).toBe(true);
   for (const href of ["/kvkk", "/mesafeli-satis", "/iade", "https://afina.com.tr"]) expect(doc.querySelector(`a[href="${href}"]`)).not.toBeNull();
 });
 

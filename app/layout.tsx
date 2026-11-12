@@ -67,7 +67,7 @@ export default async function RootLayout({
   let products: readonly Product[] | null;
   try { products = await getProducts(); } catch { products = null; }
   return (
-    <html lang="tr" className={`${display.variable} ${displayItalic.variable} ${body.variable}`}>
+    <html lang="tr" data-scroll-behavior="smooth" className={`${display.variable} ${displayItalic.variable} ${body.variable}`}>
       <body style={storefrontMotionStyles}>
         <a
           href="#ana-icerik"

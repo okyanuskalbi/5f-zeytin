@@ -14,7 +14,9 @@ export type PillButtonProps = {
   busy?: boolean;
   disabled?: boolean;
   children: ReactNode;
-} & Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children">;
+} & Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children">
+  /** Only with `href`: an external destination (map, carrier) opens in its own tab. */
+  & Pick<AnchorHTMLAttributes<HTMLAnchorElement>, "target" | "rel" | "referrerPolicy">;
 
 const coinIcons = { arrow: ArrowRight, cart: ShoppingCart, check: Check, plus: Plus } as const;
 
@@ -25,9 +27,9 @@ const coinIcons = { arrow: ArrowRight, cart: ShoppingCart, check: Check, plus: P
  */
 export function PillButton({
   variant = "primary", icon = "arrow", size = "lg", href, fullWidth = false, busy = false, disabled = false,
-  className, children, ...rest
+  target, rel, referrerPolicy, className, children, ...rest
 }: PillButtonProps): JSX.Element {
-  const CoinIcon = variant === "quiet" || disabled || icon === "none" ? null : coinIcons[icon];
+  const CoinIcon = disabled || icon === "none" ? null : coinIcons[icon];
   const shared = {
     "data-pill": "",
     "data-variant": variant,
@@ -44,7 +46,7 @@ export function PillButton({
   if (href !== undefined) {
     // Only anchor-safe attributes arrive here in practice: aria-*, data-*, id, onClick.
     const anchor = rest as unknown as AnchorHTMLAttributes<HTMLAnchorElement>;
-    return <Link prefetch={false} href={href} {...anchor} {...shared}>{content}</Link>;
+    return <Link prefetch={false} href={href} target={target} rel={rel} referrerPolicy={referrerPolicy} {...anchor} {...shared}>{content}</Link>;
   }
   return <button type="button" {...rest} {...shared} disabled={disabled || busy} aria-busy={busy || undefined}>{content}</button>;
 }

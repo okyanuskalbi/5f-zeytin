@@ -44,10 +44,17 @@ test.describe("Task195 blog pages", () => {
     await context.route("**/*", route => new URL(route.request().url()).origin === origin.origin ? route.continue() : route.abort());
   });
 
+  // Task208: the list page is the #blog section of the home page; /blog redirects there.
   test("staticpages: blog list and all four articles respond 200 with canonical editorial metadata", async ({ page, request }) => {
+    const moved = await request.get("/blog", { maxRedirects: 0 });
+    expect(moved.status()).toBe(308);
+    expect(moved.headers().location).toBe("/#blog");
     expect((await page.goto("/blog", { waitUntil: "load" }))?.status()).toBe(200);
+    await expect(page).toHaveURL(/\/#blog$/);
     await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
-    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://afinazeytin.com/blog");
+    await expect(page.locator("#blog").getByRole("heading", { level: 2, name: "Zeytin Defteri", exact: true })).toBeVisible();
+    await expect(page.locator('#blog a[href^="/blog/"]')).toHaveCount(3);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /^https:\/\/afinazeytin\.com\/?$/);
     for (const post of posts) {
       expect((await page.goto(`/blog/${post.slug}`, { waitUntil: "load" }))?.status()).toBe(200);
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(post.title);
@@ -58,7 +65,8 @@ test.describe("Task195 blog pages", () => {
       expect(JSON.stringify(schemas)).toContain('"@type":"BreadcrumbList"');
       expect(JSON.stringify(schemas)).not.toMatch(/"@type":"(?:Product|Offer)"/);
       const breadcrumb = page.getByRole("navigation", { name: "İçerik yolu", exact: true });
-      await expect(breadcrumb.getByRole("link", { name: "Blog", exact: true })).toHaveAttribute("href", "/blog");
+      await expect(breadcrumb.getByRole("link", { name: "Blog", exact: true })).toHaveAttribute("href", "/#blog");
+      expect(JSON.stringify(schemas)).toContain('"item":"https://afinazeytin.com/#blog"');
       await expect(breadcrumb.locator('[aria-current="page"]')).toHaveText(post.title);
       const robots = await page.locator('meta[name="robots"]').evaluateAll(nodes => nodes[0]?.getAttribute("content") ?? "");
       expect(robots).not.toContain("noindex");
@@ -73,14 +81,19 @@ test.describe("Task195 blog pages", () => {
     const report = [];
     const errors: string[] = [];
     page.on("pageerror", error => errors.push(error.message));
-    expect((await page.goto("/blog", { waitUntil: "load" }))?.status()).toBe(200);
-    report.push({ path: "/blog", ...(await layout(page)) });
-    for (const post of posts) await expect(page.locator(`main a[href="/blog/${post.slug}"]`).first()).toBeVisible();
+    // Task208: the list is the home page's #blog section (three cards); the fourth article is reached from the others.
+    expect((await page.goto("/#blog", { waitUntil: "load" }))?.status()).toBe(200);
+    await page.locator("#blog").scrollIntoViewIfNeeded();
+    await expect(page.locator("#blog > div")).toHaveCSS("opacity", "1");
+    report.push({ path: "/#blog", ...(await layout(page)) });
+    for (const post of posts.slice(0, 3)) await expect(page.locator(`#blog a[href="/blog/${post.slug}"]`)).toBeVisible();
+    await expect(page.locator('#blog a[href^="/blog/"]')).toHaveCount(3);
     await capture(page, `output/task195/list-${width}.png`);
     for (const post of posts) {
       expect((await page.goto(`/blog/${post.slug}`, { waitUntil: "load" }))?.status()).toBe(200);
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(post.title);
       const metrics = await layout(page);
+      for (const other of posts.filter(item => item.slug !== post.slug)) await expect(page.locator(`main a[href="/blog/${other.slug}"]`).first()).toBeAttached();
       const body = page.locator("[data-blog-content]");
       await expect(body).toHaveCount(1);
       const text = await body.textContent() ?? "";
@@ -125,6 +138,7 @@ test.describe("Task195 blog pages", () => {
     await expect(page.locator("[data-product-page]")).toBeVisible();
   });
 
+  // Task208: the sitemap lists the home page and the four articles; the list page is gone.
   test("sitemap, llms and parseable Atom advertise the editorial pages without price pages", async ({ page, request }) => {
     const sitemap = await (await request.get("/sitemap.xml")).text();
     const llms = await (await request.get("/llms.txt")).text();
@@ -132,7 +146,7 @@ test.describe("Task195 blog pages", () => {
     expect(feedResponse.status()).toBe(200);
     expect(feedResponse.headers()["content-type"]).toContain("application/atom+xml");
     const feed = await feedResponse.text();
-    await page.goto("/blog", { waitUntil: "load" });
+    await page.goto("/", { waitUntil: "load" });
     const parsed = await page.evaluate(({ sitemap, feed }) => {
       const parser = new DOMParser(), map = parser.parseFromString(sitemap, "application/xml"), atom = parser.parseFromString(feed, "application/xml");
       return { errors: map.querySelectorAll("parsererror").length + atom.querySelectorAll("parsererror").length,
@@ -141,8 +155,10 @@ test.describe("Task195 blog pages", () => {
           href: entry.getElementsByTagName("link")[0]?.getAttribute("href") })) };
     }, { sitemap, feed });
     expect(parsed.errors).toBe(0);
-    expect(parsed.urls).toHaveLength(9);
-    expect(parsed.urls).toContain("https://afinazeytin.com/blog");
+    expect(parsed.urls).toHaveLength(5);
+    expect(parsed.urls).toContain("https://afinazeytin.com/");
+    expect(parsed.urls).not.toContain("https://afinazeytin.com/blog");
+    expect(llms).toContain("https://afinazeytin.com/#blog");
     for (const post of posts) {
       const url = `https://afinazeytin.com/blog/${post.slug}`;
       expect(parsed.urls).toContain(url);

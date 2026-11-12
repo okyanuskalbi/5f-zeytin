@@ -51,8 +51,9 @@ it("uses route-specific social metadata without weakening noindex", async () => 
 it("discovery points at the current catalogue and describes provisional pricing honestly", async () => {
   for (const get of [discovery, fullDiscovery]) {
     const body = await (await get()).text();
-    expect(body).toContain("](https://afinazeytin.com/urunler)");
-    expect(body).not.toContain("/#urunler");
+    // Task208: the catalogue is the #urunler section of the home page; the retired address is not advertised.
+    expect(body).toContain("](https://afinazeytin.com/#urunler)");
+    expect(body).not.toContain("afinazeytin.com/urunler");
     expect(body).toMatch(/Fiyat ve stok.*temsili/);
     expect(body).not.toMatch(/güncel bilgi esas/);
   }

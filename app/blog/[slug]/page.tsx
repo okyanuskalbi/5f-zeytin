@@ -60,13 +60,13 @@ export default async function Page({ params }: Props): Promise<JSX.Element> {
   const breadcrumb = {
     "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
       { "@type": "ListItem", position: 1, name: "Ana Sayfa", item: `${siteIdentity.origin}/` },
-      { "@type": "ListItem", position: 2, name: "Blog", item: `${siteIdentity.origin}/blog` },
+      { "@type": "ListItem", position: 2, name: "Blog", item: `${siteIdentity.origin}/#blog` },
       { "@type": "ListItem", position: 3, name: post.title, item: canonical },
     ],
   };
   return <main className={styles.root}><div className={styles.container}>
     {[article, breadcrumb, faq].map(schema => <script key={schema["@type"]} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />)}
-    <PagePath steps={[{ name: "Ana Sayfa", href: "/" }, { name: "Blog", href: "/blog" }, { name: post.title }]} />
+    <PagePath steps={[{ name: "Ana Sayfa", href: "/" }, { name: "Blog", href: "/#blog" }, { name: post.title }]} />
     <article className={styles.article}>
       <header className={styles.articleHeader}><h1>{post.title}</h1><div className={styles.articleMeta}><span>Güncelleme: <time dateTime={post.updated}>{formatBlogDate(post.updated)}</time></span><span data-article-author>AFİNA ZEYTİN</span><span>{post.readingMinutes} dakika okuma</span></div><p className={styles.excerpt} data-article-answer>{editorial.answer}</p></header>
       <V3Picture image={image} sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1023px) 90vw, 960px" eager className={styles.cover} />

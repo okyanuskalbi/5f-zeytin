@@ -52,7 +52,7 @@ export function AccountSummary({ profile }: { profile: AccountProfile | null }) 
       </nav>
     </div></div> : <div className={summary.failure}>
       <p role="alert">Hesap bilgileri yüklenemedi. Lütfen yeniden deneyin.</p>
-      <div className={styles.actions}><PillButton icon="none" onClick={() => router.refresh()}>Yeniden dene</PillButton><Link href="/giris" className={styles.textLink}>Giriş sayfasına dön</Link></div>
+      <div className={styles.actions}><PillButton icon="none" onClick={() => router.refresh()}>Yeniden dene</PillButton><PillButton variant="quiet" href="/giris">Giriş sayfasına dön</PillButton></div>
     </div>}
     <p ref={feedbackRef} tabIndex={-1} role={feedback.error ? "alert" : "status"} aria-live={feedback.error ? "assertive" : "polite"} aria-atomic="true" className={`${styles.feedback} ${feedback.error ? styles.error : ""}`}>{busy ? "İsteğiniz işleniyor…" : feedback.message}</p>
   </div></main>;

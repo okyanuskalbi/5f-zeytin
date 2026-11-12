@@ -129,10 +129,10 @@ function judge(name, facts) {
   if (!/Cormorant/i.test(facts.h1Font)) fail(name, `h1 font ${facts.h1Font}`);
   if (!/Montserrat/i.test(facts.bodyFont)) fail(name, `body font ${facts.bodyFont}`);
   for (const eyebrow of facts.eyebrows) if (!eyebrow.includes('İ') || /I/.test(eyebrow)) fail(name, `eyebrow "${eyebrow}" lost the dotted İ`);
-  if (facts.sections.length !== 9 || facts.sections.some(section => !section.visible)) fail(name, 'a home section is missing or hidden');
+  if (facts.sections.length !== 6 || facts.sections.some(section => !section.visible)) fail(name, 'a home section is missing or hidden');
   if (facts.stamps !== 1) fail(name, `${facts.stamps} stamps`);
   if (facts.branches > 2) fail(name, `${facts.branches} olive branches`);
-  if (facts.darkBands > 2) fail(name, `${facts.darkBands} dark bands`);
+  if (facts.darkBands > 1) fail(name, `${facts.darkBands} dark bands`);
 }
 
 async function auditProfile([width, height, engine]) {
@@ -247,26 +247,26 @@ async function overlayCards(width, height) {
   try {
     await page.goto(origin.href, { waitUntil: 'networkidle' });
     await settle(page, height);
-    const cards = page.locator('a[data-home-category], [data-home-section="banners"] a');
+    const cards = page.locator('[data-home-facility] figure');
     const rows = [];
     for (const card of await cards.all()) {
       await card.scrollIntoViewIfNeeded();
       const texts = await card.evaluate(element => {
         const frame = element.getBoundingClientRect();
-        return [...element.querySelectorAll('h2, [data-card-action]')].map(node => {
+        return [...element.querySelectorAll('figcaption')].map(node => {
           const range = document.createRange();
           range.selectNodeContents(node);
           const box = range.getBoundingClientRect();
-          return { text: node.textContent.trim(), large: node.tagName === 'H2', x: box.x - frame.x, y: box.y - frame.y, width: box.width, height: box.height };
+          return { text: node.textContent.trim(), large: true, x: box.x - frame.x, y: box.y - frame.y, width: box.width, height: box.height };
         });
       });
-      await card.evaluate(element => { for (const node of element.querySelectorAll('h2, [data-card-action]')) node.style.visibility = 'hidden'; });
+      await card.evaluate(element => { for (const node of element.querySelectorAll('figcaption')) node.style.visibility = 'hidden'; });
       const image = await card.screenshot();
-      await card.evaluate(element => { for (const node of element.querySelectorAll('h2, [data-card-action]')) node.style.visibility = ''; });
+      await card.evaluate(element => { for (const node of element.querySelectorAll('figcaption')) node.style.visibility = ''; });
       for (const text of texts) {
         const behind = await backdrop(image, text, 1);
         const contrast = ratio(IVORY, behind.bright);
-        if (contrast < (text.large ? limits.headingContrast : limits.textContrast)) fail(`overlay-${width}`, `"${text.text}" ${contrast.toFixed(2)}:1`);
+        if (contrast < limits.textContrast) fail(`overlay-${width}`, `"${text.text}" ${contrast.toFixed(2)}:1`);
         rows.push({ text: text.text, large: text.large, contrast });
       }
     }
@@ -347,7 +347,7 @@ async function withoutScript() {
     });
     const rgb = value => value.match(/\d+/g).slice(0, 3).map(Number);
     facts.soldOutContrast = facts.soldOut ? ratio(luminance(rgb(facts.soldOut.color)), luminance(rgb(facts.soldOut.background))) : 0;
-    if (facts.sections !== 9 || !facts.heading || facts.pills) fail('no-script', 'content or actions hidden without JavaScript');
+    if (facts.sections !== 6 || !facts.heading || facts.pills) fail('no-script', 'content or actions hidden without JavaScript');
     if (!facts.soldOut?.shown || facts.soldOut.coin || facts.soldOutContrast < limits.textContrast) fail('no-script', '"Mevcut değil" is not readable');
     await page.screenshot({ path: path.join(shots, 'js-kapali-390.png'), fullPage: true });
     return facts;
@@ -361,7 +361,8 @@ async function pillStates() {
     await page.goto(origin.href, { waitUntil: 'networkidle' });
     await page.evaluate(() => document.fonts.ready);
     await page.evaluate(() => {
-      const source = document.querySelector('main a[data-pill][data-variant="primary"]');
+      // Task208: the home page's primary pills are the buy buttons.
+      const source = document.querySelector('main button[data-pill][data-variant="primary"]:not(:disabled)');
       let waitClass = '';
       for (const sheet of document.styleSheets) {
         const rules = [...sheet.cssRules];
@@ -373,7 +374,7 @@ async function pillStates() {
       board.id = 'pill-states';
       board.style.cssText = 'position:fixed;inset:0;z-index:9999;overflow:auto;padding:32px;background:#F5F1E7;font:500 13px var(--font-body);color:#243A29';
       const states = ['duran', 'hover', 'odak', 'busy', 'disabled'];
-      for (const [variant, label] of [['primary', 'Sepete ekle'], ['gold', 'Teklif İste'], ['outline', 'Hakkımızda'], ['quiet', 'Teklife ekle']]) {
+      for (const [variant, label] of [['primary', 'Sepete ekle'], ['gold', 'Teklif İste'], ['outline', 'Hakkımızda'], ['quiet', 'Sepeti görüntüle']]) {
         const row = document.createElement('div');
         row.style.cssText = `display:grid;grid-template-columns:96px repeat(5,minmax(0,1fr));align-items:center;gap:24px;padding:24px;margin-bottom:16px;border-radius:24px;background:${variant === 'gold' ? '#243A29' : '#FFFDF8'};color:${variant === 'gold' ? '#F5F1E7' : '#243A29'}`;
         row.append(Object.assign(document.createElement('strong'), { textContent: variant }));
@@ -389,7 +390,7 @@ async function pillStates() {
           pill.innerHTML = source.innerHTML;
           pill.querySelector('[data-pill-label]').textContent = state === 'disabled' && variant !== 'quiet' ? 'Mevcut değil' : label;
           const coin = pill.querySelector('[data-coin]');
-          if (variant === 'quiet' || state === 'disabled') coin.remove();
+          if (state === 'disabled') coin.remove();
           if (state === 'busy') { pill.disabled = true; pill.setAttribute('aria-busy', 'true'); coin.innerHTML = `<span class="${waitClass}"></span>`; }
           if (state === 'disabled') pill.disabled = true;
           cell.append(pill, Object.assign(document.createElement('span'), { textContent: state }));
@@ -482,8 +483,8 @@ await fs.writeFile(path.join(out, 'KONTRAST.md'), [
     ...hero.brightest.map(frame => `| ${frame.time} | ${fixed(frame.title)}:1 | ${fixed(frame.lead)}:1 | ${fixed(frame.pillOnVideo)}:1 |`), '',
     `Bütün karelerde en düşük: başlık ${fixed(hero.worstTitle)}:1, açıklama ${fixed(hero.worstLead)}:1. Düğme yazısı kendi altın dolgusunun üstündedir: yeşil/altın ${fixed(hero.buttonLabel)}:1 (videodan bağımsız).`, '',
   ]),
-  '# Fotoğraf kartlarındaki yazı (4 kutu + üçlü banner)', '',
-  'Aynı yöntem: yazı gizlenir, kartın ekran görüntüsünde yazı kutusunun arkasındaki en parlak %5 eşiği fildişi yazıyla karşılaştırılır. Başlık (Cormorant 24–28 px) büyük metindir (≥ 3:1); eylem metni ≥ 4,5:1.', '',
+  '# Fotoğraf kartlarındaki yazı (Hikâyemiz tesis fotoğrafları)', '',
+  'Aynı yöntem: yazı gizlenir, kartın ekran görüntüsünde yazı kutusunun arkasındaki en parlak %5 eşiği fildişi yazıyla karşılaştırılır. Başlık (Cormorant 600, telefonda 15–17 px, masaüstünde 22 px) kalın büyük metin sayılmaz; yine de ≥ 4,5:1 aranır.', '',
   ...report.overlays.flatMap(view => [`## ${view.width} px`, '', '| Yazı | Tür | Karşıtlık |', '|---|---|---|', ...view.rows.map(row => `| ${row.text} | ${row.large ? 'başlık' : 'eylem metni'} | ${fixed(row.contrast)}:1 |`), '']),
 ].join('\n'));
 await fs.writeFile(path.join(out, 'olcum.json'), JSON.stringify(report, null, 1));

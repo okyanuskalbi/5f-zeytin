@@ -23,7 +23,7 @@ export function TrackingSummary({ order }: { order: TrackingOrder }) {
         <dl><div><dt>Kargo firması</dt><dd>{shipping.carrier}</dd></div><div><dt>Takip numarası</dt><dd className={styles.trackingNo}>{shipping.trackingNo}</dd></div></dl>
         <PillButton variant="outline" icon="none" onClick={() => void copy()}>Takip numarasını kopyala</PillButton>
         <p role="status" aria-live="polite">{copyMessage}</p>
-        {isSafeCarrierUrl(shipping.trackingUrl) ? <a className={styles.link} href={shipping.trackingUrl} target="_blank" rel="noopener noreferrer" referrerPolicy="no-referrer">Kargo firmasında takip et <span className="sr-only">(yeni sekmede açılır)</span></a> : <p>Kargo firmasında takip et bağlantısı, firma belirlendiğinde burada yer alacak.</p>}
+        {isSafeCarrierUrl(shipping.trackingUrl) ? <PillButton variant="quiet" href={shipping.trackingUrl} target="_blank" rel="noopener noreferrer" referrerPolicy="no-referrer">Kargo firmasında takip et <span className="sr-only">(yeni sekmede açılır)</span></PillButton> : <p>Kargo firmasında takip et bağlantısı, firma belirlendiğinde burada yer alacak.</p>}
         {shipping.estimatedDelivery && order.status !== "cancelled" && order.status !== "refunded" && <p>Tahmini teslim: <time dateTime={shipping.estimatedDelivery}>{new Intl.DateTimeFormat("tr-TR", { dateStyle: "long", timeZone: "UTC" }).format(new Date(shipping.estimatedDelivery))}</time></p>}
       </> : <p>Kargo bilgileri henüz eklenmedi.</p>}
     </section>

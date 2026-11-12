@@ -1,124 +1,104 @@
-import { cleanup, render, screen, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { readFileSync } from "node:fs";
 import { parse } from "postcss";
-import { afterEach, expect, it, vi } from "vitest";
-import { DealershipPage } from "@/components/storefront/content/DealershipPage";
+import { renderToStaticMarkup } from "react-dom/server";
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import Home from "@/app/page";
+import { getProductFamilies } from "@/lib/catalog/static-products";
 
-vi.mock("@/components/dealership/DealershipForm", () => ({
-  DealershipForm: () => <form aria-label="Bayilik başvurusu"><button type="submit">Başvuru E-postasını Hazırla</button></form>,
-}));
+// Task208: the dealership page is the "Bayilik" pill of the home page's #toptan-bayilik section
+// (`/bayilik` redirects to `/?sekme=bayilik#toptan-bayilik`). The profile cards, the "Neden AFİNA ZEYTİN?"
+// facts with packaging cutouts and the page's own H1 and anchors were retired with the page.
+vi.mock("@/lib/catalog/read", () => ({ readProductFamilies: () => getProductFamilies() }));
+vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }), usePathname: () => "/", useSearchParams: () => new URLSearchParams(window.location.search) }));
+vi.mock("@/components/cart/CartProvider", () => ({ useCart: () => null }));
 
-afterEach(cleanup);
+beforeEach(() => { window.matchMedia = vi.fn().mockReturnValue({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn(), addListener: vi.fn(), removeListener: vi.fn() }); });
+afterEach(() => { cleanup(); history.replaceState(null, "", "/"); });
 
-const pageCss = parse(readFileSync("components/storefront/content/DealershipPage.module.css", "utf8"));
+const homeCss = parse(readFileSync("components/storefront/StoreHome.module.css", "utf8"));
+function declarations(selector: string): Record<string, string> {
+  const found: Record<string, string> = {};
+  homeCss.walkRules(selector, rule => { if (rule.parent?.type === "root") rule.walkDecls(decl => { found[decl.prop] = decl.value; }); });
+  return found;
+}
+async function openDealership() {
+  history.replaceState(null, "", "/?sekme=bayilik#toptan-bayilik");
+  const view = render(await Home());
+  return { ...view, panel: screen.getByRole("group", { name: "Bayilik" }) };
+}
 
-it("introduces dealership with one H1 and working application and product anchors", () => {
-  const { container } = render(<DealershipPage />);
-  expect(screen.getAllByRole("heading", { level: 1 }).map(node => node.textContent)).toEqual(["Bayimiz Olun"]);
-  expect(screen.getByText("AFİNA ZEYTİN'i bölgenizde birlikte büyütelim; bayilik için bize yazın.")).toBeTruthy();
-  expect(screen.getByRole("link", { name: "Başvuru Formu" }).getAttribute("href")).toBe("#basvuru");
-  expect(screen.getByRole("link", { name: "Ürünleri İnceleyin" }).getAttribute("href")).toBe("/urunler");
-  expect(container.querySelector("header, footer")).toBeNull();
-  expect(container.querySelector("video, canvas")).toBeNull();
+it("Task208: introduces dealership inside the home section, under the page's single H1", async () => {
+  const { container, panel } = await openDealership();
+  expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
+  expect(screen.getByRole("heading", { level: 2, name: "Toptan & Bayilik" }).closest("#toptan-bayilik")).not.toBeNull();
+  expect(screen.getByRole("radio", { name: "Bayilik" }).getAttribute("aria-checked")).toBe("true");
+  expect(panel.closest("[hidden]")).toBeNull();
+  expect(within(panel).getByText("AFİNA ZEYTİN'i bölgenizde birlikte büyütelim; bayilik için bize yazın.")).toBeTruthy();
+  expect(document.querySelector('[data-business-panel="toptan"]')?.hasAttribute("hidden")).toBe(true);
+  // One way into the form and no second products button: the pill opens the panel, the menu owns the rest.
+  expect(panel.querySelector('a[href="#basvuru"], a[href="/urunler"], a[href="/#urunler"]')).toBeNull();
+  expect(container.querySelector("#toptan-bayilik video, #toptan-bayilik canvas")).toBeNull();
 });
 
-it("keeps the dealership introduction on a light surface without a dark image overlay", () => {
-  const { container } = render(<DealershipPage />);
-  const hero = container.querySelector('section[aria-labelledby="bayilik-title"]')!;
-  expect(hero.getAttribute("data-surface")).not.toBe("dark");
-  expect(hero.querySelector("picture")).toBeNull();
-  // Task206 (v3): the introduction sits in the shared sage band; still light, still no photograph or overlay.
-  expect(hero.querySelector("[data-page-band]")).not.toBeNull();
-  const colors: Record<string, string> = {};
-  parse(readFileSync("components/storefront/ui/ui.module.css", "utf8")).walkRules(".band", rule => rule.walkDecls(decl => { colors[decl.prop] = decl.value; }));
-  expect(colors.background).toBe("var(--sf-sage)");
-  const root: Record<string, string> = {};
-  pageCss.walkRules(".root", rule => rule.walkDecls(decl => { root[decl.prop] = decl.value; }));
-  expect(root.color).toBe("var(--sf-ink)");
+it("Task208: keeps the dealership panel on a light surface without a photograph or dark overlay", async () => {
+  const { panel } = await openDealership();
+  const section = panel.closest("section")!;
+  expect(section.id).toBe("toptan-bayilik");
+  expect(section.getAttribute("data-surface")).not.toBe("dark");
+  expect(section.getAttribute("data-tone")).not.toBe("dark");
+  expect(panel.querySelector("picture")).toBeNull();
+  expect(declarations(".business").background).toBe("var(--sf-sage)");
+  expect(declarations(".dealershipForm").background).toBe("var(--sf-paper)");
+  expect(declarations(".businessCard > p").color).toBe("var(--sf-ink)");
 });
 
-it("gives the wider tin its own responsive source slots while preserving the jar and oil sources", () => {
-  render(<DealershipPage />);
-  const section = within(screen.getByRole("region", { name: "Neden AFİNA ZEYTİN?" }));
-  const images = section.getAllByRole("img");
-  const expectedSizes = [
-    "(max-width: 767px) 45vw, (max-width: 1100px) 25vw, 260px",
-    "(max-width: 767px) 28vw, (max-width: 1280px) 15vw, 180px",
-    "(max-width: 767px) 28vw, (max-width: 1280px) 15vw, 180px",
-  ];
-  images.forEach((image, index) => {
-    expect(image.getAttribute("sizes")).toBe(expectedSizes[index]);
-    expect(image.getAttribute("srcset")).toContain("h600.webp");
-    const source = image.closest("picture")?.querySelector('source[type="image/avif"]');
-    expect(source?.getAttribute("sizes")).toBe(expectedSizes[index]);
-    expect(source?.getAttribute("srcset")).toContain("h600.avif");
-  });
-});
-
-it("fills each packaging frame and aligns contained artwork to its bottom instead of relying on source intrinsic size", () => {
-  const styles: Record<string, string> = {};
-  pageCss.walkRules(".packaging img", rule => {
-    rule.walkDecls(declaration => { styles[declaration.prop] = declaration.value; });
-  });
-  expect(styles).toMatchObject({ width: "100%", height: "100%", "object-fit": "contain", "object-position": "bottom" });
-});
-
-it("shows the three specified business profiles with their descriptions", () => {
-  render(<DealershipPage />);
-  const section = within(screen.getByRole("region", { name: "Kimler başvurabilir?" }));
-  expect(section.getAllByRole("article")).toHaveLength(3);
-  for (const title of ["Market ve şarküteriler", "Kuruyemiş ve yöresel ürün dükkânları", "Toptancı ve distribütörler"]) {
-    expect(section.getByRole("heading", { name: title })).toBeTruthy();
-  }
-  for (const description of [
-    "Rafında yöresel zeytin ve zeytinyağı bulundurmak isteyen işletmeler.",
-    "Ambalajlı zeytin ve zeytinyağı satan dükkânlar.",
-    "Bölgesindeki satış noktalarına ürün ulaştıran firmalar.",
-  ]) expect(section.getByText(description)).toBeTruthy();
-});
-
-it("pairs only verified production and packaging facts with the current product cutouts", () => {
-  const { container } = render(<DealershipPage />);
-  const section = within(screen.getByRole("region", { name: "Neden AFİNA ZEYTİN?" }));
-  for (const fact of ["Kendi tesisimizde hazırlanır", "Ellek zeytini, geleneksel doğal kırma", "3 L teneke, 1 kg kavanoz ve zeytinyağı seçenekleri", "Koli bazında sipariş"]) {
-    expect(section.getByText(fact)).toBeTruthy();
-  }
-  expect(section.getByText("Osmaniye Düziçi")).toBeTruthy();
-  const images = section.getAllByRole("img");
-  expect(images.map(image => image.getAttribute("src"))).toEqual([
-    "/images/v3/urun-01-kirma-10kg-h300.webp",
-    "/images/v3/urun-02-kirma-1kg-h300.webp",
-    "/images/v3/urun-04-yag-1l-h300.webp",
-  ]);
-  for (const image of images) {
-    expect(image.getAttribute("width")).toBeTruthy();
-    expect(image.getAttribute("height")).toBeTruthy();
-    expect(image.getAttribute("loading")).toBe("lazy");
-  }
-  expect(container.textContent).not.toMatch(/₺|fiyat|indirim|kâr marjı|bölge sözü|sertifika|Türkiye geneli|başvurunuz alındı/i);
-});
-
-it("explains the application in a real three-step ordered list", () => {
-  render(<DealershipPage />);
-  const section = within(screen.getByRole("region", { name: "Başvuru nasıl ilerler?" }));
-  const list = section.getByRole("list");
+it("Task208: explains the application in a real three-step ordered list", async () => {
+  const { panel } = await openDealership();
+  const list = within(panel).getByRole("list");
   expect(list.tagName).toBe("OL");
   const steps = within(list).getAllByRole("listitem");
   expect(steps).toHaveLength(3);
-  expect(steps.map(step => within(step).getByRole("heading").textContent)).toEqual([
+  expect(steps.map(step => step.querySelector("strong")?.textContent)).toEqual([
     "Formu doldurun", "Size dönüş yapalım", "Koşulları birlikte belirleyelim",
   ]);
-  expect(steps.map(step => step.querySelector("p")?.textContent)).toEqual([
+  expect(steps.map(step => step.querySelector("span")?.textContent)).toEqual([
     "Firma ve bölge bilgilerinizi girin. Hazırlanan taslağı e-posta uygulamanızdan gönderin.",
     "Başvurunuzu inceledikten sonra sizinle iletişime geçeriz.",
     "Ürün, miktar ve sevkiyat planını birlikte netleştiririz.",
   ]);
+  expect(panel.textContent).not.toMatch(/₺|fiyat|indirim|kâr marjı|bölge sözü|sertifika|Türkiye geneli|başvurunuz alındı/i);
 });
 
-it("provides the named application anchor and composes the separate form", () => {
-  render(<DealershipPage />);
-  const section = screen.getByRole("region", { name: "Bayilik Başvuru Formu" });
-  expect(section.id).toBe("basvuru");
-  expect(within(section).getByRole("form", { name: "Bayilik başvurusu" })).toBeTruthy();
-  expect(within(section).getByText(/e-posta taslağı/i)).toBeTruthy();
+it("Task208: provides the named application anchor and loads the separate, unchanged form when the pill is open", async () => {
+  const { panel } = await openDealership();
+  const anchor = panel.querySelector("#basvuru")!;
+  expect(anchor).not.toBeNull();
+  const form = await within(anchor as HTMLElement).findByRole("form", { name: "Bayilik başvurusu" });
+  expect(within(form).getByRole("button", { name: "Başvuru E-postasını Hazırla" })).toBeTruthy();
+  expect(within(anchor as HTMLElement).getByText(/e-posta taslağını hazırlar/i)).toBeTruthy();
+  expect(form.querySelector('input[name="kvkk"][required]')).not.toBeNull();
+});
+
+it("Task208: leaves the dealership form out of the first HTML and keeps what was typed when the visitor switches pills", async () => {
+  const markup = new DOMParser().parseFromString(renderToStaticMarkup(await Home()), "text/html");
+  expect(markup.querySelector('[data-business-panel="bayilik"]')?.hasAttribute("hidden")).toBe(true);
+  expect(markup.querySelector('form[aria-label="Bayilik başvurusu"]')).toBeNull();
+  expect(markup.querySelector('#toptan form[aria-label="Kurumsal teklif talebi"]')).not.toBeNull();
+
+  render(await Home());
+  expect(screen.getByRole("radio", { name: "Toptan Satış" }).getAttribute("aria-checked")).toBe("true");
+  fireEvent.click(screen.getByRole("radio", { name: "Bayilik" }));
+  expect(new URLSearchParams(location.search).get("sekme")).toBe("bayilik");
+  const panel = screen.getByRole("group", { name: "Bayilik" });
+  const company = await within(panel).findByRole("textbox", { name: /Firma adı/ });
+  fireEvent.change(company, { target: { value: "Ellek Şarküteri" } });
+  expect((company as HTMLInputElement).value).toBe("Ellek Şarküteri");
+  fireEvent.click(screen.getByRole("radio", { name: "Toptan Satış" }));
+  expect(panel.hasAttribute("hidden")).toBe(true);
+  expect(screen.getByRole("group", { name: "Toptan Satış" }).hasAttribute("hidden")).toBe(false);
+  expect(new URLSearchParams(location.search).has("sekme")).toBe(false);
+  fireEvent.click(screen.getByRole("radio", { name: "Bayilik" }));
+  expect(panel.hasAttribute("hidden")).toBe(false);
+  expect((within(panel).getByRole("textbox", { name: /Firma adı/ }) as HTMLInputElement).value).toBe("Ellek Şarküteri");
 });

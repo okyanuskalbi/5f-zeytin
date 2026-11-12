@@ -44,8 +44,8 @@ export default async function Page({ params, searchParams }: Props): Promise<JSX
   const related = families.flatMap(item => item.variants);
   const trail = [
     { name: "Ana Sayfa", item: `${siteIdentity.origin}/` },
-    { name: "Ürünler", item: `${siteIdentity.origin}/urunler` },
-    ...getGroupTrail(family.groupId).map(group => ({ name: group.name, item: `${siteIdentity.origin}/urunler/${group.id}` })),
+    { name: "Ürünler", item: `${siteIdentity.origin}/#urunler` },
+    ...getGroupTrail(family.groupId).map(group => ({ name: group.name, item: `${siteIdentity.origin}/?kategori=${group.id}#urunler` })),
     { name: family.name, item: `${siteIdentity.origin}/urun/${slug}` },
   ];
   const breadcrumb = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: trail.map((item, index) => ({ "@type": "ListItem", position: index + 1, ...item })) };

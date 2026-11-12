@@ -22,7 +22,8 @@ it("serves a static Markdown discovery file with all six variant sizes and no pr
     expect(body).not.toContain(String(product.priceKurus));
   }
   expect(body).toContain("Düziçi / Osmaniye");
-  for (const href of ["https://afinazeytin.com/toptan-satis", "https://afinazeytin.com/hakkimizda#sik-sorulanlar", "https://afina.com.tr"]) expect(body).toContain(`](${href})`);
+  // Task208: sections of the one landing page.
+  for (const href of ["https://afinazeytin.com/?sekme=toptan#toptan-bayilik", "https://afinazeytin.com/#sik-sorulanlar", "https://afinazeytin.com/#iletisim", "https://afina.com.tr"]) expect(body).toContain(`](${href})`);
   expect(body).not.toMatch(/₺|\bTRY\b|\bTL\b|\/(?:kvkk|iade|mesafeli-satis)|%100|organik/i);
   expect(robots().rules).toMatchObject({ allow: "/" });
   expect((robots().rules as { disallow: string[] }).disallow).not.toContain("/llms.txt");

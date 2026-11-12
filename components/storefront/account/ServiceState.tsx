@@ -3,7 +3,7 @@ import { PageBand, PagePath } from "@/components/storefront/ui/PageBand";
 import { PillButton } from "@/components/storefront/ui/PillButton";
 import styles from "./ServiceState.module.css";
 
-export function ServiceState({ title, children, href = "/urunler", action = "Ürünleri İnceleyin" }: {
+export function ServiceState({ title, children, href = "/#urunler", action = "Ürünleri İnceleyin" }: {
   title: string; children: ReactNode; href?: string; action?: string;
 }) {
   return <main className={styles.page}><section className={styles.content}>

@@ -45,8 +45,11 @@ test.describe("Task193 product pages", () => {
     await mkdir("output/task193", { recursive: true });
     await page.setViewportSize({ width, height: 900 });
     await measure(page);
-    await page.goto("/urunler", { waitUntil: "load" });
-    const card = page.locator('article[data-product-id="sample-green-olive-1kg"]');
+    // Task208: the catalogue is the home page's #urunler section; a card carries only the buy action.
+    await page.goto("/#urunler", { waitUntil: "load" });
+    const card = page.locator('#urunler article[data-product-id="sample-green-olive-1kg"]');
+    await expect(card.locator("[data-pill]")).toHaveCount(1);
+    await expect(card.getByRole("link", { name: "Teklife ekle" })).toHaveCount(0);
     const anchor = card.locator('a[href^="/urun/dogal-kirma-yesil-zeytin"]').first();
     await expect(anchor).toHaveAttribute("href", /\?boy=1(?:%20|\+)kg$/);
     await anchor.click();
@@ -66,9 +69,15 @@ test.describe("Task193 product pages", () => {
     await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("afina-zeytin:cart") ?? "[]"))).toEqual([
       { productId: "sample-green-olive-10kg", quantity: 2 },
     ]);
-    await expect(product.getByRole("link", { name: "Teklife ekle", exact: true })).toHaveAttribute("href", "/toptan-satis?teklif=sample-green-olive-10kg");
-    await expect(page.getByRole("heading", { name: "Benzer Ürünler", exact: true })).toBeVisible();
     const related = page.locator('section[aria-labelledby="benzer-title"] article[data-product-id]');
+    await expect(product.getByRole("link", { name: "Teklife ekle", exact: true })).toHaveAttribute("href", "/?sekme=toptan&teklif=sample-green-olive-10kg#toptan-bayilik"); // Task208
+    const category = page.locator('section[aria-labelledby="benzer-title"]').getByRole("link", { name: "Kategorideki ürünler", exact: true });
+    await expect(category).toHaveAttribute("href", "/?kategori=zeytin#urunler");
+    await expect(category).toHaveAttribute("data-variant", "quiet");
+    await expect(category.locator("[data-coin]")).toHaveCount(1);
+    expect(await category.evaluate(link => getComputedStyle(link.querySelector("[data-pill-label]")!).textDecorationLine)).toBe("none");
+    for (const item of await related.all()) await expect(item.getByRole("link", { name: "Teklife ekle" })).toHaveCount(0);
+    await expect(page.getByRole("heading", { name: "Benzer Ürünler", exact: true })).toBeVisible();
     await expect(related).toHaveCount(4);
     const relatedItems = await related.evaluateAll(cards => cards.map(card => ({ id: card.getAttribute("data-product-id"), category: card.getAttribute("data-category") })));
     expect(new Set(relatedItems.map(item => item.id)).size).toBe(4);
@@ -94,9 +103,13 @@ test.describe("Task193 product pages", () => {
     expect((await page.goto("/urun/salamura-siyah-zeytin", { waitUntil: "load" }))?.status()).toBe(200);
     const product = page.locator("[data-product-page]");
     await expect(product.getByRole("button", { name: "Mevcut değil", exact: true })).toBeDisabled();
-    await expect(product.getByRole("link", { name: "Teklife ekle", exact: true })).toHaveAttribute("href", "/toptan-satis?teklif=sample-black-olive-1kg");
+    await expect(product.getByRole("link", { name: "Teklife ekle", exact: true })).toHaveAttribute("href", "/?sekme=toptan&teklif=sample-black-olive-1kg#toptan-bayilik"); // Task208
     const breadcrumb = page.getByRole("navigation", { name: "İçerik yolu", exact: true });
-    await expect(breadcrumb.getByRole("link", { name: "Ürünler", exact: true })).toHaveAttribute("href", "/urunler");
+    // Task208: the trail leads to the products section and to the category pills of the home page.
+    await expect(breadcrumb.getByRole("link", { name: "Ürünler", exact: true })).toHaveAttribute("href", "/#urunler");
+    await expect(breadcrumb.getByRole("link", { name: "Zeytin", exact: true })).toHaveAttribute("href", "/?kategori=zeytin#urunler");
+    await expect(breadcrumb.getByRole("link", { name: "Siyah Zeytin", exact: true })).toHaveAttribute("href", "/?kategori=siyah-zeytin#urunler");
+    expect(await breadcrumb.getByRole("link").evaluateAll(links => links.map(link => getComputedStyle(link).textDecorationLine))).toEqual(["none", "none", "none", "none"]);
     const image = product.locator("[data-product-detail-image] img");
     const initialImage = await image.getAttribute("src");
     await product.getByRole("button", { name: "Sofra görseli", exact: true }).click();
@@ -105,7 +118,7 @@ test.describe("Task193 product pages", () => {
     await layout(page);
   });
 
-  test("all family and category responses are 200/noindex; unknowns 404 and sitemap excludes prices", async ({ page, request }) => {
+  test("Task208: family pages are 200/noindex, category addresses redirect to their pill, unknown products 404 and the sitemap excludes prices", async ({ page, request }) => {
     for (const family of families) {
       expect((await page.goto(`/urun/${family.slug}`, { waitUntil: "load" }))?.status()).toBe(200);
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(family.name);
@@ -118,16 +131,22 @@ test.describe("Task193 product pages", () => {
       await expect(page.locator('meta[property="og:url"]')).toHaveAttribute("content", canonical.href);
       const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll(scripts => scripts.map(script => JSON.parse(script.textContent ?? "{}")));
       expect(JSON.stringify(schemas)).toContain('"@type":"BreadcrumbList"');
+      // Task208: breadcrumb items point at the home sections, never at a retired page.
+      expect(JSON.stringify(schemas)).toContain('"item":"https://afinazeytin.com/#urunler"');
+      expect(JSON.stringify(schemas)).not.toMatch(/afinazeytin\.com\/urunler/);
       expect(JSON.stringify(schemas)).not.toMatch(/"@type":"(?:Product|Offer)"/);
     }
-    for (const group of groups) {
-      expect((await page.goto(`/urunler/${group}`, { waitUntil: "load" }))?.status()).toBe(200);
-      await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex.*follow/);
+    for (const group of [...groups, "olmayan-kategori"]) {
+      const redirect = await request.get(`/urunler/${group}`, { maxRedirects: 0 });
+      expect(redirect.status()).toBe(308);
+      expect(redirect.headers().location).toBe(`/?kategori=${group}#urunler`);
     }
+    const catalogue = await request.get("/urunler", { maxRedirects: 0 });
+    expect(catalogue.status()).toBe(308);
+    expect(catalogue.headers().location).toBe("/#urunler");
     expect((await request.get("/urun/olmayan-urun")).status()).toBe(404);
-    expect((await request.get("/urunler/olmayan-kategori")).status()).toBe(404);
     const sitemap = await (await request.get("/sitemap.xml")).text();
-    for (const path of [...families.map(item => `/urun/${item.slug}`), ...groups.map(item => `/urunler/${item}`)]) expect(sitemap).not.toContain(path);
+    for (const path of [...families.map(item => `/urun/${item.slug}`), "/urunler", "kategori="]) expect(sitemap).not.toContain(path);
   });
 
   for (const width of [390, 1440]) test(`${width}: directly linked non-default size hydrates without a layout jump`, async ({ page }) => {
@@ -145,24 +164,31 @@ test.describe("Task193 product pages", () => {
     await layout(page);
   });
 
-  for (const width of [390, 1440]) test(`${width}: olive parent and query-based price sorting work`, async ({ page }) => {
+  // Task208: price sorting is gone with the catalogue page (six products in one grid). The parent pill still
+  // gathers its three child groups, in the catalogue order, and the address alone opens it without a layout jump.
+  for (const width of [390, 1440]) test(`${width}: Task208 olive parent pill gathers its child groups in catalogue order`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await measure(page);
-    await page.goto("/urunler/zeytin", { waitUntil: "load" });
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Zeytin");
-    await expect(page.locator("article[data-product-id]")).toHaveCount(4);
-    const navigation = page.getByRole("navigation", { name: "Ürün grupları", exact: true });
-    for (const name of ["Siyah Zeytin", "Yeşil Zeytin", "Kırma Zeytin"]) await expect(navigation.getByRole("link", { name, exact: true })).toBeVisible();
-    // Opening stability is measured before intentional sorting reorders cards.
+    await page.goto("/?kategori=zeytin#urunler", { waitUntil: "load" });
+    const pills = page.getByRole("radiogroup", { name: "Ürün kategorisi", exact: true });
+    await expect(pills.locator('[role="radio"][aria-checked="true"]')).toHaveText("Zeytin");
+    const cards = page.locator("#urunler article[data-product-id]");
+    await expect(cards).toHaveCount(4);
+    expect(await cards.evaluateAll(items => items.map(card => card.getAttribute("data-product-id")))).toEqual(["sample-green-olive-10kg", "sample-green-olive-1kg", "sample-black-olive-1kg", "sample-brined-green-olive-5kg"]);
+    for (const name of ["Siyah", "Yeşil", "Kırma"]) await expect(pills.getByRole("radio", { name, exact: true })).toBeVisible();
+    await expect(page.getByRole("combobox", { name: /sırala/i })).toHaveCount(0);
+    // The address scrolls (smoothly) to the section; measure once it rests and the sections it passed have arrived.
+    const gap = () => page.evaluate(() => Math.round(document.getElementById("urunler")!.getBoundingClientRect().top - document.querySelector("header[data-site-navbar]")!.getBoundingClientRect().bottom));
+    await expect.poll(gap, { timeout: 10_000 }).toBeGreaterThanOrEqual(0);
+    await expect.poll(gap, { timeout: 10_000 }).toBeLessThanOrEqual(24);
+    await expect.poll(() => page.evaluate(() => document.getAnimations().filter(animation => animation.playState === "running" && !(animation.effect as KeyframeEffect | null)?.target?.closest("#baslangic")).length), { timeout: 10_000 }).toBe(0);
+    // Opening stability: the filtered grid arrives without a shift.
     await layout(page);
-    const sort = page.getByRole("combobox", { name: /sırala/i });
-    await sort.selectOption({ label: "Fiyat artan" });
-    await expect(page).toHaveURL(/[?&]sirala=/);
-    const ascending = await page.locator("article[data-product-id]").evaluateAll(cards => cards.map(card => card.getAttribute("data-product-id")));
-    expect(ascending).toEqual(["sample-green-olive-1kg", "sample-black-olive-1kg", "sample-brined-green-olive-5kg", "sample-green-olive-10kg"]);
-    await sort.selectOption({ label: "Fiyat azalan" });
-    const descending = await page.locator("article[data-product-id]").evaluateAll(cards => cards.map(card => card.getAttribute("data-product-id")));
-    expect(descending).toEqual(["sample-green-olive-10kg", "sample-brined-green-olive-5kg", "sample-green-olive-1kg", "sample-black-olive-1kg"]);
+    await expect(page.locator("[data-cart-pill]")).toBeEnabled();
+    await pills.getByRole("radio", { name: "Kırma", exact: true }).click();
+    await expect(page).toHaveURL(/\/\?kategori=kirma-zeytin#urunler$/);
+    await expect(cards).toHaveCount(2);
+    expect(await cards.evaluateAll(items => items.map(card => card.getAttribute("data-product-id")))).toEqual(["sample-green-olive-10kg", "sample-green-olive-1kg"]);
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
   });
 });

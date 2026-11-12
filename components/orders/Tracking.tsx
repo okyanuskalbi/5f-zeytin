@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
-import Link from "next/link";
 import { PillButton } from "@/components/storefront/ui/PillButton";
 import { Field, Feedback } from "@/components/account/FormControls";
 import { getMembershipAdapters } from "@/lib/auth/demo";
@@ -99,6 +98,6 @@ function TrackingView({ requestedNo }: { requestedNo: string }) {
       <header className={styles.resultHeader}><h2 ref={resultTitle} tabIndex={-1} id="tracking-result-title">{order.no}</h2><p><Tag>{labels[order.status]}</Tag></p></header>
       <div className={styles.resultBody}><DeliveryTimeline order={order} /><TrackingSummary key={order.no} order={order} /></div>
     </article>}
-    <Link className={styles.link} href="/hesabim">Hesabım ve siparişlerim</Link>
+    <PillButton variant="quiet" href="/hesabim">Hesabım ve siparişlerim</PillButton>
   </div></main>;
 }

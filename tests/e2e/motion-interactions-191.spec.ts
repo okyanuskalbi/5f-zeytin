@@ -39,10 +39,14 @@ async function recorded(page: Page): Promise<Record<string, Sample[]>> {
   return page.evaluate(() => (window as unknown as { task191Recording: Recording }).task191Recording.samples);
 }
 
+// Task208: the catalogue is the home page's #urunler section; its category pills answer after hydration
+// (the cart pill is enabled by the same hydration).
+const GRID = "#urunler [data-product-grid]";
+const CARD = "#urunler [data-product-grid] article[data-product-id]";
 async function ready(page: Page) {
   await page.evaluate(() => document.fonts.ready);
-  await expect(page.getByRole("navigation", { name: "Ürün grupları" })).toHaveAttribute("data-indicator-ready", "");
-  await expect(page.locator("[data-category-indicator]")).toHaveCSS("opacity", "1");
+  await expect(page.getByRole("radiogroup", { name: "Ürün kategorisi", exact: true })).toBeVisible();
+  await expect(page.locator("[data-cart-pill]")).toBeEnabled();
 }
 
 test.describe("Task191 action-only motion", () => {
@@ -51,52 +55,57 @@ test.describe("Task191 action-only motion", () => {
     await localOnly(context, baseURL);
   });
 
-  test("a category click keeps navigation, moves its indicator and leaves products visible", async ({ page }, info) => {
+  // Task208: no page navigation and no sliding indicator any more. The chosen pill fills at once and the grid
+  // answers with one short opacity pass: no travel, no scale, cards never hidden on their own.
+  test("Task208: a category pill filters in place with one short opacity pass and no travel", async ({ page }, info) => {
     await page.setViewportSize({ width: 1440, height: 900 });
-    await page.goto("/urunler", { waitUntil: "load" });
+    await page.goto("/#urunler", { waitUntil: "load" });
     await ready(page);
-    const nav = page.getByRole("navigation", { name: "Ürün grupları" });
-    const persistent = await nav.elementHandle();
-    const indicator = page.locator("[data-category-indicator]");
-    const before = await indicator.evaluate(element => new DOMMatrixReadOnly(getComputedStyle(element).transform).m42);
-    await record(page, { grid: "[data-category-transition] article[data-product-id]" }, 350);
+    const pills = page.getByRole("radiogroup", { name: "Ürün kategorisi", exact: true });
+    const persistent = await pills.elementHandle();
+    await page.evaluate(() => { (window as unknown as { task208SameDocument: boolean }).task208SameDocument = true; });
+    await record(page, { grid: GRID, card: CARD }, 350);
     const initial = await recorded(page);
     expect(initial.grid.length).toBeGreaterThan(0);
     expect(initial.grid.every(sample => sample.opacity === 1 && sample.y === 0 && sample.running === 0)).toBe(true);
+    expect(initial.card.every(sample => sample.opacity === 1 && sample.y === 0)).toBe(true);
 
-    await record(page, { indicator: "[data-category-indicator]", grid: "[data-category-transition] article[data-product-id]" });
-    await nav.getByRole("link", { name: "Siyah Zeytin", exact: true }).click();
-    await expect(page).toHaveURL(/\/urunler\/siyah-zeytin$/);
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Siyah Zeytin");
-    expect(await persistent!.evaluate(element => element === document.querySelector('nav[aria-label="Ürün grupları"]'))).toBe(true);
+    await record(page, { grid: GRID, card: CARD });
+    await pills.getByRole("radio", { name: "Siyah", exact: true }).click();
+    await expect(page).toHaveURL(/\/\?kategori=siyah-zeytin#urunler$/);
+    await expect(pills.getByRole("radio", { name: "Siyah", exact: true })).toHaveAttribute("aria-checked", "true");
+    await expect(pills.getByRole("radio", { name: "Siyah", exact: true })).toHaveCSS("background-color", "rgb(36, 58, 41)");
+    expect(await persistent!.evaluate(element => element === document.querySelector('#urunler [role="radiogroup"]'))).toBe(true);
+    expect(await page.evaluate(() => (window as unknown as { task208SameDocument?: boolean }).task208SameDocument)).toBe(true);
     const samples = await recorded(page);
     await info.attach("category-motion-samples", { body: JSON.stringify(samples), contentType: "application/json" });
-    const last = samples.indicator.at(-1)!;
-    expect(last.y).toBeGreaterThan(before);
-    expect(samples.indicator.some(sample => sample.y > before + 1 && sample.y < last.y - 1)).toBe(true);
-    expect(samples.grid.every(sample => sample.opacity === 1)).toBe(true);
+    // The pass is visible (some frame between 0 and 1), touches opacity only, and is over well inside the recording.
+    expect(samples.grid.some(sample => sample.opacity > 0 && sample.opacity < 1)).toBe(true);
+    expect(samples.grid.every(sample => sample.x === 0 && sample.y === 0 && sample.scale === 1)).toBe(true);
+    expect(samples.card.every(sample => sample.opacity === 1 && sample.y === 0 && sample.scale === 1)).toBe(true);
     expect(samples.grid.at(-1)).toMatchObject({ opacity: 1, y: 0, running: 0 });
-    const markerBounds = await indicator.boundingBox();
-    const activeBounds = await nav.getByRole("link", { name: "Siyah Zeytin", exact: true }).boundingBox();
-    expect(markerBounds!.x).toBeCloseTo(activeBounds!.x, 0);
-    expect(markerBounds!.width).toBeCloseTo(activeBounds!.width, 0);
-    expect(markerBounds!.y).toBeCloseTo(activeBounds!.y, 0);
+    expect(samples.grid.slice(-10).every(sample => sample.opacity === 1 && sample.running === 0)).toBe(true);
+    await expect(page.locator(CARD)).toHaveCount(1);
+    await expect(page.locator(CARD)).toHaveAttribute("data-product-id", "sample-black-olive-1kg");
   });
 
-  test("reduced motion category changes show the final products without a transient entrance", async ({ page }, info) => {
+  test("Task208: reduced motion category changes show the final products without any transient", async ({ page }, info) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.goto("/urunler", { waitUntil: "load" });
+    await page.goto("/#urunler", { waitUntil: "load" });
     await ready(page);
-    await record(page, { grid: "[data-category-transition] article[data-product-id]" });
-    await page.getByRole("navigation", { name: "Ürün grupları" }).getByRole("link", { name: "Zeytinyağı", exact: true }).click();
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Zeytinyağı");
-    await expect(page.getByRole("navigation", { name: "Ürün grupları" }).getByRole("link", { name: "Zeytinyağı", exact: true })).toHaveCSS("background-color", "rgb(36, 58, 41)"); // Task205: without motion the current pill fills itself green
+    const pills = page.getByRole("radiogroup", { name: "Ürün kategorisi", exact: true });
+    await record(page, { grid: GRID, card: CARD });
+    await pills.getByRole("radio", { name: "Zeytinyağı", exact: true }).click();
+    await expect(page).toHaveURL(/\/\?kategori=zeytinyagi#urunler$/);
+    await expect(pills.getByRole("radio", { name: "Zeytinyağı", exact: true })).toHaveCSS("background-color", "rgb(36, 58, 41)");
     const samples = await recorded(page);
     await info.attach("reduced-category-samples", { body: JSON.stringify(samples), contentType: "application/json" });
     expect(samples.grid.length).toBeGreaterThan(0);
     expect(samples.grid.every(sample => sample.opacity === 1 && sample.y === 0 && sample.running === 0)).toBe(true);
-    await expect(page.locator("article[data-product-id]")).toHaveCount(2);
+    expect(samples.card.every(sample => sample.opacity === 1 && sample.y === 0 && sample.running === 0)).toBe(true);
+    await expect(page.locator(CARD)).toHaveCount(2);
+    expect(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior)).toBe("auto");
   });
 
   test("stored cart hydration and later additions keep the badge stable without resizing the button", async ({ page }, info) => {
@@ -112,7 +121,8 @@ test.describe("Task191 action-only motion", () => {
       };
       requestAnimationFrame(frame);
     });
-    await page.goto("/urunler", { waitUntil: "load" });
+    // Task208: the product cards live in the home page's #urunler section.
+    await page.goto("/#urunler", { waitUntil: "load" });
     const badge = page.locator('button[aria-label^="Sepetim,"] span[aria-hidden="true"]');
     await expect(badge).toHaveText("1");
     const hydration = await page.evaluate(() => (window as unknown as { task191HydrationScales: number[] }).task191HydrationScales);
@@ -136,7 +146,8 @@ test.describe("Task191 action-only motion", () => {
   });
 
   test("FAQ remains keyboard controlled and reduced motion opens and closes immediately", async ({ page }) => {
-    await page.goto("/hakkimizda", { waitUntil: "load" });
+    // Task208: the questions moved to the home page's last section.
+    await page.goto("/#iletisim", { waitUntil: "load" });
     const faq = page.locator("#sik-sorulanlar details").first();
     const summary = faq.locator("summary");
     const answer = faq.locator("p");

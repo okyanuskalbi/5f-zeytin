@@ -2,16 +2,12 @@ import { readFileSync } from "node:fs";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import About from "@/app/hakkimizda/page";
-import Wholesale from "@/app/toptan-satis/page";
-import Blog from "@/app/blog/page";
+import Home from "@/app/page";
 import Article from "@/app/blog/[slug]/page";
 import Kvkk from "@/app/kvkk/page";
 import NotFound from "@/app/not-found";
 import Unauthorized from "@/app/unauthorized";
 import TrackingPage from "@/app/siparis-takip/page";
-import { AboutStrip } from "@/components/storefront/content/AboutStrip";
-import { DealershipPage } from "@/components/storefront/content/DealershipPage";
 import { DealershipForm } from "@/components/dealership/DealershipForm";
 import { MembershipFrame } from "@/components/account/MembershipFrame";
 import { SignIn } from "@/components/account/SignIn";
@@ -25,10 +21,11 @@ import { getProductFamilies } from "@/lib/catalog/static-products";
 import { adminProduct } from "../fixtures/admin-products";
 
 vi.mock("next/navigation", () => ({
-  useRouter: () => ({ replace: vi.fn(), refresh: vi.fn() }), usePathname: () => "/",
+  useRouter: () => ({ replace: vi.fn(), refresh: vi.fn() }), usePathname: () => "/", useSearchParams: () => new URLSearchParams(window.location.search),
   notFound: () => { throw new Error("NEXT_NOT_FOUND"); },
 }));
 vi.mock("@/lib/catalog/read", () => ({ readProductFamilies: () => getProductFamilies() }));
+vi.mock("@/components/cart/CartProvider", () => ({ useCart: () => null }));
 vi.mock("@/components/account/ConfiguredGoogleButton", () => ({ ConfiguredGoogleButton: () => null }));
 
 const css = (path: string): string => readFileSync(path, "utf8");
@@ -40,6 +37,7 @@ function rule(sheet: string, selector: string): string {
   return match[1];
 }
 const parse = (html: string): Document => new DOMParser().parseFromString(html, "text/html");
+const home = async (): Promise<Document> => parse(renderToStaticMarkup(await Home()));
 const profile = { name: "Deniz Sofra", email: "deniz@example.test", phone: null };
 
 beforeEach(() => {
@@ -47,63 +45,67 @@ beforeEach(() => {
 });
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.unstubAllEnvs(); });
 
-describe("Task206 step 1: about page", () => {
-  const sheet = css("components/storefront/content/AboutPage.module.css");
-
-  it("heads the page with SectionHeading as the single h1 and frames the factory photograph as an arch", () => {
-    const doc = parse(renderToStaticMarkup(<About />));
+// Task208: the about page is the #hikayemiz section of the home page. The moving strip (AboutStrip), the arch
+// frame, the four production-stage cards and the page's own "Ürünleri İnceleyin" action were retired with it.
+describe("Task206 step 1 → Task208: the story section of the home page", () => {
+  it("Task208: heads the section with SectionHeading under the page's single h1 and shows the factory photograph on a card corner", async () => {
+    const doc = await home();
     expect(doc.querySelectorAll("h1")).toHaveLength(1);
-    expect(doc.querySelector("[data-section-heading] h1")?.textContent).toBe("Hakkımızda");
-    const arch = doc.querySelector("[data-about-story] [data-about-arch]")!;
-    expect(arch.querySelector("img")?.getAttribute("src")).toContain("/images/customer-home/fabrika-");
-    expect(rule(sheet, ".arch")).toContain("border-radius: var(--sf-radius-arch)");
+    const story = doc.querySelector("#hikayemiz")!;
+    expect(story.querySelector("[data-section-heading] h2")?.textContent).toBe("Nesillerin Emeği, Toprağın Bereketi");
+    expect(story.querySelector("[data-home-facility] img")?.getAttribute("src")).toContain("/images/customer-home/fabrika-");
+    expect(rule(css("components/storefront/StoreHome.module.css"), ".facilityPhoto")).toContain("border-radius: var(--sf-radius-card)");
   });
 
-  it("carries exactly one still stamp, with the customer's permitted claim", () => {
-    const doc = parse(renderToStaticMarkup(<About />));
+  it("Task208: carries exactly one still stamp on the whole page, with the customer's permitted claim, inside the story", async () => {
+    const doc = await home();
     const stamps = doc.querySelectorAll("[data-stamp]");
     expect(stamps).toHaveLength(1);
     expect(stamps[0].getAttribute("aria-label")).toBe("%100 Doğal ve Katkısız");
+    expect(stamps[0].closest("#hikayemiz")).not.toBeNull();
+    // Still: no animation is ever attached to the seal.
+    expect(css("components/storefront/ui/ui.module.css")).not.toMatch(/\.stamp[^{]*\{[^}]*animation/);
   });
 
-  it("runs the strip on a deep green band in ivory Cormorant with a pill pause button", () => {
-    render(<AboutStrip />);
-    const pause = screen.getByRole("button", { name: "Şeridi duraklat" });
-    expect(pause.hasAttribute("data-pill")).toBe(true);
-    expect(pause.getAttribute("aria-pressed")).toBe("false");
-    fireEvent.click(pause);
-    expect(screen.getByRole("button", { name: "Şeridi oynat" }).getAttribute("aria-pressed")).toBe("true");
-    expect(document.querySelector("[data-about-strip]")?.getAttribute("data-paused")).toBe("true");
-    expect(rule(sheet, ".strip")).toMatch(/background: var\(--sf-green\)/);
-    expect(rule(sheet, ".strip")).toMatch(/color: var\(--sf-ivory\)/);
-    expect(rule(sheet, ".stripTrack li")).toContain("font-family: var(--font-display)");
-    // Reduced motion: no animation, the words wrap and stay readable.
-    const reduced = sheet.slice(sheet.indexOf("@media (prefers-reduced-motion: reduce)"));
-    expect(reduced).toMatch(/\.stripTrack \{[^}]*animation: none/);
-    expect(reduced).toMatch(/flex-wrap: wrap/);
+  it("Task208: has no moving strip and no dark band; the page keeps a single sliding element nowhere", async () => {
+    const doc = await home();
+    expect(doc.querySelector("[data-about-strip]")).toBeNull();
+    expect(doc.querySelector('[data-tone="dark"], main [data-surface="dark"]')).toBeNull();
+    // Task208: the only keyframes are the one-time section arrival; nothing loops.
+    const homeStyles = css("components/storefront/StoreHome.module.css");
+    expect(homeStyles.match(/@keyframes [\w-]+/g)).toEqual(["@keyframes section-arrive"]);
+    expect(homeStyles.match(/animation: [^;]+/g)).toEqual(["animation: section-arrive 280ms ease-out"]);
+    expect(homeStyles).not.toMatch(/infinite/);
   });
 
-  it("marks each production stage and value with a medallion and rounds the FAQ rows to the field radius", () => {
-    const doc = parse(renderToStaticMarkup(<About />));
-    expect(doc.querySelectorAll("[data-about-facility] li [data-medallion]")).toHaveLength(4);
-    expect(doc.querySelectorAll("[data-about-values] li [data-medallion]")).toHaveLength(3);
-    expect(rule(sheet, ".answers details")).toContain("border-radius: var(--sf-radius-field)");
-    const actions = doc.querySelector("[data-about-story]")!;
-    expect(actions.querySelector('a[data-pill][data-variant="primary"]')?.textContent).toBe("Ürünleri İnceleyin");
+  it("Task208: marks each value and harvest step with a medallion or the seal and rounds the FAQ rows to the field radius", async () => {
+    const doc = await home();
+    const story = doc.querySelector("#hikayemiz")!;
+    expect(story.querySelectorAll("[data-story-values] > li")).toHaveLength(3);
+    expect(story.querySelectorAll("[data-story-values] li [data-medallion]")).toHaveLength(2);
+    expect(story.querySelectorAll("[data-story-values] li [data-stamp]")).toHaveLength(1);
+    expect(story.querySelectorAll("[data-harvest-ledger] li [data-medallion]")).toHaveLength(3);
+    expect(rule(css("components/storefront/content/StoreFaq.module.css"), ".answers details")).toContain("border-radius: var(--sf-radius-field)");
+    // The section tells; the one products action stays in the hero.
+    expect(story.querySelector("a")).toBeNull();
+    expect([...doc.querySelectorAll('a[data-pill][href="/#urunler"]')].map(link => link.textContent)).toEqual(["Ürünleri İnceleyin"]);
   });
 });
 
 describe("Task206 step 2: wholesale and dealership", () => {
-  it("opens wholesale with a sage band that holds the h1 and a photograph", async () => {
-    const doc = parse(renderToStaticMarkup(await Wholesale()));
-    const band = doc.querySelector("[data-page-band]")!;
-    expect(band.querySelector("[data-section-heading] h1")?.textContent).toBe("Toptan Satış");
-    expect(band.querySelector("picture img")?.getAttribute("src")).toContain("/images/klasik/depo-");
-    expect(rule(css("components/storefront/ui/ui.module.css"), ".band")).toContain("background: var(--sf-sage)");
+  // Task208: one sage section with a two-pill switch replaces the two page bands.
+  it("Task208: opens wholesale and dealership in one sage section with a pill switch and a medallion note", async () => {
+    const section = (await home()).querySelector("#toptan-bayilik")!;
+    expect(section.querySelector("[data-section-heading] h2")?.textContent).toBe("Toptan & Bayilik");
+    const pills = [...section.querySelectorAll('[role="radiogroup"][data-pill-switch] [role="radio"]')];
+    expect(pills.map(pill => [pill.textContent, pill.getAttribute("aria-checked")])).toEqual([["Toptan Satış", "true"], ["Bayilik", "false"]]);
+    expect(section.querySelector('[data-business-panel="toptan"] [data-medallion]')).not.toBeNull();
+    expect(section.querySelector("picture")).toBeNull();
+    expect(rule(css("components/storefront/StoreHome.module.css"), ".business")).toContain("background: var(--sf-sage)");
   });
 
   it("submits the quote with a full-width primary pill and draws fields to the form contract", async () => {
-    const doc = parse(renderToStaticMarkup(await Wholesale()));
+    const doc = await home();
     const submit = doc.querySelector('form[aria-label="Kurumsal teklif talebi"] button[type="submit"]')!;
     expect(submit.getAttribute("data-variant")).toBe("primary");
     expect(submit.hasAttribute("data-full")).toBe(true);
@@ -116,14 +118,7 @@ describe("Task206 step 2: wholesale and dealership", () => {
     expect(rule(sheet, ".field label")).toMatch(/font-size: 14px;[^}]*font-weight: 600/);
   });
 
-  it("opens dealership with a light sage band and two pill actions, then a pill submit", () => {
-    const { container } = render(<DealershipPage />);
-    const band = container.querySelector("[data-page-band]")!;
-    expect(within(band as HTMLElement).getByRole("heading", { level: 1 }).textContent).toBe("Bayimiz Olun");
-    expect(screen.getByRole("link", { name: "Başvuru Formu" }).getAttribute("data-variant")).toBe("primary");
-    expect(screen.getByRole("link", { name: "Ürünleri İnceleyin" }).getAttribute("data-variant")).toBe("outline");
-    expect(container.querySelectorAll("[data-medallion]").length).toBeGreaterThanOrEqual(7);
-    cleanup();
+  it("Task208: submits the dealership form, the only primary action of its pill, with a full-width pill", () => {
     render(<DealershipForm />);
     const submit = screen.getByRole("button", { name: "Başvuru E-postasını Hazırla" });
     expect(submit.getAttribute("data-variant")).toBe("primary");
@@ -137,13 +132,15 @@ describe("Task206 step 2: wholesale and dealership", () => {
 describe("Task206 step 3: blog", () => {
   const sheet = css("components/storefront/content/Blog.module.css");
 
-  it("lists one large card and the rest small", () => {
-    const doc = parse(renderToStaticMarkup(<Blog />));
-    expect(doc.querySelectorAll("[data-blog-card]")).toHaveLength(blogPosts.length);
-    expect(doc.querySelectorAll('[data-blog-card][data-blog-size="large"]')).toHaveLength(1);
-    expect(doc.querySelector("[data-blog-card]")?.getAttribute("data-blog-size")).toBe("large");
-    expect(doc.querySelectorAll('[data-blog-card][data-blog-size="small"]')).toHaveLength(blogPosts.length - 1);
-    expect(doc.querySelector("[data-page-band] [data-section-heading] h1")?.textContent).toBe("Zeytin Defteri");
+  // Task208: the list page is the home page's #blog section: three equal cards under an h2.
+  it("Task208: shows three equal article cards on the home page and keeps the large/small card for the article pages", async () => {
+    const blog = (await home()).querySelector("#blog")!;
+    expect(blog.querySelector("[data-section-heading] h2")?.textContent).toBe("Zeytin Defteri");
+    expect(blog.querySelectorAll("a")).toHaveLength(3);
+    expect(blog.querySelectorAll("a picture img")).toHaveLength(3);
+    expect(blog.querySelector("[data-pill]")).toBeNull();
+    const article = parse(renderToStaticMarkup(await Article({ params: Promise.resolve({ slug: blogPosts[0].slug }) })));
+    expect(article.querySelectorAll('[data-blog-card][data-blog-size="small"]')).toHaveLength(blogPosts.length - 1);
   });
 
   it("sets the article for reading: large Cormorant title, 17 px body, 68 character measure, contents pills, FAQ rows", async () => {
@@ -226,7 +223,8 @@ describe("Task206 step 4: sign-in, register, account, tracking", () => {
     vi.stubEnv("NEXT_PUBLIC_DEMO", undefined);
     const doc = parse(renderToStaticMarkup(<TrackingPage />));
     expect(doc.querySelector("[data-page-band] [data-section-heading] h1")?.textContent).toBe("Sipariş takibi");
-    expect(doc.querySelector('a[data-pill][href="/urunler"]')?.textContent).toBe("Ürünleri İnceleyin");
+    // Task208: the products are a section of the home page.
+    expect(doc.querySelector('a[data-pill][href="/#urunler"]')?.textContent).toBe("Ürünleri İnceleyin");
   });
 });
 
@@ -249,7 +247,8 @@ describe("Task206 step 5: legal pages and 404", () => {
     const home = doc.querySelector('a[data-pill][href="/"]')!;
     expect(home.getAttribute("data-variant")).toBe("primary");
     expect(home.textContent).toBe("Ana sayfa");
-    const products = doc.querySelector('a[data-pill][href="/urunler"]')!;
+    // Task208: the products are a section of the home page.
+    const products = doc.querySelector('a[data-pill][href="/#urunler"]')!;
     expect(products.getAttribute("data-variant")).toBe("outline");
     expect(products.textContent).toBe("Ürünler");
   });
@@ -310,14 +309,15 @@ describe("Task206 step 6: admin panel", () => {
 
 describe("Task206 step 7: no leftover v2 shapes", () => {
   const sheets = [
-    "components/storefront/content/AboutPage.module.css", "components/storefront/content/DealershipPage.module.css",
+    // Task208: the about, dealership and wholesale page sheets were retired; the landing sheets take their place.
+    "components/storefront/StoreHome.module.css", "components/storefront/content/StoreFaq.module.css", "components/storefront/Navigation.module.css",
     "components/storefront/content/Blog.module.css", "components/storefront/content/Content.module.css",
     "components/storefront/quote/QuoteComposer.module.css", "components/dealership/DealershipForm.module.css",
     "components/storefront/account/AccountSurface.module.css", "components/storefront/account/ServiceState.module.css",
     "components/account/Membership.module.css", "components/account/AccountSummary.module.css",
     "components/orders/Tracking.module.css", "components/site/InnerPage.module.css",
     "components/admin/AdminShell.module.css", "components/admin/Products.module.css",
-    "components/ui/contact-fields.css", "components/ui/phone-country-search.css", "app/toptan-satis/page.module.css",
+    "components/ui/contact-fields.css", "components/ui/phone-country-search.css",
   ];
 
   it.each(sheets)("%s takes every corner from the radius table", path => {
@@ -330,7 +330,7 @@ describe("Task206 step 7: no leftover v2 shapes", () => {
   });
 
   it("writes no long dash in the visible text of the changed pages", () => {
-    for (const path of ["components/storefront/content/AboutPage.tsx", "components/storefront/content/DealershipPage.tsx", "components/storefront/content/LegalDocument.tsx", "app/not-found.tsx", "app/blog/page.tsx", "app/toptan-satis/page.tsx", "components/site/EmptyState.tsx"]) {
+    for (const path of ["components/storefront/StoreHome.tsx", "components/storefront/home/BusinessTabs.tsx", "components/storefront/home/ProductShowcase.tsx", "components/storefront/home/DeferredDealershipForm.tsx", "components/storefront/StoreFooter.tsx", "components/storefront/StoreMenu.tsx", "components/storefront/site-sections.ts", "components/storefront/content/LegalDocument.tsx", "app/not-found.tsx", "components/site/EmptyState.tsx"]) {
       const visible = css(path).replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, "");
       expect(visible, path).not.toMatch(/[—–]/);
     }

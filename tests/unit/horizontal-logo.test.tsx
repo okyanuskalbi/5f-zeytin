@@ -41,8 +41,11 @@ it("uses the original horizontal footer artwork and retains the community identi
   expect(logo.getAttribute("src")).toBe("/brand/afina-zeytin-yatay-dark@2x.webp");
   expect([logo.width, logo.height]).toEqual([180, 48]);
   expect(logo.getAttribute("loading")).toBe("lazy");
+  // Task208: the group's name is a link inside its sentence (sentence links stay underlined).
   const community = doc.querySelector('a[href="https://afina.com.tr"]')!;
-  expect(community.textContent).toBe("AFİNA Şirketler Topluluğu markasıdır.");
+  expect(community.textContent).toBe("AFİNA Şirketler Topluluğu");
+  expect(community.closest("p")?.textContent).toBe("AFİNA Şirketler Topluluğu markasıdır.");
+  expect(community.getAttribute("target")).toBe("_blank");
   expect(community.getAttribute("rel")!.split(/\s+/)).toContain("noopener");
 });
 

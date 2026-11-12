@@ -32,7 +32,7 @@ describe("SEO metadata routes", () => {
     });
   });
 
-  it("lists public home and dealership pages, excluding noindex and product query URLs, with actual content update dates", () => {
+  it("lists the home page and the articles, excluding retired pages, noindex and product query URLs, with actual content update dates", () => {
     const buildDate = new Date("2026-10-22T12:00:00.000Z");
     vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(buildDate);
@@ -44,14 +44,7 @@ describe("SEO metadata routes", () => {
         priority: 1,
         lastModified: "2026-11-11",
       },
-      {
-        url: "https://afinazeytin.com/bayilik",
-        changeFrequency: "monthly",
-        priority: 0.7,
-        lastModified: "2026-11-11",
-      },
-      ...["hakkimizda", "toptan-satis"].map(path => ({ url: `https://afinazeytin.com/${path}`, changeFrequency: "monthly", priority: 0.7, lastModified: "2026-11-10" })),
-      { url: "https://afinazeytin.com/blog", changeFrequency: "monthly", priority: 0.6, lastModified: "2026-11-11" },
+      // Task208: dealership, about, wholesale and the blog list are sections of the home page (308 redirects), not sitemap entries.
       ...blogPosts.map(post => ({ url: `https://afinazeytin.com/blog/${post.slug}`, changeFrequency: "monthly", priority: 0.5, lastModified: post.updated })),
     ]);
   });

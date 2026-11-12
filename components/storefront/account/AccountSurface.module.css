@@ -55,7 +55,7 @@
 .customerNav a { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 8px 20px; border: 1px solid var(--sf-line); border-radius: var(--sf-radius-pill); background: var(--sf-paper); color: var(--sf-green); font-size: 15px; font-weight: 500; line-height: 1.2; transition: background-color 180ms ease-out, color 180ms ease-out; }
 .customerNav svg { flex-shrink: 0; }
 .customerNav a[aria-current="page"] { border-color: var(--sf-green); background: var(--sf-green); color: var(--sf-ivory); font-weight: 600; }
-.customerNav .continueShopping { margin-top: 16px; border-color: transparent; background: transparent; text-decoration: underline; text-decoration-color: var(--sf-gold); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.customerNav .continueShopping { margin-top: 16px; }
 @media (hover: hover) and (pointer: fine) { .customerNav a:not([aria-current="page"]):hover { background: var(--sf-sage); } }
 .customerContent { min-width: 0; }
 /* Reserve the asynchronous account body before its response moves the footer. */
@@ -81,10 +81,8 @@
 .fields input { background: var(--sf-paper); }
 .fields small { font-size: 14px; }
 .formActions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 24px; }
-.formActions > a { display: inline-flex; align-items: center; min-height: 48px; color: var(--sf-green); font-size: 16px; text-decoration: underline; text-decoration-color: var(--sf-gold); text-decoration-thickness: 2px; text-underline-offset: 4px; }
 .formActions > span { font-size: 14px; font-variant-numeric: tabular-nums; color: var(--sf-muted); }
 .empty { display: grid; justify-items: start; gap: 16px; padding-block: 24px; color: var(--sf-olive); }
-.empty a:not([data-pill]), .details a:not([data-pill]), .back, .orderRow a { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; color: var(--sf-green); text-decoration: underline; text-decoration-color: var(--sf-gold); text-decoration-thickness: 2px; text-underline-offset: 4px; }
 .rows { display: grid; padding: 0; list-style: none; }
 .orderRow { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px; padding-block: 20px; border-bottom: 1px solid var(--sf-line); }
 .orderRow h3 { margin-bottom: 4px; font-family: var(--font-body), sans-serif; font-size: 16px; font-weight: 600; line-height: 1.5; color: var(--sf-ink); overflow-wrap: anywhere; }

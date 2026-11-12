@@ -7,9 +7,10 @@ import path from 'node:path';
 
 export const profiles = [[320,568],[360,800],[375,667],[390,844],[414,896],[430,932],[768,1024],[820,1180],[1024,768],[1024,1366],[1280,800],[1366,768],[1440,900],[1920,1080],[2560,1440]];
 export const routes = [
- ['anasayfa','/'], ['urunler','/urunler'], ...['zeytinyagi','zeytin','siyah-zeytin','yesil-zeytin','kirma-zeytin'].map(x=>[x,`/urunler/${x}`]),
+ // Task208: one landing page; categories and the two business pills are query states of `/`.
+ ['anasayfa','/'], ...['zeytinyagi','zeytin','siyah-zeytin','yesil-zeytin','kirma-zeytin'].map(x=>[x,`/?kategori=${x}`]),
  ['urun-kirma','/urun/dogal-kirma-yesil-zeytin?boy=1%20kg'],['urun-teneke','/urun/dogal-kirma-yesil-zeytin?boy=3%20L'],['urun-yag','/urun/naturel-sizma-zeytinyagi?boy=5%20L'],['urun-siyah','/urun/salamura-siyah-zeytin'],['urun-yesil','/urun/salamura-yesil-zeytin'],
- ['hakkimizda','/hakkimizda'], ['toptan-satis','/toptan-satis'],['teklif-onsecim','/toptan-satis?teklif=sample-green-olive-1kg'],['bayilik','/bayilik'], ['blog','/blog'],
+ ['toptan','/?sekme=toptan'],['teklif-onsecim','/?sekme=toptan&teklif=sample-green-olive-1kg'],['bayilik','/?sekme=bayilik'],
  ...['salamura-zeytin-nasil-hazirlanir','kirma-zeytin-nedir-nasil-saklanir','naturel-sizma-zeytinyagi-nasil-saklanmali','sofralik-zeytin-secerken-nelere-dikkat-edilmeli'].map((x,i)=>[`blog-${i+1}`,`/blog/${x}`]),
  ['sepet','/sepet'],['odeme','/odeme'],['giris','/giris'],['kayit','/kayit'],['hesabim','/hesabim'],['adresler','/hesabim/adresler'],['bilgilerim','/hesabim/bilgilerim'],['guvenlik','/hesabim/guvenlik'],['siparisler','/hesabim/siparisler'],['siparis-detay','/hesabim/siparisler/TASK199-QA'],
  ['siparis-takip','/siparis-takip'],['iade','/iade'],['kvkk','/kvkk'],['mesafeli-satis','/mesafeli-satis'],['404','/task199-bulunamayan-sayfa'],

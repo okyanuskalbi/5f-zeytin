@@ -3,15 +3,20 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { expect, it } from "vitest";
 import { StoreFooter as Footer } from "@/components/storefront/StoreFooter";
 
+// Task208: the corporate column leads to sections of the home page; categories open the products section filtered.
 it("keeps every C destination and legal/payment content usable before JavaScript", () => {
   const doc = new DOMParser().parseFromString(renderToStaticMarkup(<Footer />), "text/html");
+  expect([...doc.querySelectorAll("[data-footer-links] h2")].map(heading => heading.textContent)).toEqual(["Ürünler", "Kurumsal", "Yardım"]);
   expect([...doc.querySelectorAll('nav[aria-label="Alt menü"] a')].map(link => link.getAttribute("href"))).toEqual([
-    "/hakkimizda", "/toptan-satis", "/bayilik", "/blog",
+    "/#hikayemiz", "/?sekme=toptan#toptan-bayilik", "/?sekme=bayilik#toptan-bayilik", "/#blog", "/#iletisim",
+  ]);
+  expect([...doc.querySelectorAll('nav[aria-label="Kategoriler"] a')].map(link => link.getAttribute("href"))).toEqual([
+    "/?kategori=zeytinyagi#urunler", "/?kategori=zeytin#urunler", "/?kategori=siyah-zeytin#urunler", "/?kategori=yesil-zeytin#urunler", "/?kategori=kirma-zeytin#urunler",
   ]);
   expect([...doc.querySelectorAll('nav[aria-label="Müşteri ve yasal bilgiler"] a')].map(link => link.getAttribute("href"))).toEqual(["/hesabim", "/siparis-takip", "/iade", "/kvkk", "/mesafeli-satis"]);
   expect(doc.querySelectorAll('[aria-label="Güvenli ödeme"] img')).toHaveLength(4);
   expect(doc.querySelector('a[href="#"]')).toBeNull();
-  expect(doc.querySelector('input, button, canvas')).toBeNull();
+  expect(doc.querySelector('input, button, canvas, [data-pill], address')).toBeNull();
 });
 
 it("uses named local payment vectors with safe markup and reserved dimensions in the footer's paper pill", () => {

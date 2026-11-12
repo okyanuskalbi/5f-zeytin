@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { MembershipFrame } from "./MembershipFrame";
-import { Eye, EyeOff, ArrowRight } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PillButton } from "@/components/storefront/ui/PillButton";
 import { Input } from "@/components/ui/input";
@@ -82,7 +82,7 @@ export function SignIn({ next = "/hesabim", signedIn = false, unavailable = fals
             {method === "password" ? <div className={styles.field}>
               <div className={styles.labelRow}>
                 <label htmlFor="auth-password">Şifre</label>
-                <PillButton variant="quiet" size="md" className={styles.forgotPassword} onClick={() => { setMethod("magic_link"); setPassword(""); setShowPassword(false); }}>Şifremi unuttum</PillButton>
+                <PillButton variant="quiet" icon="none" size="md" className={styles.forgotPassword} onClick={() => { setMethod("magic_link"); setPassword(""); setShowPassword(false); }}>Şifremi unuttum</PillButton>
               </div>
               <div className={styles.password}>
                 <Input id="auth-password" name="password" type={showPassword ? "text" : "password"} autoComplete="current-password" value={password} onChange={event => setPassword(event.target.value)} maxLength={128} required aria-invalid={!!errors.password} aria-describedby={errors.password ? "auth-password-error" : undefined} />
@@ -100,7 +100,7 @@ export function SignIn({ next = "/hesabim", signedIn = false, unavailable = fals
             if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
             event.preventDefault(); event.stopPropagation(); onRegister();
           } : undefined}>Hesap oluştur</Link></p>
-          <Link prefetch={false} href="/sepet" className={styles.guestLink}>Üye olmadan alışverişe devam et<ArrowRight aria-hidden="true" size={15} /></Link>
+          <PillButton variant="quiet" href="/sepet" className={styles.guestLink}>Üye olmadan alışverişe devam et</PillButton>
         </div>}
   </>;
   return embedded ? content : <MembershipFrame mode="login">{content}</MembershipFrame>;

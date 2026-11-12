@@ -189,7 +189,8 @@ it("keeps Escape as ordinary page behavior without a modal trap or close action"
 it("offers a normal catalogue link instead of a modal backdrop", async () => {
   const { container } = await mount();
   expect(container.querySelector('[data-slot$="-overlay"]')).toBeNull();
-  expect(screen.getByRole("link", { name:"Ürünler" }).getAttribute("href")).toBe("/urunler");
+  // Task208: the catalogue is the "#urunler" section of the home page.
+  expect(screen.getByRole("link", { name:"Ürünler" }).getAttribute("href")).toBe("/#urunler");
   expect(document.body.hasAttribute("data-scroll-locked")).toBe(false);
 });
 

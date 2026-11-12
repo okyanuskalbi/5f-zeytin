@@ -10,13 +10,8 @@ const PAPER = 'rgb(255, 253, 248)';
 const skus = ['sample-green-olive-1kg', 'sample-green-olive-10kg', 'sample-black-olive-1kg', 'sample-olive-oil-1l', 'sample-olive-oil-5l', 'sample-brined-green-olive-5kg'];
 const crowded = skus.map(productId => ({ productId, quantity: 99 }));
 const profiles = [[320, 568, 'chromium'], [390, 844, 'webkit'], [768, 1024, 'chromium'], [1440, 900, 'chromium']];
+// Task208: the catalogue is the #urunler section of the home page (measured by scripts/qa-landing-208.mjs).
 const routes = [
-  { name: 'urunler', path: '/urunler', kind: 'catalog' },
-  { name: 'kategori-zeytinyagi', path: '/urunler/zeytinyagi', kind: 'catalog' },
-  { name: 'kategori-zeytin', path: '/urunler/zeytin', kind: 'catalog' },
-  { name: 'kategori-kirma', path: '/urunler/kirma-zeytin', kind: 'catalog' },
-  { name: 'kategori-siyah', path: '/urunler/siyah-zeytin', kind: 'catalog' },
-  { name: 'kategori-yesil', path: '/urunler/yesil-zeytin', kind: 'catalog' },
   { name: 'urun-kirma-1kg', path: '/urun/dogal-kirma-yesil-zeytin?boy=1%20kg', kind: 'product' },
   { name: 'urun-kirma-3l', path: '/urun/dogal-kirma-yesil-zeytin?boy=3%20L', kind: 'product' },
   { name: 'urun-yag-5l', path: '/urun/naturel-sizma-zeytinyagi?boy=5%20L', kind: 'product' },
@@ -26,7 +21,6 @@ const routes = [
   { name: 'sepet-kalabalik', path: '/sepet', kind: 'cart', cart: crowded },
   { name: 'odeme', path: '/odeme', kind: 'checkout' },
 ];
-const columnsFor = width => width >= 1200 ? 3 : width >= 360 ? 2 : 1;
 
 /** Runs in the page: facts that belong to one kind of shop page. */
 function inspectShop(kind) {
@@ -44,19 +38,6 @@ function inspectShop(kind) {
       nameFont: getComputedStyle(card.querySelector('h3')).fontFamily,
     };
   });
-  if (kind === 'catalog') {
-    const grid = document.querySelector('[data-catalog-grid]');
-    // Tracks, not cards: a category with two products still lays out three columns on a desktop.
-    facts.columns = getComputedStyle(grid).gridTemplateColumns.split(' ').length;
-    const current = [...document.querySelectorAll('nav[aria-label="Ürün grupları"] a[aria-current="page"]')];
-    const marker = document.querySelector('[data-category-indicator]');
-    facts.currentPills = current.length;
-    facts.indicatorOnCurrent = current.length === 1 && getComputedStyle(marker.parentElement).visibility === 'visible'
-      ? Math.abs(box(marker).left - box(current[0]).left) < 1.5 && Math.abs(box(marker).top - box(current[0]).top) < 1.5 && Math.abs(box(marker).width - box(current[0]).width) < 1.5
-      : null;
-    facts.banner = { photo: document.querySelector('[data-catalog-banner] img')?.naturalWidth > 0, background: getComputedStyle(document.querySelector('[data-catalog-banner]')).backgroundColor };
-    facts.sortRadius = font(document.querySelector('#catalog-sort')).radius;
-  }
   if (kind === 'product') {
     const purchase = document.querySelector('[data-product-detail-purchase]');
     const action = purchase.querySelector('button[data-pill]');
@@ -82,11 +63,11 @@ function inspectShop(kind) {
       controls: [...line.querySelectorAll('button')].map(button => Math.round(Math.min(box(button).width, box(button).height))),
       thumb: getComputedStyle(line.querySelector('picture')).backgroundColor,
     }));
-    facts.empty = document.querySelector('main a[data-pill][href="/urunler"][data-variant="primary"]')?.textContent ?? null;
+    facts.empty = document.querySelector('main a[data-pill][href="/#urunler"][data-variant="primary"]')?.textContent ?? null;
     const pay = [...summary.querySelectorAll('[data-pill]')].find(pill => pill.textContent.trim() === 'Ödemeye geç');
     facts.pay = pay ? { disabled: pay.disabled === true, coin: pay.querySelector('[data-coin]') !== null, help: document.getElementById(pay.getAttribute('aria-describedby'))?.textContent ?? null } : null;
-    facts.quote = summary.querySelector('a[data-pill][href="/toptan-satis"]')?.dataset.variant ?? null;
-    facts.back = document.querySelector('main a[data-pill][href="/urunler"][data-variant="quiet"]')?.textContent ?? null;
+    facts.quote = summary.querySelector('a[data-pill][href="/?sekme=toptan#toptan-bayilik"]')?.dataset.variant ?? null;
+    facts.back = document.querySelector('main a[data-pill][href="/#urunler"][data-variant="quiet"]')?.textContent ?? null;
   }
   if (kind === 'checkout') {
     const panel = document.querySelector('[data-checkout-panel]');
@@ -124,12 +105,6 @@ export async function auditShop({ origin, out, shots, open, settle, inspectDesig
       if (card.escaping.length) fail(where, `card ${card.id}: ${card.escaping.join(', ')} leaves the card`);
       if (card.stage !== 'rgb(231, 235, 221)') fail(where, `card ${card.id} stage ${card.stage}`);
       if (!/Cormorant/i.test(card.nameFont)) fail(where, `card ${card.id} name font`);
-    }
-    if (route.kind === 'catalog') {
-      if (shop.columns !== columnsFor(width)) fail(where, `${shop.columns} grid columns`);
-      if (shop.currentPills !== 1 || shop.indicatorOnCurrent === false) fail(where, 'category indicator is not on the one current pill');
-      if (!shop.banner.photo || shop.banner.background !== 'rgb(231, 235, 221)') fail(where, 'heading band without photograph or sage');
-      if (shop.sortRadius !== 12) fail(where, `sort field radius ${shop.sortRadius}`);
     }
     if (route.kind === 'product') {
       if (width < 768 && shop.action.bottom > shop.action.viewport) fail(where, `"${shop.action.label}" ends at ${shop.action.bottom}, below the first screen (${shop.action.viewport})`);

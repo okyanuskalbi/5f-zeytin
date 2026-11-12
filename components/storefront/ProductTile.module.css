@@ -54,7 +54,6 @@
   background: var(--sf-olive);
 }
 .buy { margin-block-start: auto; }
-.quote { display: flex; justify-content: center; margin-block-start: 4px; }
 .tile a:focus-visible { outline: 2px solid var(--sf-gold-deep); outline-offset: 3px; }
 @media (hover: hover) and (pointer: fine) {
   .tile:hover { transform: translateY(-4px); box-shadow: var(--sf-shadow-lift); }

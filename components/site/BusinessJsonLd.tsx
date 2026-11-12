@@ -20,7 +20,7 @@ const business = {
       "@type": "Place",
       "@id": `${origin}/#tesis`,
       name: "Afina Zeytin Osmaniye Üretim Tesisi",
-      url: `${origin}/hakkimizda#tesisimiz`,
+      url: `${origin}/#hikayemiz`,
       image: `${origin}/images/renewal/tesis-musteri-1672.webp`,
       description: siteIdentity.description,
       address: {

@@ -101,7 +101,7 @@ export function CartSummary({ store, products, onRefresh, refreshing = false, up
       <header className={styles.header}>
         <h1 ref={headingRef} tabIndex={-1}>Sepetim</h1>
         <p>Ürünlerinizi gözden geçirin, sofranız için adetleri düzenleyin.</p>
-        <PillButton variant="quiet" href="/urunler">Alışverişe devam et</PillButton>
+        <PillButton variant="quiet" href="/#urunler">Alışverişe devam et</PillButton>
       </header>
 
       <InteractiveCheckout className={styles.layout}>

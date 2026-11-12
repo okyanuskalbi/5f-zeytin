@@ -3,7 +3,8 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { scripts } from "../../package.json";
-vi.mock("next/navigation", async importOriginal => ({ ...(await importOriginal<typeof import("next/navigation")>()), useRouter: () => ({ replace: vi.fn() }) }));
+// Task208: the landing page reads its pill choices from the address after hydration.
+vi.mock("next/navigation", async importOriginal => ({ ...(await importOriginal<typeof import("next/navigation")>()), useRouter: () => ({ replace: vi.fn() }), usePathname: () => "/", useSearchParams: () => new URLSearchParams(window.location.search) }));
 
 // next/font is a build-time transform; browser tests verify the real font files.
 vi.mock("next/font/google", () => ({

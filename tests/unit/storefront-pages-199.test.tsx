@@ -15,7 +15,10 @@ it("rejects an unknown packaging query and uses the actual default variant", asy
  const metadata = await generateMetadata({ params: Promise.resolve({ slug: "naturel-sizma-zeytinyagi" }), searchParams: Promise.resolve({ boy: "999 L" }) });
  expect(metadata.title).toContain("1 L"); expect(metadata.title).not.toContain("999");
 });
-it("uses the A product tiles and a dedicated wholesale surface", () => {
- expect(readFileSync("components/storefront/catalog/ProductListing.tsx", "utf8")).toContain("ProductTile");
- expect(readFileSync("app/toptan-satis/page.tsx", "utf8")).not.toContain("components/landing");
+it("uses the A product tiles and the wholesale form on the home page", () => {
+ // Task208: the catalogue and the wholesale form are sections of the home page.
+ const home = readFileSync("components/storefront/StoreHome.tsx", "utf8");
+ expect(home).toContain("ProductTile");
+ expect(home).toContain("QuoteComposer");
+ expect(home).not.toContain("components/landing");
 });

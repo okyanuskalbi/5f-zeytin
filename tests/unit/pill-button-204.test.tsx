@@ -44,14 +44,19 @@ it("PillButton: busy announces itself, cannot be pressed and keeps its coin", ()
   expect(click).not.toHaveBeenCalled();
 });
 
-it("PillButton: disabled and quiet pills never draw a coin", () => {
-  render(<><PillButton disabled>Mevcut değil</PillButton><PillButton variant="quiet" href="/blog" icon="arrow">Tüm yazılar</PillButton><PillButton icon="none">Kaydet</PillButton></>);
+// Task208: quiet is a paper pill with a ring coin; only disabled and icon="none" pills go without one.
+it("PillButton: disabled and icon-less pills never draw a coin, a quiet link draws its ring coin", () => {
+  render(<><PillButton disabled>Mevcut değil</PillButton><PillButton variant="quiet" href="/sepet" icon="arrow">Sepeti görüntüle</PillButton><PillButton icon="none">Kaydet</PillButton>
+    <PillButton variant="quiet" icon="none">Sil</PillButton><PillButton variant="quiet" disabled>Bekleyin</PillButton></>);
   const unavailable = screen.getByRole("button", { name: "Mevcut değil" });
   expect((unavailable as HTMLButtonElement).disabled).toBe(true);
   expect(unavailable.querySelector("[data-coin]")).toBeNull();
-  const quiet = screen.getByRole("link", { name: "Tüm yazılar" });
+  const quiet = screen.getByRole("link", { name: "Sepeti görüntüle" });
   expect(quiet.getAttribute("data-variant")).toBe("quiet");
-  expect(quiet.querySelector("[data-coin]")).toBeNull();
+  expect(quiet.querySelectorAll("[data-coin]")).toHaveLength(1);
+  expect(quiet.querySelector("[data-coin]")?.getAttribute("aria-hidden")).toBe("true");
+  expect(screen.getByRole("button", { name: "Sil" }).querySelector("[data-coin]")).toBeNull();
+  expect(screen.getByRole("button", { name: "Bekleyin" }).querySelector("[data-coin]")).toBeNull();
   expect(screen.getByRole("button", { name: "Kaydet" }).querySelector("[data-coin]")).toBeNull();
 });
 

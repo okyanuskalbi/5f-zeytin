@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { MembershipFrame } from "./MembershipFrame";
 import Link from "next/link";
-import { Eye, EyeOff, ArrowRight } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PillButton } from "@/components/storefront/ui/PillButton";
 import { Input } from "@/components/ui/input";
@@ -25,7 +25,7 @@ export function Register({ embedded = false, onSignIn }: { embedded?: boolean; o
         if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
         event.preventDefault(); event.stopPropagation(); onSignIn();
       } : undefined}>Giriş yap</Link></p>
-      <Link prefetch={false} href="/sepet" className={styles.guestLink}>Üye olmadan alışverişe devam et<ArrowRight aria-hidden="true" size={15} /></Link>
+      <PillButton variant="quiet" href="/sepet" className={styles.guestLink}>Üye olmadan alışverişe devam et</PillButton>
     </div>
   </>;
   return embedded ? content : <MembershipFrame mode="register">{content}</MembershipFrame>;

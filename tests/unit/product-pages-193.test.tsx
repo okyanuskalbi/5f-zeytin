@@ -36,7 +36,13 @@ it.each(Object.values(familySlugs))("serves %s with one title, canonical, noinde
   const schemas = [...doc.querySelectorAll('script[type="application/ld+json"]')].map(node => JSON.parse(node.textContent!));
   expect(schemas.map(item => item["@type"])).toEqual(["BreadcrumbList"]);
   expect(schemas[0].itemListElement.at(-1).item).toBe(`https://afinazeytin.com/urun/${slug}`);
-  expect(doc.querySelector('a[href="/urunler"]')).not.toBeNull();
+  // Task208: the trail leads to the home page's product section and to the family's category pill; no retired address remains.
+  expect(doc.querySelector('nav[aria-label="İçerik yolu"] a[href="/#urunler"]')?.textContent).toBe("Ürünler");
+  expect(doc.querySelector(`nav[aria-label="İçerik yolu"] a[href="/?kategori=${family.groupId}#urunler"]`)).not.toBeNull();
+  expect(doc.querySelector('a[href^="/urunler"], a[href^="/toptan-satis"]')).toBeNull();
+  expect(schemas[0].itemListElement[1]).toMatchObject({ name: "Ürünler", item: "https://afinazeytin.com/#urunler" });
+  expect(schemas[0].itemListElement.at(-2).item).toBe(`https://afinazeytin.com/?kategori=${family.groupId}#urunler`);
+  for (const entry of schemas[0].itemListElement) expect(entry.item).not.toMatch(/\/urunler(\/|$)/);
   expect(doc.body.textContent).toContain("Benzer Ürünler");
   expect(doc.body.textContent).not.toMatch(/kişi inceliyor|Ayvalık|Köklü/);
   const main = doc.querySelector("[data-product-page]")!;
@@ -94,5 +100,6 @@ it("reads a directly linked size, resets quantity on size change and adds the se
   expect(new URL(location.href).searchParams.get("kaynak")).toBe("test");
   fireEvent.click(article.getByRole("button", { name: "Sepete ekle" }));
   expect(JSON.parse(localStorage.getItem("afina-zeytin:cart") ?? "null")).toEqual([{ productId: "sample-olive-oil-1l", quantity: 1 }]);
-  expect(article.getByRole("link", { name: "Teklife ekle" }).getAttribute("href")).toBe("/toptan-satis?teklif=sample-olive-oil-1l");
+  // Task208: quoting opens the wholesale pill of the home page with the product chosen.
+  expect(article.getByRole("link", { name: "Teklife ekle" }).getAttribute("href")).toBe("/?sekme=toptan&teklif=sample-olive-oil-1l#toptan-bayilik");
 });

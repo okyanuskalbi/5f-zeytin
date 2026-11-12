@@ -2,7 +2,11 @@ import { mkdir, writeFile } from "node:fs/promises";
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 
-const pages = [{ path: "/hakkimizda", title: "Hakkımızda" }, { path: "/toptan-satis", title: "Toptan Satış" }];
+// Task208: both pages are sections of the one landing page; their old addresses redirect (308) to the section.
+const pages = [
+  { path: "/hakkimizda", destination: "/#hikayemiz", section: "#hikayemiz", title: "Nesillerin Emeği, Toprağın Bereketi" },
+  { path: "/toptan-satis", destination: "/?sekme=toptan#toptan-bayilik", section: "#toptan-bayilik", title: "Toptan & Bayilik" },
+];
 async function measure(page: Page): Promise<void> {
   await page.addInitScript(() => {
     const metrics = { cls: 0 };
@@ -30,29 +34,42 @@ test.describe("Task194 corporate pages", () => {
     await context.route("**/*", route => new URL(route.request().url()).origin === origin.origin ? route.continue() : route.abort());
   });
 
-  test("staticpages: both new pages respond 200 with truthful headings and structured navigation", async ({ page }) => {
+  // Task208: was "both new pages respond 200"; the same content is now checked in its home section.
+  test("staticpages: both retired pages redirect to home sections with truthful headings and structured data", async ({ page, request }) => {
     for (const item of pages) {
+      const moved = await request.get(item.path, { maxRedirects: 0 });
+      expect(moved.status()).toBe(308);
+      expect(moved.headers().location).toBe(item.destination);
       expect((await page.goto(item.path, { waitUntil: "load" }))?.status()).toBe(200);
-      await expect(page.getByRole("heading", { level: 1, name: item.title, exact: true })).toBeVisible();
-      await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", `https://afinazeytin.com${item.path}`);
+      await expect(page).toHaveURL(new RegExp(`${item.destination.replace(/[?]/g, "\\?")}$`));
+      await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
+      const section = page.locator(item.section);
+      await section.scrollIntoViewIfNeeded();
+      await expect(section.getByRole("heading", { level: 2, name: item.title, exact: true })).toBeVisible();
+      await expect(section.locator(":scope > div")).toHaveCSS("opacity", "1");
+      await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /^https:\/\/afinazeytin\.com\/?$/);
       const robots = await page.locator('meta[name="robots"]').evaluateAll(nodes => nodes[0]?.getAttribute("content") ?? "");
       expect(robots ?? "").not.toContain("noindex");
-      const navigation = page.getByRole("navigation", { name: "İçerik yolu", exact: true });
-      await expect(navigation.getByRole("link", { name: "Ana Sayfa", exact: true })).toHaveAttribute("href", "/");
-      await expect(navigation.locator('[aria-current="page"]')).toHaveText(item.title);
+      // The menu marks nothing as a separate page: every destination is a section link.
+      expect(await page.locator('header nav[aria-label="Ana navigasyon"] a').evaluateAll(links => links.map(link => link.getAttribute("href")))).toEqual(["/#urunler", "/#hikayemiz", "/#toptan-bayilik", "/#blog", "/#iletisim"]);
       const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll(scripts => scripts.map(script => JSON.parse(script.textContent ?? "{}")));
-      expect(JSON.stringify(schemas)).toContain('"@type":"BreadcrumbList"');
       if (item.path === "/hakkimizda") {
-        await expect(page.locator('main img[src*="customer-home/fabrika"]').first()).toBeVisible();
+        await expect(page.locator('#hikayemiz img[src*="customer-home/fabrika"]').first()).toBeVisible();
         const faq = schemas.find(schema => schema["@type"] === "FAQPage");
+        expect(faq?.["@id"]).toBe("https://afinazeytin.com/#sik-sorulanlar");
         expect(faq?.mainEntity.length).toBeGreaterThan(0);
+        await page.locator("#sik-sorulanlar").scrollIntoViewIfNeeded();
         for (const question of faq.mainEntity) {
           await expect(page.getByText(question.name, { exact: true })).toBeVisible();
           expect(await page.locator("#sik-sorulanlar").textContent()).toContain(question.acceptedAnswer.text);
         }
         await expect(page.locator("#iletisim")).toBeVisible();
+        await expect(page.locator("#iletisim address")).toContainText("Düziçi / Osmaniye");
         expect(await page.locator("main").textContent()).not.toMatch(/ödüllü|sertifikalı|500\.000|199\d|200\d yılında/);
-      } else await expect(page.getByRole("form", { name: "Kurumsal teklif talebi", exact: true })).toBeVisible();
+      } else {
+        await expect(section.getByRole("radio", { name: "Toptan Satış", exact: true })).toBeChecked();
+        await expect(page.locator("#toptan").getByRole("form", { name: "Kurumsal teklif talebi", exact: true })).toBeVisible();
+      }
     }
   });
 
@@ -62,8 +79,14 @@ test.describe("Task194 corporate pages", () => {
     await measure(page);
     const errors: string[] = [];
     page.on("pageerror", error => errors.push(error.message));
+    // Task208: the old address lands on its section of the home page.
     expect((await page.goto(item.path, { waitUntil: "load" }))?.status()).toBe(200);
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText(item.title);
+    await expect(page).toHaveURL(new RegExp(`${item.destination.replace(/[?]/g, "\\?")}$`));
+    const section = page.locator(item.section);
+    await section.scrollIntoViewIfNeeded();
+    await expect(section.getByRole("heading", { level: 2, name: item.title, exact: true })).toBeVisible();
+    await expect(section.locator(":scope > div")).toHaveCSS("opacity", "1");
+    if (item.path === "/toptan-satis") await expect(page.locator("#toptan").getByRole("button", { name: "Talep özetini hazırla", exact: true })).toBeEnabled();
     const result = await assertLayout(page);
     expect(errors).toEqual([]);
     await page.screenshot({ path: `output/task194/${item.path.slice(1)}-${width}.png`, fullPage: true });
@@ -77,10 +100,12 @@ test.describe("Task194 corporate pages", () => {
     await page.goto("/urun/naturel-sizma-zeytinyagi?boy=5%20L", { waitUntil: "load" });
     // v3 (Task205): the size is a pill switch (role="radio" + aria-checked), no longer a native radio input.
     await expect(page.locator("[data-product-page]").getByRole("radio", { name: "5 L", exact: true })).toBeChecked();
-    await expect(page.locator("[data-product-page]").getByRole("link", { name: "Teklife ekle", exact: true })).toHaveAttribute("href", "/toptan-satis?teklif=sample-olive-oil-5l");
+    await expect(page.locator("[data-product-page]").getByRole("link", { name: "Teklife ekle", exact: true })).toHaveAttribute("href", "/?sekme=toptan&teklif=sample-olive-oil-5l#toptan-bayilik");
     await page.locator("[data-product-page]").getByRole("link", { name: "Teklife ekle", exact: true }).click();
-    await expect(page).toHaveURL(/\/toptan-satis(?:\?|#|$)/);
-    const form = page.getByRole("form", { name: "Kurumsal teklif talebi", exact: true });
+    // Task208: the quote form is the wholesale pill of the home page; the product query is consumed there.
+    await expect(page).toHaveURL(/\/\?sekme=toptan#toptan(?:-bayilik)?$/);
+    await expect(page.locator("#toptan-bayilik").getByRole("radio", { name: "Toptan Satış", exact: true })).toBeChecked();
+    const form = page.locator("#toptan").getByRole("form", { name: "Kurumsal teklif talebi", exact: true });
     const picker = form.getByRole("button", { name: "İlgilendiğiniz ürünler", exact: true });
     await expect(picker).toContainText("1 ürün");
     await picker.click();
@@ -109,21 +134,39 @@ test.describe("Task194 corporate pages", () => {
     expect(writes).toEqual([]);
   });
 
-  test("legacy query308 and hash navigation preserve destinations; sitemap and llms advertise only public information", async ({ page, request, baseURL }) => {
+  // Task208: was "legacy query308 …". The quote query and the old fragments are now answered by the home page itself.
+  test("legacy quote query, old addresses and hash navigation reach their sections; sitemap and llms advertise only public information", async ({ page, request }) => {
     const response = await request.get("/?teklif=sample-olive-oil-5l", { maxRedirects: 0 });
-    expect(response.status()).toBe(308);
-    const destination = new URL(response.headers().location, baseURL ?? "http://localhost:3004");
-    expect(destination.pathname).toBe("/toptan-satis");
+    expect(response.status()).toBe(200);
+    const moved = await request.get("/toptan-satis?teklif=sample-olive-oil-5l", { maxRedirects: 0 });
+    expect(moved.status()).toBe(308);
+    const destination = new URL(moved.headers().location, "https://afinazeytin.com");
+    expect(destination.pathname).toBe("/");
     expect(destination.searchParams.get("teklif")).toBe("sample-olive-oil-5l");
-    for (const [hash, path] of [["toptan", "/toptan-satis"], ["teklif", "/toptan-satis"], ["hakkimizda", "/hakkimizda"], ["tesisimiz", "/hakkimizda"], ["iletisim", "/hakkimizda#iletisim"]]) {
+    expect(destination.searchParams.get("sekme")).toBe("toptan");
+    expect(destination.hash).toBe("#toptan-bayilik");
+    await page.goto("/?teklif=sample-olive-oil-5l", { waitUntil: "load" });
+    await expect(page.locator("#toptan").getByRole("button", { name: "İlgilendiğiniz ürünler", exact: true })).toContainText("1 ürün");
+    await expect.poll(() => new URL(page.url()).searchParams.has("teklif")).toBe(false);
+    for (const [hash, landed, target] of [["toptan", "/#toptan", "#toptan"], ["teklif", "/#teklif", "#toptan"], ["hakkimizda", "/#hikayemiz", "#hikayemiz"], ["tesisimiz", "/#hikayemiz", "#hikayemiz"], ["iletisim", "/#iletisim", "#iletisim"]]) {
       await page.goto(`/#${hash}`, { waitUntil: "load" });
-      await expect.poll(() => new URL(page.url()).pathname + new URL(page.url()).hash).toBe(path);
+      await expect.poll(() => new URL(page.url()).pathname + new URL(page.url()).hash).toBe(landed);
+      await expect(page.locator(target)).toBeInViewport();
     }
+    await page.goto("/?magaza=ac", { waitUntil: "load" });
+    await expect.poll(() => new URL(page.url()).pathname + new URL(page.url()).search + new URL(page.url()).hash).toBe("/#urunler");
+    await expect(page.locator("#urunler")).toBeInViewport();
     await page.goto("/", { waitUntil: "load" });
-    await expect(page.locator("main form")).toHaveCount(0);
+    await expect(page.locator("main form")).toHaveCount(1);
+    await expect(page.locator("main #toptan form")).toHaveCount(1);
     const sitemap = await (await request.get("/sitemap.xml")).text();
     const llms = await (await request.get("/llms.txt")).text();
-    for (const item of pages) { expect(sitemap).toContain(`https://afinazeytin.com${item.path}`); expect(llms).toContain(item.path); }
+    for (const item of pages) {
+      expect(sitemap).not.toContain(`https://afinazeytin.com${item.path}`);
+      expect(llms).not.toContain(`https://afinazeytin.com${item.path}`);
+      expect(llms).toContain(`https://afinazeytin.com${item.destination}`);
+    }
+    expect(sitemap).toContain("<loc>https://afinazeytin.com/</loc>");
     expect(sitemap).not.toMatch(/https:\/\/afinazeytin\.com\/urun(?:ler)?(?:\/|<)/);
     expect(llms).not.toMatch(/https:\/\/afinazeytin\.com\/urun(?:ler)?(?:\/|\s)/);
   });

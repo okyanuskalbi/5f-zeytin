@@ -11,14 +11,21 @@ vi.mock("@/components/account/MembershipDialogProvider", () => ({ useMembershipD
 beforeEach(() => { state.pathname = "/"; state.count = 0; state.hydrated = true; });
 afterEach(() => { cleanup(); vi.clearAllMocks(); });
 
-it.each(["/urunler", "/urunler/zeytinyagi", "/urun/naturel-sizma-zeytinyagi"])("keeps the products destination current at %s", pathname => {
-  state.pathname = pathname;
+// Task208: `/urunler` pages redirect to the home section; only a product page keeps the products link marked.
+it("keeps the products destination current on a product page", () => {
+  state.pathname = "/urun/naturel-sizma-zeytinyagi";
   render(<StoreHeader />);
   const products = within(screen.getByRole("navigation", { name: "Ana navigasyon" })).getByRole("link", { name: "Ürünler" });
-  expect(products.getAttribute("href")).toBe("/urunler");
-  expect(products.getAttribute("aria-current")).toBe("page");
+  expect(products.getAttribute("href")).toBe("/#urunler");
+  expect(products.getAttribute("aria-current")).toBe("true");
   fireEvent.scroll(window);
-  expect(products.getAttribute("aria-current")).toBe("page");
+  expect(products.getAttribute("aria-current")).toBe("true");
+});
+
+it.each(["/sepet", "/kvkk", "/hesabim"])("marks no section at %s", pathname => {
+  state.pathname = pathname;
+  render(<StoreHeader />);
+  for (const link of within(screen.getByRole("navigation", { name: "Ana navigasyon" })).getAllByRole("link")) expect(link.hasAttribute("aria-current")).toBe(false);
 });
 
 it("keeps the cart disabled until hydration and announces its actual count while capping its visual badge", () => {
@@ -35,14 +42,20 @@ it("keeps the cart disabled until hydration and announces its actual count while
   expect(screen.getByRole("button", { name: "Sepetim, 0 adet" }).querySelector("span")).toBeNull();
 });
 
-it("keeps phone destinations and categories reachable and closes on selection", () => {
+// Task208: the drawer lists the five sections, reports the chosen one and closes; no category row.
+it("keeps phone destinations reachable, reports the chosen section and closes on selection", () => {
   const close = vi.fn();
-  render(<StoreMenu links={[{ label: "Ürünler", href: "/urunler" }]} pathname="/urunler" onClose={close} onRestoreFocus={() => {}} />);
+  const section = vi.fn();
+  render(<StoreMenu current="urunler" onClose={close} onSection={section} onRestoreFocus={() => {}} />);
   expect(screen.getByRole("dialog").getAttribute("aria-labelledby")).toBeTruthy();
-  const products = within(screen.getByRole("navigation", { name: "Mobil navigasyon" })).getByRole("link", { name: "Ürünler" });
-  expect(products.getAttribute("aria-current")).toBe("page");
-  expect(within(screen.getByRole("navigation", { name: "Ürün kategorileri" })).getAllByRole("link")).toHaveLength(5);
+  const links = within(screen.getByRole("navigation", { name: "Mobil navigasyon" })).getAllByRole("link");
+  expect(links.map(link => link.getAttribute("href"))).toEqual(["/#urunler", "/#hikayemiz", "/#toptan-bayilik", "/#blog", "/#iletisim"]);
+  const products = links[0];
+  expect(products.getAttribute("aria-current")).toBe("true");
+  expect(links.slice(1).every(link => !link.hasAttribute("aria-current"))).toBe(true);
+  expect(screen.queryByRole("navigation", { name: "Ürün kategorileri" })).toBeNull();
   expect(screen.getByRole("link", { name: "Hesabım" }).getAttribute("href")).toBe("/hesabim");
   fireEvent.click(products);
+  expect(section).toHaveBeenCalledWith("urunler");
   expect(close).toHaveBeenCalledOnce();
 });

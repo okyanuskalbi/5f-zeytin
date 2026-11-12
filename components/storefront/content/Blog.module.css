@@ -10,7 +10,7 @@
 .cardMeta, .articleMeta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; margin: 0; font-size: 13px; line-height: 1.5; color: var(--sf-muted); font-variant-numeric: tabular-nums; }
 .cardContent h2, .cardContent h3 { margin: 0; font-size: 28px; font-weight: 600; line-height: 1.1; letter-spacing: -.01em; color: var(--sf-green); text-wrap: balance; }
 .cardContent > p:not(.cardMeta) { flex: 1; margin: 0; font-size: 16px; line-height: 1.6; color: var(--sf-muted); text-wrap: pretty; }
-.textLink { display: inline-flex; align-items: center; min-height: 44px; color: var(--sf-green); font-size: 15px; font-weight: 600; text-decoration: underline; text-decoration-color: var(--sf-gold); text-decoration-thickness: 2px; text-underline-offset: 6px; }
+.textLink { display: inline-flex; align-items: center; min-height: 44px; color: var(--sf-green); font-size: 15px; font-weight: 600; transition: color 180ms ease-out; }
 /* The first post reads across the full row: photograph beside the text. */
 .card[data-blog-size="large"] { grid-column: 1 / -1; }
 .card[data-blog-size="large"] .cardLink { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: center; gap: 48px; }
@@ -20,7 +20,7 @@
 .card[data-blog-size="large"] .cardContent > p:not(.cardMeta) { flex: none; font-size: 18px; }
 @media (hover: hover) and (pointer: fine) {
   .cardLink:hover .cardImage img { transform: scale(1.03); }
-  .cardLink:hover .textLink { text-decoration-color: var(--sf-gold-deep); }
+  .cardLink:hover .textLink { color: var(--sf-gold-deep); }
 }
 .root :is(a, button, summary):focus-visible { outline: 2px solid var(--sf-focus); outline-offset: 3px; }
 

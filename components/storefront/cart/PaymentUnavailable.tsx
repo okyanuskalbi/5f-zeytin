@@ -15,7 +15,7 @@ export function PaymentUnavailable({ id, onNavigate, showDetails = false, emphas
   return <div className={styles.notice}>
     <p id={id}>Online ödeme yakında açılıyor. Şimdilik ürünleriniz için teklif isteyebilirsiniz.</p>
     <div className={styles.actions}>
-      <PillButton variant={emphasis} size={compact ? "md" : "lg"} href="/toptan-satis" onClick={onNavigate}>Teklif İste</PillButton>
+      <PillButton variant={emphasis} size={compact ? "md" : "lg"} href="/?sekme=toptan#toptan-bayilik" onClick={onNavigate}>Teklif İste</PillButton>
       {showDetails && <PillButton variant="quiet" href="/odeme" onClick={onNavigate}>Ödeme bilgileri</PillButton>}
       {children}
     </div>

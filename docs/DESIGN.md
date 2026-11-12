@@ -34,7 +34,7 @@ Reddedilen ui-ux-pro-max önerileri: koyu zemin + "Liquid Glass" (müşteri aç�
 
 Hata/başarı/uyarı tokenları mevcut değerleriyle kalır. Karşıtlık çiftleri (ölçülmüş): fildişi/yeşil 11:1+, yeşil/altın 6,2:1, koyu altın/fildişi 5,1:1. **Beyaz yazı altın üstüne konmaz** (2:1); altın dolgunun üstündeki yazı her zaman `--sf-green`.
 
-Yüzey dengesi: sayfanın çoğu açık (fildişi/kâğıt/adaçayı). Ana sayfada **en çok 2 koyu yeşil bant** + alt bilgi; iç sayfalarda en çok 1.
+Yüzey dengesi: sayfanın çoğu açık (fildişi/kâğıt/adaçayı). Tek sayfa landing'de (208) **ana sayfada koyu yeşil bant yok**, tek koyu yüzey alt bilgidir; ayrı kalan sayfalarda en çok 1.
 
 ## Tokens — Typography
 
@@ -66,7 +66,18 @@ Yükleme: `next/font/google` (`Cormorant`, `Montserrat`; `display: "swap"`, `sub
 
 ## Tokens — Spacing & Shapes
 
-Boşluk ölçeği değişmez: 8 / 16 / 24 / 32 / 48 / 64 / 96 / 128 (`--sf-space-*`). Bölüm dikey boşluğu masaüstü 96, telefon 64. İçerik genişliği en çok 1280 px; yan boşluk masaüstü 48, telefon 16.
+Boşluk ölçeği değişmez: 8 / 16 / 24 / 32 / 48 / 64 / 96 / 128 (`--sf-space-*`). İçerik genişliği en çok 1280 px; yan boşluk masaüstü 48, telefon 16.
+
+Bölüm ritmi (208, tek kaynak `--sf-section-y`, `app/globals.css`):
+
+| Ölçü | Masaüstü (≥ 1100) | Tablet (768–1099) | Telefon (≤ 767) |
+|---|---|---|---|
+| Bölüm dikey boşluğu `--sf-section-y` | 60 px | 48 px | 40 px |
+| Başlık altı (başlık → içerik) | 28 px | 28 px | 20 px |
+| Kart arası | 24 px | 24 px | 12–16 px |
+| Bölüm içi iki blok arası | 48 px | 40 px | 32 px |
+
+Dokunma: hedef en az 44 px (telefonda `quiet` hap 48 px); komşu iki hedef arası en az 8 px (hap anahtar, alt bilgi satırları, çekmece bağlantıları dahil). Yapışkan üst menü telefonda 64, masaüstünde 76 px (+1 px çizgi); `html { scroll-padding-top: calc(var(--header-height) + 9px) }` ile bölüm başlığı menünün 8 px altına iner.
 
 ### Köşe tablosu (tek kaynak; kod bu tabloyla birebir)
 
@@ -86,7 +97,19 @@ Duran kart: gölgesiz, 1 px `--sf-line`. Hover/odak: `--sf-shadow-lift: 0 16px 3
 
 ## Sayfa yapısı (12 Kas kararı: tek sayfa landing)
 
-Site **tek sayfalık landing**: `/` sırayla Hero (`baslangic`) · Ürünler (`urunler`, kategori sekmeli) · Hikâyemiz (`hikayemiz`, hakkımızda + tesis + hasat) · Toptan & Bayilik (`toptan-bayilik`, iki sekme + form) · Zeytin Defteri (`blog`, 3 kart) · SSS + İletişim (`iletisim`) · alt bilgi. Üst menü `/#id` bağlantılarıdır. Ayrı kalan sayfalar: sepet, ödeme, giriş/kayıt/hesabım, yönetim paneli, yasal sayfalar, `/urun/[slug]`, `/blog/[slug]`. Eski adresler 308 ile bölüme yönlendirilir. Bölüm dikey boşluğu masaüstü 56–64, tablet 48, telefon 36–40 px. Tekrar kuralı: aynı hedefe ikinci düğme yok, bölüm başına en çok bir `primary`/`gold`, aynı cümle iki kez geçmez. Hareket: yalnız tek seferlik hafif belirme (opacity + 8 px, 280 ms) ve hover/odak; kaydırmaya bağlı efekt yok. Ayrıntı: `docs/tasks/208-tek-sayfa-landing.md`. Aşağıdaki "Components" bölümündeki sayfa başına tarifler bu yapıya göre okunur (bölümler tek sayfada birleşir).
+Site **tek sayfalık landing** (uygulandı: görev 208): `/` sırayla Hero (`baslangic`) · Ürünler (`urunler`, kategori sekmeli) · Hikâyemiz (`hikayemiz`, hakkımızda + tesis + hasat) · Toptan & Bayilik (`toptan-bayilik`, iki sekme + form) · Zeytin Defteri (`blog`, 3 kart) · SSS + İletişim (`iletisim`) · alt bilgi. Üst menü `/#id` bağlantılarıdır. Ayrı kalan sayfalar: sepet, ödeme, giriş/kayıt/hesabım, yönetim paneli, yasal sayfalar, `/urun/[slug]`, `/blog/[slug]`. Eski adresler 308 ile bölüme yönlendirilir. Bölüm dikey boşluğu masaüstü 56–64, tablet 48, telefon 36–40 px. Tekrar kuralı: aynı hedefe ikinci düğme yok, bölüm başına en çok bir `primary`/`gold`, aynı cümle iki kez geçmez. Hareket: yalnız tek seferlik hafif belirme (opacity + 8 px, 280 ms) ve hover/odak; kaydırmaya bağlı efekt yok. Ayrıntı: `docs/tasks/208-tek-sayfa-landing.md`.
+
+| # | id | Zemin | İçerik |
+|---|---|---|---|
+| 1 | `baslangic` | video | h1 + tek cümle + tek `gold` düğme "Ürünleri İnceleyin" → `/#urunler`. Giriş animasyonu yok |
+| 2 | `urunler` | fildişi | başlık, 6 kategori hapı (`PillSwitch`: Tümü, Zeytinyağı, Zeytin, Siyah, Yeşil, Kırma; `?kategori=`), tek ızgara: masaüstü 3, tablet ve telefon 2, 360 px altı 1 sütun (yatay kart) |
+| 3 | `hikayemiz` | kâğıt | iki fotoğraf + üst etiket + başlık + iki cümle + 3 değer (ortadaki **mühür**) · 3 bağlantısız tesis fotoğrafı + "Bereketin Hasat Vakti" 3 madde · sonda zeytin dalı |
+| 4 | `toptan-bayilik` | adaçayı | başlık + `PillSwitch` (Toptan Satış / Bayilik; `?sekme=`), kısa not + mevcut form; Bayilik formu sekme açılınca yüklenir |
+| 5 | `blog` | fildişi | 3 kart: görsel + başlık + okuma süresi |
+| 6 | `iletisim` | kâğıt | SSS akordeonu + adres, telefon, e-posta, "Yol tarifi" (`quiet`) |
+| – | alt bilgi | yeşil | logo, slogan, 3 sütun (Ürünler / Kurumsal / Yardım) düz satırlar, ödeme logoları; düğme ve adres yok |
+
+Sorgu durumları paylaşılabilir ve sayfayı yeniden yüklemez (`history.replaceState`). Menü `aria-current="true"` ile etkin bölümü işaretler (sınıf değişimi, animasyonsuz). Bölüm 3–6 görünür olduğunda bir kez belirir (`SectionReveal`); JS yokken ve azaltılmış harekette içerik doğrudan görünür. Zeytin dalı sayfada 2 kez (Hikâyemiz sonu + alt bilgi). Aşağıdaki "Components" bölümündeki tarifler bu yapıya göre güncellendi.
 
 ## Components
 
@@ -98,7 +121,7 @@ Yapı: hap gövde + sağ uçta **36 px dairesel madalyon** içinde ikon (ok / se
 | `primary` | `--sf-green` / `--sf-ivory` | `--sf-gold` zemin, yeşil ikon | Açık zeminde ana eylem (Sepete ekle, Ürünleri İnceleyin, Gönder) |
 | `gold` | `--sf-gold` / `--sf-green` | `--sf-green` zemin, fildişi ikon | Koyu bant, video/fotoğraf üstü, alt bilgi |
 | `outline` | saydam, 1,5 px `--sf-green` kenar / `--sf-green` | kenarlı, saydam | İkincil eylem (Teklife ekle, Hakkımızda, Tüm Ürünler açık zeminde) |
-| `quiet` | kâğıt zemin, 1 px `--sf-line` kenar / `--sf-green` 600; yükseklik 44 | 28 px mini madalyon: 1,5 px `--sf-gold` halka, 14 px ok | Üçüncül bağlantı, **tek başına duran** her yazı bağlantısı (12 Kas kararı: alt çizgili tek başına bağlantı yok). Cümle içi bağlantılar alt çizgili kalır. Koyu zeminde kenar `--sf-gold` %40, yazı `--sf-ivory`. Telefonda tam genişlik ya da 2 sütun |
+| `quiet` | kâğıt zemin, 1 px `--sf-line` kenar / `--sf-green` 600; yükseklik 44 (telefonda ≤ 640 px: 48) | 28 px mini madalyon: 1,5 px `--sf-gold` halka, 14 px ok | Üçüncül bağlantı, **tek başına duran** her yazı bağlantısı (12 Kas kararı: alt çizgili tek başına bağlantı yok). Cümle içi bağlantılar alt çizgili kalır. Gezinme olmayan eylemde (`Sil`, `Şifremi unuttum`, telefon, e-posta) `icon="none"`: madalyon çizilmez. Koyu zeminde kenar `--sf-gold` %40, yazı `--sf-ivory`. Telefonda tam genişlik ya da 2 sütun |
 
 Durumlar: hover → dolgu `--sf-green-deep` (gold'da %6 koyulaşma), madalyon `translateX(4px)`; basılı → `scale(.97)`; odak → 2 px `--sf-gold-deep` halka, 3 px ofset; `busy` → madalyonda dönen halka, `aria-busy`, tıklanamaz; `disabled` → `--sf-sage` dolgu, `--sf-muted` yazı, madalyon yok. Geçiş 180 ms `ease-out`; azaltılmış harekette yalnız renk değişir. Ölçek büyütme (scale > 1) kullanılmaz.
 Sepete ekle akışı: "Sepete ekle" + sepet → `busy` → **"Eklendi"** + onay (1,6 sn) → başa döner. Mantık `components/catalog/AddToCart` içinde aynen kalır; yalnız görünüm değişir. Stok yok: `disabled` "Mevcut değil".
@@ -117,37 +140,35 @@ Durağan SVG: dairesel yazı + ortada yaprak, `--sf-gold-deep` (koyu zeminde `--
 İsteğe bağlı üst etiket + Cormorant başlık + isteğe bağlı giriş paragrafı; `tone="dark"` koyu bantta fildişi/altın. Başlığın altında 48 px genişlikte 2 px altın çizgi yalnız ortalanmış başlıklarda.
 
 ### Üst menü
-Kâğıt zemin, 76 px (telefon 64), alt 1 px çizgi, yapışkan. Logo solda; bağlantılar Montserrat 500, etkin bağlantıda 2 px altın alt çizgi; sağda hesap ikonu + **sepet hapı** (ikon + adet rozeti). Telefonda logo + sepet + menü düğmesi; çekmece sağdan, 24 px sol köşeler, bağlantılar Cormorant 28 px, altta `gold` düğme "Ürünleri İnceleyin".
+Kâğıt zemin, 76 px (telefon 64), alt 1 px çizgi, yapışkan. Logo solda; bağlantılar Montserrat 500, etkin bağlantıda 2 px altın alt çizgi; sağda hesap ikonu + **sepet hapı** (ikon + adet rozeti). Bağlantılar `/#urunler`, `/#hikayemiz`, `/#toptan-bayilik`, `/#blog`, `/#iletisim` (her sayfada aynı). Telefonda logo + sepet + menü düğmesi; çekmece sağdan, 24 px sol köşeler, aynı beş bağlantı Cormorant 28 px (52 px satır, 8 px ara) + Hesabım ve Sipariş takibi; çekmecede düğme ve slogan yok. Bağlantıya dokununca çekmece kapanır ve bölüm menünün altına iner.
 
 ### Hero
-Tam genişlik video, yükseklik `min(86vh, 860px)` (telefon 78vh), alt köşeler `--sf-radius-hero`. Sol altta metin: Cormorant 700 fildişi başlık + 18 px tek satır açıklama + **`gold` düğme** "Ürünleri İnceleyin". Okunurluk: sol-alt köşeden `--sf-green-deep` %88 → saydam doğrusal + dairesel koyulaştırma; videonun sağ üstü açık kalır. Video duraklat düğmesi sağ altta 44 px daire. Hero'da mühür ve üst etiket yok.
+Tam genişlik video, yükseklik `min(86vh, 860px)` (telefon 78vh), alt köşeler `--sf-radius-hero`. Sol altta metin: Cormorant 700 fildişi başlık + 18 px tek satır açıklama + **`gold` düğme** "Ürünleri İnceleyin" (→ `/#urunler`, sayfadaki tek ürün düğmesi). Okunurluk: sol-alt köşeden `--sf-green-deep` %88 → saydam doğrusal + dairesel koyulaştırma; videonun sağ üstü açık kalır. Video duraklat düğmesi sağ altta 44 px daire. Hero'da mühür ve üst etiket yok.
 
 ### Dört geçiş (4 kutu)
-Dört fotoğraf kartı, oran 4:5 (telefon 2×2, oran 3:4), köşe 24. Altta yeşil koyulaştırma üstünde Cormorant 28 px fildişi başlık + Montserrat 14 px eylem metni ("Ürünleri İnceleyin" / "Hakkında Bilgi Alın") + 36 px altın madalyon ok. Hover: fotoğraf `scale(1.03)`, madalyon 4 px sağa. Kartın tamamı bağlantıdır.
+208'de kaldırıldı: kategori seçimi Ürünler bölümündeki haplara, Tesisimiz ve Bayilik kendi bölümlerine taşındı.
 
 ### Ürün kartı
-Kâğıt kart, köşe 24, 1 px çizgi. Üstte **adaçayı zeminli** görsel alanı (oran 1:1, ürün `object-fit: contain`, altında zemin gölgesi); sol üstte boy etiketi (`sage` Tag). Altında Cormorant 24 px ad, Montserrat 600 fiyat + stok satırı, tam genişlik `primary` "Sepete ekle", altında `quiet` "Teklife ekle". Hover: kart `translateY(-4px)` + `--sf-shadow-lift`. Telefon ilk raf: yatay kaydırmalı raf (kart 74vw, sonraki kartın kenarı görünür); ikinci ızgara: 2 sütun, kompakt (düğme 44 px, madalyon 28 px).
+Kâğıt kart, köşe 24, 1 px çizgi. Üstte **adaçayı zeminli** görsel alanı (oran 1:1, ürün `object-fit: contain`, altında zemin gölgesi); sol üstte boy etiketi (`sage` Tag). Altında Cormorant 24 px ad, Montserrat 600 fiyat + stok satırı, tam genişlik `primary` "Sepete ekle" (kartta tek eylem; teklif için ürün, Toptan formundaki ürün seçiciden eklenir). Hover: kart `translateY(-4px)` + `--sf-shadow-lift`. Ana sayfa ızgarası: masaüstü 3 sütun (görsel alanı 5:4), tablet ve telefon 2 sütun; telefonda kompakt (düğme 44 px, madalyon 28 px); 360 px altında tek sütun, görsel solda yatay kart.
 
-### Hikayemiz
-İki sütun: solda büyük fotoğraf (köşe 24) + sağ alt köşesine binen küçük ikinci fotoğraf (kâğıt 6 px çerçeve); sağda üst etiket "Hikayemiz", başlık, metin, `outline` "Hakkımızda", altında 3 madalyonlu satır. `whileInView` ufak giriş (müşteri izni).
+### Hikâyemiz (tek bölüm)
+İki sütun: solda büyük fotoğraf (köşe 24) + sağ alt köşesine binen küçük ikinci fotoğraf (kâğıt 6 px çerçeve); sağda üst etiket "Hikayemiz", başlık, iki cümle, altında 3 değer satırı: Geleneksel Üretim (madalyon) · **%100 Doğal ve Katkısız (mühür, 96 px; telefonda 72)** · Kendi Tesisimizde (madalyon). Bölümde düğme ve bağlantı yok.
+Altında ikinci satır: solda üç dikey fotoğraf (Tesisimiz / Her Tanede Aynı Özen / Ellek zeytinlikleri; bağlantısız, alt yazı koyulaştırma üstünde), sağda "Bereketin Hasat Vakti" (h3) + müşteri cümlesi + 3 madalyonlu madde. Bölüm sonunda tek zeytin dalı.
 
-### Öne Çıkan Ürünler — koyu bant
-`--sf-green` zemin, başlık `tone="dark"`, sağ üstte `gold` "Tüm Ürünler". İçinde kâğıt ürün kartları (afişteki "yeşil zemin üstünde parlayan ürün" hissi). Ana sayfadaki 1. koyu bant.
+### Öne Çıkan Ürünler, üçlü banner bağlantıları, kemer görsel
+208'de kaldırıldı (aynı ürünlerin ikinci gösterimi, aynı hedefe ikinci bağlantı). Kemer köşe tokenı (`--sf-radius-arch`) duruyor, şu an kullanılmıyor.
 
-### Üçlü banner
-Üç dikey fotoğraf kartı (ortadaki 32 px aşağı kaydırılmış), köşe 24; altta koyulaştırma üstünde başlık + altın madalyon ok. `whileInView` ufak giriş.
-
-### Bereketin Hasat Vakti
-Solda üst etiket + başlık + müşteri cümlesi + 4 madde (madalyonlu; dördüncü maddede **mühür**) + `primary` "Hikayemizi Keşfet"; sağda **kemer** fotoğraf (`--sf-radius-arch`), arkasında adaçayı daire.
-
-### Toptan Satış + Bayilik
-Adaçayı bant üstünde iki kâğıt kart (köşe 24, arka plan görseli yok): madalyon, Cormorant 28 px başlık, tek cümle, `primary` / `outline` düğme.
+### Toptan & Bayilik (tek bölüm)
+Adaçayı zemin. Başlık solda, sağında iki seçenekli hap anahtar (telefonda başlığın altında tam genişlik). Altında iki sütun: solda madalyon + tek cümle (Bayilik'te ayrıca 3 adımlı sıra), sağda kâğıt panelde form. Formların mantığı, alanları ve KVKK onayı değişmez; gönder düğmesi bölümdeki tek `primary`.
 
 ### Blog
-1 büyük (yatay) + 3 küçük kart; görsel köşe 24; başlık Cormorant; "4 dk okuma" Montserrat 13 px; `quiet` "Tüm yazılar".
+Üç eşit kart: görsel (16:10, köşe 24) + Cormorant başlık + "4 dk okuma" Montserrat 13 px. Telefonda görsel 112 px kare solda, yazı sağda. Ayrı "Tüm yazılar" düğmesi yok.
 
-### Alt bilgi — koyu
-`--sf-green`; üstte ince altın çizgi + zeytin dalı çizimi; altın logo, Cormorant slogan; bağlantılar Montserrat 15 px fildişi (hover altın); `gold` düğme "Teklif İste"; ödeme logoları kâğıt hap içinde. Ana sayfadaki 2. koyu yüzey sayılmaz.
+### SSS + İletişim
+İki sütun (telefonda alt alta): solda "Sık sorulanlar" akordeonu (satır köşe 12), sağda "İletişim": adres + telefon ve e-posta (`quiet`, madalyonsuz) + "Yol tarifi" (`quiet`). Telefonda haplar alt alta tam genişlik.
+
+### Alt bilgi (koyu)
+`--sf-green`; üstte ince altın çizgi + zeytin dalı çizimi; altın logo, Cormorant slogan, "AFİNA Şirketler Topluluğu markasıdır." cümlesi; üç sütun (Ürünler / Kurumsal / Yardım): bağlantılar hap değil, Montserrat 15 px fildişi, 44 px satır + 8 px ara, ortak sol çizgi, hover altın; ödeme logoları kâğıt hap içinde. Düğme ve adres satırı yok (adres İletişim bölümünde).
 
 ### Formlar
 Alan: kâğıt zemin, 1 px `--sf-line`, köşe 12, yükseklik 52; etiket Montserrat 600 14 px üstte; odakta 2 px koyu altın halka; hata metni alanın altında 14 px. Gönder düğmesi `primary` tam genişlik (telefon). İki seçenekli seçim yan yana hap anahtar.
@@ -173,22 +194,22 @@ Solda adaçayı zeminli büyük görsel (köşe 24) + küçük görsel şeridi (
 - Kaydırmaya bağlı hareket, sabitleme, sayfa düzeyinde snap.
 
 ## Surfaces
-Ana sayfa sırası ve zemin: menü (kâğıt) → hero (video) → 4 kutu (fildişi) → ürünler (fildişi) → Hikayemiz (kâğıt) → **Öne Çıkan (yeşil)** → 3'lü banner (fildişi) → Hasat (fildişi + adaçayı daire) → Toptan/Bayilik (adaçayı) → Blog (kâğıt) → **alt bilgi (yeşil)**. Art arda iki aynı zemin en çok bir kez.
+Ana sayfa sırası ve zemin: menü (kâğıt) → hero (video) → Ürünler (fildişi) → Hikâyemiz (kâğıt) → Toptan & Bayilik (adaçayı) → Blog (fildişi) → SSS + İletişim (kâğıt) → **alt bilgi (yeşil)**. Art arda iki aynı zemin yok.
 
 ## Imagery
 Yalnız onaylı görseller (MASTER-PROMPT §3). Ürün fotoğrafı beyaz kutuda değil adaçayı zeminde; sahne fotoğrafları tam kart. Koyulaştırma: `linear-gradient(to top, rgba(26,43,30,.86), rgba(26,43,30,0) 62%)`. Süs: logodaki dal çizgisinden türeyen tek satır zeytin dalı (SVG, `--sf-olive` / `--sf-gold`), sayfada en çok 2 kez.
 
 ## Layout
-Masaüstü 12 sütun, 24 px oluk; telefon 4 sütun, 16 px. Kırılımlar 640 / 768 / 1024 / 1280. Ana sayfada en az 5 farklı yerleşim ailesi (tam genişlik video, 4'lü kart, raf, iki sütun, koyu bant ızgara, kaydırılmış üçlü, kemer, ikili kart, 1+3 blog).
+Masaüstü 12 sütun, 24 px oluk; telefon 4 sütun, 16 px. Kırılımlar 640 / 768 / 1024 / 1280. Ana sayfada en az 5 farklı yerleşim ailesi (tam genişlik video, haplı ürün ızgarası, bindirmeli iki sütun, üçlü fotoğraf + liste, not + form paneli, üçlü kart, akordeon + iletişim).
 
 ### Hareket sözleşmesi
-MASTER-PROMPT §8 aynen. Ek: PillButton madalyonu 4 px, kart kaldırma −4 px, fotoğraf 1,03; hepsi 180–240 ms, yalnız transform/opacity; azaltılmış harekette kapalı.
+MASTER-PROMPT §8 aynen. Ek: PillButton madalyonu 4 px, kart kaldırma −4 px, fotoğraf 1,03; hepsi 180–240 ms, yalnız transform/opacity; azaltılmış harekette kapalı. Bölüm belirmesi: opacity 0→1 + 8 px, 280 ms `ease-out`, bir kez (`SectionReveal`); hap anahtar değişiminde yalnız 160 ms opaklık. Yumuşak kaydırma yalnız `prefers-reduced-motion: no-preference`.
 
 ## Agent Prompt Guide
 - **Yeni bir düğme gerekiyorsa** `PillButton` kullan; yeni düğme sınıfı yazma. Varyantı zemine göre seç (açık → primary, koyu/fotoğraf → gold).
 - **Yeni bir kart gerekiyorsa** köşe 24, kâğıt zemin, 1 px çizgi; görsel alanı adaçayı.
 - **İç sayfa başlığı:** üst etiket (isteğe bağlı) + Cormorant h1 + giriş paragrafı; yanında/altında fotoğraf ya da adaçayı bant. Düz boş başlık şeridi bırakma.
-- **Katalog:** solda kategori hapları (Tag, etkin olan yeşil dolgu), sağda ürün kartı ızgarası (masaüstü 3, tablet 2, telefon 2 kompakt).
+- **Katalog:** ana sayfanın Ürünler bölümü; üstte kategori hapları (`PillSwitch`), altında ürün kartı ızgarası (masaüstü 3, tablet 2, telefon 2 kompakt). Ayrı katalog sayfası yok.
 - **Sepet/ödeme/hesap:** kâğıt paneller köşe 24; özet paneli yeşil değil kâğıt (v2'deki koyu özet kutusu kalkar), toplam satırı Cormorant 28 px; birincil eylem `primary` tam genişlik.
 - **Yönetim paneli:** aynı tokenlar; düğmeler hap ama madalyonsuz (`icon="none"`), tablo satırı 52 px, başlıklar Montserrat 600 (panelde Cormorant yalnız sayfa başlığında).
 - **21st kaynakları (uyarlanır, birebir yapıştırılmaz):** hyperiux/arrow-fill-button (#26022, hap + ok dolgusu) · bidyut10/add-to-cart-button (#34564, sepete ekle durumları) · shadcnstore/product-card-1 (#28227) · bundui/navigation-menu4 (#18131, mağaza menüsü) · designali-in/stamp (#3417, mühür) · haydenbleasel/pill (#1600, etiket).
@@ -206,7 +227,10 @@ MASTER-PROMPT §8 aynen. Ek: PillButton madalyonu 4 px, kart kaldırma −4 px, 
   --sf-shadow-lift: 0 16px 36px -18px rgba(36, 58, 41, .32);
   --sf-overlay: linear-gradient(to top, rgba(26, 43, 30, .86), rgba(26, 43, 30, 0) 62%);
   --sf-button-h: 52px; --sf-coin: 36px;
+  --sf-section-y: 60px;
 }
+@media (max-width: 1099px) { :root { --sf-section-y: 48px; } }
+@media (max-width: 767px) { :root { --sf-section-y: 40px; } }
 @media (max-width: 640px) { :root { --sf-radius-card: 20px; --sf-radius-hero: 24px; --sf-button-h: 48px; } }
 ```
 

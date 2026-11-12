@@ -59,8 +59,8 @@ export function ProductDetail({ family, related, initialSize = "" }: { family: P
 
   return <main className={styles.root}><div className={styles.container}>
     <nav className={styles.breadcrumb} aria-label="İçerik yolu"><ol>
-      <li><Link prefetch={false} href="/">Ana Sayfa</Link></li><li><span aria-hidden="true">/</span><Link prefetch={false} href="/urunler">Ürünler</Link></li>
-      {getGroupTrail(family.groupId).map(item => <li key={item.id}><span aria-hidden="true">/</span><Link prefetch={false} href={`/urunler/${item.id}`}>{item.name}</Link></li>)}
+      <li><Link prefetch={false} href="/">Ana Sayfa</Link></li><li><span aria-hidden="true">/</span><Link prefetch={false} href="/#urunler">Ürünler</Link></li>
+      {getGroupTrail(family.groupId).map(item => <li key={item.id}><span aria-hidden="true">/</span><Link prefetch={false} href={`/?kategori=${item.id}#urunler`}>{item.name}</Link></li>)}
       <li><span aria-hidden="true">/</span><span aria-current="page">{family.name}</span></li>
     </ol></nav>
     <article className={styles.product} data-product-page data-product-id={product.id} data-surface="light" data-reduced-motion={Boolean(reduced)}>
@@ -83,7 +83,7 @@ export function ProductDetail({ family, related, initialSize = "" }: { family: P
               onChange={next => setSelection({ ...selection, quantity: next })} />}
             <div className={styles.add}><AddToCart key={product.id} product={product} quantity={quantity} disabled={remaining === 0} /></div>
           </div>
-          <PillButton variant="outline" fullWidth href={`/toptan-satis?teklif=${encodeURIComponent(product.id)}`}>Teklife ekle</PillButton>
+          <PillButton variant="outline" fullWidth href={`/?sekme=toptan&teklif=${encodeURIComponent(product.id)}#toptan-bayilik`}>Teklife ekle</PillButton>
         </div>
       </div>
       <div className={styles.gallery} data-product-detail-gallery>
@@ -106,7 +106,7 @@ export function ProductDetail({ family, related, initialSize = "" }: { family: P
       </div>
     </article>
     {relatedProducts.length > 0 && <section aria-labelledby="benzer-title" className={styles.related}>
-      <header><div id="benzer-title"><SectionHeading title="Benzer Ürünler" /></div><PillButton variant="quiet" href={`/urunler/${group?.parentId ?? group?.id ?? ""}`}>Kategorideki ürünler</PillButton></header>
+      <header><div id="benzer-title"><SectionHeading title="Benzer Ürünler" /></div><PillButton variant="quiet" href={`/?kategori=${group?.parentId ?? group?.id ?? ""}#urunler`}>Kategorideki ürünler</PillButton></header>
       <div className={styles.relatedGrid}>{relatedProducts.map(item => <ProductTile key={item.id} product={item} />)}</div>
     </section>}
   </div></main>;

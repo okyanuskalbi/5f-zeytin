@@ -11,16 +11,21 @@ const GREEN = 'rgb(36, 58, 41)';
 const SAGE = 'rgb(231, 235, 221)';
 const PAPER = 'rgb(255, 253, 248)';
 const LONG_WORD = 'cok-uzun-bir-eposta-adresi-ornegi-kirilmali@ornek-alan-adi-oldukca-uzun.example.test';
+/** Task208: a section that has just come into view fades in for 280 ms; contrast is read after it has arrived. */
+const arrived = async page => {
+  // The page may still be gliding to a focused field; a section entering on the way starts its fade late.
+  for (let last = -1, rounds = 0; rounds < 40; rounds++) { const now = await page.evaluate(() => Math.round(window.scrollY)); if (now === last) break; last = now; await page.waitForTimeout(120); }
+  for (let pass = 0; pass < 2; pass++) {
+    await page.evaluate(() => Promise.all(document.getAnimations().filter(animation => animation.effect?.getComputedTiming().iterations !== Infinity).map(animation => animation.finished.catch(() => {}))));
+    await page.waitForTimeout(120);
+  }
+};
 const LONG_ADDRESS = 'ŞehitAliGökçeMahallesiŞehitÖmerHalisDemirSokağıNumaraOtuzBeşEllekBeldesiDüziçiOsmaniyeTürkiye, Kat 3 Daire 12, 80600';
 const LONG_NAME = 'Geleneksel Usulde Hazırlanmış Doğal Kırma Yeşil Zeytin Ellek Hasadı Büyük Boy Teneke Ambalaj';
 const profiles = [[320, 568, 'chromium'], [390, 844, 'webkit'], [768, 1024, 'chromium'], [1440, 900, 'chromium']];
 const posts = ['salamura-zeytin-nasil-hazirlanir', 'kirma-zeytin-nedir-nasil-saklanir', 'naturel-sizma-zeytinyagi-nasil-saklanmali', 'sofralik-zeytin-secerken-nelere-dikkat-edilmeli'];
+// Task208: Hakkımızda, Toptan, Bayilik and the blog list are sections of the home page (scripts/qa-landing-208.mjs).
 const publicRoutes = [
-  { name: 'hakkimizda', path: '/hakkimizda', kind: 'about' },
-  { name: 'toptan-satis', path: '/toptan-satis', kind: 'form' },
-  { name: 'teklif-onsecim', path: '/toptan-satis?teklif=sample-green-olive-1kg', kind: 'form' },
-  { name: 'bayilik', path: '/bayilik', kind: 'form' },
-  { name: 'blog', path: '/blog', kind: 'blog' },
   ...posts.map((slug, index) => ({ name: `blog-yazi-${index + 1}`, path: `/blog/${slug}`, kind: 'article' })),
   { name: 'giris', path: '/giris', kind: 'auth' },
   { name: 'kayit', path: '/kayit', kind: 'auth' },
@@ -50,15 +55,6 @@ function inspectPage(kind) {
   });
   const band = document.querySelector('[data-page-band]');
   if (band) facts.band = { background: style(band).backgroundColor, radius: parseFloat(style(band).borderTopLeftRadius), photo: band.querySelector('img') ? band.querySelector('img').naturalWidth > 0 : null };
-  if (kind === 'about') {
-    const arch = document.querySelector('[data-about-arch] picture');
-    const strip = document.querySelector('[data-about-strip]');
-    const track = strip.querySelector('ul').parentElement;
-    facts.arch = { top: parseFloat(style(arch).borderTopLeftRadius), bottom: parseFloat(style(arch).borderBottomLeftRadius), width: arch.getBoundingClientRect().width };
-    facts.strip = { background: style(strip).backgroundColor, font: style(strip.querySelector('li')).fontFamily, color: style(strip.querySelector('li')).color, animation: style(track).animationName, pause: !!strip.querySelector('button[data-pill]') && style(strip.querySelector('button[data-pill]')).display !== 'none' };
-    facts.medallions = document.querySelectorAll('[data-about-facility] [data-medallion]').length;
-    facts.faqRadius = parseFloat(style(document.querySelector('#sik-sorulanlar details')).borderTopLeftRadius);
-  }
   if (kind === 'form') {
     const form = document.querySelector('form');
     const submit = form.querySelector('button[type="submit"]');
@@ -68,10 +64,6 @@ function inspectPage(kind) {
       submit: { variant: submit.dataset.variant, width: submit.getBoundingClientRect().width, panel: panel.getBoundingClientRect().width - parseFloat(style(panel).paddingLeft) - parseFloat(style(panel).paddingRight) },
       field: { height: input.getBoundingClientRect().height, radius: parseFloat(style(input).borderTopLeftRadius), background: style(input).backgroundColor },
     };
-  }
-  if (kind === 'blog') {
-    const cards = [...document.querySelectorAll('[data-blog-card]')];
-    facts.blog = { cards: cards.length, large: cards.filter(card => card.dataset.blogSize === 'large').length, widths: cards.map(card => Math.round(card.getBoundingClientRect().width)) };
   }
   if (kind === 'article') {
     const prose = document.querySelector('[data-blog-content]');
@@ -222,19 +214,13 @@ export async function auditPages({ origin, out, shots, open, settle, inspectDesi
     if (extras.contrast.length) fail(where, `contrast ${extras.contrast.join(' | ')}`);
     if (extras.errors.length) fail(where, `console ${extras.errors.join(' | ')}`);
     if (facts.band && (facts.band.background !== SAGE || facts.band.radius < 20 || facts.band.photo === false)) fail(where, `page band ${JSON.stringify(facts.band)}`);
-    if (['form', 'blog', 'legal', 'state'].includes(route.kind) && !facts.band) fail(where, 'no page band');
-    if (route.kind === 'about') {
-      if (facts.arch.top < facts.arch.width / 2 - 1 || facts.arch.bottom > 24) fail(where, `arch ${JSON.stringify(facts.arch)}`);
-      if (facts.strip.background !== GREEN || !/Cormorant/i.test(facts.strip.font) || !facts.strip.pause) fail(where, `strip ${JSON.stringify(facts.strip)}`);
-      if (facts.medallions !== 4 || facts.faqRadius !== 12) fail(where, `about parts ${facts.medallions} medallions, FAQ radius ${facts.faqRadius}`);
-    }
+    if (['legal', 'state'].includes(route.kind) && !facts.band) fail(where, 'no page band');
     if (route.kind === 'form') {
       const { submit, field } = facts.form;
       if (submit.variant !== 'primary') fail(where, `submit variant ${submit.variant}`);
       if (width < 768 && Math.abs(submit.width - submit.panel) > 2) fail(where, `submit ${submit.width} of ${submit.panel}`);
       if (field.height < 52 || field.radius !== 12 || field.background !== PAPER) fail(where, `field ${JSON.stringify(field)}`);
     }
-    if (route.kind === 'blog' && (facts.blog.large !== 1 || facts.blog.cards !== 4 || (width >= 768 && facts.blog.widths[0] <= facts.blog.widths[1]))) fail(where, `blog cards ${JSON.stringify(facts.blog)}`);
     if (route.kind === 'article') {
       const { title, body, contents, sections, faqRadius, schemas } = facts.article;
       if (!/Cormorant/i.test(title.font) || title.size < 44 || title.size > 56) fail(where, `title ${JSON.stringify(title)}`);
@@ -259,7 +245,7 @@ export async function auditPages({ origin, out, shots, open, settle, inspectDesi
     if (route.kind === 'legal' && (facts.legal.measure > 68.5 || facts.legal.contents < 3)) fail(where, `legal ${JSON.stringify(facts.legal)}`);
     if (route.kind === 'missing') {
       const [home, products] = facts.missing.actions;
-      if (home?.text !== 'Ana sayfa' || home.variant !== 'primary' || home.href !== '/' || products?.text !== 'Ürünler' || products.variant !== 'outline' || products.href !== '/urunler' || base.branches < 1) fail(where, `404 ${JSON.stringify(facts.missing)}`);
+      if (home?.text !== 'Ana sayfa' || home.variant !== 'primary' || home.href !== '/' || products?.text !== 'Ürünler' || products.variant !== 'outline' || products.href !== '/#urunler' || base.branches < 1) fail(where, `404 ${JSON.stringify(facts.missing)}`);
     }
     if (route.kind === 'admin') {
       if (facts.coins) fail(where, `${facts.coins} coins in the panel`);
@@ -291,7 +277,8 @@ export async function auditPages({ origin, out, shots, open, settle, inspectDesi
     const base = await page.evaluate(inspectDesign, limits.touch);
     await page.waitForTimeout(150);
     const cls = await page.evaluate(() => window.__cls);
-    const axe = await new AxeBuilder({ page }).withRules(['color-contrast']).analyze();
+    await arrived(page);
+        const axe = await new AxeBuilder({ page }).withRules(['color-contrast']).analyze();
     const contrast = axe.violations.flatMap(violation => violation.nodes.map(node => node.target.join(' ')));
     const serious = errors.filter(message => !(route.kind === 'missing' && /404/.test(message)));
     judge(where, route, width, base, facts, { cls, contrast, errors: serious });
@@ -331,38 +318,6 @@ export async function auditPages({ origin, out, shots, open, settle, inspectDesi
 
     if (only.length) return report;
 
-    // Reduced motion: the about strip stands still and every word is on screen.
-    {
-      const { context, page } = await open('chromium', { ...viewport(390, 844), reducedMotion: 'reduce' });
-      try {
-        await page.goto(new URL('/hakkimizda', origin).href, { waitUntil: 'networkidle' });
-        const strip = await page.evaluate(() => {
-          const band = document.querySelector('[data-about-strip]');
-          const track = band.querySelector('ul').parentElement;
-          const words = [...band.querySelectorAll('ul:not([aria-hidden]) li')].map(word => { const box = word.getBoundingClientRect(); return { text: word.textContent, inside: box.left >= 0 && box.right <= innerWidth && box.height > 0 }; });
-          const button = band.querySelector('button');
-          return { animation: getComputedStyle(track).animationName, words, pauseHidden: getComputedStyle(button).display === 'none', duplicateHidden: getComputedStyle(band.querySelector('ul[aria-hidden]')).display === 'none' };
-        });
-        await page.locator('[data-about-strip]').scrollIntoViewIfNeeded();
-        await page.screenshot({ path: path.join(shots, 'hakkimizda-serit-azaltilmis-hareket-390.png') });
-        report.checks.reducedStrip = strip;
-        if (strip.animation !== 'none' || strip.words.length !== 5 || strip.words.some(word => !word.inside) || !strip.duplicateHidden) fail('reduced motion', `strip ${JSON.stringify(strip)}`);
-      } finally { await context.close(); }
-    }
-
-    // Strip pause works without hover.
-    {
-      const { context, page } = await open('chromium', viewport(1440, 900));
-      try {
-        await page.goto(new URL('/hakkimizda', origin).href, { waitUntil: 'networkidle' });
-        await page.getByRole('button', { name: 'Şeridi duraklat', exact: true }).click();
-        const paused = await page.evaluate(() => getComputedStyle(document.querySelector('[data-about-strip] ul').parentElement).animationPlayState);
-        const label = await page.locator('[data-about-strip] button').textContent();
-        report.checks.stripPause = { paused, label };
-        if (paused !== 'paused' || label !== 'Şeridi oynat') fail('strip', `pause ${paused} ${label}`);
-      } finally { await context.close(); }
-    }
-
     // Quote form: preselected product, phone field on WebKit after it scrolls into view, error state at 320.
     for (const [width, height, engine] of [[390, 844, 'webkit'], [320, 568, 'chromium'], [1440, 900, 'chromium']]) {
       const where = `teklif ${width}x${height}-${engine}`;
@@ -370,7 +325,7 @@ export async function auditPages({ origin, out, shots, open, settle, inspectDesi
       const steps = [];
       const step = async (name, check) => { try { await check(); steps.push({ name, ok: true }); } catch (error) { const message = String(error.message).split('\n')[0]; steps.push({ name, ok: false, error: message }); fail(where, `${name}: ${message}`); } };
       try {
-        await page.goto(new URL('/toptan-satis?teklif=sample-olive-oil-5l', origin).href, { waitUntil: 'networkidle' });
+        await page.goto(new URL('/?sekme=toptan&teklif=sample-olive-oil-5l#toptan-bayilik', origin).href, { waitUntil: 'networkidle' });
         await page.evaluate(() => document.fonts.ready);
         const form = page.getByRole('form', { name: 'Kurumsal teklif talebi' });
         await step('ön seçim: 5 L ürün seçili', async () => {
@@ -397,7 +352,8 @@ export async function auditPages({ origin, out, shots, open, settle, inspectDesi
             const submit = document.querySelector('[data-quote-composer] button[type="submit"]');
             return { overflow: document.documentElement.scrollWidth - innerWidth, leaving, errors: document.querySelectorAll('[data-quote-composer] [id$="-error"]').length, submitLines: Math.round(submit.querySelector('[data-pill-label]').getBoundingClientRect().height / parseFloat(getComputedStyle(submit).lineHeight || '20')) };
           });
-          const axe = await new AxeBuilder({ page }).withRules(['color-contrast']).analyze();
+          await arrived(page);
+        const axe = await new AxeBuilder({ page }).withRules(['color-contrast']).analyze();
           const contrast = axe.violations.flatMap(violation => violation.nodes.map(node => node.target.join(' ')));
           if (state.overflow > 0 || state.leaving.length || state.errors < 3 || contrast.length) throw new Error(JSON.stringify({ ...state, contrast }));
         });
@@ -415,8 +371,8 @@ export async function auditPages({ origin, out, shots, open, settle, inspectDesi
     report.checks.shortScreen = [];
     for (const form of [
       { name: 'giris', path: '/giris', field: '#auth-password', submit: 'E-posta ile giriş yap' },
-      { name: 'teklif', path: '/toptan-satis', field: 'form[aria-label="Kurumsal teklif talebi"] input[name="kvkk"]', submit: 'Talep özetini hazırla' },
-      { name: 'bayilik', path: '/bayilik', field: 'form[aria-label="Bayilik başvurusu"] input[name="kvkk"]', submit: 'Başvuru E-postasını Hazırla' },
+      { name: 'teklif', path: '/?sekme=toptan#toptan-bayilik', field: 'form[aria-label="Kurumsal teklif talebi"] input[name="kvkk"]', submit: 'Talep özetini hazırla' },
+      { name: 'bayilik', path: '/?sekme=bayilik#toptan-bayilik', field: 'form[aria-label="Bayilik başvurusu"] input[name="kvkk"]', submit: 'Başvuru E-postasını Hazırla' },
     ]) {
       const { context, page } = await open('chromium', viewport(390, 500));
       try {
@@ -441,7 +397,7 @@ export async function auditPages({ origin, out, shots, open, settle, inspectDesi
     // Error state at 320 px: field, message and pill stay inside the panel (the quote form is covered by its flow above).
     report.checks.errorState320 = [];
     for (const form of [
-      { name: 'bayilik', path: '/bayilik', panel: '[data-dealership-form]', submit: 'Başvuru E-postasını Hazırla', message: 'Lütfen işaretli alanları kontrol edin.' },
+      { name: 'bayilik', path: '/?sekme=bayilik#toptan-bayilik', panel: '[data-dealership-form]', submit: 'Başvuru E-postasını Hazırla', message: 'Lütfen işaretli alanları kontrol edin.' },
       { name: 'giris', path: '/giris', panel: '[data-membership-frame]', submit: 'E-posta ile giriş yap', message: 'Lütfen alanları kontrol edin.' },
       { name: 'kayit', path: '/kayit', panel: '[data-membership-frame]', submit: 'Üyelik oluştur', message: 'Lütfen alanları kontrol edin.' },
     ]) {
@@ -461,6 +417,7 @@ export async function auditPages({ origin, out, shots, open, settle, inspectDesi
           const label = submit.querySelector('[data-pill-label]').getBoundingClientRect();
           return { overflow: document.documentElement.scrollWidth - innerWidth, leaving, invalid: root.querySelectorAll('[aria-invalid="true"]').length, pillOneLine: label.height < parseFloat(getComputedStyle(submit).fontSize) * 2 };
         }, form.panel);
+        await arrived(page);
         const axe = await new AxeBuilder({ page }).withRules(['color-contrast']).analyze();
         const contrast = axe.violations.flatMap(violation => violation.nodes.map(node => node.target.join(' ')));
         await page.evaluate(() => scrollTo(0, 0));
@@ -472,10 +429,9 @@ export async function auditPages({ origin, out, shots, open, settle, inspectDesi
       } finally { await context.close(); }
     }
 
-    // In-page links land their target below the sticky header: the dealership "Başvuru Formu" pill and an article's contents pill.
+    // In-page links land their target below the sticky header: an article's contents pill and a legal page's.
     report.checks.anchors = [];
     for (const [name, route, link, target] of [
-      ['bayilik', '/bayilik', 'a[data-pill][href="#basvuru"]', '#basvuru'],
       ['blog-yazi', `/blog/${posts[0]}`, 'nav[aria-label="İçindekiler"] a >> nth=1', '#bolum-2'],
       ['kvkk', '/kvkk', 'nav[aria-label="İçindekiler"] a >> nth=2', '#seller-title'],
     ]) {
@@ -516,7 +472,7 @@ export async function auditPages({ origin, out, shots, open, settle, inspectDesi
     {
       const { context, page, errors } = await open('chromium', viewport(1440, 900));
       try {
-        await page.goto(new URL('/hakkimizda', origin).href, { waitUntil: 'networkidle' });
+        await page.goto(new URL('/kvkk', origin).href, { waitUntil: 'networkidle' });
         await page.getByRole('banner').getByRole('link', { name: 'Hesabım', exact: true }).click();
         const dialog = page.getByRole('dialog');
         await dialog.getByRole('heading', { name: 'Soframıza hoş geldiniz.' }).waitFor({ timeout: 10000 });
@@ -543,17 +499,17 @@ export async function auditPages({ origin, out, shots, open, settle, inspectDesi
     {
       const { context, page } = await open('webkit', viewport(390, 844));
       try {
-        await page.goto(new URL('/hakkimizda', origin).href, { waitUntil: 'networkidle' });
+        await page.goto(new URL('/kvkk', origin).href, { waitUntil: 'networkidle' });
         await page.getByRole('button', { name: 'Menüyü aç', exact: true }).click();
         const dialog = page.getByRole('dialog');
         await dialog.waitFor();
-        // Twelve destinations, then the one gold action.
+        // Five sections and the two account links; no second products button (Task208).
         const links = await dialog.locator('a:not([data-pill])').evaluateAll(nodes => nodes.map(node => node.textContent.trim()));
         const action = await dialog.locator('a[data-pill]').evaluateAll(nodes => nodes.map(node => node.textContent.trim()));
         await page.waitForTimeout(350);
         await page.screenshot({ path: path.join(shots, 'menu-390.png') });
         report.checks.menu = { count: links.length, links, action };
-        if (links.length !== 12 || action.join() !== 'Ürünleri İnceleyin') fail('menu', `${links.length} links: ${links.join(', ')}`);
+        if (links.length !== 7 || action.length !== 0) fail('menu', `${links.length} links: ${links.join(', ')}`);
       } finally { await context.close(); }
     }
 

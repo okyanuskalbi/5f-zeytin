@@ -63,7 +63,8 @@ describe("Task 131 cart presentation", () => {
     drawer(true);
     expect(screen.getByText("Sepetiniz boş")).toBeDefined();
     const browse = screen.getByRole("link", { name: "Ürünleri İnceleyin" });
-    expect(browse.getAttribute("href")).toBe("/urunler");
+    // Task208: the products are the "#urunler" section of the home page.
+    expect(browse.getAttribute("href")).toBe("/#urunler");
     fireEvent.click(browse);
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
   });
@@ -106,7 +107,8 @@ describe("Task 131 cart presentation", () => {
     const store = createCartStore({ products, storage: null });
     render(<CartSummary store={store} products={products} onRefresh={() => {}} />);
     expect(screen.getByText("Sepetiniz boş")).toBeDefined();
-    expect(screen.getByRole("link", { name: "Ürünleri İnceleyin" }).getAttribute("href")).toBe("/urunler");
+    // Task208: the products are the "#urunler" section of the home page.
+    expect(screen.getByRole("link", { name: "Ürünleri İnceleyin" }).getAttribute("href")).toBe("/#urunler");
     expect(screen.queryByRole("region", { name: "Mobil ödeme" })).toBeNull();
   });
 

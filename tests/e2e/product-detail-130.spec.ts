@@ -13,8 +13,9 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
     test(`${viewport.width}×${viewport.height} ${reducedMotion}: details, gallery and purchase fit`, async ({ page }) => {
       await page.setViewportSize(viewport);
       await page.emulateMedia({ reducedMotion });
-      await page.goto("/urunler", { waitUntil: "load" });
-      const card = page.locator('article[data-product-id="sample-green-olive-10kg"]');
+      // Task208: the catalogue is the home page's #urunler section.
+      await page.goto("/#urunler", { waitUntil: "load" });
+      const card = page.locator('#urunler article[data-product-id="sample-green-olive-10kg"]');
       await card.getByRole("link", { name: /detayını aç/ }).click();
       await expect(page).toHaveURL(/\/urun\/dogal-kirma-yesil-zeytin\?boy=3(?:%20|\+)L$/);
       const detail = page.locator("[data-product-page]");
@@ -52,9 +53,15 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       await expect(detail).toBeVisible();
       await expect(page).toHaveURL(/\/urun\/dogal-kirma-yesil-zeytin/);
       const recovery = page.getByRole("navigation", { name: "İçerik yolu", exact: true }).getByRole("link", { name: "Ürünler", exact: true });
+      // Task208: the way back is the products section of the home page, landed below the sticky header.
+      await expect(recovery).toHaveAttribute("href", "/#urunler");
       await recovery.focus();
       await page.keyboard.press("Enter");
-      await expect(page).toHaveURL(/\/urunler$/);
+      await expect(page).toHaveURL(/\/#urunler$/);
+      const gap = () => page.evaluate(() => Math.round(document.getElementById("urunler")!.getBoundingClientRect().top - document.querySelector("header[data-site-navbar]")!.getBoundingClientRect().bottom));
+      await expect.poll(gap, { timeout: 10_000 }).toBeGreaterThanOrEqual(0);
+      await expect.poll(gap, { timeout: 10_000 }).toBeLessThanOrEqual(24);
+      await expect(page.locator("#urunler article[data-product-id]")).toHaveCount(6);
     });
   }
 }

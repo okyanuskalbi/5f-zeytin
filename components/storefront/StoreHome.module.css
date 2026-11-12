@@ -1,6 +1,5 @@
-/* Ana sayfa: docs/DESIGN.md → Components + Surfaces. Hover and press are CSS; in-view motion lives in QuietMotion. */
+/* Tek sayfa landing: docs/DESIGN.md → Sayfa yapısı, docs/tasks/208. Hover and press are CSS; the one arrival lives in SectionReveal. */
 .container { width: min(100% - 96px, 1280px); margin-inline: auto; }
-.anchor { position: absolute; scroll-margin-top: 112px; }
 .empty { margin-top: 24px; }
 
 /* Hero: the customer's video, darkened only where the words sit. */
@@ -60,55 +59,25 @@
 .videoControl:active { transform: scale(.97); }
 .videoControl:focus-visible { outline: 2px solid var(--sf-ivory); outline-offset: 3px; }
 
-/* Shared photo card: whole card is the link, words sit on the green overlay. */
-.portal, .banner {
-  position: relative;
-  display: block;
-  overflow: hidden;
-  min-width: 0;
-  border-radius: var(--sf-radius-card);
-  background: var(--sf-green-deep);
-  color: var(--sf-ivory);
-  text-decoration: none;
-}
-.portal picture, .banner picture { position: absolute; inset: 0; }
-.portal img, .banner img { width: 100%; height: 100%; object-fit: cover; transition: transform 240ms ease-out; }
-.portal::after, .banner::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(26, 43, 30, .55), rgba(26, 43, 30, 0) 38%), var(--sf-overlay); pointer-events: none; }
-.portal:focus-visible, .banner:focus-visible, .leadPost:focus-visible, .post:focus-visible { outline: 2px solid var(--sf-gold-deep); outline-offset: 3px; }
-.portalCoin, .bannerCoin {
-  position: absolute;
-  z-index: 1;
-  inset: auto 20px 20px auto;
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border-radius: var(--sf-radius-round);
-  background: var(--sf-gold);
-  color: var(--sf-green);
-  transition: transform 180ms ease-out;
-}
-.portalCoin svg, .bannerCoin svg { width: 18px; height: 18px; }
+/* One soft arrival per section below the first screen; never tied to the scroll position. */
+/* While it waits a section is only transparent: a transform held on the wrapper stops Chromium from laying out
+   the container-query fields inside the forms, which then jump into place later. The 8 px rise lives in the keyframes. */
+[data-reveal="pending"] > .container { opacity: 0; }
+[data-reveal="shown"] > .container { animation: section-arrive 280ms ease-out; }
+@keyframes section-arrive { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
-/* 4 kutu */
-.portals { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; padding-block-start: 48px; }
-.portal { aspect-ratio: 4 / 5; }
-.portalCopy { position: absolute; z-index: 1; inset: auto 68px 20px 20px; display: grid; gap: 8px; }
-.portal h2 { font-size: 28px; line-height: 1.1; color: var(--sf-ivory); }
-.portalCopy span { font-size: 14px; font-weight: 500; line-height: 1.4; white-space: nowrap; }
+/* Ürünler: category pills over one grid. */
+.products { padding-block: var(--sf-section-y); }
+.categoryPills { margin-block: 28px 24px; }
+.productGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.productCell { display: grid; min-width: 0; }
+.productGrid [data-tile-stage] { aspect-ratio: 5 / 4; }
+.note { margin-block-start: 16px; font-size: 14px; line-height: 1.5; color: var(--sf-muted); }
 
-/* Ürün rafı */
-.products { padding-block: 96px; }
-.shelfGrid { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "head all" "shelf shelf" "note note"; align-items: end; gap: 0 32px; }
-.shelfHead { grid-area: head; }
-.shelfAll { grid-area: all; }
-.shelf { grid-area: shelf; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin-block-start: 40px; }
-.note { grid-area: note; margin-block-start: 16px; font-size: 14px; line-height: 1.5; color: var(--sf-muted); }
-
-/* Hikayemiz */
-.story { position: relative; padding-block: 96px; background: var(--sf-paper); }
-.storyGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; gap: 96px; }
-.storyPhotos { position: relative; padding: 0 32px 48px 0; }
+/* Hikâyemiz: story, the three values with the one seal, the facility photographs and the harvest steps. */
+.story { padding-block: var(--sf-section-y); background: var(--sf-paper); }
+.storyGrid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: 64px; }
+.storyPhotos { position: relative; padding: 0 32px 40px 0; }
 /* A portrait: the old tree above, the two pairs of hands and the basket below. */
 .storyPhoto { display: block; aspect-ratio: 4 / 5; overflow: hidden; border-radius: var(--sf-radius-card); }
 .storyPhoto img, .storyInset img { width: 100%; height: 100%; object-fit: cover; }
@@ -123,125 +92,99 @@
   border-radius: var(--sf-radius-card);
   background: var(--sf-paper);
 }
-.storyCopy { display: grid; justify-items: start; gap: 32px; }
-.values { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; width: 100%; padding-block-start: 32px; border-top: 1px solid var(--sf-line); }
-.values li { display: grid; justify-items: start; gap: 12px; }
-.values strong { font-size: 14px; font-weight: 600; line-height: 1.4; color: var(--sf-green); }
+.storyCopy { display: grid; justify-items: start; gap: 24px; }
+.storyText { max-width: 60ch; color: var(--sf-ink); }
+.values { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px; width: 100%; padding-block-start: 24px; border-top: 1px solid var(--sf-line); }
+.values li { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.values strong { max-width: 14ch; font-size: 14px; font-weight: 600; line-height: 1.4; color: var(--sf-green); }
+.facility { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: center; gap: 64px; margin-block-start: 48px; }
+.facilityPhotos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.facilityPhoto { position: relative; aspect-ratio: 3 / 4; overflow: hidden; min-width: 0; margin: 0; border-radius: var(--sf-radius-card); background: var(--sf-green-deep); }
+.facilityPhoto picture { position: absolute; inset: 0; }
+.facilityPhoto img { width: 100%; height: 100%; object-fit: cover; }
+.facilityPhoto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(26, 43, 30, .55), rgba(26, 43, 30, 0) 38%), var(--sf-overlay); pointer-events: none; }
+.facilityPhoto figcaption { position: absolute; z-index: 1; inset: auto 16px 16px; font-family: var(--font-display); font-size: 22px; font-weight: 600; line-height: 1.1; color: var(--sf-ivory); }
+.harvest { display: grid; justify-items: start; gap: 16px; min-width: 0; }
+.harvest h3 { font-size: 28px; line-height: 1.1; color: var(--sf-green); }
+.harvest p { max-width: 48ch; color: var(--sf-muted); }
+.steps { display: grid; gap: 12px; width: 100%; margin-block-start: 8px; }
+.steps li { display: flex; align-items: center; gap: 16px; font-size: 16px; font-weight: 600; line-height: 1.4; color: var(--sf-green); }
+.divider { width: 200px; margin: 40px auto 0; }
 
-/* Öne Çıkan Ürünler: the page's one dark band. */
-.featured { padding-block: 96px; background: var(--sf-green); color: var(--sf-ivory); }
-.featuredHead { display: flex; align-items: end; justify-content: space-between; gap: 32px; margin-block-end: 40px; }
-.pairs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
-.pairs > article { flex-direction: row; align-items: stretch; }
-.pairs [data-tile-stage] { flex: 0 0 38%; align-self: center; }
-.pairs [data-tile-content] { padding: 8px 12px 8px 24px; }
-
-/* Üçlü banner */
-.triptych { position: relative; padding-block: 96px 32px; }
-.banners { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: 24px; }
-.banner { aspect-ratio: 3 / 4; }
-.banner:nth-child(2) { margin-block-start: 32px; }
-.banner h2 { position: absolute; z-index: 1; inset: auto 72px 22px 24px; font-size: 28px; line-height: 1.1; color: var(--sf-ivory); }
-
-/* Bereketin Hasat Vakti */
-.harvest { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .82fr); align-items: center; gap: 96px; padding-block: 64px 96px; }
-.harvestCopy { display: grid; justify-items: start; gap: 40px; }
-.steps { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 16px 40px; width: 100%; }
-.steps li { grid-column: 1; display: flex; align-items: center; gap: 16px; font-size: 16px; font-weight: 600; line-height: 1.4; color: var(--sf-green); }
-.steps .sealed {
-  grid-column: 2;
-  grid-row: 1 / span 3;
-  flex-direction: column;
-  gap: 12px;
-  max-width: 200px;
-  padding-inline-start: 40px;
-  border-inline-start: 1px solid var(--sf-line);
-  text-align: center;
-}
-.harvestArt { position: relative; isolation: isolate; padding-inline-start: 14%; }
-.harvestArt::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset: auto auto -6% 0;
-  width: 74%;
-  aspect-ratio: 1;
-  border-radius: var(--sf-radius-round);
-  background: var(--sf-sage);
-}
-.harvestPhoto { display: block; aspect-ratio: 4 / 5; overflow: hidden; border-radius: var(--sf-radius-arch); }
-.harvestPhoto img { width: 100%; height: 100%; object-fit: cover; }
-
-/* Toptan + Bayilik */
-.business { padding-block: 96px; background: var(--sf-sage); }
-.businessGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
-.businessBranch { grid-column: 1 / -1; justify-self: center; width: 240px; margin-block-end: 16px; }
-.business article {
+/* Toptan & Bayilik: two pills, a short note, the unchanged form. */
+.business { padding-block: var(--sf-section-y); background: var(--sf-sage); }
+.businessHead { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 20px 32px; margin-block-end: 28px; }
+.businessPanel { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); align-items: start; gap: 48px; }
+.businessCard { display: grid; justify-items: start; gap: 16px; min-width: 0; }
+.businessCard > p { max-width: 34ch; font-size: 18px; line-height: 1.6; color: var(--sf-ink); }
+.businessSteps { display: grid; gap: 16px; margin-block-start: 8px; counter-reset: step; }
+.businessSteps li { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 2px 12px; counter-increment: step; }
+.businessSteps li::before {
+  content: counter(step);
+  grid-row: 1 / span 2;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-areas: "icon icon" "title title" "text action";
-  justify-items: start;
-  align-items: end;
-  gap: 16px 32px;
-  padding: 48px;
-  border-radius: var(--sf-radius-card);
-  background: var(--sf-paper);
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid var(--sf-gold-deep);
+  border-radius: var(--sf-radius-round);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--sf-green);
 }
-.business article > [data-medallion] { grid-area: icon; }
-.business h2 { grid-area: title; margin-block-start: 8px; font-size: 36px; line-height: 1.1; color: var(--sf-green); }
-.business p { grid-area: text; max-width: 38ch; color: var(--sf-ink); }
-.business article > a { grid-area: action; }
+.businessSteps strong { font-size: 16px; font-weight: 600; line-height: 1.4; color: var(--sf-green); }
+.businessSteps span { font-size: 14px; line-height: 1.55; color: var(--sf-muted); }
+.businessForm { min-width: 0; scroll-margin-top: calc(var(--header-height) + 24px); }
+.dealershipForm { padding: 40px; border: 1px solid var(--sf-line); border-radius: var(--sf-radius-card); background: var(--sf-paper); }
+.formLoading { min-height: 320px; color: var(--sf-muted); }
 
-/* Blog */
-.blog { padding-block: 96px; background: var(--sf-paper); }
-.blogHead { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-block-end: 40px; }
-.posts { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 64px; }
-.leadPost, .post { min-width: 0; color: var(--sf-ink); text-decoration: none; }
-.leadPost { display: grid; align-content: start; gap: 24px; border-radius: var(--sf-radius-card); }
-.leadPost picture { display: block; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--sf-radius-card); }
-.leadPost img, .post img { width: 100%; height: 100%; object-fit: cover; transition: transform 240ms ease-out; }
-.leadPost h3 { max-width: 20ch; font-size: clamp(30px, 2.8vw, 40px); line-height: 1.08; color: var(--sf-green); }
-.leadPost p { max-width: 52ch; margin-block: 12px 16px; color: var(--sf-muted); }
-.morePosts { display: grid; align-content: start; }
-.post { display: grid; grid-template-columns: 160px minmax(0, 1fr); align-items: center; gap: 24px; padding-block: 24px; border-top: 1px solid var(--sf-line); }
-.post:first-child { padding-block-start: 0; border-top: 0; }
-.post picture { display: block; aspect-ratio: 1; overflow: hidden; border-radius: var(--sf-radius-card); }
-.post h3 { margin-block-end: 12px; font-size: 24px; line-height: 1.15; color: var(--sf-green); }
+/* Zeytin Defteri: three cards. */
+.blog { padding-block: var(--sf-section-y); }
+.posts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-block-start: 28px; }
+.post { display: grid; align-content: start; gap: 16px; min-width: 0; border-radius: var(--sf-radius-card); color: var(--sf-ink); text-decoration: none; }
+.post picture { display: block; aspect-ratio: 16 / 10; overflow: hidden; border-radius: var(--sf-radius-card); background: var(--sf-sage); }
+.post img { width: 100%; height: 100%; object-fit: cover; transition: transform 240ms ease-out; }
+.post h3 { margin-block-end: 8px; font-size: 26px; line-height: 1.12; color: var(--sf-green); }
+.post:focus-visible { outline: 2px solid var(--sf-gold-deep); outline-offset: 3px; }
 .readTime { font-size: 13px; font-weight: 500; line-height: 1.4; color: var(--sf-muted); }
 
+/* SSS + İletişim */
+.contact { padding-block: var(--sf-section-y); background: var(--sf-paper); }
+.contactGrid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: start; gap: 64px; }
+.contactGrid > * { min-width: 0; }
+.contactCard h2 { margin: 0 0 24px; font-size: clamp(34px, 4.2vw, 56px); font-weight: 600; line-height: 1.05; letter-spacing: -.01em; color: var(--sf-green); }
+.address { display: flex; align-items: flex-start; gap: 12px; margin-block-end: 20px; }
+.address svg { flex: none; margin-block-start: 3px; color: var(--sf-olive); }
+.address address { font-style: normal; font-size: 16px; line-height: 1.65; }
+.contactActions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+
 @media (hover: hover) and (pointer: fine) {
-  .portal:hover img, .banner:hover img, .leadPost:hover img, .post:hover img { transform: scale(1.03); }
-  .portal:hover .portalCoin, .banner:hover .bannerCoin { transform: translateX(4px); }
-  .leadPost:hover h3, .post:hover h3 { text-decoration: underline; text-decoration-color: var(--sf-gold); text-decoration-thickness: 2px; text-underline-offset: 6px; }
+  .post:hover img { transform: scale(1.03); }
+  .post:hover h3 { text-decoration: underline; text-decoration-color: var(--sf-gold); text-decoration-thickness: 2px; text-underline-offset: 6px; }
 }
 
 @media (max-width: 1099px) {
-  .portals { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  /* Tall enough for a portrait photograph's subject: the bottle mouth and the bowl beneath it. */
-  .portal { aspect-ratio: 6 / 5; }
-  .portalCoin { inset: 16px 16px auto auto; }
-  .portalCopy { inset-inline-end: 20px; }
-  .shelf { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .storyGrid { gap: 48px; }
-  .pairs > article { flex-direction: column; }
-  .pairs [data-tile-stage] { flex: none; align-self: stretch; }
-  .pairs [data-tile-content] { padding: 16px 8px 4px; }
-  .harvest { gap: 48px; }
-  .business article { grid-template-columns: minmax(0, 1fr); grid-template-areas: "icon" "title" "text" "action"; }
-  .business p { margin-block-end: 8px; }
-  .steps { grid-template-columns: minmax(0, 1fr); }
-  .steps .sealed { grid-column: 1; grid-row: auto; flex-direction: row; max-width: none; margin-block-start: 8px; padding: 24px 0 0; border-inline-start: 0; border-top: 1px solid var(--sf-line); text-align: start; }
-  .posts { gap: 40px; }
-  .post { grid-template-columns: 112px minmax(0, 1fr); gap: 16px; }
-  .banner h2 { inset: auto 20px 20px 20px; font-size: 24px; }
-  .bannerCoin { inset: 16px 16px auto auto; }
+  .productGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .productGrid [data-tile-stage] { aspect-ratio: 1; }
+  .storyGrid, .facility { gap: 40px; }
+  .businessPanel { gap: 32px; }
+  .contactGrid { gap: 40px; }
 }
 
 @media (max-width: 1023px) {
-  .storyGrid, .posts { grid-template-columns: minmax(0, 1fr); }
-  .storyGrid { gap: 48px; }
+  .storyGrid, .facility, .businessPanel, .contactGrid { grid-template-columns: minmax(0, 1fr); }
+  .storyGrid { gap: 32px; }
   /* Full-width on a tablet: the frame turns landscape and the focus point keeps the hands in it. */
   .storyPhoto { aspect-ratio: 5 / 4; }
+  .facility { gap: 28px; margin-block-start: 40px; }
+  .facilityPhoto { aspect-ratio: 4 / 3; }
+  /* A landscape frame puts the caption halfway up the photograph: the darkening has to reach it. */
+  .facilityPhoto::after { background: linear-gradient(to top, rgba(26, 43, 30, .92), rgba(26, 43, 30, .78) 46%, rgba(26, 43, 30, 0) 90%); }
+  .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .businessPanel { gap: 24px; }
+  .businessCard > p { max-width: 60ch; }
+  .businessSteps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 @media (max-width: 767px) {
@@ -251,62 +194,54 @@
   .hero h1 { font-size: clamp(44px, 12.5vw, 52px); }
   .heroLead { max-width: 30ch; font-size: 17px; }
   .videoControl { inset-inline-end: 16px; bottom: 32px; }
-  .portals { gap: 12px; padding-block-start: 24px; }
-  .portal { aspect-ratio: 3 / 4; }
-  .portalCoin { inset: 12px 12px auto auto; }
-  .portalCopy { inset: auto 12px 14px 12px; gap: 4px; }
-  .portal h2 { font-size: 24px; }
-  .portalCopy span { font-size: clamp(12px, 3.4vw, 14px); }
-  .products, .story, .featured, .business, .blog { padding-block: 64px; }
-  .shelfGrid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "shelf" "all" "note"; }
-  .shelfAll { margin-block-start: 8px; }
-  /* A reachable shelf: the next card's edge shows there is more; no snapping, no auto-scroll. */
-  .shelf { display: flex; gap: 12px; overflow-x: auto; overscroll-behavior-x: contain; margin: 24px -16px 0; padding: 4px 16px 16px; scroll-padding-inline: 16px; }
-  .shelf > article { flex: 0 0 min(74vw, 300px); }
-  .storyGrid { gap: 40px; }
-  .storyPhotos { padding: 0 16px 32px 0; }
-  .storyPhoto { aspect-ratio: 4 / 5; }
-  .storyInset { width: 40%; }
-  .storyCopy { gap: 24px; }
-  .values { gap: 12px; padding-block-start: 24px; }
-  .featuredHead { flex-direction: column; align-items: start; gap: 24px; margin-block-end: 32px; }
-  .pairs { gap: 12px; }
-  .triptych { padding-block: 64px 0; }
-  .banners { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-  .banner:nth-child(1) { grid-column: 1 / -1; aspect-ratio: 5 / 4; }
-  .banner:nth-child(2) { margin-block-start: 0; }
-  .banner h2 { inset: auto 16px 16px 16px; }
-  .bannerCoin { inset: 12px 12px auto auto; }
-  .harvest { grid-template-columns: minmax(0, 1fr); gap: 48px; padding-block: 64px; }
-  .harvestCopy { gap: 32px; }
-  .harvestArt { width: min(100%, 420px); margin-inline: auto; }
-  .businessGrid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
-  .business article { padding: 32px 24px; }
-  .business h2 { font-size: 28px; }
-  .sealed svg { width: 104px; height: 104px; }
-  .blogHead { margin-block-end: 24px; }
-  .posts { gap: 32px; }
-  .leadPost { gap: 16px; }
-  .post { grid-template-columns: 96px minmax(0, 1fr); padding-block: 16px; }
-  .post h3 { margin-block-end: 8px; font-size: 22px; }
+  .categoryPills { margin-block: 20px 16px; }
+  /* Six pills in two tidy rows of three: nothing hidden behind a sideways scroll. */
+  .categoryPills [data-pill-switch] { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-radius: var(--sf-radius-card); }
+  .categoryPills [data-pill-switch] button { min-width: 0; padding-inline: 4px; font-size: 14px; }
+  .productGrid { gap: 12px; }
+  .storyGrid { gap: 28px; }
+  .storyPhotos { padding: 0 16px 28px 0; }
+  .storyInset { width: 34%; }
+  .storyCopy { gap: 20px; }
+  .values { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: 12px; padding-block-start: 20px; }
+  .values li { flex-direction: column; justify-content: flex-start; text-align: center; }
+  .values li:not(.sealed) { padding-block-start: 12px; }
+  .sealed svg { width: 72px; height: 72px; }
+  .facility { margin-block-start: 32px; }
+  .facilityPhotos { gap: 8px; }
+  .facilityPhoto { aspect-ratio: 3 / 4; }
+  .facilityPhoto figcaption { inset: auto 10px 10px; font-size: 17px; }
+  .steps { grid-template-columns: minmax(0, 1fr); }
+  .divider { width: 160px; margin-block-start: 32px; }
+  .businessHead { align-items: stretch; flex-direction: column; margin-block-end: 20px; }
+  .businessHead [data-pill-switch] { display: flex; }
+  .businessHead [data-pill-switch] button { flex: 1 1 0; min-width: 0; padding-inline: 12px; }
+  .businessSteps { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .dealershipForm { padding: 24px 16px; }
+  .posts { grid-template-columns: minmax(0, 1fr); gap: 16px; margin-block-start: 20px; }
+  .post { grid-template-columns: 112px minmax(0, 1fr); align-items: center; }
+  .post picture { aspect-ratio: 1; }
+  .post h3 { font-size: 22px; }
+  .contactGrid { gap: 32px; }
+  .contactActions { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .contactActions > a { display: flex; width: 100%; }
 }
 
 /* Compact product cards for the two-column phone grid (docs/DESIGN.md → Ürün kartı). */
-@media (min-width: 360px) and (max-width: 520px) {
-  .pairs > article { --tile-pad: 8px; --pill-h: 44px; --pill-coin: 28px; --pill-pad: 14px; --pill-gap: 6px; --pill-font: 13px; }
-  .pairs [data-tile-content] { padding: 12px 4px 0; }
+@media (max-width: 520px) {
+  .productCell > article { --tile-pad: 8px; --pill-h: 44px; --pill-coin: 28px; --pill-pad: 14px; --pill-gap: 6px; --pill-font: 13px; }
+  .productCell [data-tile-content] { padding: 12px 4px 0; }
 }
 @media (max-width: 359px) {
-  .portals, .pairs, .banners { grid-template-columns: minmax(0, 1fr); }
-  /* Half-width banners would push a three-line title above the green overlay. */
-  .banner:nth-child(n) { grid-column: auto; aspect-ratio: 5 / 4; }
-  .portal { aspect-ratio: 16 / 10; }
-  /* A short card puts the title halfway up the photograph: the darkening has to reach it. */
-  .portal::after { background: linear-gradient(to top, rgba(26, 43, 30, .9), rgba(26, 43, 30, .72) 44%, rgba(26, 43, 30, 0) 88%); }
-  .portalCopy span { font-size: 14px; }
-  .values { grid-template-columns: minmax(0, 1fr); }
-  .values li { grid-template-columns: auto minmax(0, 1fr); align-items: center; }
+  /* One column of low cards: photograph beside the name, price and action. */
+  .productGrid { grid-template-columns: minmax(0, 1fr); }
+  .productCell > article { flex-direction: row; align-items: stretch; }
+  .productGrid [data-tile-stage] { flex: 0 0 40%; align-self: center; aspect-ratio: 1; }
+  .productCell [data-tile-content] { padding: 4px 4px 4px 12px; }
+  .productCell [data-tile-stage] > span { inset: 6px auto auto 6px; }
+  .productCell [data-tile-stage] [data-tag] { height: 24px; padding-inline: 8px; font-size: 12px; }
+  .facilityPhoto figcaption { font-size: 15px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .portal:hover img, .banner:hover img, .leadPost:hover img, .post:hover img, .portal:hover .portalCoin, .banner:hover .bannerCoin, .videoControl:active { transform: none; }
+  .post:hover img, .videoControl:active { transform: none; }
 }

@@ -4,13 +4,12 @@ import { cleanup } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, expect, it, vi } from "vitest";
 import Home from "@/app/page";
-import AboutPage from "@/app/hakkimizda/page";
 import { StoreFaq } from "@/components/storefront/content/StoreFaq";
 import { verifiedFaqs } from "@/lib/site/faqs";
 import { StoreFooter as Footer } from "@/components/storefront/StoreFooter";
 import manifest from "@/public/images/v3/manifest.json";
 
-vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }) }));
+vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }), usePathname: () => "/", useSearchParams: () => new URLSearchParams(window.location.search) }));
 vi.mock("server-only", () => ({}));
 
 afterEach(cleanup);
@@ -27,7 +26,7 @@ it("keeps at most six verified answers as standalone complete sentences", () => 
 
 it("keeps FAQ answers in the server HTML for native JavaScript-free disclosure", () => {
   const doc = document.implementation.createHTMLDocument();
-  doc.body.innerHTML = renderToStaticMarkup(<StoreFaq canonicalPath="/hakkimizda" />);
+  doc.body.innerHTML = renderToStaticMarkup(<StoreFaq canonicalPath="/" />);
   expect(doc.querySelectorAll("details > summary")).toHaveLength(verifiedFaqs.length);
   for (const { answer } of verifiedFaqs) expect(doc.body.textContent).toContain(answer);
   // Native details owns expansion until hydration; no stale ARIA override without JS.
@@ -36,12 +35,14 @@ it("keeps FAQ answers in the server HTML for native JavaScript-free disclosure",
 
 it("publishes a connected entity graph with only the public district address", async () => {
   const doc = document.implementation.createHTMLDocument();
-  doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}{await AboutPage()}<Footer /></>);
+  // Task208: the home page alone carries the entity graph and the FAQ schema (the about page's breadcrumb went with the page).
+  doc.body.innerHTML = renderToStaticMarkup(<>{await Home()}<Footer /></>);
   expect(doc.body.textContent).not.toMatch(/henüz kullanıma açık değil|Gerçek satış kataloğu/);
   const scripts = [...doc.querySelectorAll('script[type="application/ld+json"]')];
-  expect(scripts).toHaveLength(3);
+  expect(scripts).toHaveLength(2);
   const schemas = scripts.map(script => JSON.parse(script.textContent!));
   expect(schemas.filter(schema => schema["@type"] === "FAQPage")).toHaveLength(1);
+  expect(schemas.find(schema => schema["@type"] === "FAQPage")["@id"]).toBe("https://afinazeytin.com/#sik-sorulanlar");
   const schema = schemas.find(schema => schema["@graph"]);
   expect(schema["@context"]).toBe("https://schema.org");
   const [organization, place, webpage, website] = schema["@graph"];
@@ -51,6 +52,7 @@ it("publishes a connected entity graph with only the public district address", a
   expect(webpage.isPartOf).toEqual({ "@id": "https://afinazeytin.com/#website" });
   expect(organization.location).toEqual({ "@id": "https://afinazeytin.com/#tesis" });
   expect(place["@id"]).toBe(organization.location["@id"]);
+  expect(place.url).toBe("https://afinazeytin.com/#hikayemiz");
   expect(place.address).toEqual({ "@type": "PostalAddress", addressLocality: "Düziçi", addressRegion: "Osmaniye", addressCountry: "TR" });
   expect(place).not.toHaveProperty("parentOrganization");
   expect(website).toMatchObject({ "@id": "https://afinazeytin.com/#website", url: "https://afinazeytin.com", inLanguage: "tr-TR", publisher: { "@id": organization["@id"] } });

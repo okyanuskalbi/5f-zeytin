@@ -39,7 +39,7 @@ export function AddressBook({ initialAddresses, onChange, adapter, demo = true }
       <div className={styles.actions}>
         <PillButton variant="outline" icon="none" size="md" disabled={busy} onClick={() => edit(address)}>Düzenle</PillButton>
         {!address.isDefault && <PillButton variant="outline" icon="none" size="md" disabled={busy} onClick={() => void run(async () => { await getAdapter().setDefaultAddress(address.id); await refresh(); return "Varsayılan adres güncellendi."; })}>Varsayılan yap</PillButton>}
-        <PillButton variant="quiet" size="md" disabled={busy} onClick={() => setRemoving(address)}>Sil</PillButton>
+        <PillButton variant="quiet" icon="none" size="md" disabled={busy} onClick={() => setRemoving(address)}>Sil</PillButton>
       </div>
     </li>)}</ul>
     {editing && <div className={styles.addressForm}>

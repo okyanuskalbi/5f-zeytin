@@ -8,7 +8,9 @@ import { siteIdentity } from "@/lib/site/identity";
 
 it("discovers the blog and every working article without publishing catalogue prices in the sitemap", async () => {
   const urls = sitemap().map(item => item.url);
-  expect(urls).toContain(`${siteIdentity.origin}/blog`);
+  // Task208: the list page is the home page's #blog section; only the articles stay in the sitemap.
+  expect(urls).not.toContain(`${siteIdentity.origin}/blog`);
+  expect(urls).toContain(`${siteIdentity.origin}/`);
   expect(urls.some(url => /\/urun(?:ler)?(?:\/|$)/.test(url))).toBe(false);
   const text = await (await discovery()).text();
   for (const post of blogPosts) {

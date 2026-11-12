@@ -3,6 +3,7 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { ProductDetail } from "@/components/storefront/ProductDetail";
 import { ProductTile } from "@/components/storefront/ProductTile";
 import { CartProvider } from "@/components/cart/CartProvider";
+import { productHref } from "@/lib/catalog/product-pages";
 import { getProductFamilies, getProducts } from "@/lib/catalog/static-products";
 
 vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }) }));
@@ -21,7 +22,8 @@ it("retains the selected size, real SKU, quantity and quotation target together"
   expect(screen.getByLabelText("Adet").textContent).toBe("1");
   expect(history.state).toEqual({ retained: true });
   expect(new URL(location.href).searchParams.get("kaynak")).toBe("test");
-  expect(screen.getByRole("link", { name: "Teklife ekle" }).getAttribute("href")).toBe("/toptan-satis?teklif=sample-olive-oil-1l");
+  // Task208: quoting opens the wholesale pill of the home page with the product chosen.
+  expect(screen.getByRole("link", { name: "Teklife ekle" }).getAttribute("href")).toBe("/?sekme=toptan&teklif=sample-olive-oil-1l#toptan-bayilik");
   fireEvent.click(screen.getByRole("button", { name: "Sepete ekle" }));
   expect(JSON.parse(localStorage.getItem("afina-zeytin:cart") ?? "null")).toEqual([{ productId: "sample-olive-oil-1l", quantity: 1 }]);
 });
@@ -55,12 +57,15 @@ it("limits related products to four unique SKUs excluding the selected product",
   expect(ids).not.toContain(family.variants[0].id);
 });
 
-it("product tiles provide separate detail, buy and quotation actions with their full names", async () => {
+// Task208: the card keeps the detail link and the one buy action; quoting moved to the wholesale form's product picker.
+it("product tiles provide separate detail and buy actions with their full names, and no quotation link", async () => {
   const product = (await getProducts())[0];
   render(<ProductTile product={product} />);
   const tile = within(screen.getByRole("article"));
   expect(tile.getByRole("heading", { name: product.name })).toBeTruthy();
-  expect(tile.getByRole("link", { name: "Teklife ekle" }).getAttribute("href")).toBe(`/toptan-satis?teklif=${product.id}`);
+  expect(tile.getAllByRole("link").map(link => link.getAttribute("href"))).toEqual([productHref(product), productHref(product)]);
+  expect(tile.queryByRole("link", { name: "Teklife ekle" })).toBeNull();
+  expect(tile.getAllByRole("button")).toHaveLength(1);
   expect(tile.getByRole("button", { name: "Sepete ekle" })).toBeTruthy();
   expect(tile.getByText("Stokta mevcut")).toBeTruthy();
 });

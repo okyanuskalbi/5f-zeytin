@@ -57,20 +57,22 @@
 .pill[data-variant="gold"] .coin { background: var(--sf-green); color: var(--sf-ivory); }
 .pill[data-variant="outline"] { border-color: var(--sf-green); background: transparent; color: var(--sf-green); }
 .pill[data-variant="outline"] .coin { border-color: var(--sf-green); color: var(--sf-green); }
+/* Quiet: every standalone text link. A paper pill with a ring coin, never an underline. */
 .pill[data-variant="quiet"] {
-  min-height: 44px;
-  height: auto;
-  padding-inline: 0;
-  border-width: 0;
-  background: transparent;
+  --pill-h: 44px;
+  --pill-coin: 28px;
+  --pill-pad: 18px;
+  --pill-font: 14px;
+  --pill-edge: 1px;
+  border-color: var(--sf-line);
+  background: var(--sf-paper);
   color: var(--sf-green);
 }
-.pill[data-variant="quiet"] .label {
-  text-decoration: underline;
-  text-decoration-color: var(--sf-gold);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 4px;
-}
+.pill[data-variant="quiet"] .coin { border: 1.5px solid var(--sf-gold); color: var(--sf-green); }
+.pill[data-variant="quiet"] .label { display: inline-flex; align-items: center; gap: 8px; }
+.pill[data-variant="quiet"] .label svg { flex: none; color: var(--sf-olive); }
+[data-surface="dark"] .pill[data-variant="quiet"] { border-color: color-mix(in srgb, var(--sf-gold) 40%, transparent); background: transparent; color: var(--sf-ivory); }
+[data-surface="dark"] .pill[data-variant="quiet"] .coin { color: var(--sf-gold); }
 
 .pill:focus-visible { outline: 2px solid var(--sf-gold-deep); outline-offset: 3px; }
 .pill[data-variant="gold"]:focus-visible { outline-color: var(--sf-ivory); }
@@ -82,8 +84,8 @@
   -webkit-text-fill-color: var(--sf-muted);
   cursor: not-allowed;
 }
-/* Quiet is text only: while disabled it greys out but never gains a fill. */
-.pill[data-variant="quiet"]:disabled:not([aria-busy="true"]) { background: transparent; }
+/* Quiet stays a paper pill while disabled: it greys out but never gains the sage fill. */
+.pill[data-variant="quiet"]:disabled:not([aria-busy="true"]) { border-color: var(--sf-line); background: var(--sf-paper); }
 .pill[aria-busy="true"] { cursor: progress; }
 .pill[aria-disabled="true"] { cursor: default; }
 
@@ -94,7 +96,12 @@
   .pill[data-variant="gold"]:where(:not(:disabled, [aria-disabled="true"])):hover { background: color-mix(in srgb, var(--sf-gold) 94%, #000); }
   .pill[data-variant="outline"]:where(:not(:disabled, [aria-disabled="true"])):hover { background: var(--sf-green); color: var(--sf-ivory); }
   .pill[data-variant="outline"]:where(:not(:disabled, [aria-disabled="true"])):hover .coin { border-color: var(--sf-gold); background: var(--sf-gold); color: var(--sf-green); }
-  .pill[data-variant="quiet"]:hover .label { text-decoration-color: var(--sf-gold-deep); }
+  .pill[data-variant="quiet"]:where(:not(:disabled, [aria-disabled="true"])):hover { border-color: var(--sf-gold-deep); background: var(--sf-ivory); }
+  [data-surface="dark"] .pill[data-variant="quiet"]:where(:not(:disabled, [aria-disabled="true"])):hover { border-color: var(--sf-gold); background: transparent; }
+}
+/* Phones: 48 px quiet pills (Android 48dp); 44 px stays the floor elsewhere. */
+@media (max-width: 640px) {
+  .pill[data-variant="quiet"] { --pill-h: 48px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .pill:active, .pill:hover .coin { transform: none !important; }

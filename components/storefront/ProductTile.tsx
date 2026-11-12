@@ -5,7 +5,6 @@ import { AddToCart } from "@/components/catalog/AddToCart";
 import { productHref } from "@/lib/catalog/product-pages";
 import { v3Image } from "@/lib/media/v3-assets";
 import type { ProductVariant } from "@/types/catalog";
-import { PillButton } from "./ui/PillButton";
 import { Tag } from "./ui/Tag";
 import styles from "./ProductTile.module.css";
 
@@ -28,7 +27,6 @@ export function ProductTile({ product, priority = false, imageSizes }: { product
         <p className={styles.stock} data-in-stock={inStock}>{inStock ? "Stokta mevcut" : "Mevcut değil"}</p>
       </div>
       <div className={styles.buy}><AddToCart product={product} /></div>
-      <div className={styles.quote}><PillButton variant="quiet" href={`/toptan-satis?teklif=${encodeURIComponent(product.id)}`}>Teklife ekle</PillButton></div>
     </div>
   </article>;
 }

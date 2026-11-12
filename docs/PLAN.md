@@ -1,3 +1,7 @@
+## Görev 208 uygulandı: tek sayfa landing (13 Kasım 2026)
+
+`/` altı bölüm taşıyor (`baslangic`, `urunler`, `hikayemiz`, `toptan-bayilik`, `blog`, `iletisim`); `/urunler`, `/urunler/:kategori`, `/hakkimizda`, `/toptan-satis`, `/bayilik`, `/blog` 308 ile bölümüne gider; `/urun/[slug]`, `/blog/[slug]`, sepet, ödeme, üyelik, yasal sayfalar ve panel ayrı. Bölüm boşluğu 60 / 48 / 40 px; tekrar eden düğme ve cümleler silindi; tek başına yazı bağlantıları `quiet` hap. Yerel kayıt, push ve yayın yok. Kanıt `output/task208/KANIT.md` (git dışı).
+
 ## Aktif plan: tasarım dili v3 "Altın Dal" (12 Kasım 2026)
 
 Müşteri v2'yi ("Ellek sofrası", canlı `0dd0222`) beğenmedi. Kullanıcı: "button ve yazıları ... hepsini güncelle

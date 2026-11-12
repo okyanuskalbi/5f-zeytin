@@ -22,10 +22,9 @@ export const metadata: Metadata = {
 
 export default async function Home(): Promise<JSX.Element> {
   const families = await readProductFamilies();
-  const products = families.flatMap(family => family.variants);
   return <main>
     <LegacyHomeNavigation />
     <BusinessJsonLd />
-    <StoreHome products={products} />
+    <StoreHome families={families} />
   </main>;
 }

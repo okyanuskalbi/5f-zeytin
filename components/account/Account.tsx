@@ -4,6 +4,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { PillButton } from "@/components/storefront/ui/PillButton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Session } from "@/lib/auth/adapter";
 import { getMembershipAdapters } from "@/lib/auth/demo";
@@ -43,7 +44,7 @@ export function Account() {
     <Feedback {...action.feedback} />
     {state.phase === "loading" && <p role="status">Hesabınız yükleniyor…</p>}
     {state.phase === "error" && <div><p role="alert">Hesap bilgileri yüklenemedi.</p><Button onClick={() => { setState({ phase: "loading" }); setAttempt(attempt + 1); }}>Yeniden dene</Button></div>}
-    {state.phase === "guest" && <div className={styles.empty}><p>Hesabınızı görmek için giriş yapın.</p><div className={styles.actions}><Button asChild><Link href="/giris">Giriş yap</Link></Button><Link href="/sepet" className={styles.textLink}>Üye olmadan devam et</Link></div></div>}
+    {state.phase === "guest" && <div className={styles.empty}><p>Hesabınızı görmek için giriş yapın.</p><div className={styles.actions}><Button asChild><Link href="/giris">Giriş yap</Link></Button><PillButton variant="quiet" href="/sepet">Üye olmadan devam et</PillButton></div></div>}
     {state.phase === "ready" && <Tabs defaultValue="profile">
       <TabsList aria-label="Hesap bölümleri"><TabsTrigger value="profile">Profil</TabsTrigger><TabsTrigger value="addresses">Adreslerim</TabsTrigger><TabsTrigger value="orders">Siparişlerim</TabsTrigger></TabsList>
       <TabsContent value="profile" className={styles.panel}><Profile profile={state.profile} onChange={profile => setState({ ...state, profile })} /></TabsContent>

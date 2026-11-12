@@ -10,7 +10,8 @@ it("keeps the four approved preview addresses and approved cover photographs", (
     expect(blogCover(post).outputs.length).toBeGreaterThan(0);
     expect(post.date).toBe("2026-11-10");
     expect(post.readingMinutes).toBeGreaterThan(0);
-    expect(post.categoryHref).toBe(`/urunler/${post.category}`);
+    // Task208: categories are pills of the home page's product section.
+    expect(post.categoryHref).toBe(`/?kategori=${post.category}#urunler`);
   }
 });
 

@@ -8,17 +8,10 @@ import { Menu, ShoppingCart, UserRound } from "lucide-react";
 import { useCart } from "@/components/cart/CartProvider";
 import { useMembershipDialog } from "@/components/account/MembershipDialogProvider";
 import { BrandLogo } from "@/components/site/BrandLogo";
+import { sectionForPath, siteSections, type SiteSectionId } from "./site-sections";
 import styles from "./Navigation.module.css";
 
 const StoreMenu = dynamic(() => import("./StoreMenu").then(module => module.StoreMenu));
-
-const links = [
-  { label: "Ürünler", href: "/urunler" },
-  { label: "Hakkımızda", href: "/hakkimizda" },
-  { label: "Toptan Satış", href: "/toptan-satis" },
-  { label: "Bayilik", href: "/bayilik" },
-  { label: "Blog", href: "/blog" },
-] as const;
 
 /** Shop bar after 21st.dev Shop Navigation Menu (#18131): flat destinations, account and a cart pill; Radix owns drawer focus. */
 export function StoreHeader(): JSX.Element {
@@ -29,7 +22,49 @@ export function StoreHeader(): JSX.Element {
   const [open, setOpen] = useState(false);
   const trigger = useRef<HTMLButtonElement>(null);
   const home = useRef<HTMLAnchorElement>(null);
-  const active = (href: string) => pathname === href || (href === "/urunler" && (pathname?.startsWith("/urunler/") || pathname?.startsWith("/urun/")));
+  const pendingSection = useRef<string | null>(null);
+  const [visibleSection, setVisibleSection] = useState<SiteSectionId | null>(null);
+  const onHome = pathname === "/";
+  const current = onHome ? visibleSection : sectionForPath(pathname);
+
+  // Which section crosses the reading line decides the marked link: a class change, never an animation.
+  useEffect(() => {
+    if (!onHome || typeof IntersectionObserver === "undefined") return;
+    const observer = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const section = siteSections.find(item => item.id === entry.target.id);
+        setVisibleSection(section?.id ?? null);
+      }
+    }, { rootMargin: "-45% 0px -55% 0px" });
+    document.querySelectorAll("[data-landing-section]").forEach(section => observer.observe(section));
+    return () => observer.disconnect();
+  }, [onHome]);
+
+  // Next keeps the first address of a visit, fragment included, and can append a second fragment when a link
+  // returns to that page ("/#urunler#urunler"). Keep the last fragment so the address stays shareable.
+  useEffect(() => {
+    const normalize = () => {
+      const { hash, pathname: path, search } = window.location;
+      const last = hash.lastIndexOf("#");
+      if (last > 0) window.history.replaceState(window.history.state, "", `${path}${search}${hash.slice(last)}`);
+    };
+    let frame = 0;
+    const afterNavigation = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(() => { frame = requestAnimationFrame(normalize); }); };
+    normalize();
+    window.addEventListener("hashchange", normalize);
+    document.addEventListener("click", afterNavigation);
+    return () => { cancelAnimationFrame(frame); window.removeEventListener("hashchange", normalize); document.removeEventListener("click", afterNavigation); };
+  }, [pathname]);
+
+  // The drawer locks page scroll while open: go to the chosen section once it has closed.
+  useEffect(() => {
+    if (open || !pendingSection.current) return;
+    const id = pendingSection.current;
+    pendingSection.current = null;
+    const frame = requestAnimationFrame(() => requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView()));
+    return () => cancelAnimationFrame(frame);
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -43,7 +78,7 @@ export function StoreHeader(): JSX.Element {
     <div className={styles.headerInner}>
       <Link prefetch={false} ref={home} href="/" aria-label="Afina Zeytin ana sayfa" className={styles.logoLink}><BrandLogo tone="light" className={styles.logo} /></Link>
       <nav aria-label="Ana navigasyon" className={styles.desktopNav}>
-        {links.map(link => <Link prefetch={false} key={link.href} href={link.href} aria-current={active(link.href) ? "page" : undefined}>{link.label}</Link>)}
+        {siteSections.map(link => <Link prefetch={false} key={link.id} href={link.href} aria-current={current === link.id ? "true" : undefined}>{link.label}</Link>)}
       </nav>
       <div className={styles.actions}>
         <Link href="/hesabim" prefetch={false} aria-label="Hesabım" className={`${styles.iconButton} ${styles.account}`} onClick={event => {
@@ -62,7 +97,7 @@ export function StoreHeader(): JSX.Element {
         </button>
       </div>
     </div>
-    {open && <StoreMenu links={links} pathname={pathname} onClose={() => setOpen(false)}
+    {open && <StoreMenu current={current} onClose={() => setOpen(false)} onSection={id => { if (onHome) pendingSection.current = id; }}
       onRestoreFocus={() => (window.matchMedia("(min-width: 1100px)").matches ? home : trigger).current?.focus()} />}
   </header>;
 }

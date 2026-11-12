@@ -74,7 +74,8 @@ it("keeps navigation light and gives the AFİNA footer its own dark surface", ()
 });
 
 it("keeps the entire phone menu light including its close control and account link", () => {
-  render(<NavbarMenu pathname="/" links={[{ href: "/", label: "Ana Sayfa" }]} onClose={() => {}} onRestoreFocus={() => {}} />);
+  // Task208: the drawer takes the current section instead of a link list.
+  render(<NavbarMenu current={null} onClose={() => {}} onSection={() => {}} onRestoreFocus={() => {}} />);
   expect(screen.getByRole("dialog").getAttribute("data-surface")).not.toBe("dark");
   expect(screen.getByRole("button", { name: "Menüyü kapat" }).closest('[data-surface="dark"]')).toBeNull();
   expect(screen.getByRole("link", { name: "Hesabım" }).closest('[data-surface="dark"]')).toBeNull();

@@ -14,6 +14,6 @@ export default function NotFound() {
     <OliveBranch className={styles.stateBranch} />
     <h1>Sayfa bulunamadı</h1>
     <p>Bu adres artık kullanılmıyor ya da yanlış yazılmış olabilir. Ürünleri inceleyebilir veya ana sayfaya dönebilirsiniz.</p>
-    <div className={styles.actions}><PillButton href="/">Ana sayfa</PillButton><PillButton variant="outline" href="/urunler">Ürünler</PillButton></div>
+    <div className={styles.actions}><PillButton href="/">Ana sayfa</PillButton><PillButton variant="outline" href="/#urunler">Ürünler</PillButton></div>
   </div></main>;
 }

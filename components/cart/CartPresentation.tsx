@@ -93,6 +93,6 @@ export function CartEmpty({ onBrowse }: { onBrowse?: () => void }): JSX.Element 
     <Image src="/brand/favicon.svg" alt="" width={64} height={64} className={styles.emptyEmblem} />
     <h2>Sepetiniz boş</h2>
     <p>Sofranız için seçtikleriniz burada birikir.</p>
-    <PillButton href="/urunler" onClick={onBrowse}>Ürünleri İnceleyin</PillButton>
+    <PillButton href="/#urunler" onClick={onBrowse}>Ürünleri İnceleyin</PillButton>
   </div>;
 }

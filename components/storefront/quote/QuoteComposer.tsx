@@ -10,7 +10,6 @@ import { useQuoteJourney, type BusinessSegment } from "./QuoteJourneyProvider";
 import styles from "./QuoteComposer.module.css";
 import { AddressSearchField } from "@/components/ui/address-search-field";
 import { DeferredPhoneField } from "@/components/storefront/forms/DeferredPhoneField";
-import { Mail, Phone } from "lucide-react";
 import { PillButton } from "@/components/storefront/ui/PillButton";
 import { DeferredQuoteProductPicker as QuoteProductPicker } from "./DeferredQuoteProductPicker";
 import { validateQuoteQuantity } from "@/lib/site/quote-lines";
@@ -161,11 +160,6 @@ export function QuoteComposer({ products }: { products: readonly ProductVariant[
       <p role="alert" className={styles.error}>{Object.values(errors).some(Boolean) ? "Lütfen işaretli alanları kontrol edin." : ""}</p>
     </form>
     <AnimatePresence initial={false}>{summary && <QuoteSummary key="quote-summary" quote={summary} reduced={reduced} />}</AnimatePresence>
-    <div className={styles.contact}>
-      <p>{corporateContact.name}<span>Kurumsal iletişim</span></p>
-      <a href={`tel:${corporateContact.phone}`} aria-label={`${corporateContact.name}’nu arayın · ${corporateContact.displayPhone}`}><Phone size={15} aria-hidden="true" />{corporateContact.displayPhone}</a>
-      <a href={`mailto:${corporateContact.email}`}><Mail size={15} aria-hidden="true" />{corporateContact.email}</a>
-    </div>
-    <noscript><p>Talep özeti hazırlamak için JavaScript gerekir. Yukarıdaki kurumsal e-posta veya telefon bağlantısını kullanabilirsiniz.</p></noscript>
+    <noscript><p>Talep özeti hazırlamak için JavaScript gerekir. İletişim bölümündeki e-posta veya telefon bağlantısını kullanabilirsiniz.</p></noscript>
   </div>;
 }

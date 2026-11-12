@@ -7,13 +7,23 @@ import sharp from "sharp";
 type State = { name: string; url: string; prepare?: (page: Page) => Promise<void>; mobileOnly?: boolean };
 const states: State[] = [
   { name: "ana-sayfa", url: "/" },
-  { name: "urunler", url: "/urunler" },
-  { name: "kategori-siyah", url: "/urunler/siyah-zeytin" },
-  { name: "kategori-yesil", url: "/urunler/yesil-zeytin" },
-  { name: "kategori-kirma", url: "/urunler/kirma-zeytin" },
-  { name: "kategori-yag", url: "/urunler/zeytinyagi" },
-  { name: "bayilik", url: "/bayilik" },
-  { name: "bayilik-hata", url: "/bayilik", prepare: async page => {
+  // Task208: the catalogue, its categories and both business forms are states of the home page.
+  { name: "urunler", url: "/#urunler", prepare: async page => {
+    await expect(page.locator("#urunler").getByRole("radio", { name: "Tümü", exact: true })).toBeChecked();
+    await expect(page.locator("#urunler article[data-product-id]")).toHaveCount(6);
+  } },
+  ...([["kategori-siyah", "siyah-zeytin", "Siyah"], ["kategori-yesil", "yesil-zeytin", "Yeşil"], ["kategori-kirma", "kirma-zeytin", "Kırma"], ["kategori-yag", "zeytinyagi", "Zeytinyağı"]] as const).map(([name, group, pill]): State => ({
+    name, url: `/?kategori=${group}#urunler`, prepare: async page => {
+      await expect(page.locator("#urunler").getByRole("radio", { name: pill, exact: true })).toBeChecked();
+      await expect(page.locator("#urunler article[data-product-id]").first()).toBeVisible();
+    },
+  })),
+  { name: "bayilik", url: "/?sekme=bayilik#toptan-bayilik", prepare: async page => {
+    await expect(page.locator("#toptan-bayilik").getByRole("radio", { name: "Bayilik", exact: true })).toBeChecked();
+    await expect(page.getByRole("button", { name: "Başvuru E-postasını Hazırla" })).toBeEnabled();
+  } },
+  { name: "bayilik-hata", url: "/?sekme=bayilik#toptan-bayilik", prepare: async page => {
+    await expect(page.getByRole("button", { name: "Başvuru E-postasını Hazırla" })).toBeEnabled();
     await page.getByRole("button", { name: "Başvuru E-postasını Hazırla" }).click();
     await expect(page.locator("#basvuru form").getByRole("alert")).toContainText("Lütfen işaretli alanları kontrol edin.");
   } },
@@ -47,7 +57,8 @@ const states: State[] = [
     await page.getByRole("button", { name: "Menüyü aç" }).click();
     await expect(page.getByRole("dialog", { name: "Site menüsü" })).toBeVisible();
   } },
-  { name: "teklif-hata", url: "/toptan-satis", prepare: async page => {
+  { name: "teklif-hata", url: "/?sekme=toptan#toptan-bayilik", prepare: async page => {
+    await expect(page.getByRole("button", { name: "Talep özetini hazırla" })).toBeEnabled();
     await page.getByRole("button", { name: "Talep özetini hazırla" }).click();
     await expect(page.locator('#toptan [aria-invalid="true"]').first()).toBeVisible();
   } },
@@ -69,8 +80,9 @@ async function pixelDifference(light: Buffer, dark: Buffer) {
 
 /** Compare the real cart/observer state, never a timer, hidden overlay or mask. */
 async function settleCaptureState(page: Page, width: number, state: State) {
-  const cartRoutes = new Set(["urunler", "bayilik", "bayilik-hata", "siparis-takip", "bulunamayan", "urun-detayi-mevcut", "urun-detayi-mevcut-degil"]);
-  const hasMiniCart = width < 768 && (cartRoutes.has(state.name) || state.url.startsWith("/urunler/") || state.url === "/toptan-satis");
+  // Task208: the catalogue and form states live on the home page, which (as before) shows no phone mini cart.
+  const cartRoutes = new Set(["siparis-takip", "bulunamayan", "urun-detayi-mevcut", "urun-detayi-mevcut-degil"]);
+  const hasMiniCart = width < 768 && cartRoutes.has(state.name);
   if (hasMiniCart) await expect(page.locator("[data-mini-cart-reserve]")).toBeVisible();
   else await expect(page.locator("[data-mini-cart-reserve]")).toHaveCount(0);
 

@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { PillButton } from "@/components/storefront/ui/PillButton";
 import {
   HouseIcon,
   PackageIcon,
   MapPinIcon,
   UserRoundIcon,
   ShieldCheckIcon,
-  ArrowUpRightIcon,
 } from "lucide-react";
 import styles from "@/components/storefront/account/AccountSurface.module.css";
 
@@ -41,10 +41,7 @@ export function CustomerNavigation({
           <span>{label}</span>
         </Link>
       ))}
-      <Link href="/#urunler" className={styles.continueShopping}>
-        <ArrowUpRightIcon size={18} aria-hidden="true" />
-        <span>Alışverişe devam et</span>
-      </Link>
+      <PillButton variant="quiet" href="/#urunler" className={styles.continueShopping}>Alışverişe devam et</PillButton>
     </nav>
   );
 }

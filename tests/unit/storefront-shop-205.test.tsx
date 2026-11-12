@@ -1,20 +1,19 @@
 import { readFileSync } from "node:fs";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
-import { renderToStaticMarkup } from "react-dom/server";
 import { useState } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { CartSummary } from "@/components/cart/CartSummary";
 import { CheckoutUnavailable } from "@/components/checkout/CheckoutUnavailable";
-import { CatalogShell } from "@/components/storefront/catalog/CatalogShell";
-import { ProductListing } from "@/components/storefront/catalog/ProductListing";
+import { ProductShowcase } from "@/components/storefront/home/ProductShowcase";
 import { ProductDetail } from "@/components/storefront/ProductDetail";
+import { ProductTile } from "@/components/storefront/ProductTile";
 import { createCartStore } from "@/lib/cart/store";
-import { productGroups, productsForGroup } from "@/lib/catalog/groups";
+import { productGroups, productsForGroup, type ProductGroupId } from "@/lib/catalog/groups";
 import { getProductFamilies, getProducts } from "@/lib/catalog/static-products";
 
-const route = vi.hoisted(() => ({ pathname: "/urunler", replace: vi.fn() }));
+const route = vi.hoisted(() => ({ pathname: "/", replace: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: route.replace, refresh: vi.fn() }), usePathname: () => route.pathname }));
 vi.mock("@/components/cart/MiniCart", () => ({ MiniCart: () => null }));
 
@@ -29,7 +28,7 @@ function rule(sheet: string, selector: string): string {
 }
 
 beforeEach(() => {
-  route.pathname = "/urunler";
+  route.pathname = "/";
   window.matchMedia = vi.fn().mockReturnValue({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn(), addListener: vi.fn(), removeListener: vi.fn() });
 });
 afterEach(() => { cleanup(); localStorage.clear(); history.replaceState(null, "", "/"); vi.clearAllMocks(); });
@@ -76,6 +75,7 @@ describe("Task205 product page", () => {
     expect(second.getAttribute("aria-checked")).toBe("true");
   });
 
+  // Task208: the quotation leads to the wholesale pill of the home page.
   it("buys with one primary pill, quotes with an outline pill and counts in a pill stepper", async () => {
     const families = await getProductFamilies();
     const family = families.find(item => item.variants[0].stock > 0)!;
@@ -85,7 +85,7 @@ describe("Task205 product page", () => {
     expect([buy.hasAttribute("data-pill"), buy.getAttribute("data-variant")]).toEqual([true, "primary"]);
     const quote = within(page).getByRole("link", { name: "Teklife ekle" });
     expect([quote.hasAttribute("data-pill"), quote.getAttribute("data-variant")]).toEqual([true, "outline"]);
-    expect(quote.getAttribute("href")).toBe(`/toptan-satis?teklif=${family.variants[0].id}`);
+    expect(quote.getAttribute("href")).toBe(`/?sekme=toptan&teklif=${family.variants[0].id}#toptan-bayilik`);
     expect(purchase.querySelectorAll('[data-pill][data-variant="primary"], [data-pill][data-variant="gold"]')).toHaveLength(1);
     const stepper = within(page).getByRole("group", { name: "Adet seçimi" });
     expect(stepper.hasAttribute("data-stepper")).toBe(true);
@@ -104,6 +104,7 @@ describe("Task205 product page", () => {
     expect(within(page).getByRole("link", { name: "Teklife ekle" }).getAttribute("data-variant")).toBe("outline");
   });
 
+  // Task208: the card carries the buy action only; the category link opens that pill on the home page.
   it("shows up to four related products with the home page card", async () => {
     await mountProduct(0);
     const related = screen.getByRole("region", { name: "Benzer Ürünler" });
@@ -111,10 +112,14 @@ describe("Task205 product page", () => {
     expect(cards.length).toBeGreaterThan(0);
     expect(cards.length).toBeLessThanOrEqual(4);
     for (const card of cards) {
-      expect(card.querySelector('[data-pill][data-variant="quiet"]')?.textContent).toBe("Teklife ekle");
+      expect(card.querySelectorAll("[data-pill]")).toHaveLength(1);
+      expect(card.textContent).not.toContain("Teklife ekle");
       expect(card.querySelector("[data-tile-stage]")).not.toBeNull();
     }
-    expect(within(related).getByRole("link", { name: "Kategorideki ürünler" }).getAttribute("data-variant")).toBe("quiet");
+    const category = within(related).getByRole("link", { name: "Kategorideki ürünler" });
+    expect(category.getAttribute("data-variant")).toBe("quiet");
+    expect(category.getAttribute("href")).toMatch(/^\/\?kategori=(zeytinyagi|zeytin)#urunler$/);
+    expect(category.querySelector("[data-coin]")).not.toBeNull();
   });
 
   it("stands the product on the sage stage and keeps table corners in the corner table", () => {
@@ -127,60 +132,63 @@ describe("Task205 product page", () => {
   });
 });
 
+// Task208: the catalogue pages became the "#urunler" section of the home page (ProductShowcase):
+// category links are pills in one radiogroup, the choice lives in `?kategori=`, sorting and the photo band are gone.
 describe("Task205 catalogue", () => {
-  it.each([["/urunler", "Tüm ürünler"], ...productGroups.map(group => [`/urunler/${group.id}`, group.name])])("opens %s with a photographed heading band and one current category pill", (path, name) => {
-    route.pathname = path;
-    render(<CatalogShell><div /></CatalogShell>);
-    const heading = screen.getByRole("heading", { level: 1 });
-    expect(heading.textContent).toBe(name);
-    expect(heading.closest("[data-section-heading]")).not.toBeNull();
-    const band = heading.closest("[data-catalog-banner]")!;
-    expect(band.querySelector("picture img")?.getAttribute("alt")).toBe("");
-    const navigation = screen.getByRole("navigation", { name: "Ürün grupları" });
-    const current = navigation.querySelectorAll('a[aria-current="page"]');
-    expect(current).toHaveLength(1);
-    expect(current[0].textContent).toBe(name);
-    expect(within(navigation).getAllByRole("link")).toHaveLength(6);
+  async function mountShowcase(search = "", without?: string) {
+    const families = (await getProductFamilies()).filter(family => family.groupId !== without);
+    const items = families.flatMap(family => family.variants.map(product => ({ product, group: family.groupId })))
+      .sort((a, b) => a.product.imageKey.localeCompare(b.product.imageKey))
+      .map(({ product, group }) => ({ id: product.id, groups: [group], tile: <ProductTile product={product} /> }));
+    history.replaceState(null, "", `/${search}`);
+    render(<ProductShowcase items={items} />);
+    return families;
+  }
+  const shownIds = () => screen.queryAllByRole("article").map(card => card.getAttribute("data-product-id"));
+  const pillLabels: Record<string, string> = { zeytinyagi: "Zeytinyağı", zeytin: "Zeytin", "siyah-zeytin": "Siyah", "yesil-zeytin": "Yeşil", "kirma-zeytin": "Kırma" };
+
+  it.each<[string, string, string | undefined]>([["", "Tümü", undefined], ...productGroups.map((group): [string, string, string] => [`?kategori=${group.id}`, pillLabels[group.id], group.id])])("opens %s with one checked category pill and exactly that group's products", async (search, name, groupId) => {
+    const families = await mountShowcase(search);
+    const pills = within(screen.getByRole("radiogroup", { name: "Ürün kategorisi" })).getAllByRole("radio");
+    expect(pills).toHaveLength(6);
+    const checked = pills.filter(pill => pill.getAttribute("aria-checked") === "true");
+    expect(checked.map(pill => pill.textContent)).toEqual([name]);
+    expect(shownIds()).toEqual(productsForGroup(families, groupId as ProductGroupId | undefined).map(product => product.id));
   });
 
-  it("gives every category its own photograph", () => {
-    const photos = ["/urunler", ...productGroups.map(group => `/urunler/${group.id}`)].map(path => {
-      route.pathname = path;
-      const html = renderToStaticMarkup(<CatalogShell><div /></CatalogShell>);
-      return /data-catalog-banner[\s\S]*?<img[^>]*src="([^"]+?)-\d+\.webp"/.exec(html)?.[1];
-    });
-    expect(photos.every(Boolean)).toBe(true);
-    expect(new Set(photos).size).toBe(photos.length);
-  });
-
-  it("lists the products as home page cards under a labelled sort control", async () => {
-    const products = productsForGroup(await getProductFamilies());
-    render(<ProductListing products={products} />);
-    const grid = document.querySelector("[data-catalog-grid]")!;
+  it("lists the products as home page cards without a sort control", async () => {
+    const products = productsForGroup(await mountShowcase());
+    const grid = document.querySelector("[data-product-grid]")!;
     expect(grid.querySelectorAll("article[data-product-id]")).toHaveLength(products.length);
-    expect(grid.querySelector('article [data-pill][data-variant="primary"]')?.textContent).toContain("Sepete ekle");
-    expect((screen.getByLabelText("Sıralama") as HTMLSelectElement).value).toBe("onerilen");
-    expect(screen.getByText(`${products.length} ürün`)).toBeTruthy();
+    for (const card of grid.querySelectorAll("article")) {
+      expect(card.querySelector('[data-pill][data-variant="primary"]')?.textContent).toMatch(/Sepete ekle|Mevcut değil/);
+      expect(card.querySelectorAll("[data-pill]")).toHaveLength(1);
+    }
+    expect(screen.queryByLabelText("Sıralama")).toBeNull();
   });
 
-  it("explains an empty category and leads back with an outline pill", () => {
-    render(<ProductListing products={[]} category routeKey="/urunler/siyah-zeytin" />);
-    expect(screen.getByRole("status").textContent).toBe("Bu grupta şu an ürün bulunmuyor.");
-    const back = screen.getByRole("link", { name: "Tüm Ürünler" });
-    expect([back.getAttribute("data-variant"), back.getAttribute("href")]).toEqual(["outline", "/urunler"]);
+  it("explains an empty category and leads back through the first pill", async () => {
+    const families = await mountShowcase("?kategori=siyah-zeytin", "siyah-zeytin");
+    const notice = () => document.querySelector('[data-product-grid] + [role="status"]');
+    expect(notice()?.textContent).toBe("Bu grupta şu an ürün bulunmuyor.");
+    expect(shownIds()).toEqual([]);
+    fireEvent.click(screen.getByRole("radio", { name: "Tümü" }));
+    expect(notice()).toBeNull();
+    expect(shownIds()).toHaveLength(families.flatMap(family => family.variants).length);
+    expect(location.search).toBe("");
   });
 
-  it("lays the grid out 3 / 2 / 2 compact and rounds the sort field to 12 px", () => {
-    const sheet = css("components/storefront/catalog/Catalog.module.css");
+  it("lays the grid out 3 / 2 / 2 compact and draws the category pills on the pill radius", () => {
+    const sheet = css("components/storefront/StoreHome.module.css");
     expect(rule(sheet, ".productGrid")).toMatch(/grid-template-columns:\s*repeat\(3,/);
-    expect(sheet).toMatch(/@media\s*\(max-width:\s*1199px\)\s*\{[^@]*\.productGrid\s*\{[^}]*repeat\(2,/);
-    // Phones keep two columns with the compact pill (44 px, 28 px coin): PillButton size "md".
-    expect(sheet).toMatch(/@media\s*\(max-width:\s*599px\)\s*\{[^@]*--pill-h:\s*44px;[^@]*--pill-coin:\s*28px/);
-    expect(rule(sheet, ".sortLabel select")).toMatch(/border-radius:\s*var\(--sf-radius-field\)/);
-    const chips = css("components/storefront/catalog/CategoryNavigation.module.css");
-    expect(rule(chips, ".link")).toMatch(/border-radius:\s*var\(--sf-radius-pill\)/);
-    expect(rule(chips, '.link[aria-current="page"]')).toMatch(/color:\s*var\(--sf-ivory\)/);
-    expect(rule(chips, ".indicator")).toMatch(/background:\s*var\(--sf-green\)/);
+    expect(sheet).toMatch(/@media\s*\(max-width:\s*1099px\)\s*\{[^@]*\.productGrid\s*\{[^}]*repeat\(2,/);
+    // Phones keep two columns with the compact pill (44 px, 28 px coin).
+    expect(sheet).toMatch(/@media\s*\(max-width:\s*520px\)\s*\{[^@]*--pill-h:\s*44px;[^@]*--pill-coin:\s*28px/);
+    expect(sheet).toMatch(/@media\s*\(max-width:\s*359px\)\s*\{[^@]*\.productGrid\s*\{[^}]*minmax\(0, 1fr\)\s*;/);
+    const pills = css("components/storefront/ui/ui.module.css");
+    expect(rule(pills, ".switch")).toMatch(/border-radius:\s*var\(--sf-radius-pill\)/);
+    expect(rule(pills, ".switch :is(button, a)")).toMatch(/height:\s*44px/);
+    expect(rule(pills, '.switch :is(button[aria-checked="true"], [aria-current="page"])')).toMatch(/background:\s*var\(--sf-green\);\s*color:\s*var\(--sf-ivory\)/);
   });
 });
 
@@ -217,6 +225,7 @@ describe("Task205 cart", () => {
     expect(sheet).not.toMatch(/background:\s*var\(--sf-green\)[^}]*\}[^{]*\.summary|\.summary\s*\{[^}]*background:\s*var\(--sf-green\)/);
   });
 
+  // Task208: "Teklif İste" opens the wholesale pill of the home page.
   it("keeps the closed checkout as a disabled pill with its sentence and an outline quotation", () => {
     mountCartPage();
     const summary = screen.getByRole("complementary", { name: "Sepet özeti" });
@@ -224,7 +233,7 @@ describe("Task205 cart", () => {
     expect([pay.hasAttribute("data-pill"), pay.disabled, pay.querySelector("[data-coin]")]).toEqual([true, true, null]);
     expect(document.getElementById(pay.getAttribute("aria-describedby")!)?.textContent).toBe(PAYMENT_SENTENCE);
     const quote = within(summary).getByRole("link", { name: "Teklif İste" });
-    expect([quote.getAttribute("data-variant"), quote.getAttribute("href")]).toEqual(["outline", "/toptan-satis"]);
+    expect([quote.getAttribute("data-variant"), quote.getAttribute("href")]).toEqual(["outline", "/?sekme=toptan#toptan-bayilik"]);
     expect(screen.queryByRole("link", { name: "Ödemeye geç" })).toBeNull();
   });
 
@@ -234,10 +243,12 @@ describe("Task205 cart", () => {
     expect([pay.getAttribute("data-variant"), pay.getAttribute("href")]).toEqual(["primary", "/odeme"]);
   });
 
+  // Task208: the shop is the "#urunler" section; the quiet link is a paper pill with a ring coin.
   it("returns to the shop quietly and edits lines with 44 px pill controls", () => {
     mountCartPage();
     const back = screen.getByRole("link", { name: "Alışverişe devam et" });
-    expect([back.getAttribute("data-variant"), back.getAttribute("href")]).toEqual(["quiet", "/urunler"]);
+    expect([back.getAttribute("data-variant"), back.getAttribute("href")]).toEqual(["quiet", "/#urunler"]);
+    expect(back.querySelector("[data-coin]")).not.toBeNull();
     const line = screen.getByRole("group", { name: "Doğal Kırma Yeşil Zeytin" });
     expect(line.querySelector("[data-stepper]")).not.toBeNull();
     expect(line.querySelector("[data-tag]")?.textContent).toBe("1 kg");
@@ -260,11 +271,12 @@ describe("Task205 cart", () => {
     expect(rule(sheet, ".amount")).toMatch(/font-variant-numeric:\s*tabular-nums/);
   });
 
+  // Task208: products live at "/#urunler".
   it("invites an empty cart back to the products with a primary pill", () => {
     mountCartPage(0);
     expect(screen.getByRole("heading", { name: "Sepetiniz boş" })).toBeTruthy();
     const browse = screen.getByRole("link", { name: "Ürünleri İnceleyin" });
-    expect([browse.getAttribute("data-variant"), browse.getAttribute("href")]).toEqual(["primary", "/urunler"]);
+    expect([browse.getAttribute("data-variant"), browse.getAttribute("href")]).toEqual(["primary", "/#urunler"]);
   });
 
   it("gives the drawer a paper footer with the same closed checkout and a link to the cart", () => {
@@ -304,36 +316,18 @@ describe("Task205 checkout while payment is closed", () => {
     const back = screen.getByRole("link", { name: "Sepetime dön" });
     expect([back.getAttribute("data-variant"), back.getAttribute("href")]).toEqual(["outline", "/sepet"]);
     const quote = screen.getByRole("link", { name: "Teklif İste" });
-    expect([quote.getAttribute("data-variant"), quote.getAttribute("href")]).toEqual(["primary", "/toptan-satis"]);
+    // Task208: the wholesale pill of the home page.
+    expect([quote.getAttribute("data-variant"), quote.getAttribute("href")]).toEqual(["primary", "/?sekme=toptan#toptan-bayilik"]);
     expect(document.querySelectorAll('[data-pill][data-variant="primary"], [data-pill][data-variant="gold"]')).toHaveLength(1);
     expect(rule(css("components/checkout/Checkout.module.css"), ".marks")).toMatch(/border-radius:\s*var\(--sf-radius-pill\)/);
   });
 });
 
-describe("Task205 category indicator", () => {
-  it("covers the current pill even when the animation features have not loaded yet", async () => {
-    const { CategoryNavigation } = await import("@/components/storefront/catalog/CategoryNavigation");
-    vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(function (this: HTMLElement) {
-      const current = this.getAttribute("aria-current") === "page";
-      const left = current ? 177 : 0;
-      const width = current ? 154 : 150;
-      return { x: left, y: 0, left, right: left + width, top: 0, bottom: 48, width, height: 48, toJSON() {} } as DOMRect;
-    });
-    route.pathname = "/urunler/zeytinyagi";
-    // No MotionProvider here: nothing but the component itself may place the indicator.
-    render(<CategoryNavigation />);
-    const indicator = document.querySelector<HTMLElement>("[data-category-indicator]")!;
-    expect(document.querySelector("[data-indicator-ready]")).not.toBeNull();
-    expect(indicator.style.width).toBe("154px");
-    expect(indicator.style.transform).toContain("177px");
-    vi.restoreAllMocks();
-  });
-});
-
 describe("Task205 corner table", () => {
+  // Task208: the catalogue sheets were removed with their pages; the product card sheet takes their place.
   it("keeps raw pixel radii out of the cart, checkout and catalogue styles", () => {
     const sheets = ["components/cart/CartExperience.module.css", "components/checkout/Checkout.module.css", "components/catalog/AddToCart.module.css",
-      "components/storefront/ProductDetail.module.css", "components/storefront/catalog/Catalog.module.css", "components/storefront/catalog/CategoryNavigation.module.css",
+      "components/storefront/ProductDetail.module.css", "components/storefront/ProductTile.module.css",
       "components/storefront/cart/PaymentUnavailable.module.css", "components/storefront/ui/ui.module.css"];
     const raw = sheets.flatMap(file => css(file).split("\n").filter(line => /border(-[a-z]+)*-radius:\s*[0-9]/.test(line)).map(line => `${file}: ${line.trim().slice(0, 80)}`));
     expect(raw).toEqual([]);

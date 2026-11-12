@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 
-const links = ["/urunler", "/hakkimizda", "/toptan-satis", "/bayilik", "/blog"];
+// Task208: every destination is a section of the one landing page.
+const links = ["/#urunler", "/#hikayemiz", "/#toptan-bayilik", "/#blog", "/#iletisim"];
 
 test("shell keeps every page destination and original brand links readable", async ({ page }) => {
   const errors: string[] = [];

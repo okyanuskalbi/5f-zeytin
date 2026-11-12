@@ -1,11 +1,12 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { expect, it } from "vitest";
-import Page from "@/app/bayilik/page";
+import { DealershipForm } from "@/components/dealership/DealershipForm";
 
-it("composes the real dealership page and form into readable, safe server HTML", () => {
+// Task208: the dealership page is a pill of the home page; the unchanged form is checked on its own.
+const Page = () => <div id="basvuru"><DealershipForm /></div>;
+
+it("composes the real dealership form into readable, safe server HTML", () => {
   const doc = new DOMParser().parseFromString(renderToStaticMarkup(<Page />), "text/html");
-  expect(doc.querySelectorAll("main")).toHaveLength(1);
-  expect([...doc.querySelectorAll("h1")].map(heading => heading.textContent)).toEqual(["Bayimiz Olun"]);
   const form = doc.querySelector("#basvuru form");
   expect(form).not.toBeNull();
   expect(form!.getAttribute("aria-label")).toMatch(/bayilik/i);

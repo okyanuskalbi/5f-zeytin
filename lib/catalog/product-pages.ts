@@ -14,7 +14,7 @@ export function getFamilySlug(familyId: string): string | undefined {
 
 export function productHref(product: Pick<ProductVariant, "familyId" | "weight">): string {
   const slug = getFamilySlug(product.familyId);
-  return slug ? `/urun/${slug}?boy=${encodeURIComponent(product.weight)}` : "/urunler";
+  return slug ? `/urun/${slug}?boy=${encodeURIComponent(product.weight)}` : "/#urunler";
 }
 
 export function getFamilyBySlug(families: readonly ProductFamily[], slug: string): ProductFamily | undefined {

@@ -17,8 +17,10 @@
 .seller dd { margin: 4px 0 0; font-size: 16px; line-height: 1.6; overflow-wrap: anywhere; }
 .legalNav { margin-bottom: 16px; padding-block: 24px; border-top: 1px solid var(--sf-line); }
 .legalNav ul { display: flex; flex-wrap: wrap; gap: 4px 24px; }
-.legalNav a { display: inline-flex; align-items: center; min-height: 44px; color: var(--sf-green); font-size: 16px; text-decoration: underline; text-decoration-color: var(--sf-gold); text-decoration-thickness: 2px; text-underline-offset: 4px; }
-.legalNav a[aria-current="page"] { font-weight: 600; text-decoration-color: var(--sf-gold-deep); }
+/* A plain row of sibling pages, like the footer columns: no underline, the current one in bold. */
+.legalNav a { display: inline-flex; align-items: center; min-height: 44px; color: var(--sf-green); font-size: 16px; text-decoration: none; transition: color 180ms ease-out; }
+.legalNav a[aria-current="page"] { font-weight: 600; }
+@media (hover: hover) and (pointer: fine) { .legalNav a:hover { color: var(--sf-gold-deep); } }
 
 /* One message, one way forward. */
 .state { display: grid; justify-items: start; gap: 20px; max-width: 720px; margin: 48px auto 0; padding: 56px; border: 1px solid var(--sf-line); border-radius: var(--sf-radius-card); background: var(--sf-paper); }

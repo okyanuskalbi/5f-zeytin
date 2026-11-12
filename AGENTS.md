@@ -5,7 +5,7 @@
 - Bütün düğmeler `components/storefront/ui/PillButton` (hap + altın madalyon); yeni düğme sınıfı yazma. Köşe ölçüleri yalnız DESIGN.md köşe tablosundaki 6 token.
 - Bu dosyanın aşağısındaki v9/v11/"Hasat Rotası"/"Ellek sofrası" tasarım, token ve font paragrafları **tarihçedir**; çelişkide bu bölüm ve DESIGN.md geçerlidir. Güvenlik, yayın ve iş kuralları aynen geçerli.
 - Önizleme PDF/video hazırlama (kullanıcı istemiyor).
-- **Tek sayfa landing (12 Kas kararı):** `/` Ürünler, Hikâyemiz, Toptan & Bayilik, Blog özeti, SSS, İletişim bölümlerini taşır; menü `/#id`; eski sayfa adresleri 308. Kaydırmaya bağlı efekt yok. Ayrıntı `docs/tasks/208-tek-sayfa-landing.md`, `docs/DESIGN.md` "Sayfa yapısı".
+- **Tek sayfa landing (12 Kas kararı, görev 208 uygulandı):** `/` Ürünler, Hikâyemiz, Toptan & Bayilik, Blog özeti, SSS, İletişim bölümlerini taşır; menü `/#id`; eski sayfa adresleri 308 (`next.config.ts`); `?kategori=` ve `?sekme=` sekme durumları. Kaydırmaya bağlı efekt yok. Ayrıntı `docs/tasks/208-tek-sayfa-landing.md`, `docs/DESIGN.md` "Sayfa yapısı"; ölçüm `scripts/qa-landing-208.mjs`.
 
 ## Aktif iş: Task177 / ilk açılış ve panel akıcılığı (3 Kasım 2026)
 

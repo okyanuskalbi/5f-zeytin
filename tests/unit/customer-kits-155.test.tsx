@@ -8,10 +8,12 @@ import sitemap from "@/app/sitemap";
 
 it("keeps at least five verified short answers equal in visible HTML, schema and machine discovery", async () => {
   expect(verifiedFaqs).toHaveLength(5);
-  const html = renderToStaticMarkup(<StoreFaq canonicalPath="/hakkimizda" />);
+  const html = renderToStaticMarkup(<StoreFaq canonicalPath="/" />);
   const text = await (await GET()).text();
   const match = html.match(/<script[^>]*>([\s\S]*?)<\/script>/);
   const schema = JSON.parse(match![1]);
+  // Task208: the questions live on the home page, so the schema is anchored there.
+  expect(schema["@id"]).toBe("https://afinazeytin.com/#sik-sorulanlar");
   expect(schema.mainEntity).toHaveLength(5);
   for (const faq of verifiedFaqs) {
     expect(html).toContain(faq.question);
@@ -23,8 +25,10 @@ it("keeps at least five verified short answers equal in visible HTML, schema and
       ).acceptedAnswer.text,
     ).toBe(faq.answer);
   }
-  expect(text).toContain("https://afinazeytin.com/hakkimizda#tesisimiz");
-  expect(text).toContain("https://afinazeytin.com/toptan-satis");
+  expect(text).toContain("](https://afinazeytin.com/#hikayemiz)");
+  expect(text).toContain("](https://afinazeytin.com/?sekme=toptan#toptan-bayilik)");
+  expect(text).toContain("](https://afinazeytin.com/#sik-sorulanlar)");
+  expect(text).not.toMatch(/afinazeytin\.com\/(?:hakkimizda|toptan-satis)/);
   expect(text).not.toMatch(
     /\/hesabim|\/admin|\/api\/|organik|₺|aggregateRating/,
   );

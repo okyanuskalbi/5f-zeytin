@@ -10,8 +10,13 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   async redirects() {
     return [
-      { source: "/", has: [{ type: "query" as const, key: "teklif" }], destination: "/toptan-satis", permanent: true },
-      { source: "/", has: [{ type: "query" as const, key: "magaza", value: "ac" }], destination: "/urunler", permanent: true },
+      // Task208: the site is one landing page; the retired pages lead to their section (the query travels along).
+      { source: "/urunler", destination: "/#urunler", permanent: true },
+      { source: "/urunler/:kategori", destination: "/?kategori=:kategori#urunler", permanent: true },
+      { source: "/hakkimizda", destination: "/#hikayemiz", permanent: true },
+      { source: "/toptan-satis", destination: "/?sekme=toptan#toptan-bayilik", permanent: true },
+      { source: "/bayilik", destination: "/?sekme=bayilik#toptan-bayilik", permanent: true },
+      { source: "/blog", destination: "/#blog", permanent: true },
       ...Object.entries(legacyProductRoutes).map(([id, destination]) => ({
         source: "/", has: [{ type: "query" as const, key: "urun", value: id }], destination, permanent: true,
       })),
