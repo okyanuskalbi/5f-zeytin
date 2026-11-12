@@ -29,3 +29,9 @@ Repo dosyası değiştirme (yalnız `output/task202/` ve `AFINA-KAYNAK/araclar/2
 Claude bulguları `## Düzeltme 202-x` olarak yazar → Codex uygular → Kimi yalnız ilgili sayfa × cihazları yeniden ölçer. Kritik/Yüksek 0 olunca K3.
 
 ## Durum: BEKLİYOR (201 sonrası)
+
+## Sonuç (Claude, 12 Kasım)
+Rapor `output/task202/RAPOR.md` (veri Kimi, tamamlama Codex): 0 Kritik / 0 Yüksek / 0 Orta / 1 Düşük. K3 geçti. WebKit telefon alanı "readonly" bulgusu test kaynaklı (alan ekran dışında, kaydırınca hazır), site hatası değil.
+
+## Düzeltme 202-1 (Codex)
+202-01: ana sayfa hero posteri `/blog` ve blog yazılarında da ön yükleniyor. Kök nedeni bul (`components/storefront/StoreHome.tsx:34`, ortak layout/head), ön yüklemeyi yalnız `/` sayfasında üret. Kanıt: 5 blog rotası + `/` için belge başında poster `preload` var/yok tablosu (yalnız `/`'da var), WebKit 320/360/375 ve Chromium 1440'ta kullanılmayan kaynak uyarısı 0; ana sayfa LCP'si gerilemedi (telefon ≤ 2,5 sn). lint, typecheck, test, build PASS. Tek kayıt: `fix: 202-1 hero poster ön yüklemesi yalnız ana sayfada`. Kanıt `output/task202-1/KANIT.md`.
