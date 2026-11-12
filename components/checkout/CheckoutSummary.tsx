@@ -1,7 +1,6 @@
 "use client";
 
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { PillButton } from "@/components/storefront/ui/PillButton";
 import { Input } from "@/components/ui/input";
 import type { CheckoutSummary as Summary } from "@/lib/checkout/adapter";
 import styles from "./Checkout.module.css";
@@ -21,7 +20,7 @@ export function CheckoutSummary({ summary }: { summary: Summary }) {
       </li>)}
     </ul>
     <dl>
-      <div><dt>Ara toplam (tahmini)</dt><dd>{summary.subtotalKurus === null ? "Hesaplanamadı" : money.format(summary.subtotalKurus / 100)}</dd></div>
+      <div className={styles.subtotal}><dt>Ara toplam (tahmini)</dt><dd>{summary.subtotalKurus === null ? "Hesaplanamadı" : money.format(summary.subtotalKurus / 100)}</dd></div>
       <div><dt>Kargo</dt><dd>Ücret ödeme adımında</dd></div>
       <div><dt>İndirim</dt><dd>Henüz hesaplanmadı</dd></div>
     </dl>
@@ -31,8 +30,8 @@ export function CheckoutSummary({ summary }: { summary: Summary }) {
       <label htmlFor="checkout-coupon">Kupon kodu</label>
       <Input id="checkout-coupon" disabled aria-describedby="checkout-coupon-hint" />
       <p id="checkout-coupon-hint" className={styles.muted}>Kupon kullanımı yakında.</p>
-      <Button variant="outline" disabled aria-describedby="checkout-coupon-hint">Kuponu uygula</Button>
+      <PillButton variant="outline" icon="none" size="md" disabled aria-describedby="checkout-coupon-hint">Kuponu uygula</PillButton>
     </div>
-    <Link className={styles.link} href="/sepet">Sepeti düzenle</Link>
+    <PillButton variant="quiet" href="/sepet">Sepeti düzenle</PillButton>
   </aside>;
 }

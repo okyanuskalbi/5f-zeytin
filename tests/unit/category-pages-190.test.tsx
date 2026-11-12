@@ -72,7 +72,7 @@ it("announces an empty group with a route back to the full catalogue", async () 
   readFamilies.mockResolvedValue([]);
   const doc = parse(renderToStaticMarkup(await CategoryPage(params("siyah-zeytin"))));
   expect(doc.querySelector('[role="status"]')?.textContent).toBe("Bu grupta şu an ürün bulunmuyor.");
-  expect(doc.querySelector('a[href="/urunler"]')?.textContent).toBe("Tüm ürünler");
+  expect(doc.querySelector('a[href="/urunler"]')?.textContent).toBe("Tüm Ürünler");
   expect(doc.querySelectorAll("[data-product-id]")).toHaveLength(0);
 });
 

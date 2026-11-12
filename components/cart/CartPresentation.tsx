@@ -1,11 +1,12 @@
 "use client";
 
 import { forwardRef, useId, type JSX } from "react";
-import Link from "next/link";
 import Image from "next/image";
-import { LockKeyhole, Minus, Plus, Trash2, Truck } from "lucide-react";
+import { LockKeyhole, Trash2, Truck } from "lucide-react";
 import { motion, useIsPresent, useReducedMotion } from "motion/react";
-import { Button } from "@/components/ui/button";
+import { PillButton } from "@/components/storefront/ui/PillButton";
+import { QuantityStepper } from "@/components/storefront/ui/QuantityStepper";
+import { Tag } from "@/components/storefront/ui/Tag";
 import { CheckoutValue } from "@/components/ui/interactive-checkout";
 import { PaymentLogos } from "@/components/site/PaymentLogos";
 import { ProductThumbnail } from "./ProductThumbnail";
@@ -51,16 +52,14 @@ export const CartLineItem = forwardRef<HTMLLIElement, CartLineItemProps>(functio
       {product && <ProductThumbnail product={product} />}
       <div className={styles.lineDetails}>
         <Heading id={id} className={styles.productName}>{product?.name ?? "Kullanılamayan ürün"}</Heading>
-        {product && <><span className={styles.sizeChip}>{product.weight}</span>
+        {product && <><Tag>{product.weight}</Tag>
           <p className={styles.unitPrice}>{formatCartPrice(product.priceKurus)} / adet</p></>}
         {unavailable && <p className={styles.error}>{stockMessage}</p>}
         <div className={styles.lineActions}>
-          <div className={styles.quantity}>
-            <Button variant="ghost" size="icon" aria-label="Adedi azalt" disabled={disabled || quantity <= 1} onClick={() => onQuantity(quantity - 1)}><Minus aria-hidden="true" /></Button>
-            <output aria-label="Adet"><CheckoutValue value={quantity} /></output>
-            <Button variant="ghost" size="icon" aria-label="Adedi artır" disabled={disabled || quantity >= (product?.stock ?? 0)} onClick={() => onQuantity(quantity + 1)}><Plus aria-hidden="true" /></Button>
-          </div>
-          <Button variant="ghost" size="icon" className={styles.remove} aria-label="Sepetten sil" title="Kaldır" onClick={onRemove}><Trash2 aria-hidden="true" /></Button>
+          <QuantityStepper quantity={quantity} canDecrease={!disabled && quantity > 1} canIncrease={!disabled && quantity < (product?.stock ?? 0)} onChange={onQuantity}>
+            <CheckoutValue value={quantity} />
+          </QuantityStepper>
+          <button type="button" className={styles.remove} aria-label="Sepetten sil" title="Kaldır" onClick={onRemove}><Trash2 size={20} strokeWidth={1.7} aria-hidden="true" /></button>
         </div>
         <div className={styles.lineTotal}><span>Satır toplamı</span><CartAmount amount={product && !unavailable ? product.priceKurus * quantity : null} label="Satır toplamı" /></div>
       </div>
@@ -73,7 +72,7 @@ export function CartTotals({ subtotal, itemCount }: { subtotal: number | null; i
   return <dl className={styles.totals}>
     <div><dt>Ara toplam (tahmini), {itemCount} adet</dt><dd><CartAmount amount={subtotal} label="Ara toplam" /></dd></div>
     <div className={styles.shipping}><dt>Kargo</dt><dd>Ödeme adımında hesaplanır</dd></div>
-    <div className={styles.total}><dt>Toplam <small>(tahmini)</small></dt><dd><CartAmount amount={subtotal} label="Toplam (tahmini)" /></dd></div>
+    <div className={styles.total}><dt>Toplam <small>(tahmini)</small></dt><dd data-cart-total=""><CartAmount amount={subtotal} label="Toplam (tahmini)" /></dd></div>
   </dl>;
 }
 
@@ -94,6 +93,6 @@ export function CartEmpty({ onBrowse }: { onBrowse?: () => void }): JSX.Element 
     <Image src="/brand/favicon.svg" alt="" width={64} height={64} className={styles.emptyEmblem} />
     <h2>Sepetiniz boş</h2>
     <p>Sofranız için seçtikleriniz burada birikir.</p>
-    <Button asChild className={styles.checkout}><Link href="/urunler" prefetch={false} onClick={onBrowse}>Ürünleri İnceleyin</Link></Button>
+    <PillButton href="/urunler" onClick={onBrowse}>Ürünleri İnceleyin</PillButton>
   </div>;
 }

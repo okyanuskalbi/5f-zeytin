@@ -78,8 +78,9 @@ function declarations(selector: string, media?: string): Record<string, string> 
 }
 
 it("reserves image space while containing the entire packaging", () => {
-  expect(declarations(".image")["aspect-ratio"]).toBe("1 / 1");
+  // Task205: one 4:5 stage on every width, the same proportions as the studio photograph.
+  expect(declarations(".image")["aspect-ratio"]).toBe("4 / 5");
   expect(declarations(".image img")["object-fit"]).toBe("contain");
-  expect(declarations(".image", "(min-width: 768px)")["aspect-ratio"]).toBe("4 / 5");
-  expect(declarations(".product", "(min-width: 768px)")["align-items"]).toBe("start");
+  expect(declarations(".image", "(max-width: 767px)")["aspect-ratio"]).toBeUndefined();
+  expect(declarations(".product")["align-items"]).toBe("start");
 });

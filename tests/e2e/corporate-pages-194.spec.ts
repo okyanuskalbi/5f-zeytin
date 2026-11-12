@@ -75,7 +75,9 @@ test.describe("Task194 corporate pages", () => {
     const writes: string[] = [];
     page.on("request", request => { if (!["GET", "HEAD"].includes(request.method())) writes.push(`${request.method()} ${request.url()}`); });
     await page.goto("/urun/naturel-sizma-zeytinyagi?boy=5%20L", { waitUntil: "load" });
-    await expect(page.locator('[data-product-page] input[value="sample-olive-oil-5l"]')).toBeChecked();
+    // v3 (Task205): the size is a pill switch (role="radio" + aria-checked), no longer a native radio input.
+    await expect(page.locator("[data-product-page]").getByRole("radio", { name: "5 L", exact: true })).toBeChecked();
+    await expect(page.locator("[data-product-page]").getByRole("link", { name: "Teklife ekle", exact: true })).toHaveAttribute("href", "/toptan-satis?teklif=sample-olive-oil-5l");
     await page.locator("[data-product-page]").getByRole("link", { name: "Teklife ekle", exact: true }).click();
     await expect(page).toHaveURL(/\/toptan-satis(?:\?|#|$)/);
     const form = page.getByRole("form", { name: "Kurumsal teklif talebi", exact: true });

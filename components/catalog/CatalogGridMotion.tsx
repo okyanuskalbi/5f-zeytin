@@ -19,7 +19,7 @@ export function CatalogGridMotion({ routeKey, className, children }: { routeKey:
   // A pathname may update before its streamed page. Only the matching new list
   // enters; the old products stay readable while navigation is still pending.
   const enter = navigation.changed && navigation.pathname === routeKey && !reduced;
-  return <m.div key={routeKey} className={className} data-category-transition={enter ? "navigation" : "static"}
+  return <m.div key={routeKey} className={className} data-catalog-grid="" data-category-transition={enter ? "navigation" : "static"}
     initial={enter ? "hidden" : false} animate="visible"
     variants={{ hidden: {}, visible: { transition: { staggerChildren: reduced ? 0 : motionTokens.storefront.category.stagger } } }}>
     {children}

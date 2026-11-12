@@ -22,7 +22,9 @@ for (const width of [390, 1440]) for (const reducedMotion of ["reduce", "no-pref
       await button.click();
       await expect(image).toHaveAttribute("src", new RegExp(filename));
       await expect.poll(() => image.evaluate(node => (node as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
-      await expect(image).toHaveCSS("object-fit", "contain");
+      // Task205: the studio photograph is contained whole; the wide table scene fills the 4:5 stage,
+      // cropped towards its right side where the packaging stands (all six scenes checked by eye).
+      await expect(image).toHaveCSS("object-fit", filename === "studyo" ? "contain" : "cover");
       await expect(button).toHaveAttribute("aria-pressed", "true");
       const current = (await container.boundingBox())!;
       expect(current.width).toBeCloseTo(reserved.width, 0);

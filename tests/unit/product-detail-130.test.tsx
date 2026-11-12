@@ -162,7 +162,7 @@ it("reads a direct size and preserves history state and unrelated parameters whe
 it("falls back safely for an unknown size and follows browser history without loading modal code", async () => {
   const { page } = await mount("sample-olive-oil-1l");
   act(() => { history.replaceState(null, "", `${location.pathname}?boy=unknown`); window.dispatchEvent(new PopStateEvent("popstate")); });
-  expect(within(page).getByRole("radio", { name:"1 L" }).getAttribute("checked")).not.toBeNull();
+  expect(within(page).getByRole("radio", { name:"1 L" }).getAttribute("aria-checked")).toBe("true");
   act(() => { history.replaceState(null, "", `${location.pathname}?boy=5%20L`); window.dispatchEvent(new PopStateEvent("popstate")); });
   expect(within(page).getByText(copy[4][1])).toBeDefined(); expect(screen.queryByRole("dialog")).toBeNull();
 });

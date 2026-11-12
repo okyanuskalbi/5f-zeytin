@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { Button } from "@/components/ui/button";
+import { PillButton } from "@/components/storefront/ui/PillButton";
 import { GoogleButton } from "@/components/account/GoogleButton";
 import { useCart } from "@/components/cart/CartProvider";
 import { EmptyState } from "@/components/site/EmptyState";
@@ -84,7 +85,7 @@ export function Checkout({ localPreviewAvailable = false }: { localPreviewAvaila
     <header className={styles.header}>
       <h1>Sofranıza bir adım daha.</h1>
       <p className={styles.muted}>Bilgilerinizi girin, teslimat seçimini gözden geçirin.</p>
-      <Link href="/sepet" className={styles.link}>Sepetime dön</Link>
+      <PillButton variant="quiet" href="/sepet">Sepetime dön</PillButton>
     </header>
     <p className={styles.demo}><strong>Demo ödeme.</strong> Örnek bilgiler kullanın. Gerçek sipariş, üyelik veya tahsilat oluşturulmaz. Adres bilgileri sayfa yenilendiğinde silinir.</p>
     <nav aria-label="Ödeme adımları">
@@ -140,8 +141,8 @@ export function Checkout({ localPreviewAvailable = false }: { localPreviewAvaila
               </div>
             </>}
             <div className={styles.actions}>
-              {step > 1 && <Button type="button" variant="outline" onClick={() => go(step - 1)}>{step === 2 ? "Bilgilere dön" : "Teslimata dön"}</Button>}
-              <Button type="submit" disabled={paymentOpen}>{step === 1 ? "Teslimata devam et" : step === 2 ? "Ödemeye devam et" : "PayTR ekranına geç"}</Button>
+              {step > 1 && <PillButton variant="outline" icon="none" onClick={() => go(step - 1)}>{step === 2 ? "Bilgilere dön" : "Teslimata dön"}</PillButton>}
+              <PillButton type="submit" disabled={paymentOpen}>{step === 1 ? "Teslimata devam et" : step === 2 ? "Ödemeye devam et" : "PayTR ekranına geç"}</PillButton>
             </div>
           </form>
           {step === 3 && paymentOpen && sale && information && <section className={styles.section} aria-label="PayTR ödeme alanı">

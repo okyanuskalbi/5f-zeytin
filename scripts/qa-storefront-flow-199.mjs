@@ -14,7 +14,7 @@ try{for(const [engine,width,height] of [['chromium',320,568],['webkit',390,844],
  try{
   await page.waitForLoadState('networkidle');
   await page.goto(`${origin}/urun/naturel-sizma-zeytinyagi?boy=1%20L`,{waitUntil:'networkidle'});
-  await page.locator('label').filter({has:page.getByRole('radio',{name:'5 L',exact:true})}).click();
+  await page.getByRole('radio',{name:'5 L',exact:true}).click();
   await page.waitForFunction(()=>document.title.includes('5 L'));
   assert((await page.locator('link[rel=canonical]').getAttribute('href')).includes('5%20L')||(await page.locator('link[rel=canonical]').getAttribute('href')).includes('5+L'));
   await page.getByRole('button',{name:'Sepete ekle',exact:true}).first().click();

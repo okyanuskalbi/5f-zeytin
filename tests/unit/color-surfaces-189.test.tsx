@@ -80,15 +80,15 @@ it("keeps the entire phone menu light including its close control and account li
   expect(screen.getByRole("link", { name: "Hesabım" }).closest('[data-surface="dark"]')).toBeNull();
 });
 
-it("scopes only the cart summary and drawer footer while product lines remain light", () => {
+it("keeps the whole cart light: the summary and the drawer footer are paper since Task205", () => {
   const store = createCartStore({ products: [], storage: null });
   const page = render(<CartSummary store={store} products={[]} onRefresh={() => {}} />);
-  expect(screen.getByRole("complementary").getAttribute("data-surface")).toBe("dark");
-  expect(screen.getByRole("main").getAttribute("data-surface")).not.toBe("dark");
+  expect(screen.getByRole("complementary").hasAttribute("data-surface")).toBe(false);
+  expect(screen.getByRole("main").querySelector('[data-surface="dark"]')).toBeNull();
   page.unmount();
   render(<CartDrawer store={store} products={[]} open onOpenChange={() => {}} />);
-  expect(screen.getByRole("button", { name: "Ödemeye geç" }).closest('[data-surface="dark"]')).not.toBeNull();
-  expect(screen.getByRole("dialog").getAttribute("data-surface")).not.toBe("dark");
+  expect(screen.getByRole("button", { name: "Ödemeye geç" }).closest('[data-surface="dark"]')).toBeNull();
+  expect(screen.getByRole("dialog").querySelector('[data-surface="dark"]')).toBeNull();
 });
 
 it("uses the chosen storefront light palette for admin in the shell and its portal", () => {

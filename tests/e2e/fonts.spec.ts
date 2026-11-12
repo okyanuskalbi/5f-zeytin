@@ -42,6 +42,8 @@ test("Turkish glyphs and lira render from self-hosted fonts in every brand style
   const requests: string[] = [];
   page.on("request", (request) => requests.push(request.url()));
   await page.goto("/");
+  // The probes are foreign nodes inside <main>: add them once hydration has settled, or React may drop them.
+  await page.waitForLoadState("networkidle");
   await page.evaluate(async (sample) => {
     const panel = document.createElement("section");
     panel.id = "font-glyph-probes";

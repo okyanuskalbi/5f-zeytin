@@ -17,6 +17,81 @@
 .tag[data-tone="gold"] { background: var(--sf-gold); }
 .tag svg { flex: 0 0 16px; }
 
+/* Pill choice (PillSwitch): the chosen option fills green inside one paper track. */
+.switch {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-width: 100%;
+  padding: 3px;
+  border: 1px solid var(--sf-line);
+  border-radius: var(--sf-radius-pill);
+  background: var(--sf-paper);
+}
+.switch button {
+  min-width: 72px;
+  height: 44px;
+  padding-inline: 20px;
+  border-radius: var(--sf-radius-pill);
+  background: transparent;
+  color: var(--sf-green);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 180ms ease-out, color 180ms ease-out;
+}
+.switch button[aria-checked="true"] { background: var(--sf-green); color: var(--sf-ivory); }
+.switch button:focus-visible { outline: 2px solid var(--sf-gold-deep); outline-offset: 3px; }
+
+/* Pill quantity control (QuantityStepper). */
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  padding: 3px;
+  border: 1px solid var(--sf-line);
+  border-radius: var(--sf-radius-pill);
+  background: var(--sf-paper);
+  color: var(--sf-green);
+}
+.stepper button {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px; height: 44px;
+  border-radius: var(--sf-radius-round);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 180ms ease-out, transform 180ms ease-out;
+}
+.stepper button:disabled { color: var(--sf-muted); opacity: .45; cursor: not-allowed; }
+.stepper button:not(:disabled):active { transform: scale(.97); }
+.stepper button:focus-visible { outline: 2px solid var(--sf-gold-deep); outline-offset: 2px; }
+.stepper output {
+  min-width: 36px;
+  padding-inline: 4px;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+@media (hover: hover) and (pointer: fine) {
+  .switch button[aria-checked="false"]:hover { background: var(--sf-sage); }
+  .stepper button:not(:disabled):hover { background: var(--sf-sage); }
+}
+/* The phone action height is 48 px: the stepper beside it keeps its 44 px targets in a thinner rim. */
+@media (max-width: 640px) { .stepper { padding: 1px; } }
+@media (prefers-reduced-motion: reduce) { .stepper button:active { transform: none; } }
+
 .medallion {
   display: grid;
   place-items: center;

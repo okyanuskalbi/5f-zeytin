@@ -55,7 +55,7 @@ test.describe("Task193 product pages", () => {
     await expect(product.getByRole("heading", { level: 1 })).toHaveText("Doğal Kırma Yeşil Zeytin");
     await expect(product.getByRole("radio", { name: "1 kg", exact: true })).toBeChecked();
     const price = await product.getByLabel("Fiyat", { exact: true }).textContent();
-    await product.getByRole("radio", { name: "3 L", exact: true }).locator("..").click();
+    await product.getByRole("radio", { name: "3 L", exact: true }).click();
     await expect(page).toHaveURL(/\?boy=3(?:%20|\+)L$/);
     await expect(product.getByLabel("Fiyat", { exact: true })).not.toHaveText(price!);
     await expect(product.getByRole("button", { name: "Sepete ekle", exact: true })).toBeEnabled();

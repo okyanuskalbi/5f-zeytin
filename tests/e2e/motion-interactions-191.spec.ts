@@ -91,7 +91,7 @@ test.describe("Task191 action-only motion", () => {
     await record(page, { grid: "[data-category-transition] article[data-product-id]" });
     await page.getByRole("navigation", { name: "Ürün grupları" }).getByRole("link", { name: "Zeytinyağı", exact: true }).click();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Zeytinyağı");
-    await expect(page.getByRole("navigation", { name: "Ürün grupları" }).getByRole("link", { name: "Zeytinyağı", exact: true })).toHaveCSS("background-color", "rgb(255, 253, 248)");
+    await expect(page.getByRole("navigation", { name: "Ürün grupları" }).getByRole("link", { name: "Zeytinyağı", exact: true })).toHaveCSS("background-color", "rgb(36, 58, 41)"); // Task205: without motion the current pill fills itself green
     const samples = await recorded(page);
     await info.attach("reduced-category-samples", { body: JSON.stringify(samples), contentType: "application/json" });
     expect(samples.grid.length).toBeGreaterThan(0);

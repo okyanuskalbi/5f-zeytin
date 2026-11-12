@@ -44,7 +44,7 @@ describe("PaymentLogos", () => {
 });
 
 describe("Task 132 payment artwork and surfaces", () => {
-  it.each(["drawer", "page"])("uses four named, dark logos on the %s's milk plate", view => {
+  it.each(["drawer", "page"])("uses four named, dark logos on the %s's paper pill", view => {
     const store = createCartStore({ products, storage: null });
     store.addItem("olive");
     render(view === "drawer"
@@ -60,7 +60,7 @@ describe("Task 132 payment artwork and surfaces", () => {
     postcss.parse(readFileSync("components/cart/CartExperience.module.css", "utf8")).walkRules(rule => {
       if (rule.selector === ".paymentLogos") rule.walkDecls("background", decl => { backgrounds.push(decl.value); });
     });
-    expect(backgrounds).toEqual(["var(--sut)"]);
+    expect(backgrounds).toEqual(["var(--sf-paper)"]);
   });
 
   it.each([["paytr", "#0E1510"], ["visa", "#1A1F71"], ["troy", "#0E1510"]])(

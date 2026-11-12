@@ -1,8 +1,7 @@
 "use client";
 
 import { useId, type JSX } from "react";
-import { Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { PillButton } from "@/components/storefront/ui/PillButton";
 import { ProductThumbnail } from "./ProductThumbnail";
 import styles from "./CartExperience.module.css";
 import type { CartItem } from "@/lib/cart/types";
@@ -45,9 +44,7 @@ export function Upsell({ products, items, configuration, onAdd }: UpsellProps): 
   if (suggestions.length === 0) return null;
 
   return <section aria-labelledby={`${id}-heading`} className={styles.upsell}>
-    <div className="space-y-2">
-      <h2 id={`${id}-heading`}>Sofranıza ekleyin</h2>
-    </div>
+    <h2 id={`${id}-heading`}>Sofranıza ekleyin</h2>
     <ul className={styles.suggestions}>
       {suggestions.slice(0, 2).map((product) => <li key={product.id} className={styles.suggestion}>
         <ProductThumbnail product={product} />
@@ -56,9 +53,7 @@ export function Upsell({ products, items, configuration, onAdd }: UpsellProps): 
           <p>{product.weight}</p>
           <p className={styles.amount}>{money.format(product.priceKurus / 100)} ₺ / adet (tahmini)</p>
         </div>
-        <Button variant="outline" className={styles.suggestionAdd} aria-label={`${product.name} sepete ekle`} onClick={() => onAdd(product.id)}>
-          <Plus aria-hidden="true" />Ekle
-        </Button>
+        <PillButton variant="outline" icon="plus" size="md" fullWidth aria-label={`${product.name} sepete ekle`} onClick={() => onAdd(product.id)}>Ekle</PillButton>
       </li>)}
     </ul>
   </section>;

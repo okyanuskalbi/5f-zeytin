@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, type JSX } from "react";
-import { animate, m, useMotionValue } from "motion/react";
+import { animate, useMotionValue } from "motion/react";
 import { usePrefersReducedMotion } from "@/lib/media/use-deferred-enhancement";
 import { motionTokens } from "@/lib/ui-motion";
 import { productGroups } from "@/lib/catalog/groups";
@@ -21,6 +21,17 @@ export function CategoryNavigation(): JSX.Element {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const scaleX = useMotionValue(1);
+
+  // The indicator is drawn here, from the motion values themselves. It must not wait for the lazily
+  // loaded animation features: a value set before they arrive used to stay unpainted on some loads.
+  useEffect(() => {
+    const marker = indicator.current;
+    if (!marker) return;
+    const paint = () => { marker.style.transform = `translate(${x.get()}px, ${y.get()}px) scaleX(${scaleX.get()})`; };
+    const stops = [x.on("change", paint), y.on("change", paint), scaleX.on("change", paint)];
+    paint();
+    return () => { for (const stop of stops) stop(); };
+  }, [x, y, scaleX]);
 
   useEffect(() => {
     let mounted = true;
@@ -70,7 +81,7 @@ export function CategoryNavigation(): JSX.Element {
   ];
   return <nav ref={navigation} aria-label="Ürün grupları" className={styles.navigation}>
     <ul ref={list} className={styles.list}>
-      <li aria-hidden="true" className={styles.indicatorLayer}><m.span ref={indicator} data-category-indicator="" className={styles.indicator} initial={false} style={{ x, y, scaleX }} /></li>
+      <li aria-hidden="true" className={styles.indicatorLayer}><span ref={indicator} data-category-indicator="" className={styles.indicator} /></li>
       {links.map(link => <li key={link.href} data-parent={link.parentId ?? undefined}>
         <Link prefetch={false} href={link.href} className={styles.link} aria-current={pathname === link.href ? "page" : undefined}>
           <V3Picture image={photos.assets[link.photo]} sizes="36px" decorative />

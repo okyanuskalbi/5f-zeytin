@@ -84,7 +84,7 @@ it("reads a directly linked size, resets quantity on size change and adds the se
   history.replaceState({ keep: true }, "", "/urun/naturel-sizma-zeytinyagi?boy=5%20L&kaynak=test");
   render(<CartProvider products={products}><ProductPage family={family} related={[]} /></CartProvider>);
   const article = within(screen.getByRole("article"));
-  expect(article.getByRole("radio", { name: "5 L" }).getAttribute("checked")).not.toBeNull();
+  expect(article.getByRole("radio", { name: "5 L" }).getAttribute("aria-checked")).toBe("true");
   expect(article.getByLabelText("Fiyat").textContent).toContain("1.750");
   fireEvent.click(article.getByRole("button", { name: "Adedi artır" }));
   fireEvent.click(article.getByRole("radio", { name: "1 L" }));

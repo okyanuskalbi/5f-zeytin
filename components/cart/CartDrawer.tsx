@@ -1,11 +1,10 @@
 "use client";
 
 import { forwardRef, useEffect, useId, useRef, useState, useSyncExternalStore, type JSX, type ReactElement, type RefObject } from "react";
-import Link from "next/link";
-import { ArrowRight, X } from "lucide-react";
+import { X } from "lucide-react";
 import { Dialog as DialogPrimitive } from "radix-ui";
 import { AnimatePresence, motion, useIsPresent, useReducedMotion, type HTMLMotionProps } from "motion/react";
-import { Button } from "@/components/ui/button";
+import { PillButton } from "@/components/storefront/ui/PillButton";
 import { PaymentUnavailable } from "@/components/storefront/cart/PaymentUnavailable";
 import { InteractiveCheckout } from "@/components/ui/interactive-checkout";
 import { CartEmpty, CartLineItem, CartTotals, CartTrust } from "./CartPresentation";
@@ -91,6 +90,8 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
     }
   }
 
+  const viewCart = <PillButton variant="quiet" href="/sepet" onClick={() => onOpenChange(false)}>Sepeti görüntüle</PillButton>;
+
   return (
     <Dialog open={open} onOpenChange={(nextOpen) => {
       // Safari does not focus clicked buttons. Remember the trigger explicitly.
@@ -123,11 +124,11 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
         initial={reduced ? false : { x: "100%" }}
         animate={{ x: 0 }} exit={reduced ? { opacity: 0 } : { x: "100%" }} transition={transition}>
         <div className={styles.drawerHeader}>
-          <div className="min-w-0 space-y-2">
+          <div className={styles.drawerHeading}>
             <DialogTitle className={styles.drawerTitle}>Sepetim ({itemCount})</DialogTitle>
             <DialogDescription className={styles.drawerDescription}>Sofranız için seçtikleriniz.</DialogDescription>
           </div>
-          <DialogClose asChild><Button ref={closeRef} variant="ghost" size="icon" aria-label="Sepeti kapat"><X aria-hidden="true" /></Button></DialogClose>
+          <DialogClose asChild><button ref={closeRef} type="button" className={styles.close} aria-label="Sepeti kapat"><X size={22} strokeWidth={1.7} aria-hidden="true" /></button></DialogClose>
         </div>
 
         {/* Firefox otherwise inserts an implicit tab stop on this scroll container. */}
@@ -149,22 +150,23 @@ export function CartDrawer({ store, products, open, onOpenChange, trigger, retur
             </ul>
           )}
           {validCart && <Upsell products={products} items={state.items} configuration={upsell} onAdd={addSuggestion} />}
-          {state.storageError && <p role="alert" className="text-base text-destructive">Sepet bu tarayıcıya kaydedilemiyor. Sayfayı yenilerseniz sepetiniz korunmayabilir.</p>}
-          <p role={feedback.error ? "alert" : "status"} aria-atomic="true" className={`text-base ${feedback.error ? "text-destructive" : "text-muted-foreground"}`}>
+          {state.storageError && <p role="alert" className={styles.error}>Sepet bu tarayıcıya kaydedilemiyor. Sayfayı yenilerseniz sepetiniz korunmayabilir.</p>}
+          <p role={feedback.error ? "alert" : "status"} aria-atomic="true" className={feedback.error ? styles.error : styles.feedback}>
             {feedback.message}
           </p>
           {mobile && state.hydrated && lines.length > 0 && <div className={styles.drawerBodyTrust}><CartTrust /></div>}
         </motion.div>
 
-        <div className={styles.drawerFooter} data-surface="dark">
+        <div className={styles.drawerFooter} data-cart-footer="">
           <CartTotals subtotal={state.hydrated && (lines.length === 0 || validCart) ? subtotal : null} itemCount={itemCount} />
           <p className={styles.estimate}>Kargo ve indirimler dahil değildir.</p>
-          {validCart && checkoutHref ? (
-            <DialogClose asChild><Button asChild className={styles.checkout}><Link href={checkoutHref} prefetch={false}>Ödemeye geç<ArrowRight aria-hidden="true" /></Link></Button></DialogClose>
-          ) : <Button disabled className={styles.checkout} aria-describedby={`${id}-payment-help`}>Ödemeye geç</Button>}
-          {checkoutHref ? <p id={`${id}-payment-help`} className={styles.paymentHelp}>Kesin tutar ödeme öncesinde doğrulanır.</p> : <PaymentUnavailable id={`${id}-payment-help`} onNavigate={() => onOpenChange(false)} />}
+          {validCart && checkoutHref
+            ? <PillButton fullWidth href={checkoutHref} onClick={() => onOpenChange(false)}>Ödemeye geç</PillButton>
+            : <PillButton fullWidth disabled aria-describedby={`${id}-payment-help`}>Ödemeye geç</PillButton>}
+          {checkoutHref
+            ? <><p id={`${id}-payment-help`} className={styles.paymentHelp}>Kesin tutar ödeme öncesinde doğrulanır.</p><div className={styles.viewCart}>{viewCart}</div></>
+            : <PaymentUnavailable compact id={`${id}-payment-help`} onNavigate={() => onOpenChange(false)}>{viewCart}</PaymentUnavailable>}
           {!mobile && <CartTrust />}
-          <DialogClose asChild><Button asChild variant="link" className={styles.secondaryLink}><Link href="/sepet" prefetch={false}>Sepeti görüntüle</Link></Button></DialogClose>
         </div>
         </InteractiveCheckout>
       </CartPanel>

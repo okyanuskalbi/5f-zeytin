@@ -19,7 +19,7 @@ it("uses a single static membership surface without overlapping 3D card faces", 
 it("explains unavailable online payment and offers a real quote destination", () => {
   render(<CheckoutPage />);
   expect(screen.getByText(/Online ödeme yakında açılıyor/)).toBeDefined();
-  expect(screen.getByRole("link", { name: "Teklif iste" }).getAttribute("href")).toBe("/toptan-satis");
+  expect(screen.getByRole("link", { name: "Teklif İste" }).getAttribute("href")).toBe("/toptan-satis");
   expect(screen.getByRole("link", { name: "Sepetime dön" }).getAttribute("href")).toBe("/sepet");
   expect(document.querySelector("form")).toBeNull();
 });

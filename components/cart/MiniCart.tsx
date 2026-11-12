@@ -4,7 +4,7 @@ import { useEffect, useState, type JSX } from "react";
 import { usePathname } from "next/navigation";
 import * as motion from "motion/react-m";
 import { useReducedMotion } from "motion/react";
-import { Button } from "@/components/ui/button";
+import { PillButton } from "@/components/storefront/ui/PillButton";
 import { useCart } from "@/components/cart/CartProvider";
 import { useCartViewport } from "@/components/cart/useCartViewport";
 import { motionTokens, springs } from "@/lib/ui-motion";
@@ -51,7 +51,7 @@ export function MiniCart(): JSX.Element | null {
         initial={reduced ? false : { opacity: 0, y: motionTokens.distance.lg }} animate={{ opacity: 1, y: 0 }}
         transition={reduced ? { duration: 0 } : springs.drawer}>
         <p aria-live="polite" aria-atomic="true">{count} adet, Ara toplam (tahmini)<strong>{known ? money.format(subtotal / 100) : "Tutar güncellenecek"}</strong></p>
-        <Button onClick={event => cart.openCart(event.currentTarget)}>Sepet</Button>
+        <PillButton size="md" icon="cart" onClick={event => cart.openCart(event.currentTarget)}>Sepet</PillButton>
       </motion.aside>}
   </>;
 }

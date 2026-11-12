@@ -31,4 +31,4 @@ Satın alma yolundaki sayfaları v3 diline geçirmek: `/urun/[slug]`, `/urunler`
 ## Kabul
 Adım 5 PASS; `output/task205/{KANIT.md,ekran/}`; `git diff <204 kaydı> --name-only -- lib/auth lib/db lib/cart lib/checkout lib/payments lib/orders app/api` boş; §14.1 (v2.0) 12 madde PASS. Tek kayıt: `feat: 205 tasarım dili v3 ürün katalog sepet`. Son satır: `205 BİTTİ`.
 
-## Durum: BEKLİYOR (204 + K5 sonrası)
+## Durum: TAMAMLANDI

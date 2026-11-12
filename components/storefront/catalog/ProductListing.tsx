@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useSyncExternalStore, type JSX } from "react";
 import { CatalogGridMotion } from "@/components/catalog/CatalogGridMotion";
 import { ProductTile } from "@/components/storefront/ProductTile";
+import { PillButton } from "@/components/storefront/ui/PillButton";
 import { sortProducts } from "@/lib/catalog/groups";
 import type { ProductVariant } from "@/types/catalog";
 import styles from "@/components/storefront/catalog/Catalog.module.css";
@@ -36,11 +36,11 @@ export function ProductListing({ products, category = false, routeKey = "/urunle
       </label>
     </div>
     <CatalogGridMotion routeKey={routeKey} className={styles.productGrid}>
-      {sorted.map(product => <ProductTile key={product.id} product={product} imageSizes="(max-width: 599px) calc(100vw - 32px), (max-width: 1023px) 44vw, 320px" />)}
+      {sorted.map(product => <ProductTile key={product.id} product={product} imageSizes="(max-width: 1023px) 44vw, 320px" />)}
     </CatalogGridMotion>
-    {!products.length && <>
+    {!products.length && <div className={styles.emptyState}>
       <p role="status">{category ? "Bu grupta şu an ürün bulunmuyor." : "Görüntülenecek ürün bulunmuyor."}</p>
-      {category && <Link prefetch={false} href="/urunler">Tüm ürünler</Link>}
-    </>}
+      {category && <PillButton variant="outline" href="/urunler">Tüm Ürünler</PillButton>}
+    </div>}
   </>;
 }

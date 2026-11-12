@@ -1,11 +1,9 @@
 "use client";
 
 import { useEffect, useId, useRef, useState, useSyncExternalStore, useTransition, type JSX } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, ArrowRight, RefreshCw } from "lucide-react";
 import { AnimatePresence } from "motion/react";
-import { Button } from "@/components/ui/button";
+import { PillButton } from "@/components/storefront/ui/PillButton";
 import { PaymentUnavailable } from "@/components/storefront/cart/PaymentUnavailable";
 import { InteractiveCheckout } from "@/components/ui/interactive-checkout";
 import { CartAmount, CartEmpty, CartLineItem, CartTotals, CartTrust } from "./CartPresentation";
@@ -94,23 +92,21 @@ export function CartSummary({ store, products, onRefresh, refreshing = false, up
 
   function checkout(): JSX.Element {
     return checkoutHref && showOffers
-      ? <Button asChild className={styles.checkout}><Link href={checkoutHref} prefetch={false}>Ödemeye geç<ArrowRight aria-hidden="true" /></Link></Button>
-      : <Button className={styles.checkout} disabled aria-describedby={`${id}-payment-help`}>Ödemeye geç</Button>;
+      ? <PillButton fullWidth href={checkoutHref} data-cart-checkout="">Ödemeye geç</PillButton>
+      : <PillButton fullWidth disabled data-cart-checkout="" aria-describedby={`${id}-payment-help`}>Ödemeye geç</PillButton>;
   }
 
   return (
     <main className={styles.page}>
       <header className={styles.header}>
-        <h1 ref={headingRef} tabIndex={-1} className="flex items-center gap-3 rounded-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring">
-          Sepetim
-        </h1>
-        <p className="max-w-xl text-muted-foreground">Ürünlerinizi gözden geçirin, sofranız için adetleri düzenleyin.</p>
-        <Button asChild variant="link" className="px-0"><Link href="/urunler" prefetch={false}><ArrowLeft aria-hidden="true" />Alışverişe devam et</Link></Button>
+        <h1 ref={headingRef} tabIndex={-1}>Sepetim</h1>
+        <p>Ürünlerinizi gözden geçirin, sofranız için adetleri düzenleyin.</p>
+        <PillButton variant="quiet" href="/urunler">Alışverişe devam et</PillButton>
       </header>
 
       <InteractiveCheckout className={styles.layout}>
         <section aria-label="Sepet içeriği" className={styles.contents}>
-          {products === null ? <p role="alert" className="rounded-none p-5 text-destructive">Katalog yüklenemedi. Sepetiniz korunuyor. Fiyat ve stokları yenileyip tekrar deneyin.</p>
+          {products === null ? <p role="alert" className={styles.notice}>Katalog yüklenemedi. Sepetiniz korunuyor. Fiyat ve stokları yenileyip tekrar deneyin.</p>
             : !state.hydrated ? <p role="status">Sepet yükleniyor…</p>
             : lines.length === 0 ? <CartEmpty />
             : <ul aria-label="Sepetteki ürünler" className={styles.pageLines}>
@@ -124,40 +120,37 @@ export function CartSummary({ store, products, onRefresh, refreshing = false, up
               })}
               </AnimatePresence>
             </ul>}
-          {products !== null && state.hydrated && invalidStock && <div className="space-y-3 rounded-none p-5">
-            <p role="alert" className="text-base text-destructive">Sepetteki bazı ürünlerin stoğu değişti. Devam etmeden önce adetleri ve ürünleri güncelleyin.</p>
-            <Button variant="outline" disabled={refreshing} onClick={reconcileStock}>Stok değişikliklerini uygula</Button>
+          {products !== null && state.hydrated && invalidStock && <div className={styles.notice}>
+            <p role="alert">Sepetteki bazı ürünlerin stoğu değişti. Devam etmeden önce adetleri ve ürünleri güncelleyin.</p>
+            <PillButton variant="outline" icon="none" disabled={refreshing} onClick={reconcileStock}>Stok değişikliklerini uygula</PillButton>
           </div>}
           {showOffers && <Upsell products={products} items={state.items} configuration={upsell} onAdd={addSuggestion} />}
-          {state.storageError && <p role="alert" className="text-base text-destructive">Sepet bu tarayıcıya kaydedilemiyor. Sayfayı yenilerseniz sepetiniz korunmayabilir.</p>}
-          <p aria-label="Sepet bildirimi" role={feedback.error ? "alert" : "status"} aria-atomic="true" className={`text-base ${feedback.error ? "text-destructive" : "text-muted-foreground"}`}>{feedback.message}</p>
+          {state.storageError && <p role="alert" className={styles.error}>Sepet bu tarayıcıya kaydedilemiyor. Sayfayı yenilerseniz sepetiniz korunmayabilir.</p>}
+          <p aria-label="Sepet bildirimi" role={feedback.error ? "alert" : "status"} aria-atomic="true" className={feedback.error ? styles.error : styles.feedback}>{feedback.message}</p>
         </section>
 
-        <aside aria-labelledby={`${id}-summary`} className={styles.summary} data-surface="dark">
+        <aside aria-labelledby={`${id}-summary`} className={styles.summary} data-cart-summary="">
           <h2 id={`${id}-summary`}>Sepet özeti</h2>
           <CartTotals subtotal={knownSubtotal ? subtotal : null} itemCount={itemCount} />
           <p className={styles.estimate}>İndirimler: <span>Henüz hesaplanmadı</span></p>
-          <p className="text-base text-muted-foreground">Kargo ve indirimler ara toplama dahil değildir. Kesin tutar ödeme öncesinde sunucuda doğrulanır.</p>
+          <p className={styles.estimate}>Kargo ve indirimler ara toplama dahil değildir. Kesin tutar ödeme öncesinde sunucuda doğrulanır.</p>
           {showOffers && <QuantityDiscount products={products} items={state.items} configuration={quantityDiscount} />}
-          <Button variant="outline" className="w-full" onClick={onRefresh} disabled={refreshing} aria-busy={refreshing}>
-            <RefreshCw aria-hidden="true" />Fiyat ve stokları yenile
-          </Button>
-          <p role="status" className="text-base text-muted-foreground">{refreshing ? "Fiyat ve stok bilgileri yenileniyor…" : "Sepet açıldığında adetler mevcut stokla sınırlandırılır."}</p>
+          <PillButton variant="outline" icon="none" size="md" fullWidth onClick={onRefresh} busy={refreshing}>Fiyat ve stokları yenile</PillButton>
+          <p role="status" className={styles.estimate}>{refreshing ? "Fiyat ve stok bilgileri yenileniyor…" : "Sepet açıldığında adetler mevcut stokla sınırlandırılır."}</p>
           <div className={styles.coupon}>
-            <label htmlFor={`${id}-coupon`} className="block text-base font-medium">Kupon kodu</label>
-            <input id={`${id}-coupon`} type="text" readOnly value="" aria-describedby={`${id}-coupon-help`}
-              className="min-h-11 w-full min-w-0 rounded-none border border-input bg-background px-3 py-2 text-base focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring" />
-            <p id={`${id}-coupon-help`} className="text-base text-muted-foreground">Kupon ekleme hazırlıkları sürüyor.</p>
-            <Button variant="outline" className="w-full" disabled aria-describedby={`${id}-coupon-help`}>Kuponu uygula</Button>
+            <label htmlFor={`${id}-coupon`}>Kupon kodu</label>
+            <input id={`${id}-coupon`} type="text" readOnly value="" aria-describedby={`${id}-coupon-help`} />
+            <PillButton variant="outline" icon="none" size="md" disabled aria-describedby={`${id}-coupon-help`}>Kuponu uygula</PillButton>
+            <p id={`${id}-coupon-help`}>Kupon ekleme hazırlıkları sürüyor.</p>
           </div>
           <div className={styles.summaryCheckout}>
             {checkout()}
-            <div>{checkoutHref ? <p id={`${id}-payment-help`}>Yerel test ödemesi sepetinizden tahsilat yapmaz.</p> : <PaymentUnavailable showDetails id={`${id}-payment-help`} />}</div>
+            <div>{checkoutHref ? <p id={`${id}-payment-help`} className={styles.paymentHelp}>Yerel test ödemesi sepetinizden tahsilat yapmaz.</p> : <PaymentUnavailable showDetails id={`${id}-payment-help`} />}</div>
           </div>
           <CartTrust />
         </aside>
       </InteractiveCheckout>
-      {products !== null && state.hydrated && lines.length > 0 && <section aria-label="Mobil ödeme" className={styles.mobileCheckout} data-surface="dark">
+      {products !== null && state.hydrated && lines.length > 0 && <section aria-label="Mobil ödeme" className={styles.mobileCheckout}>
         <p>Toplam (tahmini)<strong><CartAmount amount={knownSubtotal ? subtotal : null} label="Mobil toplam (tahmini)" /></strong></p>
         {checkout()}
       </section>}

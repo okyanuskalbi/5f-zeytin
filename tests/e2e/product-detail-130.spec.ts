@@ -31,7 +31,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       await expect(image).toHaveAttribute("loading", "eager");
       await detail.getByRole("button", { name: "Sofra görseli" }).click();
       await expect(image).toHaveAttribute("src", /sahne/);
-      await detail.getByRole("radio", { name: "1 kg", exact: true }).locator("..").click();
+      await detail.getByRole("radio", { name: "1 kg", exact: true }).click();
       await expect(detail.getByLabel("Fiyat", { exact: true })).toHaveText("₺220,00");
       await expect(page).toHaveURL(/boy=1(?:%20|\+)kg/);
       await detail.getByRole("button", { name: "Adedi artır" }).click();

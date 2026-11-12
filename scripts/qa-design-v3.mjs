@@ -1,6 +1,7 @@
 /* global document, window, innerWidth, innerHeight, getComputedStyle, PerformanceObserver, performance, scrollTo, NodeFilter, CSSKeyframesRule, CSSStyleRule */
 // Task204 browser evidence for the "Altın Dal" design language (docs/DESIGN.md).
-// node scripts/qa-design-v3.mjs <local-https-url> <output-directory>
+// node scripts/qa-design-v3.mjs <local-https-url> <output-directory> [home|shop]
+//   home (default): Task204 home page evidence · shop: Task205 buying path (scripts/qa-design-v3-shop.mjs)
 import { chromium, webkit } from 'playwright';
 import AxeBuilder from '@axe-core/playwright';
 import sharp from 'sharp';
@@ -8,11 +9,14 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { routes } from './qa-storefront-pages.mjs';
+import { auditShop } from './qa-design-v3-shop.mjs';
 
 const origin = new URL(process.argv[2] ?? 'https://localhost:3024');
 assert(['localhost', '127.0.0.1'].includes(origin.hostname), 'Local verification only');
 const out = path.resolve(process.argv[3] ?? 'output/task204');
 assert(out.startsWith(path.resolve('output') + path.sep), 'Evidence belongs in project output/');
+const scope = process.argv[4] ?? 'home';
+assert(['home', 'shop'].includes(scope), 'Scope is home or shop');
 const shots = path.join(out, 'ekran');
 await fs.mkdir(shots, { recursive: true });
 
@@ -423,6 +427,20 @@ async function otherRoutes() {
     }
     return results;
   } finally { await context.close(); }
+}
+
+if (scope === 'shop') {
+  let shop;
+  try { shop = await auditShop({ origin, out, shots, open, settle, inspectDesign, limits, fail }); }
+  finally { for (const browser of Object.values(browsers)) await browser.close(); }
+  const cls = shop.pages.map(page => page.cls).filter(value => value !== null);
+  console.log(JSON.stringify({
+    failures: report.failures, pages: shop.pages.length, maxCls: Math.max(0, ...cls), clsUnmeasured: shop.pages.filter(page => page.cls === null).length,
+    axeContrast: shop.pages.reduce((sum, page) => sum + page.axeContrast, 0), consoleErrors: shop.pages.reduce((sum, page) => sum + page.consoleErrors, 0),
+    overflow: Math.max(0, ...shop.pages.map(page => page.overflow)), minPillHeight: Math.min(...shop.pages.map(page => page.minPillHeight).filter(Boolean)),
+    flows: shop.flows.map(flow => ({ where: flow.where, steps: flow.steps.map(step => `${step.ok ? 'ok' : 'FAIL'} ${step.name}`) })), keyboard: shop.keyboard,
+  }, null, 1));
+  process.exit(report.failures.length ? 1 : 0);
 }
 
 try {

@@ -1,14 +1,23 @@
-.navigation { min-width:0; margin-block:0 32px; }
-.list { position:relative; isolation:isolate; display:flex; flex-wrap:wrap; gap:8px; margin:0; padding:4px; list-style:none; }
-.list > li { min-width:0; }
-.indicatorLayer { position:absolute; inset:0; pointer-events:none; z-index:-1; }
-.indicator { position:absolute; inset-inline-start:0; display:block; background:var(--sf-paper); border:1px solid var(--sf-green); border-radius:var(--sf-radius-field); transform-origin:left; opacity:0; }
-.navigation[data-indicator-ready] .indicator { opacity:1; }
-.link { position:relative; display:flex; align-items:center; gap:8px; min-height:48px; padding:8px 16px; border:1px solid var(--sf-line); border-radius:var(--sf-radius-field); background:var(--sf-paper); color:var(--sf-green); font-size:1rem; font-weight:500; line-height:1.5; text-decoration:none; }
-.link[aria-current="page"] { border-color:var(--sf-green); font-weight:700; }
-.link picture,.link img { display:block; width:32px; height:32px; object-fit:cover; flex:none; border-radius:var(--sf-radius-field); }
-.link:focus-visible { outline:2px solid var(--sf-focus); outline-offset:4px; }
-@media(prefers-reduced-motion:reduce) { .indicatorLayer { visibility:hidden; } }
-@media(prefers-reduced-motion:no-preference) { .navigation[data-indicator-ready] .link { background:transparent; } }
-@media(hover:hover) { .link:hover { border-color:var(--sf-focus); } }
-@media(min-width:1024px) { .navigation { margin-bottom:0; } .list { flex-direction:column; } .list > li[data-parent] { margin-inline-start:16px; } }
+/* Category pills: a small round photograph, the name, green fill on the current one.
+   The moving indicator is that green fill; without motion each current pill fills itself. */
+.navigation { min-width: 0; }
+.list { position: relative; isolation: isolate; display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+/* Paper sits on the item, the indicator above it and the transparent link (with its words) above both. */
+.list > li:not(.indicatorLayer) { min-width: 0; border-radius: var(--sf-radius-pill); background: var(--sf-paper); }
+.indicatorLayer { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.indicator { position: absolute; inset-inline-start: 0; display: block; border-radius: var(--sf-radius-pill); background: var(--sf-green); transform-origin: left; opacity: 0; }
+.navigation[data-indicator-ready] .indicator { opacity: 1; }
+.link { position: relative; display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 5px 20px 5px 5px; border: 1px solid var(--sf-line); border-radius: var(--sf-radius-pill); background: transparent; color: var(--sf-green); font-family: var(--font-body); font-size: 15px; font-weight: 600; line-height: 1.2; white-space: nowrap; text-decoration: none; transition: color 180ms ease-out, border-color 180ms ease-out; }
+.link[aria-current="page"] { border-color: var(--sf-green); background: var(--sf-green); color: var(--sf-ivory); }
+.link picture, .link img { display: block; flex: none; width: 36px; height: 36px; border-radius: var(--sf-radius-round); object-fit: cover; }
+.link:focus-visible { outline: 2px solid var(--sf-gold-deep); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .indicatorLayer { visibility: hidden; } }
+@media (prefers-reduced-motion: no-preference) {
+  /* Once measured, the sliding indicator supplies the green fill under the current pill's words. */
+  .navigation[data-indicator-ready] .link[aria-current="page"] { border-color: transparent; background: transparent; }
+}
+@media (hover: hover) and (pointer: fine) { .link:not([aria-current="page"]):hover { border-color: var(--sf-green); } }
+@media (min-width: 1024px) {
+  .list { flex-direction: column; flex-wrap: nowrap; }
+  .list > li[data-parent] { margin-inline-start: 20px; }
+}
