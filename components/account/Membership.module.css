@@ -1,96 +1,83 @@
 /* Google mandates this face for its branded button; site type stays Cormorant/Montserrat. */
 @font-face { font-family: "Google Sans Button"; src: url("/fonts/google-sans-button.ttf") format("truetype"); font-weight: 500; font-style: normal; font-display: swap; }
+/* Üyelik formları (docs/DESIGN.md → Formlar): 52 px fields, 12 px corners, pill actions. */
 .page { padding: 48px var(--page-margin) 96px; color: var(--foreground); }
-.split { display: grid; gap: 48px; align-items: start; }
-.formSide { min-width: 0; width: 100%; max-width: 480px; margin-inline: auto; }
-.intro { display: grid; gap: 16px; margin-bottom: 24px; }
-.intro h1 { font-size: var(--step-head); }
+.intro { display: grid; gap: 12px; margin-bottom: 24px; }
 .intro p, .muted { color: var(--muted-foreground); }
-.demo { max-width: 65ch; padding: 16px 24px; margin-bottom: 24px; background: var(--card); font-size: var(--step-body); color: var(--foreground); }
+.demo { max-width: 65ch; margin-bottom: 24px; padding: 16px 24px; border-radius: var(--sf-radius-field); background: var(--card); font-size: 16px; color: var(--foreground); }
 .demo strong { font-weight: 600; }
-.form { display: grid; gap: 24px; }
+.form { display: grid; gap: 24px; font-size: 16px; line-height: 1.6; }
 .form fieldset { display: grid; gap: 24px; min-width: 0; }
 .field { display: grid; gap: 8px; min-width: 0; }
-.field label { font-weight: 600; }
-.field input, .field textarea { background: var(--card); }
-.field small, .error { font-size: var(--step-small); }
+.field label { font-size: 14px; font-weight: 600; line-height: 1.5; color: var(--sf-green); }
+.field :is(input, textarea) { min-height: 52px; padding: 12px 16px; border: 1px solid var(--sf-line); border-radius: var(--sf-radius-field); background: var(--sf-paper); color: var(--sf-ink); font-size: 16px; }
+.field :is(input, textarea)[aria-invalid="true"] { border-color: var(--destructive); }
+.field small, .error { font-size: 14px; line-height: 1.5; }
 .error { color: var(--destructive); }
+/* The show/hide control lives inside the field's right edge. */
 .password { position: relative; display: block; }
-.password input { width: 100%; padding-right: 48px; }
-.password button { position: absolute; top: 50%; right: 4px; transform: translateY(-50%); min-height: 44px; min-width: 44px; width: 44px; height: 44px; color: var(--foreground); }
-.password button, .password button:hover, .password button:active, .password button:focus, .password button:focus-visible { background: transparent; }
+.password input { width: 100%; padding-right: 52px; }
+.password button { position: absolute; top: 50%; right: 4px; width: 44px; min-width: 44px; height: 44px; min-height: 44px; border-radius: var(--sf-radius-round); background: transparent; color: var(--sf-green); transform: translateY(-50%); }
+.password button:is(:hover, :active, :focus, :focus-visible) { background: transparent; }
 .labelRow { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; column-gap: 12px; margin-bottom: -6px; }
-.forgotPassword { min-height: 44px; padding: 8px 0 8px 8px; font-size: 14px; font-weight: 500; color: var(--muted-foreground); text-underline-offset: 3px; }
-.alternateSignIn { width: 100%; min-height: 48px; padding: 12px; border: 1px solid var(--customer-rule, var(--border)); border-radius: var(--sf-radius-pill); font-size: 16px; font-weight: 500; background: transparent; }
-.alternateSignIn:hover { background: var(--card); }
+.forgotPassword { font-size: 14px; }
 .authFooter { display: grid; gap: 2px; margin-top: 4px; text-align: center; font-size: 16px; }
 .authFooter p { color: var(--muted-foreground); }
-.authFooter .textLink { color: var(--foreground); font-weight: 600; padding-inline: 4px; }
-.guestLink { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding-block: 8px; color: var(--muted-foreground); font-size: 14px; }
+.authFooter .textLink { padding-inline: 4px; color: var(--sf-green); font-weight: 600; }
+.guestLink { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding-block: 8px; font-size: 14px; color: var(--muted-foreground); }
 .guestLink:hover { color: var(--foreground); text-decoration: underline; text-underline-offset: 4px; }
 .strength { display: flex; gap: 8px; align-items: center; }
-.strength meter { width: 100%; height: 16px; accent-color: var(--altin); }
-.strength span { white-space: nowrap; font-size: var(--step-small); }
-.consents { display: grid; gap: 16px; }
-.check { display: flex; align-items: flex-start; gap: 12px; min-height: 44px; padding-block: 8px; cursor: pointer; font-size: var(--step-body); }
-.check input { width: 24px; height: 24px; flex-shrink: 0; margin-top: 1px; accent-color: var(--altin); }
-.textLink { display: inline-flex; align-items: center; min-height: 44px; padding-block: 8px; text-decoration: underline; }
-.check a { text-decoration: underline; }
-.feedback { padding: 16px; background: var(--card); overflow-wrap: anywhere; }
+.strength meter { width: 100%; height: 16px; accent-color: var(--sf-gold-deep); }
+.strength span { font-size: 14px; white-space: nowrap; }
+.consents { display: grid; gap: 12px; }
+.check { display: flex; align-items: flex-start; gap: 12px; min-height: 44px; padding-block: 8px; font-size: 16px; cursor: pointer; }
+.check input { flex-shrink: 0; width: 24px; height: 24px; margin-top: 1px; accent-color: var(--sf-green); }
+.check a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; }
+.textLink { display: inline-flex; align-items: center; min-height: 44px; padding-block: 8px; text-decoration: underline; text-decoration-color: var(--sf-gold); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.feedback { padding: 16px 20px; border-radius: var(--sf-radius-field); background: var(--card); overflow-wrap: anywhere; }
 .feedback:empty { display: none; }
-.separator { text-align: center; color: var(--muted-foreground); margin-block: 24px; }
-.google { display: flex; width: 100%; min-height: 48px; align-items: center; justify-content: center; gap: 10px; border: 1px solid #747775; border-radius: 4px; background: #fff; padding: 12px; color: #1f1f1f; cursor: pointer; font: 500 14px/20px "Google Sans Button", var(--font-body, var(--font-body-fallback)); }
-.google img { width: 20px; height: 20px; flex-shrink: 0; }
+/* Google's sign-in button keeps the colours its brand rules prescribe (white fill, #747775 stroke, #1f1f1f label); only the pill shape is ours. */
+.google { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 52px; padding: 12px; border: 1px solid #747775; border-radius: var(--sf-radius-pill); background: #fff; color: #1f1f1f; cursor: pointer; font: 500 14px/20px "Google Sans Button", var(--font-body, var(--font-body-fallback)); }
+.google img { flex-shrink: 0; width: 20px; height: 20px; }
 .google:hover { background: #f2f2f2; }
-.google:disabled { cursor: wait; opacity: 0.6; }
-.story { background: var(--brand-olive); color: var(--brand-ivory); min-width: 0; }
-.story img { width: 100%; height: clamp(260px, 40vw, 520px); object-fit: cover; }
-.story figcaption { padding: 32px; }
-.story p { font: 500 var(--step-head)/1.2 var(--font-display, var(--font-display-fallback)); text-wrap: balance; }
+.google:disabled { cursor: wait; opacity: .6; }
 .account { max-width: 1200px; margin-inline: auto; }
 .accountHeader { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
 .accountHeader p { margin-top: 16px; }
-.panel { padding-block: 24px; max-width: 760px; }
-.panel h2 { font-size: var(--step-lead); margin-bottom: 24px; }
-.actions { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
-.list { display: grid; gap: 32px; margin-block: 24px; }
-.address { padding: 24px; background: var(--card); overflow-wrap: anywhere; }
-.address h3 { margin-bottom: 16px; }
-.address p + p { margin-top: 8px; }
+.panel { max-width: 760px; padding-block: 24px; }
+.panel h2 { margin-bottom: 24px; font-size: var(--step-lead); }
+.actions { display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: center; }
+.actions [data-variant="quiet"] { min-width: 44px; justify-content: center; }
+.list { display: grid; gap: 16px; margin-block: 24px; }
+.address, .addressForm { padding: 24px; border: 1px solid var(--sf-line); border-radius: var(--sf-radius-card); background: var(--card); overflow-wrap: anywhere; }
+.address h3 { margin-bottom: 12px; }
+.address [data-tag] { margin-bottom: 12px; }
+.address p + p { margin-top: 4px; }
 .address .actions { margin-top: 16px; }
-.badge { display: inline-block; background: var(--card); padding: 8px 12px; font: 600 var(--step-small)/1.4 var(--font-body, var(--font-body-fallback)); }
-.address .badge { padding-left: 0; }
-.order { display: grid; gap: 24px; padding: 24px; background: var(--card); }
+/* "Adres silinsin mi?" confirmation: the same paper panel as every other dialog. */
+.confirm { border: 1px solid var(--sf-line); border-radius: var(--sf-radius-card); background: var(--sf-paper); color: var(--sf-ink); }
+.confirm [data-slot="dialog-title"] { font-size: 28px; font-weight: 600; line-height: 1.1; color: var(--sf-green); }
+.confirm [data-slot="dialog-description"] { color: var(--sf-muted); }
+.confirm [data-slot="dialog-close"] { border-radius: var(--sf-radius-round); color: var(--sf-green); }
+.confirm :is(a, button):focus-visible { outline: 2px solid var(--sf-focus); outline-offset: 3px; }
+.badge { display: inline-block; padding: 8px 12px; border-radius: var(--sf-radius-pill); background: var(--card); font: 600 14px/1.4 var(--font-body, var(--font-body-fallback)); }
+.order { display: grid; gap: 24px; padding: 24px; border-radius: var(--sf-radius-card); background: var(--card); }
 .order h3 { font-size: var(--step-lead); }
 .order dl { display: flex; flex-wrap: wrap; gap: 24px; }
-.order dt { color: var(--muted-foreground); font-size: var(--step-small); }
+.order dt { font-size: 14px; color: var(--muted-foreground); }
 .order dd { font-variant-numeric: tabular-nums; }
 .empty { padding-block: 24px; }
 .empty p { margin-bottom: 24px; }
-.addressForm { margin-top: 32px; padding: 24px; background: var(--card); }
+.addressForm { margin-top: 32px; }
 .addressGrid { display: grid; gap: 24px; }
 .suggestion { display: grid; gap: 8px; margin-block: 24px; }
 @media (min-width: 1024px) {
-  .split { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; }
-  .formSide { padding-block: 16px; }
-  .story { position: sticky; top: calc(var(--header-height) + 24px); }
-  .addressGrid { grid-template-columns: minmax(0, 1fr); }
   .order { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
   .order dl { grid-column: 1; }
   .order > a { grid-column: 2; grid-row: 1 / 3; }
 }
 @media (max-width: 599px) {
   .page { padding-block: 32px 64px; }
-  .story figcaption { padding: 24px; }
-  .formSide { max-width: none; }
+  .address, .addressForm { padding: 20px 16px; }
+  .actions > [data-pill][type="submit"] { flex: 1 1 100%; }
 }
-
-/* Storefront form surfaces share the A design tokens. */
-.form { font-size: 16px; line-height: 1.6; }
-.form button { min-height: 48px; border-radius: var(--sf-radius-pill); white-space: nowrap; }
-.field :is(input,textarea) { min-height: 48px; font-size: 16px; border-radius: 0; color: var(--sf-ink); background: var(--sf-paper); border-color: var(--sf-muted); }
-.field small, .error { font-size: 14px; }
-.password button { min-height: 44px; border-radius: var(--sf-radius-round); }
-.check a { display: inline-flex; align-items: center; min-height: 44px; }
-.address, .addressForm { border-radius: var(--sf-radius-card); }
-@media (max-width: 359px) { .form button { padding-inline: 8px; } .alternateSignIn { font-size: 14px; gap: 4px; } }

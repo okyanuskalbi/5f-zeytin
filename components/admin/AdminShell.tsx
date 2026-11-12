@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { Boxes, ClipboardList, LayoutDashboard, Menu, Search, Store, Truck, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { PillButton } from "@/components/storefront/ui/PillButton";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -142,10 +143,10 @@ export function AdminShell({ overview = { status: "empty" }, children, area }: {
       </header>
       <main id="admin-content" tabIndex={-1} className={styles.content}>
         {children ?? <section aria-labelledby="admin-genel-bakis" className={styles.overview}>
-          <div className={styles.overviewHeading}><div><h1 id="admin-genel-bakis" tabIndex={-1}>Panel</h1><p className={styles.muted}>Ürünlerinizi yönetin.</p></div><Link prefetch={false} href="/admin/urunler" className={styles.primaryLink}>Ürünleri yönet</Link></div>
+          <div className={styles.overviewHeading}><div><h1 id="admin-genel-bakis" tabIndex={-1}>Panel</h1><p className={styles.muted}>Ürünlerinizi yönetin.</p></div><PillButton href="/admin/urunler" icon="none">Ürünleri yönet</PillButton></div>
           {sample && <p className={styles.notice}>Örnek özet. Gerçek işlem verisi değildir.</p>}
           {loading && <p role="status">Özet yükleniyor…</p>}
-          {failed && <div className={styles.error}><p role="alert">Özet yüklenemedi. Lütfen yeniden deneyin.</p><Button onClick={() => router.refresh()}>Yeniden dene</Button></div>}
+          {failed && <div className={styles.error}><p role="alert">Özet yüklenemedi. Lütfen yeniden deneyin.</p><PillButton icon="none" size="md" onClick={() => router.refresh()}>Yeniden dene</PillButton></div>}
           <section aria-label="Operasyon özeti" aria-busy={loading} className={styles.summaries}>
             {summaries.map((summary, index) => <Card key={summary.title} role="region" aria-labelledby={`admin-summary-${index}`}>
               <CardHeader><summary.icon aria-hidden="true" /><h2 id={`admin-summary-${index}`}>{summary.title}</h2>{sample && <Badge variant="outline">Test verisi</Badge>}</CardHeader>

@@ -2,7 +2,8 @@ import { randomBytes, randomUUID } from 'node:crypto';
 import pg from 'pg';
 import assert from 'node:assert/strict';
 
-const origin = 'https://localhost:3021';
+// Local evidence servers differ by task; qa-design-v3-pages sets its own address before importing this.
+const origin = /^https:\/\/localhost:\d+$/.test(process.env.STOREFRONT_QA_ORIGIN ?? '') ? process.env.STOREFRONT_QA_ORIGIN : 'https://localhost:3021';
 function localPool() {
   const raw = process.env.TEST_DATABASE_URL;
   if (!raw) throw new Error('Local TEST_DATABASE_URL required');

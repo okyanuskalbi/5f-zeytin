@@ -27,10 +27,14 @@ it("keeps the dealership introduction on a light surface without a dark image ov
   const hero = container.querySelector('section[aria-labelledby="bayilik-title"]')!;
   expect(hero.getAttribute("data-surface")).not.toBe("dark");
   expect(hero.querySelector("picture")).toBeNull();
+  // Task206 (v3): the introduction sits in the shared sage band; still light, still no photograph or overlay.
+  expect(hero.querySelector("[data-page-band]")).not.toBeNull();
   const colors: Record<string, string> = {};
-  pageCss.walkRules(".hero", rule => rule.walkDecls(decl => { colors[decl.prop] = decl.value; }));
-  expect(colors.background).toBe("var(--sf-ivory)");
-  expect(colors.color).toBe("var(--sf-ink)");
+  parse(readFileSync("components/storefront/ui/ui.module.css", "utf8")).walkRules(".band", rule => rule.walkDecls(decl => { colors[decl.prop] = decl.value; }));
+  expect(colors.background).toBe("var(--sf-sage)");
+  const root: Record<string, string> = {};
+  pageCss.walkRules(".root", rule => rule.walkDecls(decl => { root[decl.prop] = decl.value; }));
+  expect(root.color).toBe("var(--sf-ink)");
 });
 
 it("gives the wider tin its own responsive source slots while preserving the jar and oil sources", () => {

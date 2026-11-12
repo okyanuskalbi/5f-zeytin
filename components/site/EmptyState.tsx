@@ -1,16 +1,15 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
-import { Button } from "@/components/ui/button";
-import styles from "./InnerPage.module.css";
+import { PillButton } from "@/components/storefront/ui/PillButton";
+import styles from "@/components/storefront/content/Content.module.css";
 
 export function EmptyState({ title, children, href = "/#urunler", action = "Ürünlerimizi keşfedin" }: {
   title: string; children: ReactNode; href?: string; action?: string;
 }) {
   return <main className={styles.page}>
-    <div className={`${styles.paper} ${styles.statePaper} ${styles.empty}`}>
-      <header className={styles.header}><h1>{title}</h1></header>
+    <div className={styles.state}>
+      <h1>{title}</h1>
       {children}
-      <Button asChild><Link href={href} prefetch={false}>{action}</Link></Button>
+      <div className={styles.actions}><PillButton href={href}>{action}</PillButton></div>
     </div>
   </main>;
 }

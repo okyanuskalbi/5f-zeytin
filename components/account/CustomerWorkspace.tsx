@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { PackageIcon, ArrowLeftIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { PillButton } from "@/components/storefront/ui/PillButton";
 import { TrackingTimeline } from "@/components/ui/order-history";
 import { customerOrderTimeline } from "@/lib/orders/timeline";
 import type { AccountProfile } from "@/lib/contracts/account";
@@ -19,6 +19,8 @@ import {
   customerJson,
   customerRequest,
 } from "@/lib/account/customer-client";
+import { SectionHeading } from "@/components/storefront/ui/SectionHeading";
+import { Tag } from "@/components/storefront/ui/Tag";
 import { CustomerNavigation } from "./CustomerNavigation";
 import { AddressBook } from "./AddressBook";
 import { Feedback, Field, useMembershipAction } from "./FormControls";
@@ -104,9 +106,9 @@ function ResourceFailure({ retry }: { retry: () => void }) {
       <p role="alert">
         Bilgileriniz şu anda yüklenemedi. Lütfen yeniden deneyin.
       </p>
-      <Button variant="outline" onClick={retry}>
+      <PillButton variant="outline" icon="none" onClick={retry}>
         Yeniden dene
-      </Button>
+      </PillButton>
       <p>
         <Link href="/giris">Giriş sayfasına dön</Link>
       </p>
@@ -132,12 +134,11 @@ export function CustomerWorkspace({
       <div className={styles.customerShell}>
         <header className={styles.customerHeader}>
           <div>
-            <h1>{title}</h1>
-            <p>{description}</p>
+            <SectionHeading as="h1" title={title} lead={description} />
           </div>
           {!signedOut && (
-            <Button
-              variant="outline"
+            <PillButton
+              variant="outline" icon="none"
               disabled={action.busy}
               onClick={() =>
                 void action.run(async () => {
@@ -154,7 +155,7 @@ export function CustomerWorkspace({
               }
             >
               {action.busy ? "İşleniyor…" : "Çıkış yap"}
-            </Button>
+            </PillButton>
           )}
         </header>
         {signedOut ? (
@@ -207,9 +208,9 @@ function CustomerOrders() {
           </h2>
           <p>Sofranız için seçtiğiniz lezzetleri burada takip edebilirsiniz.</p>
           {page > 1 ? (
-            <Button variant="outline" onClick={() => setPage(page - 1)}>
+            <PillButton variant="outline" icon="none" onClick={() => setPage(page - 1)}>
               Önceki sayfaya dön
-            </Button>
+            </PillButton>
           ) : (
             <Link href="/#urunler">Ürünlerimizi keşfedin</Link>
           )}
@@ -223,9 +224,7 @@ function CustomerOrders() {
                   <h3>{order.no}</h3>
                   <time dateTime={order.date}>{date(order.date)}</time>
                 </div>
-                <span className={styles.status}>
-                  {customerOrderStatuses[order.status]}
-                </span>
+                <Tag>{customerOrderStatuses[order.status]}</Tag>
                 <strong>{money(order.totalKurus)}</strong>
                 <Link
                   href={`/hesabim/siparisler/${encodeURIComponent(order.no)}`}
@@ -236,21 +235,21 @@ function CustomerOrders() {
             ))}
           </ul>
           <div className={styles.formActions}>
-            <Button
-              variant="outline"
+            <PillButton
+              variant="outline" icon="none"
               disabled={page === 1}
               onClick={() => setPage(page - 1)}
             >
               Önceki
-            </Button>
+            </PillButton>
             <span>Sayfa {page}</span>
-            <Button
-              variant="outline"
+            <PillButton
+              variant="outline" icon="none"
               disabled={page * customerPageSize >= state.data.total}
               onClick={() => setPage(page + 1)}
             >
               Sonraki
-            </Button>
+            </PillButton>
           </div>
         </>
       )}
@@ -280,9 +279,7 @@ function CustomerOrderDetail({ no }: { no: string }) {
           <p>
             <time dateTime={order.date}>{date(order.date)}</time>
           </p>
-          <span className={styles.status}>
-            {customerOrderStatuses[order.status]}
-          </span>
+          <Tag>{customerOrderStatuses[order.status]}</Tag>
           <ul>
             {order.items.map((item, index) => (
               <li key={index}>
@@ -415,9 +412,9 @@ function ProfileEditor({ profile }: { profile: AccountProfile }) {
         </fieldset>
         <Feedback {...feedback} />
         <div className={styles.formActions}>
-          <Button type="submit" disabled={busy}>
+          <PillButton type="submit" icon="check" busy={busy}>
             {busy ? "Kaydediliyor…" : "Bilgileri kaydet"}
-          </Button>
+          </PillButton>
         </div>
       </form>
     </section>
@@ -483,9 +480,9 @@ function SecurityEditor() {
         </fieldset>
         <Feedback {...feedback} />
         <div className={styles.formActions}>
-          <Button type="submit" disabled={busy}>
+          <PillButton type="submit" icon="check" busy={busy}>
             {busy ? "Güncelleniyor…" : "Şifreyi güncelle"}
-          </Button>
+          </PillButton>
           <Link href="/giris">
             Şifremi unuttum / E-posta bağlantısıyla giriş
           </Link>

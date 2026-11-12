@@ -1,8 +1,9 @@
 "use client";
 
 import { useRef, useState, type FormEvent } from "react";
-import { Button } from "@/components/ui/button";
+import { PillButton } from "@/components/storefront/ui/PillButton";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Tag } from "@/components/storefront/ui/Tag";
 import { getMembershipAdapters } from "@/lib/auth/demo";
 import type { AccountAdapter, Address, AddressInput } from "@/lib/account/adapter";
 import { Feedback, Field, useMembershipAction } from "./FormControls";
@@ -28,17 +29,17 @@ export function AddressBook({ initialAddresses, onChange, adapter, demo = true }
 
   return <section aria-labelledby="addresses-title">
     <h2 id="addresses-title" ref={heading} tabIndex={-1}>Adreslerim</h2>
-    <Button disabled={busy} onClick={() => edit("new")}>Adres ekle</Button>
+    <PillButton icon="plus" disabled={busy} onClick={() => edit("new")}>Adres ekle</PillButton>
     <Feedback {...feedback} />
     {!addresses.length && <p className={styles.empty}>Henüz adresiniz yok.</p>}
     <ul className={styles.list}>{addresses.map(address => <li key={address.id} className={styles.address}>
       <h3>{address.title}</h3>
-      {address.isDefault && <span className={styles.badge}>Varsayılan adres</span>}
+      {address.isDefault && <Tag>Varsayılan adres</Tag>}
       <p>{address.recipient}</p><p>{address.line}</p><p>{address.district} / {address.city}, {address.postalCode}</p><p>{address.phone}</p>
       <div className={styles.actions}>
-        <Button variant="outline" disabled={busy} onClick={() => edit(address)}>Düzenle</Button>
-        {!address.isDefault && <Button variant="outline" disabled={busy} onClick={() => void run(async () => { await getAdapter().setDefaultAddress(address.id); await refresh(); return "Varsayılan adres güncellendi."; })}>Varsayılan yap</Button>}
-        <Button variant="link" disabled={busy} onClick={() => setRemoving(address)}>Sil</Button>
+        <PillButton variant="outline" icon="none" size="md" disabled={busy} onClick={() => edit(address)}>Düzenle</PillButton>
+        {!address.isDefault && <PillButton variant="outline" icon="none" size="md" disabled={busy} onClick={() => void run(async () => { await getAdapter().setDefaultAddress(address.id); await refresh(); return "Varsayılan adres güncellendi."; })}>Varsayılan yap</PillButton>}
+        <PillButton variant="quiet" size="md" disabled={busy} onClick={() => setRemoving(address)}>Sil</PillButton>
       </div>
     </li>)}</ul>
     {editing && <div className={styles.addressForm}>
@@ -46,11 +47,11 @@ export function AddressBook({ initialAddresses, onChange, adapter, demo = true }
       <AddressForm adapter={getAdapter()} key={editing === "new" ? "new" : editing.id} address={editing === "new" ? undefined : editing} onCancel={finish} onSave={async () => { await refresh(); finish(); }} />
     </div>}
     <Dialog open={removing !== null} onOpenChange={open => { if (!open && !busy) setRemoving(null); }}>
-      <DialogContent role="alertdialog" onCloseAutoFocus={event => { event.preventDefault(); heading.current?.focus(); }}>
+      <DialogContent role="alertdialog" className={styles.confirm} onCloseAutoFocus={event => { event.preventDefault(); heading.current?.focus(); }}>
         <DialogHeader><DialogTitle>Adres silinsin mi?</DialogTitle><DialogDescription>{removing?.title} adresi {demo ? "demo adres defterinizden" : "adres defterinizden"} silinecek.</DialogDescription></DialogHeader>
         <div className={styles.actions}>
-          <Button variant="outline" disabled={busy} onClick={() => setRemoving(null)}>Vazgeç</Button>
-          <Button variant="destructive" disabled={busy} onClick={() => void run(async () => { if (!removing) return; await getAdapter().deleteAddress(removing.id); await refresh(); setRemoving(null); if (editing !== "new" && editing?.id === removing.id) finish(); return "Adres silindi."; })}>Adresi sil</Button>
+          <PillButton variant="outline" icon="none" disabled={busy} onClick={() => setRemoving(null)}>Vazgeç</PillButton>
+          <PillButton icon="none" disabled={busy} onClick={() => void run(async () => { if (!removing) return; await getAdapter().deleteAddress(removing.id); await refresh(); setRemoving(null); if (editing !== "new" && editing?.id === removing.id) finish(); return "Adres silindi."; })}>Adresi sil</PillButton>
         </div>
       </DialogContent>
     </Dialog>
@@ -79,7 +80,7 @@ function AddressForm({ address, onSave, onCancel, adapter }: { adapter: AddressB
     <fieldset disabled={busy}>
       <div className={styles.addressGrid}>{addressFields.map(field => <Field key={field.name} {...field} id={`address-${field.name}`} required defaultValue={address?.[field.name] ?? ""} error={errors[field.name]} />)}</div>
       <Feedback {...feedback} />
-      <div className={styles.actions}><Button type="submit">{busy ? "Kaydediliyor…" : "Adresi kaydet"}</Button><Button variant="outline" onClick={onCancel}>Vazgeç</Button></div>
+      <div className={styles.actions}><PillButton type="submit" icon="check">{busy ? "Kaydediliyor…" : "Adresi kaydet"}</PillButton><PillButton variant="outline" icon="none" onClick={onCancel}>Vazgeç</PillButton></div>
     </fieldset>
   </form>;
 }

@@ -4,13 +4,13 @@
 .customer-address-combobox[data-open=true]{z-index:4}
 .customer-address-combobox>label{display:block;margin:0;font-size:13px;line-height:1.5;font-weight:500;color:var(--ink)}
 .customer-address-combobox-control{position:relative;min-width:0;margin-top:7px}
-.customer-address-combobox .customer-address-combobox-control>input{display:block;width:100%;min-width:0;max-width:100%;min-height:48px;box-sizing:border-box;margin:0;padding:11px 46px 11px 12px;border:1px solid var(--line);border-radius:0;background:#fff;color:var(--ink);font:16px/1.45 var(--sans)}
-.customer-address-combobox-control>input:focus-visible{outline:2px solid var(--forest);outline-offset:2px}
+.customer-address-combobox .customer-address-combobox-control>input{display:block;width:100%;min-width:0;max-width:100%;min-height:52px;box-sizing:border-box;margin:0;padding:11px 46px 11px 12px;border:1px solid var(--line);border-radius:var(--sf-radius-field);background:var(--sf-paper);color:var(--ink);font:16px/1.45 var(--sans)}
+.customer-address-combobox-control>input:focus-visible{outline:2px solid var(--sf-focus);outline-offset:2px}
 .customer-address-combobox .customer-address-combobox-control>input:disabled{background:var(--soft);color:var(--muted);cursor:not-allowed}
-.customer-address-combobox-control>.customer-address-toggle{position:absolute;inset-inline-end:2px;top:2px;display:grid;place-items:center;width:44px;height:44px;min-height:44px;padding:0;border:0;border-radius:var(--sf-radius-field);background:none;color:var(--forest);cursor:pointer}
+.customer-address-combobox-control>.customer-address-toggle{position:absolute;inset-inline-end:4px;top:4px;display:grid;place-items:center;width:44px;height:44px;min-height:44px;padding:0;border:0;border-radius:var(--sf-radius-field);background:none;color:var(--forest);cursor:pointer}
 .customer-address-toggle:disabled{color:var(--muted);cursor:not-allowed;opacity:.6}
 .customer-address-combobox[data-open=true] .customer-address-toggle>svg{transform:rotate(180deg)}
-.customer-address-options{position:absolute;inset-inline:0;top:calc(100% + 4px);z-index:20;min-width:0;max-width:100%;max-height:var(--address-options-max-height,260px);box-sizing:border-box;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;border:1px solid var(--line);border-radius:var(--sf-radius-card);background:#fff;color:var(--ink);box-shadow:0 8px 24px #0c211924}
+.customer-address-options{position:absolute;inset-inline:0;top:calc(100% + 4px);z-index:20;min-width:0;max-width:100%;max-height:var(--address-options-max-height,260px);box-sizing:border-box;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;border:1px solid var(--line);border-radius:var(--sf-radius-field);background:var(--sf-paper);color:var(--ink);box-shadow:0 8px 24px #0c211924}
 .customer-address-options[data-side=above]{top:auto;bottom:calc(100% + 4px)}
 .customer-address-options-list{display:block;max-height:calc(var(--address-options-max-height,260px) - 2px);min-width:0;margin:0;padding:4px;list-style:none;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;scroll-padding:4px;-webkit-overflow-scrolling:touch}
 .customer-address-options-list:empty{display:none}
@@ -22,11 +22,14 @@
 .customer-address-combobox>.customer-address-combobox-hint{display:block;margin-top:6px;color:var(--muted);font-size:12px;line-height:1.5}
 .customer-address-combobox>.customer-address-live{position:absolute!important;width:1px!important;height:1px!important;margin:-1px!important;padding:0!important;border:0!important;overflow:hidden!important;clip-path:inset(50%)!important;white-space:nowrap!important}
 /* AFİNA tokens; source interaction retained from the user's Bazgold project. */
-.customer-phone-field,.customer-address-combobox,.phone-country-search { --line:#8b9583; --ink:#172b21; --muted:#52604e; --sans:var(--font-body),sans-serif; --forest:#243a29; --soft:#ecf0e4; }
+.customer-phone-field,.customer-address-combobox,.phone-country-search { --line:var(--sf-line); --ink:var(--sf-ink); --muted:var(--sf-muted); --sans:var(--font-body),sans-serif; --forest:var(--sf-green); --soft:var(--sf-sage); }
 .customer-address-combobox { margin:0; }
 .customer-address-combobox>label,.customer-phone-label { font-size:14px; font-weight:600; }
-.customer-phone-inputs>input { min-height:48px; padding:12px; border:1px solid var(--line); border-radius:0; background:#fff; color:var(--ink); font-size:16px; line-height:1.5; }
-.customer-phone-inputs>input:focus-visible { outline:2px solid var(--forest); outline-offset:2px; }
+.customer-phone-inputs>input { min-height:52px; padding:12px; border:1px solid var(--line); border-radius:var(--sf-radius-field); background:var(--sf-paper); color:var(--ink); font-size:16px; line-height:1.5; }
+.customer-phone-inputs>input:focus-visible { outline:2px solid var(--sf-focus); outline-offset:2px; }
 .customer-address-combobox-control>input[aria-invalid=true] { border-color:#8e312b; }
 
-.customer-phone-inputs select { min-height:48px; font-size:16px; border:1px solid var(--sf-muted); background:var(--sf-paper); color:var(--sf-ink); }
+.customer-phone-inputs select { min-height:52px; font-size:16px; border:1px solid var(--sf-line); background:var(--sf-paper); color:var(--sf-ink); }
+
+/* Task206: placeholders at 4.5:1 or better on paper and on the disabled sage fill (was half-transparent ink). */
+.customer-address-combobox-control>input::placeholder,.customer-phone-inputs>input::placeholder { color:var(--sf-muted); opacity:1; }

@@ -1,6 +1,8 @@
 import { PageBreadcrumbJsonLd } from "@/components/site/PageBreadcrumbJsonLd";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { PageBand } from "@/components/storefront/ui/PageBand";
+import { PillButton } from "@/components/storefront/ui/PillButton";
 import styles from "./Content.module.css";
 
 const documents = [
@@ -14,8 +16,8 @@ export function LegalDocument({ title, path, scope, children }: {
 }) {
   return <main className={styles.page}>
     <PageBreadcrumbJsonLd name={title} path={path} />
-    <article className={`${styles.paper} ${styles.legal}`}>
-      <h1>{title}</h1>
+    <div className={styles.band}><PageBand title={title} /></div>
+    <article className={styles.paper}>
       <nav className={styles.contents} aria-label="İçindekiler"><h2>İçindekiler</h2><ul><li><a href="#taslak-basligi">Metnin durumu</a></li><li><a href="#kapsam-basligi">Kapsam</a></li><li><a href="#seller-title">Satıcı bilgileri</a></li></ul></nav>
       <section aria-labelledby="taslak-basligi">
         <h2 id="taslak-basligi">Taslak, onay bekleniyor</h2>
@@ -23,7 +25,7 @@ export function LegalDocument({ title, path, scope, children }: {
         <p>Tam şirket unvanı, adresi ve vergi bilgileri aşağıda yer alır. İletişim bilgileri ve yasal metin onayı bekleniyor.</p>
       </section>
       <section aria-labelledby="kapsam-basligi">
-        <h2 id="kapsam-basligi" className={styles.scopeTitle}>{scope}</h2>
+        <h2 id="kapsam-basligi">{scope}</h2>
         <p>{children}</p>
       </section>
       <section aria-labelledby="seller-title">
@@ -38,10 +40,10 @@ export function LegalDocument({ title, path, scope, children }: {
       </section>
       <nav aria-label="Hukuk sayfaları" className={styles.legalNav}>
         <ul>{documents.map(document => <li key={document.href}>
-          <Link prefetch={false} href={document.href} aria-current={path === document.href ? "page" : undefined} className={styles.textLink}>{document.title}</Link>
+          <Link prefetch={false} href={document.href} aria-current={path === document.href ? "page" : undefined}>{document.title}</Link>
         </li>)}</ul>
       </nav>
-      <Link prefetch={false} href="/" className={styles.textLink}>Ana sayfaya dön</Link>
+      <PillButton variant="quiet" href="/">Ana sayfaya dön</PillButton>
     </article>
   </main>;
 }

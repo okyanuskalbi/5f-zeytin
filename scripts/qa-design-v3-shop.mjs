@@ -15,6 +15,8 @@ const routes = [
   { name: 'kategori-zeytinyagi', path: '/urunler/zeytinyagi', kind: 'catalog' },
   { name: 'kategori-zeytin', path: '/urunler/zeytin', kind: 'catalog' },
   { name: 'kategori-kirma', path: '/urunler/kirma-zeytin', kind: 'catalog' },
+  { name: 'kategori-siyah', path: '/urunler/siyah-zeytin', kind: 'catalog' },
+  { name: 'kategori-yesil', path: '/urunler/yesil-zeytin', kind: 'catalog' },
   { name: 'urun-kirma-1kg', path: '/urun/dogal-kirma-yesil-zeytin?boy=1%20kg', kind: 'product' },
   { name: 'urun-kirma-3l', path: '/urun/dogal-kirma-yesil-zeytin?boy=3%20L', kind: 'product' },
   { name: 'urun-yag-5l', path: '/urun/naturel-sizma-zeytinyagi?boy=5%20L', kind: 'product' },

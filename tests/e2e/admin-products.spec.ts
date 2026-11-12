@@ -113,12 +113,20 @@ for (const reducedMotion of ["no-preference", "reduce"] as const) {
       await expect(page.getByRole("status")).toContainText("Ürün yayından kaldırıldı");
       expect(records[0].isActive).toBe(false); expect(records).toHaveLength(3);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-      const scroll = page.getByRole("region", { name: "Yatay kaydırılabilir ürün tablosu" });
+      // Task206 (tasarım dili v3): the product list no longer scrolls sideways. In a narrow panel every
+      // product is a card whose values carry their column name, and the column headers stay as sort pills.
+      const scroll = page.getByRole("region", { name: "Ürün tablosu", exact: true });
       await scroll.focus(); await expect(scroll).toBeFocused();
+      expect(await scroll.evaluate(element => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(0);
+      await expect(page.getByRole("table")).toHaveCount(1);
+      for (const label of ["Ürün", "Fiyat", "Stok", "Durum"]) await expect(page.getByRole("button", { name: `${label} ile sırala` })).toBeVisible();
       if (width < 768) {
-        await scroll.evaluate(element => { element.scrollLeft = 0; });
-        await page.keyboard.press("ArrowRight");
-        await expect.poll(() => scroll.evaluate(element => element.scrollLeft)).toBeGreaterThan(0);
+        const firstRow = page.getByRole("row").nth(1);
+        const labels = await firstRow.getByRole("cell").evaluateAll(cells => cells.map(cell => getComputedStyle(cell, "::before").content));
+        expect(labels).toEqual(['"Ürün"', '"Fiyat"', '"Stok"', '"Durum"', '"İşlemler"']);
+        const row = await firstRow.boundingBox();
+        expect(row!.x).toBeGreaterThanOrEqual(0);
+        expect(row!.x + row!.width).toBeLessThanOrEqual(width);
       }
       if (width < 1024) {
         const menu = page.getByRole("button", { name: "Yönetim menüsünü aç" });

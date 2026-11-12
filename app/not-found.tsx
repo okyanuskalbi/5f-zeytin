@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { OliveBranch } from "@/components/storefront/ui/OliveBranch";
+import { PillButton } from "@/components/storefront/ui/PillButton";
 import styles from "@/components/storefront/content/Content.module.css";
 
 export const metadata: Metadata = {
@@ -9,9 +10,10 @@ export const metadata: Metadata = {
 };
 
 export default function NotFound() {
-  return <main className={styles.page}><div className={styles.paper}>
+  return <main className={styles.page}><div className={styles.state}>
+    <OliveBranch className={styles.stateBranch} />
     <h1>Sayfa bulunamadı</h1>
     <p>Bu adres artık kullanılmıyor ya da yanlış yazılmış olabilir. Ürünleri inceleyebilir veya ana sayfaya dönebilirsiniz.</p>
-    <div className={styles.actions}><Link prefetch={false} href="/urunler">Ürünleri İnceleyin</Link><Link prefetch={false} href="/">Ana sayfaya dön</Link></div>
+    <div className={styles.actions}><PillButton href="/">Ana sayfa</PillButton><PillButton variant="outline" href="/urunler">Ürünler</PillButton></div>
   </div></main>;
 }

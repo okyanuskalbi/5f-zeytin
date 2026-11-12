@@ -5,6 +5,7 @@ import { MembershipFrame } from "./MembershipFrame";
 import Link from "next/link";
 import { Eye, EyeOff, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PillButton } from "@/components/storefront/ui/PillButton";
 import { Input } from "@/components/ui/input";
 import { MembershipError, passwordStrength } from "@/lib/auth/adapter";
 import { registrationConfirmation, registrationReady, registrationPasswordError, validateRegisterRequest, type RegisterResponse } from "@/lib/contracts/register";
@@ -80,7 +81,7 @@ function RegisterForm() {
         <Consent name="consent" error={errors.consent}>Açık rıza: üyelik bilgilerimin üyelik işlemleri için işlenmesine rıza veriyorum. (Zorunlu)</Consent>
         <Consent name="marketing">Ticari ileti almak istiyorum. (İsteğe bağlı)</Consent>
       </div>
-      <Button type="submit" className="w-full" disabled={busy}>{busy ? "İşleniyor…" : "Üyelik oluştur"}</Button>
+      <PillButton type="submit" fullWidth busy={busy}>{busy ? "İşleniyor…" : "Üyelik oluştur"}</PillButton>
     </fieldset>
     <p ref={feedbackRef} tabIndex={-1} role={feedback.error ? "alert" : "status"} aria-live={feedback.error ? "assertive" : "polite"} aria-atomic="true" className={`${styles.feedback} ${feedback.error ? styles.error : ""}`}>{busy ? "İsteğiniz işleniyor…" : feedback.message}</p>
   </form>;

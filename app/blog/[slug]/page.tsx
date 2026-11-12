@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { BlogCard, formatBlogDate } from "@/components/storefront/content/BlogCard";
 import { V3Picture } from "@/components/media/V3Picture";
 import { ProductTile } from "@/components/storefront/ProductTile";
+import { PagePath } from "@/components/storefront/ui/PageBand";
 import { blogEditorial } from "@/components/storefront/content/blog-editorial";
 import { blogCover } from "@/lib/blog/cover";
 import { blogPosts } from "@/lib/blog/posts";
@@ -65,11 +66,12 @@ export default async function Page({ params }: Props): Promise<JSX.Element> {
   };
   return <main className={styles.root}><div className={styles.container}>
     {[article, breadcrumb, faq].map(schema => <script key={schema["@type"]} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />)}
-    <nav aria-label="İçerik yolu" className={styles.breadcrumb}><ol><li><Link prefetch={false} href="/">Ana Sayfa</Link></li><li><span aria-hidden="true">/</span><Link href="/blog">Blog</Link></li><li><span aria-hidden="true">/</span><span aria-current="page">{post.title}</span></li></ol></nav>
+    <PagePath steps={[{ name: "Ana Sayfa", href: "/" }, { name: "Blog", href: "/blog" }, { name: post.title }]} />
     <article className={styles.article}>
       <header className={styles.articleHeader}><h1>{post.title}</h1><div className={styles.articleMeta}><span>Güncelleme: <time dateTime={post.updated}>{formatBlogDate(post.updated)}</time></span><span data-article-author>AFİNA ZEYTİN</span><span>{post.readingMinutes} dakika okuma</span></div><p className={styles.excerpt} data-article-answer>{editorial.answer}</p></header>
       <V3Picture image={image} sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1023px) 90vw, 960px" eager className={styles.cover} />
-      <div className={styles.prose} data-blog-content>{post.sections.map((section, index) => <section key={section.heading}><h2>{editorial.headings[index]}</h2>{section.paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}{section.items && <ol>{section.items.map(item => <li key={item}>{item}</li>)}</ol>}</section>)}<p className={styles.categoryLink}><Link href={post.categoryHref}>{category?.name ?? "İlgili kategori"} ürünlerini inceleyin</Link></p><section data-article-faq className={styles.faq} aria-labelledby="article-faq-title"><h2 id="article-faq-title">Bu konuda sık sorulan sorular neler?</h2>{editorial.faq.map(item => <details key={item.question}><summary>{item.question}</summary><p>{item.answer}</p></details>)}</section></div>
+      <nav aria-label="İçindekiler" className={styles.contents}><ul>{editorial.headings.slice(0, post.sections.length).map((heading, index) => <li key={heading}><a href={`#bolum-${index + 1}`}>{heading}</a></li>)}</ul></nav>
+      <div className={styles.prose} data-blog-content>{post.sections.map((section, index) => <section key={section.heading}><h2 id={`bolum-${index + 1}`}>{editorial.headings[index]}</h2>{section.paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}{section.items && <ol>{section.items.map(item => <li key={item}>{item}</li>)}</ol>}</section>)}<p className={styles.categoryLink}><Link href={post.categoryHref}>{category?.name ?? "İlgili kategori"} ürünlerini inceleyin</Link></p><section data-article-faq className={styles.faq} aria-labelledby="article-faq-title"><h2 id="article-faq-title">Bu konuda sık sorulan sorular neler?</h2>{editorial.faq.map(item => <details key={item.question}><summary>{item.question}</summary><p>{item.answer}</p></details>)}</section></div>
     </article>
     <section aria-labelledby="related-products-title" className={styles.related}><h2 id="related-products-title">Hangi ürünler bu yazıyla ilgili?</h2><div className={styles.productGrid}>{related.map(product => <ProductTile key={product.id} product={product} />)}</div></section>
     <section aria-labelledby="other-articles-title" className={styles.related}><h2 id="other-articles-title">Başka hangi yazıları okuyabilirsiniz?</h2><div className={`${styles.cardGrid} ${styles.otherGrid}`}>{blogPosts.filter(other => other.slug !== post.slug).map(other => <BlogCard key={other.slug} post={other} headingLevel={3} other />)}</div></section>

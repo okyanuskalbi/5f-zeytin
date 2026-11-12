@@ -82,6 +82,8 @@
   -webkit-text-fill-color: var(--sf-muted);
   cursor: not-allowed;
 }
+/* Quiet is text only: while disabled it greys out but never gains a fill. */
+.pill[data-variant="quiet"]:disabled:not([aria-busy="true"]) { background: transparent; }
 .pill[aria-busy="true"] { cursor: progress; }
 .pill[aria-disabled="true"] { cursor: default; }
 

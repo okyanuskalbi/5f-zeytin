@@ -1,7 +1,8 @@
 /* global document, window, innerWidth, innerHeight, getComputedStyle, PerformanceObserver, performance, scrollTo, NodeFilter, CSSKeyframesRule, CSSStyleRule */
 // Task204 browser evidence for the "Altın Dal" design language (docs/DESIGN.md).
-// node scripts/qa-design-v3.mjs <local-https-url> <output-directory> [home|shop]
+// node scripts/qa-design-v3.mjs <local-https-url> <output-directory> [home|shop|pages] [pages: route,names for a partial look]
 //   home (default): Task204 home page evidence · shop: Task205 buying path (scripts/qa-design-v3-shop.mjs)
+//   pages: Task206 remaining pages, account and admin (scripts/qa-design-v3-pages.mjs; needs a --local-auth server)
 import { chromium, webkit } from 'playwright';
 import AxeBuilder from '@axe-core/playwright';
 import sharp from 'sharp';
@@ -10,13 +11,14 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { routes } from './qa-storefront-pages.mjs';
 import { auditShop } from './qa-design-v3-shop.mjs';
+import { auditPages } from './qa-design-v3-pages.mjs';
 
 const origin = new URL(process.argv[2] ?? 'https://localhost:3024');
 assert(['localhost', '127.0.0.1'].includes(origin.hostname), 'Local verification only');
 const out = path.resolve(process.argv[3] ?? 'output/task204');
 assert(out.startsWith(path.resolve('output') + path.sep), 'Evidence belongs in project output/');
 const scope = process.argv[4] ?? 'home';
-assert(['home', 'shop'].includes(scope), 'Scope is home or shop');
+assert(['home', 'shop', 'pages'].includes(scope), 'Scope is home, shop or pages');
 const shots = path.join(out, 'ekran');
 await fs.mkdir(shots, { recursive: true });
 
@@ -439,6 +441,20 @@ if (scope === 'shop') {
     axeContrast: shop.pages.reduce((sum, page) => sum + page.axeContrast, 0), consoleErrors: shop.pages.reduce((sum, page) => sum + page.consoleErrors, 0),
     overflow: Math.max(0, ...shop.pages.map(page => page.overflow)), minPillHeight: Math.min(...shop.pages.map(page => page.minPillHeight).filter(Boolean)),
     flows: shop.flows.map(flow => ({ where: flow.where, steps: flow.steps.map(step => `${step.ok ? 'ok' : 'FAIL'} ${step.name}`) })), keyboard: shop.keyboard,
+  }, null, 1));
+  process.exit(report.failures.length ? 1 : 0);
+}
+
+if (scope === 'pages') {
+  let pages;
+  try { pages = await auditPages({ origin, out, shots, open, settle, inspectDesign, limits, fail, browsers, engines, only: (process.argv[5] ?? '').split(',').filter(Boolean) }); }
+  finally { for (const browser of Object.values(browsers)) await browser.close(); }
+  const cls = pages.pages.map(page => page.cls).filter(value => value !== null);
+  console.log(JSON.stringify({
+    failures: report.failures, pages: pages.pages.length, maxCls: Math.max(0, ...cls), clsUnmeasured: pages.pages.filter(page => page.cls === null).length,
+    axeContrast: pages.pages.reduce((sum, page) => sum + page.axeContrast, 0), consoleErrors: pages.pages.reduce((sum, page) => sum + page.consoleErrors, 0),
+    overflow: Math.max(0, ...pages.pages.map(page => page.overflow)), minPillHeight: Math.min(...pages.pages.map(page => page.minPillHeight).filter(Boolean)),
+    auth: pages.auth, checks: pages.checks, flows: pages.flows.map(flow => ({ where: flow.where, steps: flow.steps.map(step => `${step.ok ? 'ok' : 'FAIL'} ${step.name}`) })),
   }, null, 1));
   process.exit(report.failures.length ? 1 : 0);
 }

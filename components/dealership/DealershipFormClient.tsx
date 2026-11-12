@@ -3,7 +3,7 @@
 import { useCallback, useId, useLayoutEffect, useRef, useState, useSyncExternalStore, type JSX, type SubmitEvent } from "react";
 import { AddressSearchField } from "@/components/ui/address-search-field";
 import { DeferredPhoneField as CustomerPhoneField } from "@/components/storefront/forms/DeferredPhoneField";
-
+import { PillButton } from "@/components/storefront/ui/PillButton";
 import { corporateContact } from "@/lib/site/corporate-contact";
 import type { DealershipDraft, DealershipErrors, DealershipField, dealershipLimits as Limits } from "@/lib/dealership/application";
 import styles from "./DealershipForm.module.css";
@@ -108,14 +108,15 @@ export function DealershipFormClient({ openDraft = openMailto, configuration }: 
           <label><input type="checkbox" name="kvkk" checked={consent} required aria-invalid={!!errors.consent || undefined} aria-describedby={errors.consent ? `${id}-consent-error` : undefined} onChange={event => { setConsent(event.target.checked); setErrors(previous => ({ ...previous, consent: undefined })); invalidate(); }} /><span>KVKK aydınlatma metnini okudum. <span aria-hidden="true">*</span></span></label>
           <a href="/kvkk">KVKK aydınlatma metni</a>{error("consent")}
         </div>
-        <button className={`${styles.submit} ${styles.wide}`} type="submit" disabled={!hydrated || preparing} aria-busy={preparing}>Başvuru E-postasını Hazırla</button>
+        {/* Mounted afresh once the page is interactive: the pre-hydration disabled look gives way at once, with no colour fade on load. */}
+        <PillButton key={hydrated ? "ready" : "waiting"} className={styles.wide} type="submit" fullWidth disabled={!hydrated} busy={preparing}>Başvuru E-postasını Hazırla</PillButton>
       </fieldset>
       <p role="alert" className={styles.error}>{Object.values(errors).some(Boolean) ? "Lütfen işaretli alanları kontrol edin." : ""}</p>
     </form>
     <p role="status" aria-label="Başvuru durumu" aria-atomic="true" className={styles.status}>{prepared ? launchFailed ? "Başvuru taslağınız hazır. E-posta uygulamanız açılamadıysa metni kopyalayıp aşağıdaki adrese gönderebilirsiniz." : "E-posta uygulamanızda başvuru taslağı açıldı. Gönder'e bastığınızda başvurunuz bize ulaşır." : ""}{copyStatus && <> {copyStatus}</>}</p>
     {prepared && <div className={styles.fallback}>
       <p>E-posta uygulamanız açılmadıysa metni kopyalayıp <a href={`mailto:${corporateContact.email}`}>{corporateContact.email}</a> adresine gönderebilirsiniz.</p>
-      <button type="button" onClick={() => void copy()}>Metni kopyala</button>
+      <PillButton variant="outline" icon="none" onClick={() => void copy()}>Metni kopyala</PillButton>
       <label htmlFor={`${id}-preview`}>Hazırlanan başvuru metni</label><textarea id={`${id}-preview`} ref={preview} readOnly rows={7} value={`${prepared.subject}\r\n\r\n${prepared.body}`} />
     </div>}
     <noscript><p>Başvuru taslağını hazırlamak için JavaScript gerekir. Firma, yetkili, telefon, e-posta, il, ilçe ve işletme türü bilgilerinizi <a href={`mailto:${corporateContact.email}`}>{corporateContact.email}</a> adresine yazabilirsiniz.</p></noscript>

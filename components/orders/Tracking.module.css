@@ -1,58 +1,41 @@
-.page { font-size: 16px; padding: 48px 32px 96px; color: var(--foreground); }
+/* Sipariş takibi (docs/DESIGN.md v3): paper panels, pill actions, Tag status. */
+.page { padding: 48px 48px 96px; background: var(--sf-ivory); color: var(--sf-ink); font-size: 16px; }
 .container { max-width: 1200px; margin-inline: auto; }
-.header { display: grid; gap: 16px; margin-bottom: 32px; }
-.header h1 { font-size: clamp(36px, 5vw, 56px); line-height: 1.15; }
-.header p { color: var(--muted-foreground); }
-.demo { padding: 24px; margin-bottom: 32px; background: var(--card); max-width: 60ch; overflow-wrap: anywhere; }
+.header { margin-bottom: 32px; }
+.demo { max-width: 62ch; margin-bottom: 32px; padding: 20px 24px; border-radius: var(--sf-radius-field); background: var(--sf-sage); line-height: 1.6; overflow-wrap: anywhere; }
 .demo strong { font-weight: 600; }
-.form { margin-bottom: 24px; }
+.form { max-width: 560px; margin-bottom: 24px; padding: 32px; border: 1px solid var(--sf-line); border-radius: var(--sf-radius-card); background: var(--sf-paper); }
 .form fieldset { display: grid; align-items: start; gap: 24px; min-width: 0; }
-.form button { min-height: 48px; }
-.ownOrders { display: flex; flex-wrap: wrap; gap: 16px; margin-block: 24px; }
+.form fieldset > [data-pill] { justify-self: start; }
+.ownOrders { display: flex; flex-wrap: wrap; gap: 12px; margin-block: 24px; }
 .ownOrders p { width: 100%; }
 .result { margin-block: 48px; }
-.resultHeader { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; margin-bottom: 32px; }
-.resultHeader h2 { font-size: var(--step-lead); overflow-wrap: anywhere; }
-.resultHeader p { padding: 8px 16px; background: var(--card); font-weight: 600; }
+.resultHeader { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-bottom: 32px; }
+.resultHeader h2 { font-size: clamp(28px, 3vw, 38px); font-weight: 600; line-height: 1.1; color: var(--sf-green); overflow-wrap: anywhere; }
 .resultBody { display: grid; gap: 48px; align-items: start; }
 .timeline, .summary { min-width: 0; }
-.timeline h2, .summary h2 { font-size: var(--step-lead); margin-bottom: 24px; }
-.progress { height: 6px; background: var(--card); margin-bottom: 32px; }
-.progress span { display: block; height: 100%; background: var(--altin); transform-origin: left; }
-.steps { display: grid; gap: 0; }
-.steps li { position: relative; display: flex; flex-wrap: wrap; column-gap: 16px; row-gap: 8px; padding-bottom: 32px; padding-left: 36px; }
-.steps li:last-child { padding-bottom: 0; }
-.steps li::before { content: ""; position: absolute; top: 20px; bottom: 0; left: 8px; width: 3px; background: var(--card); }
-.steps li:last-child::before { display: none; }
-.steps li[data-connected="true"]::before { background: var(--altin); }
-.marker { position: absolute; top: 5px; left: 0; width: 20px; height: 20px; border: 3px solid var(--altin); border-radius: 50%; background: var(--background); }
-.steps li[data-complete="true"] .marker { background: var(--altin); }
-.steps li[aria-current="step"] .marker { background: var(--brand-gold); }
-.steps p { color: var(--muted-foreground); font-size: var(--step-small); margin-top: 8px; }
-.current { align-self: start; font-size: var(--step-small); font-weight: 600; background: var(--card); padding: 4px 8px; }
-.summary { display: grid; gap: 40px; }
+.timeline h2, .summary h2 { margin-bottom: 24px; font-size: 28px; font-weight: 600; line-height: 1.1; color: var(--sf-green); }
+.progress { height: 6px; margin-bottom: 32px; overflow: hidden; border-radius: var(--sf-radius-pill); background: var(--sf-sage); }
+.progress span { display: block; height: 100%; background: var(--sf-gold-deep); transform-origin: left; }
+.summary { display: grid; gap: 32px; }
 .summary section { min-width: 0; }
-.shipping { padding: 24px; background: var(--card); }
+.shipping { padding: 24px; border: 1px solid var(--sf-line); border-radius: var(--sf-radius-card); background: var(--sf-paper); }
 .shipping > * + * { margin-top: 16px; }
 .shipping > p:empty { display: none; }
 .summary dl { display: grid; gap: 16px; }
-.summary dt { font-size: var(--step-small); color: var(--muted-foreground); margin-bottom: 4px; }
+.summary dt { margin-bottom: 4px; font-size: 14px; color: var(--sf-muted); }
 .summary dd { font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 .trackingNo { user-select: all; }
-.items { display: grid; gap: 24px; margin-bottom: 32px; }
-.items li { display: grid; gap: 8px; }
-.items span { font-variant-numeric: tabular-nums; }
+.items { display: grid; gap: 20px; margin-bottom: 32px; }
+.items li { display: grid; gap: 4px; }
+.items span { font-variant-numeric: tabular-nums; color: var(--sf-muted); }
 .totals > div:first-child { display: flex; justify-content: space-between; gap: 24px; font-weight: 600; }
-.link { display: inline-flex; min-height: 44px; align-items: center; padding-block: 8px; text-decoration: underline; }
-.link:focus-visible { outline: 2px solid var(--ring); outline-offset: 4px; }
-@media (min-width: 768px) {
-  .form fieldset { grid-template-columns: minmax(0, 1fr); }
-  .form fieldset > button { grid-column: 1 / -1; justify-self: start; }
-  .resultBody { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; }
+.link { display: inline-flex; align-items: center; min-height: 44px; padding-block: 8px; color: var(--sf-green); text-decoration: underline; text-decoration-color: var(--sf-gold); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.page :is(a, button, input):focus-visible { outline: 2px solid var(--sf-focus); outline-offset: 3px; }
+@media (min-width: 768px) { .resultBody { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; } }
+@media (max-width: 599px) {
+  .page { padding: 24px 16px 64px; }
+  .demo { padding: 16px; }
+  .form { padding: 24px 16px; }
+  .form fieldset > [data-pill] { justify-self: stretch; width: 100%; }
 }
-@media (max-width: 599px) { .page { padding-block: 32px 64px; } .demo { padding: 16px; } }
-
-.form { max-width: 576px; }
-.page button { border-radius: var(--sf-radius-pill); }
-.page input { min-height: 48px; font-size: 16px; }
-@media (max-width: 599px) { .page { padding-inline: 16px; } }

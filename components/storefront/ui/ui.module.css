@@ -28,7 +28,10 @@
   border-radius: var(--sf-radius-pill);
   background: var(--sf-paper);
 }
-.switch button {
+.switch :is(button, a) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-width: 72px;
   height: 44px;
   padding-inline: 20px;
@@ -45,8 +48,8 @@
   -webkit-tap-highlight-color: transparent;
   transition: background-color 180ms ease-out, color 180ms ease-out;
 }
-.switch button[aria-checked="true"] { background: var(--sf-green); color: var(--sf-ivory); }
-.switch button:focus-visible { outline: 2px solid var(--sf-gold-deep); outline-offset: 3px; }
+.switch :is(button[aria-checked="true"], [aria-current="page"]) { background: var(--sf-green); color: var(--sf-ivory); }
+.switch :is(button, a):focus-visible { outline: 2px solid var(--sf-gold-deep); outline-offset: 3px; }
 
 /* Pill quantity control (QuantityStepper). */
 .stepper {
@@ -85,7 +88,7 @@
   font-variant-numeric: tabular-nums;
 }
 @media (hover: hover) and (pointer: fine) {
-  .switch button[aria-checked="false"]:hover { background: var(--sf-sage); }
+  .switch :is(button[aria-checked="false"], a:not([aria-current]), button:not([aria-checked], [aria-current])):hover { background: var(--sf-sage); }
   .stepper button:not(:disabled):hover { background: var(--sf-sage); }
 }
 /* The phone action height is 48 px: the stepper beside it keeps its 44 px targets in a thinner rim. */
@@ -151,4 +154,32 @@
 @media (max-width: 640px) {
   .title { font-size: 34px; }
   .lead { font-size: 17px; }
+}
+
+/* Inner page opening (PageBand): path, then a sage band with the title and a photograph or the branch. */
+.path ol { display: flex; flex-wrap: wrap; align-items: center; gap: 0 12px; margin: 0; padding: 0; list-style: none; font-size: 14px; line-height: 1.5; color: var(--sf-muted); }
+.path li { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.path a { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; color: var(--sf-green); text-decoration: underline; text-decoration-color: var(--sf-gold); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.path [aria-current="page"] { overflow-wrap: anywhere; }
+.path a:focus-visible { outline: 2px solid var(--sf-gold-deep); outline-offset: 3px; }
+.band { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; min-height: 260px; margin-block: 8px 0; overflow: hidden; border-radius: var(--sf-radius-card); background: var(--sf-sage); }
+.band[data-photo] { grid-template-columns: minmax(0, 1fr) minmax(0, .86fr); min-height: 320px; }
+.bandCopy { display: grid; align-content: center; justify-items: start; gap: 24px; min-width: 0; padding: 48px 56px; }
+.bandCopy > p { max-width: 54ch; margin: 0; font-size: 16px; line-height: 1.65; color: var(--sf-muted); }
+.bandActions { display: flex; flex-wrap: wrap; gap: 12px 16px; max-width: 100%; }
+.bandPhoto { position: relative; display: block; min-height: 100%; background: var(--sf-green-deep); }
+.bandPhoto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* The branch closes the band's lower right corner in its own grid cell, so it never sits on the text. */
+.bandBranch { align-self: end; width: min(280px, 24vw); margin: 0 40px 28px 0; opacity: .7; }
+@media (max-width: 1023px) {
+  .band { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  .bandCopy { padding: 40px; }
+  .bandBranch { justify-self: end; width: 168px; margin: -12px 32px 28px 0; }
+}
+@media (max-width: 767px) {
+  .band[data-photo] { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  .bandCopy { padding: 32px 20px; gap: 20px; }
+  .bandPhoto { min-height: 0; aspect-ratio: 16 / 10; }
+  .bandBranch { margin: 0 20px 24px 0; }
+  .bandActions > * { flex: 1 1 100%; }
 }

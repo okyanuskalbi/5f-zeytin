@@ -1,4 +1,5 @@
-.manager { display: grid; gap: 24px; min-width: 0; }
+/* The product list answers to its own width (see the @container block below), not the window's. */
+.manager { display: grid; gap: 24px; min-width: 0; container-type: inline-size; }
 .heading { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
 .heading h1 { margin-bottom: 8px; }
 .heading p, .count, .weight, .upsells > p { color: var(--muted-foreground); }
@@ -6,49 +7,73 @@
 .count p { display: flex; align-items: center; gap: 16px; }
 .count strong { color: var(--foreground); font-weight: 600; }
 .panel { min-width: 0; display: grid; gap: 24px; padding: 16px; background: var(--card); border: 1px solid var(--border); border-radius: var(--sf-radius-card); }
-.manager button, .editDialog button { min-height: 48px; border-radius: var(--sf-radius-pill); font-size: 1rem; white-space: nowrap; }
+.manager button:not([data-pill]), .editDialog button:not([data-pill]) { min-height: 48px; border-radius: var(--sf-radius-pill); font-size: 1rem; white-space: nowrap; }
 .manager :is(a, button, input, select, [tabindex]):focus-visible { outline: 2px solid var(--ring); outline-offset: 4px; }
 .status { color: var(--primary); }
 .silentStatus { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 .editDialog { width: calc(100% - 32px); max-width: 720px; padding: 24px; gap: 16px; border: 1px solid var(--border); border-radius: var(--sf-radius-card); overscroll-behavior: contain; }
 .dialogHeading { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-.dialogHeading [data-slot="dialog-title"] { font-size: 1.75rem; }
+.dialogHeading [data-slot="dialog-title"] { font-size: 1.375rem; }
 .formPanel { min-width: 0; padding-top: 8px; }
-.formPanel :is(input, select) { min-height: 48px; width: 100%; border: 1px solid var(--input); border-radius: 0; background: var(--background); color: var(--foreground); padding: 8px 16px; font-size: 1rem; }
+.formPanel :is(input, select) { min-height: 52px; width: 100%; border: 1px solid var(--input); border-radius: var(--sf-radius-field); background: var(--background); color: var(--foreground); padding: 8px 16px; font-size: 1rem; }
 .formPanel input::placeholder { color: var(--muted-foreground); }
 .fields { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; min-width: 0; }
 .fields > div { min-width: 0; }
-.fields label, .controlLabel { display: block; margin-bottom: 8px; }
+.fields label, .controlLabel { display: block; margin-bottom: 8px; font-size: .875rem; font-weight: 600; }
 .help { margin-top: 8px; color: var(--muted-foreground); overflow-wrap: anywhere; font-size: .875rem; }
 .categoryVisibility { display: flex; gap: 8px; max-width: 100%; }
 .categoryVisibility [data-slot="toggle-group-item"] { min-width: 72px; min-height: 48px; border: 1px solid var(--input); border-radius: var(--sf-radius-pill); background: var(--background); color: var(--foreground); }
 .categoryVisibility [data-slot="toggle-group-item"][data-state="on"] { background: var(--primary); color: var(--primary-foreground); border-color: var(--primary); }
 .fields .check { display: flex; gap: 16px; align-items: center; min-height: 48px; margin: 0; overflow-wrap: anywhere; }
-.check input { flex-shrink: 0; min-width: 20px; width: 20px; min-height: 20px; height: 20px; padding: 0; accent-color: var(--primary); }
+.fields .check { font-size: 1rem; font-weight: 400; }
+.check input { flex-shrink: 0; min-width: 20px; width: 20px; min-height: 20px; height: 20px; padding: 0; border-radius: var(--sf-radius-field); accent-color: var(--primary); }
 .upsells { min-width: 0; display: grid; gap: 8px; grid-column: 1 / -1; padding-top: 24px; border-top: 1px solid var(--border); }
 .upsells legend { font-weight: 600; margin-bottom: 8px; }
 .actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 16px; }
-.actions [data-variant="outline"], .pagination button { border-color: var(--border); }
 .fields > .actions { grid-column: 1 / -1; border-top: 1px solid var(--border); padding-top: 24px; }
 .error { padding: 16px; border: 1px solid var(--destructive); color: var(--destructive); background: var(--sf-paper); border-radius: var(--sf-radius-card); display: grid; gap: 16px; }
 .error button { justify-self: start; }
-.tableHint { color: var(--muted-foreground); font-size: .875rem; }
 .scroll { overflow-x: auto; min-width: 0; }
 .scroll [data-slot="table-container"] { overflow: visible; }
 .scroll table { min-width: 760px; font-size: 1rem; }
-.scroll th, .scroll td { padding: 16px; }
-.scroll th { background: var(--sf-ivory); color: var(--sf-muted); }
+/* 52 px rows (docs/DESIGN.md → Yönetim paneli): a 44 px pill or a name with its packaging line fits inside. */
+.scroll :is(th, td) { height: 52px; padding: 4px 16px; }
+.scroll th { padding-block: 2px; }
+.scroll th { background: var(--sf-sage); color: var(--sf-green); font-size: .875rem; font-weight: 600; }
+.scroll th:first-child { border-radius: var(--sf-radius-field) 0 0 var(--sf-radius-field); }
+.scroll th:last-child { border-radius: 0 var(--sf-radius-field) var(--sf-radius-field) 0; }
 .scroll th button { display: inline-flex; align-items: center; gap: 8px; text-align: left; min-width: 48px; }
 .scroll th svg { width: 16px; height: 16px; }
 .scroll td:first-child { white-space: normal; min-width: 192px; max-width: 288px; overflow-wrap: anywhere; }
-.scroll td:first-child strong { font-weight: 600; }
+.scroll td:first-child strong { display: block; font-weight: 600; line-height: 1.25; }
 .scroll caption { padding-block: 16px; text-align: left; font-size: .875rem; max-width: 64ch; }
-.weight { display: block; margin-top: 8px; font-size: .875rem; }
+.weight { display: block; font-size: .8125rem; line-height: 1.3; }
 .number { font-variant-numeric: tabular-nums; }
 .pagination { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; font-variant-numeric: tabular-nums; }
-.pagination button { padding-inline: 16px; }
 .pagination span { font-size: .875rem; }
 @media (min-width: 768px) { .panel, .editDialog { padding: 24px; } .fields { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* Narrow panel (phone, tablet, laptop beside the sidebar): each product becomes a labelled card and
+   the column headers become sort pills, so nothing scrolls sideways and sorting stays within reach. */
+@container (max-width: 927px) {
+  .scroll { overflow-x: visible; }
+  .scroll table { min-width: 0; }
+  .scroll :is(table, thead, tbody, tr, th, td) { display: block; }
+  .scroll thead tr { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding-bottom: 12px; }
+  .scroll thead tr::before { content: "Sırala"; margin-inline-end: 4px; font-size: .875rem; font-weight: 600; color: var(--sf-muted); }
+  .scroll th { height: auto; padding: 0; background: none; }
+  .scroll th:last-child { display: none; }
+  .scroll th button { padding: 0 16px; border: 1px solid var(--border); background: var(--sf-paper); }
+  .scroll th[aria-sort="ascending"] button, .scroll th[aria-sort="descending"] button { border-color: var(--sf-green); background: var(--sf-green); color: var(--sf-ivory); }
+  .scroll tbody { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); gap: 0 32px; }
+  .scroll tbody tr { padding: 12px 0; }
+  .scroll td { display: grid; grid-template-columns: 72px minmax(0, 1fr); align-items: center; gap: 0 12px; height: auto; min-height: 40px; padding: 4px 0; white-space: normal; }
+  .scroll td::before { content: attr(data-label); font-size: .875rem; font-weight: 600; color: var(--sf-muted); }
+  .scroll td > * { grid-column: 2; min-width: 0; max-width: 100%; }
+  .scroll td > [data-slot="badge"] { justify-self: start; }
+  .scroll td:first-child { min-width: 0; max-width: none; }
+  .scroll td:last-child { padding-top: 8px; }
+  .scroll caption { display: block; }
+}
 @media (max-width: 479px) {
   .editDialog { padding: 16px; }
   .heading > button, .fields > .actions > button { width: 100%; }

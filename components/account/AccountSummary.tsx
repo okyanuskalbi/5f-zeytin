@@ -3,11 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { PillButton } from "@/components/storefront/ui/PillButton";
 import { MembershipError } from "@/lib/auth/adapter";
 import type { AccountProfile } from "@/lib/contracts/account";
 import { useMembershipAction } from "./FormControls";
 import styles from "./Membership.module.css";
+import { SectionHeading } from "@/components/storefront/ui/SectionHeading";
 import summary from "./AccountSummary.module.css";
 import panel from "@/components/storefront/account/AccountSurface.module.css";
 import { CustomerNavigation } from "./CustomerNavigation";
@@ -34,10 +35,10 @@ export function AccountSummary({ profile }: { profile: AccountProfile | null }) 
 
   return <main className={panel.customerPage}><div className={panel.customerShell}>
     <header className={panel.customerHeader}>
-      <div><h1 className={summary.title}>Hesabım</h1><p className={styles.muted}>Profil bilgileriniz ve siparişlerinize ulaşabileceğiniz alan.</p></div>
-      {profile && !signedOut && <Button variant="outline" disabled={busy} onClick={signOut}>{busy ? "İşleniyor…" : "Çıkış yap"}</Button>}
+      <div><SectionHeading as="h1" title="Hesabım" lead="Profil bilgileriniz ve siparişlerinize ulaşabileceğiniz alan." /></div>
+      {profile && !signedOut && <PillButton variant="outline" icon="none" disabled={busy} onClick={signOut}>{busy ? "İşleniyor…" : "Çıkış yap"}</PillButton>}
     </header>
-    {signedOut ? <Button asChild><Link href="/giris">Giriş yap</Link></Button> : profile ? <div className={panel.customerLayout}><CustomerNavigation /><div className={panel.customerContent}>
+    {signedOut ? <PillButton href="/giris">Giriş yap</PillButton> : profile ? <div className={panel.customerLayout}><CustomerNavigation /><div className={panel.customerContent}>
       <section className={panel.card} aria-labelledby="account-profile-title">
         <h2 id="account-profile-title">Profil bilgilerim</h2>
         <dl>{([["Ad soyad", profile.name], ["E-posta", profile.email], ["Telefon", profile.phone]] as const).map(([label, value]) =>
@@ -51,7 +52,7 @@ export function AccountSummary({ profile }: { profile: AccountProfile | null }) 
       </nav>
     </div></div> : <div className={summary.failure}>
       <p role="alert">Hesap bilgileri yüklenemedi. Lütfen yeniden deneyin.</p>
-      <div className={styles.actions}><Button onClick={() => router.refresh()}>Yeniden dene</Button><Link href="/giris" className={styles.textLink}>Giriş sayfasına dön</Link></div>
+      <div className={styles.actions}><PillButton icon="none" onClick={() => router.refresh()}>Yeniden dene</PillButton><Link href="/giris" className={styles.textLink}>Giriş sayfasına dön</Link></div>
     </div>}
     <p ref={feedbackRef} tabIndex={-1} role={feedback.error ? "alert" : "status"} aria-live={feedback.error ? "assertive" : "polite"} aria-atomic="true" className={`${styles.feedback} ${feedback.error ? styles.error : ""}`}>{busy ? "İsteğiniz işleniyor…" : feedback.message}</p>
   </div></main>;

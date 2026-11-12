@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { Minus, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PillButton } from "@/components/storefront/ui/PillButton";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { V3Picture } from "@/components/media/V3Picture";
 import { v3Image } from "@/lib/media/v3-assets";
@@ -139,7 +140,7 @@ export function QuoteProductPicker({ products, quantities, onChange, invalid = f
       </div>
       <div className={styles.footer}>
         <div><p aria-label="Seçim özeti" aria-live="polite" aria-atomic="true" className={styles.summary}>{selected.length ? summary : "Henüz ürün seçilmedi"}</p><p className={styles.note}>Adet, seçilen ambalaj sayısıdır.</p></div>
-        <DialogClose asChild><Button className={styles.done} disabled={disabled || hasInvalid}>Tamam</Button></DialogClose>
+        <DialogClose asChild><PillButton icon="check" size="md" disabled={disabled || hasInvalid}>Tamam</PillButton></DialogClose>
       </div>
     </DialogContent>
   </Dialog>;

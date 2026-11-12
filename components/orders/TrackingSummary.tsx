@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { PillButton } from "@/components/storefront/ui/PillButton";
 import { isSafeCarrierUrl, type TrackingOrder } from "@/lib/orders/tracking-adapter";
 import styles from "./Tracking.module.css";
 
@@ -21,7 +21,7 @@ export function TrackingSummary({ order }: { order: TrackingOrder }) {
       <h2 id="shipping-title">Kargo bilgileri</h2>
       {shipping ? <>
         <dl><div><dt>Kargo firması</dt><dd>{shipping.carrier}</dd></div><div><dt>Takip numarası</dt><dd className={styles.trackingNo}>{shipping.trackingNo}</dd></div></dl>
-        <Button variant="outline" onClick={() => void copy()}>Takip numarasını kopyala</Button>
+        <PillButton variant="outline" icon="none" onClick={() => void copy()}>Takip numarasını kopyala</PillButton>
         <p role="status" aria-live="polite">{copyMessage}</p>
         {isSafeCarrierUrl(shipping.trackingUrl) ? <a className={styles.link} href={shipping.trackingUrl} target="_blank" rel="noopener noreferrer" referrerPolicy="no-referrer">Kargo firmasında takip et <span className="sr-only">(yeni sekmede açılır)</span></a> : <p>Kargo firmasında takip et bağlantısı, firma belirlendiğinde burada yer alacak.</p>}
         {shipping.estimatedDelivery && order.status !== "cancelled" && order.status !== "refunded" && <p>Tahmini teslim: <time dateTime={shipping.estimatedDelivery}>{new Intl.DateTimeFormat("tr-TR", { dateStyle: "long", timeZone: "UTC" }).format(new Date(shipping.estimatedDelivery))}</time></p>}

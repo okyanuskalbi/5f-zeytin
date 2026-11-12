@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { PillButton } from "@/components/storefront/ui/PillButton";
 import styles from "./AboutPage.module.css";
 
 const words = ["Zeytin", "Zeytinyağı", "Geleneksel Salamura", "%100 Doğal", "Katkısız"];
@@ -13,6 +14,6 @@ export function AboutStrip() {
       <ul>{words.map(word => <li key={word}>{word}</li>)}</ul>
       <ul aria-hidden="true">{words.map(word => <li key={word}>{word}</li>)}</ul>
     </div></div>
-    <button type="button" aria-pressed={paused} onClick={() => setPaused(value => !value)}>{paused ? "Şeridi oynat" : "Şeridi duraklat"}</button>
+    <PillButton variant="gold" icon="none" size="md" aria-pressed={paused} onClick={() => setPaused(value => !value)}>{paused ? "Şeridi oynat" : "Şeridi duraklat"}</PillButton>
   </section>;
 }

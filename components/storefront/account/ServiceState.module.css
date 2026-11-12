@@ -1,9 +1,5 @@
-.page { min-height: 65svh; padding: 32px 32px 96px; background: var(--sf-ivory); color: var(--sf-ink); }
+.page { min-height: 65svh; padding: 16px 48px 96px; background: var(--sf-ivory); color: var(--sf-ink); }
 .content { max-width: 1280px; margin-inline: auto; }
-.content nav { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-bottom: 32px; color: var(--sf-muted); font-size: 14px; }
-.content nav a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; }
-.content h1 { margin-bottom: 32px; font-size: clamp(36px, 5vw, 56px); font-weight: 500; line-height: 1.15; }
-.copy { max-width: 64ch; display: grid; gap: 16px; margin-bottom: 32px; font-size: 16px; line-height: 1.6; color: var(--sf-muted); }
-.content > a { min-height: 48px; border-radius: var(--sf-radius-pill); padding-inline: 24px; }
-.content a:focus-visible { outline: 2px solid var(--sf-focus); outline-offset: 4px; }
-@media (max-width: 599px) { .page { padding: 24px 16px 64px; } }
+.copy { display: grid; gap: 12px; max-width: 54ch; font-size: 16px; line-height: 1.65; color: var(--sf-muted); }
+.copy p { margin: 0; }
+@media (max-width: 767px) { .page { padding: 8px 16px 64px; } }

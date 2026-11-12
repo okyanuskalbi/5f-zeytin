@@ -1,9 +1,12 @@
 import type { JSX } from "react";
-import Link from "next/link";
 import { Factory, Leaf, Package, Store, Truck, Warehouse } from "lucide-react";
 import { V3Picture } from "@/components/media/V3Picture";
 import { v3Image } from "@/lib/media/v3-assets";
 import { DealershipForm } from "@/components/dealership/DealershipForm";
+import { Medallion } from "@/components/storefront/ui/Medallion";
+import { PageBand } from "@/components/storefront/ui/PageBand";
+import { PillButton } from "@/components/storefront/ui/PillButton";
+import ui from "@/components/storefront/ui/ui.module.css";
 import styles from "./DealershipPage.module.css";
 
 const businessProfiles = [
@@ -26,18 +29,13 @@ const packaging = [
 
 export function DealershipPage(): JSX.Element {
   return <main className={styles.root}>
-    <section aria-labelledby="bayilik-title" className={styles.hero} data-storefront-hero>
-      <div className={`${styles.container} ${styles.heroContent}`}>
-        <div className={styles.heroCopy}>
-
-          <h1 id="bayilik-title" data-hero-enter="title">Bayimiz Olun</h1>
-          <p data-hero-enter="description">AFİNA ZEYTİN&apos;i bölgenizde birlikte büyütelim; bayilik için bize yazın.</p>
-          <div className={styles.actions} data-hero-enter="actions">
-            <a href="#basvuru" className={styles.darkGoldButton}>Başvuru Formu</a>
-            <Link prefetch={false} href="/urunler" className={styles.outlineButton}>Ürünleri İnceleyin</Link>
-          </div>
+    <section aria-labelledby="bayilik-title" className={`${styles.container} ${styles.hero}`} data-storefront-hero>
+      <PageBand headingId="bayilik-title" title="Bayimiz Olun" lead="AFİNA ZEYTİN'i bölgenizde birlikte büyütelim; bayilik için bize yazın.">
+        <div className={ui.bandActions}>
+          <PillButton href="#basvuru">Başvuru Formu</PillButton>
+          <PillButton variant="outline" href="/urunler">Ürünleri İnceleyin</PillButton>
         </div>
-      </div>
+      </PageBand>
     </section>
 
     <section aria-labelledby="bayilik-kimler-title" className={`${styles.container} ${styles.section}`}>
@@ -47,7 +45,7 @@ export function DealershipPage(): JSX.Element {
       </div>
       <div className={styles.profileGrid}>
         {businessProfiles.map(({ icon: Icon, title, description }) => <article key={title} className={styles.profile}>
-          <Icon className={styles.icon} strokeWidth={1.25} aria-hidden="true" />
+          <Medallion icon={Icon} />
           <h3>{title}</h3>
           <p>{description}</p>
         </article>)}
@@ -60,10 +58,10 @@ export function DealershipPage(): JSX.Element {
 
           <h2 id="bayilik-neden-title">Neden AFİNA ZEYTİN?</h2>
           <ul className={styles.factList}>
-            <li><Factory className={styles.icon} strokeWidth={1.25} aria-hidden="true" /><div><h3>Kendi tesisimizde hazırlanır</h3><p>Osmaniye Düziçi</p></div></li>
-            <li><Leaf className={styles.icon} strokeWidth={1.25} aria-hidden="true" /><h3>Ellek zeytini, geleneksel doğal kırma</h3></li>
-            <li><Package className={styles.icon} strokeWidth={1.25} aria-hidden="true" /><h3>3 L teneke, 1 kg kavanoz ve zeytinyağı seçenekleri</h3></li>
-            <li><Truck className={styles.icon} strokeWidth={1.25} aria-hidden="true" /><h3>Koli bazında sipariş</h3></li>
+            <li><Medallion icon={Factory} /><div><h3>Kendi tesisimizde hazırlanır</h3><p>Osmaniye Düziçi</p></div></li>
+            <li><Medallion icon={Leaf} /><h3>Ellek zeytini, geleneksel doğal kırma</h3></li>
+            <li><Medallion icon={Package} /><h3>3 L teneke, 1 kg kavanoz ve zeytinyağı seçenekleri</h3></li>
+            <li><Medallion icon={Truck} /><h3>Koli bazında sipariş</h3></li>
           </ul>
         </div>
         <div className={styles.packaging}>

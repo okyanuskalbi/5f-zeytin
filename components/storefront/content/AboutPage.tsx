@@ -1,11 +1,16 @@
 import Link from "next/link";
 import type { JSX } from "react";
-import { Factory, Leaf, MapPin, Sprout } from "lucide-react";
+import { Droplets, Factory, Leaf, ListChecks, MapPin, Package, Sprout, Warehouse } from "lucide-react";
 import { V3Picture } from "@/components/media/V3Picture";
 import { StoreFaq as Faq } from "./StoreFaq";
 import media from "@/lib/media/customer-home.json";
 import { seller } from "@/lib/site/seller";
 import { siteContact } from "@/lib/site/contact";
+import { Medallion } from "@/components/storefront/ui/Medallion";
+import { PagePath } from "@/components/storefront/ui/PageBand";
+import { PillButton } from "@/components/storefront/ui/PillButton";
+import { SectionHeading } from "@/components/storefront/ui/SectionHeading";
+import { Stamp } from "@/components/storefront/ui/Stamp";
 import { AboutStrip } from "./AboutStrip";
 import styles from "./AboutPage.module.css";
 
@@ -15,22 +20,28 @@ const values = [
   { icon: Factory, title: "Kendi Tesisimizde", text: "Ayıklama, salamura ve paketleme tek çatı altında" },
 ];
 
+const stageIcons = [ListChecks, Droplets, Package, Warehouse] as const;
+
 /** Public company details and approved customer images, with no new claims. */
 export function AboutPage(): JSX.Element {
   const phone = siteContact.phone.trim();
   const email = siteContact.email.trim();
   return <main className={styles.root}>
-    <header className={styles.pageHeader}><div className={styles.container}>
-      <nav aria-label="İçerik yolu" className={styles.breadcrumb}><ol><li><Link prefetch={false} href="/">Ana Sayfa</Link></li><li><span aria-hidden="true">/</span><span aria-current="page">Hakkımızda</span></li></ol></nav>
-      <h1>Hakkımızda</h1><p>Kökü toprakta. Yeri sofrada.</p>
-    </div></header>
+    <header className={`${styles.container} ${styles.pageHeader}`}>
+      <PagePath steps={[{ name: "Ana Sayfa", href: "/" }, { name: "Hakkımızda" }]} />
+      <SectionHeading as="h1" title="Hakkımızda" lead="Kökü toprakta. Yeri sofrada." />
+    </header>
     <section data-about-story className={`${styles.container} ${styles.story}`} aria-labelledby="hikayemiz-title">
-      <div><h2 id="hikayemiz-title">Ellek&apos;ten sofranıza</h2>
+      <div data-about-arch className={styles.archFrame}>
+        <V3Picture image={media.assets.fabrika} sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1312px) 40vw, 520px" eager className={styles.arch} />
+        {/* The page's one stamp (docs/DESIGN.md → Mühür): the customer's permitted claim, still. */}
+        <div className={styles.stamp}><Stamp label="%100 Doğal ve Katkısız" size={112} /></div>
+      </div>
+      <div className={styles.storyCopy}><h2 id="hikayemiz-title">Ellek&apos;ten sofranıza</h2>
         <p>AFİNA ZEYTİN, AFİNA Şirketler Topluluğu&apos;nun zeytin ve zeytinyağı markasıdır. Osmaniye&apos;nin Düziçi ilçesindeki Ellek&apos;te, kendi tesisimizde hazırladığımız ürünleri bireysel ve toptan alıcılarla buluşturuyoruz.</p>
         <p>Doğal kırma zeytinlerimizi geleneksel usulle hazırlıyoruz. Kendi tesisimizde ayıklamadan paketlemeye uzanan üretim sürecini takip ediyoruz.</p>
-        <div className={styles.actions}><Link prefetch={false} href="/urunler" className={styles.goldButton}>Ürünleri İnceleyin</Link><a href="https://afina.com.tr" target="_blank" rel="noopener noreferrer" className={styles.textLink}>AFİNA Şirketler Topluluğu</a></div>
+        <div className={styles.actions}><PillButton href="/urunler">Ürünleri İnceleyin</PillButton><a href="https://afina.com.tr" target="_blank" rel="noopener noreferrer" className={styles.textLink}>AFİNA Şirketler Topluluğu</a></div>
       </div>
-      <V3Picture image={media.assets.fabrika} sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1312px) 44vw, 580px" eager className={styles.factoryPhoto} />
     </section>
     <AboutStrip />
     <section id="tesisimiz" data-about-facility className={styles.facility} aria-labelledby="tesisimiz-title"><div className={styles.container}>
@@ -41,12 +52,12 @@ export function AboutPage(): JSX.Element {
         ["Salamura", "Salamura zeytinler geleneksel usulle hazırlanır."],
         ["Paketleme", "Ürünler kendi tesisimizde paketlenir."],
         ["Depolama", "Depolama süreci kendi tesisimizde yürütülür."],
-      ].map(([title, text]) => <li key={title}><h3>{title}</h3><p>{text}</p></li>)}</ul>
+      ].map(([title, text], index) => <li key={title}><Medallion icon={stageIcons[index]} /><div><h3>{title}</h3><p>{text}</p></div></li>)}</ul>
     </div></section>
-    <section aria-label="Üretim anlayışımız" data-about-values className={`${styles.container} ${styles.values}`}><ul>{values.map(({ icon: Icon, title, text }) => <li key={title}><Icon size={36} strokeWidth={1.3} aria-hidden="true" /><div><strong>{title}</strong><p>{text}</p></div></li>)}</ul></section>
+    <section aria-label="Üretim anlayışımız" data-about-values className={`${styles.container} ${styles.values}`}><ul>{values.map(({ icon, title, text }) => <li key={title}><Medallion icon={icon} /><div><strong>{title}</strong><p>{text}</p></div></li>)}</ul></section>
     <div className={`${styles.container} ${styles.faq}`}><Faq canonicalPath="/hakkimizda" /></div>
     <section id="iletisim" aria-labelledby="iletisim-title" className={styles.contact}><div className={`${styles.container} ${styles.contactGrid}`}>
-      <div><h2 id="iletisim-title">Sofrada görüşürüz.</h2><p>Kökü toprakta. Yeri sofrada.</p><Link prefetch={false} href="/urunler" className={styles.textLink}>Ürünlere dön</Link></div>
+      <div><h2 id="iletisim-title">Sofrada görüşürüz.</h2><p>Kökü toprakta. Yeri sofrada.</p><PillButton variant="quiet" href="/urunler">Ürünlere dön</PillButton></div>
       <div><h3>AFİNA ZEYTİN</h3><div className={styles.address}><MapPin size={22} aria-hidden="true" /><address>{seller.address}</address></div>
         {phone && <a href={`tel:${phone.replace(/\s/g, "")}`}>{phone}</a>}
         {email && <a href={`mailto:${email}`}>{email}</a>}

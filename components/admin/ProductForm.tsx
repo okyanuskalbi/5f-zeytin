@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
+import { PillButton } from "@/components/storefront/ui/PillButton";
 import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { parseProductInput, type AdminProduct, type ProductInput } from "@/lib/contracts/admin-products";
@@ -68,7 +68,7 @@ export function ProductForm({ product, options, activeCount, busy, onSave, onCan
           </label>)}
           {options.every(option => option.id === product?.id) && <p>Önerilebilecek başka aktif ürün yok.</p>}
         </fieldset>
-        <div className={styles.actions}><Button type="submit">{busy ? "Kaydediliyor…" : "Kaydet"}</Button><Button type="button" variant="outline" onClick={onCancel}>Vazgeç</Button></div>
+        <div className={styles.actions}><PillButton type="submit" icon="none">{busy ? "Kaydediliyor…" : "Kaydet"}</PillButton><PillButton variant="outline" icon="none" onClick={onCancel}>Vazgeç</PillButton></div>
       </fieldset>
     </form>
   </section>;

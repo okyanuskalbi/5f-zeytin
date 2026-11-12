@@ -10,7 +10,8 @@ import { useQuoteJourney, type BusinessSegment } from "./QuoteJourneyProvider";
 import styles from "./QuoteComposer.module.css";
 import { AddressSearchField } from "@/components/ui/address-search-field";
 import { DeferredPhoneField } from "@/components/storefront/forms/DeferredPhoneField";
-import { ArrowUpRight, Mail, Phone } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
+import { PillButton } from "@/components/storefront/ui/PillButton";
 import { DeferredQuoteProductPicker as QuoteProductPicker } from "./DeferredQuoteProductPicker";
 import { validateQuoteQuantity } from "@/lib/site/quote-lines";
 
@@ -42,7 +43,7 @@ function QuoteSummary({ quote, reduced }: { quote: PreparedQuote; reduced: boole
     </ul>
     <p>Bu sayfa e-posta göndermedi. Gönderimi e-posta uygulamanızda tamamlayın. Alıcı {corporateContact.name}: {corporateContact.email}.</p>
     <p>Fiyat, stok, ambalaj ve teslimat koşulları teklif aşamasında teyit edilir.</p>
-    <a className={styles.emailAction} href={present ? buildQuoteMailto(quote.draft) : undefined} tabIndex={present ? undefined : -1}>E-postayla gönder</a>
+    {present && <PillButton href={buildQuoteMailto(quote.draft)} fullWidth>E-postayla gönder</PillButton>}
   </motion.section>;
 }
 
@@ -153,7 +154,8 @@ export function QuoteComposer({ products }: { products: readonly ProductVariant[
             onChange={event => { setConsent(event.target.checked); clearError("consent"); }} /><span><a href="/kvkk" target="_blank" rel="noopener noreferrer">KVKK aydınlatma metnini</a> okudum.</span></label>
           {error("consent")}
         </div>
-        <button className={styles.prepare} type="submit" disabled={!hydrated || preparing} aria-busy={preparing || undefined}>Talep özetini hazırla<ArrowUpRight size={17} aria-hidden="true" /></button>
+        {/* Mounted afresh once the page is interactive: the pre-hydration disabled look gives way at once, with no colour fade on load. */}
+        <PillButton key={hydrated ? "ready" : "waiting"} className={styles.prepare} type="submit" fullWidth disabled={!hydrated} busy={preparing}>Talep özetini hazırla</PillButton>
       </fieldset>
       <p className={styles.status} id={`${id}-status`} role="status" aria-atomic="true">{summary ? "Talep özetiniz hazır. E-posta henüz gönderilmedi." : ""}</p>
       <p role="alert" className={styles.error}>{Object.values(errors).some(Boolean) ? "Lütfen işaretli alanları kontrol edin." : ""}</p>

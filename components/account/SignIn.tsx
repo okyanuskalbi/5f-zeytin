@@ -4,8 +4,9 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { MembershipFrame } from "./MembershipFrame";
-import { Eye, EyeOff, Mail, ArrowRight } from "lucide-react";
+import { Eye, EyeOff, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PillButton } from "@/components/storefront/ui/PillButton";
 import { Input } from "@/components/ui/input";
 import { MembershipError } from "@/lib/auth/adapter";
 import { safeAuthRedirect } from "@/lib/auth/config";
@@ -73,15 +74,15 @@ export function SignIn({ next = "/hesabim", signedIn = false, unavailable = fals
         {!sessionOpen && <ConfiguredGoogleButton next={destination} />}
         {sessionOpen ? <div className={styles.form}>
           <p>Oturumunuz açık.</p>
-          <Button asChild><Link prefetch={false} href={destination}>Alışverişe devam et</Link></Button>
-          <Button variant="outline" disabled={busy} onClick={signOut}>{busy ? "İşleniyor…" : "Çıkış yap"}</Button>
+          <PillButton href={destination}>Alışverişe devam et</PillButton>
+          <PillButton variant="outline" icon="none" disabled={busy} onClick={signOut}>{busy ? "İşleniyor…" : "Çıkış yap"}</PillButton>
         </div> : <form onSubmit={submit} noValidate className={styles.form} aria-label="E-posta ile giriş" aria-busy={busy}>
           <fieldset disabled={busy}>
             <Field id="auth-email" name="email" label="E-posta" type="email" autoComplete="email" inputMode="email" maxLength={254} required error={errors.email} />
             {method === "password" ? <div className={styles.field}>
               <div className={styles.labelRow}>
                 <label htmlFor="auth-password">Şifre</label>
-                <Button variant="link" className={styles.forgotPassword} onClick={() => { setMethod("magic_link"); setPassword(""); setShowPassword(false); }}>Şifremi unuttum</Button>
+                <PillButton variant="quiet" size="md" className={styles.forgotPassword} onClick={() => { setMethod("magic_link"); setPassword(""); setShowPassword(false); }}>Şifremi unuttum</PillButton>
               </div>
               <div className={styles.password}>
                 <Input id="auth-password" name="password" type={showPassword ? "text" : "password"} autoComplete="current-password" value={password} onChange={event => setPassword(event.target.value)} maxLength={128} required aria-invalid={!!errors.password} aria-describedby={errors.password ? "auth-password-error" : undefined} />
@@ -89,8 +90,8 @@ export function SignIn({ next = "/hesabim", signedIn = false, unavailable = fals
               </div>
               {errors.password && <small id="auth-password-error" className={styles.error}>{errors.password}</small>}
             </div> : <p className={styles.muted}>Şifrenizi kullanmadan, e-posta adresinize gönderilecek bağlantıyla giriş yapabilirsiniz.</p>}
-            <Button type="submit" className="w-full" disabled={busy}>{busy ? "İşleniyor…" : method === "password" ? "E-posta ile giriş yap" : "Giriş bağlantısı iste"}<ArrowRight aria-hidden="true" /></Button>
-            <Button variant="outline" className={styles.alternateSignIn} onClick={() => { setMethod(method === "password" ? "magic_link" : "password"); setPassword(""); setShowPassword(false); }}><Mail aria-hidden="true" />{method === "password" ? "E-posta bağlantısıyla giriş" : "Şifreyle girişe dön"}</Button>
+            <PillButton type="submit" fullWidth busy={busy}>{busy ? "İşleniyor…" : method === "password" ? "E-posta ile giriş yap" : "Giriş bağlantısı iste"}</PillButton>
+            <PillButton variant="outline" icon="none" fullWidth onClick={() => { setMethod(method === "password" ? "magic_link" : "password"); setPassword(""); setShowPassword(false); }}>{method === "password" ? "E-posta bağlantısıyla giriş" : "Şifreyle girişe dön"}</PillButton>
           </fieldset>
         </form>}
         <p ref={feedbackRef} tabIndex={-1} role={failed ? "alert" : "status"} aria-live={failed ? "assertive" : "polite"} aria-atomic="true" className={`${styles.feedback} ${failed ? styles.error : ""}`}>{busy ? "İsteğiniz işleniyor…" : message}</p>
