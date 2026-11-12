@@ -228,3 +228,24 @@ Uygulama 12 Kasım 2026'da tamamlandı. Kanıt: `output/task204/KANIT.md`, ölç
 **Bekleyenler / yapılmayanlar:** Playwright e2e takımı çalıştırılmadı (yapılandırma kendi sunucusunu açıyor); WebKit'te CLS ölçülemiyor; Firefox ve gerçek cihaz 207'de. Ana sayfa dışındaki sayfalar yalnız "açılıyor, konsol hatası yok" düzeyinde doğrulandı; yeni tokenlar yüzünden görünümleri kısmen değişti (düğmeler hap, köşeler 12/24), asıl tasarımları 205–206'da.
 
 ## Durum: TAMAMLANDI (fable) — K5 kullanıcı onayı bekliyor
+
+
+## K5 sonucu (Claude, 12 Kasım)
+Kullanıcı ana sayfayı onayladı ("olur ok"). Higgsfield aday görselleri de onaylandı.
+
+## Düzeltme 204-1 — onaylı Higgsfield görsellerinin yerleştirilmesi
+Kaynak (git dışı): `AFINA-KAYNAK/higgsfield-2026-11-12/*.png` + `LISTE.md` (GPT Image 2.5 Flare, 2K; yazı/logo/yüz yok; temsili). Kullanıcı 12 Kasım'da onayladı; MASTER-PROMPT §3 buna göre güncellendi.
+
+| Dosya | Nereye | Not |
+|---|---|---|
+| `hikaye-ana.png` (3:4) | Ana sayfa Hikayemiz büyük görsel | "Nesillerin Emeği" müşteri görseli gelene kadar; tek dosyadan değiştirilebilir kalsın |
+| `hikaye-dal.png` (1:1) | Hikayemiz küçük bindirme görseli | |
+| `zeytinyagi-dikey.png` (3:4) | Üçlü banner "Zeytinyağı" + 4 kutu "Zeytinyağı" | Aynı fotoğraf sayfada en çok 2 kez |
+| `zeytin-kase.png` (3:4) | 4 kutu "Zeytin" | |
+| `zeytinyagi-yatay.png` (16:9) | Blog "Natürel Sızma Zeytinyağı Nasıl Saklanmalı?" kapağı | 205'te zeytinyağı kategori başlığında da kullanılabilir |
+| `blog-salamura.png` (3:2) | Blog "Salamura Zeytin Nasıl Hazırlanır?" kapağı | |
+| `blog-kirma.png` (3:2) | Blog "Kırma Zeytin Nedir, Nasıl Saklanır?" kapağı | |
+| `blog-sofra.png` (3:2) | Blog "Sofralık Zeytin Seçerken Nelere Dikkat Edilmeli?" kapağı | |
+
+Yapılacak: PNG'ler projenin mevcut görsel hattıyla (AVIF + WebP, doğru genişlikler, `lib/media/*.json` kaydı, `V3Picture`, anlamlı Türkçe `alt`) `public/images/` altına işlenir; ham 4–6 MB PNG repoya girmez. Hedef orana kırpma odak noktası korunarak yapılır (eller, kase, şişe ağzı kadraj içinde). Yerleşim sonrası: aynı fotoğrafın ana sayfada 2'den fazla tekrarı kalmaz; `npm run check:assets` (varsa) + birim testleri + `scripts/qa-design-v3.mjs` ana sayfa ölçümleri (fotoğraf üstü yazı karşıtlığı, LCP ≤ 2,5 sn, CLS) yeniden PASS. Fotoğraf üstü yazı okunmuyorsa yalnız koyulaştırma ayarlanır. Kayıt: `feat: 204-1 onaylı Higgsfield görselleri`.
+Ayrıca 204'te çalıştırılamayan Playwright e2e takımı: yerel sertifika/sunucu sorununu çöz ya da takımı `output/task201/run-clean.mjs` sunucusuna karşı çalıştır; güncellenen 5 e2e dosyası PASS olmalı (olmuyorsa nedeni Coder Notu'na).

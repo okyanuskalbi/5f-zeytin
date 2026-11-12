@@ -66,7 +66,7 @@ Veri kaynakları: `lib/catalog/static-products.ts`, `lib/catalog/groups.ts`, `li
 
 ---
 
-## 3 · Varlıklar (yalnız bunlar; yeni görsel/video üretimi YOK)
+## 3 · Varlıklar (yalnız bunlar; ajan kendiliğinden yeni görsel/video üretmez)
 
 | Varlık | Yol / anahtar | Not |
 |---|---|---|
@@ -78,6 +78,7 @@ Veri kaynakları: `lib/catalog/static-products.ts`, `lib/catalog/groups.ts`, `li
 | Ürün fotoğrafları (stüdyo 4:5 + sahne 16:9) | `public/images/v3/*` (`lib/media/v3-assets`) | Onaylı, temsili ambalaj |
 | Logo | `public/brand/afina-zeytin-yatay@2x.webp` (açık zemin), `…-dark@2x.webp` | Değiştirme |
 | Ödeme logoları | `public/images/payment/*` | PayTR/Visa/MC/troy |
+| Higgsfield aday görselleri (12 Kas, kullanıcı onaylı) | Kaynak `AFINA-KAYNAK/higgsfield-2026-11-12/` → işlenmiş hali `public/images/` + `lib/media/*.json` | GPT Image 2.5; temsili; yazı/logo/yüz yok. Yerleşim: `docs/tasks/204-…` Düzeltme 204-1. Başka yeni görsel üretimi yalnız kullanıcı isteğiyle |
 | Eksik (müşteriden bekleniyor) | "Nesillerin Emeği" yazısız görseli + metni; zeytinyağı paylaşım görseli | Şimdilik `zeytinlik` / `zeytinyagi` yer tutucu; tek dosyada değiştirilebilir olsun |
 
 Görsel kuralları: `V3Picture` (AVIF/WebP, `sizes` doğru), ilk ekran dışı `loading="lazy"`, oran kutusu sabit (CLS 0), alt metin anlamlı Türkçe; süs görseli `alt=""`. Plakalı tesis orijinali asla kullanılmaz.
