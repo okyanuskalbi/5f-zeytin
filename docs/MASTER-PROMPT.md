@@ -1,4 +1,4 @@
-# AFİNA ZEYTİN — Ön Yüz Master Prompt (v1.2 · 10 Kasım 2026 — ui-ux-pro-max akışı, Motion değerleri, 21st erişimi, §14.1 kalite listesi)
+# AFİNA ZEYTİN — Ön Yüz Master Prompt (v2.0 · 12 Kasım 2026 — tasarım dili v3 "Altın Dal": Cormorant + Montserrat, altın madalyonlu hap düğme, zengin fotoğraf yüzeyleri; §6 ve §14.1 buna göre güncellendi)
 
 > Bu dosya afinazeytin.com ön yüzünü **baştan** kurmanın tek ve bağlayıcı talimatıdır. Her aşama görevi (`docs/tasks/198+`) bu dosyaya atıf yapar; çelişkide **bu dosya geçerlidir** (müşteri BRIEF'i hariç — o her şeyin üstündedir).
 > Kaynak kitler: `~/Desktop/WB AI PROJELER ICIN/` → profesyonel-web-sitesi-skill-yeni-nesil.md (rol + yasak liste + bitiş şartı), ui-ux-pro-max.md (Motion + 21st), BEST MY PROJECT .md (Karar → Üret → Denetle → Sun → Büyüt), DESIGN.md (tasarım dosyası BİÇİMİ), One-Shot Luxury Watch prompt (konfigürasyon + varlık tablosu + bölüm şartnamesi biçimi), AEO_GEO_Rehberi (bulunabilirlik), 9-mayis-10-kiti + web-site-yetenegi-kiti (marka kimliği → hiyerarşi → mikro-detay → kanıt), claude-codex-workflow.md (roller), Admin paneli .JPG (panel referansı).
@@ -11,11 +11,11 @@
 | Rol | Kim | Ne yapar | Ne yapmaz |
 |---|---|---|---|
 | Prompt master + denetçi | Claude | Bu dosyayı ve aşama görevlerini yazar, ajanları çalıştırır, çıktıyı (diff, ekran görüntüsü, test sonucu) denetler, kullanıcıya sade özet sunar, onaylı yayını yürütür | **Hiçbir üretim yapmaz**: kod, CSS, tasarım, görsel, metin, test scripti, önizleme yok |
-| Yazar (Coder) | Codex — `gpt-6-astra`, reasoning high | Tasarım sistemi, kod, testler, önizleme PDF/video, düzeltmeler | Push, yayın, canlı DB, ortam değişkeni |
+| Yazar (Coder) | Codex — `gpt-6-astra`, reasoning high (kullanıcı seçerse Fable 5.2 alt ajanı) | Kod, testler, düzeltmeler. v3'te tasarım yönü `docs/DESIGN.md` içinde sabittir; yazar yön değiştirmez. Önizleme PDF/video **hazırlanmaz** (kullanıcı kararı, 12 Kas) | Push, yayın, canlı DB, ortam değişkeni |
 | Paralel yazar + QA | Kimi — `kimi-code/k3.1-pro` | A/B ikinci tasarım; tüm cihaz QA raporu | Aynı |
 | Karar | Kullanıcı (emre) | Kapılarda seçim/onay; müşteri malzemesi | — |
 
-Kapılar (⛔ atlanmaz): **K1** tasarım seçimi (A/B) · **K2** tüm sayfalar kabulü · **K3** QA temiz · **K4** yayın onayı.
+Kapılar (⛔ atlanmaz): **K1** tasarım seçimi (A/B) · **K2** tüm sayfalar kabulü · **K3** QA temiz · **K4** yayın onayı · v3: **K5** ana sayfa onayı (204 sonrası; ekran görüntüsüyle, PDF/video yok) · **K6** v3 yayın onayı (207).
 Düzeltme döngüsü: Claude bulguyu görev dosyasına `## Düzeltme NNN-x` olarak yazar → aynı ajan uygular. 3 denemede kapanmazsa kullanıcıya rapor.
 
 ---
@@ -43,11 +43,11 @@ RENK_ANA             = "#243A29"  zeytin yeşili
 RENK_ZEMİN           = "#F5F1E7"  fildişi
 RENK_VURGU           = "#D4B483"  şampanya altını
 YARDIMCI_TONLAR      = ajan türetir (metin, çizgi, ikinci zemin, hata, başarı) — hepsi WCAG AA
-FONT_BAŞLIK          = "Fraunces"   (kullanıcı seçimi; gerçek italik var)
-FONT_GÖVDE           = "Figtree"    (kullanıcı seçimi)
-TEMA                 = AÇIK ton (müşteri isteği). Koyu yüzey yalnız alt bilgi ve gerekli yerel bölümlerde.
+FONT_BAŞLIK          = "Cormorant"  (600/700; v3, 12 Kas — kullanıcı: "button ve yazıları ... baştan"; kaynak ui-ux-pro-max + müşterinin beğendiği referans)
+FONT_GÖVDE           = "Montserrat" (400/500/600; gövde, arayüz, düğme)
+TEMA                 = AÇIK ton (müşteri isteği); sayfanın çoğu fildişi/kâğıt/adaçayı. Zeytin yeşili bant: ana sayfada en çok 2 + alt bilgi, iç sayfada en çok 1 (müşterinin kendi afişindeki derin yeşil + altın dünyası).
 SES                  = sıcak, yöresel, sade Türkçe; abartısız; pazarlama klişesi yok
-İMZA_ÖĞE             = logodaki altın zeytin dalı + el (tek imza; abartmadan)
+İMZA_ÖĞE             = logodaki altın zeytin dalı + el · altın madalyonlu hap düğme (PillButton) · dairesel mühür (yalnız izinli iddiada)
 ```
 
 Ürünler (en fazla 6 varyant; fiyat/stok **temsili**, gerçek fiyat onayına kadar ürün/kategori sayfaları noindex):
@@ -101,15 +101,15 @@ Yeni bileşenler: `components/storefront/` (vitrin), `components/storefront/ui/`
 ## 6 · Yasak liste
 
 **AI slop (kit):** mor→mavi / neon degrade · emoji ikon · anlamsız glassmorphism/blur kart yığını · "hero başlık + alt başlık + iki buton" kalıbı · stok illüstrasyon/3D render · her bölümde aynı boşluk ve aynı boy kart · sürekli oynayan süs animasyonu · lorem ipsum, uydurma istatistik.
-**Şablon izleri (frontend-design):** her başlığın üstünde büyük harfli küçük üst yazı (eyebrow) · "A · B · C" ortası noktalı meta dizileri · her bağlantının sonuna "→" · numaralı 01/02/03 işaretleri (içerik gerçek sıra değilse) · tek kelimeyi italik/renkli vurgulama alışkanlığı · tüm kartlarda aynı yuvarlaklık ve aynı gri gölge · krem zemin + terrakota vurgu klişesi.
+**Şablon izleri (frontend-design; v3'te güncellendi):** **her** başlığın üstünde üst etiket (v3: en çok her iki bölümde bir, yapraklı) · "A · B · C" ortası noktalı meta dizileri · numaralı 01/02/03 işaretleri (içerik gerçek sıra değilse) · her cümlede bir kelimeyi italik/renkli vurgulama · gri/siyah gölge · düz, boş, fotoğrafsız fildişi bölümler ve köşeli küçük düğmeler (v2'nin reddedilen görünümü) · cam/bulanıklık · degrade yazı.
 **Proje özel:** Köklü Zeytincilik'in görünümü, ikonları, yerleşim kalıpları ve şu ifadeleri: "TOPRAKTAN SOFRAYA", "TARLADAN SOFRAYA", "Doğallığın", numaralı "Keşfedin", "Sizden Gelen", "Zeytin Rehberi", "Daha Fazlasını Keşfet", "En Beğenilen" · müşteri yorumu, rakamlı istatistik ("500.000+ ağaç" vb.), YouTube/kısa video bölümü, 2'li banner · sahte indirim ("İndirimdeki" yerine "Öne Çıkan") · yeni iddia (sertifika, ödül, ciro, sağlık; "%100 Doğal ve Katkısız" YALNIZ müşterinin istediği hasat maddesinde ve Hakkımızda şeridinde) · kaydırmaya bağlı hareket, sabitleme (pin), snap, Lenis/GSAP · otomatik kayan karusel · tam ekran açılış perdesi.
-**Ret geçmişi (aynısına düşme):** v1 "etiket" (beğenilmedi) · v2 koyu "topraktan sofraya" ("berbat") · v8–v12 sinematik kaydırma (vazgeçildi) · v11 · 196 "kopya gibi olmasın". Ortak ret nedeni: şablon hissi, düşük özen, telefonda kusur.
+**Ret geçmişi (aynısına düşme):** v2 "Ellek sofrası" (12 Kas: müşteri beğenmedi; fazla sade, düz, afişteki marka dünyasından uzak) · v1 "etiket" (beğenilmedi) · v2 koyu "topraktan sofraya" ("berbat") · v8–v12 sinematik kaydırma (vazgeçildi) · v11 · 196 "kopya gibi olmasın". Ortak ret nedeni: şablon hissi, düşük özen, telefonda kusur.
 
 ---
 
 ## 7 · Tasarım sistemi (`docs/DESIGN.md`)
 
-`~/Desktop/WB AI PROJELER ICIN/DESIGN.md` dosyasının **bölüm yapısında** yazılır (içerik/renk/koyu tema alınmaz): başlık + tek cümlelik sanat yönetimi cümlesi · Tokens — Colors (ad, değer, token, rol) · Typography (aile, ağırlıklar, boylar, satır yüksekliği, harf aralığı) · Type Scale tablosu · Spacing & Shapes (8 px taban: 8/16/24/32/48/64/96/128; köşe yuvarlaklıkları hiyerarşiye göre farklı) · Components (her bileşenin rolü ve ölçüleri) · Do's and Don'ts · Surfaces · Elevation · Imagery · Layout (masaüstü + telefon) · Agent Prompt Guide (sonraki aşamaların kullanacağı hazır tarifler) · Quick Start (CSS custom properties + Tailwind v4 `@theme`).
+**v3 (12 Kas): `docs/DESIGN.md` "Altın Dal" yazıldı ve bağlayıcıdır; yazar ajan onu yeniden üretmez, uygular. Önceki dil `docs/DESIGN-v2-ellek-sofrasi.md` yalnız tarihçe.** Biçim: `~/Desktop/WB AI PROJELER ICIN/DESIGN.md` dosyasının **bölüm yapısında** yazılır (içerik/renk/koyu tema alınmaz): başlık + tek cümlelik sanat yönetimi cümlesi · Tokens — Colors (ad, değer, token, rol) · Typography (aile, ağırlıklar, boylar, satır yüksekliği, harf aralığı) · Type Scale tablosu · Spacing & Shapes (8 px taban: 8/16/24/32/48/64/96/128; köşe yuvarlaklıkları hiyerarşiye göre farklı) · Components (her bileşenin rolü ve ölçüleri) · Do's and Don'ts · Surfaces · Elevation · Imagery · Layout (masaüstü + telefon) · Agent Prompt Guide (sonraki aşamaların kullanacağı hazır tarifler) · Quick Start (CSS custom properties + Tailwind v4 `@theme`).
 Karar yolu: `ui-ux-pro-max --design-system` ("premium regional olive food e-commerce light editorial", `--variance 6 --motion 3 --density 4`) → `frontend-design` planı (4–6 renk, yazı rolleri, ASCII yerleşim, ilkeler) → **öz inceleme**: "bu kısım her zeytin sitesinde olur mu?" → değiştir, nedenini yaz → `better-typography`, `better-colors`, `better-layout` ile ince ayar.
 Ölçü tabanı: gövde ≥ 16 px (telefonda da), satır 1.5–1.6, satır uzunluğu ≤ 72 karakter; başlık ölçeği belirgin (h1 ≫ h2 > h3); dokunma hedefi ≥ 44×44; odak halkası görünür (altın, 2 px, ofsetli); karşıtlık AA.
 
@@ -124,7 +124,7 @@ Karar yolu: `ui-ux-pro-max --design-system` ("premium regional olive food e-comm
 - Kullanıcı eylemine yanıt: hover/tap (`whileHover`, `whileTap`), menü/çekmece/pencere açılıp kapanma (`AnimatePresence`), sepete ekleme onayı.
 - Kayan şerit (yalnız Hakkımızda): CSS transform, fareyle/odakla durur, azaltılmış harekette durağan.
 - `useReducedMotion()` → tüm hareket kapalı, içerik doğrudan görünür. CLS < 0.05.
-- Hazır değerler (ui-ux-pro-max.md): giriş `container {staggerChildren: 0.08, delayChildren: 0.2}` + `item {opacity 0→1, y 24→0, spring 120/20}` — kitteki `filter: blur(8px)` girişi **kullanılmaz** (telefonda pahalı, kuralı ihlal eder) · düğme/kart `whileHover {scale: 1.04}` (kartta en çok 1.02) `whileTap {scale: 0.96}`, spring 400/25 · `whileInView` `viewport={{ once: true, margin: "-80px" }}`, spring 100/22 · menü/çekmece/pencere/"sepete eklendi" bildirimi `AnimatePresence` (giriş y −8→0, çıkış girişten kısa) · sepet satırı silme ve kategori süzme `layout` prop ile.
+- Hazır değerler (ui-ux-pro-max.md): giriş `container {staggerChildren: 0.08, delayChildren: 0.2}` + `item {opacity 0→1, y 24→0, spring 120/20}` — kitteki `filter: blur(8px)` girişi **kullanılmaz** (telefonda pahalı, kuralı ihlal eder) · v3: düğmede ölçek büyütme yok; `PillButton` madalyonu hover'da 4 px sağa, basışta `scale(.97)`, 180 ms; kart hover `y: -4` + gölge; fotoğraf en çok 1.03 · `whileInView` `viewport={{ once: true, margin: "-80px" }}`, spring 100/22 · menü/çekmece/pencere/"sepete eklendi" bildirimi `AnimatePresence` (giriş y −8→0, çıkış girişten kısa) · sepet satırı silme ve kategori süzme `layout` prop ile.
 - `useScroll`/`useTransform` parallax ve video scrub bu projede **yok** (müşteri: kaydırma animasyonu olmasın).
 
 ---
@@ -133,6 +133,7 @@ Karar yolu: `ui-ux-pro-max --design-system` ("premium regional olive food e-comm
 
 - Standart kalıplar (menü, mobil çekmece, ürün kartı, form alanı, akordeon, sekme, tablo, alt bilgi, admin kenar menüsü) için önce **21st MCP** `search` → `get_component`; renk/boşluk/font tokenlara uyarlanır, birebir yapıştırılmaz. 21st aracı oturumda yoksa Coder Notu'na yaz ve shadcn/el yazımıyla devam et.
 - Markaya özgü bölümler (hero, Hikayemiz, 3'lü banner, Hasat) el yazımı + Motion.
+- **v3 ortak parçalar tek kaynaktır:** `components/storefront/ui/` → `PillButton`, `Tag`, `Stamp`, `Medallion`, `SectionHeading`, `OliveBranch` (imzalar `docs/tasks/204-…` "Arayüzler"). Yeni düğme/etiket sınıfı yazılmaz. 21st kaynak listesi `docs/DESIGN.md` → Agent Prompt Guide.
 - 21st erişimi: **Codex** MCP ile (`21st/search` → `21st/get_component`). **Kimi'de 21st MCP yok** → Claude görev dosyasına bileşen listesini yazar, Kimi `npx shadcn@latest add "https://21st.dev/r/<yazar>/<ad>?api_key=$API_KEY_21ST"` ile kurar (anahtar ortamdan gelir, dosyaya/kayda yazılmaz). Erişim yoksa (401/anahtar eski) Coder Notu'na yaz, uydurma bileşen yazma.
 - Hangisi ne zaman: nav, kart, form, akordeon, tablo, alt bilgi, admin menüsü → 21st · hero, imza bölümler → el yazımı + Motion · hareket karakteri her zaman Motion ile eklenir (21st çıktısındaki hazır animasyonlar tokenlara ve §8'e uydurulur ya da çıkarılır).
 - shadcn: resmî CLI (`npx shadcn@latest add …`), varsayılan halde bırakma. İki seçenekli ayar = yan yana anahtar (toggle-group), açılır liste değil.
@@ -190,6 +191,10 @@ Referans: `Admin paneli .JPG` — açık zemin, solda gruplu ikonlu menü, üstt
 | A6 Denetim | 201 | Codex | `impeccable` critique → düzelt → polish (yoksa `audit-ai-design-slop` + `avoid-ai-ui-cliches`), axe 0 ihlal, `security-audit` (quick) bulgusu 0 confirmed, ölü kod 0 | **K2** Claude kabul |
 | A7 Cihaz QA | 202 | Kimi | Tüm sayfa × 15 cihaz × Chromium+WebKit, akışlar, gözle inceleme → `RAPOR.md` (197 düzeni) → Codex düzeltme döngüsü | **K3** kritik/yüksek 0 |
 | A8 Sunum + yayın | 203 | Codex (önizleme PDF + ana sayfa gezinti videosu 1440 + 390); Claude (push → CI → deploy.py → canlı kontrol) | `AFINA-KAYNAK/tasarim/uygulama-kontrol/AFINA-onyuz-v2-onizleme.pdf` + `.mp4` | **K4** kullanıcı yayın onayı |
+| **v3** A10 Temel + ana sayfa | 204 | Seçilen yazar | Tokenlar, fontlar, ortak parçalar, menü + alt bilgi + ana sayfa | **K5** kullanıcı/müşteri ana sayfayı onaylar |
+| **v3** A11 Satın alma yolu | 205 | Aynı yazar | Ürün, katalog, sepet, ödeme | — |
+| **v3** A12 Kalan sayfalar + panel | 206 | Aynı yazar | Hakkımızda, toptan, bayilik, blog, hesap, yasal, 404, admin | — |
+| **v3** A13 Cihaz QA + yayın | 207 | Farklı ajan (QA); Claude (yayın) | `output/task207/RAPOR.md`; canlı | **K6** yayın onayı |
 | A9 Büyüt (ayrı onay) | sonra | Codex | `claude-seo` / `geo` denetimi, Search Console, tanıtım videosu (hyperframes / video-shotcraft), pazarlama skill'leri | — |
 
 ### 12.1 · ui-ux-pro-max akışı (A1'de zorunlu, A3/A4'te sayfa bazında)
@@ -231,17 +236,17 @@ Tarayıcılar repo içindeki Playwright (`node_modules/playwright`, chromium + w
 - §14.1 kalite listesi: her madde PASS/FAIL + kanıt (komut çıktısı ya da ekran görüntüsü yolu).
 
 ### 14.1 · Son kalite listesi (taste-skill uyarlaması, 10 Kas — her ön yüz aşaması)
-Marka seçimleri (§2 renkleri, Fraunces + Figtree) kullanıcı kararıdır; taste-skill'in "Fraunces / bej-altın palet yasağı" bu projede **uygulanmaz**. Kaydırmaya bağlı hareket yasağı (§6, §8) aynen geçerli.
+v2.0 (12 Kas): liste tasarım dili v3'e göre güncellendi. Marka renkleri (§2) ve Cormorant + Montserrat çifti karardır; taste-skill'in serif/bej-altın palet yasağı bu projede **uygulanmaz**. Kaydırmaya bağlı hareket yasağı (§6, §8) aynen geçerli.
 1. **Uzun tire yok:** ziyaretçinin gördüğü hiçbir metinde (başlık, düğme, alt metin, `alt`, SEO title/description) `—` ya da ayraç olarak `–` yok; tarih/aralıkta `-`. Kanıt: `rg -n "—|–" app components lib/content` görünen metinde 0.
-2. **Üst etiket sınırı:** büyük harfli, harf aralığı açık küçük üst etiket (eyebrow) en çok her 3 bölümde 1; hero dahil sayılır.
+2. **Üst etiket sınırı:** yapraklı üst etiket en çok her iki bölümde bir; hero'da yok; büyük harfte Türkçe İ doğru.
 3. **Bir amaç = bir düğme metni:** aynı işi yapan düğmeler sayfa boyunca aynı adı taşır (ör. teklif için yalnız "Teklif İste"); iki farklı ad yok.
 4. **Düğme tek satır:** masaüstünde hiçbir düğme yazısı iki satıra kırılmaz; telefonda da 320 px'te kırılmaz ya da düğme tam genişliğe geçer.
 5. **Metin denetimi:** tüm görünen metinler baştan okunur; yapay/şişkin dil yok ("eşsiz deneyim", "lezzet yolculuğu", "keşfetmeye hazır mısınız", "benzersiz", "en kaliteli"). Anlamı belirsiz cümle düz bir cümleyle değiştirilir. Liste `DENETIM.md`'ye.
 6. **Yerleşim tekrarı:** aynı yerleşim ailesi (ör. görsel solda + metin sağda) art arda en çok 2 bölüm; ana sayfada en az 4 farklı yerleşim ailesi.
-7. **Görsel üstüne etiket yok:** fotoğrafın üstüne rozet/etiket/numara yazısı konmaz (bilerek üstte duran `data-overlay-ok` başlıkları hariç).
-8. **Süs işaretleri yok:** bölüm numarası ("01 /"), "Kaydır" işareti, her satırın önünde renkli nokta, `·` ile dizilmiş meta satırı yok.
+7. **Görsel üstü öğeler kurallı:** fotoğraf üstünde yalnız `data-overlay-ok` başlık + eylem metni + madalyon ve ürün kartındaki boy etiketi (`Tag`) bulunur; hepsi koyulaştırma üstünde ve AA. Numara, indirim rozeti, uydurma iddia rozeti yok. Mühür (`Stamp`) yalnız Hasat maddesi ve Hakkımızda'da.
+8. **Süs ölçülü:** bölüm numarası ("01 /"), "Kaydır" işareti, `·` ile dizilmiş meta satırı yok. İzinli süs: zeytin dalı çizgisi (sayfada ≤ 2), 2 px altın çizgi, madalyon; hiçbiri hareket etmez.
 9. **Kayan şerit tek:** sayfada en çok bir kayan yazı şeridi (Hakkımızda şeridi).
-10. **Tek köşe kuralı:** düğme, kart, alan ve görsel köşe yuvarlaklıkları `docs/DESIGN.md`'de tek tabloda yazılı ve her yerde aynı.
+10. **Köşe tablosu:** yalnız `docs/DESIGN.md` köşe tablosundaki 6 token kullanılır (hap, kart 24, alan 12, daire, hero 32, kemer); kodda ham piksel yarıçapı yok; bütün düğmeler hap (`[data-pill]`).
 11. **Kontrast:** her düğme, form alanı, yer tutucu, yardımcı ve hata metni WCAG AA (4,5:1; büyük metin 3:1); fotoğraf üstündeki yazıda koyulaştırma katmanı.
 12. **Hareketin nedeni:** her animasyon tek cümleyle gerekçelendirilir (dikkat, geri bildirim, durum değişimi); gerekçesi olmayan kaldırılır.
 

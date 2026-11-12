@@ -1,3 +1,28 @@
+## Aktif plan: tasarım dili v3 "Altın Dal" (12 Kasım 2026)
+
+Müşteri v2'yi ("Ellek sofrası", canlı `0dd0222`) beğenmedi. Kullanıcı: "button ve yazıları ... hepsini güncelle
+baştan", "tüm md dosyalarını dizayn baştan yap", "başla sen", "firecrawl ile en iyi nasıl yapabilirsin araştır".
+Neyin beğenilmediği iletilmedi; yön kanıttan türetildi (karar Claude'un, onay K5'te): müşterinin kendi marka
+afişi (derin yeşil + altın hap etiket + mühür + fotoğraf), beğendiği Köklü sitesi (Cormorant + geometrik sans),
+Firecrawl ile taranan Brightland / Graza / Kosterina (çok büyük karakterli serif, güçlü düğme, fotoğraf) ve
+ui-ux-pro-max önerisi (Cormorant / Montserrat). Ayrıntı: `docs/DESIGN.md` → "Neden değişti".
+
+Değişen: yazı çifti (Cormorant + Montserrat), düğme dili (altın madalyonlu hap, 4 varyant), köşe sistemi
+(hap / 24 / 12), ürün kartı (adaçayı zemin), yüzey ritmi (en çok 2 yeşil bant), fotoğraf ağırlığı, mühür ve
+etiket (kurallı). Değişmeyen: içerik ve sıra (BRIEF), sayfa adresleri, üyelik/sepet/ödeme/DB/API mantığı,
+hareket yasakları, yayın düzeni.
+
+| Görev | İş | Kapı |
+|---|---|---|
+| 204 | Tokenlar, fontlar, ortak parçalar (`PillButton`, `Tag`, `Stamp`, `Medallion`, `SectionHeading`, `OliveBranch`), menü + alt bilgi + **ana sayfa** | **K5** kullanıcı/müşteri ana sayfayı görür (ekran görüntüsü; PDF/video yok) |
+| 205 | Ürün, katalog, sepet, ödeme | — |
+| 206 | Hakkımızda, toptan, bayilik, blog, hesap, yasal, 404, yönetim paneli | — |
+| 207 | Tüm cihaz QA (yazandan farklı ajan) + yayın | **K6** yayın onayı |
+
+Yazar: kullanıcı seçer (Codex `gpt-6-astra` ya da Fable 5.2 alt ajanı). Geri dönüş: canlı
+`dpl_7BNv49JbjcWeYyAU3S8qUPkNLyp8` (`0dd0222`). Açık kalan ayrı işler: yönetim paneli özet kartları
+(DB okuma, onay bekliyor), müşteri görselleri, SMTP, ilk yönetici.
+
 ## Task201 / bulunabilirlik ve denetim (11 Kasım 2026)
 
 A0: başlangıç `1c53b64`, temiz main; Motion14.4.0, Next16.4.2,

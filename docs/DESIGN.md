@@ -1,326 +1,214 @@
-# AFİNA ZEYTİN — Ellek sofrası
+# AFİNA ZEYTİN — Altın Dal (tasarım dili v3 · 12 Kasım 2026)
 
-> Ellek’teki gerçek üretim görüntüsünü, açık bir sofra zemini ve okunur ürün raflarıyla yan yana getiren sakin bir AFİNA vitrini.
+> Sanat yönetimi cümlesi: **AFİNA'nın kendi afişindeki dünya web'e taşınır: zeytinliğin derin yeşili, şampanya altını hap düğmeler, iştah açan büyük fotoğraf; hepsi açık fildişi zeminde.**
+> Bu dosya ön yüzün tek tasarım sözleşmesidir. Önceki dil ("Ellek sofrası") `docs/DESIGN-v2-ellek-sofrasi.md` içinde yalnız tarihçedir, uygulanmaz. İçerik ve sıra için `docs/MASTER-PROMPT.md` §10–§11 ve müşteri BRIEF'i geçerlidir.
 
-**Tema:** açık. **Yön:** K1, 11 Kasım 2026: kullanıcı A / Codex “Ellek sofrası” tasarımını seçti. Bu belge bir yayın veya tüm sayfalar kabulü değildir. Önceki v12 dosyası değiştirilmeden `DESIGN-v12-hasat.md` altında saklanır. Bağlayıcı üst kaynaklar müşteri BRIEF’i ve `MASTER-PROMPT.md` dosyasıdır.
+## Neden değişti (karar kaydı)
 
-Bu düzen ziyaretçinin gerçek ürünü, boyu ve fiyatı okuyarak seçim yapmasını sağlar. Büyük doğal görüntü, değişen bölüm ölçüleri ve orijinal logo kimliği taşır. Sahte istatistik, yorum veya indirim anlatısı yoktur. Fraunces ile Figtree kullanıcı seçimidir; değiştirilmez.
+Müşteri v2'yi beğenmedi; neyi beğenmediğini kullanıcı iletmedi ("başla sen"). Yön bu yüzden üç kanıttan türetildi; **bu seçim Claude'un kararıdır, müşteri onayı K5 kapısında alınır:**
+
+| Kanıt | Ne gösteriyor | v2'de neydi |
+|---|---|---|
+| Müşterinin kendi marka afişi (`AFINA-KAYNAK/referans/kurumsal-banner-referans.png`, AFİNA ZEYTİN şeridi) | Derin zeytin yeşili fotoğraf zemin, altın logo, **altın hap etiketler + ikon**, yuvarlak hatlı yazı, dairesel "%100 Doğal" mührü, gerçek ürün fotoğrafı | Düz fildişi, köşeli koyu düğme, mühür/etiket yasak, bol boşluk |
+| Müşterinin beğendiği site (Köklü Zeytincilik, Firecrawl marka taraması) | Zarif serif (Cormorant Garamond) + geometrik sans (Jost), yeşil + krem + altın, 8–9 px yuvarlak düğme | Fraunces + Figtree, 4–8 px köşe |
+| Dünyadaki iyi zeytinyağı siteleri (Firecrawl: Brightland, Graza, Kosterina) | Karakterli **çok büyük** serif başlık (72 px+), sade sans gövde, krem zemin, zeminden ayrışan güçlü düğme rengi, fotoğraf ağırlığı | Başlıklar orta boy, düğme zemine yakın |
+| ui-ux-pro-max `--design-system` ("olive oil food artisan ecommerce premium natural") | Yazı çifti **Cormorant / Montserrat**; altın vurgu; hover 150–300 ms; 4,5:1 karşıtlık; görünür odak | — |
+
+Reddedilen ui-ux-pro-max önerileri: koyu zemin + "Liquid Glass" (müşteri açık ton istedi; cam efekti yasak listede).
 
 ## Tokens — Colors
 
 | Ad | Değer | Token | Rol |
 |---|---|---|---|
-| Zeytin yeşili | `#243A29` | `--sf-green` | Ana eylem, marka, yerel koyu alt bilgi |
-| Fildişi | `#F5F1E7` | `--sf-ivory` | Ana sayfa zemini |
-| Kâğıt | `#FFFDF8` | `--sf-paper` | Ürün fotoğrafı zemini ve açık menü |
-| Şampanya altını | `#D4B483` | `--sf-gold` | Logo çevresi ve koyu zeminde küçük vurgu |
-| Mürekkep | `#202A22` | `--sf-ink` | Başlık, ana metin |
-| İkincil metin | `#586052` | `--sf-muted` | Boy, stok açıklaması, ikincil paragraf |
-| Ayırıcı | `#D7D7C9` | `--sf-line` | İşlevsel çizgi; metin rengi değildir |
-| Koyu altın | `#80602D` | `--sf-focus` | Açık zeminde 2 px, 4 px ofsetli odak halkası |
+| Zeytin yeşili | `#243A29` | `--sf-green` | Birincil düğme, koyu bant, alt bilgi, başlık metni |
+| Derin yeşil | `#1A2B1E` | `--sf-green-deep` | Düğme hover/basılı, fotoğraf üstü koyulaştırma tabanı |
+| Zeytin | `#5C6B3A` | `--sf-olive` | İkon, ince süs çizgisi, ikincil vurgu (fildişinde 5,1:1) |
+| Adaçayı | `#E7EBDD` | `--sf-sage` | Ürün görsel zemini, yumuşak bant |
+| Fildişi | `#F5F1E7` | `--sf-ivory` | Sayfa zemini |
+| Kâğıt | `#FFFDF8` | `--sf-paper` | Kart, üst menü, form alanı |
+| Şampanya altını | `#D4B483` | `--sf-gold` | Altın düğme dolgusu, madalyon, ince çizgi, koyu zeminde vurgu |
+| Koyu altın | `#80602D` | `--sf-gold-deep` | Açık zeminde altın metin/ikon/üst etiket, odak halkası (5,1:1) |
+| Mürekkep | `#202A22` | `--sf-ink` | Gövde metni |
+| Soluk | `#586052` | `--sf-muted` | Yardımcı metin |
+| Çizgi | `#D7D7C9` | `--sf-line` | Ayırıcı, kart kenarı |
 
-Altı ana renk vardır; çizgi ve odak işlevsel yardımcı tonlardır. Mevcut hata/başarı durumları sözcük ve simgeyle de anlatılır. Yeni dekoratif renk ailesi açılmaz. Genel açık görünüm işletim sistemi karanlık tercihiyle değişmez; koyu alt bilgi kendi renk kapsamını taşır.
+Hata/başarı/uyarı tokenları mevcut değerleriyle kalır. Karşıtlık çiftleri (ölçülmüş): fildişi/yeşil 11:1+, yeşil/altın 6,2:1, koyu altın/fildişi 5,1:1. **Beyaz yazı altın üstüne konmaz** (2:1); altın dolgunun üstündeki yazı her zaman `--sf-green`.
 
-Hesaplanan düz renk karşıtlıkları: yeşil/fildişi **10.87:1**, mürekkep/fildişi **13.15:1**, ikincil metin/fildişi **5.80:1**, ikincil metin/kâğıt **6.44:1**, altın/yeşil **6.22:1**, koyu altın/fildişi **5.13:1**. Şampanya altını/fildişi **1.75:1** olduğu için açık zemin üstünde metin veya tek odak göstergesi olmaz. Bunlar sRGB bağıl parlaklık hesabıdır; fotoğraf üstündeki gerçek karşıtlık ayrıca ekran denetimine tabidir.
+Yüzey dengesi: sayfanın çoğu açık (fildişi/kâğıt/adaçayı). Ana sayfada **en çok 2 koyu yeşil bant** + alt bilgi; iç sayfalarda en çok 1.
 
 ## Tokens — Typography
 
-### Fraunces — başlık ve marka cümlesi · `--font-display`
+### Cormorant — başlık · `--font-display`
+Google Fonts, değişken ağırlık; kullanılan: 600 (başlıklar), 700 (hero). `latin` + `latin-ext` (İ ı ş ğ ç ö ü). Harf aralığı −0,01em; satır 0,95–1,1. Küçük x-yüksekliği nedeniyle **büyük** kullanılır; 22 px altına inmez. İtalik yalnız hero başlığında tek ifadede, aynı aileden.
 
-- Ağırlık: 500; seçili kısa vurgu ve ürün adı 600.
-- Ölçü: ana sayfa başlığı 40–80 px; ürün başlığı 36–56 px; bölüm başlığı 36–56 px; ürün kartı başlığı 22 px, diğer kart başlıkları 24–32 px.
-- Satır yüksekliği: büyük başlık 1.08–1.15; bölüm 1.2; çok satırlı kart 1.3.
-- Harf aralığı: büyük başlık −0.02em, kart −0.01em.
-- Gerçek italik dosyası vardır; tek kelimeyi alışkanlıkla italikleştirme. Bu yönün başlıkları düz yazılır.
-- Yedek: Georgia, Times New Roman, serif. Başlıklar yazı olarak kalır.
+### Montserrat — gövde, arayüz, düğme · `--font-body`
+Google Fonts, değişken; 400 (gövde), 500 (menü), 600 (düğme, fiyat, etiket). Gövde 16 px / 1,65; satır ≤ 68 karakter. Fiyatlarda `font-variant-numeric: tabular-nums`.
 
-### Figtree — gövde ve arayüz · `--font-body`
-
-- Ağırlık: 400 gövde; 500 bağlantı; 600 düğme/etiket; 700 gerektiğinde durum.
-- Ölçü: gövde ve form 16–18 px; yardımcı bilgi 14 px; hiçbir görünür metin 12 px altında değildir.
-- Satır yüksekliği: gövde 1.6; arayüz 1.5. Harf aralığı 0.
-- Fiyat, adet ve rozetlerde `font-variant-numeric: tabular-nums`.
-- Uzun metin 65–72ch ile sınırlı; paragraflar `text-wrap: pretty`, başlıklar `balance`.
-- Resmî Google Fonts kaynağından alınan `app/fonts/Figtree-variable.ttf` ve OFL lisansı kullanılır; `next/font/local` 300–900 ağırlık aralığını yerelden yükler. Uygulamada gövde 400 ve üstüdür. Font yüklenmesi içerik kaydırmamalıdır. Yedek Arial/Helvetica Neue.
+Yükleme: `next/font/google` (`Cormorant`, `Montserrat`; `display: "swap"`, `subsets: ["latin","latin-ext"]`) — dosyalar derlemede indirilir ve kendi alan adımızdan sunulur, CSP değişmez. Derleme ortamında indirme başarısız olursa woff2 dosyaları OFL lisansıyla `app/fonts/` altına alınır ve `next/font/local` kullanılır. Fraunces/Figtree/Inter dosyaları ve `scripts/optimize-fraunces.py` kaldırılır.
 
 ### Type Scale
 
-| Rol | Aile | Ağırlık | Ölçü | Satır | Harf aralığı |
-|---|---|---|---|---|---|
-| Yardımcı bilgi | Figtree | 400 | .875rem | 1.5 | 0 |
-| Menü / düğme | Figtree | 500–600 | 1rem | 1.5 | 0 |
-| Gövde | Figtree | 400 | 1–1.125rem | 1.6 | 0 |
-| Fiyat | Figtree | 600 | 1.125–1.5rem | 1.5 | 0 |
-| H3 ürün kartı | Fraunces | 500 | 1.375rem | 1.35 | −.01em |
-| H3 blog / banner | Fraunces | 500 | 1.5–1.75rem | 1.3 | −.01em |
-| H2 bölüm | Fraunces | 500 | 2.25–3.5rem | 1.15 | −.02em |
-| H1 ürün | Fraunces | 500 | 2.25–3.5rem | 1.15 | −.02em |
-| H1 ana sayfa | Fraunces | 500 | 2.5–5rem | 1.08 | −.025em |
+| Rol | Aile / ağırlık | Masaüstü | Telefon | Satır |
+|---|---|---|---|---|
+| Hero başlık | Cormorant 700 | `clamp(56px, 7vw, 96px)` | 44–52 px | 0,95 |
+| Bölüm başlığı (h2) | Cormorant 600 | `clamp(38px, 4.2vw, 56px)` | 34 px | 1,05 |
+| Alt başlık (h3), kart başlığı | Cormorant 600 | 28 px | 24 px | 1,1 |
+| Ürün adı | Cormorant 600 | 24 px | 22 px | 1,15 |
+| Giriş paragrafı | Montserrat 400 | 18 px | 17 px | 1,6 |
+| Gövde | Montserrat 400 | 16 px | 16 px | 1,65 |
+| Düğme | Montserrat 600 | 15 px, +0,01em | 15 px | 1 |
+| Menü | Montserrat 500 | 15 px | 17 px (çekmece) | 1 |
+| Fiyat | Montserrat 600 | 20 px | 18 px | 1 |
+| Üst etiket | Montserrat 600, büyük harf, +0,14em, `--sf-gold-deep` | 12 px | 12 px | 1 |
+| Yardımcı / küçük | Montserrat 400 | 14 px | 14 px | 1,5 |
+
+Üst etiket (ör. "Hikayemiz") afişteki dile aittir ve serbesttir; en çok **her iki bölümde bir**, yanında 16 px zeytin yaprağı ikonu. Büyük harf dönüşümü CSS ile ve `lang="tr"` altında yapılır (i → İ).
 
 ## Tokens — Spacing & Shapes
 
-**Taban:** 8 px. **Yoğunluk:** rahat, ancak ilk ürüne erişim gereksiz boşlukla geciktirilmez.
+Boşluk ölçeği değişmez: 8 / 16 / 24 / 32 / 48 / 64 / 96 / 128 (`--sf-space-*`). Bölüm dikey boşluğu masaüstü 96, telefon 64. İçerik genişliği en çok 1280 px; yan boşluk masaüstü 48, telefon 16.
 
-### Spacing Scale
+### Köşe tablosu (tek kaynak; kod bu tabloyla birebir)
 
-| Ad | Değer | Token | Kullanım |
-|---|---|---|---|
-| 8 | 8 px | `--sf-space-8` | İkon/metin, durum satırı |
-| 16 | 16 px | `--sf-space-16` | Telefon kenarı, yakın öğe arası |
-| 24 | 24 px | `--sf-space-24` | Kartlar ve satırlar arası |
-| 32 | 32 px | `--sf-space-32` | Bölüm içi gruplar |
-| 48 | 48 px | `--sf-space-48` | Telefon bölüm arası, menü kontrolü |
-| 64 | 64 px | `--sf-space-64` | Masaüstü bölüm içi geniş aralık |
-| 96 | 96 px | `--sf-space-96` | Ana bölümler arası |
-| 128 | 128 px | `--sf-space-128` | Yalnız geniş ekran hikâye geçişi |
-
-44 px erişilebilirlik alt sınırıdır; çoğu kontrol 48 px seçilir. İnce çizgi 1 px ve odak 2 px bu boşluk ölçeğinin konusu değildir.
-
-### Border Radius
-
-Tek köşe tablosu. Değerler mevcut görünümü koruyan adlandırılmış CSS değişkenleridir (`app/globals.css`). Ana sayfa, ürün, katalog, kurumsal içerik, teklif, üyelik, hesap ve ortak menü/sepet yüzeyi bu tabloyu kullanır. Yönetim paneli de Task200 ile aynı tabloyu kullanır.
-
-| Öğe türü / kullanım | Köşe ölçüsü | Token adı |
+| Öğe | Köşe | Token |
 |---|---|---|
-| Düğme: ürün satın alma, boy seçimi, ürün teklifi, kategori/hesap bağlantısı, seçici seçeneği | 4 px | `--sf-radius-action` |
-| Düğme: ana sayfa birincil/ikincil eylem, sepet kuponu | 8 px | `--sf-radius-button` |
-| Düğme: dairesel menü, hesap, sepet kontrolleri | %50 | `--sf-radius-icon` |
-| Düğme: video kontrolü | 24 px | `--sf-radius-video` |
-| Düğme: ortak sepet ödeme/öneri/mini eylemi | 999 px | `--sf-radius-pill` |
-| Kart: çerçevesiz ürün, kategori, blog | 0 px | `--sf-radius-card` |
-| Kart/panel: toptan, bayilik, üyelik, hesap, talep özeti, seçici listesi | 8 px | `--sf-radius-panel` |
-| Kart: mevcut sepet satırı/öneri/özet | 12 px | `--sf-radius-cart-card` |
-| Görsel: ürün, küçük kategori, banner, blog, sepet fotoğrafı | 8 px | `--sf-radius-image` |
-| Görsel: geniş kategori; masaüstü hikâye | 16 px | `--sf-radius-image-wide` |
-| Görsel: telefon hikâyesi | 8 px | `--sf-radius-image` |
-| Görsel: hasat üst-sol, masaüstü / telefon | 64 / 32 px | `--sf-radius-harvest` / `--sf-radius-harvest-mobile` |
-| Görsel: hasat diğer üç köşe | 8 px | `--sf-radius-image` |
-| Görsel seçici düğmesi | 4 px | `--sf-radius-thumbnail` |
-| Rozet/etiket: menüde adet | 16 px | `--sf-radius-badge` |
-| Rozet/etiket: mevcut sepette boy | 999 px | `--sf-radius-pill` |
-| Form alanı: ürün adet grubu | 4 px | `--sf-radius-field` |
-| Form alanı: mevcut sepet adet grubu | 999 px | `--sf-radius-pill` |
-| Form alanı: ortak Input, select, telefon ve ülke düğmesi (kupon hariç) | 0 px | `rounded-none` veya `border-radius:0` |
-| Form alanı: mevcut sepet kuponu | 8 px | `--sf-radius-button` |
-| Çekmece/pencere: menü ve ortak Dialog/Sheet kabuğu | 0 px | `--sf-radius-drawer`; ortak `rounded-none` |
+| Düğme, etiket (tag), adet seçici, arama alanı, sepet rozeti | 999 px (hap) | `--sf-radius-pill` |
+| Kart, fotoğraf, panel, pencere, çekmece dış köşesi | 24 px (telefon 20 px) | `--sf-radius-card` |
+| Form alanı, küçük görsel, açılır liste | 12 px | `--sf-radius-field` |
+| Madalyon, mühür, ikon dairesi | 50% | `--sf-radius-round` |
+| Hero video alt köşeleri | 32 px (telefon 24 px) | `--sf-radius-hero` |
+| Kemer görsel (yalnız Hasat ve Hakkımızda ana görseli) | üst 999 px, alt 24 px | `--sf-radius-arch` |
 
-Hasat köşeleri sırası üst-sol, üst-sağ, alt-sağ, alt-soldur. Fotoğrafın üzerinde yer adı rozeti yoktur. `data-overlay-ok` yalnız bilinçli başlık/eylem kapsayıcısındadır; video kontrolü işlevsel `data-media-control` düğmesidir. Çakışma testi ikisini açıkça ayırır; geri kalan yazı/görsel kesişmeleri hatadır.
+Eski `--sf-radius-*` tokenları (action, button, panel, image, harvest, badge, cart-card, drawer, video…) silinir; kodda tablo dışı yarıçap kalmaz.
 
-### Shadows
-
-Ürünlerde ve bölümlerde gölge yoktur. Çekmeceyi arka plandan ayıran örtü yeterlidir; varsa gölge yalnız bu işlev için kullanılır. Gölgeler hareket ettirilmez.
-
-### Layout
-
-Telefon dış boşluğu 16 px; tablet/masaüstü en az 32 px. Ana sayfa içerik genişliği 1312 px, ürün sayfası 1280 px, menü/alt bilgi 1440 px ile sınırlanır. Bölüm araları içerik görevine göre 48/64/96/128 px; her bölüm aynı yükseklikte değildir.
+### Gölge
+Duran kart: gölgesiz, 1 px `--sf-line`. Hover/odak: `--sf-shadow-lift: 0 16px 36px -18px rgba(36,58,41,.32)`. Ürün görselinin altında yumuşak zemin gölgesi (elips, `rgba(36,58,41,.18)`). Gri/siyah gölge yok.
 
 ## Components
 
-### Üst menü
+### PillButton — imza öğe: "altın madalyonlu hap"
+Yapı: hap gövde + sağ uçta **36 px dairesel madalyon** içinde ikon (ok / sepet / onay / artı). Yükseklik masaüstü 52, telefon 48; sol iç boşluk 24, madalyonlu sağ iç boşluk 8, madalyonsuz 24. Etiket **tek satır** (`white-space: nowrap`); 320 px'te sığmazsa düğme tam genişlik olur.
 
-Logo solda, beş gerçek sayfa bağlantısı ortada, hesap ve sepet sağda. Açık ve opak zemin; cam/blur yok. Menü satırı telefon 72 px, 1100 px ve üstünde 80 px; 48 px kontrol alanları. Çekmece yalnız dar ekranda; Esc, odak kilidi, odağı açan düğmeye geri verme ve erişilir başlık zorunlu. Çapa hedefi menü altında kalmaz. Hesap/sepet mevcut sağlayıcıları çağırır. Menü gövdesi yalnız açıldığında yüklenir; ilk sayfa yüküne eklenmez.
+| Varyant | Dolgu / yazı | Madalyon | Nerede |
+|---|---|---|---|
+| `primary` | `--sf-green` / `--sf-ivory` | `--sf-gold` zemin, yeşil ikon | Açık zeminde ana eylem (Sepete ekle, Ürünleri İnceleyin, Gönder) |
+| `gold` | `--sf-gold` / `--sf-green` | `--sf-green` zemin, fildişi ikon | Koyu bant, video/fotoğraf üstü, alt bilgi |
+| `outline` | saydam, 1,5 px `--sf-green` kenar / `--sf-green` | kenarlı, saydam | İkincil eylem (Teklife ekle, Hakkımızda, Tüm Ürünler açık zeminde) |
+| `quiet` | yalnız yazı, 2 px `--sf-gold` alt çizgi (4 px ofset) | yok | Üçüncül bağlantı; dokunma alanı ≥ 44 px |
+
+Durumlar: hover → dolgu `--sf-green-deep` (gold'da %6 koyulaşma), madalyon `translateX(4px)`; basılı → `scale(.97)`; odak → 2 px `--sf-gold-deep` halka, 3 px ofset; `busy` → madalyonda dönen halka, `aria-busy`, tıklanamaz; `disabled` → `--sf-sage` dolgu, `--sf-muted` yazı, madalyon yok. Geçiş 180 ms `ease-out`; azaltılmış harekette yalnız renk değişir. Ölçek büyütme (scale > 1) kullanılmaz.
+Sepete ekle akışı: "Sepete ekle" + sepet → `busy` → **"Eklendi"** + onay (1,6 sn) → başa döner. Mantık `components/catalog/AddToCart` içinde aynen kalır; yalnız görünüm değişir. Stok yok: `disabled` "Mevcut değil".
+Bir görünüm alanında tek `primary`/`gold`; diğerleri `outline`/`quiet`.
+
+### Etiket (Tag)
+Hap, 32 px yükseklik, Montserrat 600 13 px. `sage` (adaçayı zemin, yeşil yazı; boy "1 kg", kategori) ve `gold` (altın zemin, yeşil yazı; koyu/fotoğraf üstü). Afişteki "Zeytin / Zeytinyağı" haplarının karşılığıdır; ikon solda 16 px.
+
+### Mühür (Stamp)
+Durağan SVG: dairesel yazı + ortada yaprak, `--sf-gold-deep` (koyu zeminde `--sf-gold`), 96–120 px. **Yalnız** müşterinin izinli iddiasında: Hasat bölümündeki "%100 Doğal ve Katkısız" maddesi ve Hakkımızda. Dönmez, yanıp sönmez.
+
+### Madalyon
+48 px daire, 1,5 px `--sf-gold` kenar, içinde 22 px `lucide` ikonu (`--sf-green`; koyu zeminde `--sf-gold`). 3'lü ikon, Hasat maddeleri, Toptan/Bayilik kartları.
+
+### SectionHeading
+İsteğe bağlı üst etiket + Cormorant başlık + isteğe bağlı giriş paragrafı; `tone="dark"` koyu bantta fildişi/altın. Başlığın altında 48 px genişlikte 2 px altın çizgi yalnız ortalanmış başlıklarda.
+
+### Üst menü
+Kâğıt zemin, 76 px (telefon 64), alt 1 px çizgi, yapışkan. Logo solda; bağlantılar Montserrat 500, etkin bağlantıda 2 px altın alt çizgi; sağda hesap ikonu + **sepet hapı** (ikon + adet rozeti). Telefonda logo + sepet + menü düğmesi; çekmece sağdan, 24 px sol köşeler, bağlantılar Cormorant 28 px, altta `gold` düğme "Ürünleri İnceleyin".
 
 ### Hero
+Tam genişlik video, yükseklik `min(86vh, 860px)` (telefon 78vh), alt köşeler `--sf-radius-hero`. Sol altta metin: Cormorant 700 fildişi başlık + 18 px tek satır açıklama + **`gold` düğme** "Ürünleri İnceleyin". Okunurluk: sol-alt köşeden `--sf-green-deep` %88 → saydam doğrusal + dairesel koyulaştırma; videonun sağ üstü açık kalır. Video duraklat düğmesi sağ altta 44 px daire. Hero'da mühür ve üst etiket yok.
 
-Müşterinin zeytinlik videosu, tek slogan ve tek `Ürünleri İnceleyin` bağlantısı. Video geniş yüzeydir; bütün video karartılmaz. Masaüstünde slogan alt-sol bölgede, yalnız metnin arkasındaki koyu radyal geçiş üzerinde; sağdaki zeytinlik serbest kalır. Koyulaştırmanın çekirdeği %80-86 opaklıktadır; üst, alt ve sağ kenarı 48 px içinde yumuşar. Fotoğraf üstündeki düğmelerin koyu altın odak halkası, karelerden etkilenmemesi için açık düğme zemininin 4 px içinde kalır. Düğme fildişi, yazısı yeşildir. Krem panel, kesik köşeli etiket, açılış perdesi ve ikinci düğme yok. Telefonda da slogan video üstünde, alt-sol yerel karartmada durur. Hero telefon yüksekliği en fazla 608 px ve ekran yüksekliği eksi 72 px; kontrol için alt alan ayrılır. Poster ilk kare için yer ayırır; duyarlı AVIF ön yükleme bağlantısı belge başına taşınır ve yüksek önceliklidir. Fraunces normal yüzü gerektiğinde yüklenir; kullanılmayan italik dosya açılışta ön yüklenmez. Video kontrolü en az 48×48 px.
+### Dört geçiş (4 kutu)
+Dört fotoğraf kartı, oran 4:5 (telefon 2×2, oran 3:4), köşe 24. Altta yeşil koyulaştırma üstünde Cormorant 28 px fildişi başlık + Montserrat 14 px eylem metni ("Ürünleri İnceleyin" / "Hakkında Bilgi Alın") + 36 px altın madalyon ok. Hover: fotoğraf `scale(1.03)`, madalyon 4 px sağa. Kartın tamamı bağlantıdır.
 
-### Dört geçiş
+### Ürün kartı
+Kâğıt kart, köşe 24, 1 px çizgi. Üstte **adaçayı zeminli** görsel alanı (oran 1:1, ürün `object-fit: contain`, altında zemin gölgesi); sol üstte boy etiketi (`sage` Tag). Altında Cormorant 24 px ad, Montserrat 600 fiyat + stok satırı, tam genişlik `primary` "Sepete ekle", altında `quiet` "Teklife ekle". Hover: kart `translateY(-4px)` + `--sf-shadow-lift`. Telefon ilk raf: yatay kaydırmalı raf (kart 74vw, sonraki kartın kenarı görünür); ikinci ızgara: 2 sütun, kompakt (düğme 44 px, madalyon 28 px).
 
-Zeytinyağı ve Zeytin daha büyük fotoğraflı geçişler; Tesisimiz/Bayilik daha kısa görselli geçişler. Hepsinde metin ve hedef bağlayıcı BRIEF’ten gelir. Telefonda dört geçiş alt alta; ilk iki görsel geniş, Tesisimiz ve Bayilik küçük fotoğrafla yatay satırdır. Yuvarlak küçük fotoğraf + ortalı başlık şablonu yok.
+### Hikayemiz
+İki sütun: solda büyük fotoğraf (köşe 24) + sağ alt köşesine binen küçük ikinci fotoğraf (kâğıt 6 px çerçeve); sağda üst etiket "Hikayemiz", başlık, metin, `outline` "Hakkımızda", altında 3 madalyonlu satır. `whileInView` ufak giriş (müşteri izni).
 
-### Ürün kartı ve ilk raf
-
-Stüdyo fotoğrafı 4:5 oranlı görüntü alanında, ambalaj kırpılmadan; masaüstünde yaklaşık 260 px görüntü yüksekliği. Kart dış çerçeve/gölge yığını değildir. Ad, boy, fiyat, stok ve iki ayrı eylem okunur. İlk raf masaüstünde dört sütun; tablet iki sütun; telefonda doğal yatay raf, sonraki kart için 32 px alan ipucu. Otomatik kayma ve snap yoktur. `Tüm Ürünler` bağlantısı rafın altında durur. Başlık/eylem kısaltılmaz; `Teklife ekle` ikincil eylemdir.
-
-### Hikâyemiz
-
-Başlık ve kısa açıklama iki sütunlu giriş; altında geniş onaylı zeytinlik fotoğrafı ve üç değer. Telefon sırası başlık, açıklama, fotoğraf, değerlerdir. Hakkımızda bağlantısı ikincil düğmedir:48px asgari yükseklik,12×24px iç boşluk,8px köşe, yeşil1px çerçeve, kâğıt zemin ve yeşil metin; üzerine gelince fildişi zemin. Müşteri metni/görseli henüz gelmediği için yer tutucu kaydı korunur; yeni tarihçe uydurulmaz.
-
-### Öne çıkan ürünler
-
-İlk rafın kopyası olmayan iki sütunlu yatay ürün anlatımı; ürün sırası ters çevrilir. 1100 px ve altında iki sütundaki kartların fotoğraf/bilgisi alt alta gelir. 767 px ve altında tek sütun raf vardır; tüm telefon boylarında fotoğraf üstte, bilgi alttadır. Fotoğraf bağlantısının yüksekliği kendi oranından hesaplanır, kartın bütün yüksekliğinden alınmaz; bu, görüntünün yazı sütununa taşmasını önler. İndirim etiketi, üzeri çizili fiyat veya popülerlik iddiası yoktur.
+### Öne Çıkan Ürünler — koyu bant
+`--sf-green` zemin, başlık `tone="dark"`, sağ üstte `gold` "Tüm Ürünler". İçinde kâğıt ürün kartları (afişteki "yeşil zemin üstünde parlayan ürün" hissi). Ana sayfadaki 1. koyu bant.
 
 ### Üçlü banner
+Üç dikey fotoğraf kartı (ortadaki 32 px aşağı kaydırılmış), köşe 24; altta koyulaştırma üstünde başlık + altın madalyon ok. `whileInView` ufak giriş.
 
-Masaüstünde 1.25/1/.85 oranında farklı genişliklerde tek sıra: tesis daha geniş, el ve yağ daha kısa; ikinci ve üçüncü görsel 48/96 px aşağıdan başlar. Telefonda bu düşey fark kaldırılır, üç doğal satır olur. Başlıklar açık zeminde/fotoğrafla ilişkili okunur alanda; numara, keşif etiketi ve eşit üç kemer yok. İlk sıradaki iki kategoriden ayrı görev taşır: üretim görüntülerini gösterir.
+### Bereketin Hasat Vakti
+Solda üst etiket + başlık + müşteri cümlesi + 4 madde (madalyonlu; dördüncü maddede **mühür**) + `primary` "Hikayemizi Keşfet"; sağda **kemer** fotoğraf (`--sf-radius-arch`), arkasında adaçayı daire.
 
-### Hasat
+### Toptan Satış + Bayilik
+Adaçayı bant üstünde iki kâğıt kart (köşe 24, arka plan görseli yok): madalyon, Cormorant 28 px başlık, tek cümle, `primary` / `outline` düğme.
 
-Başlık, verilen açıklama ve dört sade çizgisel ikonlu madde solda; müşterinin hasat fotoğrafı sağda. 2×2 kart kabuğu veya sıra numarası yok. Telefonda metin ve maddeler önce, fotoğraf sonra. `Hikayemizi Keşfet` `/hakkimizda` hedefine gider.
+### Blog
+1 büyük (yatay) + 3 küçük kart; görsel köşe 24; başlık Cormorant; "4 dk okuma" Montserrat 13 px; `quiet` "Tüm yazılar".
 
-### Toptan ve bayilik
+### Alt bilgi — koyu
+`--sf-green`; üstte ince altın çizgi + zeytin dalı çizimi; altın logo, Cormorant slogan; bağlantılar Montserrat 15 px fildişi (hover altın); `gold` düğme "Teklif İste"; ödeme logoları kâğıt hap içinde. Ana sayfadaki 2. koyu yüzey sayılmaz.
 
-İki ayrı düz alan: Toptan Satış kâğıt yüzeyinde, Bayilik yeşil yüzeyde fildişi metinle. Arka plan fotoğrafı yok. Başlık, kısa açıklama ve ayrı sayfa bağlantısı. Telefonda alt alta.
-
-### Blog ve alt bilgi
-
-Dört gerçek yazı bağlantısı; küçük görseller, farklı metin uzunluğuna açık düzen. Koyu yeşil alt bilgi orijinal logo, slogan, iletişim, bağlantı grupları ve gerçek ödeme logolarını taşır. Link alanları en az 44 px. Sahte sosyal hesap eklenmez.
+### Formlar
+Alan: kâğıt zemin, 1 px `--sf-line`, köşe 12, yükseklik 52; etiket Montserrat 600 14 px üstte; odakta 2 px koyu altın halka; hata metni alanın altında 14 px. Gönder düğmesi `primary` tam genişlik (telefon). İki seçenekli seçim yan yana hap anahtar.
 
 ### Ürün ayrıntısı
-
-Masaüstünde büyük görüntü solda, seçim/satın alma ve açıklama sağda; telefonda ad, boy, fiyat, adet ve satın alma önce, ardından fotoğraf, açıklama ve saklama bilgisi gelir. Kaynak okuma sırası da telefondaki bu sıradır. 320×568 ve 390×844 ilk ekranında seçili boy, fiyat ve Sepete ekle görünür. Stüdyo ve sahne görünümü seçilebilir; değişim sabit kutuda olur. Boy seçimleri görünür düğmeler; seçili durum yalnız renkle belirtilmez. Adet alanı 16 px ve 48 px hedefler. `Sepete ekle` mevcut sepet işlevini çağırır; teklif doğru ürün kimliğini taşır. Açıklama, saklama bilgisi ve en fazla dört benzer ürün. Breadcrumb ve noindex korunur.
+Solda adaçayı zeminli büyük görsel (köşe 24) + küçük görsel şeridi (köşe 12); sağda Tag (kategori), Cormorant 44–56 px ad, boy seçimi hap anahtar, fiyat 28 px, adet seçici (hap), `primary` "Sepete ekle" + `outline` "Teklife ekle". Telefonda sıra 198-3'teki gibi: ad, boy, fiyat, adet, düğmeler ilk ekranda; fotoğraf altında.
 
 ## Do's and Don'ts
 
 ### Do
-
-- Müşterinin sırasını ve metnini koru; yerleşimi AFİNA’ya göre yeniden kur.
-- Orijinal logo, altı ürün kimliği, gerçek hedefler ve mevcut işlevler kullan.
-- Fotoğrafın kendisini göster; okunurluk için yalnız metin çevresini ele al.
-- 8 px boşluk ritmi, 16 px gövde ve belirgin başlık hiyerarşisi kullan.
-- Klavye odağı, stok yok durumu ve azaltılmış hareketi normal tasarımın parçası yap.
-- Açık/koyu yüzeyin karşıtlığını kendi arka planında ölç.
+- Fotoğrafı büyük kullan; her bölümde en az bir gerçek görsel ya da ürün.
+- Başlıkları cesur büyüt; Cormorant küçük kalırsa zayıf görünür.
+- Düğmeyi zeminden ayır: açıkta yeşil, koyuda altın.
+- Altını az ve parlak kullan: madalyon, ince çizgi, etkin durum.
+- Fotoğraf üstü yazıda koyulaştırma + sayısal karşıtlık ölçümü.
 
 ### Don't
-
-- Her başlığa üst etiket, her bağlantıya ok veya her karta gölge ekleme.
-- Sahte indirim, rakam, yorum, sağlık/sertifika/ödül iddiası üretme.
-- Referans sitenin ifadelerini, dairesel kategorilerini veya numaralı bannerlarını kullanma.
-- Scroll pin/scrub/snap/parallax, GSAP/Lenis, kayan karusel veya sürekli süs animasyonu ekleme.
-- Müşterinin videosunu başka kliple veya yeni üretilen görselle değiştirme.
-- Ana sayfaya kayan yazı bandı ekleme; Hakkımızda bandı Task199 kapsamındadır.
-- `lib/auth`, `lib/db`, sepet/checkout/ödeme/sipariş mantığını tasarım gerekçesiyle değiştirme.
+- Köşeli düğme, 4–8 px yarıçap, gri gölge, düz boş fildişi alan (v2'nin reddedilen hali).
+- Altın üstüne beyaz yazı; altın renkli gövde metni.
+- Dönen/yanıp sönen mühür, sürekli oynayan süs, cam/bulanıklık efekti, degrade yazı.
+- Mührü izinli iki yer dışında kullanmak; yeni iddia eklemek.
+- Köklü Zeytincilik'in yerleşimini, ikonlarını, cümlelerini almak (yazı ailesi benzerliği kopya sayılmaz; düzen ve metin özgün kalır).
+- Kaydırmaya bağlı hareket, sabitleme, sayfa düzeyinde snap.
 
 ## Surfaces
-
-| Seviye | Yüzey | Değer | Amaç |
-|---|---|---|---|
-| 0 | Ana zemin | `--sf-ivory` | Sayfa boyunca açık süreklilik |
-| 1 | Kâğıt | `--sf-paper` | Fotoğraf alanı, menü, yerel bilgi yüzeyi |
-| 2 | Gerçek fotoğraf | Onaylı medya | Hero, üretim ve ürün görselleri |
-| 3 | Yerel koyu | `--sf-green` | Alt bilgi, bayilik kutusu ve sayfa dış kabuğu; içerik fildişidir |
-
-## Elevation
-
-Hiyerarşi gölgeden değil büyük fotoğraf, boşluk, yazı ölçüsü ve işlevden gelir. Kartlar sayfanın yüzeyine oturur. Menü/çekmece içerikle karışmayacak katmandadır; arka planı bulanıklaştırmak yerine sade örtü kullanılır.
+Ana sayfa sırası ve zemin: menü (kâğıt) → hero (video) → 4 kutu (fildişi) → ürünler (fildişi) → Hikayemiz (kâğıt) → **Öne Çıkan (yeşil)** → 3'lü banner (fildişi) → Hasat (fildişi + adaçayı daire) → Toptan/Bayilik (adaçayı) → Blog (kâğıt) → **alt bilgi (yeşil)**. Art arda iki aynı zemin en çok bir kez.
 
 ## Imagery
-
-Yalnız `customer-home.json`, `classic-photos.json` ve onaylı V3 ürün kaynakları. AVIF/WebP `V3Picture`, doğru `sizes`, sabit oran ve ilk ekran dışında lazy yükleme. İlk görünür hero posteri öncelikli; tüm sayfayı yüksek öncelikle yükleme. Üründe ambalajı kesme; görselin gerçek oranını koru. Fotoğraflı bağlantının metni zaten adını söylüyorsa tekrar eden süs görseli boş alt metin alabilir; anlam taşıyan ürün/fabrika görseli kısa Türkçe alt metin alır.
-
-Hero müşteri MP4: masaüstü 1920, telefon 720; 1280 ara boy mevcuttur. Sessiz, inline ve loop; görünür oynat/durdur kontrolü. Azaltılmış hareket poster; veri tasarrufu ve hata durumunda da görünür içerik/eylem korunur. Video zemininde bütün fotoğrafı kapatan karartma yok.
-
-Bekleyenler: “Nesillerin Emeği” yazısız fotoğraf ve müşteri açıklaması; zeytinyağı paylaşım görseli. Şimdilik onaylı zeytinlik/zeytinyağı fotoğrafları kullanılır; ortak içerik kaydından değiştirilebilir olmalıdır. Plakalı tesis orijinali kullanılmaz. Temsili ambalaj için sayfada bir kısa not yeterlidir.
+Yalnız onaylı görseller (MASTER-PROMPT §3). Ürün fotoğrafı beyaz kutuda değil adaçayı zeminde; sahne fotoğrafları tam kart. Koyulaştırma: `linear-gradient(to top, rgba(26,43,30,.86), rgba(26,43,30,0) 62%)`. Süs: logodaki dal çizgisinden türeyen tek satır zeytin dalı (SVG, `--sf-olive` / `--sf-gold`), sayfada en çok 2 kez.
 
 ## Layout
-
-Masaüstünde büyük video → dört yol → ilk ürün rafı → hikâye → farklı ürün yerleşimi → üç banner → hasat → iki iş bağlantısı → dört yazı → alt bilgi. Bölümler doğal sayfa akışındadır. Tek imza orijinal altın dal/el logosudur; yeni dekoratif motif ailesi yoktur.
-
-Telefonda 16 px metin kenarı ve doğal okuma sırası; hero eylemi kısa ekranda görünür, menü 48 px hedeflerle erişilir. 320–430 px ilk ürün rafı dışında sayfa yatay kaymaz. Ürün rafı klavyeyle ve dokunarak kullanılabilir, sonraki kartın görünmesi kayma ipucudur. 768–1100 px iki ürün sütunu; 1100 px üstünde dört sütun. Tam menü yalnız gerçek etiketler rahatça sığdığında açılır. Büyük ekranlarda içerik sınırı metni aşırı uzatmaz.
+Masaüstü 12 sütun, 24 px oluk; telefon 4 sütun, 16 px. Kırılımlar 640 / 768 / 1024 / 1280. Ana sayfada en az 5 farklı yerleşim ailesi (tam genişlik video, 4'lü kart, raf, iki sütun, koyu bant ızgara, kaydırılmış üçlü, kemer, ikili kart, 1+3 blog).
 
 ### Hareket sözleşmesi
-
-`motion/react` ve mevcut LazyMotion. Yalnız transform ve opacity. İlk açılışta başlık/eylem birlikte tek 8→0 px ve .85→1 opacity girişi yapar; spring 180/28, sıra gecikmesi yoktur. Başlık sunucu çıktısında görünür kalır (`initial=false`). Hikâye ve üçlü banner dışında `whileInView` yok; bu iki yerde `once: true`, görünürlük eşiği .15, aynı 8 px/.85 opacity ve spring 180/28. Menü düğmesi basışta .96 ölçek; çekmece 24→0 px yatay ve .6→1 opacity, spring 200/28. Ürün görseli küçük resim düğmeleri basışta .98 ölçek ve spring 240/28; boy seçimi sabit radio kontrolüdür. Azaltılmış harekette tümü anlık, içerik doğrudan görünür. CSS global hareket azaltma kuralı da korunur. Kaydırma video zamanını veya sayfa konumunu yönetmez.
+MASTER-PROMPT §8 aynen. Ek: PillButton madalyonu 4 px, kart kaldırma −4 px, fotoğraf 1,03; hepsi 180–240 ms, yalnız transform/opacity; azaltılmış harekette kapalı.
 
 ## Agent Prompt Guide
-
-### Task199 tüm sayfalara uyarlama
-
-“Bu belgedeki Ellek sofrası yönünü koru. Fraunces/Figtree, `--sf-*` renkleri, 8 px ölçek, gerçek katalog ve 44 px alt sınırı kullan. Yeni üst etiket/numara/ok/gölge ekleme. Mevcut sunucu işlevlerini değiştirme. Önce sayfanın gerçek işini ve durumlarını çıkar, sonra görünümü uyarla; boş, hata, yükleniyor, seçili ve stok yok durumlarını doğrula.”
-
-### Katalog ve kategori
-
-“Tek başlık, görünür kategori gezinmesi ve mevcut ProductTile kullan. Zeytin üst kategorisi alt grupları açıkça gösterir. Gerçek ürün kimliği/fiyat/stok yetkisini koru. Noindex sürer. Dört sütun ancak ürün adı ve eylemleri sığıyorsa; telefonda liste sayfası için iki dar/kırpık kart yerine okunur sütun.”
-
-### Hakkımızda, toptan ve bayilik
-
-“Üretimi müşteri fabrika fotoğrafıyla anlat. Yeni kuruluş yılı/kapasite/sertifika uydurma. Hakkımızda kayan bandı yalnız kendi sayfasında; hover/focus durdurma ve reduced-motion durağan metin zorunlu. Toptan formda `?teklif=<id>` ön seçimi ve aranabilir il/ilçe mantığını koru. Bayilikte mevcut içerik ve gerçek bağlantılar.”
-
-### Hesap, sepet ve ödeme
-
-“Mevcut sağlayıcılar ve servis çağrıları değişmez. Tek sütunlu 16 px form alanları, alan içi şifre göster düğmesi, alan altında Türkçe hata. 48 px eylemler. Klavye açık telefon ekranında kaydırarak son düğmeye erişim. Sepet toplamı ve PayTR iFrame sınırı korunur; gerçek kart formu üretme.”
-
-### Blog, uzun metin ve 404
-
-“Blogda mevcut dört yazıdan çalış; H1 soru, ilk 40–60 kelimede cevap, soru H2’ler, yazar/güncelleme ve SSS AEO aşamasıyla uyumlu olsun. Yasal metinlerde 72ch sınırı ve içindekiler. 404 kısa açıklama ile ana sayfa ve ürünlere dönüş verir. Sadece ana sayfa görsel dilini taşımak için içerik uydurma.”
-
-### Doğrulama ve sınır
-
-“320–2560 px görev matrisini; klavye/odak, menü Esc, taşma, kırık görsel, konsol, axe, CLS, gerçek video boyu ve reduced-motion kontrolünü çalıştır. Görüntü kanıtını sonuçtan ayrı sakla. Çalışmamış kontrolü PASS yazma. K1 seçimi Task198, tüm sayfa/cihaz kabulü sonraki kapılardır. Push/yayın/canlı DB/.env yok; node_modules ve .next silinmez; AFINA-KAYNAK ve output git’e eklenmez.”
+- **Yeni bir düğme gerekiyorsa** `PillButton` kullan; yeni düğme sınıfı yazma. Varyantı zemine göre seç (açık → primary, koyu/fotoğraf → gold).
+- **Yeni bir kart gerekiyorsa** köşe 24, kâğıt zemin, 1 px çizgi; görsel alanı adaçayı.
+- **İç sayfa başlığı:** üst etiket (isteğe bağlı) + Cormorant h1 + giriş paragrafı; yanında/altında fotoğraf ya da adaçayı bant. Düz boş başlık şeridi bırakma.
+- **Katalog:** solda kategori hapları (Tag, etkin olan yeşil dolgu), sağda ürün kartı ızgarası (masaüstü 3, tablet 2, telefon 2 kompakt).
+- **Sepet/ödeme/hesap:** kâğıt paneller köşe 24; özet paneli yeşil değil kâğıt (v2'deki koyu özet kutusu kalkar), toplam satırı Cormorant 28 px; birincil eylem `primary` tam genişlik.
+- **Yönetim paneli:** aynı tokenlar; düğmeler hap ama madalyonsuz (`icon="none"`), tablo satırı 52 px, başlıklar Montserrat 600 (panelde Cormorant yalnız sayfa başlığında).
+- **21st kaynakları (uyarlanır, birebir yapıştırılmaz):** hyperiux/arrow-fill-button (#26022, hap + ok dolgusu) · bidyut10/add-to-cart-button (#34564, sepete ekle durumları) · shadcnstore/product-card-1 (#28227) · bundui/navigation-menu4 (#18131, mağaza menüsü) · designali-in/stamp (#3417, mühür) · haydenbleasel/pill (#1600, etiket).
 
 ## Quick Start
 
-### CSS Custom Properties
-
 ```css
 :root {
-  --sf-green: #243A29;
-  --sf-ivory: #F5F1E7;
-  --sf-paper: #FFFDF8;
-  --sf-gold: #D4B483;
-  --sf-ink: #202A22;
-  --sf-muted: #586052;
-  --sf-line: #D7D7C9;
-  --sf-focus: #80602D;
-  --sf-space-8: 8px;
-  --sf-space-16: 16px;
-  --sf-space-24: 24px;
-  --sf-space-32: 32px;
-  --sf-space-48: 48px;
-  --sf-space-64: 64px;
-  --sf-space-96: 96px;
-  --sf-space-128: 128px;
-  --background: var(--sf-ivory);
-  --foreground: var(--sf-ink);
-  --primary: var(--sf-green);
-  --primary-foreground: var(--sf-paper);
-  --muted-foreground: var(--sf-muted);
-  --ring: var(--sf-focus);
+  --sf-green: #243A29; --sf-green-deep: #1A2B1E; --sf-olive: #5C6B3A;
+  --sf-sage: #E7EBDD; --sf-ivory: #F5F1E7; --sf-paper: #FFFDF8;
+  --sf-gold: #D4B483; --sf-gold-deep: #80602D;
+  --sf-ink: #202A22; --sf-muted: #586052; --sf-line: #D7D7C9; --sf-focus: #80602D;
+  --sf-radius-pill: 999px; --sf-radius-card: 24px; --sf-radius-field: 12px;
+  --sf-radius-round: 50%; --sf-radius-hero: 32px; --sf-radius-arch: 999px 999px 24px 24px;
+  --sf-shadow-lift: 0 16px 36px -18px rgba(36, 58, 41, .32);
+  --sf-overlay: linear-gradient(to top, rgba(26, 43, 30, .86), rgba(26, 43, 30, 0) 62%);
+  --sf-button-h: 52px; --sf-coin: 36px;
 }
+@media (max-width: 640px) { :root { --sf-radius-card: 20px; --sf-radius-hero: 24px; --sf-button-h: 48px; } }
 ```
-
-### Tailwind v4
 
 ```css
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-ring: var(--ring);
-  --color-store-olive: var(--sf-green);
-  --color-store-ivory: var(--sf-ivory);
-  --color-store-paper: var(--sf-paper);
-  --color-store-gold: var(--sf-gold);
-  --font-sans: var(--font-body);
-  --font-serif: var(--font-display);
+  --font-display: var(--font-cormorant), "Iowan Old Style", Georgia, serif;
+  --font-body: var(--font-montserrat), "Helvetica Neue", Arial, sans-serif;
 }
 ```
-
-Bu örnek mevcut `@theme` içine birleştirilir; ikinci çelişen tema açılmaz. Eski bileşenlerin gerektirdiği adlar ortak semantik değere bağlanabilir, fakat eski ön yüzün kanıtlı temizliği Task199'a aittir. Gerçek uygulama dosyaları ve ölçüm sonuçları Task198 `KANIT.md` kaydında izlenir.
-
-
-## Task199: tüm müşteri sayfaları
-
-A tasarımının Fraunces/Figtree, fildişi/kâğıt/yeşil ve 8 px aralık sistemi katalog, içerik, teklif, üyelik ve hesaba uygulanır. Yeni sunumlar `components/storefront/{catalog,content,quote,account}` içindedir. Eski auth, sepet, fiyat/stok ve form gönderim yetkileri korunur. Gerçek online ödeme kapalıdır; sepet ve ödeme sayfası bunu açıklar, teklif bağlantısı verir.
-
-Katalog telefonda tek, tablette iki, geniş ekranda üç ürün sütunu; kategori gezinmesi ve sıralama kontrolleri 48 px'tir. Ürün boyu seçimi sayfa başlığı, açıklaması, canonical ve OG adresini birlikte günceller. Hakkımızda tesis fotoğrafı ve tek durdurulabilir şerit; blog başında doğrudan yanıt, soru başlıkları, üç SSS ve ilgili ürünler; yasal metinlerde taslak durumu, içerik bağlantıları ve en fazla 72ch okuma alanı bulunur. Üyelikte tek görünür form yüzeyi vardır; 3D dönüş yoktur. Hesapta soldaki gezinme telefonda doğal akışa geçer. Şifre göster/gizle alanın içindedir.
-
-Hareketler yalnız kullanıcı geri bildirimi içindir: menü spring'i (`stiffness:200,damping:28`) ve sepet spring'i (`visualDuration:.35,bounce:0`), kategori göstergesi (`duration:.25,ease:easeOut`,transform), talep özeti (`stiffness:160,damping:26`,8px/opacity), ürün basma (`stiffness:240,damping:28`,.98scale). Hakkımızda şeridi müşteri talebiyle 36sn doğrusal transform kullanır; üzerine gelince, odak içinde ve düğmeyle durur. Azaltılmış harekette sabittir. Formlar/sayfa gövdeleri kaydırmayla açılmaz; tüm içerik ilk HTML'de erişilir. Mevcut ana sayfa tek açılış ve ürün hover hareketleri A temelinden korunur.
-
-
-Task199 yükleme sınırları: müşteri bağlantıları başka sayfaların kodunu kendiliğinden indirmez. Kapalı ürün seçicisi ilk tıkta yüklenir; telefon alanının aynı ölçüdeki kabuğu, alanın100px yakınına gelince gerçek kontrolle değiştirilir. Odak, hata/retry ve ilk tık korunur; yeni görünme animasyonu yoktur. Doğrulama aynı lib modülünde kalır. Hesap adres/sipariş/detay gövdelerinde en az `calc(100svh - 240px)` alan ayrılır; sabit sipariş başlıkları ilk HTML'dedir, kişisel veri yanıt bekler.404telefon eylemleri tam genişlikte alt alta kalır; yazı tipi yüklenmesi düğme satırını değiştirmez.
-
-## Task200: yönetim paneli
-
-Panel, seçilen A tasarımının `--sf-*` renklerini kullanır: fildişi çalışma alanı,
-kâğıt menü/pencere/kart, yeşil seçili bağlantı ve birincil eylem. Başlık ve
-pencere başlığı Fraunces, arayüz Figtree; sayılar tabular-nums. Sol menü 248 px,
-1024 px altında çekmece. İçerik aralıkları 16/24/32/48 px, kontroller en az
-48 px. Yalnız Panel ve Ürünler bağlantıdır; Siparişler/Müşteriler Planlanan
-altında düz metindir. Bağlı olmayan özetlerde sayı uydurulmaz.
-
-Yukarıdaki tek köşe tablosunun panel eşlemesi: özet ve tablo kabuğu
-`--sf-radius-panel` (8 px), menü/eylem/iki seçenekli anahtar/durum etiketi
-`--sf-radius-action` (4 px), alanlar 0 px, çekmece ve düzenleme penceresi
-`--sf-radius-drawer` (0 px). Ek köşe ölçeği yoktur. Ürün tablosu kendi alanında
-yatay kayar; kaydırma açıklaması tablonun dışında okunur. Düzenleme penceresi
-telefon ekranına sığar, kendi içinde kayar; Escape/odak kapanı/geri dönüş
-Radix ile korunur. Yanlışlıkla dışına dokunmak taslağı kapatmaz. Kaydetme
-sırasında kapatma kapalıdır; hata pencerenin içinde okunur. Mevcut sunucu
-çağrıları, doğrulama ve yetki aynıdır.
-
-Panelde giriş/scroll/süs animasyonu yoktur; ortak düğmenin kısa basış tepkisi
-(.98 transform, `--duration-fast`) geri bildirim içindir. Azaltılmış harekette
-bu tepki de kapatılır. Mevcut sayfaların hareket motoruna ekleme yapılmaz.

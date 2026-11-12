@@ -1,3 +1,11 @@
+## AKTİF TASARIM SÖZLEŞMESİ (12 Kasım 2026) — bu bölüm aşağıdaki eski tasarım paragraflarının üstündedir
+
+- Ön yüz tasarım dili **v3 "Altın Dal"**: `docs/DESIGN.md` (bağlayıcı) + `docs/MASTER-PROMPT.md` v2.0. Görevler `docs/tasks/204`–`207`.
+- Yazı: Cormorant (başlık) + Montserrat (gövde, arayüz, düğme). Fraunces, Figtree, Inter kullanılmaz.
+- Bütün düğmeler `components/storefront/ui/PillButton` (hap + altın madalyon); yeni düğme sınıfı yazma. Köşe ölçüleri yalnız DESIGN.md köşe tablosundaki 6 token.
+- Bu dosyanın aşağısındaki v9/v11/"Hasat Rotası"/"Ellek sofrası" tasarım, token ve font paragrafları **tarihçedir**; çelişkide bu bölüm ve DESIGN.md geçerlidir. Güvenlik, yayın ve iş kuralları aynen geçerli.
+- Önizleme PDF/video hazırlama (kullanıcı istemiyor).
+
 ## Aktif iş: Task177 / ilk açılış ve panel akıcılığı (3 Kasım 2026)
 
 Kullanıcı Task176 salt okunur denetimindeki üç bulgunun düzeltilmesini istedi:

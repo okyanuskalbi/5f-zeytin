@@ -57,7 +57,7 @@ Dört gerçek birlikte; rakip aynı cümleyi doğrulukla kuramaz:
   - beyaz oval logo paneli;
   - altın kurdele üstünde ürün adı;
   - kase-limon illüstrasyonu.
-- Kullanıcının seçtiği fontlar: Fraunces + Figtree.
+- Fontlar (v3, 12 Kasım 2026): Cormorant (başlık) + Montserrat (gövde, düğme). Önceki Fraunces + Figtree kaldırıldı.
 - Marka renkleri: zeytin yeşili #243A29, fildişi #F5F1E7, şampanya altını #D4B483.
 - Ses: sıcak, yöresel, sade Türkçe; abartısız.
 
