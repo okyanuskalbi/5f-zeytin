@@ -19,7 +19,9 @@ const states: State[] = [
     },
   })),
   { name: "bayilik", url: "/?sekme=bayilik#toptan-bayilik", prepare: async page => {
-    await expect(page.locator("#toptan-bayilik").getByRole("radio", { name: "Bayilik", exact: true })).toBeChecked();
+    // Task209: a phone shows the dealership form in its full-screen sheet; wider screens keep the pill.
+    if ((page.viewportSize()?.width ?? 1440) <= 767) await expect(page.getByRole("dialog", { name: "Bayilik başvurusu", exact: true })).toBeVisible();
+    else await expect(page.locator("#toptan-bayilik").getByRole("radio", { name: "Bayilik", exact: true })).toBeChecked();
     await expect(page.getByRole("button", { name: "Başvuru E-postasını Hazırla" })).toBeEnabled();
   } },
   { name: "bayilik-hata", url: "/?sekme=bayilik#toptan-bayilik", prepare: async page => {

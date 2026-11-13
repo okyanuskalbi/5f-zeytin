@@ -118,6 +118,8 @@ test("fallback stacks keep Turkish content and actions readable when font files 
   await page.goto("/");
   await page.evaluate(() => document.fonts.ready);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  // Task209: a phone folds the footer's link groups; the group opens with one tap.
+  if ((page.viewportSize()?.width ?? 1440) <= 767) await page.getByRole("contentinfo").getByRole("button", { name: "Kurumsal", exact: true }).click();
   await expect(page.getByRole("contentinfo").getByRole("link", { name: "Toptan Satış" })).toBeVisible();
   await expect(page.locator("article[data-product-id]").first().getByRole("button", { name: "Sepete ekle", exact: true })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

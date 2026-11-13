@@ -12,6 +12,7 @@ import type { ProductFamily } from '@/types/catalog';
 import { StoreFaq } from './content/StoreFaq';
 import { HeroVideo } from './HeroVideo';
 import { HERO_POSTER_SIZES } from './hero-poster';
+import { businessCopy } from './home/business-copy';
 import { BusinessTabs } from './home/BusinessTabs';
 import { DeferredDealershipForm } from './home/DeferredDealershipForm';
 import { ProductShowcase } from './home/ProductShowcase';
@@ -53,7 +54,10 @@ const dealershipSteps = [
 ];
 const dealershipConfiguration = { businessTypes, outletCounts, outletCountLabels, dealershipLimits };
 
-/** The whole storefront on one page (docs/tasks/208): hero, products, story, wholesale and dealership, articles, questions and contact. */
+/**
+ * The whole storefront on one page (docs/tasks/208): hero, products, story, wholesale and dealership, articles, questions and contact.
+ * `data-phone-screen` names the blocks that each fit one phone screen (docs/tasks/209); the footer is the tenth.
+ */
 export function StoreHome({ families }: { families: readonly ProductFamily[] }) {
   const products = families.flatMap(family => family.variants.map(product => ({ product, group: family.groupId })))
     .sort((a, b) => a.product.imageKey.localeCompare(b.product.imageKey));
@@ -64,7 +68,7 @@ export function StoreHome({ families }: { families: readonly ProductFamily[] }) 
     <Suspense fallback={null}><SearchSync /></Suspense>
     <SectionReveal />
 
-    <section id="baslangic" data-landing-section="" data-home-section="hero" className={styles.hero} aria-labelledby="hero-title">
+    <section id="baslangic" data-landing-section="" data-home-section="hero" data-phone-screen="hero" className={styles.hero} aria-labelledby="hero-title">
       <HeroVideo />
       <div className={styles.heroShade} aria-hidden="true" />
       <div className={styles.heroCopy} data-overlay-ok="">
@@ -74,7 +78,7 @@ export function StoreHome({ families }: { families: readonly ProductFamily[] }) 
       </div>
     </section>
 
-    <section id="urunler" data-landing-section="" data-home-section="products" className={styles.products} aria-labelledby="urunler-title">
+    <section id="urunler" data-landing-section="" data-home-section="products" data-phone-screen="products" className={styles.products} aria-labelledby="urunler-title">
       <div className={styles.container}>
         <SectionHeading id="urunler-title" title="Sofranıza AFİNA" lead="Kavanozdan tenekeye, sofranıza uygun boyu seçin." />
         <ProductShowcase items={items} />
@@ -84,7 +88,7 @@ export function StoreHome({ families }: { families: readonly ProductFamily[] }) 
 
     <section id="hikayemiz" data-landing-section="" data-reveal="" data-home-section="story" className={styles.story} aria-labelledby="hikayemiz-title">
       <div className={styles.container}>
-        <div className={styles.storyGrid}>
+        <div className={styles.storyGrid} data-phone-screen="story">
           <div className={styles.storyPhotos}>
             <V3Picture image={homeMedia.story} sizes="(max-width: 1023px) 92vw, 520px" className={styles.storyPhoto} />
             <V3Picture image={homeMedia.storyDetail} sizes="(max-width: 1023px) 36vw, 200px" className={styles.storyInset} decorative />
@@ -101,13 +105,13 @@ export function StoreHome({ families }: { families: readonly ProductFamily[] }) 
           </div>
         </div>
         <div className={styles.facility} data-home-facility="">
-          <div className={styles.facilityPhotos}>
+          <div className={styles.facilityPhotos} data-phone-screen="facility">
             {facilityPhotos.map(item => <figure className={styles.facilityPhoto} key={item.title}>
               <V3Picture image={item.image} sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1375px) 20vw, 250px" decorative />
               <figcaption data-overlay-ok="">{item.title}</figcaption>
             </figure>)}
           </div>
-          <div className={styles.harvest}>
+          <div className={styles.harvest} data-phone-screen="harvest">
             <h3>Bereketin Hasat Vakti</h3>
             <p>Afina Zeytin, her hasatta aynı özenle doğanın bereketini seçkin bir lezzete dönüştürür.</p>
             <ul className={styles.steps} data-harvest-ledger="">
@@ -119,7 +123,7 @@ export function StoreHome({ families }: { families: readonly ProductFamily[] }) 
       </div>
     </section>
 
-    <section id="toptan-bayilik" data-landing-section="" data-reveal="" data-home-section="business" className={styles.business} aria-labelledby="toptan-bayilik-title">
+    <section id="toptan-bayilik" data-landing-section="" data-reveal="" data-home-section="business" data-phone-screen="business" className={styles.business} aria-labelledby="toptan-bayilik-title">
       <div className={styles.container}>
         <QuoteJourneyProvider>
           <QuoteQuerySelection products={variants} />
@@ -128,14 +132,14 @@ export function StoreHome({ families }: { families: readonly ProductFamily[] }) 
             wholesale={<div className={styles.businessPanel}>
               <div className={styles.businessCard}>
                 <Medallion icon={Package} />
-                <p>Otel, restoran, market ve toplu tüketim için koli bazında teklif.</p>
+                <p>{businessCopy.toptan.note}</p>
               </div>
               <div id="toptan" className={styles.businessForm}><span id="teklif" aria-hidden="true" /><QuoteComposer products={variants} /></div>
             </div>}
             dealership={<div className={styles.businessPanel}>
               <div className={styles.businessCard}>
                 <Medallion icon={Handshake} />
-                <p>AFİNA ZEYTİN&apos;i bölgenizde birlikte büyütelim; bayilik için bize yazın.</p>
+                <p>{businessCopy.bayilik.note}</p>
                 <ol className={styles.businessSteps}>
                   {dealershipSteps.map(step => <li key={step.title}><strong>{step.title}</strong><span>{step.description}</span></li>)}
                 </ol>
@@ -147,7 +151,7 @@ export function StoreHome({ families }: { families: readonly ProductFamily[] }) 
       </div>
     </section>
 
-    <section id="blog" data-landing-section="" data-reveal="" data-home-section="blog" className={styles.blog} aria-labelledby="blog-title">
+    <section id="blog" data-landing-section="" data-reveal="" data-home-section="blog" data-phone-screen="blog" className={styles.blog} aria-labelledby="blog-title">
       <div className={styles.container}>
         <SectionHeading id="blog-title" title="Zeytin Defteri" />
         <div className={styles.posts}>
@@ -161,8 +165,8 @@ export function StoreHome({ families }: { families: readonly ProductFamily[] }) 
 
     <section id="iletisim" data-landing-section="" data-reveal="" data-home-section="contact" className={styles.contact} aria-label="Sık sorulanlar ve iletişim">
       <div className={`${styles.container} ${styles.contactGrid}`}>
-        <StoreFaq canonicalPath="/" />
-        <div className={styles.contactCard}>
+        <div data-phone-screen="faq"><StoreFaq canonicalPath="/" /></div>
+        <div className={styles.contactCard} data-phone-screen="contact">
           <h2 id="iletisim-title">İletişim</h2>
           <div className={styles.address}><MapPin size={22} strokeWidth={1.6} aria-hidden="true" /><address>{seller.address}</address></div>
           <div className={styles.contactActions}>

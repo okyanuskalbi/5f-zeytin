@@ -89,6 +89,8 @@ test("skip link, document navigation and return work by keyboard with reduced mo
 
 test("missing legal document returns 404 and footer recovers to a readable draft", async ({ page }) => {
   expect((await page.goto("/kvkk/bulunamayan-metin"))?.status()).toBe(404);
+  // Task209: a phone folds the footer's link groups; the group opens with one tap.
+  if ((page.viewportSize()?.width ?? 1440) <= 767) await page.getByRole("contentinfo").getByRole("button", { name: "Yardım", exact: true }).click();
   const legal = page.getByRole("contentinfo").getByRole("navigation", { name: "Yasal bilgiler" });
   await legal.getByRole("link", { name: "KVKK", exact: true }).click();
   await expect(page).toHaveURL(/\/kvkk$/);

@@ -20,7 +20,8 @@ it("stacks the facility photographs in one column of low landscape cards on a ph
 });
 
 it("keeps the 22 px caption and its 16 px inset on every phone: no leftovers of the three-column row", () => {
-  expect(facilityRules(block("(max-width: 359px)"))).toEqual([]);
+  // Task209: the narrowest block now also serves short phones; it still leaves the photographs alone.
+  expect(facilityRules(block("(max-width: 359px), (max-width: 767px) and (max-height: 700px)"))).toEqual([]);
   expect(css).not.toMatch(/\.facilityPhoto figcaption \{[^}]*font-size: 1[0-9]px/);
   expect(css.match(/\.facilityPhoto figcaption \{/g)).toHaveLength(1);
 });

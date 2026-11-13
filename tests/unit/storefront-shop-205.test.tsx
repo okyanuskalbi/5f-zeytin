@@ -182,9 +182,11 @@ describe("Task205 catalogue", () => {
     const sheet = css("components/storefront/StoreHome.module.css");
     expect(rule(sheet, ".productGrid")).toMatch(/grid-template-columns:\s*repeat\(3,/);
     expect(sheet).toMatch(/@media\s*\(max-width:\s*1099px\)\s*\{[^@]*\.productGrid\s*\{[^}]*repeat\(2,/);
-    // Phones keep two columns with the compact pill (44 px, 28 px coin).
+    // Phones keep the compact pill (44 px, 28 px coin).
     expect(sheet).toMatch(/@media\s*\(max-width:\s*520px\)\s*\{[^@]*--pill-h:\s*44px;[^@]*--pill-coin:\s*28px/);
-    expect(sheet).toMatch(/@media\s*\(max-width:\s*359px\)\s*\{[^@]*\.productGrid\s*\{[^}]*minmax\(0, 1fr\)\s*;/);
+    // Task209: a phone shows the cards on a sideways shelf; the narrowest and shortest phones lay each card out as a row.
+    expect(sheet).toMatch(/@media\s*\(max-width:\s*767px\)\s*\{[^@]*\.productGrid\s*\{[^}]*scroll-snap-type:\s*x mandatory/);
+    expect(sheet).toMatch(/@media\s*\(max-width:\s*359px\)[^{]*\{[^@]*\.productCell > article\s*\{[^}]*flex-direction:\s*row/);
     const pills = css("components/storefront/ui/ui.module.css");
     expect(rule(pills, ".switch")).toMatch(/border-radius:\s*var\(--sf-radius-pill\)/);
     expect(rule(pills, ".switch :is(button, a)")).toMatch(/height:\s*44px/);

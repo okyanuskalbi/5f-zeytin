@@ -119,6 +119,47 @@
 .footerBottom p { font-size: 14px; color: color-mix(in srgb, var(--sf-ivory) 82%, var(--sf-green)); }
 .payments { display: inline-flex; align-items: center; gap: 20px; min-height: 44px; padding: 10px 20px; border-radius: var(--sf-radius-pill); background: var(--sf-paper); }
 .paymentLogo { max-width: 64px; max-height: 20px; width: auto; height: auto; }
+/* Phone: the footer fits one screen (docs/tasks/209). The link groups fold; each stays one tap away. */
+@media (max-width: 767px) {
+  .footer { padding-block-end: 16px; }
+  .footerRule { gap: 16px; padding-block: 20px; }
+  .footerBranch { width: 160px; }
+  .footerIdentity { gap: 4px; }
+  .footerSlogan { font-size: 32px; }
+  .footerGroups { grid-template-columns: minmax(0, 1fr); gap: 0; margin-top: 16px; border-top: 1px solid color-mix(in srgb, var(--sf-gold) 35%, transparent); }
+  .footerGroups section { padding-block: 4px; border-bottom: 1px solid color-mix(in srgb, var(--sf-gold) 35%, transparent); }
+  .footerGroups h2 { position: relative; display: flex; align-items: center; min-height: 44px; margin: 0; font-size: 15px; letter-spacing: .02em; }
+  /* The fold mark is drawn here, so the row looks the same before and after the page hydrates. */
+  .footerGroups h2::after {
+    content: "";
+    position: absolute;
+    inset: 50% 6px auto auto;
+    width: 9px;
+    height: 9px;
+    border: solid currentColor;
+    border-width: 0 1.5px 1.5px 0;
+    transform: translateY(-70%) rotate(45deg);
+    pointer-events: none;
+  }
+  .footerGroups section[data-open] h2::after { transform: translateY(-30%) rotate(-135deg); }
+  .footerGroups h2 button {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 44px;
+    padding: 0 32px 0 0;
+    font: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    text-align: start;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .footerGroups section:not([data-open]) > nav { display: none; }
+  /* An open group lists its links in two columns, so the footer still fits the screen. */
+  .footerGroups nav { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 16px; margin-block: 4px 12px; }
+  .footerBottom { gap: 12px 16px; margin-top: 16px; padding-top: 0; border-top: 0; }
+}
 @media (min-width: 768px) {
   .headerInner, .footerInner, .footerRule { width: min(100% - 96px, 1280px); }
   .logo { width: 172px; }

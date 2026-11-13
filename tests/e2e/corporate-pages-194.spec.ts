@@ -7,6 +7,16 @@ const pages = [
   { path: "/hakkimizda", destination: "/#hikayemiz", section: "#hikayemiz", title: "Nesillerin Emeği, Toprağın Bereketi" },
   { path: "/toptan-satis", destination: "/?sekme=toptan#toptan-bayilik", section: "#toptan-bayilik", title: "Toptan & Bayilik" },
 ];
+const isPhone = (page: Page): boolean => (page.viewportSize()?.width ?? 1440) <= 767;
+/** Task209: on a phone the wholesale address opens the form in a full-screen sheet over the page. */
+async function closeWholesaleSheet(page: Page): Promise<void> {
+  const sheet = page.getByRole("dialog", { name: "Toptan teklif formu", exact: true });
+  await expect(sheet.getByRole("form", { name: "Kurumsal teklif talebi", exact: true })).toBeVisible();
+  await expect(sheet.getByRole("button", { name: "Talep özetini hazırla", exact: true })).toBeEnabled();
+  await sheet.getByRole("button", { name: "Pencereyi kapat", exact: true }).click();
+  await expect(sheet).toBeHidden();
+  await expect(page).toHaveURL(/\/#toptan-bayilik$/);
+}
 async function measure(page: Page): Promise<void> {
   await page.addInitScript(() => {
     const metrics = { cls: 0 };
@@ -42,6 +52,8 @@ test.describe("Task194 corporate pages", () => {
       expect(moved.headers().location).toBe(item.destination);
       expect((await page.goto(item.path, { waitUntil: "load" }))?.status()).toBe(200);
       await expect(page).toHaveURL(new RegExp(`${item.destination.replace(/[?]/g, "\\?")}$`));
+      const sheetFirst = isPhone(page) && item.path === "/toptan-satis";
+      if (sheetFirst) await closeWholesaleSheet(page);
       await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
       const section = page.locator(item.section);
       await section.scrollIntoViewIfNeeded();
@@ -66,6 +78,11 @@ test.describe("Task194 corporate pages", () => {
         await expect(page.locator("#iletisim")).toBeVisible();
         await expect(page.locator("#iletisim address")).toContainText("Düziçi / Osmaniye");
         expect(await page.locator("main").textContent()).not.toMatch(/ödüllü|sertifikalı|500\.000|199\d|200\d yılında/);
+      } else if (sheetFirst) {
+        // Task209: with the sheet closed a phone shows the two cards; the one form waits behind them.
+        await expect(section.getByRole("button", { name: "Teklif iste", exact: true })).toBeVisible();
+        await expect(section.getByRole("button", { name: "Başvuru yap", exact: true })).toBeVisible();
+        await expect(page.locator("#toptan")).toHaveCount(1);
       } else {
         await expect(section.getByRole("radio", { name: "Toptan Satış", exact: true })).toBeChecked();
         await expect(page.locator("#toptan").getByRole("form", { name: "Kurumsal teklif talebi", exact: true })).toBeVisible();
@@ -82,11 +99,13 @@ test.describe("Task194 corporate pages", () => {
     // Task208: the old address lands on its section of the home page.
     expect((await page.goto(item.path, { waitUntil: "load" }))?.status()).toBe(200);
     await expect(page).toHaveURL(new RegExp(`${item.destination.replace(/[?]/g, "\\?")}$`));
+    const sheetFirst = isPhone(page) && item.path === "/toptan-satis";
+    if (sheetFirst) await closeWholesaleSheet(page);
     const section = page.locator(item.section);
     await section.scrollIntoViewIfNeeded();
     await expect(section.getByRole("heading", { level: 2, name: item.title, exact: true })).toBeVisible();
     await expect(section.locator(":scope > div")).toHaveCSS("opacity", "1");
-    if (item.path === "/toptan-satis") await expect(page.locator("#toptan").getByRole("button", { name: "Talep özetini hazırla", exact: true })).toBeEnabled();
+    if (item.path === "/toptan-satis" && !sheetFirst) await expect(page.locator("#toptan").getByRole("button", { name: "Talep özetini hazırla", exact: true })).toBeEnabled();
     const result = await assertLayout(page);
     expect(errors).toEqual([]);
     await page.screenshot({ path: `output/task194/${item.path.slice(1)}-${width}.png`, fullPage: true });
@@ -104,7 +123,9 @@ test.describe("Task194 corporate pages", () => {
     await page.locator("[data-product-page]").getByRole("link", { name: "Teklife ekle", exact: true }).click();
     // Task208: the quote form is the wholesale pill of the home page; the product query is consumed there.
     await expect(page).toHaveURL(/\/\?sekme=toptan#toptan(?:-bayilik)?$/);
-    await expect(page.locator("#toptan-bayilik").getByRole("radio", { name: "Toptan Satış", exact: true })).toBeChecked();
+    // Task209: a phone opens the same form in its sheet; wider screens keep the pill.
+    if (isPhone(page)) await expect(page.getByRole("dialog", { name: "Toptan teklif formu", exact: true })).toBeVisible();
+    else await expect(page.locator("#toptan-bayilik").getByRole("radio", { name: "Toptan Satış", exact: true })).toBeChecked();
     const form = page.locator("#toptan").getByRole("form", { name: "Kurumsal teklif talebi", exact: true });
     const picker = form.getByRole("button", { name: "İlgilendiğiniz ürünler", exact: true });
     await expect(picker).toContainText("1 ürün");

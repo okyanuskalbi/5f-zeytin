@@ -114,6 +114,8 @@
 /* Toptan & Bayilik: two pills, a short note, the unchanged form. */
 .business { padding-block: var(--sf-section-y); background: var(--sf-sage); }
 .businessHead { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 20px 32px; margin-block-end: 28px; }
+/* The two phone cards (docs/tasks/209): wider screens keep the pills. */
+.businessChooser { display: none; }
 .businessPanel { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); align-items: start; gap: 48px; }
 .businessCard { display: grid; justify-items: start; gap: 16px; min-width: 0; }
 .businessCard > p { max-width: 34ch; font-size: 18px; line-height: 1.6; color: var(--sf-ink); }
@@ -198,12 +200,27 @@
   /* Six pills in two tidy rows of three: nothing hidden behind a sideways scroll. */
   .categoryPills [data-pill-switch] { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-radius: var(--sf-radius-card); }
   .categoryPills [data-pill-switch] button { min-width: 0; padding-inline: 4px; font-size: 14px; }
-  .productGrid { gap: 12px; }
-  .storyGrid { gap: 28px; }
-  .storyPhotos { padding: 0 16px 28px 0; }
-  .storyInset { width: 34%; }
-  .storyCopy { gap: 20px; }
-  .values { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: 12px; padding-block-start: 20px; }
+  /* A sideways shelf: one large card and the edge of the next, so the section fits one screen (docs/tasks/209). */
+  .productGrid {
+    display: flex;
+    gap: 12px;
+    margin-inline: -16px;
+    padding: 4px 16px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 16px;
+  }
+  .productCell { flex: 0 0 78%; scroll-snap-align: start; }
+  /* The photograph gives way first on a short screen. */
+  .productGrid [data-tile-stage] { max-height: clamp(104px, calc(100svh - 620px), 320px); }
+  .storyGrid { gap: 20px; }
+  .storyPhotos { padding: 0 16px 20px 0; }
+  /* The story fits one screen: the photograph takes what the words leave (docs/tasks/209). */
+  .storyPhoto { aspect-ratio: auto; height: clamp(112px, calc(100svh - 600px), 280px); }
+  .storyInset { width: 30%; }
+  .storyCopy { gap: 16px; }
+  .values { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: 12px; padding-block-start: 16px; }
   .values li { flex-direction: column; justify-content: flex-start; text-align: center; }
   .values li:not(.sealed) { padding-block-start: 12px; }
   .sealed svg { width: 72px; height: 72px; }
@@ -216,8 +233,27 @@
   .steps { grid-template-columns: minmax(0, 1fr); }
   .divider { width: 160px; margin-block-start: 32px; }
   .businessHead { align-items: stretch; flex-direction: column; margin-block-end: 20px; }
-  .businessHead [data-pill-switch] { display: flex; }
-  .businessHead [data-pill-switch] button { flex: 1 1 0; min-width: 0; padding-inline: 12px; }
+  /* Two cards instead of the pills; the forms wait in a full-screen sheet (docs/tasks/209). */
+  .businessHead [data-pill-switch] { display: none; }
+  .businessSlot { display: none; }
+  .businessChooser { display: grid; gap: 12px; }
+  .chooserCard {
+    position: relative;
+    display: grid;
+    gap: 12px;
+    min-width: 0;
+    padding: 20px;
+    border: 1px solid var(--sf-line);
+    border-radius: var(--sf-radius-card);
+    background: var(--sf-paper);
+  }
+  .chooserHead { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .chooserHead h3 { font-size: 26px; line-height: 1.1; color: var(--sf-green); }
+  .chooserCard > p { font-size: 16px; line-height: 1.55; color: var(--sf-ink); }
+  /* The whole card is the pill's target. */
+  .chooserCard [data-pill] { position: static; }
+  .chooserCard [data-pill]::after { content: ""; position: absolute; inset: 0; border-radius: var(--sf-radius-card); }
+  .businessSheetSlot .businessPanel { gap: 20px; }
   .businessSteps { grid-template-columns: minmax(0, 1fr); gap: 12px; }
   .dealershipForm { padding: 24px 16px; }
   .posts { grid-template-columns: minmax(0, 1fr); gap: 16px; margin-block-start: 20px; }
@@ -229,16 +265,24 @@
   .contactActions > a { display: flex; width: 100%; }
 }
 
+/* A short phone (640 px tall): the story gives up air, not words (docs/tasks/209). */
+@media (max-width: 767px) and (max-height: 700px) {
+  .storyGrid { gap: 16px; }
+  .storyCopy { gap: 12px; }
+  .storyCopy [data-section-heading] > p:not([data-eyebrow]) { font-size: 16px; line-height: 1.5; }
+  .values { padding-block-start: 12px; }
+}
+
 /* Compact product cards for the two-column phone grid (docs/DESIGN.md → Ürün kartı). */
 @media (max-width: 520px) {
   .productCell > article { --tile-pad: 8px; --pill-h: 44px; --pill-coin: 28px; --pill-pad: 14px; --pill-gap: 6px; --pill-font: 13px; }
   .productCell [data-tile-content] { padding: 12px 4px 0; }
 }
-@media (max-width: 359px) {
-  /* One column of low cards: photograph beside the name, price and action. */
-  .productGrid { grid-template-columns: minmax(0, 1fr); }
+/* The narrowest and the shortest phones (docs/tasks/209): a low card on the shelf, photograph beside the name, price and action. */
+@media (max-width: 359px), (max-width: 767px) and (max-height: 700px) {
+  .productCell { flex-basis: 88%; }
   .productCell > article { flex-direction: row; align-items: stretch; }
-  .productGrid [data-tile-stage] { flex: 0 0 40%; align-self: center; aspect-ratio: 1; }
+  .productGrid [data-tile-stage] { flex: 0 0 36%; align-self: center; aspect-ratio: 1; }
   .productCell [data-tile-content] { padding: 4px 4px 4px 12px; }
   .productCell [data-tile-stage] > span { inset: 6px auto auto 6px; }
   .productCell [data-tile-stage] [data-tag] { height: 24px; padding-inline: 8px; font-size: 12px; }

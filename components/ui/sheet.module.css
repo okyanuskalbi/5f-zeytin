@@ -1,0 +1,73 @@
+/* Storefront bottom sheet (SheetContent side="bottom"): docs/DESIGN.md tokens, docs/tasks/209.
+   Doubled selectors outrank the utility classes of the shared dialog base. */
+.bottom.bottom {
+  inset: var(--sheet-top, 0px) 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+  max-width: none;
+  /* 100dvh until the visual viewport is measured; then the height the keyboard leaves free. */
+  height: var(--sheet-height, 100dvh);
+  padding: 0;
+  overflow: hidden;
+  background: var(--sf-ivory);
+  color: var(--sf-ink);
+  font-family: var(--font-body);
+  animation: sheet-rise 240ms ease-out;
+}
+/* Answers the tap: a short rise from the bottom edge, once. */
+@keyframes sheet-rise { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: none; } }
+.bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: max(12px, env(safe-area-inset-top, 0px)) 16px 12px;
+  border-bottom: 1px solid var(--sf-line);
+  background: var(--sf-ivory);
+}
+.title.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -.01em;
+  color: var(--sf-green);
+}
+/* The one gold line of the sheet. */
+.title::after { content: ""; display: block; width: 48px; height: 2px; margin-block-start: 8px; background: var(--sf-gold); }
+.close {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border: 1.5px solid var(--sf-line);
+  border-radius: var(--sf-radius-round);
+  background: var(--sf-paper);
+  color: var(--sf-green);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 180ms ease-out, transform 180ms ease-out;
+}
+.close:active { transform: scale(.97); }
+.close:focus-visible { outline: 2px solid var(--sf-gold-deep); outline-offset: 3px; }
+.body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 20px 16px max(24px, env(safe-area-inset-bottom, 0px));
+  /* A focused field never hides under the bar or against the keyboard edge. */
+  scroll-padding-block: 16px 24px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .close:hover { background: var(--sf-sage); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bottom.bottom { animation: none; }
+  .close:active { transform: none; }
+}
