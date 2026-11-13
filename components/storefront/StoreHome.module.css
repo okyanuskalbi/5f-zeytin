@@ -208,9 +208,11 @@
   .values li:not(.sealed) { padding-block-start: 12px; }
   .sealed svg { width: 72px; height: 72px; }
   .facility { margin-block-start: 32px; }
-  .facilityPhotos { gap: 8px; }
-  .facilityPhoto { aspect-ratio: 3 / 4; }
-  .facilityPhoto figcaption { inset: auto 10px 10px; font-size: 17px; }
+  /* Stacked, full content width: three low landscape cards fit about one phone screen. */
+  .facilityPhotos { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .facilityPhoto { aspect-ratio: 16 / 10; }
+  /* The caption sits in the bottom quarter of a full-width card: darken that band, leave the photograph clear above it. */
+  .facilityPhoto::after { background: linear-gradient(to top, rgba(26, 43, 30, .9), rgba(26, 43, 30, .74) 26%, rgba(26, 43, 30, 0) 64%); }
   .steps { grid-template-columns: minmax(0, 1fr); }
   .divider { width: 160px; margin-block-start: 32px; }
   .businessHead { align-items: stretch; flex-direction: column; margin-block-end: 20px; }
@@ -240,7 +242,6 @@
   .productCell [data-tile-content] { padding: 4px 4px 4px 12px; }
   .productCell [data-tile-stage] > span { inset: 6px auto auto 6px; }
   .productCell [data-tile-stage] [data-tag] { height: 24px; padding-inline: 8px; font-size: 12px; }
-  .facilityPhoto figcaption { font-size: 15px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .post:hover img, .videoControl:active { transform: none; }

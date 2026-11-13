@@ -103,7 +103,7 @@ export function StoreHome({ families }: { families: readonly ProductFamily[] }) 
         <div className={styles.facility} data-home-facility="">
           <div className={styles.facilityPhotos}>
             {facilityPhotos.map(item => <figure className={styles.facilityPhoto} key={item.title}>
-              <V3Picture image={item.image} sizes="(max-width: 767px) 31vw, (max-width: 1375px) 20vw, 250px" decorative />
+              <V3Picture image={item.image} sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1375px) 20vw, 250px" decorative />
               <figcaption data-overlay-ok="">{item.title}</figcaption>
             </figure>)}
           </div>
