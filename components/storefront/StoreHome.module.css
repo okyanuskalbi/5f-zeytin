@@ -26,6 +26,15 @@
     radial-gradient(ellipse 92% 108% at 0% 100%, rgba(26, 43, 30, .88) 0%, rgba(26, 43, 30, .8) 40%, rgba(26, 43, 30, .42) 62%, rgba(26, 43, 30, 0) 84%),
     linear-gradient(to top, rgba(26, 43, 30, .78) 0%, rgba(26, 43, 30, 0) 48%);
 }
+@media (min-width: 360px) and (max-width: 767px) {
+  .heroShade::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(to top, rgba(26, 43, 30, .5) 0%, rgba(26, 43, 30, .42) 45%, rgba(26, 43, 30, 0) 72%);
+  }
+}
 .heroCopy {
   position: absolute;
   z-index: 2;
