@@ -1,3 +1,15 @@
+## Görev 211 yerel uygulaması (13 Kasım 2026)
+
+376–392 px ürün düğmesi düzeltildi; giriş/kayıt 320/360/390/430 px'te
+canlıyla boyut ve piksel farkı 0, iki kat yazıda taşma/çakışma 0.
+1466 birim testi, kod/tür/derleme kontrolleri geçti; uçtan uca yeni
+başarısız 0 (86 tarihsel başarısızlık sürüyor). 392 px çelişkisi kullanıcı
+kararıyla çözüldü: yalnız ilgili kartlarda 389–392 px değişimine izin verildi.
+34 genişlikte 272 “Sepete ekle” etiketi ölçümü geçti; 389–392 px dışında görüntü farkı 0.
+Son karar sonrası dört kod kontrolü yeniden geçti.
+[211](tasks/211-dar-ekran-artiklari.md) TAMAMLANDI;
+kanıt `output/task211/KANIT.md`. Kayıt/GitHub/yayın yok; F2/F5 yapılmadı.
+
 ## Görev 210 yerel uygulaması (13 Kasım 2026)
 
 Cihaz kontrolünün F1/F3/F4 bulguları ve kısa telefon Tesisimiz/Hikâyemiz düzeni

@@ -35,6 +35,15 @@
 /* Two equal pills in one paper track. */
 .authTabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; margin-bottom: 32px; }
 .authTabs > * { min-width: 0; padding-inline: 8px; cursor: pointer; text-decoration: none; }
+/* Task211: keep the original membership labels when the frame has room at
+   its current text size. Text enlargement reduces the space measured in em,
+   falling back to Task210's wrapping and automatic heights. */
+@media (max-width: 767px) {
+  .authFrame { container: membership / inline-size; }
+  @container membership (min-width: 16em) {
+    .authTabs[data-pill-switch] > :is(a, button), .authContent [data-pill-label] { white-space: nowrap; }
+  }
+}
 .privacyNotice { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--sf-line); font-size: 14px; line-height: 1.6; color: var(--sf-muted); }
 .privacyNotice a { display: inline-flex; align-items: center; min-height: 44px; color: var(--sf-green); text-decoration: underline; text-decoration-color: var(--sf-gold); text-decoration-thickness: 2px; text-underline-offset: 4px; }
 .authPage :is(a, button, input):focus-visible, .customerPage :is(a, button, input):focus-visible, .dialog :is(a, button, input):focus-visible { outline: 2px solid var(--sf-focus); outline-offset: 3px; }

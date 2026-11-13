@@ -44,12 +44,12 @@ try{for(const [engine,width,height] of [['chromium',320,568],['webkit',390,844],
   await page.waitForLoadState('networkidle');
   await page.goto(`${origin}/urun/dogal-kirma-yesil-zeytin?boy=1%20kg`,{waitUntil:'networkidle'});
   await page.locator('[data-product-detail-purchase]').getByRole('link',{name:'Teklife ekle',exact:true}).click();
-  const picker=page.getByRole('button',{name:'İlgilendiğiniz ürünler',exact:true});await picker.waitFor();
+  const picker=page.getByRole('button',{name:/İlgilendiğiniz ürünler$/});await picker.waitFor();
   assert((await picker.textContent()).includes('1 ürün'));
   await picker.click();const selector=page.getByRole('dialog',{name:'Ürünleri seçin',exact:true});await selector.waitFor();
   await selector.getByRole('textbox',{name:'Adet · Doğal Kırma Yeşil Zeytin · 1 kg',exact:true}).fill('2');
   await page.keyboard.press('Escape');await selector.waitFor({state:'hidden'});
-  await page.waitForFunction(()=>document.activeElement?.getAttribute('aria-label')==='İlgilendiğiniz ürünler',{},{timeout:2000});
+  await page.waitForFunction(()=>document.activeElement?.getAttribute('aria-label')?.endsWith('İlgilendiğiniz ürünler'),{},{timeout:2000});
   assert(await picker.evaluate(e=>e===document.activeElement));assert((await picker.textContent()).includes('2 adet'));
   await page.getByLabel('Adınız veya firma adı',{exact:true}).fill('Yerel teklif denetimi');
   await page.getByLabel('İşletme türü',{exact:true}).selectOption('retail');

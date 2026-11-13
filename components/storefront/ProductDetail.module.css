@@ -114,3 +114,7 @@
 @media (min-width: 376px) and (max-width: 390px) {
   .relatedGrid > article { --pill-gap: 4px; }
 }
+/* Task211: keep the two-column labels on one line without shrinking the type. */
+@media (min-width: 376px) and (max-width: 392px) {
+  .relatedGrid > article { --pill-pad: 4px; --pill-gap: 6px; }
+}

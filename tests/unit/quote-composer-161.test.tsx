@@ -91,6 +91,7 @@ it("uses the Bazgold country control and clears the district after a city edit",
   render(<Page products={await getProducts()} />);
   expect((screen.getByRole("combobox", { name: "İlçe" }) as HTMLInputElement).disabled).toBe(true);
   fireEvent.focus(screen.getByLabelText("Telefon"));
+  await waitFor(() => expect((screen.getByLabelText("Telefon") as HTMLInputElement).readOnly).toBe(false));
   expect(await screen.findByRole("button", { name: "TR +90 Türkiye · Telefon ülke kodu" })).toBeTruthy();
   fireEvent.change(screen.getByRole("combobox", { name: "Şehir" }), { target: { value: "Osmaniye" } });
   fireEvent.change(screen.getByRole("combobox", { name: "İlçe" }), { target: { value: "Düziçi" } });
