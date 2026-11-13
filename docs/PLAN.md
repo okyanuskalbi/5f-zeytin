@@ -1,3 +1,13 @@
+## Görev 210 yerel uygulaması (13 Kasım 2026)
+
+Cihaz kontrolünün F1/F3/F4 bulguları ve kısa telefon Tesisimiz/Hikâyemiz düzeni
+düzeltildi. F2 yalnız ≤359 px'te düzeltildi; 360 px ve üstündeki görünümün
+aynı kalması şartı korunduğundan bu genişliklerde ölçülen karşıtlık eksikleri
+açıkça raporlandı. 1466 birim test, kod/tür/derleme kontrolleri geçti;
+uçtan uca yeni başarısız 0 (90 tarihsel başarısız test sürüyor).
+Kayıt/GitHub'a gönderim/yayın yok; F5 yapılmadı. Görev ve açık kabul sınırı:
+[210](tasks/210-kontrol-bulgulari-duzeltme.md), kanıt `output/task210/KANIT.md`.
+
 ## Görev 208 uygulandı: tek sayfa landing (13 Kasım 2026)
 
 `/` altı bölüm taşıyor (`baslangic`, `urunler`, `hikayemiz`, `toptan-bayilik`, `blog`, `iletisim`); `/urunler`, `/urunler/:kategori`, `/hakkimizda`, `/toptan-satis`, `/bayilik`, `/blog` 308 ile bölümüne gider; `/urun/[slug]`, `/blog/[slug]`, sepet, ödeme, üyelik, yasal sayfalar ve panel ayrı. Bölüm boşluğu 60 / 48 / 40 px; tekrar eden düğme ve cümleler silindi; tek başına yazı bağlantıları `quiet` hap. Yerel kayıt, push ve yayın yok. Kanıt `output/task208/KANIT.md` (git dışı).

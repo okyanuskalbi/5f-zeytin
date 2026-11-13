@@ -49,7 +49,7 @@ it("supports searching country codes, keyboard selection and Escape without subm
   await screen.findByRole("option", { name: /Birleşik Krallık/ });
   fireEvent.keyDown(query, { key: "ArrowDown" });
   fireEvent.keyDown(query, { key: "Enter" });
-  expect(screen.getByRole("button", { name: /Telefon ülke kodu: \+44/ })).toBeTruthy();
+  expect(screen.getByRole("button", { name: /GB \+44 .*Telefon ülke kodu/ })).toBeTruthy();
   expect(submit).not.toHaveBeenCalled();
   fireEvent.click(screen.getByRole("button", { name: /Telefon ülke kodu/ }));
   fireEvent.keyDown(screen.getByRole("combobox", { name: "Ülke veya kod ara" }), { key: "Escape" });

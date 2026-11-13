@@ -21,7 +21,7 @@ const step = (product: ProductVariant, action: "artır" | "azalt") => `Adedi ${a
 it("selects real packages including a stock-zero quote item and keeps the trigger compact and named for validation", async () => {
   const products = await getProducts();
   render(<Fixture products={products} />);
-  const trigger = screen.getByRole("button", { name: "İlgilendiğiniz ürünler" });
+  const trigger = screen.getByRole("button", { name: /İlgilendiğiniz ürünler$/ });
   expect(trigger.getAttribute("name")).toBe("productId");
   expect(trigger.getAttribute("type")).toBe("button");
   expect(trigger.textContent).toContain("Ürünleri seçin");
@@ -42,7 +42,7 @@ it("selects real packages including a stock-zero quote item and keeps the trigge
 it("keeps blank, zero and fractional edits raw, blocks completion and never repairs them with a stepper", async () => {
   const products = await getProducts(); const product = products[0]; const changed = vi.fn();
   render(<Fixture products={products} initial={{ [product.id]: "2" }} changed={changed} />);
-  fireEvent.click(screen.getByRole("button", { name: "İlgilendiğiniz ürünler" }));
+  fireEvent.click(screen.getByRole("button", { name: /İlgilendiğiniz ürünler$/ }));
   const field = screen.getByRole("textbox", { name: quantity(product) });
   expect(field.getAttribute("inputmode")).toBe("numeric");
   expect(field.getAttribute("maxlength")).toBe("5");
@@ -67,7 +67,7 @@ it("keeps blank, zero and fractional edits raw, blocks completion and never repa
 it("bulk-selects available products without overwriting edits, excludes missing SKUs from the visible total, and clears explicitly", async () => {
   const products = await getProducts(); const changed = vi.fn();
   render(<Fixture products={products} initial={{ removed: "500", [products[0].id]: "7" }} changed={changed} />);
-  const trigger = screen.getByRole("button", { name: "İlgilendiğiniz ürünler" });
+  const trigger = screen.getByRole("button", { name: /İlgilendiğiniz ürünler$/ });
   expect(trigger.textContent).toContain("1 ürün, 7 adet");
   fireEvent.click(trigger);
   fireEvent.click(screen.getByRole("button", { name: "Tümünü seç" }));
@@ -86,7 +86,7 @@ it("bulk-selects available products without overwriting edits, excludes missing 
 it("honors disabled even inside the portal and leaves close available", async () => {
   const products = await getProducts(); const changed = vi.fn();
   const view = render(<Fixture products={products} initial={{ [products[0].id]: "3" }} changed={changed} />);
-  fireEvent.click(screen.getByRole("button", { name: "İlgilendiğiniz ürünler" }));
+  fireEvent.click(screen.getByRole("button", { name: /İlgilendiğiniz ürünler$/ }));
   view.rerender(<Fixture products={products} initial={{ [products[0].id]: "3" }} changed={changed} disabled />);
   const dialog = screen.getByRole("dialog");
   for (const control of [...within(dialog).getAllByRole("checkbox"), ...within(dialog).getAllByRole("textbox")]) expect(control.hasAttribute("disabled")).toBe(true);
@@ -101,7 +101,7 @@ it("honors disabled even inside the portal and leaves close available", async ()
 it("reflects external selections and exposes a supplied validation error on the real trigger", async () => {
   const products = await getProducts();
   const view = render(<QuoteProductPicker products={products} quantities={{}} onChange={() => {}} id="quote-products" invalid errorId="product-error" />);
-  const trigger = screen.getByRole("button", { name: "İlgilendiğiniz ürünler" });
+  const trigger = screen.getByRole("button", { name: /İlgilendiğiniz ürünler$/ });
   expect(trigger.id).toBe("quote-products");
   expect(trigger.getAttribute("aria-describedby")).toBe("product-error");
   expect(trigger.getAttribute("aria-invalid")).toBe("true");

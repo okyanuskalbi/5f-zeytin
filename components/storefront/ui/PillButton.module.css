@@ -106,3 +106,10 @@
 @media (prefers-reduced-motion: reduce) {
   .pill:active, .pill:hover .coin { transform: none !important; }
 }
+
+/* Task210: only phone labels reflow. Extra leading contains the glyphs when
+   enlarged text spans lines; a single line remains centered at the same pixel. */
+@media (max-width: 767px) {
+  .pill { height: auto; min-height: var(--pill-height); line-height: calc(1em + 8px); }
+  .label { white-space: normal; overflow-wrap: anywhere; }
+}

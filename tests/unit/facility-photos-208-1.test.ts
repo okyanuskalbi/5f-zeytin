@@ -14,7 +14,7 @@ const facilityRules = (source: string): string[] => source.split("\n").map(line 
 it("stacks the facility photographs in one column of low landscape cards on a phone", () => {
   expect(facilityRules(block("(max-width: 767px)"))).toEqual([
     ".facilityPhotos { grid-template-columns: minmax(0, 1fr); gap: 12px; }",
-    ".facilityPhoto { aspect-ratio: 16 / 10; }",
+    ".facilityPhoto { aspect-ratio: 2 / 1; }",
     ".facilityPhoto::after { background: linear-gradient(to top, rgba(26, 43, 30, .9), rgba(26, 43, 30, .74) 26%, rgba(26, 43, 30, 0) 64%); }",
   ]);
 });

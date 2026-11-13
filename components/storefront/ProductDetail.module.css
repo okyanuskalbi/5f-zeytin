@@ -106,3 +106,11 @@
   .relatedGrid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (hover: hover) and (pointer: fine) { .breadcrumb a:hover { text-decoration: underline; text-decoration-color: var(--sf-gold); text-decoration-thickness: 2px; text-underline-offset: 4px; } }
+
+/* Task210: preserve the label size; narrow related cards need a full row. */
+@media (min-width: 360px) and (max-width: 375px) {
+  .relatedGrid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (min-width: 376px) and (max-width: 390px) {
+  .relatedGrid > article { --pill-gap: 4px; }
+}

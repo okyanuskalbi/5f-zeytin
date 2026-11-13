@@ -65,7 +65,7 @@ it("carries the actual gallery SKU and segment into a truthful encoded corporate
   const fetch = vi.spyOn(globalThis, "fetch").mockResolvedValue(Response.json({ items: [] }));
   render(<Page products={await getProducts()} />);
   const anchor = await prepare();
-  expect(screen.getByRole("button", { name: "İlgilendiğiniz ürünler" }).textContent).toContain("1 ürün");
+  expect(screen.getByRole("button", { name: /İlgilendiğiniz ürünler$/ }).textContent).toContain("1 ürün");
   expect((screen.getByLabelText("İşletme türü") as HTMLSelectElement).value).toBe("hospitality");
   const uri = new URL(anchor.getAttribute("href")!);
   expect(uri.protocol).toBe("mailto:");
@@ -91,13 +91,13 @@ it("uses the Bazgold country control and clears the district after a city edit",
   render(<Page products={await getProducts()} />);
   expect((screen.getByRole("combobox", { name: "İlçe" }) as HTMLInputElement).disabled).toBe(true);
   fireEvent.focus(screen.getByLabelText("Telefon"));
-  expect(await screen.findByRole("button", { name: "Telefon ülke kodu: +90 · Türkiye" })).toBeTruthy();
+  expect(await screen.findByRole("button", { name: "TR +90 Türkiye · Telefon ülke kodu" })).toBeTruthy();
   fireEvent.change(screen.getByRole("combobox", { name: "Şehir" }), { target: { value: "Osmaniye" } });
   fireEvent.change(screen.getByRole("combobox", { name: "İlçe" }), { target: { value: "Düziçi" } });
   fireEvent.change(screen.getByRole("combobox", { name: "Şehir" }), { target: { value: "İstanbul" } });
   expect((screen.getByRole("combobox", { name: "İlçe" }) as HTMLInputElement).value).toBe("");
   fireEvent.change(screen.getByLabelText("Telefon"), { target: { value: "+44 7400 123456" } });
-  expect(screen.getByRole("button", { name: /Telefon ülke kodu: \+44/ })).toBeTruthy();
+  expect(screen.getByRole("button", { name: /GB \+44 .*Telefon ülke kodu/ })).toBeTruthy();
 });
 
 it("keeps header metadata fixed and encodes raw delimiters/control characters inside the email body", () => {
@@ -137,7 +137,7 @@ it("keeps all selected SKUs and typed quantities in the draft and invalidates it
   await prepare();
   fireEvent.click(screen.getByRole("button", { name: "Galeriden yağı seç" }));
   await waitFor(() => expect(screen.queryByRole("link", { name: "E-postayla gönder" })).toBeNull());
-  fireEvent.click(screen.getByRole("button", { name: "İlgilendiğiniz ürünler" }));
+  fireEvent.click(screen.getByRole("button", { name: /İlgilendiğiniz ürünler$/ }));
   const olive = await screen.findByRole("textbox", { name: "Adet · Doğal Kırma Yeşil Zeytin · 1 kg" });
   const oil = screen.getByRole("textbox", { name: "Adet · Natürel Sızma Zeytinyağı · 1 L" });
   fireEvent.change(olive, { target: { value: "24" } });
@@ -148,12 +148,12 @@ it("keeps all selected SKUs and typed quantities in the draft and invalidates it
   const body = new URL(anchor.getAttribute("href")!).searchParams.get("body")!;
   expect(body).toContain("Doğal Kırma Yeşil Zeytin · 1 kg · Miktar: 24 adet");
   expect(body).toContain("Natürel Sızma Zeytinyağı · 1 L · Miktar: 12 adet");
-  fireEvent.click(screen.getByRole("button", { name: "İlgilendiğiniz ürünler" }));
+  fireEvent.click(screen.getByRole("button", { name: /İlgilendiğiniz ürünler$/ }));
   fireEvent.change(screen.getByRole("textbox", { name: "Adet · Natürel Sızma Zeytinyağı · 1 L" }), { target: { value: "" } });
   fireEvent.click(screen.getByRole("button", { name: "Kapat" }));
   await waitFor(() => expect(screen.queryByRole("link", { name: "E-postayla gönder" })).toBeNull());
   fireEvent.click(screen.getByRole("button", { name: "Talep özetini hazırla" }));
-  await waitFor(() => expect(screen.getByRole("button", { name: "İlgilendiğiniz ürünler" }).getAttribute("aria-invalid")).toBe("true"));
+  await waitFor(() => expect(screen.getByRole("button", { name: /İlgilendiğiniz ürünler$/ }).getAttribute("aria-invalid")).toBe("true"));
   expect(screen.queryByRole("link", { name: "E-postayla gönder" })).toBeNull();
 });
 
@@ -165,8 +165,8 @@ it("blocks missing catalogue items and refreshes stock instead of sending a stal
   view.rerender(<Page products={[oil]} />);
   await waitFor(() => expect(screen.queryByRole("link", { name: "E-postayla gönder" })).toBeNull());
   fireEvent.click(screen.getByRole("button", { name: "Talep özetini hazırla" }));
-  await waitFor(() => expect(screen.getByRole("button", { name: "İlgilendiğiniz ürünler" }).getAttribute("aria-invalid")).toBe("true"));
-  fireEvent.click(screen.getByRole("button", { name: "İlgilendiğiniz ürünler" }));
+  await waitFor(() => expect(screen.getByRole("button", { name: /İlgilendiğiniz ürünler$/ }).getAttribute("aria-invalid")).toBe("true"));
+  fireEvent.click(screen.getByRole("button", { name: /İlgilendiğiniz ürünler$/ }));
   fireEvent.click(await screen.findByRole("button", { name: "Seçimi temizle" }));
   fireEvent.click(screen.getByRole("button", { name: "Tümünü seç" }));
   fireEvent.click(screen.getByRole("button", { name: "Tamam" }));

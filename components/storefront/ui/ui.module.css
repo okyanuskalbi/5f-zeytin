@@ -183,3 +183,8 @@
   .bandPhoto { min-height: 0; aspect-ratio: 16 / 10; }
   .bandBranch { margin: 0 20px 24px 0; }
 }
+
+/* Task210: enlarged phone labels can wrap without covering their neighbours. */
+@media (max-width: 767px) {
+  .switch :is(button, a) { height: auto; min-height: 44px; line-height: calc(1em + 8px); white-space: normal; overflow-wrap: anywhere; }
+}

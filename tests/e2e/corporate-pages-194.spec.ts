@@ -127,7 +127,7 @@ test.describe("Task194 corporate pages", () => {
     if (isPhone(page)) await expect(page.getByRole("dialog", { name: "Toptan teklif formu", exact: true })).toBeVisible();
     else await expect(page.locator("#toptan-bayilik").getByRole("radio", { name: "Toptan Satış", exact: true })).toBeChecked();
     const form = page.locator("#toptan").getByRole("form", { name: "Kurumsal teklif talebi", exact: true });
-    const picker = form.getByRole("button", { name: "İlgilendiğiniz ürünler", exact: true });
+    const picker = form.getByRole("button", { name: /İlgilendiğiniz ürünler$/ });
     await expect(picker).toContainText("1 ürün");
     await picker.click();
     const dialog = page.getByRole("dialog", { name: "Ürünleri seçin", exact: true });
@@ -167,7 +167,7 @@ test.describe("Task194 corporate pages", () => {
     expect(destination.searchParams.get("sekme")).toBe("toptan");
     expect(destination.hash).toBe("#toptan-bayilik");
     await page.goto("/?teklif=sample-olive-oil-5l", { waitUntil: "load" });
-    await expect(page.locator("#toptan").getByRole("button", { name: "İlgilendiğiniz ürünler", exact: true })).toContainText("1 ürün");
+    await expect(page.locator("#toptan").getByRole("button", { name: /İlgilendiğiniz ürünler$/ })).toContainText("1 ürün");
     await expect.poll(() => new URL(page.url()).searchParams.has("teklif")).toBe(false);
     for (const [hash, landed, target] of [["toptan", "/#toptan", "#toptan"], ["teklif", "/#teklif", "#toptan"], ["hakkimizda", "/#hikayemiz", "#hikayemiz"], ["tesisimiz", "/#hikayemiz", "#hikayemiz"], ["iletisim", "/#iletisim", "#iletisim"]]) {
       await page.goto(`/#${hash}`, { waitUntil: "load" });

@@ -13,7 +13,7 @@ it("keeps the picker above the visual keyboard and releases viewport listeners w
   vi.stubGlobal("visualViewport", viewport);
   vi.stubGlobal("innerHeight", 844);
   render(<QuoteProductPicker products={await getProducts()} quantities={{}} onChange={() => {}} />);
-  const trigger = screen.getByRole("button", { name: "İlgilendiğiniz ürünler" });
+  const trigger = screen.getByRole("button", { name: /İlgilendiğiniz ürünler$/ });
   fireEvent.click(trigger);
   const dialog = screen.getByRole("dialog", { name: "Ürünleri seçin" });
   await waitFor(() => expect(dialog.style.getPropertyValue("--quote-picker-viewport-height")).toBe("844px"));
@@ -31,7 +31,7 @@ it("offers a short mobile country prefix without losing its full accessible name
   const options = countryPhoneOptions("tr");
   const { container } = render(<form><PhoneCountrySearch name="phoneCountry" value="TR" options={options}
     label="Telefon ülke kodu" autoComplete="tel-country-code" lang="tr" onChange={changed} /></form>);
-  const trigger = screen.getByRole("button", { name: `Telefon ülke kodu: +90 · ${options.find(option => option.country === "TR")!.name}` });
+  const trigger = screen.getByRole("button", { name: `TR +90 ${options.find(option => option.country === "TR")!.name} · Telefon ülke kodu` });
   expect(trigger.querySelector("[data-phone-country-compact]")?.textContent).toBe("TR +90");
   expect(trigger.querySelector("[data-phone-country-compact]")?.getAttribute("aria-hidden")).toBe("true");
   expect(new FormData(container.querySelector("form")!).get("phoneCountry")).toBe("TR");

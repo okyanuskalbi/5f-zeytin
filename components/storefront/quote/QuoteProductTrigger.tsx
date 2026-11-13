@@ -26,7 +26,7 @@ export function QuoteProductTrigger({ products, quantities, invalid, errorId, ..
   SelectionProps & Pick<QuoteProductPickerProps, "invalid" | "errorId"> & ComponentProps<typeof Button>) {
   const { selected, hasInvalid, summary } = quoteSelectionSummary({ products, quantities });
   return <Button type="button" name="productId" variant="outline"
-    aria-label="İlgilendiğiniz ürünler" aria-description={summary}
+    aria-label={`${summary} · İlgilendiğiniz ürünler`}
     aria-invalid={invalid || hasInvalid || undefined} aria-describedby={errorId} className={styles.trigger} {...props}>
     {selected.length ? <span className={styles.thumbnails} aria-hidden="true">
       {selected.slice(0, 3).map(product => <V3Picture key={product.id} image={v3Image(product.imageKey)} sizes="32px" decorative />)}

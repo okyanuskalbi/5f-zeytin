@@ -39,7 +39,7 @@ it("selects a known product query and keeps the existing incomplete-form errors 
   history.replaceState(null, "", "/?sekme=toptan&teklif=sample-olive-oil-1l&kaynak=urun");
   HTMLElement.prototype.scrollIntoView = vi.fn();
   render(await Home());
-  await waitFor(() => expect(screen.getByRole("button", { name: "İlgilendiğiniz ürünler" }).textContent).toContain("1 ürün"));
+  await waitFor(() => expect(screen.getByRole("button", { name: /İlgilendiğiniz ürünler$/ }).textContent).toContain("1 ürün"));
   expect(location.pathname).toBe("/");
   expect(new URL(location.href).searchParams.get("kaynak")).toBe("urun");
   expect(new URL(location.href).searchParams.has("teklif")).toBe(false);

@@ -63,7 +63,7 @@ export function DeferredPhoneField(props: Props) {
     {Field ? <Field {...props} /> : <div className="customer-phone-field">
       <span className="customer-phone-label" id={`${id}-label`}>{c.label}</span>
       <div className="customer-phone-inputs">
-        <div className="phone-country-search"><button type="button" className="phone-country-trigger" aria-label={failed ? c.retry : `${c.country}: +90 ${c.name}`} aria-disabled={!failed || undefined}
+        <div className="phone-country-search"><button type="button" className="phone-country-trigger" aria-label={failed ? c.retry : `TR +90 ${c.name} · ${c.country}`} aria-disabled={!failed || undefined}
           onClick={() => { focusTarget.current = "country"; void load(); }}>
           <span data-phone-country-full="" aria-hidden="true">{failed ? c.retry : `+90 ${c.name}`}</span><span data-phone-country-compact="" aria-hidden="true">{failed ? c.retry : "TR +90"}</span><ChevronDown size={16} aria-hidden="true" />
         </button></div>
