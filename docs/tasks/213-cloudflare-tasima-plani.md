@@ -52,6 +52,13 @@ Ayrı depo (`okyanuskalbi/afina-kurumsal`, `AFINA-KURUMSAL/`). Aynı yöntem (ad
 - [ ] Hiçbir gizli değer dosyada/komut çıktısında/commit'te yok.
 - [ ] `output/task213/KANIT.md` yazıldı; bu dosyanın sonu `## Durum: TAMAMLANDI` (Faz A için).
 
-## Durum: FAZ A TAMAMLANDI
+## Durum (20 Kas 2026): FAZ A, B (atlandı), C, E TAMAMLANDI; D BEKLİYOR
 
-Kanıt: `output/task213/KANIT.md`. Faz B, C, D, E yapılmadı; onay bekliyor. Açık sorular KANIT.md sonunda (Next 16.4.6 yükseltmesi önerisi dahil).
+- Faz A: tamam (kanıt: output/task213/KANIT.md). Next 16.4.6'ya yükseltildi.
+- Faz B: kullanıcı kararıyla Neon'dan veri taşınmadı; D1 boş başladı (6 ürün, 0 kullanıcı).
+- Faz C: afinazeytin.com + www Worker `afina-zeytin` özel alan adı olarak CANLI (Cloudflare Acayip hesabı). www -> apex 308 worker.ts'te. E-posta kayıtları (Yoncu) aynen. Yönetim yolu /admin -> /panel (API /api/admin/products aynı).
+- Faz E: afina.com.tr + www Worker `afina-kurumsal` olarak CANLI (AFINA-KURUMSAL, görev 214). SMTP yok, iletişim formu 503 döner.
+- GitHub workflow'ları kullanıcı isteğiyle kaldırıldı; yayın elle: `wrangler deploy` (anahtar Keychain `api-cloudflare-acayip`).
+- Geri dönüş: output/cloudflare-tasima/*dns-oncesi.json dosyalarındaki kayıtlar geri konursa Vercel'e döner.
+- Faz D (Vercel + Neon silme): yapılmadı; en az 7 gün sonra kullanıcı onayıyla, tek tek.
+- Bekleyen: afina@5faktoriyel.com kaydı sonrası admin:grant (`--remote`), SMTP, gerçek cihaz testi.
