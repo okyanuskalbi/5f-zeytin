@@ -33,7 +33,7 @@ test.describe("verified summary client acceptance", () => {
       await expect(page.getByRole("region", { name: "Profil bilgilerim" })).toContainText("Deniz Sofra");
       await expect(page.getByRole("main")).toContainText("deniz@example.test");
       await expect(page.getByRole("main")).toContainText("05321234567");
-      await expect(page.locator('a[href^="/admin"], input, form')).toHaveCount(0);
+      await expect(page.locator('a[href^="/panel"], input, form')).toHaveCount(0);
       const history = page.getByRole("link", { name: "Sipariş geçmişim" });
       await expect(history).toHaveAttribute("href", "/hesabim/siparisler");
       if (!info.project.use.isMobile) {

@@ -6,7 +6,7 @@ import { adminConfigurationMessage, assertAdminConfiguration } from "@/lib/auth/
 export async function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const adminApi = path === "/api/admin" || path.startsWith("/api/admin/");
-  if (adminApi || path === "/admin" || path.startsWith("/admin/")) {
+  if (adminApi || path === "/panel" || path.startsWith("/panel/")) {
     try { assertAdminConfiguration(); }
     catch (error) {
       if (adminApi) return authErrorResponse(error);
@@ -29,4 +29,4 @@ export async function proxy(request: NextRequest) {
   return response;
 }
 
-export const config = { matcher: ["/hesabim/:path*", "/api/account/:path*", "/admin/:path*", "/api/admin/:path*", "/sepet", "/odeme", "/giris"] };
+export const config = { matcher: ["/hesabim/:path*", "/api/account/:path*", "/panel/:path*", "/api/admin/:path*", "/sepet", "/odeme", "/giris"] };

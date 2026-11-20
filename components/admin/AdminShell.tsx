@@ -19,8 +19,8 @@ export type AdminOverview =
   | { status: "loading" | "empty" | "error" };
 
 const destinations = [
-  { id: "admin-genel-bakis", label: "Panel", href: "/admin", icon: LayoutDashboard },
-  { id: "admin-urunler", label: "Ürünler", href: "/admin/urunler", icon: Boxes },
+  { id: "admin-genel-bakis", label: "Panel", href: "/panel", icon: LayoutDashboard },
+  { id: "admin-urunler", label: "Ürünler", href: "/panel/urunler", icon: Boxes },
 ] as const;
 const planned = [{ label: "Siparişler", icon: ClipboardList }, { label: "Müşteriler", icon: Users }];
 
@@ -143,7 +143,7 @@ export function AdminShell({ overview = { status: "empty" }, children, area }: {
       </header>
       <main id="admin-content" tabIndex={-1} className={styles.content}>
         {children ?? <section aria-labelledby="admin-genel-bakis" className={styles.overview}>
-          <div className={styles.overviewHeading}><div><h1 id="admin-genel-bakis" tabIndex={-1}>Panel</h1><p className={styles.muted}>Ürünlerinizi yönetin.</p></div><PillButton href="/admin/urunler" icon="none">Ürünleri yönet</PillButton></div>
+          <div className={styles.overviewHeading}><div><h1 id="admin-genel-bakis" tabIndex={-1}>Panel</h1><p className={styles.muted}>Ürünlerinizi yönetin.</p></div><PillButton href="/panel/urunler" icon="none">Ürünleri yönet</PillButton></div>
           {sample && <p className={styles.notice}>Örnek özet. Gerçek işlem verisi değildir.</p>}
           {loading && <p role="status">Özet yükleniyor…</p>}
           {failed && <div className={styles.error}><p role="alert">Özet yüklenemedi. Lütfen yeniden deneyin.</p><PillButton icon="none" size="md" onClick={() => router.refresh()}>Yeniden dene</PillButton></div>}

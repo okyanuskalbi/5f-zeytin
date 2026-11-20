@@ -26,7 +26,7 @@ test.beforeEach(async ({ page, baseURL }, info) => {
 test.afterEach(() => { expect(errors).toEqual([]); });
 
 test("all paths expose enforced CSP with zero policy violations or refused resources", async ({ page }) => {
-  for (const path of ["/", "/sepet", "/odeme", "/giris", "/kayit", "/hesabim", "/siparis-takip", "/kvkk", "/admin"]) {
+  for (const path of ["/", "/sepet", "/odeme", "/giris", "/kayit", "/hesabim", "/siparis-takip", "/kvkk", "/panel"]) {
     const response = await page.goto(path);
     const headers = response!.headers();
     expect(headers["x-content-type-options"]).toBe("nosniff");

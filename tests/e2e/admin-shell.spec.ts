@@ -8,7 +8,7 @@ test.beforeEach(async ({ page, baseURL }) => {
 
 test("anonymous or forged demo state cannot access the production shell", async ({ page }) => {
   await page.addInitScript(() => sessionStorage.setItem("afina:membership:demo-session:v1", JSON.stringify({ id: "forged", email: "admin@afina.com.tr", role: "admin" })));
-  const response = await page.goto("/admin?role=admin");
+  const response = await page.goto("/panel?role=admin");
   expect(response?.status()).toBe(401);
   await expect(page.getByRole("heading", { level: 1, name: "Giriş gerekli", exact: true })).toBeVisible();
   await expect(page.getByText("Bu sayfayı görmek için yönetici hesabıyla giriş yapın.", { exact: true })).toBeVisible();
@@ -31,7 +31,7 @@ test.describe("admin client acceptance", () => {
         await expect(page.getByRole("region", { name: "Aktif ürün", exact: true })).toContainText("3 / 6");
         await expect(page.getByRole("region", { name: "Sipariş görünümü" })).toContainText("henüz kullanıma açık değil");
         await expect(page.locator("table, canvas")).toHaveCount(0);
-        await expect(page.getByRole("link", { name: "Ürünleri yönet" })).toHaveAttribute("href", "/admin/urunler");
+        await expect(page.getByRole("link", { name: "Ürünleri yönet" })).toHaveAttribute("href", "/panel/urunler");
         const menu = page.getByRole("button", { name: "Yönetim menüsünü aç" });
         if (width < 1024) {
           await menu.focus(); await page.keyboard.press("Enter");

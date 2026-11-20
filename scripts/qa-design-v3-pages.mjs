@@ -160,7 +160,7 @@ async function prepareAdmin(browser, origin) {
   try {
     if ((await pool.query('select current_database() AS name')).rows[0].name !== 'afina_kontrol189') throw new Error('unexpected database');
     const page = await context.newPage();
-    const anonymous = { page: (await page.goto(new URL('/admin', origin).href)).status(), api: (await page.request.get(new URL('/api/admin/products', origin).href)).status() };
+    const anonymous = { page: (await page.goto(new URL('/panel', origin).href)).status(), api: (await page.request.get(new URL('/api/admin/products', origin).href)).status() };
     await page.goto(new URL('/kayit', origin).href, { waitUntil: 'networkidle' });
     await page.getByLabel('Ad soyad', { exact: true }).fill('Yerel Panel Denetimi');
     await page.getByLabel('E-posta', { exact: true }).fill(email);
@@ -304,7 +304,7 @@ export async function auditPages({ origin, out, shots, open, settle, inspectDesi
     report.checks.anonymousAdmin = admin.anonymous;
     if (admin.anonymous.page !== 401 || admin.anonymous.api !== 401) fail('admin', `anonymous access ${JSON.stringify(admin.anonymous)}`);
     const accountRoutes = account.routes.map(([name, route]) => ({ name, path: route, kind: 'account', tag: /siparis/.test(name), ready: name === 'hesabim-adresler' ? 'main button[data-pill]' : name === 'hesabim-siparisler' || name === 'hesabim-siparis-detayi' ? 'main [data-tag]' : undefined }));
-    const adminRoutes = [{ name: 'admin', path: '/admin', kind: 'admin' }, { name: 'admin-urunler', path: '/admin/urunler', kind: 'admin', table: true, ready: 'tbody tr' }];
+    const adminRoutes = [{ name: 'admin', path: '/panel', kind: 'admin' }, { name: 'admin-urunler', path: '/panel/urunler', kind: 'admin', table: true, ready: 'tbody tr' }];
 
     for (const [width, height, engine] of profiles) {
       for (const [routes, state] of [[publicRoutes, undefined], [accountRoutes, account.storageState], [adminRoutes, admin.storageState]]) {
@@ -456,7 +456,7 @@ export async function auditPages({ origin, out, shots, open, settle, inspectDesi
     for (const [width, height] of [[1440, 900], [390, 844]]) {
       const { context, page } = await open('chromium', viewport(width, height));
       try {
-        const response = await page.goto(new URL('/admin', origin).href, { waitUntil: 'networkidle' });
+        const response = await page.goto(new URL('/panel', origin).href, { waitUntil: 'networkidle' });
         const state = await page.evaluate(() => {
           const pill = document.querySelector('main a[data-pill]');
           const panel = document.querySelector('main h1').parentElement;
@@ -574,7 +574,7 @@ export async function auditPages({ origin, out, shots, open, settle, inspectDesi
     for (const [width, height] of [[390, 844], [320, 568], [768, 1024], [1024, 768]]) {
       const { context, page } = await open('chromium', { ...viewport(width, height), storageState: admin.storageState });
       try {
-        await page.goto(new URL('/admin/urunler', origin).href, { waitUntil: 'networkidle' });
+        await page.goto(new URL('/panel/urunler', origin).href, { waitUntil: 'networkidle' });
         await page.locator('tbody tr').first().waitFor();
         const result = await page.evaluate(value => {
           for (const name of document.querySelectorAll('tbody td:first-child strong')) name.textContent = value;
@@ -593,7 +593,7 @@ export async function auditPages({ origin, out, shots, open, settle, inspectDesi
     for (const [width, height] of [[390, 844], [1440, 900]]) {
       const { context, page } = await open('chromium', { ...viewport(width, height), storageState: admin.storageState });
       try {
-        await page.goto(new URL('/admin/urunler', origin).href, { waitUntil: 'networkidle' });
+        await page.goto(new URL('/panel/urunler', origin).href, { waitUntil: 'networkidle' });
         await page.locator('tbody tr').first().locator('button[data-pill]').first().click();
         const dialog = page.getByRole('dialog');
         await dialog.waitFor();

@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import AdminLayout, { dynamic, metadata } from "@/app/admin/layout";
+import AdminLayout, { dynamic, metadata } from "@/app/panel/layout";
 import { requireAdmin, requireAdminMutation } from "@/lib/auth/admin";
 import { authErrorResponse, AuthCoreError } from "@/lib/auth/server";
 import nextConfig from "@/next.config";
@@ -8,7 +8,8 @@ import nextConfig from "@/next.config";
 vi.mock("server-only", () => ({}));
 const session = vi.hoisted(() => vi.fn());
 const query = vi.hoisted(() => vi.fn());
-vi.mock("@/lib/db", () => ({ query }));
+const dbConfigured = vi.hoisted(() => ({ value: true }));
+vi.mock("@/lib/db", async importOriginal => ({ ...await importOriginal<typeof import("@/lib/db")>(), query, isDatabaseConfigured: () => dbConfigured.value }));
 vi.mock("@/lib/auth/server", async importOriginal => ({
   ...await importOriginal<typeof import("@/lib/auth/server")>(),
   getVerifiedSession: session,
@@ -28,7 +29,7 @@ beforeEach(() => {
   query.mockReset().mockResolvedValue({ rows: [] });
   vi.stubEnv("BETTER_AUTH_URL", origin);
   vi.stubEnv("BETTER_AUTH_SECRET", "task186-local-tests-only-32-character-secret");
-  vi.stubEnv("DATABASE_URL", "postgres://postgres@localhost:54329/afina_test");
+  dbConfigured.value = true;
 });
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllEnvs(); });
 
@@ -125,7 +126,7 @@ describe("admin server layout gate", () => {
     expect(await AdminLayout({ children: "protected-content" })).toBe("protected-content");
   });
   it("propagates configuration failure before accessing sessions or rendering", async () => {
-    vi.stubEnv("DATABASE_URL", undefined);
+    dbConfigured.value = false;
     await expect(AdminLayout({ children: "protected-content" })).rejects.toMatchObject({ status: 503 });
     expect(session).not.toHaveBeenCalled();
   });

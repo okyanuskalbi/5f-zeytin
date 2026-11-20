@@ -39,7 +39,7 @@ it("renders the verified own profile with no admin data or profile mutation cont
   expect(screen.getByRole("heading", { level: 1 }).textContent).toBe("Hesabım");
   Object.values(profile).forEach(value => expect(screen.getByRole("main").textContent).toContain(value));
   expect(screen.getByRole("link", { name: "Sipariş geçmişim" }).getAttribute("href")).toBe("/hesabim/siparisler");
-  expect(document.querySelector('a[href^="/admin"], form, input')).toBeNull();
+  expect(document.querySelector('a[href^="/panel"], form, input')).toBeNull();
   expect(document.body.textContent).not.toMatch(/admin|Demo|yakında|DEMO-10801/);
   expect(fetchMock).not.toHaveBeenCalled();
 });

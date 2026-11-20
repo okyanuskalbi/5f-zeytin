@@ -1,6 +1,6 @@
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import Page from "@/app/admin/page";
+import Page from "@/app/panel/page";
 import { AdminShell, type AdminOverview } from "@/components/admin/AdminShell";
 
 const mocks = vi.hoisted(() => ({ requireAdmin: vi.fn(), refresh: vi.fn() }));
@@ -36,12 +36,12 @@ describe("protected admin shell", () => {
     render(<AdminShell overview={fixture} />);
     const nav = within(screen.getByRole("navigation", { name: "Yönetim navigasyonu" }));
     expect(nav.getByRole("link", { name: "Panel" }).getAttribute("aria-current")).toBe("page");
-    expect(nav.getByRole("link", { name: "Ürünler" }).getAttribute("href")).toBe("/admin/urunler");
+    expect(nav.getByRole("link", { name: "Ürünler" }).getAttribute("href")).toBe("/panel/urunler");
     expect(nav.getAllByRole("link")).toHaveLength(2);
     expect(nav.getByText("Planlanan")).toBeTruthy();
     expect(nav.queryByRole("link", { name: "Siparişler" })).toBeNull();
     expect(nav.queryByRole("link", { name: "Müşteriler" })).toBeNull();
-    expect(screen.getByRole("link", { name: "Ürünleri yönet" }).getAttribute("href")).toBe("/admin/urunler");
+    expect(screen.getByRole("link", { name: "Ürünleri yönet" }).getAttribute("href")).toBe("/panel/urunler");
   });
   it("labels all three sample summaries and keeps unavailable analysis honest", () => {
     render(<AdminShell overview={fixture} />);
@@ -61,7 +61,7 @@ describe("protected admin shell", () => {
     fireEvent.change(input, { target: { value: "ÜrÜn" } });
     const results = within(screen.getByRole("navigation", { name: "Arama sonuçları" }));
     expect(results.getAllByRole("link")).toHaveLength(1);
-    expect(results.getByRole("link", { name: "Ürünler" }).getAttribute("href")).toBe("/admin/urunler");
+    expect(results.getByRole("link", { name: "Ürünler" }).getAttribute("href")).toBe("/panel/urunler");
     fireEvent.change(input, { target: { value: "PANEL" } });
     fireEvent.click(results.getByRole("link", { name: "Panel" }));
     await waitFor(() => expect(document.activeElement).toBe(screen.getByRole("heading", { name: "Panel" })));

@@ -7,6 +7,8 @@ export default defineConfig([
   ...nextTypescript,
   globalIgnores([
     ".next/**",
+    ".open-next/**",
+    ".wrangler/**",
     "next-env.d.ts",
     "_legacy/**",
     ".agents/**",

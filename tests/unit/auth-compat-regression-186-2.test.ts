@@ -18,7 +18,7 @@ beforeEach(()=>{vi.clearAllMocks();vi.stubEnv("BETTER_AUTH_URL",origin);vi.stubE
 afterEach(()=>{vi.unstubAllEnvs();vi.restoreAllMocks();});
 describe("restored provider-independent authentication regressions",()=>{
  it.each(["/hesabim","/hesabim/siparisler","/hesabim/adresler","/hesabim/bilgilerim","/hesabim/guvenlik","/sepet","/odeme"])("retains allowed destination %s",path=>{expect(safeAuthRedirect(path)).toBe(path);});
- it.each(["https://evil.test","//evil.test","/admin","/hesabim/../admin","/hesabim?next=https://evil.test","/hesabim#private","/hesabim%2fadmin",null,""])("rejects unsafe return destination %#",path=>{expect(safeAuthRedirect(path)).toBe("/hesabim");});
+ it.each(["https://evil.test","//evil.test","/panel","/hesabim/../admin","/hesabim?next=https://evil.test","/hesabim#private","/hesabim%2fadmin",null,""])("rejects unsafe return destination %#",path=>{expect(safeAuthRedirect(path)).toBe("/hesabim");});
  it.each(["cross-site","same-site","none"])("rejects fetch site %s before any auth transport",async site=>{
   for(const [handler,path,body]of [[login,"/api/auth/login",loginBody],[register,"/api/auth/register",registration]] as const){expect((await handler(request(path,body,{"sec-fetch-site":site}))).status).toBe(403);}
   expect(mocks.request).not.toHaveBeenCalled();

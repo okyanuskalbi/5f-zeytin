@@ -1,13 +1,14 @@
 import { readFile } from "node:fs/promises";
 import { stripTypeScriptTypes } from "node:module";
 import { pathToFileURL } from "node:url";
-import { Pool } from "pg";
-import { operatorConnectionString } from "./db-operator.mjs";
+import { execute, parseTarget, sqlText } from "./d1.mjs";
 
 export function parseSeedArguments(args) {
   if (args.length === 0 || (args.length === 1 && args[0] === "--dry-run")) return { apply: false };
-  if (args.length === 1 && args[0] === "--apply") return { apply: true };
-  throw new Error("Use db:seed [--apply]");
+  if (args.length === 2 && args.includes("--apply") && args.some(arg => arg === "--local" || arg === "--remote")) {
+    return { apply: true, target: parseTarget(args.filter(arg => arg !== "--apply")) };
+  }
+  throw new Error("Use db:seed [--dry-run] or db:seed --apply --local|--remote");
 }
 
 /** Execute the same checked-in catalog module as the app, using Node 24's native
@@ -32,52 +33,44 @@ export async function loadStaticCatalog() {
   return { products, upsells: [] };
 }
 
-export async function seedCatalog(pool, { apply = false } = {}) {
-  const plan = await loadStaticCatalog();
-  if (!apply) return { mode: "dry-run", ...plan };
-  const client = await pool.connect();
-  let productChanges = 0;
-  let upsellChanges = 0;
-  try {
-    await client.query("BEGIN");
-    // Share the product editor's transaction lock, preserving its six active slots.
-    await client.query("SELECT pg_advisory_xact_lock($1)", [640064]);
-    for (const product of plan.products) {
-      const result = await client.query(`INSERT INTO public.products
-        (id,name,category,weight,price_kurus,stock,currency,is_active,category_label,show_category_label,active_slot)
-        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,(SELECT active_slot FROM public.products WHERE id=$1))
-        ON CONFLICT (id) DO UPDATE SET name=excluded.name,category=excluded.category,
-          weight=excluded.weight,price_kurus=excluded.price_kurus,stock=excluded.stock,
-          currency=excluded.currency,is_active=excluded.is_active,category_label=excluded.category_label,
-          show_category_label=excluded.show_category_label
-        WHERE (products.name,products.category,products.weight,products.price_kurus,products.stock,
-          products.currency,products.is_active,products.category_label,products.show_category_label)
-        IS DISTINCT FROM (excluded.name,excluded.category,excluded.weight,excluded.price_kurus,excluded.stock,
-          excluded.currency,excluded.is_active,excluded.category_label,excluded.show_category_label)`,
-        [product.id, product.name, product.category, product.weight, product.price_kurus, product.stock,
-          product.currency, product.is_active, product.category_label, product.show_category_label]);
-      productChanges += result.rowCount ?? 0;
-    }
-    for (const upsell of plan.upsells) {
-      const result = await client.query("INSERT INTO public.product_upsells(product_id,upsell_id) VALUES($1,$2) ON CONFLICT(product_id,upsell_id) DO NOTHING", [upsell.productId, upsell.upsellId]);
-      upsellChanges += result.rowCount ?? 0;
-    }
-    await client.query("COMMIT");
-    return { mode: "applied", productChanges, upsellChanges, products: plan.products.length };
-  } catch (error) {
-    await client.query("ROLLBACK");
-    throw error;
-  } finally { client.release(); }
+/** Tohum SQL'i: yalnız onaylı statik katalog; tek toplu çağrı olarak çalışır, değişmeyen satırlara dokunmaz. */
+export function seedStatements(plan) {
+  const num = value => { if (!Number.isSafeInteger(value)) throw new Error("Invalid seed number"); return String(value); };
+  const statements = plan.products.map(product => `INSERT INTO products
+    (id,name,category,weight,price_kurus,stock,currency,is_active,category_label,show_category_label)
+    VALUES (${sqlText(product.id)},${sqlText(product.name)},${sqlText(product.category)},${sqlText(product.weight)},${num(product.price_kurus)},${num(product.stock)},
+      ${sqlText(product.currency)},${product.is_active ? 1 : 0},${product.category_label === null ? "NULL" : sqlText(product.category_label)},${product.show_category_label ? 1 : 0})
+    ON CONFLICT (id) DO UPDATE SET name=excluded.name,category=excluded.category,
+      weight=excluded.weight,price_kurus=excluded.price_kurus,stock=excluded.stock,
+      currency=excluded.currency,is_active=excluded.is_active,category_label=excluded.category_label,
+      show_category_label=excluded.show_category_label
+    WHERE products.name IS NOT excluded.name OR products.category IS NOT excluded.category OR products.weight IS NOT excluded.weight
+      OR products.price_kurus IS NOT excluded.price_kurus OR products.stock IS NOT excluded.stock OR products.currency IS NOT excluded.currency
+      OR products.is_active IS NOT excluded.is_active OR products.category_label IS NOT excluded.category_label
+      OR products.show_category_label IS NOT excluded.show_category_label;`);
+  for (const upsell of plan.upsells) {
+    statements.push(`INSERT INTO product_upsells(product_id,upsell_id) VALUES(${sqlText(upsell.productId)},${sqlText(upsell.upsellId)}) ON CONFLICT(product_id,upsell_id) DO NOTHING;`);
+  }
+  return statements;
+}
+
+export function seedCatalog(options = { apply: false }, run = execute) {
+  return loadStaticCatalog().then(plan => {
+    if (!options.apply) return { mode: "dry-run", ...plan };
+    const results = run(options.target, { command: seedStatements(plan).join("\n") });
+    const changes = results.map(result => result?.meta?.changes ?? 0);
+    const productChanges = changes.slice(0, plan.products.length).reduce((sum, value) => sum + value, 0);
+    // wrangler değişiklik sayısını hedefe göre farklı bildirir (tetikleyiciler dahil); gerçek durumu ayrıca okuruz.
+    const activeProducts = run(options.target, { command: "SELECT count(*) AS n FROM products WHERE is_active = 1" })[0]?.results?.[0]?.n ?? null;
+    return { mode: "applied", productChanges, upsellChanges: changes.slice(plan.products.length).reduce((sum, value) => sum + value, 0), products: plan.products.length, activeProducts };
+  });
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  let pool;
   try {
-    const options = parseSeedArguments(process.argv.slice(2));
-    if (options.apply) pool = new Pool({ connectionString: operatorConnectionString(), max: 1, connectionTimeoutMillis: 10000 });
-    console.log(JSON.stringify(await seedCatalog(pool, options), null, 2));
+    console.log(JSON.stringify(await seedCatalog(parseSeedArguments(process.argv.slice(2))), null, 2));
   } catch {
-    console.error("Catalog seed failed. Use --apply only with a reviewed DATABASE_URL_UNPOOLED and migrated database.");
+    console.error("Catalog seed failed. Use --apply --local|--remote only with a migrated database.");
     process.exitCode = 1;
-  } finally { await pool?.end(); }
+  }
 }

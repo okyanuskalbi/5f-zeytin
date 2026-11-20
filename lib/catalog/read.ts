@@ -1,20 +1,20 @@
 import "server-only";
 import { getProductFamilies, getProducts } from "@/lib/catalog/static-products";
 import { catalogProductLimit, parseCatalogProducts, type CatalogResponse } from "@/lib/contracts/catalog";
-import { query } from "@/lib/db";
+import { asBoolean, query } from "@/lib/db";
 
 const catalogColumns = "id,name,category,category_label,show_category_label,weight,price_kurus,currency,stock,is_active";
 
 async function readPublishedProducts() {
   const { rows: data } = await query(
-    `SELECT ${catalogColumns} FROM public.products WHERE is_active = $1 ORDER BY active_slot ASC LIMIT $2`,
+    `SELECT ${catalogColumns} FROM products WHERE is_active = $1 ORDER BY active_slot ASC LIMIT $2`,
     [true, catalogProductLimit],
   );
   if (!Array.isArray(data)) return null;
   const products = data.map(row => {
-    if (!row || typeof row !== "object" || row.is_active !== true || row.currency !== "TRY") return null;
+    if (!row || typeof row !== "object" || asBoolean(row.is_active) !== true || row.currency !== "TRY") return null;
     return { id: row.id, name: row.name, category: row.category, weight: row.weight,
-      categoryLabel: row.category_label, showCategoryLabel: row.show_category_label,
+      categoryLabel: row.category_label, showCategoryLabel: asBoolean(row.show_category_label),
       priceKurus: row.price_kurus, stock: row.stock };
   });
   return parseCatalogProducts(products);

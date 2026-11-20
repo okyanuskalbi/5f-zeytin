@@ -10,7 +10,7 @@ test.beforeEach(async ({ page, baseURL }) => {
 
 test("production routes reject anonymous and forged client state", async ({ page }) => {
   await page.addInitScript(() => sessionStorage.setItem("afina:membership:demo-session:v1", JSON.stringify({ role: "admin", email: "admin@afina.com.tr" })));
-  expect((await page.goto("/admin/urunler?role=admin"))?.status()).toBe(401);
+  expect((await page.goto("/panel/urunler?role=admin"))?.status()).toBe(401);
   await expect(page.getByRole("button", { name: "Ürün ekle" })).toHaveCount(0);
   const response = await page.request.get("/api/admin/products");
   expect(response.status()).toBe(401);

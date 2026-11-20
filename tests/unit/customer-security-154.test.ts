@@ -14,8 +14,7 @@ const mocks = vi.hoisted(() => ({
   user: vi.fn(),
   client: vi.fn(),
   query: vi.fn(),
-  transaction: vi.fn(),
-  tx: vi.fn(),
+  batch: vi.fn(),
   origin: vi.fn(),
   signIn: vi.fn(),
   update: vi.fn(),
@@ -26,7 +25,7 @@ vi.mock("@/lib/auth/server", async (original) => ({
   authRequest: mocks.client,
   assertRequestOrigin: mocks.origin,
 }));
-vi.mock("@/lib/db", () => ({ query: mocks.query, transaction: mocks.transaction }));
+vi.mock("@/lib/db", async original => ({ ...(await original<typeof import("@/lib/db")>()), query: mocks.query, batch: mocks.batch }));
 const owner = "11111111-1111-4111-8111-111111111111";
 const id = "22222222-2222-4222-8222-222222222222";
 const address = {
@@ -50,8 +49,7 @@ beforeEach(() => {
   mocks.user.mockResolvedValue({ id: owner, email: "owner@example.test" });
   mocks.client.mockResolvedValue(Response.json({success:true}));
   mocks.query.mockResolvedValue({ rows: [] });
-  mocks.tx.mockResolvedValue({ rows: [], rowCount: 0 });
-  mocks.transaction.mockImplementation(fn => fn({ query: mocks.tx }));
+  mocks.batch.mockResolvedValue([]);
 });
 it("uses Better Auth change-password with current password and revokes other sessions", async () => {
  const response=await passwordChange(request({currentPassword:"OldSecure123",password:"NewSecure456"}));
@@ -92,15 +90,16 @@ it("bounds streamed JSON by actual bytes and rejects malformed or non-JSON input
   ).rejects.toMatchObject({ status: 415 });
 });
 it("uses the verified owner for atomic address changes and hides foreign resource existence", async () => {
-  mocks.tx.mockImplementation(async sql => {
-    if (sql.includes("count(*)")) return { rows: [{ count: 0 }] };
-    if (sql.includes("INSERT")) return { rows: [{ id, ...address, postal_code: address.postalCode, is_default: true }] };
-    return { rows: [], rowCount: 0 };
-  });
-  await expect(saveCustomerAddress(address)).resolves.toMatchObject({ id });
-  expect(mocks.tx).toHaveBeenCalledWith("SELECT pg_advisory_xact_lock(hashtext($1))", [owner]);
+  mocks.batch.mockResolvedValueOnce([{ rows: [], rowCount: 0 }, { rows: [], rowCount: 0 }, { rows: [], rowCount: 1 }, { rows: [], rowCount: 0 },
+    { rows: [{ id, ...address, postal_code: address.postalCode, is_default: 1 }], rowCount: 1 }]);
+  await expect(saveCustomerAddress(address)).resolves.toMatchObject({ id, isDefault: true });
+  expect(mocks.batch).toHaveBeenCalledOnce();
+  expect(mocks.batch.mock.calls[0][0][0].text).toContain("address_limit");
+  mocks.batch.mockRejectedValueOnce(new Error("D1_ERROR: guard:address_not_found"));
   await expect(deleteCustomerAddress(id)).rejects.toMatchObject({ status: 404 });
-  expect(mocks.tx).toHaveBeenLastCalledWith(expect.stringContaining("DELETE FROM public.customer_addresses WHERE user_id = $1 AND id = $2"), [owner, id]);
+  const statements = mocks.batch.mock.calls.at(-1)?.[0];
+  expect(statements[0].text).toContain("address_not_found");
+  expect(statements[1]).toEqual({ text: "DELETE FROM customer_addresses WHERE user_id = $1 AND id = $2", values: [owner, id] });
 });
 it("filters the order detail by both verified owner and public number", async () => {
   await expect(readCustomerOrder("AF-001")).rejects.toMatchObject({
@@ -131,5 +130,5 @@ it("does not create an address through PATCH or overwrite an address through POS
   const { POST, PATCH } = await import("@/app/api/account/addresses/route");
   expect((await PATCH(request(address))).status).toBe(400);
   expect((await POST(request({ ...address, id }))).status).toBe(400);
-  expect(mocks.transaction).not.toHaveBeenCalled();
+  expect(mocks.batch).not.toHaveBeenCalled();
 });

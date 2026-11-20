@@ -1,6 +1,7 @@
 import "server-only";
 import { getAuthConfig } from "./server-config";
 import { AuthCoreError } from "./server";
+import { isDatabaseConfigured } from "@/lib/db";
 
 export const adminConfigurationMessage = "Yönetim paneli şu an yapılandırılıyor.";
 
@@ -11,8 +12,7 @@ export const adminConfigurationMessage = "Yönetim paneli şu an yapılandırıl
 export function assertAdminConfiguration(): void {
   try {
     getAuthConfig();
-    const url = new URL(process.env.DATABASE_URL ?? "");
-    if (!["postgres:", "postgresql:"].includes(url.protocol) || !url.hostname) throw new Error();
+    if (!isDatabaseConfigured()) throw new Error();
   } catch {
     throw new AuthCoreError(503, "admin_configuration_unavailable", 5);
   }

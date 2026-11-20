@@ -2,7 +2,9 @@ import "server-only";
 import { betterAuth } from "better-auth";
 import { APIError, createAuthMiddleware, getAuthoritativeSessionFromCtx } from "better-auth/api";
 import { magicLink } from "better-auth/plugins";
-import { getPool, query } from "@/lib/db";
+import { getDb, query } from "@/lib/db";
+import { createD1Dialect } from "@/lib/db/kysely-d1";
+import { isCloudflareRuntime } from "@/lib/runtime/app-env";
 import { getAuthConfig, requireEmailVerification } from "./server-config";
 import { getAuthCookieOptions, safeAuthRedirect } from "./config";
 import { validateCredentials } from "./adapter";
@@ -15,7 +17,7 @@ function createAuth() {
   const emailVerificationRequired = requireEmailVerification();
   const google = process.env.GOOGLE_CLIENT_ID?.trim() && process.env.GOOGLE_CLIENT_SECRET?.trim();
   return betterAuth({
-    database: getPool(), baseURL: siteOrigin, secret,
+    database: { dialect: createD1Dialect(getDb()), type: "sqlite" }, baseURL: siteOrigin, secret,
     trustedOrigins: [...new Set([siteOrigin, "https://afinazeytin.com", "https://www.afinazeytin.com"])],
     emailAndPassword: {
       enabled: true, minPasswordLength: 10, maxPasswordLength: 128, requireEmailVerification: emailVerificationRequired, autoSignIn: false,
@@ -45,7 +47,7 @@ function createAuth() {
     socialProviders: google ? { google: { clientId: process.env.GOOGLE_CLIENT_ID!, clientSecret: process.env.GOOGLE_CLIENT_SECRET! } } : {},
     rateLimit: { enabled: true, storage: "database", window: 60, max: 100,
       customRules: { "/sign-in/email": { window: 60, max: 5 }, "/sign-up/email": { window: 60, max: 5 }, "/sign-in/magic-link": { window: 60, max: 5 }, "/change-password": { window: 60, max: 5 }, "/request-password-reset": { window: 60, max: 5 }, "/reset-password": { window: 60, max: 5 }, "/forget-password": { window: 60, max: 5 } } },
-    advanced: { defaultCookieAttributes: getAuthCookieOptions(), useSecureCookies: process.env.NODE_ENV === "production", ipAddress: { ipAddressHeaders: process.env.VERCEL === "1" ? ["x-vercel-forwarded-for"] : [] } },
+    advanced: { defaultCookieAttributes: getAuthCookieOptions(), useSecureCookies: process.env.NODE_ENV === "production", ipAddress: { ipAddressHeaders: isCloudflareRuntime() ? ["cf-connecting-ip"] : [] } },
     hooks: {
       before: createAuthMiddleware(async ctx => {
         const emailPaths = ["/sign-in/email", "/sign-up/email", "/sign-in/magic-link", "/request-password-reset", "/forget-password", "/send-verification-email"];
@@ -56,7 +58,7 @@ function createAuth() {
             // Match Better Auth's token precedence exactly, including an empty body token.
             const token = ctx.body?.token || ctx.query?.token;
             if (typeof token === "string" && token.length <= 256) {
-              const result = await query<{email: string}>(`SELECT u.email FROM public.verification v JOIN public."user" u ON u.id = v.value WHERE v.identifier = $1 AND v."expiresAt" > CURRENT_TIMESTAMP LIMIT 1`, [`reset-password:${token}`]);
+              const result = await query<{email: string}>(`SELECT u.email FROM verification v JOIN "user" u ON u.id = v.value WHERE v.identifier = $1 AND v."expiresAt" > strftime('%Y-%m-%dT%H:%M:%fZ', 'now') LIMIT 1`, [`reset-password:${token}`]);
               accountEmail = result.rows[0]?.email;
             }
           }

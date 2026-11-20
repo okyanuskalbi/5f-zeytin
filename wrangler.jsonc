@@ -1,0 +1,23 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "afina-zeytin",
+  "main": "worker.ts",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "afina-zeytin", "database_id": "ad01a479-7df0-4b6a-818a-88fc78a8fbeb", "migrations_dir": "db/d1" },
+    { "binding": "NEXT_TAG_CACHE_D1", "database_name": "afina-zeytin", "database_id": "ad01a479-7df0-4b6a-818a-88fc78a8fbeb" }
+  ],
+  "kv_namespaces": [{ "binding": "NEXT_INC_CACHE_KV", "id": "bc3b1928984d470c9d586809d16d4a47" }],
+  "routes": [
+    { "pattern": "afinazeytin.com", "custom_domain": true },
+    { "pattern": "www.afinazeytin.com", "custom_domain": true }
+  ],
+  "vars": {
+    "APP_ENV": "production",
+    "BETTER_AUTH_URL": "https://afinazeytin.com",
+    "AUTH_REQUIRE_EMAIL_VERIFICATION": "false"
+  },
+  "observability": { "enabled": true }
+}

@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-li
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { ProductManager } from "@/components/admin/ProductManager";
 import { ProductForm } from "@/components/admin/ProductForm";
-import ProductsPage from "@/app/admin/urunler/page";
+import ProductsPage from "@/app/panel/urunler/page";
 import { requireAdmin } from "@/lib/auth/admin";
 import { adminProduct, productInput } from "../fixtures/admin-products";
 

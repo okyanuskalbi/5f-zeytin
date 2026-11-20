@@ -10,7 +10,7 @@ import { getProductFamilies } from "@/lib/catalog/static-products";
 vi.mock("server-only", () => ({}));
 
 const db = vi.hoisted(() => ({ query: vi.fn() }));
-vi.mock("@/lib/db", () => db);
+vi.mock("@/lib/db", async importOriginal => ({ ...await importOriginal<typeof import("@/lib/db")>(), query: db.query }));
 const fixtureKey = "private-test-credential";
 const product = {
   id: "fixture-green-1kg", name: "Test zeytin", category: "sofralik-zeytin",

@@ -1,33 +1,25 @@
 // @vitest-environment node
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-const mocks = vi.hoisted(() => ({ migrate: vi.fn(), end: vi.fn(), pool: vi.fn() }));
-vi.mock("pg", () => ({ Pool: class { constructor(options: unknown) { mocks.pool(options); } end = mocks.end; } }));
-vi.mock("../../scripts/db-migrate.mjs", () => ({ migrate: mocks.migrate }));
-import setup from "../global-setup";
-beforeEach(() => { vi.clearAllMocks(); mocks.migrate.mockResolvedValue([]); });
-afterEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks(); });
-describe("local database global setup", () => {
-  it("explicitly reports skipped integrations without touching any fallback database", async () => {
-    vi.stubEnv("TEST_DATABASE_URL", ""); vi.stubEnv("DATABASE_URL", "postgres://remote.example.test/never");
-    const message = vi.spyOn(console, "warn").mockImplementation(() => {});
-    await setup();
-    expect(message).toHaveBeenCalledWith(expect.stringContaining("TEST_DATABASE_URL"));
-    expect(mocks.pool).not.toHaveBeenCalled();
+import { describe, expect, it } from "vitest";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { bindTestD1, createTestD1 } from "../helpers/d1-sqlite";
+
+describe("local D1 test setup", () => {
+  it("gives each test file a migrated in-memory database through the Cloudflare context", async () => {
+    const db = (getCloudflareContext().env as { DB: ReturnType<typeof createTestD1> }).DB;
+    const tables = (await db.prepare("select name from sqlite_master where type = 'table'").all<{ name: string }>()).results.map(row => row.name);
+    expect(tables).toEqual(expect.arrayContaining(["user", "session", "products", "orders", "auth_account_limits"]));
   });
-  it("migrates the validated local target before suites begin and closes the pool", async () => {
-    vi.stubEnv("TEST_DATABASE_URL", "postgres://postgres@localhost:54329/local_test");
-    await setup();
-    expect(mocks.pool).toHaveBeenCalledWith(expect.objectContaining({ connectionString: process.env.TEST_DATABASE_URL, max: 1 }));
-    expect(mocks.migrate).toHaveBeenCalledOnce(); expect(mocks.end).toHaveBeenCalledOnce();
+  it("starts every database empty and isolated from other bindings", async () => {
+    const first = createTestD1();
+    const second = createTestD1();
+    await first.prepare("insert into products(id,name,category,weight,price_kurus) values('a','N','zeytinyagi','1',1)").run();
+    expect((await second.prepare("select count(*) as n from products").all<{ n: number }>()).results[0].n).toBe(0);
+    bindTestD1(first);
+    expect((await (getCloudflareContext().env as { DB: typeof first }).DB.prepare("select count(*) as n from products").all<{ n: number }>()).results[0].n).toBe(1);
   });
-  it("refuses remote connection overrides before creating a pool", async () => {
-    vi.stubEnv("TEST_DATABASE_URL", "postgres://localhost/test?host=remote.example.test");
-    await expect(setup()).rejects.toThrow(); expect(mocks.pool).not.toHaveBeenCalled();
-  });
-  it("fails the test run safely if migration fails and still closes the connection", async () => {
-    vi.stubEnv("TEST_DATABASE_URL", "postgres://localhost/local_test");
-    mocks.migrate.mockRejectedValueOnce(new Error("private connection detail"));
-    await expect(setup()).rejects.toThrow("Local test database migration failed");
-    expect(mocks.end).toHaveBeenCalledOnce();
+  it("can remove the binding to simulate an unconfigured deployment", () => {
+    bindTestD1(null);
+    expect(() => getCloudflareContext()).toThrow();
+    bindTestD1(createTestD1());
   });
 });

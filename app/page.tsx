@@ -4,6 +4,7 @@ import { StoreHome } from "@/components/storefront/StoreHome";
 import { LegacyHomeNavigation } from "@/components/site/LegacyHomeNavigation";
 import { BusinessJsonLd } from "@/components/site/BusinessJsonLd";
 import { readProductFamilies } from "@/lib/catalog/read";
+import { getAppEnv } from "@/lib/runtime/app-env";
 
 // This landing reads only anonymous catalog data, never session cookies.
 // Cache its HTML for five minutes while keeping catalog/API reads uncached.
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
     canonical: "/",
     types: { "application/atom+xml": [{ url: "/feed.xml", title: "AFİNA ZEYTİN içerik güncellemeleri" }] },
   },
-  robots: process.env.VERCEL_ENV === "preview"
+  robots: getAppEnv() === "preview"
     ? { index: false, follow: false }
     : { "max-image-preview": "large", "max-snippet": -1 },
 };

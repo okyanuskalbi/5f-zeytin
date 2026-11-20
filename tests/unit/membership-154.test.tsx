@@ -17,5 +17,5 @@ it("gives the verified customer a complete panel without admin links", () => {
   render(<AccountSummary profile={{ name: "Deniz Sofra", email: "deniz@example.test", phone: null }} />);
   const destinations = ["/hesabim", "/hesabim/siparisler", "/hesabim/adresler", "/hesabim/bilgilerim", "/hesabim/guvenlik"];
   for (const path of destinations) expect(document.querySelector(`nav[aria-label="Müşteri hesabı"] a[href="${path}"]`)).not.toBeNull();
-  expect(document.querySelector('a[href^="/admin"]')).toBeNull();
+  expect(document.querySelector('a[href^="/panel"]')).toBeNull();
 });

@@ -8,7 +8,8 @@ import nextConfig from "@/next.config";
 vi.mock("server-only", () => ({}));
 const session = vi.hoisted(() => vi.fn());
 const query = vi.hoisted(() => vi.fn());
-vi.mock("@/lib/db", () => ({ query }));
+const dbConfigured = vi.hoisted(() => ({ value: true }));
+vi.mock("@/lib/db", async importOriginal => ({ ...await importOriginal<typeof import("@/lib/db")>(), query, isDatabaseConfigured: () => dbConfigured.value }));
 vi.mock("@/lib/auth/server", async importOriginal => ({
   ...await importOriginal<typeof import("@/lib/auth/server")>(), getVerifiedSession: session,
 }));
@@ -17,7 +18,7 @@ beforeEach(() => {
   vi.stubEnv("NODE_ENV", "production");
   vi.stubEnv("BETTER_AUTH_URL", "https://shop.example.test");
   vi.stubEnv("BETTER_AUTH_SECRET", "task186-local-tests-only-32-character-secret");
-  vi.stubEnv("DATABASE_URL", "postgres://postgres@localhost:54329/afina_test");
+  dbConfigured.value = true;
   query.mockReset(); session.mockReset().mockResolvedValue(null);
 });
 afterEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks(); });
@@ -26,10 +27,10 @@ describe("admin configuration HTTP responses", () => {
   it.each([
     ["BETTER_AUTH_URL", undefined], ["BETTER_AUTH_URL", "https://private@example.test/path"],
     ["BETTER_AUTH_SECRET", undefined], ["BETTER_AUTH_SECRET", "short-private-secret"],
-    ["DATABASE_URL", undefined], ["DATABASE_URL", "https://private@example.test/path"],
+    ["DATABASE_URL", undefined],
   ])("returns safe 503 HTML before admin pages render (%#)", async (key, value) => {
-    vi.stubEnv(key, value);
-    for (const path of ["/admin", "/admin/urunler"]) {
+    if (key === "DATABASE_URL") dbConfigured.value = false; else vi.stubEnv(key, value);
+    for (const path of ["/panel", "/panel/urunler"]) {
       for (const cookie of ["", "better-auth.session_token=untrusted"]) {
         const response = await proxy(new NextRequest(`https://shop.example.test${path}`, { headers: { cookie } }));
         expect(response.status).toBe(503);
@@ -54,7 +55,7 @@ describe("admin configuration HTTP responses", () => {
     }
   });
   it("keeps direct API handlers safe without the proxy", async () => {
-    vi.stubEnv("DATABASE_URL", undefined);
+    dbConfigured.value = false;
     for (const handler of [GET, POST, PATCH, DELETE]) {
       const response = await handler(new Request("https://shop.example.test/api/admin/products", {
         method: handler === GET ? "GET" : "POST", headers: { origin: "https://shop.example.test" },
@@ -100,7 +101,6 @@ describe("enforced security headers", () => {
     expect(headers["content-security-policy"]).not.toMatch(/postgres|localhost|BETTER_AUTH|private|unsafe-eval|\*/);
   });
   it("keeps database origins and secrets out of browser connection policy", async () => {
-    vi.stubEnv("DATABASE_URL", "postgres://private:private@private.example.test/db");
     vi.stubEnv("BETTER_AUTH_SECRET", "private-secret-long-enough-for-test-only");
     expect((await cspHeader()).split("; ")).toContain("connect-src 'self'");
     expect(await cspHeader()).not.toContain("private");

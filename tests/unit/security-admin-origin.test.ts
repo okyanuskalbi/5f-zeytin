@@ -6,7 +6,8 @@ import { assertAuthMutation, authErrorResponse } from "@/lib/auth/server";
 vi.mock("server-only", () => ({}));
 const session = vi.hoisted(() => vi.fn());
 const query = vi.hoisted(() => vi.fn());
-vi.mock("@/lib/db", () => ({ query }));
+const dbConfigured = vi.hoisted(() => ({ value: true }));
+vi.mock("@/lib/db", async importOriginal => ({ ...await importOriginal<typeof import("@/lib/db")>(), query, isDatabaseConfigured: () => dbConfigured.value }));
 vi.mock("@/lib/auth/server", async importOriginal => ({
   ...await importOriginal<typeof import("@/lib/auth/server")>(), getVerifiedSession: session,
 }));
@@ -18,7 +19,7 @@ beforeEach(() => {
   session.mockReset().mockResolvedValue(null); query.mockReset();
   vi.stubEnv("BETTER_AUTH_URL", origin);
   vi.stubEnv("BETTER_AUTH_SECRET", "task186-local-tests-only-32-character-secret");
-  vi.stubEnv("DATABASE_URL", "postgres://postgres@localhost:54329/afina_test");
+  dbConfigured.value = true;
 });
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllEnvs(); });
 

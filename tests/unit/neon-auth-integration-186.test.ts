@@ -1,7 +1,6 @@
 // @vitest-environment node
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { NextRequest } from "next/server";
-import { localTestDatabaseUrl } from "../helpers/local-postgres";
 vi.mock("server-only", () => ({}));
 const mail = vi.hoisted(() => ({ messages: [] as Array<{to:string;text:string}> }));
 vi.mock("nodemailer", () => ({default:{createTransport:()=>({sendMail:async(message:{to:string;text:string})=>{mail.messages.push(message);return {accepted:[message.to],rejected:[]};},close:()=>{}})}}));
@@ -9,12 +8,11 @@ const origin="https://afinazeytin.com", password="LocalSecure123!", email=`task1
 let db: typeof import("@/lib/db"), auth: ReturnType<typeof import("@/lib/auth/better-auth").getAuth>;
 let login:typeof import("@/app/api/auth/login/route").POST, register:typeof import("@/app/api/auth/register/route").POST;
 let sessionHeaders:Headers;
-const request=(path:string,body:unknown)=>new NextRequest(`${origin}${path}`,{method:"POST",headers:{origin,"content-type":"application/json","x-vercel-forwarded-for":testIp},body:JSON.stringify(body)});
+const request=(path:string,body:unknown)=>new NextRequest(`${origin}${path}`,{method:"POST",headers:{origin,"content-type":"application/json","cf-connecting-ip":testIp},body:JSON.stringify(body)});
 function cookies(response:Response) {return response.headers.getSetCookie().map(cookie=>cookie.split(";")[0]).join("; ");}
-describe.skipIf(!process.env.TEST_DATABASE_URL)("Better Auth against local PostgreSQL",()=>{
+describe("Better Auth against local D1",()=>{
 beforeAll(async()=>{
- const url=localTestDatabaseUrl();
- vi.stubEnv("DATABASE_URL",url);vi.stubEnv("VERCEL","1");vi.stubEnv("BETTER_AUTH_URL",origin);vi.stubEnv("BETTER_AUTH_SECRET","task186-local-only-secret-32-characters-or-longer");
+ vi.stubGlobal("navigator",{userAgent:"Cloudflare-Workers"});vi.stubEnv("BETTER_AUTH_URL",origin);vi.stubEnv("BETTER_AUTH_SECRET","task186-local-only-secret-32-characters-or-longer");
  vi.stubEnv("SMTP_HOST","localhost");vi.stubEnv("SMTP_PORT","2525");vi.stubEnv("SMTP_USER","test");vi.stubEnv("SMTP_PASSWORD","test");vi.stubEnv("SMTP_FROM","test@example.test");
  db=await import("@/lib/db");
  // A fresh test run must not inherit limits from earlier validation runs.
@@ -24,8 +22,8 @@ beforeAll(async()=>{
 });
 afterAll(async()=>{
  const awaitKey=(await import("@/lib/auth/account-rate-limit")).accountLimitKey;
- if(db){await db.query('DELETE FROM "user" WHERE email=$1',[email]);await db.query('DELETE FROM "rateLimit" WHERE key LIKE $1',[`%${testIp}%`]);await db.query("DELETE FROM auth_account_limits WHERE key = ANY($1::text[])", [[email,bypassEmail,noMailEmail].map(value=> awaitKey(value,"task186-local-only-secret-32-characters-or-longer"))]);await db.closePool();}
- vi.unstubAllEnvs();
+ if(db){await db.query('DELETE FROM "user" WHERE email=$1',[email]);await db.query('DELETE FROM "rateLimit" WHERE key LIKE $1',[`%${testIp}%`]);await db.query("DELETE FROM auth_account_limits WHERE key IN (SELECT value FROM json_each($1))", [[email,bypassEmail,noMailEmail].map(value=> awaitKey(value,"task186-local-only-secret-32-characters-or-longer"))]);}
+ vi.unstubAllEnvs();vi.unstubAllGlobals();
 });
 beforeEach(async()=>{
  await db.query("DELETE FROM auth_account_limits WHERE key = $1", [(await import("@/lib/auth/account-rate-limit")).accountLimitKey(email,"task186-local-only-secret-32-characters-or-longer")]);
@@ -34,7 +32,8 @@ beforeEach(async()=>{
   const registered=await register(request("/api/auth/register",{name:"Yerel Test",email,password,privacy:true,consent:true,marketing:false}));
   expect(registered.status,await registered.clone().text()).toBe(202);
   const persisted=await db.query('SELECT "emailVerified", metadata FROM "user" WHERE email=$1',[email]);
-  expect(persisted.rows[0]).toMatchObject({emailVerified:false,metadata:{privacy_acknowledged:true,membership_consent:true,marketing_consent:false}});
+  expect(persisted.rows[0]).toMatchObject({emailVerified:0});
+  expect(JSON.parse(String(persisted.rows[0].metadata))).toMatchObject({privacy_acknowledged:true,membership_consent:true,marketing_consent:false});
   expect(registered.headers.getSetCookie()).toHaveLength(0);
   const message=mail.messages.find(message=>message.to===email);expect(message).toBeDefined();
   const url=message!.text.match(/https:\/\/[^\s]+/)![0];
@@ -50,7 +49,7 @@ beforeEach(async()=>{
   expect(logout.status).toBe(204);expect(await getVerifiedSession(sessionHeaders)).toBeNull();
  });
  it("preserves profile and password changes and rejects direct validation bypasses",async()=>{
-  const raw=(path:string,body:unknown,cookie="")=>auth.handler(new Request(`${origin}/api/auth${path}`,{method:"POST",headers:{origin,"content-type":"application/json","x-vercel-forwarded-for":testIp,...(cookie?{cookie}:{})},body:JSON.stringify(body)}));
+  const raw=(path:string,body:unknown,cookie="")=>auth.handler(new Request(`${origin}/api/auth${path}`,{method:"POST",headers:{origin,"content-type":"application/json","cf-connecting-ip":testIp,...(cookie?{cookie}:{})},body:JSON.stringify(body)}));
   for(const bad of [{name:"Bypass",email:bypassEmail,password,privacy:false,consent:true},{name:"Bypass",email:bypassEmail,password,privacy:true,consent:true,role:"admin"},{name:"Bypass",email:bypassEmail,password:"weak",privacy:true,consent:true}]) expect((await raw("/sign-up/email",bad)).status).toBe(400);
   expect((await db.query('SELECT id FROM "user" WHERE email=$1',[bypassEmail])).rows).toEqual([]);
   const signed=await login(request("/api/auth/login",{method:"password",email,password}));expect(signed.status).toBe(200);
@@ -77,7 +76,7 @@ beforeEach(async()=>{
   const statuses=[];
   for(let i=0;i<6;i++) statuses.push((await login(request("/api/auth/login",{method:"password",email,password:"WrongSecret123",next:"/hesabim"}))).status);
   expect(statuses).toContain(429);
-  expect((await db.query('SELECT count(*)::int AS count FROM "rateLimit"')).rows[0].count).toBeGreaterThan(0);
+  expect((await db.query('SELECT count(*) AS count FROM "rateLimit"')).rows[0].count).toBeGreaterThan(0);
  });
  it("fails clearly when SMTP is missing without creating a token or user",async()=>{
   vi.stubEnv("SMTP_HOST","");

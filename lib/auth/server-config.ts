@@ -1,15 +1,8 @@
 import "server-only";
 export function getAuthConfig() {
   try {
-    const preview = process.env.VERCEL === "1" && process.env.VERCEL_ENV === "preview";
-    let value = process.env.BETTER_AUTH_URL?.trim();
-    if (preview) {
-      // Vercel injects this exact deployment hostname. Never trust request Host
-      // or a wildcard origin, and never send preview auth back to production.
-      const hostname = process.env.VERCEL_URL?.trim();
-      if (!hostname || !/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.vercel\.app$/.test(hostname)) throw new Error();
-      value = `https://${hostname}`;
-    }
+    // Kimlik doğrulama adresi yalnız BETTER_AUTH_URL'dir; istek Host başlığına ya da joker kökene güvenilmez.
+    const value = process.env.BETTER_AUTH_URL?.trim();
     const secret = process.env.BETTER_AUTH_SECRET?.trim();
     if (!value || !secret || secret.length < 32) throw new Error();
     const parsed = new URL(value);

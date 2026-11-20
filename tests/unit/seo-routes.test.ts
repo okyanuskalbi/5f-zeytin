@@ -22,7 +22,7 @@ describe("SEO metadata routes", () => {
           "/hesabim",
           "/giris",
           "/kayit",
-          "/admin",
+          "/panel",
           "/siparis-takip",
           "/__demo",
           "/%5F%5Fdemo",
