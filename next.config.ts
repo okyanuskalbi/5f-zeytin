@@ -37,6 +37,8 @@ const nextConfig: NextConfig = {
   },
   turbopack: {
     root: fileURLToPath(new URL(".", import.meta.url)),
+    // worker-mailer `cloudflare:sockets` içe aktarır; OpenNext'in esbuild aşaması bunu çözemez (bkz. lib/mail/cf-sockets-shim.ts).
+    resolveAlias: { "cloudflare:sockets": "./lib/mail/cf-sockets-shim.ts" },
   },
 };
 

@@ -3,14 +3,14 @@ import {afterAll,beforeAll,describe,expect,it,vi} from "vitest";
 import {NextRequest} from "next/server";
 vi.mock("server-only",()=>({}));
 const mail=vi.hoisted(()=>vi.fn());
-vi.mock("nodemailer",()=>({default:{createTransport:mail}}));
+vi.mock("worker-mailer",()=>({WorkerMailer:{connect:mail}}));
 const origin="https://afinazeytin.com",email=`temporary-${crypto.randomUUID()}@example.test`,password="ReadySecure123!",testIp="198.18.186.112";
 let db: typeof import("@/lib/db");
 const request=(path:string,body:unknown)=>new NextRequest(`${origin}/api/auth/${path}`,{method:"POST",headers:{origin,"content-type":"application/json","cf-connecting-ip":testIp},body:JSON.stringify(body)});
 describe("temporary unverified membership against local D1",()=>{
  beforeAll(async()=>{
   vi.stubGlobal("navigator",{userAgent:"Cloudflare-Workers"});vi.stubEnv("BETTER_AUTH_URL",origin);vi.stubEnv("BETTER_AUTH_SECRET","local-unverified-test-secret-at-least-32-characters");vi.stubEnv("AUTH_REQUIRE_EMAIL_VERIFICATION","false");
-  for(const key of ["SMTP_HOST","SMTP_PORT","SMTP_USER","SMTP_PASSWORD","SMTP_FROM"])vi.stubEnv(key,"");
+  for(const key of ["SMTP_HOST","SMTP_PORT","SMTP_USER","SMTP_PASSWORD","MAIL_FROM"])vi.stubEnv(key,"");
   db=await import("@/lib/db");await db.query('DELETE FROM "rateLimit" WHERE key LIKE $1',[`%${testIp}%`]);
  });
  afterAll(async()=>{if(db){await db.query('DELETE FROM "user" WHERE email=$1',[email]);await db.query("DELETE FROM auth_account_limits WHERE key=$1",[(await import("@/lib/auth/account-rate-limit")).accountLimitKey(email,"local-unverified-test-secret-at-least-32-characters")]);}vi.unstubAllEnvs();vi.unstubAllGlobals();});

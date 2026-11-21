@@ -17,7 +17,13 @@
   "vars": {
     "APP_ENV": "production",
     "BETTER_AUTH_URL": "https://afinazeytin.com",
-    "AUTH_REQUIRE_EMAIL_VERIFICATION": "false"
+    "AUTH_REQUIRE_EMAIL_VERIFICATION": "false",
+    "SMTP_HOST": "mail.5faktoriyel.com",
+    "SMTP_PORT": "465",
+    "SMTP_SECURE": "true",
+    "SMTP_USER": "afina@5faktoriyel.com",
+    "MAIL_FROM": "AFİNA ZEYTİN <afina@5faktoriyel.com>",
+    "LEAD_NOTIFY_TO": "afina@5faktoriyel.com"
   },
   "observability": { "enabled": true }
 }

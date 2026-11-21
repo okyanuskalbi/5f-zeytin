@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { authErrorResponse, authResponseHeaders } from "@/lib/auth/server";
+import { authErrorResponse, authResponseHeaders } from "@/lib/auth/errors";
 import { adminConfigurationMessage, assertAdminConfiguration } from "@/lib/auth/admin-config";
 
 /** Configuration and optimistic redirects only; protected server code verifies sessions. */

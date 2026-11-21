@@ -2,6 +2,7 @@ import { AuthCoreError, assertRequestOrigin, authResponseHeaders } from "@/lib/a
 import { apiError, apiFailure, apiJson, readJsonBody } from "@/lib/auth/admin-api";
 import { parseLeadInput } from "@/lib/contracts/admin-panel";
 import { consumeContactAttempt, createLead } from "@/lib/db/leads";
+import { notifyNewLead } from "@/lib/mail/lead-notify";
 
 export const dynamic = "force-dynamic";
 
@@ -23,6 +24,8 @@ export async function POST(request: Request) {
         { status: 429, headers: { ...authResponseHeaders, "Retry-After": "600" } });
     }
     await createLead(input);
+    // Bildirim arka planda gider; hata kaydı ve yanıtı etkilemez.
+    try { notifyNewLead(input); } catch { /* bildirim hazırlığı kaydı bozmaz */ }
     return apiJson({ ok: true }, 201);
   } catch (error) {
     if (error instanceof AuthCoreError) return apiError(error, "contact_unavailable");

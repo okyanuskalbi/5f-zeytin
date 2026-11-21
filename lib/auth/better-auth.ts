@@ -21,11 +21,11 @@ function createAuth() {
     trustedOrigins: [...new Set([siteOrigin, "https://afinazeytin.com", "https://www.afinazeytin.com"])],
     emailAndPassword: {
       enabled: true, minPasswordLength: 10, maxPasswordLength: 128, requireEmailVerification: emailVerificationRequired, autoSignIn: false,
-      sendResetPassword: async ({ user, url }) => { await sendAuthEmail({ to: user.email, url, subject: "AFİNA şifre sıfırlama" }); },
+      sendResetPassword: async ({ user, url }) => { await sendAuthEmail({ to: user.email, url, kind: "reset" }); },
     },
     emailVerification: {
       sendOnSignUp: emailVerificationRequired, autoSignInAfterVerification: false,
-      sendVerificationEmail: async ({ user, url }) => { await sendAuthEmail({ to: user.email, url, subject: "AFİNA e-posta doğrulama" }); },
+      sendVerificationEmail: async ({ user, url }) => { await sendAuthEmail({ to: user.email, url, kind: "verify" }); },
     },
     user: { additionalFields: {
       phone: { type: "string", required: false, input: true },
@@ -91,7 +91,7 @@ function createAuth() {
         }
       }),
     },
-    plugins: [magicLink({ disableSignUp: true, storeToken: "hashed", sendMagicLink: async ({ email, url }) => { await sendAuthEmail({ to: email, url, subject: "AFİNA giriş bağlantısı" }); } })],
+    plugins: [magicLink({ disableSignUp: true, storeToken: "hashed", sendMagicLink: async ({ email, url }) => { await sendAuthEmail({ to: email, url, kind: "magic" }); } })],
     logger: { disabled: true },
   });
 }

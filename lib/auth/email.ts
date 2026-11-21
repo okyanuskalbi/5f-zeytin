@@ -1,26 +1,25 @@
 import "server-only";
-import nodemailer from "nodemailer";
+import { getMailConfig, MailNotConfiguredError, sendMail } from "@/lib/mail/send";
 
 export class EmailUnavailableError extends Error {
   constructor() { super("email_not_configured"); }
 }
 
 export function assertAuthEmailConfigured() {
-  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, SMTP_FROM } = process.env;
-  if (!SMTP_HOST?.trim() || !SMTP_USER?.trim() || !SMTP_PASSWORD || !SMTP_FROM?.trim() || !/^\d+$/.test(SMTP_PORT ?? "") || Number(SMTP_PORT) < 1 || Number(SMTP_PORT) > 65535) throw new EmailUnavailableError();
+  if (!getMailConfig()) throw new EmailUnavailableError();
 }
 
-/** No preview/log fallback: a missing or refused SMTP service is a failure. */
-export async function sendAuthEmail(input: { to: string; url: string; subject: string }) {
-  assertAuthEmailConfigured();
-  const transport = nodemailer.createTransport({
-    host: process.env.SMTP_HOST, port: Number(process.env.SMTP_PORT), secure: Number(process.env.SMTP_PORT) === 465,
-    auth: { user: process.env.SMTP_USER!, pass: process.env.SMTP_PASSWORD! },
-    requireTLS: Number(process.env.SMTP_PORT) !== 465,
-    connectionTimeout: 5000, greetingTimeout: 5000, socketTimeout: 10000,
-  });
-  try {
-    const result = await transport.sendMail({ from: process.env.SMTP_FROM, to: input.to, subject: input.subject, text: `AFİNA üyelik işleminizi bu bağlantıyla tamamlayın:\n${input.url}\n\nBu işlemi siz başlatmadıysanız bu e-postayı dikkate almayın.` });
-    if (!result.accepted.length || result.rejected.length) throw new Error("email_delivery_failed");
-  } finally { transport.close(); }
+export type AuthEmailKind = "verify" | "reset" | "magic";
+const copy: Record<AuthEmailKind, { subject: string; lead: string }> = {
+  verify: { subject: "AFİNA ZEYTİN e-posta doğrulama", lead: "E-posta adresinizi doğrulamak için bu bağlantıyı açın:" },
+  reset: { subject: "AFİNA ZEYTİN şifre sıfırlama", lead: "Şifrenizi yenilemek için bu bağlantıyı açın:" },
+  magic: { subject: "AFİNA ZEYTİN giriş bağlantısı", lead: "Hesabınıza giriş yapmak için bu bağlantıyı açın:" },
+};
+
+/** Başarısızlık sessizce yutulmaz: ayar yoksa EmailUnavailableError, gönderim hatasında gönderen hata atar. */
+export async function sendAuthEmail(input: { to: string; url: string; kind: AuthEmailKind }) {
+  const { subject, lead } = copy[input.kind];
+  const text = `${lead}\n${input.url}\n\nBu bağlantı kısa süre geçerlidir. Bu işlemi siz başlatmadıysanız bu e-postayı dikkate almayın.\n\nAFİNA ZEYTİN\nhttps://afinazeytin.com`;
+  try { await sendMail({ to: input.to, subject, text }); }
+  catch (error) { throw error instanceof MailNotConfiguredError ? new EmailUnavailableError() : error; }
 }

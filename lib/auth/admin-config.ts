@@ -1,6 +1,6 @@
 import "server-only";
 import { getAuthConfig } from "./server-config";
-import { AuthCoreError } from "./server";
+import { AuthCoreError } from "./errors";
 import { isDatabaseConfigured } from "@/lib/db";
 
 export const adminConfigurationMessage = "Yönetim paneli şu an yapılandırılıyor.";

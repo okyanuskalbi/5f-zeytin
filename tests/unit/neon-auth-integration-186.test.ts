@@ -3,7 +3,7 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vites
 import { NextRequest } from "next/server";
 vi.mock("server-only", () => ({}));
 const mail = vi.hoisted(() => ({ messages: [] as Array<{to:string;text:string}> }));
-vi.mock("nodemailer", () => ({default:{createTransport:()=>({sendMail:async(message:{to:string;text:string})=>{mail.messages.push(message);return {accepted:[message.to],rejected:[]};},close:()=>{}})}}));
+vi.mock("worker-mailer", () => ({WorkerMailer:{connect:async()=>({send:async(message:{to:{email:string};text:string})=>{mail.messages.push({to:message.to.email,text:message.text});},close:async()=>{}})}}));
 const origin="https://afinazeytin.com", password="LocalSecure123!", email=`task186-auth-${crypto.randomUUID()}@example.test`, bypassEmail=`bypass-${crypto.randomUUID()}@example.test`, noMailEmail=`nomail-${crypto.randomUUID()}@example.test`, testIp="198.18.186.111";
 let db: typeof import("@/lib/db"), auth: ReturnType<typeof import("@/lib/auth/better-auth").getAuth>;
 let login:typeof import("@/app/api/auth/login/route").POST, register:typeof import("@/app/api/auth/register/route").POST;
@@ -13,7 +13,7 @@ function cookies(response:Response) {return response.headers.getSetCookie().map(
 describe("Better Auth against local D1",()=>{
 beforeAll(async()=>{
  vi.stubGlobal("navigator",{userAgent:"Cloudflare-Workers"});vi.stubEnv("BETTER_AUTH_URL",origin);vi.stubEnv("BETTER_AUTH_SECRET","task186-local-only-secret-32-characters-or-longer");
- vi.stubEnv("SMTP_HOST","localhost");vi.stubEnv("SMTP_PORT","2525");vi.stubEnv("SMTP_USER","test");vi.stubEnv("SMTP_PASSWORD","test");vi.stubEnv("SMTP_FROM","test@example.test");
+ vi.stubEnv("SMTP_HOST","localhost");vi.stubEnv("SMTP_PORT","465");vi.stubEnv("SMTP_USER","test");vi.stubEnv("SMTP_PASSWORD","test");vi.stubEnv("MAIL_FROM","AFİNA ZEYTİN <test@example.test>");
  db=await import("@/lib/db");
  // A fresh test run must not inherit limits from earlier validation runs.
  await db.query('DELETE FROM "rateLimit" WHERE key LIKE $1',[`%${testIp}%`]);
