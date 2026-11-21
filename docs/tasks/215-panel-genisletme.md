@@ -31,3 +31,6 @@ Karar: çerezsiz sayaç. ÇEREZ YOK, localStorage/sessionStorage YOK, ham IP ve 
 - Panel `/panel/ziyaretciler`: dönem seçici (Bugün/7/30 gün), sayfa görüntüleme, tekil ziyaretçi, en çok görüntülenen sayfalar, kaynaklar (doğrudan/Google/Instagram/diğer + utm), ülkeler, cihaz dağılımı, günlük çizgi grafik (hafif, bağımlılık eklemeden SVG), bot hariç. `/api/admin/visitors` (requireAdmin). Genel bakışa "bugün ziyaretçi" sayacı. AdminShell "Planlanan" listesi boşalır.
 - KVKK: sitenin gizlilik/KVKK sayfasına (app/kvkk) 1-2 cümle "çerezsiz, anonim istatistik" notu ekle (mevcut metni bozmadan, kısa).
 - Testler: toplama doğrulaması, bot/DNT/yol hariç tutma, özetin günlük değişmesi, ham IP'nin yazılmaması, panel sorguları/UI; mevcut testler yeşil.
+
+## Durum (21 Kas 2026): AŞAMA 1, 2, 3 TAMAMLANDI VE CANLI
+Migration'lar canlı D1'de: 0002_panel, 0003_discounts, 0004_visits. Panel: Genel bakış, Ürünler, Siparişler, Müşteriler, Leadler, İndirim kodları, Ziyaretçiler. 1573 birim test yeşil. Canlıda denendi: lead kaydı, indirim doğrulama (%10 → 440,00 ₺'de 44,00 ₺), sayaç limit koruması, ziyaretçi sayacı (bot/DNT sayılmaz). Eksik: girişli panel görsel kontrolü (yönetici hesabı yok), createOrder henüz hiçbir akışta çağrılmıyor (ödeme/sipariş kapalı), lead e-postası (SMTP yok).
