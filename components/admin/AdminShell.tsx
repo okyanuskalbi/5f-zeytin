@@ -16,7 +16,7 @@ import styles from "./AdminShell.module.css";
 
 export type AdminOverview =
   | { status: "fixture"; activeProducts: number; awaitingPayment: number; readyToShip: number }
-  | { status: "live"; activeProducts: number; awaitingPayment: number; readyToShip: number; orders: number; customers: number; newLeads: number }
+  | { status: "live"; activeProducts: number; awaitingPayment: number; readyToShip: number; orders: number; customers: number; newLeads: number; todayVisitors?: number | null }
   | { status: "loading" | "empty" | "error" };
 
 const destinations = [
@@ -26,15 +26,16 @@ const destinations = [
   { id: "admin-musteriler", label: "Müşteriler", href: "/panel/musteriler", icon: Users },
   { id: "admin-leadler", label: "Leadler", href: "/panel/leadler", icon: Inbox },
   { id: "admin-indirimler", label: "İndirim kodları", href: "/panel/indirimler", icon: Tag },
+  { id: "admin-ziyaretciler", label: "Ziyaretçiler", href: "/panel/ziyaretciler", icon: UserRound },
 ] as const;
-const planned = [{ label: "Ziyaretçiler", icon: UserRound }];
 export type AdminArea = Exclude<(typeof destinations)[number]["id"], "admin-genel-bakis">;
-const areaLabels: Record<AdminArea, string> = { "admin-urunler": "Ürünler", "admin-siparisler": "Siparişler", "admin-musteriler": "Müşteriler", "admin-leadler": "Leadler", "admin-indirimler": "İndirim kodları" };
+const areaLabels: Record<AdminArea, string> = { "admin-urunler": "Ürünler", "admin-siparisler": "Siparişler", "admin-musteriler": "Müşteriler", "admin-leadler": "Leadler", "admin-indirimler": "İndirim kodları", "admin-ziyaretciler": "Ziyaretçiler" };
 
 function isValid(overview: AdminOverview) {
   if (overview.status === "live") {
     return [overview.activeProducts, overview.awaitingPayment, overview.readyToShip, overview.orders, overview.customers, overview.newLeads]
-      .every(value => Number.isSafeInteger(value) && value >= 0) && overview.activeProducts <= 6;
+      .every(value => Number.isSafeInteger(value) && value >= 0) && overview.activeProducts <= 6
+      && (overview.todayVisitors == null || (Number.isSafeInteger(overview.todayVisitors) && overview.todayVisitors >= 0));
   }
   return overview.status !== "fixture" || (
     [overview.activeProducts, overview.awaitingPayment, overview.readyToShip].every(value => Number.isSafeInteger(value) && value >= 0)
@@ -99,10 +100,6 @@ export function AdminShell({ overview = { status: "empty" }, children, area }: {
           </SidebarMenuButton>
         </SidebarMenuItem>)}</SidebarMenu>
       </SidebarGroup>
-      <SidebarGroup>
-        <SidebarGroupLabel>Planlanan</SidebarGroupLabel>
-        <ul className={styles.planned}>{planned.map(item => <li key={item.label}><item.icon aria-hidden="true" /><span>{item.label}</span></li>)}</ul>
-      </SidebarGroup>
     </>;
   }
 
@@ -114,6 +111,7 @@ export function AdminShell({ overview = { status: "empty" }, children, area }: {
       { title: "Toplam sipariş", value: String(live.orders), icon: ClipboardList },
       { title: "Müşteri", value: String(live.customers), icon: Users },
       { title: "Yeni lead", value: String(live.newLeads), icon: Inbox },
+      { title: "Bugün ziyaretçi", value: typeof live.todayVisitors === "number" ? String(live.todayVisitors) : "Veri yok", icon: UserRound },
     ] : []),
   ];
 
@@ -175,6 +173,7 @@ export function AdminShell({ overview = { status: "empty" }, children, area }: {
             <PillButton href="/panel/siparisler" icon="none" variant="outline">Siparişler</PillButton>
             <PillButton href="/panel/musteriler" icon="none" variant="outline">Müşteriler</PillButton>
             <PillButton href="/panel/leadler" icon="none" variant="outline">Leadler</PillButton>
+            <PillButton href="/panel/ziyaretciler" icon="none" variant="outline">Ziyaretçiler</PillButton>
           </nav> : <section aria-labelledby="admin-orders-title" className={styles.emptyState}>
             <ClipboardList aria-hidden="true" /><div><h2 id="admin-orders-title">Sipariş görünümü</h2><p className={styles.muted}>Sipariş ve müşteri yönetimi henüz kullanıma açık değil.</p></div>
           </section>}

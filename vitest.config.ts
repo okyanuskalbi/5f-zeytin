@@ -9,6 +9,8 @@ export default defineConfig({
   },
   test: {
     environment: "jsdom",
+    // Tam takımda 160+ dosya paralel koşar; CPU'ya bağlı testler (ör. 150 bin beklentili indirim taraması, CLI süreçleri) 5 sn varsayılanını aşıp dalgalanıyordu.
+    testTimeout: 30000,
     setupFiles: ["./tests/setup-d1.ts"],
     include: ["tests/unit/**/*.test.{ts,tsx}"],
     coverage: {

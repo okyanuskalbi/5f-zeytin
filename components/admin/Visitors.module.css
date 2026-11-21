@@ -1,0 +1,37 @@
+/* Ziyaretçiler: panel tokenları (AdminShell.module.css .theme) ve ürün listesiyle aynı kart/anahtar stili. */
+.page { display: grid; gap: 24px; min-width: 0; }
+.heading { display: flex; flex-wrap: wrap; gap: 16px 24px; justify-content: space-between; align-items: center; }
+.muted { color: var(--muted-foreground); font-size: .875rem; }
+.err { color: var(--destructive); }
+.grid2 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; min-width: 0; }
+.grid2 [data-slot="card"] { border-radius: var(--sf-radius-card); box-shadow: none; min-width: 0; }
+.grid2 h2 { font: 600 1rem/1.5 var(--font-body, Arial, sans-serif); }
+.grid2 [data-slot="card-content"] { display: grid; gap: 16px; min-width: 0; }
+.kpis { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.big { font-size: 1.75rem; line-height: 1.25; font-weight: 600; font-variant-numeric: tabular-nums; }
+.chart { display: block; width: 100%; height: auto; max-width: 100%; }
+.grid { stroke: var(--border); stroke-width: 1; }
+.axis { fill: var(--muted-foreground); font-size: 11px; font-family: var(--font-body, Arial, sans-serif); }
+.area { fill: var(--sf-green); opacity: .08; }
+.viewsLine, .visitorsLine { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.viewsLine { stroke: var(--sf-green); }
+.visitorsLine { stroke: var(--sf-gold-deep); stroke-dasharray: 5 4; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: .875rem; }
+.legend span::before { content: ""; display: inline-block; width: 20px; height: 0; border-top: 2px solid; margin-right: 8px; vertical-align: middle; }
+.keyViews::before { border-color: var(--sf-green); }
+.keyVisitors::before { border-top-style: dashed; border-color: var(--sf-gold-deep); }
+.details summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; font-size: .875rem; }
+.tableWrap { overflow-x: auto; max-width: 100%; }
+.tableWrap table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: .875rem; }
+.tableWrap :is(th, td) { text-align: left; padding: 8px 12px 8px 0; border-bottom: 1px solid var(--border); }
+.bars { display: grid; gap: 12px; padding: 0; margin: 0; list-style: none; }
+.bars li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 16px; }
+.barLabel { overflow-wrap: anywhere; min-width: 0; }
+.barValue { font-variant-numeric: tabular-nums; font-weight: 600; }
+.track { grid-column: 1 / -1; display: block; height: 6px; border-radius: 999px; background: var(--muted); overflow: hidden; }
+.track span { display: block; height: 100%; border-radius: inherit; background: var(--sf-green); }
+.wide { grid-column: 1 / -1; min-width: 0; }
+@media (min-width: 768px) {
+  .grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kpis { grid-column: 1 / -1; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

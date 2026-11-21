@@ -48,18 +48,18 @@ describe("protected admin shell", () => {
     render(await Page());
     expect(screen.getByRole("alert").textContent).toContain("Özet yüklenemedi");
   });
-  it("groups working destinations and reserves future operations without links", () => {
+  it("lists every working destination as a link and has no planned section left", () => {
     render(<AdminShell overview={fixture} />);
     const nav = within(screen.getByRole("navigation", { name: "Yönetim navigasyonu" }));
     expect(nav.getByRole("link", { name: "Panel" }).getAttribute("aria-current")).toBe("page");
     expect(nav.getByRole("link", { name: "Ürünler" }).getAttribute("href")).toBe("/panel/urunler");
-    expect(nav.getAllByRole("link")).toHaveLength(6);
+    expect(nav.getAllByRole("link")).toHaveLength(7);
     expect(nav.getByRole("link", { name: "Siparişler" }).getAttribute("href")).toBe("/panel/siparisler");
     expect(nav.getByRole("link", { name: "Müşteriler" }).getAttribute("href")).toBe("/panel/musteriler");
     expect(nav.getByRole("link", { name: "Leadler" }).getAttribute("href")).toBe("/panel/leadler");
-    expect(nav.getByText("Planlanan")).toBeTruthy();
+    expect(nav.queryByText("Planlanan")).toBeNull();
     expect(nav.getByRole("link", { name: "İndirim kodları" }).getAttribute("href")).toBe("/panel/indirimler");
-    expect(nav.getByText("Ziyaretçiler")).toBeTruthy();
+    expect(nav.getByRole("link", { name: "Ziyaretçiler" }).getAttribute("href")).toBe("/panel/ziyaretciler");
     expect(screen.getByRole("link", { name: "Ürünleri yönet" }).getAttribute("href")).toBe("/panel/urunler");
   });
   it("labels all three sample summaries and keeps unavailable analysis honest", () => {

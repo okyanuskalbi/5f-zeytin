@@ -4,6 +4,7 @@ import type { JSX, ReactNode } from "react";
 import { StoreHeader } from "@/components/storefront/StoreHeader";
 import { StoreFooter } from "@/components/storefront/StoreFooter";
 import { CartProvider } from "@/components/cart/CartProvider";
+import { VisitBeacon } from "@/components/site/VisitBeacon";
 import { MotionProvider } from "@/components/site/MotionProvider";
 import { MembershipDialogProvider } from "@/components/account/MembershipDialogProvider";
 import { getProducts } from "@/lib/catalog/static-products";
@@ -81,6 +82,7 @@ export default async function RootLayout({
             {children}
           </div>
           <StoreFooter /></MembershipDialogProvider>
+          <VisitBeacon />
         </CartProvider></MotionProvider>
       </body>
     </html>

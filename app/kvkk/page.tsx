@@ -11,5 +11,6 @@ export const metadata: Metadata = completeMetadata({
 export default function Page() {
   return <LegalDocument title="KVKK" path="/kvkk" scope="Toptan talep, sipariş ve pazarlama izni">
     Toptan talep, sipariş ve pazarlama izni akışlarını kapsayan aydınlatma metni, kullanıcı onayı alındıktan sonra burada yer alacak.
+    {" "}Sitemiz çerez kullanmadan anonim ziyaret istatistiği tutar; IP adresi ve kişisel veri saklanmaz.
   </LegalDocument>;
 }
