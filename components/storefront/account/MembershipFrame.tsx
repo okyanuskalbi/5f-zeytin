@@ -16,7 +16,7 @@ export function MembershipFrame({ children, mode, embedded = false, onModeChange
 }) {
   const content = <div className={styles.authFrame} data-membership-frame data-store-membership>
     <div className={styles.authFormPanel}>
-      <div className={styles.compactBrand}><BrandLogo tone="light" loading="eager" /></div>
+      {!embedded && <div className={styles.compactBrand}><BrandLogo tone="light" loading="eager" /></div>}
       <nav aria-label="Üyelik işlemleri" data-pill-switch="" className={`${ui.switch} ${styles.authTabs}`}>
         {([["login", "Giriş yap", "/giris"], ["register", "Hesap oluştur", "/kayit"]] as const).map(([value, label, href]) =>
           onModeChange

@@ -47,13 +47,41 @@
 .privacyNotice { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--sf-line); font-size: 14px; line-height: 1.6; color: var(--sf-muted); }
 .privacyNotice a { display: inline-flex; align-items: center; min-height: 44px; color: var(--sf-green); text-decoration: underline; text-decoration-color: var(--sf-gold); text-decoration-thickness: 2px; text-underline-offset: 4px; }
 .authPage :is(a, button, input):focus-visible, .customerPage :is(a, button, input):focus-visible, .dialog :is(a, button, input):focus-visible { outline: 2px solid var(--sf-focus); outline-offset: 3px; }
-.dialog { display: flex; flex-direction: column; gap: 0; width: min(560px, calc(100% - 32px)); max-width: 560px; max-height: calc(100dvh - 32px); padding: 0; overflow: hidden; border: 1px solid var(--sf-line); border-radius: var(--sf-radius-card); }
-.dialogToolbar { display: flex; align-items: center; justify-content: space-between; flex: 0 0 auto; min-height: 64px; padding: 8px 16px; border-bottom: 1px solid var(--sf-line); }
-.dialogToolbar > span { font-size: 14px; color: var(--sf-muted); }
-.dialogClose { display: grid; place-items: center; flex: 0 0 48px; width: 48px; height: 48px; border: 1px solid var(--sf-line); border-radius: var(--sf-radius-round); background: var(--sf-paper); color: var(--sf-green); cursor: pointer; }
+/* Üyelik penceresi: kaydırmasız tek ekran. Yükseklik dvh ile hesaplanır (adres çubuğu), iki sekme aynı boyda durur;
+   iç kaydırma yalnız çok kısa ekranlarda yedek olarak çalışır. */
+.dialog { --auth-dialog-h: 740px; display: flex; flex-direction: column; gap: 0; padding: 0; overflow: hidden; border: 1px solid var(--sf-line); border-radius: var(--sf-radius-card); }
+.dialog[data-slot="dialog-content"] { width: min(520px, calc(100% - 16px)); max-width: 520px; height: min(var(--auth-dialog-h), calc(100vh - 16px)); max-height: calc(100vh - 16px); }
+@supports (height: 1dvh) { .dialog[data-slot="dialog-content"] { height: min(var(--auth-dialog-h), calc(100dvh - 16px)); max-height: calc(100dvh - 16px); } }
+.dialogToolbar { display: flex; align-items: center; justify-content: space-between; flex: 0 0 auto; min-height: 44px; padding: 0 2px 0 16px; border-bottom: 1px solid var(--sf-line); }
+.dialogTitle { display: flex; align-items: center; min-width: 0; gap: 10px; font-size: 14px; line-height: 1.2; color: var(--sf-muted); }
+.dialogTitle > span { padding-inline-start: 10px; border-inline-start: 1px solid var(--sf-line); white-space: nowrap; }
+.dialogLogo { display: block; width: auto; height: 22px; max-width: 96px; }
+.dialogClose { display: grid; place-items: center; flex: 0 0 44px; width: 44px; height: 44px; border: 0; border-radius: var(--sf-radius-round); background: transparent; color: var(--sf-green); cursor: pointer; }
+.dialog .dialogClose:focus-visible { outline-offset: -3px; }
 .dialogClose svg { width: 20px; height: 20px; }
-.dialogBody { flex: 1 1 auto; min-width: 0; min-height: 0; overflow: auto; overscroll-behavior: contain; scroll-padding-block: 24px; }
-.dialog .authFrame { border: 0; border-radius: var(--sf-radius-card); }
+.dialogBody { display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; min-height: 0; overflow: auto; overscroll-behavior: contain; scroll-padding-block: 16px; }
+.dialog .authFrame { flex: 1 0 auto; display: flex; flex-direction: column; max-width: none; border: 0; border-radius: var(--sf-radius-card); background: transparent; }
+.dialog .authFormPanel { flex: 1 0 auto; display: flex; flex-direction: column; padding: 10px 20px 8px; }
+.dialog .authTabs { gap: 0; padding: 0; margin-bottom: 8px; }
+.dialog .authContent { flex: 1 0 auto; align-content: start; gap: 8px; }
+.dialog .authContent header { display: grid; gap: 2px; margin-bottom: 0; }
+.dialog .authContent header :is(h1, h2) { font-size: 26px; font-size: clamp(22px, 3.4dvh, 32px); line-height: 1.1; }
+.dialog .authContent header p { font-size: 14px; line-height: 1.4; }
+.dialog .privacyNotice { margin-top: auto; padding-top: 8px; border-top: 0; font-size: 12.5px; line-height: 1.45; }
+.dialog .privacyNotice a { display: inline; min-height: 0; text-underline-offset: 3px; }
+/* Kısa ekranlarda başlık ve açıklama daha da sıkılaşır. */
+@media (max-height: 699px) {
+  .dialog .authFormPanel { padding-top: 8px; }
+  .dialog .authContent header p { display: none; }
+  .dialog .authContent header :is(h1, h2) { font-size: 20px; }
+}
+/* Çok kısa telefonlarda sekme zaten bağlamı söyler; başlık yalnız ekran okuyucuya kalır. */
+@media (max-height: 700px) {
+  .dialog .authContent header { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .dialog .privacyNotice { padding-top: 4px; }
+}
+@media (max-height: 760px) { .dialog .privacyNotice { font-size: 12px; line-height: 1.35; padding-top: 4px; } .dialog .authContent { gap: 6px; } }
+@media (min-width: 600px) and (min-height: 800px) { .dialog { --auth-dialog-h: 760px; } .dialog .authFormPanel { padding: 20px 32px 16px; } .dialog .authContent { gap: 14px; } }
 
 .customerShell { max-width: 1280px; margin-inline: auto; }
 .customerHeader { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 48px; }

@@ -72,8 +72,9 @@ function RegisterForm() {
           <Input id="register-password" name="password" type={showPassword ? "text" : "password"} autoComplete="new-password" value={password} onChange={event => setPassword(event.target.value)} minLength={10} maxLength={128} required aria-invalid={!!errors.password} aria-describedby={`register-password-hint${errors.password ? " register-password-error" : ""}`} />
           <Button variant="ghost" size="icon" aria-label={showPassword ? "Şifreyi gizle" : "Şifreyi göster"} aria-pressed={showPassword} onClick={() => setShowPassword(!showPassword)}>{showPassword ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}</Button>
         </div>
-        <small id="register-password-hint" className={styles.muted}>{registrationPasswordError}</small>
-        <div className={styles.strength}><meter min={0} max={4} value={strength} aria-label="Şifre gücü" /><span>{password ? ["Çok zayıf", "Zayıf", "Orta", "İyi", "Güçlü"][strength] : "Şifre gücü"}</span></div>
+        <small id="register-password-hint" className={styles.srOnly}>{registrationPasswordError}</small>
+        <div className={styles.strengthRow}><span aria-hidden="true" className={styles.hint}>10+ karakter, büyük/küçük harf, rakam</span><span className={styles.strengthLabel}>{password ? ["Çok zayıf", "Zayıf", "Orta", "İyi", "Güçlü"][strength] : "Şifre gücü"}</span></div>
+        <div className={styles.strength}><meter min={0} max={4} value={strength} aria-label="Şifre gücü" /></div>
         {errors.password && <small id="register-password-error" className={styles.error}>{errors.password}</small>}
       </div>
       <div className={styles.consents}>

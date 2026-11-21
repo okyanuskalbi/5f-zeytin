@@ -27,9 +27,17 @@
 .guestLink { max-width: 100%; }
 /* The longest standalone label on the site: on the narrowest phones it keeps one line by giving up its coin. */
 @media (max-width: 359px) { .authFooter a.guestLink { --pill-pad: 12px; --pill-font: 13px; justify-content: center; } .authFooter a.guestLink [data-coin] { display: none; } }
-.strength { display: flex; gap: 8px; align-items: center; }
-.strength meter { width: 100%; height: 16px; accent-color: var(--sf-gold-deep); }
-.strength span { font-size: 14px; white-space: nowrap; }
+/* Kural ipucu ve şifre gücü: tek satır ipucu + ince çubuk. Tam kural metni ekran okuyucuya (#register-password-hint) kalır. */
+.strengthRow { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; font-size: 12.5px; white-space: nowrap; line-height: 1.4; }
+.hint { min-width: 0; color: var(--muted-foreground); }
+.strengthLabel { flex: none; font-size: 12.5px; font-weight: 600; color: var(--sf-green); white-space: nowrap; }
+.strength { display: block; }
+.strength meter { display: block; width: 100%; height: 6px; appearance: none; border: 0; border-radius: var(--sf-radius-pill); background: var(--sf-line); overflow: hidden; }
+.strength meter::-webkit-meter-bar { height: 6px; border: 0; border-radius: var(--sf-radius-pill); background: var(--sf-line); }
+.strength meter::-webkit-meter-optimum-value, .strength meter::-webkit-meter-suboptimum-value, .strength meter::-webkit-meter-even-less-good-value { background: var(--sf-gold-deep); border-radius: var(--sf-radius-pill); transition: width 180ms ease-out; }
+.strength meter::-moz-meter-bar { background: var(--sf-gold-deep); border-radius: var(--sf-radius-pill); }
+.srOnly { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+@media (prefers-reduced-motion: reduce) { .strength meter::-webkit-meter-optimum-value, .strength meter::-webkit-meter-suboptimum-value, .strength meter::-webkit-meter-even-less-good-value { transition: none; } }
 .consents { display: grid; gap: 12px; }
 .check { display: flex; align-items: flex-start; gap: 12px; min-height: 44px; padding-block: 8px; font-size: 16px; cursor: pointer; }
 .check input { flex-shrink: 0; width: 24px; height: 24px; margin-top: 1px; accent-color: var(--sf-green); }
@@ -82,3 +90,23 @@
   .address, .addressForm { padding: 20px 16px; }
   .actions > [data-pill][type="submit"] { flex: 1 1 100%; }
 }
+
+/* Üyelik penceresi (kaydırmasız tek ekran): sıkı aralık, 44 px dokunma hedefi, yer ayrılmış durum satırı. */
+:global([data-auth-dialog-body]) .form, :global([data-auth-dialog-body]) .form fieldset { gap: 8px; }
+:global([data-auth-dialog-body]) .field { gap: 4px; }
+:global([data-auth-dialog-body]) .field label { font-size: 13px; line-height: 1.3; }
+:global([data-auth-dialog-body]) .field :is(input, textarea) { min-height: 44px; padding: 8px 14px; }
+:global([data-auth-dialog-body]) .password input { padding-right: 48px; }
+:global([data-auth-dialog-body]) .password button { right: 0; }
+:global([data-auth-dialog-body]) .labelRow { margin-bottom: -4px; }
+:global([data-auth-dialog-body]) .consents { gap: 0; }
+:global([data-auth-dialog-body]) .check { gap: 10px; min-height: 44px; padding-block: 2px; font-size: 13px; line-height: 1.4; align-items: center; }
+:global([data-auth-dialog-body]) .check input { width: 20px; height: 20px; margin-top: 0; }
+:global([data-auth-dialog-body]) .check a { display: inline; min-height: 0; }
+:global([data-auth-dialog-body]) .form fieldset > [data-pill] { --pill-h: 48px; --pill-coin: 32px; }
+:global([data-auth-dialog-body]) .feedback { margin-top: 0; padding: 10px 14px; font-size: 14px; line-height: 1.45; }
+:global([data-auth-dialog-body]) .authFooter { gap: 0; margin-top: 0; font-size: 14px; }
+/* Sekmeler aynı geçişi zaten üstte sunar; pencerede tekrar eden bağlantı satırı yer açmak için gizlenir (sayfa görünümünde durur). */
+:global([data-auth-dialog-body]) .authFooter p { display: none; }
+:global([data-auth-dialog-body]) .authFooter [data-pill] { --pill-h: 44px; --pill-coin: 28px; --pill-font: 14px; }
+:global([data-auth-dialog-body]) .field small, :global([data-auth-dialog-body]) .error { font-size: 13px; line-height: 1.4; }

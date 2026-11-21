@@ -10,6 +10,7 @@ import {
   DialogDescription,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { BrandLogo } from "@/components/site/BrandLogo";
 import { MembershipFrame } from "./MembershipFrame";
 import { SignIn } from "./SignIn";
 import { Register } from "./Register";
@@ -82,7 +83,7 @@ export function AuthDialog({
           devam edebilirsiniz.
         </DialogDescription>
         <div className={styles.dialogToolbar}>
-          <span>AFİNA üyelik</span>
+          <span className={styles.dialogTitle}><BrandLogo tone="light" loading="eager" className={styles.dialogLogo} /><span>AFİNA üyelik</span></span>
           <DialogClose asChild>
             <Button variant="ghost" size="icon" className={styles.dialogClose} aria-label="Kapat">
               <X aria-hidden="true" />
