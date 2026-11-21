@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState, type ReactNode, type MouseEvent } from "react";
+import { AdminSignOut } from "./AdminSignOut";
 import { BrandLogo } from "@/components/site/BrandLogo";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -121,6 +122,7 @@ export function AdminShell({ overview = { status: "empty" }, children, area }: {
       <div className={styles.brand}><BrandLogo tone="light" /><span>Yönetim paneli</span></div>
       <SidebarContent><nav aria-label="Yönetim navigasyonu">{navigation()}</nav></SidebarContent>
       <Link prefetch={false} href="/" className={styles.storeLink}><Store aria-hidden="true" />Vitrine dön</Link>
+      <AdminSignOut />
     </Sidebar>
     <div className={styles.workspace}>
       <header className={styles.topbar}>
@@ -142,6 +144,7 @@ export function AdminShell({ overview = { status: "empty" }, children, area }: {
               </div>
               <nav aria-label="Mobil yönetim navigasyonu">{navigation()}</nav>
               <Link prefetch={false} href="/" className={styles.storeLink}><Store aria-hidden="true" />Vitrine dön</Link>
+              <AdminSignOut />
             </SheetContent>
           </Sheet>
           <span>Yönetim / <strong>{area ? areaLabels[area] : "Panel"}</strong></span>

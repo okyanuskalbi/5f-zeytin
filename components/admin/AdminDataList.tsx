@@ -79,7 +79,7 @@ export function AdminDataList<T extends { id: string }>(props: Props<T>) {
       {!total && !loading && !listError && <p className={products.panel}>{filtered ? "Süzgece uyan kayıt yok." : `Henüz ${noun.toLocaleLowerCase("tr-TR")} yok.`}</p>}
       {total > 0 && <section className={products.panel} aria-label={listLabel} aria-busy={loading}>
         <div role="region" aria-label={`${listLabel} tablosu`} tabIndex={0} className={`${products.scroll} ${styles.table}`}>
-          <Table role="table"><TableCaption>Sayfa {page}. Sayfa başına en fazla {adminListPageSize} kayıt.</TableCaption>
+          <Table role="table"><TableCaption className={styles.captionHidden}>Sayfa {page}. Sayfa başına en fazla {adminListPageSize} kayıt.</TableCaption>
             <TableHeader role="rowgroup"><TableRow role="row">{columns.map(column => <TableHead key={column.label} role="columnheader" scope="col">{column.label}</TableHead>)}
               <TableHead role="columnheader" scope="col">İşlem</TableHead></TableRow></TableHeader>
             <TableBody role="rowgroup">{result.data.map(row => <TableRow role="row" key={row.id}>

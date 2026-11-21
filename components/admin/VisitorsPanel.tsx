@@ -13,15 +13,21 @@ const countryNames = new Intl.DisplayNames(["tr"], { type: "region" });
 const countryName = (code: string) => { try { return countryNames.of(code) ?? code; } catch { return code; } };
 const shortDay = (day: string) => new Intl.DateTimeFormat("tr-TR", { day: "numeric", month: "short", timeZone: "UTC" }).format(new Date(`${day}T00:00:00Z`));
 
+/** Eksen adımı: tam sayı ve yuvarlak (1, 5, 50, 500 ...) bir birimin katı; ortası 13 gibi tuhaf değer olmaz. */
+function niceStep(raw: number) {
+  const unit = raw <= 5 ? 1 : 5 * 10 ** Math.floor(Math.log10(raw / 5));
+  return Math.max(1, Math.ceil(raw / unit) * unit);
+}
 const W = 640, H = 220, PAD = { l: 36, r: 12, t: 12, b: 28 };
 /** Hafif çizgi grafik (bağımlılıksız SVG). Erişilebilirlik için aynı veriler altta tablo olarak da verilir. */
 function LineChart({ daily }: { daily: VisitSummary["daily"] }) {
-  const max = Math.max(1, ...daily.map(point => point.views));
+  const step = niceStep(Math.max(1, ...daily.map(point => point.views)) / 2);
+  const max = step * 2;
   const x = (index: number) => PAD.l + (daily.length === 1 ? 0 : (index / (daily.length - 1)) * (W - PAD.l - PAD.r));
   const y = (value: number) => PAD.t + (1 - value / max) * (H - PAD.t - PAD.b);
   const line = (key: "views" | "visitors") => daily.map((point, index) => `${index ? "L" : "M"}${x(index).toFixed(1)} ${y(point[key]).toFixed(1)}`).join(" ");
   const area = `${line("views")} L${x(daily.length - 1).toFixed(1)} ${y(0)} L${x(0).toFixed(1)} ${y(0)} Z`;
-  const ticks = [0, Math.round(max / 2), max];
+  const ticks = [0, step, max];
   const labelEvery = Math.ceil(daily.length / 6);
   return <svg viewBox={`0 0 ${W} ${H}`} className={styles.chart} role="img" aria-label="Günlük sayfa görüntüleme ve ziyaretçi çizgi grafiği">
     {ticks.map(tick => <g key={tick}><line x1={PAD.l} x2={W - PAD.r} y1={y(tick)} y2={y(tick)} className={styles.grid} /><text x={PAD.l - 6} y={y(tick) + 4} textAnchor="end" className={styles.axis}>{tick}</text></g>)}

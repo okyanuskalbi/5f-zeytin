@@ -7,7 +7,7 @@
 .grid2 [data-slot="card"] { border-radius: var(--sf-radius-card); box-shadow: none; min-width: 0; }
 .grid2 h2 { font: 600 1rem/1.5 var(--font-body, Arial, sans-serif); }
 .grid2 [data-slot="card-content"] { display: grid; gap: 16px; min-width: 0; }
-.kpis { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.kpis { align-items: start; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
 .big { font-size: 1.75rem; line-height: 1.25; font-weight: 600; font-variant-numeric: tabular-nums; }
 .chart { display: block; width: 100%; height: auto; max-width: 100%; }
 .grid { stroke: var(--border); stroke-width: 1; }
