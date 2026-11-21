@@ -4,7 +4,7 @@ import { useEffect, useId, useRef, useState, type ReactNode, type MouseEvent } f
 import { BrandLogo } from "@/components/site/BrandLogo";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Boxes, ClipboardList, LayoutDashboard, Menu, Search, Store, Truck, Users } from "lucide-react";
+import { Boxes, ClipboardList, Inbox, LayoutDashboard, Menu, Search, Store, Tag, Truck, UserRound, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PillButton } from "@/components/storefront/ui/PillButton";
@@ -16,15 +16,25 @@ import styles from "./AdminShell.module.css";
 
 export type AdminOverview =
   | { status: "fixture"; activeProducts: number; awaitingPayment: number; readyToShip: number }
+  | { status: "live"; activeProducts: number; awaitingPayment: number; readyToShip: number; orders: number; customers: number; newLeads: number }
   | { status: "loading" | "empty" | "error" };
 
 const destinations = [
   { id: "admin-genel-bakis", label: "Panel", href: "/panel", icon: LayoutDashboard },
   { id: "admin-urunler", label: "Ürünler", href: "/panel/urunler", icon: Boxes },
+  { id: "admin-siparisler", label: "Siparişler", href: "/panel/siparisler", icon: ClipboardList },
+  { id: "admin-musteriler", label: "Müşteriler", href: "/panel/musteriler", icon: Users },
+  { id: "admin-leadler", label: "Leadler", href: "/panel/leadler", icon: Inbox },
 ] as const;
-const planned = [{ label: "Siparişler", icon: ClipboardList }, { label: "Müşteriler", icon: Users }];
+const planned = [{ label: "İndirim kodları", icon: Tag }, { label: "Ziyaretçiler", icon: UserRound }];
+export type AdminArea = Exclude<(typeof destinations)[number]["id"], "admin-genel-bakis">;
+const areaLabels: Record<AdminArea, string> = { "admin-urunler": "Ürünler", "admin-siparisler": "Siparişler", "admin-musteriler": "Müşteriler", "admin-leadler": "Leadler" };
 
 function isValid(overview: AdminOverview) {
+  if (overview.status === "live") {
+    return [overview.activeProducts, overview.awaitingPayment, overview.readyToShip, overview.orders, overview.customers, overview.newLeads]
+      .every(value => Number.isSafeInteger(value) && value >= 0) && overview.activeProducts <= 6;
+  }
   return overview.status !== "fixture" || (
     [overview.activeProducts, overview.awaitingPayment, overview.readyToShip].every(value => Number.isSafeInteger(value) && value >= 0)
     && overview.activeProducts <= 6
@@ -33,7 +43,7 @@ function isValid(overview: AdminOverview) {
 
 /** Presentation only. Each page and API retains its independent authorization gate.
  * Layout reference: 21st App Dashboard Layout (28770); no demo metrics or charts. */
-export function AdminShell({ overview = { status: "empty" }, children, area }: { overview?: AdminOverview; children?: ReactNode; area?: "admin-urunler" }) {
+export function AdminShell({ overview = { status: "empty" }, children, area }: { overview?: AdminOverview; children?: ReactNode; area?: AdminArea }) {
   const router = useRouter();
   const searchId = useId();
   const [query, setQuery] = useState("");
@@ -45,6 +55,8 @@ export function AdminShell({ overview = { status: "empty" }, children, area }: {
   const matches = destinations.filter(item => item.label.toLocaleLowerCase("tr-TR").includes(search));
   const failed = overview.status === "error" || !isValid(overview);
   const sample = overview.status === "fixture" && !failed ? overview : null;
+  const live = overview.status === "live" && !failed ? overview : null;
+  const figures = sample ?? live;
   const loading = overview.status === "loading";
 
   useEffect(() => {
@@ -94,9 +106,14 @@ export function AdminShell({ overview = { status: "empty" }, children, area }: {
   }
 
   const summaries = [
-    { title: "Aktif ürün", value: sample ? `${sample.activeProducts} / 6` : "Veri yok", icon: Boxes },
-    { title: "Ödeme bekleyen sipariş", value: sample ? String(sample.awaitingPayment) : "Veri yok", icon: ClipboardList },
-    { title: "Kargoya hazır sipariş", value: sample ? String(sample.readyToShip) : "Veri yok", icon: Truck },
+    { title: "Aktif ürün", value: figures ? `${figures.activeProducts} / 6` : "Veri yok", icon: Boxes },
+    { title: "Ödeme bekleyen sipariş", value: figures ? String(figures.awaitingPayment) : "Veri yok", icon: ClipboardList },
+    { title: "Kargoya hazır sipariş", value: figures ? String(figures.readyToShip) : "Veri yok", icon: Truck },
+    ...(live ? [
+      { title: "Toplam sipariş", value: String(live.orders), icon: ClipboardList },
+      { title: "Müşteri", value: String(live.customers), icon: Users },
+      { title: "Yeni lead", value: String(live.newLeads), icon: Inbox },
+    ] : []),
   ];
 
   return <div data-admin-shell="" data-surface="admin" className={`${styles.theme} ${styles.shell}`}>
@@ -128,7 +145,7 @@ export function AdminShell({ overview = { status: "empty" }, children, area }: {
               <Link prefetch={false} href="/" className={styles.storeLink}><Store aria-hidden="true" />Vitrine dön</Link>
             </SheetContent>
           </Sheet>
-          <span>Yönetim / <strong>{area ? "Ürünler" : "Panel"}</strong></span>
+          <span>Yönetim / <strong>{area ? areaLabels[area] : "Panel"}</strong></span>
         </div>
         <div role="search" aria-label="Yönetim alanı arama" className={styles.search}>
           <label htmlFor={searchId} className="sr-only">Yönetim alanlarında ara</label>
@@ -150,12 +167,16 @@ export function AdminShell({ overview = { status: "empty" }, children, area }: {
           <section aria-label="Operasyon özeti" aria-busy={loading} className={styles.summaries}>
             {summaries.map((summary, index) => <Card key={summary.title} role="region" aria-labelledby={`admin-summary-${index}`}>
               <CardHeader><summary.icon aria-hidden="true" /><h2 id={`admin-summary-${index}`}>{summary.title}</h2>{sample && <Badge variant="outline">Test verisi</Badge>}</CardHeader>
-              <CardContent><p className={sample ? styles.value : styles.unavailable}>{loading ? "Yükleniyor…" : failed ? "Alınamadı" : summary.value}</p>{!sample && !loading && !failed && <span className="sr-only">Henüz veri yok</span>}</CardContent>
+              <CardContent><p className={figures ? styles.value : styles.unavailable}>{loading ? "Yükleniyor…" : failed ? "Alınamadı" : summary.value}</p>{!figures && !loading && !failed && <span className="sr-only">Henüz veri yok</span>}</CardContent>
             </Card>)}
           </section>
-          <section aria-labelledby="admin-orders-title" className={styles.emptyState}>
+          {live ? <nav aria-label="Hızlı erişim" className={styles.quickLinks}>
+            <PillButton href="/panel/siparisler" icon="none" variant="outline">Siparişler</PillButton>
+            <PillButton href="/panel/musteriler" icon="none" variant="outline">Müşteriler</PillButton>
+            <PillButton href="/panel/leadler" icon="none" variant="outline">Leadler</PillButton>
+          </nav> : <section aria-labelledby="admin-orders-title" className={styles.emptyState}>
             <ClipboardList aria-hidden="true" /><div><h2 id="admin-orders-title">Sipariş görünümü</h2><p className={styles.muted}>Sipariş ve müşteri yönetimi henüz kullanıma açık değil.</p></div>
-          </section>
+          </section>}
         </section>}
       </main>
     </div>

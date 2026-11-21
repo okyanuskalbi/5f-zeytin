@@ -74,6 +74,10 @@ export function DealershipFormClient({ openDraft = openMailto, configuration }: 
       return;
     }
     const draft = createDealershipDraft(result.data);
+    const { sendLead } = await import("@/lib/contact/lead-client");
+    const data = result.data;
+    void sendLead({ name: `${data.contactName} / ${data.companyName}`, email: data.email, phone: data.phone, source: "bayilik",
+      message: [`İşletme türü: ${data.businessType}`, `Konum: ${data.district} / ${data.city}`, data.outletCount ? `Satış noktası: ${data.outletCount}` : "", data.message ? `Mesaj: ${data.message}` : ""].filter(Boolean).join("\n") });
     setErrors({}); setPrepared(draft); setCopyStatus(""); setLaunchFailed(false);
     try { openDraft(draft.mailto); } catch { setLaunchFailed(true); }
     } catch {

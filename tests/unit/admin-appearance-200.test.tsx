@@ -5,12 +5,12 @@ import { ProductManager } from "@/components/admin/ProductManager";
 import { adminProduct } from "../fixtures/admin-products";
 vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: vi.fn() }) }));
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
-it("exposes only working panel/product destinations and no sample statistics by default", () => {
+it("exposes only working panel destinations and no sample statistics by default", () => {
   render(<AdminShell />);
   const nav = within(screen.getByRole("navigation", { name: "Yönetim navigasyonu" }));
-  expect(nav.getAllByRole("link").map(link => link.textContent)).toEqual(["Panel", "Ürünler"]);
-  expect(nav.queryByRole("link", { name: "Siparişler" })).toBeNull();
-  expect(nav.getByText("Siparişler")).toBeTruthy();
+  expect(nav.getAllByRole("link").map(link => link.textContent)).toEqual(["Panel", "Ürünler", "Siparişler", "Müşteriler", "Leadler"]);
+  expect(nav.queryByRole("link", { name: "İndirim kodları" })).toBeNull();
+  expect(nav.getByText("İndirim kodları")).toBeTruthy();
   expect(screen.queryByText("TEST VERİSİ")).toBeNull();
   expect(screen.getAllByText("Henüz veri yok")).toHaveLength(3);
 });

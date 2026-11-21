@@ -82,9 +82,10 @@ it("carries the actual gallery SKU and segment into a truthful encoded corporate
   expect(screen.queryByRole("link", { name: /WhatsApp/i })).toBeNull();
   expect(screen.queryByText("Talebiniz gönderildi.")).toBeNull();
   // Address lookup GETs may finish during deferred field loading; preparing a
-  // mail draft must never POST a form or send an email through the server.
-  expect(fetch.mock.calls.filter(([request, options]) =>
-    (options?.method ?? (request instanceof Request ? request.method : "GET")).toUpperCase() === "POST")).toEqual([]);
+  // mail draft must never send an email through the server. The only allowed POST is the silent lead record (task 215).
+  const posts = fetch.mock.calls.filter(([request, options]) =>
+    (options?.method ?? (request instanceof Request ? request.method : "GET")).toUpperCase() === "POST");
+  expect(posts.map(([request]) => String(request))).toEqual(["/api/contact"]);
 });
 
 it("uses the Bazgold country control and clears the district after a city edit", async () => {

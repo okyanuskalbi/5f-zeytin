@@ -3,7 +3,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import Page from "@/app/panel/page";
 import { AdminShell, type AdminOverview } from "@/components/admin/AdminShell";
 
-const mocks = vi.hoisted(() => ({ requireAdmin: vi.fn(), refresh: vi.fn() }));
+const mocks = vi.hoisted(() => ({ requireAdmin: vi.fn(), refresh: vi.fn(), counts: vi.fn() }));
+vi.mock("server-only", () => ({}));
+vi.mock("@/lib/db/admin-panel", () => ({ getPanelCounts: mocks.counts }));
 vi.mock("@/lib/auth/admin", () => ({ requireAdmin: mocks.requireAdmin }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: mocks.refresh }) }));
 const fixture: AdminOverview = { status: "fixture", activeProducts: 3, awaitingPayment: 2, readyToShip: 1 };
@@ -12,6 +14,7 @@ let media: { matches: boolean; listeners: Set<(event: { matches: boolean }) => v
 beforeEach(() => {
   mocks.requireAdmin.mockReset().mockResolvedValue({ id: "verified-admin", email: "private@example.test" });
   mocks.refresh.mockReset();
+  mocks.counts.mockReset().mockResolvedValue({ activeProducts: 4, awaitingPayment: 2, readyToShip: 1, orders: 9, customers: 7, newLeads: 3 });
   media = { matches: false, listeners: new Set() };
   vi.stubGlobal("matchMedia", vi.fn(() => ({ matches: media.matches,
     addEventListener: (_: string, listener: (event: { matches: boolean }) => void) => media.listeners.add(listener),
@@ -32,15 +35,30 @@ describe("protected admin shell", () => {
     await expect(Page()).rejects.toEqual({ status });
     expect(screen.queryByRole("main")).toBeNull();
   });
+  it("shows live counts from the database on the overview page and degrades to an error state", async () => {
+    render(await Page());
+    const summaries = within(screen.getByRole("region", { name: "Operasyon özeti" }));
+    expect(summaries.getByRole("region", { name: "Aktif ürün" }).textContent).toContain("4 / 6");
+    expect(summaries.getByRole("region", { name: "Toplam sipariş" }).textContent).toContain("9");
+    expect(summaries.getByRole("region", { name: "Müşteri" }).textContent).toContain("7");
+    expect(summaries.getByRole("region", { name: "Yeni lead" }).textContent).toContain("3");
+    expect(within(screen.getByRole("navigation", { name: "Hızlı erişim" })).getByRole("link", { name: "Leadler" }).getAttribute("href")).toBe("/panel/leadler");
+    cleanup();
+    mocks.counts.mockRejectedValue(new Error("db"));
+    render(await Page());
+    expect(screen.getByRole("alert").textContent).toContain("Özet yüklenemedi");
+  });
   it("groups working destinations and reserves future operations without links", () => {
     render(<AdminShell overview={fixture} />);
     const nav = within(screen.getByRole("navigation", { name: "Yönetim navigasyonu" }));
     expect(nav.getByRole("link", { name: "Panel" }).getAttribute("aria-current")).toBe("page");
     expect(nav.getByRole("link", { name: "Ürünler" }).getAttribute("href")).toBe("/panel/urunler");
-    expect(nav.getAllByRole("link")).toHaveLength(2);
+    expect(nav.getAllByRole("link")).toHaveLength(5);
+    expect(nav.getByRole("link", { name: "Siparişler" }).getAttribute("href")).toBe("/panel/siparisler");
+    expect(nav.getByRole("link", { name: "Müşteriler" }).getAttribute("href")).toBe("/panel/musteriler");
+    expect(nav.getByRole("link", { name: "Leadler" }).getAttribute("href")).toBe("/panel/leadler");
     expect(nav.getByText("Planlanan")).toBeTruthy();
-    expect(nav.queryByRole("link", { name: "Siparişler" })).toBeNull();
-    expect(nav.queryByRole("link", { name: "Müşteriler" })).toBeNull();
+    expect(nav.queryByRole("link", { name: "İndirim kodları" })).toBeNull();
     expect(screen.getByRole("link", { name: "Ürünleri yönet" }).getAttribute("href")).toBe("/panel/urunler");
   });
   it("labels all three sample summaries and keeps unavailable analysis honest", () => {
