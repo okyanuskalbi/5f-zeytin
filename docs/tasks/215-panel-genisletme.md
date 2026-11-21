@@ -15,3 +15,10 @@ Mevcut: /panel (Genel bakış), /panel/urunler; AdminShell (components/admin/Adm
 
 ## Dokunulmaz
 .env*, canlı Cloudflare/D1 (migration'ı AJAN uygulamaz, Claude uygular), git commit/push yok (Claude yapar), GitHub workflow ekleme YOK, ödeme/sepet/fiyat mantığı (Aşama 1'de), node_modules/.next silme, git stash/reset/clean.
+
+## Aşama 2 kapsamı: indirim kodları (fiyat hesabına dokunur — kullanıcı onaylı)
+- Migration `db/d1/0003_discounts.sql` (yalnız EK): `discount_codes` (id, code UNIQUE büyük harf, type[percent|fixed], value, min_subtotal, starts_at, ends_at, max_uses, used_count, active, created_at, note); `orders`'a ek sütun yok ise `order_discounts` (order_id, code, amount) tablosu. Para birimi/kuruş temsili mevcut siparişteki gibi (INTEGER kuruş ya da mevcut neyse aynen).
+- Fiyat hesabı: mevcut sunucu tarafı toplam hesabına kod indirimi eklenir; indirim ASLA istemciden güvenilmez (sunucu kodu yeniden doğrular), toplam sıfırın altına inmez, kargo/KDV mantığı mevcut kuralla aynı kalır, kullanım sayacı sipariş oluşturma ile ATOMİK artar (D1 batch), limit/tarih/aktif/min tutar denetlenir, geçersiz kod için sade Türkçe hata. Aynı sipariş iki kez sayılmaz.
+- Sepet/ödeme arayüzü: sepette "İndirim kodu" alanı (uygula/kaldır), indirim satırı toplamda; ödeme önizleme akışı bozulmaz.
+- Panel: `/panel/indirimler` (liste, oluştur, düzenle, aç/kapat, kullanım sayısı), `/api/admin/discounts` (requireAdmin + origin). Menüde "İndirim kodları" artık planlı değil aktif.
+- Testler: kod doğrulama (yüzde/sabit, tavan, min tutar, tarih, limit, pasif, büyük/küçük harf), toplam hesabı, atomik sayaç, yarış durumu (aynı son hak iki sipariş), admin API/UI, mevcut sepet/ödeme testleri yeşil kalır.
