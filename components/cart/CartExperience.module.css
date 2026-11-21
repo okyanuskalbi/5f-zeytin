@@ -116,6 +116,10 @@
 .coupon label, .coupon p { grid-column: 1 / -1; margin: 0; }
 .coupon label { font-size: 14px; font-weight: 600; line-height: 1.5; color: var(--sf-green); }
 .coupon input { min-width: 0; height: 52px; padding-inline: 16px; border: 1px solid var(--sf-line); border-radius: var(--sf-radius-field); background: var(--sf-paper); color: var(--sf-ink); font: inherit; font-size: 16px; }
+.coupon .couponApplied { grid-column: auto; display: flex; align-items: center; min-height: 52px; padding-inline: 16px; border: 1px solid var(--sf-green); border-radius: var(--sf-radius-field); color: var(--sf-green); overflow-wrap: anywhere; }
+.coupon .couponError { color: var(--destructive); }
+.coupon p:empty { display: none; }
+.discountRow dd { color: var(--sf-green); }
 .coupon p { font-size: 14px; line-height: 1.5; color: var(--sf-muted); }
 .mobileCheckout { display: none; }
 

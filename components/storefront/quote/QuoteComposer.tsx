@@ -13,6 +13,7 @@ import { DeferredPhoneField } from "@/components/storefront/forms/DeferredPhoneF
 import { PillButton } from "@/components/storefront/ui/PillButton";
 import { DeferredQuoteProductPicker as QuoteProductPicker } from "./DeferredQuoteProductPicker";
 import { validateQuoteQuantity } from "@/lib/site/quote-lines";
+import { sendLead } from "@/lib/contact/lead-client";
 
 const businessLabels: Record<Exclude<BusinessSegment, "">, string> = {
   hospitality: "Otel & restoran", retail: "Market & bayi", bulk: "Toplu tüketim",
@@ -124,8 +125,8 @@ export function QuoteComposer({ products }: { products: readonly ProductVariant[
     // Every selected row has passed the catalogue and integer checks above.
     const validated = lines.map(line => ({ ...line, quantity: line.quantity! }));
     const segment = businessLabels[journey.segment];
-    void import("@/lib/contact/lead-client").then(({ sendLead }) => sendLead({ name: clean.name, phone: clean.phone, source: "teklif",
-      message: [`İşletme türü: ${segment}`, ...validated.map(line => `${line.product}: ${line.quantity} adet`), `Konum: ${clean.district ? `${clean.district} / ` : ""}${clean.city}`].join("\n") }));
+    void sendLead({ name: clean.name, phone: clean.phone, source: "teklif",
+      message: [`İşletme türü: ${segment}`, ...validated.map(line => `${line.product}: ${line.quantity} adet`), `Konum: ${clean.district ? `${clean.district} / ` : ""}${clean.city}`].join("\n") });
     setPrepared({ fingerprint, lines: validated, draft: {
       ...clean, business: segment, items: validated.map(({ product, quantity }) => ({ product, quantity })),
     } });

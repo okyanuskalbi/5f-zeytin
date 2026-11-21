@@ -15,11 +15,13 @@ type Props<T extends { id: string }> = {
   headingId: string; title: string; subtitle: string; endpoint: string; listLabel: string; noun: string;
   columns: Column<T>[]; statusOptions?: { value: string; label: string }[]; searchLabel: string;
   detailTitle: (row: T) => string; renderDetail: (row: T, tools: DetailTools) => ReactNode; actionLabel: (row: T) => string;
+  /** Opsiyonel "yeni kayıt" düğmesi ve penceresi (ör. indirim kodu oluşturma). */
+  creator?: { label: string; title: string; render: (tools: DetailTools) => ReactNode };
 };
 
 /** Ortak liste: sayfalama, durum süzgeci, arama ve ayrıntı penceresi. Veri her zaman API'den (yönetici oturumuyla) gelir. */
 export function AdminDataList<T extends { id: string }>(props: Props<T>) {
-  const { headingId, title, subtitle, endpoint, listLabel, noun, columns, statusOptions, searchLabel, detailTitle, renderDetail, actionLabel } = props;
+  const { headingId, title, subtitle, endpoint, listLabel, noun, columns, statusOptions, searchLabel, detailTitle, renderDetail, actionLabel, creator } = props;
   const uid = useId();
   const [result, setResult] = useState<AdminListResponse<T> | null>(null);
   const [loading, setLoading] = useState(true);
@@ -30,6 +32,7 @@ export function AdminDataList<T extends { id: string }>(props: Props<T>) {
   const [q, setQ] = useState("");
   const [revision, setRevision] = useState(0);
   const [selected, setSelected] = useState<T | null>(null);
+  const [creating, setCreating] = useState(false);
   const returnFocus = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
@@ -59,7 +62,8 @@ export function AdminDataList<T extends { id: string }>(props: Props<T>) {
   const pages = Math.max(1, Math.ceil(total / adminListPageSize));
   const filtered = Boolean(status || q);
   return <div className={products.manager}>
-    <div className={products.heading}><div><h1 id={headingId} tabIndex={-1}>{title}</h1><p>{subtitle}</p></div></div>
+    <div className={products.heading}><div><h1 id={headingId} tabIndex={-1}>{title}</h1><p>{subtitle}</p></div>
+      {creator && <PillButton icon="none" size="md" onClick={event => { returnFocus.current = event.currentTarget; setCreating(true); }}>{creator.label}</PillButton>}</div>
     <form role="search" aria-label={`${title} süzgeci`} className={`${shell.theme} ${styles.filters}`} onSubmit={event => { event.preventDefault(); setPage(1); setQ(draft.trim()); }}>
       <div className={styles.filterField}><label htmlFor={`${uid}-q`}>{searchLabel}</label>
         <input id={`${uid}-q`} type="search" name="q" value={draft} maxLength={100} autoComplete="off" onChange={event => setDraft(event.target.value)} /></div>
@@ -100,5 +104,14 @@ export function AdminDataList<T extends { id: string }>(props: Props<T>) {
         {renderDetail(selected, { reload: () => setRevision(value => value + 1), close: () => setSelected(null) })}
       </DialogContent>}
     </Dialog>
+    {creator && <Dialog open={creating} onOpenChange={setCreating}>
+      {creating && <DialogContent data-surface="admin" className={`${shell.theme} ${products.editDialog} ${styles.detail}`} onPointerDownOutside={event => event.preventDefault()}
+        onCloseAutoFocus={event => { event.preventDefault(); returnFocus.current?.focus(); }}>
+        <div className={products.dialogHeading}><DialogTitle>{creator.title}</DialogTitle>
+          <PillButton variant="outline" icon="none" size="md" onClick={() => setCreating(false)}>Kapat</PillButton></div>
+        <DialogDescription className="sr-only">Yeni kayıt formu.</DialogDescription>
+        {creator.render({ reload: () => setRevision(value => value + 1), close: () => setCreating(false) })}
+      </DialogContent>}
+    </Dialog>}
   </div>;
 }

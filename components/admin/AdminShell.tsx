@@ -25,10 +25,11 @@ const destinations = [
   { id: "admin-siparisler", label: "Siparişler", href: "/panel/siparisler", icon: ClipboardList },
   { id: "admin-musteriler", label: "Müşteriler", href: "/panel/musteriler", icon: Users },
   { id: "admin-leadler", label: "Leadler", href: "/panel/leadler", icon: Inbox },
+  { id: "admin-indirimler", label: "İndirim kodları", href: "/panel/indirimler", icon: Tag },
 ] as const;
-const planned = [{ label: "İndirim kodları", icon: Tag }, { label: "Ziyaretçiler", icon: UserRound }];
+const planned = [{ label: "Ziyaretçiler", icon: UserRound }];
 export type AdminArea = Exclude<(typeof destinations)[number]["id"], "admin-genel-bakis">;
-const areaLabels: Record<AdminArea, string> = { "admin-urunler": "Ürünler", "admin-siparisler": "Siparişler", "admin-musteriler": "Müşteriler", "admin-leadler": "Leadler" };
+const areaLabels: Record<AdminArea, string> = { "admin-urunler": "Ürünler", "admin-siparisler": "Siparişler", "admin-musteriler": "Müşteriler", "admin-leadler": "Leadler", "admin-indirimler": "İndirim kodları" };
 
 function isValid(overview: AdminOverview) {
   if (overview.status === "live") {

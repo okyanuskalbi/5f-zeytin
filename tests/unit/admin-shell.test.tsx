@@ -53,12 +53,13 @@ describe("protected admin shell", () => {
     const nav = within(screen.getByRole("navigation", { name: "Yönetim navigasyonu" }));
     expect(nav.getByRole("link", { name: "Panel" }).getAttribute("aria-current")).toBe("page");
     expect(nav.getByRole("link", { name: "Ürünler" }).getAttribute("href")).toBe("/panel/urunler");
-    expect(nav.getAllByRole("link")).toHaveLength(5);
+    expect(nav.getAllByRole("link")).toHaveLength(6);
     expect(nav.getByRole("link", { name: "Siparişler" }).getAttribute("href")).toBe("/panel/siparisler");
     expect(nav.getByRole("link", { name: "Müşteriler" }).getAttribute("href")).toBe("/panel/musteriler");
     expect(nav.getByRole("link", { name: "Leadler" }).getAttribute("href")).toBe("/panel/leadler");
     expect(nav.getByText("Planlanan")).toBeTruthy();
-    expect(nav.queryByRole("link", { name: "İndirim kodları" })).toBeNull();
+    expect(nav.getByRole("link", { name: "İndirim kodları" }).getAttribute("href")).toBe("/panel/indirimler");
+    expect(nav.getByText("Ziyaretçiler")).toBeTruthy();
     expect(screen.getByRole("link", { name: "Ürünleri yönet" }).getAttribute("href")).toBe("/panel/urunler");
   });
   it("labels all three sample summaries and keeps unavailable analysis honest", () => {

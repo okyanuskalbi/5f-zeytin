@@ -21,7 +21,7 @@ beforeEach(() => { bindTestD1(createTestD1()); });
 
 describe("0002_panel migration", () => {
   it("is applied after 0001 and only adds leads and indexes", async () => {
-    expect(migrationFiles()).toEqual(["0001_init.sql", "0002_panel.sql"]);
+    expect(migrationFiles()).toEqual(["0001_init.sql", "0002_panel.sql", "0003_discounts.sql"]);
     const tables = await query<{ name: string }>("select name from sqlite_master where type = 'table' and name = 'leads'");
     expect(tables.rows).toHaveLength(1);
   });

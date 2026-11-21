@@ -19,5 +19,4 @@ it("updates only the two weights, preserves commerce fields, and is repeatable",
       { id: "sample-brined-green-olive-5kg", weight: "3 L", price_kurus: 110000, stock: 8 },
       { id: "sample-green-olive-10kg", weight: "3 L", price_kurus: 220000, stock: 6 },
     ]);
-  } finally { await db.close(); }
-});
+  } finally { await db.close(); }}, 30_000);

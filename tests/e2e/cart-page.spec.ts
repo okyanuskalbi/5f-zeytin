@@ -27,8 +27,8 @@ test("cart page: route loads the catalog and preserves edits on server refresh",
   await expect(olive.getByRole("status", { name: "Adet" })).toHaveText("2");
   await page.reload();
   await expect(olive.getByRole("status", { name: "Adet" })).toHaveText("2");
-  await expect(page.getByRole("textbox", { name: "Kupon kodu" })).toHaveAttribute("readonly", "");
-  await expect(page.getByRole("button", { name: "Kuponu uygula" })).toBeDisabled();
+  await expect(page.getByRole("textbox", { name: "İndirim kodu" })).toBeEditable();
+  await expect(page.getByRole("button", { name: "İndirim kodunu uygula" })).toBeDisabled(); // kod girilene kadar
   await expect(page.getByRole("button", { name: "Ödemeye geç" }).filter({ visible: true })).toBeDisabled();
   await expect(page.getByRole("link", { name: "Alışverişe devam et" })).toHaveAttribute("href", "/#urunler");
 });
@@ -180,9 +180,9 @@ test.describe("cart page component", () => {
       await expect(page.getByRole("group", { name: "Sofralık Zeytin", exact: true }).getByRole("button", { name: "Sepetten sil" })).toBeFocused();
       await page.keyboard.press("Enter");
       await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
-      const coupon = page.getByRole("textbox", { name: "Kupon kodu" });
+      const coupon = page.getByRole("textbox", { name: "İndirim kodu" });
       await coupon.focus();
-      await expect(coupon).toHaveAccessibleDescription(/hazırlıkları sürüyor|Fiyat ve stoklar kesinleştiğinde/);
+      await expect(coupon).toBeFocused();
       await expect(page.getByRole("button", { name: "Ödemeye geç" }).filter({ visible: true })).toHaveAccessibleDescription(/hazırlıkları sürüyor|Fiyat ve stoklar kesinleştiğinde/);
       if (reducedMotion === "reduce") expect(await continueLink.evaluate((element) => getComputedStyle(element).transitionDuration)).toBe("0s");
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

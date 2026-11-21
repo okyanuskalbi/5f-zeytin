@@ -8,9 +8,8 @@ afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
 it("exposes only working panel destinations and no sample statistics by default", () => {
   render(<AdminShell />);
   const nav = within(screen.getByRole("navigation", { name: "Yönetim navigasyonu" }));
-  expect(nav.getAllByRole("link").map(link => link.textContent)).toEqual(["Panel", "Ürünler", "Siparişler", "Müşteriler", "Leadler"]);
-  expect(nav.queryByRole("link", { name: "İndirim kodları" })).toBeNull();
-  expect(nav.getByText("İndirim kodları")).toBeTruthy();
+  expect(nav.getAllByRole("link").map(link => link.textContent)).toEqual(["Panel", "Ürünler", "Siparişler", "Müşteriler", "Leadler", "İndirim kodları"]);
+  expect(nav.getByText("Ziyaretçiler")).toBeTruthy();
   expect(screen.queryByText("TEST VERİSİ")).toBeNull();
   expect(screen.getAllByText("Henüz veri yok")).toHaveLength(3);
 });

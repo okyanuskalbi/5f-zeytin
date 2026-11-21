@@ -83,8 +83,8 @@ for (const viewport of viewports) {
       const mobile = page.getByRole("region", { name: "Mobil ödeme" });
       const line = main.getByRole("group", { name: "Doğal Kırma Yeşil Zeytin", exact: true });
       await expect(summary.getByLabel("Toplam (tahmini)", { exact: true })).toHaveText("440,00 ₺");
-      await expect(main.getByRole("textbox", { name: "Kupon kodu" })).toHaveAttribute("readonly", "");
-      await expect(main.getByRole("button", { name: "Kuponu uygula" })).toBeDisabled();
+      await expect(main.getByRole("textbox", { name: "İndirim kodu" })).toBeEditable();
+      await expect(main.getByRole("button", { name: "İndirim kodunu uygula" })).toBeDisabled();
       if (viewport.width < 768) {
         await expect(mobile).toBeVisible();
         await expect(mobile).toHaveCSS("position", "fixed");

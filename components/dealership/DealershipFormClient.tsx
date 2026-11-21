@@ -5,6 +5,7 @@ import { AddressSearchField } from "@/components/ui/address-search-field";
 import { DeferredPhoneField as CustomerPhoneField } from "@/components/storefront/forms/DeferredPhoneField";
 import { PillButton } from "@/components/storefront/ui/PillButton";
 import { corporateContact } from "@/lib/site/corporate-contact";
+import { sendLead } from "@/lib/contact/lead-client";
 import type { DealershipDraft, DealershipErrors, DealershipField, dealershipLimits as Limits } from "@/lib/dealership/application";
 import styles from "./DealershipForm.module.css";
 
@@ -74,7 +75,6 @@ export function DealershipFormClient({ openDraft = openMailto, configuration }: 
       return;
     }
     const draft = createDealershipDraft(result.data);
-    const { sendLead } = await import("@/lib/contact/lead-client");
     const data = result.data;
     void sendLead({ name: `${data.contactName} / ${data.companyName}`, email: data.email, phone: data.phone, source: "bayilik",
       message: [`İşletme türü: ${data.businessType}`, `Konum: ${data.district} / ${data.city}`, data.outletCount ? `Satış noktası: ${data.outletCount}` : "", data.message ? `Mesaj: ${data.message}` : ""].filter(Boolean).join("\n") });

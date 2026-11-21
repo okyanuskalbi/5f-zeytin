@@ -68,11 +68,14 @@ export const CartLineItem = forwardRef<HTMLLIElement, CartLineItemProps>(functio
 });
 
 // 21st Checkout Summary, demo 36084: semantic amount rows and explicit pending charges.
-export function CartTotals({ subtotal, itemCount }: { subtotal: number | null; itemCount: number }): JSX.Element {
+export function CartTotals({ subtotal, itemCount, total = subtotal, discount = null }: {
+  subtotal: number | null; itemCount: number; total?: number | null; discount?: { code: string; amountKurus: number } | null;
+}): JSX.Element {
   return <dl className={styles.totals}>
     <div><dt>Ara toplam (tahmini), {itemCount} adet</dt><dd><CartAmount amount={subtotal} label="Ara toplam" /></dd></div>
+    {discount && <div className={styles.discountRow}><dt>İndirim ({discount.code})</dt><dd><CartAmount amount={-discount.amountKurus} label="İndirim" /></dd></div>}
     <div className={styles.shipping}><dt>Kargo</dt><dd>Ödeme adımında hesaplanır</dd></div>
-    <div className={styles.total}><dt>Toplam <small>(tahmini)</small></dt><dd data-cart-total=""><CartAmount amount={subtotal} label="Toplam (tahmini)" /></dd></div>
+    <div className={styles.total}><dt>Toplam <small>(tahmini)</small></dt><dd data-cart-total=""><CartAmount amount={total} label="Toplam (tahmini)" /></dd></div>
   </dl>;
 }
 
