@@ -22,4 +22,5 @@ Logo `https://afinazeytin.com/email/...` ve `https://afina.com.tr/email/...` adr
 ## Önizleme
 `output/task220/` (5 HTML, 700 ve 360 px ekran görüntüleri, `ozet.png`); örnek veri sahtedir.
 
-## Durum: UYGULANDI (commit, yayın ve gerçek gönderim yok; kullanıcı onayı bekliyor)
+## Durum: TAMAMLANDI
+28 Kasım 2026: kullanıcı onayladı. İki site yayında (ZEYTİN 31d1139, KURUMSAL 872a8ad), logolar 200. Doğrulama dışındaki 4 e-posta kullanıcının kutusuna deneme olarak gönderildi; gerçek posta programındaki görünüm teyidi bekleniyor. Deneme talep kaydı silindi.
