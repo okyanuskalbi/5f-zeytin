@@ -82,12 +82,18 @@ async function loadSockets(): Promise<void> {
   } catch { /* Workers dışında yok; worker-mailer kendi hatasını verir */ }
 }
 
-export type MailMessage = { to: string; subject: string; text: string; replyTo?: string | null };
+export type MailMessage = { to: string; subject: string; text: string; html?: string; replyTo?: string | null };
+
+const maxTextLength = 20_000;
+/** HTML asla kesilmez (yarım etiket kalmasın): bu sınırı aşan HTML hiç eklenmez, düz metin gider. */
+const maxHtmlLength = 100_000;
+const cleanBody = (value: string) => value.replace(/\r\n?/g, "\n").replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, "");
 
 const timeouts = { socketTimeoutMs: 10_000, responseTimeoutMs: 10_000 } as const;
 
 /**
- * Düz metin e-posta gönderir (Cloudflare Workers soketi üzerinden SMTP, worker-mailer).
+ * E-posta gönderir: düz metin, verildiyse yanında HTML (multipart/alternative).
+ * Cloudflare Workers soketi üzerinden SMTP (worker-mailer).
  * Ayar yoksa MailNotConfiguredError; reddedilen/başarısız gönderimde hata fırlatır. Bağlantı her durumda kapatılır.
  */
 export async function sendMail(message: MailMessage): Promise<void> {
@@ -96,7 +102,9 @@ export async function sendMail(message: MailMessage): Promise<void> {
   const to = cleanAddress(message.to);
   if (!to) throw new Error("mail_invalid_recipient");
   const subject = cleanHeader(message.subject, 160);
-  const text = message.text.replace(/\r\n?/g, "\n").replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, "").slice(0, 20_000);
+  const text = cleanBody(message.text).slice(0, maxTextLength);
+  const cleanedHtml = message.html ? cleanBody(message.html) : "";
+  const html = cleanedHtml.length <= maxHtmlLength ? cleanedHtml : "";
   const replyTo = cleanAddress(message.replyTo);
   // cloudflare:sockets yalnız Workers'ta vardır; modül gönderim anında yüklenir (Node/test ortamı etkilenmez).
   await loadSockets();
@@ -111,7 +119,7 @@ export async function sendMail(message: MailMessage): Promise<void> {
     await mailer.send({
       from: { email: config.from.email }, to: { email: to },
       ...(replyTo ? { reply: { email: replyTo } } : {}),
-      subject, text,
+      subject, text, ...(html ? { html } : {}),
       headers: { From: fromHeader, Subject: encodeWords(subject) },
     });
   } finally {
